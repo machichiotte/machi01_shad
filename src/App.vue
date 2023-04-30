@@ -2,11 +2,11 @@
   <div id="app">
     <header>
       <nav>
-        <router-link to="/">Accueil</router-link>
-        <router-link to="/portfolio">Gestion de portefeuille</router-link>
-        <router-link to="/market-analysis">Analyse de marché</router-link>
-        <router-link to="/order-management">Gestion des ordres</router-link>
-        <router-link to="/admin">Administration</router-link>
+        <router-link to="/" active-class="selected-link">Accueil</router-link>
+        <router-link to="/portfolio" active-class="selected-link">Gestion de portefeuille</router-link>
+        <router-link to="/market-analysis" active-class="selected-link">Analyse de marché</router-link>
+        <router-link to="/order-management" active-class="selected-link">Gestion des ordres</router-link>
+        <router-link to="/admin" active-class="selected-link">Administration</router-link>
       </nav>
     </header>
     <router-view></router-view>
@@ -21,6 +21,7 @@ export default {
   router
 };
 </script>
+
 
 <style>
 #app {
@@ -45,9 +46,17 @@ nav {
 
 nav a {
   color: white;
-  text-decoration: none;
+  padding: 10px;
+  text-decoration: solid;
 }
 
 nav a:hover {
   text-decoration: underline;
-}</style>
+}
+
+.selected-link {
+  background-color: white;
+  color: #2c3e50;
+  padding: 10px;
+}
+</style>
