@@ -2,60 +2,86 @@
   <div>
     <h1>Gestion des portefeuilles</h1>
 
+    <button @click="getCmcData">Get Data</button>
+    <ul v-if="cryptoData">
+      <li v-for="crypto in cryptoData" :key="crypto.name">
+        {{ crypto.name }} - {{ crypto.price }}
+      </li>
+    </ul>
+
     <div>
-      <button @click="getCmcData">Get Data</button>
-      <ul>
-        <li v-for="crypto in cryptoData" :key="crypto.id">
-          {{ crypto.name }} - {{ crypto.price }}
+      <button @click="getBalance('binance')">Get Binance Balance</button>
+      <ul v-if="binanceBalance">
+        <li v-for="order in binanceBalance" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }} - {{ order.available }}
         </li>
       </ul>
 
-      <button @click="getKucoinBalance">Get Kucoin Balance</button>
-      <ul>
-        <li v-for="(balance, symbol, available) in kucoinBalance" :key="symbol">
-          {{ balance }} - {{ symbol }} - {{ available }}
+      <button @click="getBalance('kucoin')">Get Kucoin Balance</button>
+      <ul v-if="kucoinBalance">
+        <li v-for="order in kucoinBalance" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }} - {{ order.available }}
         </li>
       </ul>
-      <button @click="getHuobiBalance">Get Huobi Balance</button>
-      <ul>
-        <li v-for="(balance, symbol, available) in huobiBalance" :key="symbol">
-          {{ balance }} - {{ symbol }} - {{ available }}
+
+      <button @click="getBalance('huobi')">Get Huobi Balance</button>
+      <ul v-if="huobiBalance">
+        <li v-for="order in huobiBalance" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }} - {{ order.available }}
         </li>
       </ul>
-      <button @click="getOkexBalance">Get Okex Balance</button>
-      <ul>
-        <li v-for="(balance, symbol, available) in okexBalance" :key="symbol">
-          {{ balance }} - {{ symbol }} - {{ available }}
+
+      <button @click="getBalance('okex')">Get Okex Balance</button>
+      <ul v-if="okexBalance">
+        <li v-for="order in okexBalance" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }} - {{ order.available }}
         </li>
       </ul>
-      <button @click="getGateioBalance">Get Gateio Balance</button>
-      <ul>
-        <li v-for="(balance, symbol, available) in gateioBalance" :key="symbol">
-          {{ balance }} - {{ symbol }} - {{ available }}
-        </li>
-      </ul>
-      <button @click="getBinanceBalance">Get Binance Balance</button>
-      <ul>
-        <li v-for="(balance, symbol, available) in binanceBalance" :key="symbol">
-          {{ balance }} - {{ symbol }} - {{ available }}
+
+      <button @click="getBalance('gateio')">Get Gateio Balance</button>
+      <ul v-if="gateioBalance">
+        <li v-for="order in gateioBalance" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }} - {{ order.available }}
         </li>
       </ul>
     </div>
 
-    <!--<div v-for="(exchange, index) in exchanges" :key="index">
-      <h2>{{ exchange.name }}</h2>
-      <div v-for="(platform, platformIndex) in exchange.platforms" :key="platformIndex">
-        <h3>{{ platform.name }}</h3>
-        <div v-for="(wallet, walletIndex) in platform.wallets" :key="walletIndex">
-          <h4>{{ wallet.name }}</h4>
-          <div>{{ wallet.address }}</div>
-          <div>{{ wallet.balance }}</div>
-          <button @click="editWallet">Editer</button>
-          <button @click="deleteWallet">Supprimer</button>
-        </div>
-        <button @click="addWallet">Ajouter un portefeuille</button>
-      </div>
-    </div>-->
+    <div>
+      <button @click="getActiveOrders('binance')">Get Binance Active Orders</button>
+      <ul v-if="binanceActiveOrders">
+        <li v-for="order in binanceActiveOrders" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }} - {{ order.available }}
+        </li>
+      </ul>
+
+      <button @click="getActiveOrders('kucoin')">Get Kucoin Active Orders</button>
+      <ul v-if="kucoinActiveOrders">
+        <li v-for="order in kucoinActiveOrders" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }} - {{ order.available }}
+        </li>
+      </ul>
+
+      <button @click="getActiveOrders('huobi')">Get Huobi Active Orders</button>
+      <ul v-if="huobiActiveOrders">
+        <li v-for="order in huobiActiveOrders" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }} - {{ order.available }}
+        </li>
+      </ul>
+
+      <button @click="getActiveOrders('okex')">Get Okex Active Orders</button>
+      <ul v-if="okexActiveOrders">
+        <li v-for="order in okexActiveOrders" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }} - {{ order.available }}
+        </li>
+      </ul>
+
+      <button @click="getActiveOrders('gateio')">Get Gateio Active Orders</button>
+      <ul v-if="gateioActiveOrders">
+        <li v-for="order in gateioActiveOrders" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }} - {{ order.available }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -75,7 +101,6 @@ export default {
     };
   },
   methods: {
-
     async getCmcData() {
       try {
         const response = await fetch(serverHost + '/cmc-data');
@@ -86,68 +111,27 @@ export default {
       }
     },
 
-    async getBinanceBalance() {
+    async getBalance(exchange) {
       try {
-        const response = await fetch(serverHost + '/balance/binance');
+        const response = await fetch(`${serverHost}/balance/${exchange}`);
         const data = await response.json();
-        this.binanceBalance = data.balance;
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    async getKucoinBalance() {
-      try {
-        const response = await fetch(serverHost + '/balance/kucoin');
-        const data = await response.json();
-        this.kucoinBalance = data.balance;
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    async getHuobiBalance() {
-      try {
-        const response = await fetch(serverHost + '/balance/huobi');
-        const data = await response.json();
-        this.huobiBalance = data.balance;
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    async getOkexBalance() {
-      try {
-        const response = await fetch(serverHost + '/balance/okex');
-        const data = await response.json();
-        this.okexBalance = data.balance;
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    async getGateioBalance() {
-      try {
-        const response = await fetch(serverHost + '/balance/gateio');
-        const data = await response.json();
-        this.gateioBalance = data.balance;
+        this[`${exchange}Balance`] = data.balance;
       } catch (err) {
         console.error(err);
       }
     },
 
-    editWallet() {
-      // TODO: implementer la fonction pour editer un portefeuille
-    },
-    deleteWallet() {
-      // TODO: implementer la fonction pour supprimer un portefeuille
-    },
-    addWallet() {
-      // TODO: implementer la fonction pour ajouter un portefeuille
-    },
-  }, mounted() {
-    /*this.getCmcData();
-    this.getKucoinBalance();
-    this.getHuobiBalance();
-    this.getOkexBalance();
-    this.getGateioBalance();*/
-    //this.getBinanceBalance();
-  },
+    async getActiveOrders(exchange) {
+      try {
+        const response = await fetch(`${serverHost}/activeOrders/${exchange}`);
+        const data = await response.json();
+
+        //TODO change it
+        this[`${exchange}ActiveOrders`] = data.balance;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
 };
 </script>
