@@ -8,7 +8,7 @@ const { connectMDB, saveDataMDB, deleteAllDataMDB } = require('./mongodb.js');
 dotenv.config();
 const app = express();
 
-const { getBalance, getActiveOrders } = require('./utils/calculs');
+const { mapBalance, mapActiveOrders } = require('./utils/mapping');
 
 // Connexion à la base de données MongoDB
 connectMDB();
@@ -56,7 +56,7 @@ app.get('/balance/:exchangeId', async (req, res) => {
 
     const exchange = new ccxt[exchangeId](exchangeParams);
     const balances = await exchange.fetchBalance();
-    const balance = getBalance(exchangeId, balances);
+    const balance = mapBalance(exchangeId, balances);
 
     //TODO check if balance size > 0 ?
     await deleteAllDataMDB(collection);
@@ -89,7 +89,7 @@ app.get('/activeOrders/:exchangeId', async (req, res) => {
       exchange.options["warnOnFetchOpenOrdersWithoutSymbol"] = false;
     }
     const orders = await exchange.fetchOpenOrders();
-    const order = getActiveOrders(exchangeId, orders);
+    const order = mapActiveOrders(exchangeId, orders);
 
     //TODO check if order size > 0 ?
     await deleteAllDataMDB(collection);
@@ -101,6 +101,8 @@ app.get('/activeOrders/:exchangeId', async (req, res) => {
     res.status(500).send({ error: 'Internal server error' });
   }
 });
+
+
 
 const PORT = process.env.PORT || 3000;
 

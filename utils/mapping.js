@@ -1,5 +1,5 @@
 // src/calculs.js
-function getBalance(platform, balances) {
+function mapBalance(platform, balances) {
     console.log("getBalance");
     console.log("platform :: " + platform + " --- " + JSON.stringify(balances));
     switch (platform) {
@@ -46,61 +46,19 @@ function getBalance(platform, balances) {
     }
 }
 
-function getActiveOrders(platform, orders) {
+function mapActiveOrders(platform, orders) {
     console.log("getBalance");
     console.log("platform :: " + platform + " --- " + JSON.stringify(orders));
-    switch (platform) {
-        case 'binance':
-            return orders
-            .map((item) => ({
-                orderId: item.clientOrderId,
-                    symbol: item.symbol,
-                    type: item.type,
-                    side: item.side,
-                    amount: item.amount,
-                    price: item.price,
-                }));
-        case 'kucoin':
-            return orders
-                .map((item) => ({
-                orderId: item.clientOrderId,
-                    symbol: item.symbol,
-                    type: item.type,
-                    side: item.side,
-                    amount: item.amount,
-                    price: item.price,
-                }));
-        case 'huobi':
-            return orders
-            .map((item) => ({
-                orderId: item.clientOrderId,
-                    symbol: item.symbol,
-                    type: item.type,
-                    side: item.side,
-                    amount: item.amount,
-                    price: item.price,
-                }));
-        case 'okex':
-            return orders
-            .map((item) => ({
-                orderId: item.clientOrderId,
-                    symbol: item.symbol,
-                    type: item.type,
-                    side: item.side,
-                    amount: item.amount,
-                    price: item.price,
-                }));
-        case 'gateio':
-            return orders
-                .map((item) => ({
-                    orderId: item.clientOrderId,
-                        symbol: item.symbol,
-                        type: item.type,
-                        side: item.side,
-                        amount: item.amount,
-                        price: item.price,
-                    }));
-    }
+
+    return orders
+        .map((item) => ({
+            orderId: item.clientOrderId,
+            symbol: item.symbol,
+            type: item.type,
+            side: item.side,
+            amount: item.amount,
+            price: item.price,
+        }));
 }
 
-module.exports = { getBalance, getActiveOrders };
+module.exports = { mapBalance, mapActiveOrders: mapActiveOrders };
