@@ -5,7 +5,7 @@ const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PAS
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 let db;
 
-async function connectToMongo() {
+async function connectMDB() {
     try {
         await client.connect();
         db = client.db(process.env.MONGODB_DATABASE);
@@ -15,7 +15,7 @@ async function connectToMongo() {
     }
 }
 
-async function saveDataToMongoDB(data, collectionName) {
+async function saveDataMDB(data, collectionName) {
     try {
         const collection = db.collection(collectionName);
         await collection.insertMany(data);
@@ -25,4 +25,60 @@ async function saveDataToMongoDB(data, collectionName) {
     }
 }
 
-module.exports = { connectToMongo, saveDataToMongoDB };
+async function getDataMDB(collectionName) {
+    try {
+        const collection = db.collection(collectionName);
+        const data = await collection.find().toArray();
+        console.log(`Data retrieved from MongoDB in collection ${collectionName}:`, data);
+        return data;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// Insert a document into a collection
+async function insertDataMDB(collectionName, document) {
+    try {
+        const collection = db.collection(collectionName);
+        const result = await collection.insertOne(document);
+        console.log(`Inserted document with ID ${result.insertedId} into collection ${collectionName}`);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// Get all documents from a collection
+async function getAllDataMDB(collectionName) {
+    try {
+        const collection = db.collection(collectionName);
+        const documents = await collection.find().toArray();
+        console.log(`Found ${documents.length} documents in collection ${collectionName}`);
+        return documents;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// Update a document in a collection
+async function updateDataMDB(collectionName, filter, update) {
+    try {
+        const collection = db.collection(collectionName);
+        const result = await collection.updateOne(filter, update);
+        console.log(`Updated ${result.modifiedCount} document in collection ${collectionName}`);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// Delete a document from a collection
+async function deleteDataMDB(collectionName, filter) {
+    try {
+        const collection = db.collection(collectionName);
+        const result = await collection.deleteOne(filter);
+        console.log(`Deleted ${result.deletedCount} document from collection ${collectionName}`);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+module.exports = { connectMDB, saveDataMDB, getDataMDB, insertDataMDB, getAllDataMDB, updateDataMDB, deleteDataMDB };
