@@ -15,11 +15,11 @@ async function connectToMongo() {
     }
 }
 
-async function saveDataToMongoDB(data) {
+async function saveDataToMongoDB(data, collectionName) {
     try {
-        const collection = db.collection(process.env.MONGODB_COLLECTION_CMC);
+        const collection = db.collection(collectionName);
         await collection.insertMany(data);
-        console.log("Data saved to MongoDB!");
+        console.log(`Data saved to MongoDB in collection ${collectionName}!`);
     } catch (err) {
         console.error(err);
     }

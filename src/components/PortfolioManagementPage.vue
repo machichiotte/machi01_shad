@@ -9,6 +9,37 @@
           {{ crypto.name }} - {{ crypto.price }}
         </li>
       </ul>
+
+      <button @click="getKucoinBalance">Get Kucoin Balance</button>
+      <ul>
+        <li v-for="(balance, symbol, available) in kucoinBalance" :key="symbol">
+          {{ balance }} - {{ symbol }} - {{ available }}
+        </li>
+      </ul>
+      <button @click="getHuobiBalance">Get Huobi Balance</button>
+      <ul>
+        <li v-for="(balance, symbol, available) in huobiBalance" :key="symbol">
+          {{ balance }} - {{ symbol }} - {{ available }}
+        </li>
+      </ul>
+      <button @click="getOkexBalance">Get Okex Balance</button>
+      <ul>
+        <li v-for="(balance, symbol, available) in okexBalance" :key="symbol">
+          {{ balance }} - {{ symbol }} - {{ available }}
+        </li>
+      </ul>
+      <button @click="getGateioBalance">Get Gateio Balance</button>
+      <ul>
+        <li v-for="(balance, symbol, available) in gateioBalance" :key="symbol">
+          {{ balance }} - {{ symbol }} - {{ available }}
+        </li>
+      </ul>
+      <button @click="getBinanceBalance">Get Binance Balance</button>
+      <ul>
+        <li v-for="(balance, symbol, available) in binanceBalance" :key="symbol">
+          {{ balance }} - {{ symbol }} - {{ available }}
+        </li>
+      </ul>
     </div>
 
     <!--<div v-for="(exchange, index) in exchanges" :key="index">
@@ -30,86 +61,77 @@
 
 <script>
 const serverHost = "http://localhost:3000";
+
 export default {
   name: "PortfolioManagementPage",
   data() {
-    /* return {
-       exchanges: [
-         {
-           name: "Binance",
-           platforms: [
-             {
-               name: "Spot",
-               wallets: [
-                 {
-                   name: "BTC",
-                   address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                   balance: 1.2345,
-                 },
-                 {
-                   name: "ETH",
-                   address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                   balance: 23.4567,
-                 },
-               ],
-             },
-             {
-               name: "Margin",
-               wallets: [
-                 {
-                   name: "BTC",
-                   address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                   balance: 0.1234,
-                 },
-               ],
-             },
-           ],
-         },
-         {
-           name: "Kraken",
-           platforms: [
-             {
-               name: "Spot",
-               wallets: [
-                 {
-                   name: "BTC",
-                   address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                   balance: 3.4567,
-                 },
-                 {
-                   name: "ETH",
-                   address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                   balance: 45.6789,
-                 },
-               ],
-             },
-           ],
-         },
-       ],
-     };*/
-
     return {
-      cryptoData: []
+      cryptoData: null,
+      kucoinBalance: null,
+      binanceBalance: null,
+      huobiBalance: null,
+      okexBalance: null,
+      gateioBalance: null
     };
-
   },
   methods: {
-    
+
     async getCmcData() {
       try {
         const response = await fetch(serverHost + '/cmc-data');
-        console.error(response);
-
         const data = await response.json();
-        console.error(data);
-
         this.cryptoData = data.data;
-        console.error(this.cryptoData);
-
       } catch (err) {
         console.error(err);
       }
     },
+
+    async getBinanceBalance() {
+      try {
+        const response = await fetch(serverHost + '/balance/binance');
+        const data = await response.json();
+        this.binanceBalance = data.balance;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    async getKucoinBalance() {
+      try {
+        const response = await fetch(serverHost + '/balance/kucoin');
+        const data = await response.json();
+        this.kucoinBalance = data.balance;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    async getHuobiBalance() {
+      try {
+        const response = await fetch(serverHost + '/balance/huobi');
+        const data = await response.json();
+        this.huobiBalance = data.balance;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    async getOkexBalance() {
+      try {
+        const response = await fetch(serverHost + '/balance/okex');
+        const data = await response.json();
+        this.okexBalance = data.balance;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    async getGateioBalance() {
+      try {
+        const response = await fetch(serverHost + '/balance/gateio');
+        const data = await response.json();
+        this.gateioBalance = data.balance;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
     editWallet() {
       // TODO: implementer la fonction pour editer un portefeuille
     },
@@ -119,6 +141,13 @@ export default {
     addWallet() {
       // TODO: implementer la fonction pour ajouter un portefeuille
     },
+  }, mounted() {
+    /*this.getCmcData();
+    this.getKucoinBalance();
+    this.getHuobiBalance();
+    this.getOkexBalance();
+    this.getGateioBalance();*/
+    //this.getBinanceBalance();
   },
 };
 </script>
