@@ -1,4 +1,4 @@
-// src/calculs.js
+// utils/mapping.js
 function mapBalance(platform, data) {
     switch (platform) {
         case 'binance':
