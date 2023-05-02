@@ -81,6 +81,16 @@ async function deleteDataMDB(collectionName, filter) {
     }
 }
 
+async function deleteMultipleDataMDB(collectionName, deleteParam) {
+    try { 
+      const collection = db.collection(collectionName);
+      const result = await collection.deleteMany(deleteParam);
+      console.log(`Deleted ${result.deletedCount} documents from collection ${collectionName}`);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
 // Delete all documents from a collection
 async function deleteAllDataMDB(collectionName) {
     try {
@@ -92,4 +102,4 @@ async function deleteAllDataMDB(collectionName) {
     }
   }
 
-module.exports = { connectMDB, saveDataMDB, getDataMDB, insertDataMDB, getAllDataMDB, updateDataMDB, deleteDataMDB, deleteAllDataMDB };
+module.exports = { connectMDB, saveDataMDB, getDataMDB, insertDataMDB, getAllDataMDB, updateDataMDB, deleteDataMDB, deleteMultipleDataMDB, deleteAllDataMDB };

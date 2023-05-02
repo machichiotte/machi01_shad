@@ -1,56 +1,56 @@
 // src/calculs.js
-function mapBalance(platform, balances) {
-    console.log("getBalance");
-    console.log("platform :: " + platform + " --- " + JSON.stringify(balances));
+function mapBalance(platform, data) {
     switch (platform) {
         case 'binance':
-            return balances.info.balances
+            return data.info.balances
                 .filter((item) => parseFloat(item.free) > 0 || parseFloat(item.locked))
                 .map((item) => ({
                     symbol: item.asset,
                     balance: parseFloat(item.free) + parseFloat(item.locked),
-                    available: item.free
+                    available: item.free,
+                    platform: platform
                 }));
         case 'kucoin':
-            return balances.info.data
+            return data.info.data
                 .filter((item) => parseFloat(item.balance) > 0)
                 .map((item) => ({
                     symbol: item.currency,
                     balance: item.balance,
-                    available: item.available
+                    available: item.available,
+                    platform: platform
                 }));
         case 'huobi':
-            return balances.info.data.list
+            return data.info.data.list
                 .filter((item) => parseFloat(item.balance) > 0)
                 .map((item) => ({
                     symbol: item.currency,
                     balance: item.balance,
-                    available: item.available
+                    available: item.available,
+                    platform: platform
                 }));
         case 'okex':
-            return balances.info.data
+            return data.info.data
                 .filter((item) => parseFloat(item.cashBal) > 0)
                 .map((item) => ({
                     symbol: item.ccy,
                     balance: item.cashBal,
-                    available: item.availBal
+                    available: item.availBal,
+                    platform: platform
                 }));
         case 'gateio':
-            return balances.info
+            return data.info
                 .filter((item) => parseFloat(item.available) > 0 || parseFloat(item.locked))
                 .map((item) => ({
                     symbol: item.currency,
                     balance: item.available + item.locked,
-                    available: item.available
+                    available: item.available,
+                    platform: platform
                 }));
     }
 }
 
-function mapActiveOrders(platform, orders) {
-    console.log("getBalance");
-    console.log("platform :: " + platform + " --- " + JSON.stringify(orders));
-
-    return orders
+function mapActiveOrders(platform, data) {
+    return data
         .map((item) => ({
             orderId: item.clientOrderId,
             symbol: item.symbol,
@@ -58,7 +58,35 @@ function mapActiveOrders(platform, orders) {
             side: item.side,
             amount: item.amount,
             price: item.price,
+            platform: platform
         }));
 }
 
-module.exports = { mapBalance, mapActiveOrders: mapActiveOrders };
+function mapLoadMarkets(platform, data) {
+    let objArray = [];
+
+    for (const symbol in data) {
+        const pairInfo = data[symbol];
+        console.log(`Informations pour la paire ${symbol} : `, pairInfo);
+
+        objArray.push({
+            symbol: pairInfo.id,
+            base: pairInfo.base,
+            quote: pairInfo.quote,
+            active: pairInfo.active,
+            type: pairInfo.type,
+            amountMin: pairInfo.limits.amount.min,
+            priceMin: pairInfo.limits.price ? pairInfo.limits.price.min : "N/A",
+            costMin: pairInfo.limits.cost ? pairInfo.limits.cost.min : "N/A",
+            taker: pairInfo.taker,
+            maker: pairInfo.maker,
+            precisionAmount: pairInfo.precision.amount,
+            precisionPrice: pairInfo.precision.price,
+            platform: platform
+        });
+    }
+    const filteredArray = objArray.filter(item => item.quote.endsWith('USDT') || item.quote.endsWith('BUSD'));
+    return filteredArray;
+}
+
+module.exports = { mapBalance, mapActiveOrders, mapLoadMarkets };

@@ -3,12 +3,12 @@ const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
 const ccxt = require('ccxt');
-const { connectMDB, saveDataMDB, deleteAllDataMDB } = require('./mongodb.js');
+const { connectMDB, saveDataMDB, deleteAllDataMDB, deleteMultipleDataMDB } = require('./mongodb.js');
 
 dotenv.config();
 const app = express();
 
-const { mapBalance, mapActiveOrders } = require('./utils/mapping');
+const { mapBalance, mapActiveOrders, mapLoadMarkets } = require('./utils/mapping');
 
 // Connexion à la base de données MongoDB
 connectMDB();
@@ -45,7 +45,7 @@ app.get('/balance/:exchangeId', async (req, res) => {
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
   const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
 
-  const collection = `collection_${exchangeId.toLowerCase()}_balance`;
+  const collection = `collection_balance`;
 
   try {
     const exchangeParams = {
@@ -55,14 +55,15 @@ app.get('/balance/:exchangeId', async (req, res) => {
     };
 
     const exchange = new ccxt[exchangeId](exchangeParams);
-    const balances = await exchange.fetchBalance();
-    const balance = mapBalance(exchangeId, balances);
+    const data = await exchange.fetchBalance();
+    const mapData = mapBalance(exchangeId, data);
 
     //TODO check if balance size > 0 ?
-    await deleteAllDataMDB(collection);
-    await saveDataMDB(balance, collection);
+    const deleteParam = { platform: exchangeId };
+    await deleteMultipleDataMDB(collection, deleteParam);
+    await saveDataMDB(mapData, collection);
 
-    res.json(balance);
+    res.json(mapData);
   } catch (err) {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
@@ -75,7 +76,7 @@ app.get('/activeOrders/:exchangeId', async (req, res) => {
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
   const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
 
-  const collection = `collection_${exchangeId.toLowerCase()}_activeorders`;
+  const collection = `collection_activeorders`;
 
   try {
     const exchangeParams = {
@@ -88,21 +89,53 @@ app.get('/activeOrders/:exchangeId', async (req, res) => {
     if (exchangeId === 'binance') {
       exchange.options["warnOnFetchOpenOrdersWithoutSymbol"] = false;
     }
-    const orders = await exchange.fetchOpenOrders();
-    const order = mapActiveOrders(exchangeId, orders);
+    const data = await exchange.fetchOpenOrders();
+    const mapData = mapActiveOrders(exchangeId, data);
 
     //TODO check if order size > 0 ?
-    await deleteAllDataMDB(collection);
-    await saveDataMDB(order, collection);
+    const deleteParam = { platform: exchangeId };
+    await deleteMultipleDataMDB(collection, deleteParam);
+    await saveDataMDB(mapData, collection);
 
-    res.json(order);
+    res.json(mapData);
   } catch (err) {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
 });
 
+app.get('/loadMarkets/:exchangeId', async (req, res) => {
 
+  const { exchangeId } = req.params;
+  const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
+  const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
+  const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
+
+  //const collection = `collection_${exchangeId.toLowerCase()}_market`;
+  const collection = `collection_load_market`;
+
+  try {
+    const exchangeParams = {
+      apiKey,
+      secret,
+      ...(passphrase && { password: passphrase }) // add passphrase to params if it exists
+    };
+
+    const exchange = new ccxt[exchangeId](exchangeParams);
+    const data = await exchange.loadMarkets();
+    const mapData = mapLoadMarkets(exchangeId, data);
+
+    //TODO check if order size > 0 ?
+    const deleteParam = { platform: exchangeId };
+    await deleteMultipleDataMDB(collection, deleteParam);
+    await saveDataMDB(mapData, collection);
+
+    res.json(mapData);
+    //res.json(data);
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 const PORT = process.env.PORT || 3000;
 
