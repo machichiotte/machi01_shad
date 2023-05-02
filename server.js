@@ -3,7 +3,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
 const ccxt = require('ccxt');
-const { connectMDB, saveDataMDB, deleteAllDataMDB, deleteMultipleDataMDB } = require('./mongodb.js');
+const { connectMDB, saveDataMDB, deleteMultipleDataMDB } = require('./mongodb.js');
 
 dotenv.config();
 const app = express();
@@ -58,10 +58,11 @@ app.get('/balance/:exchangeId', async (req, res) => {
     const data = await exchange.fetchBalance();
     const mapData = mapBalance(exchangeId, data);
 
-    //TODO check if balance size > 0 ?
-    const deleteParam = { platform: exchangeId };
-    await deleteMultipleDataMDB(collection, deleteParam);
-    await saveDataMDB(mapData, collection);
+    if (mapData.length > 0) {
+      const deleteParam = { platform: exchangeId };
+      await deleteMultipleDataMDB(collection, deleteParam);
+      await saveDataMDB(mapData, collection);
+    }
 
     res.json(mapData);
   } catch (err) {
@@ -93,9 +94,11 @@ app.get('/activeOrders/:exchangeId', async (req, res) => {
     const mapData = mapActiveOrders(exchangeId, data);
 
     //TODO check if order size > 0 ?
-    const deleteParam = { platform: exchangeId };
-    await deleteMultipleDataMDB(collection, deleteParam);
-    await saveDataMDB(mapData, collection);
+    if (mapData.length > 0) {
+      const deleteParam = { platform: exchangeId };
+      await deleteMultipleDataMDB(collection, deleteParam);
+      await saveDataMDB(mapData, collection);
+    }
 
     res.json(mapData);
   } catch (err) {
@@ -125,13 +128,13 @@ app.get('/loadMarkets/:exchangeId', async (req, res) => {
     const data = await exchange.loadMarkets();
     const mapData = mapLoadMarkets(exchangeId, data);
 
-    //TODO check if order size > 0 ?
-    const deleteParam = { platform: exchangeId };
-    await deleteMultipleDataMDB(collection, deleteParam);
-    await saveDataMDB(mapData, collection);
+    if (mapData.length > 0) {
+      const deleteParam = { platform: exchangeId };
+      await deleteMultipleDataMDB(collection, deleteParam);
+      await saveDataMDB(mapData, collection);
+    }
 
     res.json(mapData);
-    //res.json(data);
   } catch (err) {
     console.error(err);
   }
