@@ -53,12 +53,12 @@ function mapActiveOrders(platform, data) {
     return data
         .map((item) => ({
             orderId: item.clientOrderId,
+            platform: platform,
             symbol: item.symbol,
             type: item.type,
             side: item.side,
             amount: item.amount,
             price: item.price,
-            platform: platform
         }));
 }
 

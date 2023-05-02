@@ -49,6 +49,7 @@ async function insertDataMDB(collectionName, document) {
 
 // Get all documents from a collection
 async function getAllDataMDB(collectionName) {
+    console.log("getAllDataMDB mongodb");
     try {
         const collection = db.collection(collectionName);
         const documents = await collection.find().toArray();
@@ -82,24 +83,24 @@ async function deleteDataMDB(collectionName, filter) {
 }
 
 async function deleteMultipleDataMDB(collectionName, deleteParam) {
-    try { 
-      const collection = db.collection(collectionName);
-      const result = await collection.deleteMany(deleteParam);
-      console.log(`Deleted ${result.deletedCount} documents from collection ${collectionName}`);
+    try {
+        const collection = db.collection(collectionName);
+        const result = await collection.deleteMany(deleteParam);
+        console.log(`Deleted ${result.deletedCount} documents from collection ${collectionName}`);
     } catch (err) {
-      console.error(err);
+        console.error(err);
     }
-  }
+}
 
 // Delete all documents from a collection
 async function deleteAllDataMDB(collectionName) {
     try {
-      const collection = db.collection(collectionName);
-      const result = await collection.deleteMany({});
-      console.log(`Deleted ${result.deletedCount} documents from collection ${collectionName}`);
+        const collection = db.collection(collectionName);
+        const result = await collection.deleteMany({});
+        console.log(`Deleted ${result.deletedCount} documents from collection ${collectionName}`);
     } catch (err) {
-      console.error(err);
+        console.error(err);
     }
-  }
+}
 
 module.exports = { connectMDB, saveDataMDB, getDataMDB, insertDataMDB, getAllDataMDB, updateDataMDB, deleteDataMDB, deleteMultipleDataMDB, deleteAllDataMDB };

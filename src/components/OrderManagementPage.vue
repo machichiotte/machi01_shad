@@ -5,23 +5,24 @@
     <table>
       <thead>
         <tr>
+          <th>OrderId</th>
           <th>Exchange</th>
           <th>Pair de trading</th>
           <th>Type d'ordre</th>
-          <th>Prix</th>
+          <th>Side</th>
           <th>Quantité</th>
-          <th>Date</th>
-          <th>Actions</th>
+          <th>Prix</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(order, index) in activeOrders" :key="index">
-          <td>{{ order.exchange }}</td>
-          <td>{{ order.pair }}</td>
-          <td>{{ order.orderType }}</td>
+          <td>{{ order.orderId }}</td>
+          <td>{{ order.platform }}</td>
+          <td>{{ order.symbol }}</td>
+          <td>{{ order.type }}</td>
+          <td>{{ order.side }}</td>
+          <td>{{ order.amount }}</td>
           <td>{{ order.price }}</td>
-          <td>{{ order.quantity }}</td>
-          <td>{{ order.date }}</td>
           <td>
             <button @click="cancelOrder(index)">Annuler</button>
           </td>
@@ -54,6 +55,8 @@
   </div>
 </template>
 <script>
+const serverHost = "http://localhost:3000";
+
 export default {
   name: "OrderManagementPage",
   data() {
@@ -66,28 +69,25 @@ export default {
     cancelOrder(index) {
       // Appeler l'API pour annuler l'ordre à l'index donné
       this.activeOrders.splice(index, 1);
-    }
+    },
+
+    async getActiveOrderFromDB() {
+      try {
+        const response = await fetch(serverHost + '/activeOrders');
+        const data = await response.json();
+        console.log("get active order DBDB :: " + data);
+        this.activeOrders = data;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
   },
   mounted() {
-    // Appeler l'API pour récupérer les ordres en cours et les ordres passés
-    this.activeOrders = [
-      {
-        exchange: 'Binance',
-        pair: 'BTC/USDT',
-        orderType: 'Limit',
-        price: 55000,
-        quantity: 0.5,
-        date: '2023-04-28 16:23:45'
-      },
-      {
-        exchange: 'Coinbase Pro',
-        pair: 'ETH/USD',
-        orderType: 'Market',
-        price: null,
-        quantity: 2.3,
-        date: '2023-04-28 18:45:12'
-      }
-    ];
+    this.activeOrders;
+    this.getActiveOrderFromDB();
+
+    //TODO
     this.filledOrders = [
       {
         exchange: 'Binance',

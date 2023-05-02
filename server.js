@@ -3,7 +3,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
 const ccxt = require('ccxt');
-const { connectMDB, saveDataMDB, deleteMultipleDataMDB } = require('./mongodb.js');
+const { connectMDB, saveDataMDB, deleteMultipleDataMDB, getAllDataMDB } = require('./mongodb.js');
 
 dotenv.config();
 const app = express();
@@ -16,6 +16,17 @@ connectMDB();
 app.use(cors());
 
 app.get('/cmc-data', async (req, res) => {
+  const collection = process.env.MONGODB_COLLECTION_CMC;
+  try {
+    const data = await getAllDataMDB(collection);
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+});
+
+app.get('/save/cmc-data', async (req, res) => {
   const API_KEY = process.env.CMC_APIKEY;
   const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=5000&convert=USD`;
 
@@ -28,7 +39,6 @@ app.get('/cmc-data', async (req, res) => {
       }
     });
     const data = await response.json();
-    console.log("cmc :: " + JSON.stringify(data));
     // Enregistrement des données dans MongoDB
     await saveDataMDB(data.data, process.env.MONGODB_COLLECTION_CMC);
 
@@ -39,7 +49,7 @@ app.get('/cmc-data', async (req, res) => {
   }
 });
 
-app.get('/balance/:exchangeId', async (req, res) => {
+app.get('/save/balance/:exchangeId', async (req, res) => {
   const { exchangeId } = req.params;
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
@@ -71,7 +81,18 @@ app.get('/balance/:exchangeId', async (req, res) => {
   }
 });
 
-app.get('/activeOrders/:exchangeId', async (req, res) => {
+app.get('/activeOrders', async (req, res) => {
+  const collection = `collection_activeorders`;
+  try {
+    const data = await getAllDataMDB(collection);
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+});
+
+app.get('/save/activeOrders/:exchangeId', async (req, res) => {
   const { exchangeId } = req.params;
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
@@ -107,7 +128,7 @@ app.get('/activeOrders/:exchangeId', async (req, res) => {
   }
 });
 
-app.get('/loadMarkets/:exchangeId', async (req, res) => {
+app.get('/save/loadMarkets/:exchangeId', async (req, res) => {
 
   const { exchangeId } = req.params;
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
