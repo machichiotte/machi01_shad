@@ -6,6 +6,7 @@
       <thead>
         <tr>
           <th>OrderId</th>
+          <th>ClientId</th>
           <th>Exchange</th>
           <th>Pair de trading</th>
           <th>Type d'ordre</th>
@@ -16,7 +17,8 @@
       </thead>
       <tbody>
         <tr v-for="(order, index) in activeOrders" :key="index">
-          <td>{{ order.orderId }}</td>
+          <td>{{ order.oId }}</td>
+          <td>{{ order.cId }}</td>
           <td>{{ order.platform }}</td>
           <td>{{ order.symbol }}</td>
           <td>{{ order.type }}</td>
@@ -24,7 +26,7 @@
           <td>{{ order.amount }}</td>
           <td>{{ order.price }}</td>
           <td>
-            <button @click="cancelOrder(index)">Annuler</button>
+            <button @click="cancelOrder(order.symbol, order.oId, order.platform)">Annuler</button>
           </td>
         </tr>
       </tbody>
@@ -66,16 +68,21 @@ export default {
     };
   },
   methods: {
-    cancelOrder(index) {
+    async cancelOrder(symbol, oId, platform) {
       // Appeler l'API pour annuler l'ordre à l'index donné
-      this.activeOrders.splice(index, 1);
+      try {
+        const response = await fetch(`${serverHost}/deleteOrder?exchangeId=${platform}&oId=${oId}&symbol=${symbol}`);
+        const data = await response.json();
+        console.log("code :: " + data.code);
+      } catch (err) {
+        console.error(err);
+      }
     },
 
     async getActiveOrderFromDB() {
       try {
-        const response = await fetch(serverHost + '/activeOrders');
+        const response = await fetch(serverHost + '/get/activeOrders');
         const data = await response.json();
-        console.log("get active order DBDB :: " + data);
         this.activeOrders = data;
       } catch (err) {
         console.error(err);

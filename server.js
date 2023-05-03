@@ -1,3 +1,4 @@
+//server.js
 const dotenv = require('dotenv');
 const express = require('express');
 const fetch = require('node-fetch');
@@ -15,7 +16,59 @@ connectMDB();
 
 app.use(cors());
 
-app.get('/cmc-data', async (req, res) => {
+app.post('/orders/:exchangeId', async (req, res) => {
+  // TODO: Add code to place order
+  try {
+    const data = //ajotuer mon appel;
+      res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+});
+
+app.post('/bunch-orders/:exchangeId', async (req, res) => {
+  // TODO: Add code to place bunch order
+  try {
+    const data = //ajotuer mon appel;
+      res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+});
+
+app.get('/deleteOrder', async (req, res) => {
+
+  const { exchangeId, oId, symbol } = req.query;
+  const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
+  const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
+  const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
+
+  try {
+    const exchangeParams = {
+      apiKey,
+      secret,
+      ...(passphrase && { password: passphrase }), // add passphrase to params if it exists
+
+    };
+    console.log('-' + exchangeId + '  ___   ' + oId + '     //      ' + symbol);
+
+//TODO il faut faire une clé tradable pour binance, api key invalid ! 
+
+  const exchange = new ccxt[exchangeId](exchangeParams);
+  const data = await exchange.cancelOrder(oId, symbol.replace("/",""));
+
+  console.log(data);
+  res.json(data);
+  //mise a jour activeOrder si envie ?
+} catch (err) {
+  console.error(err);
+  res.status(500).send({ error: 'Internal server error' });
+}
+});
+
+app.get('/get/cmcData', async (req, res) => {
   const collection = process.env.MONGODB_COLLECTION_CMC;
   try {
     const data = await getAllDataMDB(collection);
@@ -26,7 +79,18 @@ app.get('/cmc-data', async (req, res) => {
   }
 });
 
-app.get('/save/cmc-data', async (req, res) => {
+app.get('/get/activeOrders', async (req, res) => {
+  const collection = `collection_active_orders`;
+  try {
+    const data = await getAllDataMDB(collection);
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+});
+
+app.get('/update/cmcData', async (req, res) => {
   const API_KEY = process.env.CMC_APIKEY;
   const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=5000&convert=USD`;
 
@@ -49,7 +113,7 @@ app.get('/save/cmc-data', async (req, res) => {
   }
 });
 
-app.get('/save/balance/:exchangeId', async (req, res) => {
+app.get('/update/balance/:exchangeId', async (req, res) => {
   const { exchangeId } = req.params;
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
@@ -81,24 +145,13 @@ app.get('/save/balance/:exchangeId', async (req, res) => {
   }
 });
 
-app.get('/activeOrders', async (req, res) => {
-  const collection = `collection_activeorders`;
-  try {
-    const data = await getAllDataMDB(collection);
-    res.json(data);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-});
-
-app.get('/save/activeOrders/:exchangeId', async (req, res) => {
+app.get('/update/activeOrders/:exchangeId', async (req, res) => {
   const { exchangeId } = req.params;
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
   const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
 
-  const collection = `collection_activeorders`;
+  const collection = `collection_active_orders`;
 
   try {
     const exchangeParams = {
@@ -112,6 +165,8 @@ app.get('/save/activeOrders/:exchangeId', async (req, res) => {
       exchange.options["warnOnFetchOpenOrdersWithoutSymbol"] = false;
     }
     const data = await exchange.fetchOpenOrders();
+    console.log("data:: " + data);
+    console.log("JSON.stringify(data):: " + JSON.stringify(data));
     const mapData = mapActiveOrders(exchangeId, data);
 
     //TODO check if order size > 0 ?
@@ -128,14 +183,13 @@ app.get('/save/activeOrders/:exchangeId', async (req, res) => {
   }
 });
 
-app.get('/save/loadMarkets/:exchangeId', async (req, res) => {
+app.get('/update/loadMarkets/:exchangeId', async (req, res) => {
 
   const { exchangeId } = req.params;
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
   const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
 
-  //const collection = `collection_${exchangeId.toLowerCase()}_market`;
   const collection = `collection_load_market`;
 
   try {

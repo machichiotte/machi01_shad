@@ -52,7 +52,8 @@ function mapBalance(platform, data) {
 function mapActiveOrders(platform, data) {
     return data
         .map((item) => ({
-            orderId: item.clientOrderId,
+            oId: item.id,
+            cId: item.clientOrderId,
             platform: platform,
             symbol: item.symbol,
             type: item.type,

@@ -21,7 +21,7 @@
     <button @click="updateCmcData">Update Data</button>
     <ul v-if="cryptoData">
       <li v-for="crypto in cryptoData" :key="crypto.name">
-        {{ crypto.name }} - {{ crypto['cmc_rank'] }}
+        {{ crypto['cmc_rank'] }} - {{ crypto.name }}
       </li>
     </ul>
 
@@ -173,7 +173,7 @@ export default {
   methods: {
     async getCmcData() {
       try {
-        const response = await fetch(serverHost + '/cmc-data');
+        const response = await fetch(serverHost + '/get/cmcData');
         const data = await response.json();
         this.cryptoData = data;
       } catch (err) {
@@ -183,7 +183,7 @@ export default {
 
     async updateCmcData() {
       try {
-        const response = await fetch(serverHost + '/save/cmc-data');
+        const response = await fetch(serverHost + '/update/cmcData');
         const data = await response.json();
         this.cryptoData = data.data;
       } catch (err) {
@@ -193,7 +193,7 @@ export default {
 
     async updateBalance(exchange) {
       try {
-        const response = await fetch(`${serverHost}/save/balance/${exchange}`);
+        const response = await fetch(`${serverHost}/update/balance/${exchange}`);
         const data = await response.json();
         this[`${exchange}Balance`] = data.balance;
       } catch (err) {
@@ -203,7 +203,7 @@ export default {
 
     async updateActiveOrders(exchange) {
       try {
-        const response = await fetch(`${serverHost}/save/activeOrders/${exchange}`);
+        const response = await fetch(`${serverHost}/update/activeOrders/${exchange}`);
         const data = await response.json();
         this[`${exchange}ActiveOrders`] = data;
       } catch (err) {
@@ -213,7 +213,7 @@ export default {
 
     async updateLoadMarkets(exchange) {
       try {
-        const response = await fetch(`${serverHost}/save/loadMarkets/${exchange}`);
+        const response = await fetch(`${serverHost}/update/loadMarkets/${exchange}`);
         const data = await response.json();
         this[`${exchange}LoadMarkets`] = data;
       } catch (err) {
