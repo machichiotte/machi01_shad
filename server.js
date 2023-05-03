@@ -52,9 +52,6 @@ app.get('/deleteOrder', async (req, res) => {
       ...(passphrase && { password: passphrase }), // add passphrase to params if it exists
 
     };
-    console.log('-' + exchangeId + '  ___   ' + oId + '     //      ' + symbol);
-
-//TODO il faut faire une clé tradable pour binance, api key invalid ! 
 
   const exchange = new ccxt[exchangeId](exchangeParams);
   const data = await exchange.cancelOrder(oId, symbol.replace("/",""));
