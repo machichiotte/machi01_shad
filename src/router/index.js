@@ -2,15 +2,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
 //import HomePage from '@/components/HomePage';
 import AdminPage from '@/components/AdminPage';
-import MarketAnalysisPage from '@/components/MarketAnalysisPage';
-import OrderManagementPage from '@/components/OrderManagementPage';
-import PortfolioManagementPage from '@/components/PortfolioManagementPage';
+import ActiveOrders from '@/components/ActiveOrdersPage';
+import ShowData from '@/components/ShowDataPage';
+import Update from '@/components/UpdatePage';
 
 const routes = [
   { path: '/', component: AdminPage },
-  { path: '/portfolio', component: PortfolioManagementPage },
-  { path: '/market-analysis', component: MarketAnalysisPage },
-  { path: '/order-management', component: OrderManagementPage },
+  { path: '/update', component: Update },
+  { path: '/active-orders', component: ActiveOrders },
+  { path: '/show-data', component: ShowData },
   { path: '/admin', component: AdminPage },
 ];
 

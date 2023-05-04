@@ -1,22 +1,16 @@
 <template>
   <div>
-    <h1>Gestion des portefeuilles</h1>
+    <h1>Mise à jour des données</h1>
 
-    <h2>Ordres en cours</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Crypto</th>
-          <th>Rank</th>
-        </tr>
-      </thead>
+    <h2>Possibilité de mise à jour</h2>
+    <!--<table>
       <tbody>
         <tr v-for="(order, index) in cryptoData" :key="index">
           <td>{{ order.name }}</td>
           <td>{{ order['cmc_rank']}}</td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
 
     <button @click="updateCmcData">Update Data</button>
     <ul v-if="cryptoData">
@@ -147,7 +141,7 @@
 const serverHost = "http://localhost:3000";
 
 export default {
-  name: "PortfolioManagementPage",
+  name: "UpdatePage",
   data() {
     return {
       cryptoData: null,

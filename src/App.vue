@@ -3,9 +3,9 @@
     <header>
       <nav>
         <router-link to="/" active-class="selected-link">Accueil</router-link>
-        <router-link to="/portfolio" active-class="selected-link">Gestion de portefeuille</router-link>
-        <router-link to="/market-analysis" active-class="selected-link">Analyse de marché</router-link>
-        <router-link to="/order-management" active-class="selected-link">Gestion des ordres</router-link>
+        <router-link to="/update" active-class="selected-link">Mise à jour</router-link>
+        <router-link to="/active-orders" active-class="selected-link">Ordres ouverts</router-link>
+        <router-link to="/show-data" active-class="selected-link">Montrer données</router-link>
         <router-link to="/admin" active-class="selected-link">Administration</router-link>
       </nav>
     </header>
