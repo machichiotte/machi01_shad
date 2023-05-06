@@ -195,6 +195,7 @@ export default {
       }
     },
 
+
     async updateActiveOrders(exchange) {
       try {
         const response = await fetch(`${serverHost}/update/activeOrders/${exchange}`);

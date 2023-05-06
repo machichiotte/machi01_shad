@@ -25,17 +25,6 @@ async function saveDataMDB(data, collectionName) {
     }
 }
 
-async function getDataMDB(collectionName) {
-    try {
-        const collection = db.collection(collectionName);
-        const data = await collection.find().toArray();
-        console.log(`Data retrieved from MongoDB in collection ${collectionName}:`, data);
-        return data;
-    } catch (err) {
-        console.error(err);
-    }
-}
-
 // Insert a document into a collection
 async function insertDataMDB(collectionName, document) {
     try {
@@ -103,4 +92,4 @@ async function deleteAllDataMDB(collectionName) {
     }
 }
 
-module.exports = { connectMDB, saveDataMDB, getDataMDB, insertDataMDB, getAllDataMDB, updateDataMDB, deleteDataMDB, deleteMultipleDataMDB, deleteAllDataMDB };
+module.exports = { connectMDB, saveDataMDB, insertDataMDB, getAllDataMDB, updateDataMDB, deleteDataMDB, deleteMultipleDataMDB, deleteAllDataMDB };
