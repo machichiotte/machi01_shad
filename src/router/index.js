@@ -6,6 +6,7 @@ import ActiveOrders from '@/components/ActiveOrdersPage';
 import ShowData from '@/components/ShowDataPage';
 import Update from '@/components/UpdatePage';
 import Strat from '@/components/StratPage';
+import Trades from '@/components/TradesPage';
 
 const routes = [
   { path: '/', component: Admin },
@@ -14,6 +15,7 @@ const routes = [
   { path: '/show-data', component: ShowData },
   { path: '/admin', component: Admin },
   { path: '/strat', component: Strat },
+  { path: '/trades', component: Trades },
 ];
 
 const router = createRouter({
