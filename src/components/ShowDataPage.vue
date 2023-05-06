@@ -3,12 +3,7 @@
     <h1>Show data</h1>
     <h2>CMC</h2>
 
-    <div class="pagination">
-      <button v-if="currentPage > 1" @click="prevPage">Prev</button>
-      <button v-for="page in pages" :key="page" @click="changePage(page)" :class="{ active: currentPage === page }">{{
-        page }}</button>
-      <button v-if="currentPage < pageCount" @click="nextPage">Next</button>
-    </div>
+    
     <table>
       <thead>
         <tr>
@@ -19,12 +14,18 @@
       </thead>
       <tbody>
         <tr v-for="item in paginatedItems" :key="item.name">
-          <td>{{ item.name }}</td>
-          <td>{{ item['cmc_rank'] }}</td>
           <td>{{ item.symbol }}</td>
+          <td>{{ item['cmc_rank'] }}</td>
+          <td>{{ item.name }}</td>
         </tr>
       </tbody>
     </table>
+    <div class="pagination">
+      <button v-if="currentPage > 1" @click="prevPage">Prev</button>
+      <button v-for="page in pages" :key="page" @click="changePage(page)" :class="{ active: currentPage === page }">{{
+        page }}</button>
+      <button v-if="currentPage < pageCount" @click="nextPage">Next</button>
+    </div>
   </div>
 </template>
 
@@ -36,7 +37,7 @@ export default {
   data() {
     return {
       items: [],
-      itemsPerPage: 20,
+      itemsPerPage: 100,
       currentPage: 1,
     };
   },
