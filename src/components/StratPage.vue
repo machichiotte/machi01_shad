@@ -11,14 +11,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(asset, index) in assets" :key="index">
+                <tr v-for="(asset, assetIndex) in assets" :key="assetIndex">
                     <td>{{ asset }}</td>
                     <td v-for="(platform, platformIndex) in platforms" :key="platformIndex">
-                        <select :disabled="isDisabled(asset, platform)">
-                            <option value="">--</option>
-                            <option value="strategy1">SHAD</option>
-                            <option value="strategy2">SHAD skip x2</option>
-                            <option value="strategy3">AB = CD</option>
+                        <select v-model="strat[asset][platform]" :disabled="isDisabled(asset, platform)">
+                            <option value=""></option>
+                            <option value="strategy1">Shad</option>
+                            <option value="strategy2">Shad skip x2</option>
+                            <option value="strategy3">Strategy 3</option>
                         </select>
                     </td>
                 </tr>
@@ -36,7 +36,8 @@ export default {
             balance: [],
             platforms: [],
             assets: [],
-            strat: []
+            strat: [],
+            stratMap: {}
         };
     },
     methods: {
@@ -55,39 +56,39 @@ export default {
             try {
                 const response = await fetch(`${serverHost}/get/strat`);
                 const data = await response.json();
-                this.strat = data;
+                this.strat = data[0];
+                console.log("strat:: " + this.strat)
+
             } catch (err) {
                 console.error(err);
             }
         },
         async updateStrat() {
-            this.strat = [];
+            const stratMap = {};
             try {
-                const rows = this.$refs.stratTable.querySelectorAll('tbody tr')
+                const rows = this.$refs.stratTable.querySelectorAll('tbody tr');
 
-                rows.forEach(row => {
-                    const rowData = {}
-                    const cells = row.querySelectorAll('td')
+                rows.forEach((row) => {
+                    const rowData = {};
+                    const cells = row.querySelectorAll('td');
+                    let asset = "";
                     cells.forEach((cell, index) => {
                         if (index === 0) {
-                            rowData.asset = cell.textContent
+                            asset = cell.textContent;
                         } else {
-                            const colName = this.platforms[index - 1]
-                            const selectEl = cell.querySelector('select')
-                            rowData[colName] = selectEl.value
+                            const colName = this.platforms[index - 1];
+                            const selectEl = cell.querySelector('select');
+                            rowData[colName] = selectEl.value;
                         }
-                    })
-                    this.strat.push(rowData)
-                })
-
-                const response = await fetch(`${serverHost}/update/strat`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ strat: this.strat })
+                    });
+                    stratMap[asset] = rowData;
                 });
 
-                const data = await response.json();
-                this.strat = data;
+                await fetch(`${serverHost}/update/strat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ strat: stratMap }),
+                });
             } catch (err) {
                 console.error(err);
             }

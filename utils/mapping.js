@@ -23,7 +23,7 @@ function mapBalance(platform, data) {
             return data.info.data.list
                 .filter((item) => parseFloat(item.balance) > 0)
                 .map((item) => ({
-                    symbol: item.currency,
+                    symbol: item.currency.toUpperCase(),
                     balance: item.balance,
                     available: item.available,
                     platform: platform

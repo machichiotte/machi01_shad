@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 const cors = require('cors');
 const ccxt = require('ccxt');
-const { connectMDB, saveDataMDB, deleteMultipleDataMDB, getAllDataMDB, deleteAllDataMDB } = require('./mongodb.js');
+const { connectMDB, saveArrayDataMDB, saveObjectDataMDB, deleteMultipleDataMDB, getAllDataMDB, deleteAllDataMDB } = require('./mongodb.js');
 
 dotenv.config();
 const app = express();
@@ -40,7 +40,6 @@ app.get('/deleteOrder', async (req, res) => {
     const exchange = new ccxt[exchangeId](exchangeParams);
     const data = await exchange.cancelOrder(oId, symbol.replace("/", ""));
     res.json(data);
-    
     //mise a jour activeOrder si envie ?
   } catch (err) {
     console.error(err);
@@ -122,7 +121,7 @@ app.post('/update/strat', async (req, res) => {
   const strat = req.body.strat;
   try {
     await deleteAllDataMDB(collection);
-    const data = await saveDataMDB(strat, collection);
+    const data = await saveObjectDataMDB(strat, collection);
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -144,7 +143,7 @@ app.get('/update/cmcData', async (req, res) => {
     });
     const data = await response.json();
     // Enregistrement des données dans MongoDB
-    await saveDataMDB(data.data, process.env.MONGODB_COLLECTION_CMC);
+    await saveArrayDataMDB(data.data, process.env.MONGODB_COLLECTION_CMC);
 
     res.json(data);
   } catch (err) {
@@ -175,7 +174,7 @@ app.get('/update/balance/:exchangeId', async (req, res) => {
     if (mapData.length > 0) {
       const deleteParam = { platform: exchangeId };
       await deleteMultipleDataMDB(collection, deleteParam);
-      await saveDataMDB(mapData, collection);
+      await saveArrayDataMDB(mapData, collection);
     }
 
     res.json(mapData);
@@ -210,7 +209,7 @@ app.get('/update/activeOrders/:exchangeId', async (req, res) => {
     if (mapData.length > 0) {
       const deleteParam = { platform: exchangeId };
       await deleteMultipleDataMDB(collection, deleteParam);
-      await saveDataMDB(mapData, collection);
+      await saveArrayDataMDB(mapData, collection);
     }
 
     res.json(mapData);
@@ -243,7 +242,7 @@ app.get('/update/loadMarkets/:exchangeId', async (req, res) => {
     if (mapData.length > 0) {
       const deleteParam = { platform: exchangeId };
       await deleteMultipleDataMDB(collection, deleteParam);
-      await saveDataMDB(mapData, collection);
+      await saveArrayDataMDB(mapData, collection);
     }
 
     res.json(mapData);

@@ -15,11 +15,32 @@ async function connectMDB() {
     }
 }
 
-async function saveDataMDB(data, collectionName) {
+async function saveArrayDataMDB(data, collectionName) {
     try {
         const collection = db.collection(collectionName);
         await collection.insertMany(data);
         console.log(`Data saved to MongoDB in collection ${collectionName}!`);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function saveObjectDataMDB(data, collectionName) {
+    try {
+        const collection = db.collection(collectionName);
+        await collection.insertOne(data);
+        console.log(`Data saved to MongoDB in collection ${collectionName}!`);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function getDataMDB(collectionName) {
+    try {
+        const collection = db.collection(collectionName);
+        const data = await collection.find().toArray();
+        console.log(`Data retrieved from MongoDB in collection ${collectionName}:`, data);
+        return data;
     } catch (err) {
         console.error(err);
     }
@@ -92,4 +113,4 @@ async function deleteAllDataMDB(collectionName) {
     }
 }
 
-module.exports = { connectMDB, saveDataMDB, insertDataMDB, getAllDataMDB, updateDataMDB, deleteDataMDB, deleteMultipleDataMDB, deleteAllDataMDB };
+module.exports = { connectMDB, saveArrayDataMDB, saveObjectDataMDB, getDataMDB, insertDataMDB, getAllDataMDB, updateDataMDB, deleteDataMDB, deleteMultipleDataMDB, deleteAllDataMDB };
