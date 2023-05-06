@@ -130,6 +130,7 @@ app.post('/update/strat', async (req, res) => {
 });
 
 app.get('/update/cmcData', async (req, res) => {
+  const collection = process.env.MONGODB_COLLECTION_CMC;
   const API_KEY = process.env.CMC_APIKEY;
   const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=5000&convert=USD`;
 
@@ -142,8 +143,10 @@ app.get('/update/cmcData', async (req, res) => {
       }
     });
     const data = await response.json();
+
     // Enregistrement des données dans MongoDB
-    await saveArrayDataMDB(data.data, process.env.MONGODB_COLLECTION_CMC);
+    await deleteAllDataMDB(collection);
+    await saveArrayDataMDB(data.data, collection);
 
     res.json(data);
   } catch (err) {
