@@ -49,6 +49,60 @@ function mapBalance(platform, data) {
     }
 }
 
+function mapTrades(platform, data) {
+    console.log('map trades :: ' + JSON.stringify(data));
+    switch (platform) {
+        case 'binance':
+            return data
+                .map((item) => ({
+                    timestamp: item.timestamp,
+                    datetime: item.datetime,
+                    symbol: item.symbol,
+                    id: item.id,
+                    side: item.side,
+                    price: item.price,
+                    amount: item.amount,
+                    cost: item.cost,
+                }));
+        case 'kucoin':
+            return data.info.data
+                .filter((item) => parseFloat(item.balance) > 0)
+                .map((item) => ({
+                    symbol: item.currency,
+                    balance: item.balance,
+                    available: item.available,
+                    platform: platform
+                }));
+        case 'huobi':
+            return data.info.data.list
+                .filter((item) => parseFloat(item.balance) > 0)
+                .map((item) => ({
+                    symbol: item.currency.toUpperCase(),
+                    balance: item.balance,
+                    available: item.available,
+                    platform: platform
+                }));
+        case 'okex':
+            return data.info.data
+                .filter((item) => parseFloat(item.cashBal) > 0)
+                .map((item) => ({
+                    symbol: item.ccy,
+                    balance: item.cashBal,
+                    available: item.availBal,
+                    platform: platform
+                }));
+        case 'gateio':
+            return data.info
+                .filter((item) => parseFloat(item.available) > 0 || parseFloat(item.locked))
+                .map((item) => ({
+                    symbol: item.currency,
+                    balance: item.available + item.locked,
+                    available: item.available,
+                    platform: platform
+                }));
+    }
+}
+
 function mapActiveOrders(platform, data) {
     return data
         .map((item) => ({
@@ -90,4 +144,4 @@ function mapLoadMarkets(platform, data) {
     return filteredArray;
 }
 
-module.exports = { mapBalance, mapActiveOrders, mapLoadMarkets };
+module.exports = { mapBalance, mapActiveOrders, mapLoadMarkets, mapTrades };

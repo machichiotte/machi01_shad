@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const { mapBalance, mapActiveOrders, mapLoadMarkets } = require('./utils/mapping');
+const { mapBalance, mapActiveOrders, mapLoadMarkets, mapTrades } = require('./utils/mapping');
 
 // Connexion à la base de données MongoDB
 connectMDB();
@@ -82,6 +82,17 @@ app.get('/get/activeOrders', async (req, res) => {
 
 app.get('/get/strat', async (req, res) => {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
+  try {
+    const data = await getAllDataMDB(collection);
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+});
+
+app.get('/get/trades', async (req, res) => {
+  const collection = process.env.MONGODB_COLLECTION_TRADES;
   try {
     const data = await getAllDataMDB(collection);
     res.json(data);
@@ -216,6 +227,50 @@ app.get('/update/activeOrders/:exchangeId', async (req, res) => {
     }
 
     res.json(mapData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+});
+
+app.get('/update/trades/:exchangeId', async (req, res) => {
+  //app.get('/update/trades/:exchangeId/:symbol', async (req, res) => {
+ // const { exchangeId, symbol } = req.params;
+  const { exchangeId } = req.params;
+  const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
+  const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
+  const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
+
+  const collection = process.env.MONGODB_COLLECTION_TRADES;
+
+  try {
+    const exchangeParams = {
+      apiKey,
+      secret,
+      ...(passphrase && { password: passphrase }) // add passphrase to params if it exists
+    };
+
+    const exchange = new ccxt[exchangeId](exchangeParams);
+
+   // console.log(exchangeId + " : " + symbol);
+
+    
+
+   //const data = await exchange.fetchMyTrades(symbol);
+   const data = await exchange.fetchMyTrades();
+
+    res.json(data);
+
+    /*
+        const mapData = mapTrades(exchangeId, data);
+    
+        if (mapData.length > 0) {
+          const deleteParam = { platform: exchangeId };
+          await deleteMultipleDataMDB(collection, deleteParam);
+          await saveArrayDataMDB(mapData, collection);
+        }
+    
+        res.json(mapData);*/
   } catch (err) {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });

@@ -21,7 +21,7 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody>
+      <!--<tbody>
         <tr v-for="item in paginatedItems" :key="item.id">
           <td>{{ item.oId }}</td>
           <td>{{ item.platform }}</td>
@@ -30,9 +30,8 @@
           <td>{{ item.side }}</td>
           <td>{{ item.amount }}</td>
           <td>{{ item.price }}</td>
-          <td><button @click="deleteItem(item)">Cancel</button></td>
         </tr>
-      </tbody>
+      </tbody>-->
     </table>
   </div>
 </template>
@@ -70,6 +69,7 @@ export default {
     async getTradesFromDB() {
       try {
         const response = await fetch(serverHost + '/get/trades');
+        console.log("resp :: " + response)
         const data = await response.json();
         this.items = data;
       } catch (err) {

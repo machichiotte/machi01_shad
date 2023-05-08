@@ -134,11 +134,49 @@
         </li>
       </ul>
     </div>
+
+    <div>
+      <button @click="updateAllTrades('binance')">Update Binance Trades</button>
+      <ul v-if="binanceTrades">
+        <li v-for="order in binanceTrades" :key="order.symbol">
+          {{ order.symbol }} - {{ order.balance }}
+        </li>
+      </ul>
+
+      <button @click="updateAllTrades('kucoin')">Update Kucoin Trades</button>
+      <ul v-if="kucoinTrades">
+        <li v-for="order in kucoinTrades" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }}
+        </li>
+      </ul>
+
+      <button @click="updateAllTrades('huobi')">Update Huobi Trades</button>
+      <ul v-if="huobiTrades">
+        <li v-for="order in huobiTrades" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }}
+        </li>
+      </ul>
+
+      <button @click="updateAllTrades('okex')">Update Okex Trades</button>
+      <ul v-if="okexTrades">
+        <li v-for="order in okexTrades" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }}
+        </li>
+      </ul>
+
+      <button @click="updateAllTrades('gateio')">Update Gateio Trades</button>
+      <ul v-if="gateioTrades">
+        <li v-for="order in gateioTrades" :key="order.symbol">
+          {{ order.balance }} - {{ order.symbol }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 const serverHost = "http://localhost:3000";
+let lastUpdateTimestamp = 0;
 
 export default {
   name: "UpdatePage",
@@ -161,7 +199,13 @@ export default {
       binanceLoadMarkets: null,
       huobiLoadMarkets: null,
       okexLoadMarkets: null,
-      gateioLoadMarkets: null
+      gateioLoadMarkets: null,
+
+      kucoinTrades: null,
+      binanceTrades: null,
+      huobiTrades: null,
+      okexTrades: null,
+      gateioTrades: null,
     };
   },
   methods: {
@@ -170,6 +214,16 @@ export default {
         const response = await fetch(serverHost + '/get/cmcData');
         const data = await response.json();
         this.cryptoData = data;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    async getBalance() {
+      try {
+        const response = await fetch(serverHost + '/get/balance');
+        const data = await response.json();
+        this.balance = data;
       } catch (err) {
         console.error(err);
       }
@@ -195,6 +249,60 @@ export default {
       }
     },
 
+    async updateAllTrades(exchange) {
+      const ending = ['USDT', 'BUSD', 'BTC', 'ETH'];
+      await this.getBalance();
+      this.balance.forEach(async (item) => {
+
+        if (item.platform === exchange) {
+          const symbol = item.symbol;
+          for (let i = 0; i < ending.length; i++) {
+            const exchangeSymbol = this.getExchangeSymbol(exchange, symbol, ending[i]);
+            try {
+              const now = Date.now();
+              const timeSinceLastUpdate = now - lastUpdateTimestamp;
+              const minimumTimeBetweenUpdates = 1000 / (3600 / 60); // 1000ms / (1800 requests/60s) = 33.33ms
+              if (timeSinceLastUpdate < minimumTimeBetweenUpdates) {
+                console.log(`Delaying ${exchangeSymbol} update for ${minimumTimeBetweenUpdates - timeSinceLastUpdate}ms`);
+                await new Promise(resolve => setTimeout(resolve, minimumTimeBetweenUpdates - timeSinceLastUpdate));
+              }
+              await this.updateTrades(exchange, exchangeSymbol);
+              lastUpdateTimestamp = now;
+            } catch (err) {
+              console.error(err);
+            }
+          }
+        }
+      });
+    },
+
+    getExchangeSymbol(exchange, symbol, ending) {
+      let exchangeSymbol;
+      switch (exchange) {
+        case 'binance':
+          exchangeSymbol = symbol + ending;
+          break;
+        case 'gateio':
+          exchangeSymbol = symbol + '_' + ending;
+          break;
+        case 'kucoin':
+        case 'huobi':
+        case 'okex':
+          exchangeSymbol = symbol + '-' + ending;
+          break;
+      }
+      return exchangeSymbol;
+    },
+
+    async updateTrades(exchange, symbol) {
+      try {
+        const response = await fetch(`${serverHost}/update/trades/${exchange}/${symbol}`);
+        const data = await response.json();
+        this[`${exchange}Trades`] = data;
+      } catch (err) {
+        console.error(err);
+      }
+    },
 
     async updateActiveOrders(exchange) {
       try {
