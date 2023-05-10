@@ -233,10 +233,12 @@ app.get('/update/activeOrders/:exchangeId', async (req, res) => {
   }
 });
 
+/*
 app.get('/update/trades/:exchangeId', async (req, res) => {
-  //app.get('/update/trades/:exchangeId/:symbol', async (req, res) => {
- // const { exchangeId, symbol } = req.params;
   const { exchangeId } = req.params;
+*/
+  app.get('/update/trades/:exchangeId/:symbol', async (req, res) => {
+  const { exchangeId, symbol } = req.params;
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
   const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
@@ -252,12 +254,12 @@ app.get('/update/trades/:exchangeId', async (req, res) => {
 
     const exchange = new ccxt[exchangeId](exchangeParams);
 
-   // console.log(exchangeId + " : " + symbol);
+    console.log(exchangeId + " : " + symbol);
 
     
 
-   //const data = await exchange.fetchMyTrades(symbol);
-   const data = await exchange.fetchMyTrades();
+   const data = await exchange.fetchMyTrades(symbol);
+   //const data = await exchange.fetchMyTrades();
 
     res.json(data);
 

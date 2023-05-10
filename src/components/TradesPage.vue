@@ -11,27 +11,36 @@
     <table>
       <thead>
         <tr>
-          <th>oId</th>
-          <th>Platform</th>
-          <th>Symbol</th>
-          <th>Type</th>
-          <th>Side</th>
-          <th>Amount</th>
-          <th>Price</th>
-          <th>Action</th>
+          <th>altA</th>
+          <th>altB</th>
+          <th>date</th>
+          <th>pair</th>
+          <th>type</th>
+          <th>price</th>
+          <th>amount</th>
+          <th>total</th>
+          <th>fee</th>
+          <th>feecoin</th>
+          <th>platform</th>
+          <th>explatform</th>
         </tr>
       </thead>
-      <!--<tbody>
+      <tbody>
         <tr v-for="item in paginatedItems" :key="item.id">
-          <td>{{ item.oId }}</td>
-          <td>{{ item.platform }}</td>
-          <td>{{ item.symbol }}</td>
+          <td>{{ item.altA }}</td>
+          <td>{{ item.altB }}</td>
+          <td>{{ item.date }}</td>
+          <td>{{ item.pair }}</td>
           <td>{{ item.type }}</td>
-          <td>{{ item.side }}</td>
-          <td>{{ item.amount }}</td>
           <td>{{ item.price }}</td>
+          <td>{{ item.amount }}</td>
+          <td>{{ item.total }}</td>
+          <td>{{ item.fee }}</td>
+          <td>{{ item.feecoin }}</td>
+          <td>{{ item.platform }}</td>
+          <td>{{ item.explatform }}</td>
         </tr>
-      </tbody>-->
+      </tbody>
     </table>
   </div>
 </template>

@@ -135,7 +135,7 @@
       </ul>
     </div>
 
-    <div>
+    <!--<div>
       <button @click="updateAllTrades('binance')">Update Binance Trades</button>
       <ul v-if="binanceTrades">
         <li v-for="order in binanceTrades" :key="order.symbol">
@@ -170,13 +170,13 @@
           {{ order.balance }} - {{ order.symbol }}
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 const serverHost = "http://localhost:3000";
-let lastUpdateTimestamp = 0;
+//let lastUpdateTimestamp = 0;
 
 export default {
   name: "UpdatePage",
@@ -249,6 +249,7 @@ export default {
       }
     },
 
+    /*
     async updateAllTrades(exchange) {
       const ending = ['USDT', 'BUSD', 'BTC', 'ETH'];
       await this.getBalance();
@@ -302,7 +303,7 @@ export default {
       } catch (err) {
         console.error(err);
       }
-    },
+    },*/
 
     async updateActiveOrders(exchange) {
       try {
@@ -323,10 +324,6 @@ export default {
         console.error(err);
       }
     }
-  },
-  mounted() {
-    this.cryptoData;
-    this.getCmcData();
   }
 };
 </script>
