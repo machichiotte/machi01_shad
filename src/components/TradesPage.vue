@@ -26,7 +26,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in paginatedItems" :key="item.id">
+        <tr v-for="item in paginatedItems" :key="item.id"
+          :class="{ 'sell-row': item.type === 'sell', 'buy-row': item.type === 'buy' }">
           <td>{{ item.altA }}</td>
           <td>{{ item.altB }}</td>
           <td>{{ item.date }}</td>
@@ -53,7 +54,7 @@ export default {
   data() {
     return {
       items: [],
-      itemsPerPage: 20,
+      itemsPerPage: 100,
       currentPage: 1,
     };
   },
@@ -81,9 +82,17 @@ export default {
         console.log("resp :: " + response)
         const data = await response.json();
         this.items = data;
+        this.sortItemsByDate(); // Appel pour trier les éléments par date décroissante
       } catch (err) {
         console.error(err);
       }
+    },
+    sortItemsByDate() {
+      this.items.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateB - dateA; // Trie par ordre décroissant
+      });
     },
     prevPage() {
       this.currentPage--;
@@ -123,5 +132,15 @@ th {
   border: 1px solid black;
   padding: 10px;
   text-align: center;
+}
+
+.sell-row {
+  background-color: red;
+  color: white;
+}
+
+.buy-row {
+  background-color: green;
+  color: white;
 }
 </style>
