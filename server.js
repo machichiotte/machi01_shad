@@ -5,10 +5,15 @@ const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 const cors = require('cors');
 const ccxt = require('ccxt');
+const fs = require('fs');
+
 const { connectMDB, saveArrayDataMDB, saveObjectDataMDB, deleteMultipleDataMDB, getAllDataMDB, deleteAllDataMDB } = require('./mongodb.js');
 
 dotenv.config();
 const app = express();
+
+const isOfflineMode = process.env.OFFLINE_MODE === 'true';
+app.offlineMode = isOfflineMode;
 
 // Utilisation de body-parser comme middleware global pour toutes les requêtes
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,8 +54,18 @@ app.get('/deleteOrder', async (req, res) => {
 
 app.get('/get/balance', async (req, res) => {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
+
   try {
-    const data = await getAllDataMDB(collection);
+    let data;
+
+    if (app.offlineMode) {
+      const mockDataPath = './mockData/balance.json'; // Chemin vers le fichier JSON mocké
+      const jsonData = fs.readFileSync(mockDataPath, 'utf8');
+      data = JSON.parse(jsonData);
+    } else {
+      data = await getAllDataMDB(collection);
+    }
+
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -60,8 +75,18 @@ app.get('/get/balance', async (req, res) => {
 
 app.get('/get/cmcData', async (req, res) => {
   const collection = process.env.MONGODB_COLLECTION_CMC;
+
   try {
-    const data = await getAllDataMDB(collection);
+    let data;
+
+    if (app.offlineMode) {
+      const mockDataPath = './mockData/cmcData.json'; // Chemin vers le fichier JSON mocké
+      const jsonData = fs.readFileSync(mockDataPath, 'utf8');
+      data = JSON.parse(jsonData);
+    } else {
+      data = await getAllDataMDB(collection);
+    }
+
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -71,8 +96,18 @@ app.get('/get/cmcData', async (req, res) => {
 
 app.get('/get/activeOrders', async (req, res) => {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
+
   try {
-    const data = await getAllDataMDB(collection);
+    let data;
+
+    if (app.offlineMode) {
+      const mockDataPath = './mockData/activeOrders.json'; // Chemin vers le fichier JSON mocké
+      const jsonData = fs.readFileSync(mockDataPath, 'utf8');
+      data = JSON.parse(jsonData);
+    } else {
+      data = await getAllDataMDB(collection);
+    }
+
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -82,8 +117,18 @@ app.get('/get/activeOrders', async (req, res) => {
 
 app.get('/get/strat', async (req, res) => {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
+
   try {
-    const data = await getAllDataMDB(collection);
+    let data;
+
+    if (app.offlineMode) {
+      const mockDataPath = './mockData/strat.json'; // Chemin vers le fichier JSON mocké
+      const jsonData = fs.readFileSync(mockDataPath, 'utf8');
+      data = JSON.parse(jsonData);
+    } else {
+      data = await getAllDataMDB(collection);
+    }
+
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -93,8 +138,19 @@ app.get('/get/strat', async (req, res) => {
 
 app.get('/get/trades', async (req, res) => {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
+
   try {
-    const data = await getAllDataMDB(collection);
+    let data;
+    console.log('trade')
+
+    if (app.offlineMode) {
+      const mockDataPath = './mockData/trades.json'; // Chemin vers le fichier JSON mocké
+      const jsonData = fs.readFileSync(mockDataPath, 'utf8');
+      data = JSON.parse(jsonData);
+    } else {
+      data = await getAllDataMDB(collection);
+    }
+
     res.json(data);
   } catch (err) {
     console.error(err);

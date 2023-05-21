@@ -14,9 +14,9 @@
       </thead>
       <tbody>
         <tr v-for="item in paginatedItems" :key="item.name">
-          <td>{{ item.symbol }}</td>
-          <td>{{ item['cmc_rank'] }}</td>
           <td>{{ item.name }}</td>
+          <td>{{ item['cmc_rank'] }}</td>
+          <td>{{ item.symbol }}</td>
         </tr>
       </tbody>
     </table>

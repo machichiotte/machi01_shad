@@ -1,0 +1,38 @@
+{
+  "BTC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": "strategy1"
+  },
+  "ETH": {
+    "binance": "strategy1",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ADA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DOT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LINK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SOL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  }
+}

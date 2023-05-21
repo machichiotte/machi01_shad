@@ -1,0 +1,32 @@
+[
+    {
+        "name": "bitcoin",
+        "cmc_rank": 1,
+        "symbol": "BTC"
+    },
+    {
+        "name": "ethereum",
+        "cmc_rank": 2,
+        "symbol": "ETH"
+    },
+    {
+        "name": "cardano",
+        "cmc_rank": 3,
+        "symbol": "ADA"
+    },
+    {
+        "name": "polkadot",
+        "cmc_rank": 4,
+        "symbol": "DOT"
+    },
+    {
+        "name": "chainlink",
+        "cmc_rank": 5,
+        "symbol": "LINK"
+    },
+    {
+        "name": "solana",
+        "cmc_rank": 6,
+        "symbol": "SOL"
+    }
+]

@@ -1,0 +1,14 @@
+[
+    {
+      "symbol": "BTC",
+      "balance": 1.23456789,
+      "available": 0.98765432,
+      "platform": "binance"
+    },
+    {
+      "symbol": "ETH",
+      "balance": 10.0,
+      "available": 10.0,
+      "platform": "binance"
+    }
+  ]
