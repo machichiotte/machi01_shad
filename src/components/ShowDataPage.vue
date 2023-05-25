@@ -7,15 +7,15 @@
     <table>
       <thead>
         <tr>
-          <th>Name</th>
           <th>Rank</th>
+          <th>Name</th>
           <th>Symbol</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="item in paginatedItems" :key="item.name">
-          <td>{{ item.name }}</td>
           <td>{{ item['cmc_rank'] }}</td>
+          <td>{{ item.name }}</td>
           <td>{{ item.symbol }}</td>
         </tr>
       </tbody>

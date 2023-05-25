@@ -1,0 +1,11 @@
+{
+    "strategy1": {
+      "name": "Strategy 1",
+      "calculateNextSell": "(remainingBuyValue, remainingQuantity) => remainingBuyValue / (remainingQuantity / 2)"
+    },
+    "strategy2": {
+      "name": "Strategy 2",
+      "calculateNextSell": "(remainingBuyValue, remainingQuantity) => remainingBuyValue / (remainingQuantity / 2) * 2"
+    }
+  }
+  

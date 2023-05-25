@@ -1,17 +1,686 @@
-{
-  "BTC": {
+[{
+  "_id": {
+    "$oid": "64569ac2dd4ab3df7993e7d9"
+  },
+  "1EARTH": {
     "binance": "",
     "gateio": "",
     "huobi": "",
     "kucoin": "strategy1"
   },
-  "ETH": {
+  "1INCH": {
     "binance": "strategy1",
     "gateio": "",
     "huobi": "",
     "kucoin": ""
   },
+  "2CRZ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": "strategy1"
+  },
+  "AAC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "strategy1",
+    "kucoin": ""
+  },
+  "AAVE": {
+    "binance": "strategy1",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ABBC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": "strategy1"
+  },
+  "ACE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": "strategy1"
+  },
   "ADA": {
+    "binance": "strategy1",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ADX": {
+    "binance": "strategy1",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AE": {
+    "binance": "",
+    "gateio": "strategy1",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AGLD": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AION": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AIOZ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AKT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ALEPH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ALGO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ALICE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ALPHA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ANC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ANKR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ANT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AOA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "APE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "API3": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "APN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "APPC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ARDR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ASD": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ASR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AST": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ATM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ATOM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ATP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AUTO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AVA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AVAX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "AXS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BAL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BAND": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BAX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BCH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BEAM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BEL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BEPRO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BIX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BLOK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BLZ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BMON": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BNB": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BNS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BOA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BOBA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BOLT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BOND": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BOSON": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BSV": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BTC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BTG": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BTT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BURGER": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BUSD": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "BUY": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CAKE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CARD": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CAS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CELO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CFX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CGG": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CHR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CHZ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CIRUS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CIX100": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CKB": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CLUB": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CLV": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CMT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "COCOS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "COMP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "COTI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CPOOL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CRE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CREDI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CRO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CRU": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CRV": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CTI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CTK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CTSI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CTXC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CUDOS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CVC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CWAR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "CWS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DAC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DAG": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DAO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DAPPT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DAPPX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DASH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DATA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DEGO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DENT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DEXE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DFI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DFYN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DHT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DKA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DLT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DNT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DODO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DOGE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DON": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DORA": {
     "binance": "",
     "gateio": "",
     "huobi": "",
@@ -23,7 +692,1471 @@
     "huobi": "",
     "kucoin": ""
   },
+  "DREAMS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DREP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DSLA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DTA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DUSK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DYDX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "DYP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "EDG": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "EGLD": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "EGT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "EKT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ELA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ELF": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ELON": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "EM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ENJ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ENQ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ENS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "EOS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "EOSC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "EPIK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "EPX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "EQX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "EQZ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ERN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ETC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ETH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ETHW": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ETN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FEAR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FET": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FIL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FILDA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FIO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FIRO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FKX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FLAME": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FLOW": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FLR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FOR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FORESTPLUS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FORM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FORTH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FRM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FSN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FTM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "FUN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GAFI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GAS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GFT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GHX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GLCH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GLQ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GMB": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GMEE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GMT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GODS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GOF": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GOM2": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GOVI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GRT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GTC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "GVT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HAI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HAPI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HARD": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HBAR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HBC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HEART": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HEGIC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HIFI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HIT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HNT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HORD": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HOTCROSS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HPT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HTR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "HYDRA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ICP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ICX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "IDEA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "IMX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "INJ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "INSUR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "IOI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "IOST": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "IOTA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "IOTX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "IRIS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ISP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "JAR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "JASMY": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "JST": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "KAI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "KAR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "KAT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "KAVA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "KCASH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "KCS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "KEY": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "KLAY": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "KLV": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "KMD": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "KSM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LABS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LAMB": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LAVAX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LAYER": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LEVER": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LIKE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LINA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
   "LINK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LIT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LITH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LOKI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LOL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LPOOL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LPT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LRC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LSK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LSS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LTC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LTO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LUNA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LUNC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "LYM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MAKI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MANA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MAP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MARSH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MASK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MATIC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MBL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MDS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MDX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MEM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MIR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MITH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MJT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MKR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MLK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MLN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MNET": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MNST": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MONI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MOVR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MSWAP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MTL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "MTV": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NAKA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NAS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NAV": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NEBL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NEO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NEST": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NFT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NGL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NIM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NKN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NMR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NODE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NORD": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NSURE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NTVRK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NULS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "NXRA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "OCN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ODDZ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "OG": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "OGN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "OGV": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "OM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "OMG": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ONG": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ONT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "OOE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "OOKI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ORAI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ORBS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ORC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ORN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "OXT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PAI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PBR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PCX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PEOPLE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PERL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PERP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PHA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PHNX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PIVX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PLU": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PMON": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PNT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "POLC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "POLK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "POLS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "POLX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "POND": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PRE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PROM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PRQ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PSG": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PUNDIX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PUSH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "PYR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "QI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "QISWAP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "QNT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "QTUM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "QUICK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "REAP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "REEF": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "REN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "REP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "REQ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "REVU": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "RIF": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "RLC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "RMRK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "RNDR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ROSE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ROUTE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "RSR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "RUFF": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "RUNE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SAND": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SCLP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SEELE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SENSO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SGB": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SHA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SHIB": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SHR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SKEY": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SKL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SKU": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SLP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SMT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SNT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SNX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SOFI": {
     "binance": "",
     "gateio": "",
     "huobi": "",
@@ -34,5 +2167,653 @@
     "gateio": "",
     "huobi": "",
     "kucoin": ""
+  },
+  "SOLO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SOLR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SOLVE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SOS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SRK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SRM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "STC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "STMX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "STN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "STND": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "STORJ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "STX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SUKU": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SUN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SUPER": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SUSHI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SUTER": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SWASH": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SWINGBY": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SXP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SYLO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "SYS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "T": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TARA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TCT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TEL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TFUEL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "THETA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TKO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TLM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TNB": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TOKO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TOWER": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TRB": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TRIAS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TRIBE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TROY": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TRVL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TRX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "TXA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "UBX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "UFO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "UMA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "UNFI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "UNI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "UOS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "USDT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "UTK": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "UUU": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VAI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VALUE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VEGA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VELO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VET": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VID": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VIDT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VIDY": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VLX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VOXEL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VRA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VSYS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VTHO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "VXV": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WABI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WAN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WAVES": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WEST": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WICC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WILD": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WIN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WING": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WNXM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WOM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WOO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WPR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "WTC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XAVA": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XCAD": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XCUR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XDB": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XEC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XEM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XHV": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XLM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XNL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XNO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XPR": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XRP": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XRT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XTM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XTZ": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XVS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XYM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "XYO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "YAM": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "YEE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "YFI": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "YGG": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "YOYO": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ZCX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ZEC": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ZEE": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ZEN": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ZIL": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ZKS": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ZKT": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
+  },
+  "ZRX": {
+    "binance": "",
+    "gateio": "",
+    "huobi": "",
+    "kucoin": ""
   }
-}
+}]
