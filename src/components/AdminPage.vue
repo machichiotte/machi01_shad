@@ -2,68 +2,19 @@
   <div class="admin-page">
     <h1>SHAD</h1>
 
-    <div class="pagination">
-      <button v-if="currentPage > 1" @click="prevPage">Prev</button>
-      <button v-for="page in pages" :key="page" @click="changePage(page)" :class="{ active: currentPage === page }">{{ page }}</button>
-      <button v-if="currentPage < pageCount" @click="nextPage">Next</button>
+    <div id="app">
+      <v-grid theme="compact" :source="rows" :columns="columns"></v-grid>
     </div>
 
-    <div class="table-container">
-      <table class="scrollable-table">
-        <thead>
-          <tr>
-            <th>Symbol</th>
-            <th>Rank</th>
-            <th>Average Entry Price</th>
-            <th>Percentage Difference</th>
-            <th>Balance</th>
-            <th>Exchange</th>
-            <th>Total des achats</th>
-            <th>Total des ventes</th>
-            <th>Current Price</th>
-            <th>Percent Change 24h</th>
-            <th>Percent Change 7d</th>
-            <th>Percent Change 30d</th>
-            <th>Percent Change 60d</th>
-            <th>Percent Change 90d</th>
-            <th>Current Possession</th>
-            <th>Ratio SHAD</th>
-            <th>Open Buy Orders</th>
-            <th>Open Sell Orders</th>
-            <th>Gain</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in paginatedItems" :key="item.symbol">
-            <td>{{ item.symbol }}</td>
-            <td>{{ getCryptoRank(item.symbol) }}</td>
-            <td>{{ calculateAverageEntryPrice(item.symbol) }}</td>
-            <td :class="[getPercentageClass(calculatePercentageDifference(item.symbol))]">{{ calculatePercentageDifference(item.symbol) }}</td>
-            <td>{{ item.balance }}</td>
-            <td>{{ item.platform }}</td>
-            <td>{{ calculateBuyTotal(item.symbol) }}</td>
-            <td>{{ calculateSellTotal(item.symbol) }}</td>
-            <td>{{ getCryptoPrice(item.symbol) }}</td>
-            <td :class="[getPercentageClass(getCryptoPercentChange24h(item.symbol))]">{{ getCryptoPercentChange24h(item.symbol) }}</td>
-            <td :class="[getPercentageClass(getCryptoPercentChange7d(item.symbol))]">{{ getCryptoPercentChange7d(item.symbol) }}</td>
-            <td :class="[getPercentageClass(getCryptoPercentChange30d(item.symbol))]">{{ getCryptoPercentChange30d(item.symbol) }}</td>
-            <td :class="[getPercentageClass(getCryptoPercentChange60d(item.symbol))]">{{ getCryptoPercentChange60d(item.symbol) }}</td>
-            <td :class="[getPercentageClass(getCryptoPercentChange90d(item.symbol))]">{{ getCryptoPercentChange90d(item.symbol) }}</td>
-            <td>{{ calculateCurrentPossession(item.symbol) }}</td>
-            <td>{{ getRatioShad(item.symbol, item.platform) }}</td>
-            <td>{{ openBuyOrders[item.symbol] || 0 }}</td>
-            <td>{{ openSellOrders[item.symbol] || 0 }}</td>
-            <td>{{ calculateProfit(item.symbol) }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 </template>
 
 
 <script>
 const serverHost = "http://localhost:3000";
+import VGrid from "@revolist/vue3-datagrid";
+
+// Supposons que paginatedItems contient les éléments paginés récupérés
 
 export default {
   name: "AdminPage",
@@ -78,7 +29,32 @@ export default {
       openSellOrders: {}, // Nombre d'ordres de vente ouverts par actif
       itemsPerPage: 500,
       currentPage: 1,
+      columns: [
+        { name: "Symbol", prop: "symbol", pin: 'colPinStart', autoSize: true },
+        { name: "Rank", prop: "rank" },
+        { name: "Average Entry Price", prop: "averageEntryPrice" },
+        { name: "Percentage Difference", prop: "percentageDifference" },
+        { name: "Balance", prop: "balance" },
+        { name: "Exchange", prop: "platform" },
+        { name: "Total des achats", prop: "buyTotal" },
+        { name: "Total des ventes", prop: "sellTotal" },
+        { name: "Current Price", prop: "cryptoPrice" },
+        { name: "Percent Change 24h", prop: "cryptoPercentChange24h" },
+        { name: "Percent Change 7d", prop: "cryptoPercentChange7d" },
+        { name: "Percent Change 30d", prop: "cryptoPercentChange30d" },
+        { name: "Percent Change 60d", prop: "cryptoPercentChange60d" },
+        { name: "Percent Change 90d", prop: "cryptoPercentChange90d" },
+        { name: "Current Possession", prop: "currentPossession" },
+        { name: "Ratio SHAD", prop: "ratioShad" },
+        { name: "Open Buy Orders", prop: "openBuyOrders" },
+        { name: "Open Sell Orders", prop: "openSellOrders" },
+        { name: "Gain", prop: "profit" }
+      ],
+
     };
+  },
+  components: {
+    VGrid,
   },
   computed: {
     paginatedItems() {
@@ -103,8 +79,34 @@ export default {
         return symbolA.localeCompare(symbolB);
       });
     },
+    rows() {
+      return this.paginatedItems.map(item => {
+        return {
+          symbol: item.symbol,
+          rank: this.getCryptoRank(item.symbol),
+          averageEntryPrice: this.calculateAverageEntryPrice(item.symbol),
+          percentageDifference: this.calculatePercentageDifference(item.symbol),
+          balance: item.balance,
+          platform: item.platform,
+          buyTotal: this.calculateBuyTotal(item.symbol),
+          sellTotal: this.calculateSellTotal(item.symbol),
+          cryptoPrice: this.getCryptoPrice(item.symbol),
+          cryptoPercentChange24h: this.getCryptoPercentChange24h(item.symbol),
+          cryptoPercentChange7d: this.getCryptoPercentChange7d(item.symbol),
+          cryptoPercentChange30d: this.getCryptoPercentChange30d(item.symbol),
+          cryptoPercentChange60d: this.getCryptoPercentChange60d(item.symbol),
+          cryptoPercentChange90d: this.getCryptoPercentChange90d(item.symbol),
+          currentPossession: this.calculateCurrentPossession(item.symbol),
+          ratioShad: this.getRatioShad(item.symbol, item.platform),
+          openBuyOrders: this.openBuyOrders[item.symbol] || 0,
+          openSellOrders: this.openSellOrders[item.symbol] || 0,
+          profit: this.calculateProfit(item.symbol)
+        };
+      });
+    },
   },
   methods: {
+    
     async getBalanceFromDB() {
       try {
         const response = await fetch(serverHost + '/get/balance');
@@ -159,7 +161,6 @@ export default {
         console.error(err);
       }
     },
-
     async getCmcDataFromDB() {
       try {
         const response = await fetch(serverHost + '/get/cmcData');
@@ -225,7 +226,6 @@ export default {
 
       return 'NULL';
     },
-
     getBalance(symbol) {
       const balance = this.sortedBalances.find(item => item.symbol === symbol);
       return balance ? balance.balance : 'N/A';
@@ -245,15 +245,15 @@ export default {
     getCryptoPercentChange7d(symbol) {
       const crypto = this.cmcData.find(item => item.symbol === symbol);
       return crypto ? crypto.quote.USD.percent_change_7d.toFixed(2) + '%' : 'N/A';
-    }, 
+    },
     getCryptoPercentChange30d(symbol) {
       const crypto = this.cmcData.find(item => item.symbol === symbol);
       return crypto ? crypto.quote.USD.percent_change_30d.toFixed(2) + '%' : 'N/A';
-    }, 
+    },
     getCryptoPercentChange60d(symbol) {
       const crypto = this.cmcData.find(item => item.symbol === symbol);
       return crypto ? crypto.quote.USD.percent_change_60d.toFixed(2) + '%' : 'N/A';
-    }, 
+    },
     getCryptoPercentChange90d(symbol) {
       const crypto = this.cmcData.find(item => item.symbol === symbol);
       return crypto ? crypto.quote.USD.percent_change_90d.toFixed(2) + '%' : 'N/A';
@@ -319,7 +319,8 @@ export default {
 }
 
 .table-container {
-  padding: 10px; /* Ajoutez un padding pour la marge interne autour du tableau */
+  padding: 10px;
+  /* Ajoutez un padding pour la marge interne autour du tableau */
 }
 
 table {
@@ -345,5 +346,14 @@ th {
 
 .positive-percent {
   color: green;
+}
+
+#app {
+  height: 5000px;
+  width: auto;
+}
+
+revo-grid {
+  height: 100%;
 }
 </style>
