@@ -22,6 +22,10 @@
             <th>Total des ventes</th>
             <th>Current Price</th>
             <th>Percent Change 24h</th>
+            <th>Percent Change 7d</th>
+            <th>Percent Change 30d</th>
+            <th>Percent Change 60d</th>
+            <th>Percent Change 90d</th>
             <th>Current Possession</th>
             <th>Ratio SHAD</th>
             <th>Open Buy Orders</th>
@@ -41,6 +45,10 @@
             <td>{{ calculateSellTotal(item.symbol) }}</td>
             <td>{{ getCryptoPrice(item.symbol) }}</td>
             <td :class="[getPercentageClass(getCryptoPercentChange24h(item.symbol))]">{{ getCryptoPercentChange24h(item.symbol) }}</td>
+            <td :class="[getPercentageClass(getCryptoPercentChange7d(item.symbol))]">{{ getCryptoPercentChange7d(item.symbol) }}</td>
+            <td :class="[getPercentageClass(getCryptoPercentChange30d(item.symbol))]">{{ getCryptoPercentChange30d(item.symbol) }}</td>
+            <td :class="[getPercentageClass(getCryptoPercentChange60d(item.symbol))]">{{ getCryptoPercentChange60d(item.symbol) }}</td>
+            <td :class="[getPercentageClass(getCryptoPercentChange90d(item.symbol))]">{{ getCryptoPercentChange90d(item.symbol) }}</td>
             <td>{{ calculateCurrentPossession(item.symbol) }}</td>
             <td>{{ getRatioShad(item.symbol, item.platform) }}</td>
             <td>{{ openBuyOrders[item.symbol] || 0 }}</td>
@@ -234,6 +242,22 @@ export default {
       const crypto = this.cmcData.find(item => item.symbol === symbol);
       return crypto ? crypto.quote.USD.percent_change_24h.toFixed(2) + '%' : 'N/A';
     },
+    getCryptoPercentChange7d(symbol) {
+      const crypto = this.cmcData.find(item => item.symbol === symbol);
+      return crypto ? crypto.quote.USD.percent_change_7d.toFixed(2) + '%' : 'N/A';
+    }, 
+    getCryptoPercentChange30d(symbol) {
+      const crypto = this.cmcData.find(item => item.symbol === symbol);
+      return crypto ? crypto.quote.USD.percent_change_30d.toFixed(2) + '%' : 'N/A';
+    }, 
+    getCryptoPercentChange60d(symbol) {
+      const crypto = this.cmcData.find(item => item.symbol === symbol);
+      return crypto ? crypto.quote.USD.percent_change_60d.toFixed(2) + '%' : 'N/A';
+    }, 
+    getCryptoPercentChange90d(symbol) {
+      const crypto = this.cmcData.find(item => item.symbol === symbol);
+      return crypto ? crypto.quote.USD.percent_change_90d.toFixed(2) + '%' : 'N/A';
+    },
     calculatePercentageDifference(symbol) {
       const currentPrice = parseFloat(this.getCryptoPrice(symbol));
       const averageEntryPrice = parseFloat(this.calculateAverageEntryPrice(symbol));
@@ -285,7 +309,6 @@ export default {
 </script>
 
 <style scoped>
-
 .admin-page {
   overflow-x: auto;
 }
