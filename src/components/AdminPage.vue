@@ -2,10 +2,16 @@
   <div class="admin-page">
     <h1>SHAD</h1>
 
-    <div id="app">
-      <v-grid theme="compact" :source="rows" :columns="columns"></v-grid>
+    <div id="table">
+      <v-grid theme="compact" :source="rows" :columns="columns" :filter="false" :pagination="paginationConfig"></v-grid>
     </div>
 
+    <div class="pagination">
+      <button v-if="currentPage > 1" @click="prevPage">Prev</button>
+      <button v-for="page in pages" :key="page" @click="changePage(page)" :class="{ active: currentPage === page }">{{
+        page }}</button>
+      <button v-if="currentPage < pageCount" @click="nextPage">Next</button>
+    </div>
   </div>
 </template>
 
@@ -27,29 +33,143 @@ export default {
       cmcData: [], // Les données des cmcData à récupérer depuis l'API
       openBuyOrders: {}, // Nombre d'ordres d'achat ouverts par actif
       openSellOrders: {}, // Nombre d'ordres de vente ouverts par actif
-      itemsPerPage: 500,
+      itemsPerPage: 100,
       currentPage: 1,
       columns: [
-        { name: "Symbol", prop: "symbol", pin: 'colPinStart', autoSize: true },
-        { name: "Rank", prop: "rank" },
-        { name: "Average Entry Price", prop: "averageEntryPrice" },
-        { name: "Percentage Difference", prop: "percentageDifference" },
-        { name: "Balance", prop: "balance" },
-        { name: "Exchange", prop: "platform" },
-        { name: "Total des achats", prop: "buyTotal" },
-        { name: "Total des ventes", prop: "sellTotal" },
-        { name: "Current Price", prop: "cryptoPrice" },
-        { name: "Percent Change 24h", prop: "cryptoPercentChange24h" },
-        { name: "Percent Change 7d", prop: "cryptoPercentChange7d" },
-        { name: "Percent Change 30d", prop: "cryptoPercentChange30d" },
-        { name: "Percent Change 60d", prop: "cryptoPercentChange60d" },
-        { name: "Percent Change 90d", prop: "cryptoPercentChange90d" },
-        { name: "Current Possession", prop: "currentPossession" },
-        { name: "Ratio SHAD", prop: "ratioShad" },
-        { name: "Open Buy Orders", prop: "openBuyOrders" },
-        { name: "Open Sell Orders", prop: "openSellOrders" },
-        { name: "Gain", prop: "profit" }
+        { name: "Symbol", prop: "symbol", pin: 'colPinStart', autoSize: true, sortable: true, order: "desc", },
+        { name: "Rank", prop: "rank", sortable: true, order: "desc", type: 'number' },
+        { name: "Average Entry Price", prop: "averageEntryPrice", sortable: true, order: "desc" },
+        { name: "Percentage Difference", prop: "percentageDifference", sortable: true, order: "desc" },
+        { name: "Balance", prop: "balance", sortable: true, order: "desc" },
+        { name: "Total des achats", prop: "buyTotal", sortable: true, order: "desc" },
+        { name: "Total des ventes", prop: "sellTotal", sortable: true, order: "desc" },
+        { name: "Current Price", prop: "cryptoPrice", sortable: true, order: "desc" },
+        {
+          name: "Percent Change 24h", prop: "cryptoPercentChange24h", sortable: true, order: "desc",
+          cellTemplate: (createElement, props) => {
+            const cellContent = props.model[props.prop];
+
+            let textColor = cellContent.includes('-') ? 'red' : 'green';
+
+            return createElement('span', {
+              style: {
+                color: textColor
+              }
+            }, cellContent);
+          },
+        },
+        {
+          name: "Percent Change 7d", prop: "cryptoPercentChange7d", sortable: true, order: "desc",
+          cellTemplate: (createElement, props) => {
+            const cellContent = props.model[props.prop];
+
+            let textColor = cellContent.includes('-') ? 'red' : 'green';
+
+            return createElement('span', {
+              style: {
+                color: textColor
+              }
+            }, cellContent);
+          },
+        },
+        {
+          name: "Percent Change 30d", prop: "cryptoPercentChange30d", sortable: true, order: "desc",
+          cellTemplate: (createElement, props) => {
+            const cellContent = props.model[props.prop];
+
+            let textColor = cellContent.includes('-') ? 'red' : 'green';
+
+            return createElement('span', {
+              style: {
+                color: textColor
+              }
+            }, cellContent);
+          },
+        },
+        {
+          name: "Percent Change 60d", prop: "cryptoPercentChange60d", sortable: true, order: "desc",
+          cellTemplate: (createElement, props) => {
+            const cellContent = props.model[props.prop];
+
+            let textColor = cellContent.includes('-') ? 'red' : 'green';
+
+            return createElement('span', {
+              style: {
+                color: textColor
+              }
+            }, cellContent);
+          },
+        },
+        {
+          name: "Percent Change 90d", prop: "cryptoPercentChange90d", sortable: true, order: "desc",
+          cellTemplate: (createElement, props) => {
+            const cellContent = props.model[props.prop];
+
+            let textColor = cellContent.includes('-') ? 'red' : 'green';
+
+            return createElement('span', {
+              style: {
+                color: textColor
+              }
+            }, cellContent);
+          },
+        },
+        { name: "Current Possession", prop: "currentPossession", sortable: true, order: "desc" },
+        { name: "Ratio SHAD", prop: "ratioShad", sortable: true, order: "desc" },
+        { name: "Open Buy Orders", prop: "openBuyOrders", sortable: true, order: "desc" },
+        { name: "Open Sell Orders", prop: "openSellOrders", sortable: true, order: "desc" },
+        { name: "Gain", prop: "profit", sortable: true, order: "desc" },
+        {
+          name: "Exchange", prop: "platform", pin: 'colPinEnd', sortable: true, order: "desc",
+          cellTemplate: (createElement, props) => {
+            const cellContent = props.model[props.prop];
+            let backgroundColor = '';
+            let textColor = '';
+
+            // Définir la couleur d'arrière-plan et du texte en fonction de la valeur
+            switch (cellContent) {
+              case 'binance':
+                backgroundColor = 'yellow';
+                textColor = 'black';
+                break;
+              case 'kucoin':
+                backgroundColor = 'green';
+                textColor = 'white';
+                break;
+              case 'huobi':
+                backgroundColor = 'blue';
+                textColor = 'white';
+                break;
+              case 'okex':
+                backgroundColor = 'orange';
+                textColor = 'black';
+                break;
+              case 'gate io':
+                backgroundColor = 'purple';
+                textColor = 'white';
+                break;
+              default:
+                backgroundColor = '';
+                textColor = 'black';
+            }
+
+            return createElement('div', {
+              style: {
+                backgroundColor,
+                color: textColor,
+                textAlign: 'center'
+              }
+            }, cellContent);
+          },
+
+        },
+
       ],
+      paginationConfig: {
+        pageSize: 10, // Nombre d'éléments par page
+        totalCount: 0, // Nombre total d'éléments
+        current: 1, // Page actuelle
+      },
 
     };
   },
@@ -84,29 +204,30 @@ export default {
         return {
           symbol: item.symbol,
           rank: this.getCryptoRank(item.symbol),
-          averageEntryPrice: this.calculateAverageEntryPrice(item.symbol),
-          percentageDifference: this.calculatePercentageDifference(item.symbol),
+          averageEntryPrice: this.getAverageEntryPrice(item.symbol),
+          percentageDifference: this.getPercentageDifference(item.symbol),
           balance: item.balance,
-          platform: item.platform,
-          buyTotal: this.calculateBuyTotal(item.symbol),
-          sellTotal: this.calculateSellTotal(item.symbol),
+          buyTotal: this.getTotalBuy(item.symbol),
+          sellTotal: this.getTotalSell(item.symbol),
           cryptoPrice: this.getCryptoPrice(item.symbol),
           cryptoPercentChange24h: this.getCryptoPercentChange24h(item.symbol),
           cryptoPercentChange7d: this.getCryptoPercentChange7d(item.symbol),
           cryptoPercentChange30d: this.getCryptoPercentChange30d(item.symbol),
           cryptoPercentChange60d: this.getCryptoPercentChange60d(item.symbol),
           cryptoPercentChange90d: this.getCryptoPercentChange90d(item.symbol),
-          currentPossession: this.calculateCurrentPossession(item.symbol),
+          currentPossession: this.getCurrentPossession(item.symbol),
           ratioShad: this.getRatioShad(item.symbol, item.platform),
           openBuyOrders: this.openBuyOrders[item.symbol] || 0,
           openSellOrders: this.openSellOrders[item.symbol] || 0,
-          profit: this.calculateProfit(item.symbol)
+          profit: this.getProfit(item.symbol),
+          platform: item.platform,
+
         };
       });
     },
   },
   methods: {
-    
+
     async getBalanceFromDB() {
       try {
         const response = await fetch(serverHost + '/get/balance');
@@ -171,9 +292,10 @@ export default {
         console.error(err);
       }
     },
-    calculateProfit(symbol) {
-      const buyTotal = parseFloat(this.calculateBuyTotal(symbol));
-      const sellTotal = parseFloat(this.calculateSellTotal(symbol));
+
+    getProfit(symbol) {
+      const buyTotal = parseFloat(this.getTotalBuy(symbol));
+      const sellTotal = parseFloat(this.getTotalSell(symbol));
       const currentPrice = parseFloat(this.getCryptoPrice(symbol));
       const balance = parseFloat(this.getBalance(symbol));
 
@@ -187,17 +309,17 @@ export default {
 
       return profit.toFixed(2);
     },
-    calculateBuyTotal(symbol) {
+    getTotalBuy(symbol) {
       const filteredTrades = this.trades.filter(trade => trade.pair === `${symbol}/USDT` && trade.type === 'buy');
       const buyTotal = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
       return buyTotal.toFixed(2);
     },
-    calculateSellTotal(symbol) {
+    getTotalSell(symbol) {
       const filteredTrades = this.trades.filter(trade => trade.pair === `${symbol}/USDT` && trade.type === 'sell');
       const sellTotal = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
       return sellTotal.toFixed(2);
     },
-    calculateAverageEntryPrice(symbol) {
+    getAverageEntryPrice(symbol) {
       const filteredTrades = this.trades.filter(trade => trade.pair === `${symbol}/USDT` && trade.type === 'buy');
       if (filteredTrades.length === 0) {
         return 'N/A';
@@ -232,7 +354,7 @@ export default {
     },
     getCryptoRank(symbol) {
       const crypto = this.cmcData.find(item => item.symbol === symbol);
-      return crypto ? crypto.cmc_rank : 'N/A';
+      return crypto ? parseInt(crypto.cmc_rank) : 0;
     },
     getCryptoPrice(symbol) {
       const crypto = this.cmcData.find(item => item.symbol === symbol);
@@ -258,16 +380,16 @@ export default {
       const crypto = this.cmcData.find(item => item.symbol === symbol);
       return crypto ? crypto.quote.USD.percent_change_90d.toFixed(2) + '%' : 'N/A';
     },
-    calculatePercentageDifference(symbol) {
+    getPercentageDifference(symbol) {
       const currentPrice = parseFloat(this.getCryptoPrice(symbol));
-      const averageEntryPrice = parseFloat(this.calculateAverageEntryPrice(symbol));
+      const averageEntryPrice = parseFloat(this.getAverageEntryPrice(symbol));
       if (isNaN(currentPrice) || isNaN(averageEntryPrice)) {
         return 'N/A';
       }
       const percentageDifference = ((currentPrice - averageEntryPrice) / averageEntryPrice) * 100;
       return percentageDifference.toFixed(2) + '%';
     },
-    calculateCurrentPossession(symbol) {
+    getCurrentPossession(symbol) {
       const currentPrice = parseFloat(this.getCryptoPrice(symbol));
       const balance = parseFloat(this.getBalance(symbol));
       if (isNaN(currentPrice) || isNaN(balance)) {
@@ -276,7 +398,6 @@ export default {
       const currentPossession = (currentPrice * balance).toFixed(2);
       return currentPossession;
     },
-
     getPercentageClass(value) {
       if (value === 'N/A') {
         return '';
@@ -313,43 +434,8 @@ export default {
   overflow-x: auto;
 }
 
-.scrollable-table {
-  table-layout: auto;
-  white-space: nowrap;
-}
-
-.table-container {
-  padding: 10px;
-  /* Ajoutez un padding pour la marge interne autour du tableau */
-}
-
-table {
-  border-collapse: collapse;
-  width: 80%;
-  margin-top: 20px;
-}
-
-th {
-  font-size: 20px;
-}
-
-td,
-th {
-  border: 1px solid black;
-  padding: 10px;
-  text-align: center;
-}
-
-.negative-percent {
-  color: red;
-}
-
-.positive-percent {
-  color: green;
-}
-
-#app {
-  height: 5000px;
+#table {
+  height: 500px;
   width: auto;
 }
 
