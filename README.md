@@ -1,8 +1,11 @@
 # machi-gpt-shad
 
 ### RUN PROJECT 
+```
 npm run build 
+```
 node server.js
+```
 
 ## Project setup
 ```
