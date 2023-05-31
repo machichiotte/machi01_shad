@@ -3,7 +3,10 @@
     <h1>SHAD</h1>
 
     <div id="table">
-      <v-grid theme="compact" :source="rows" :columns="columns" :filter="false" :pagination="paginationConfig"></v-grid>
+      <v-grid theme="compact" :source="rows" :columns="columns" :filter="false" :pagination="paginationConfig"
+        :autoSizeColumn="{
+          mode: 'autoSizeOnTextOverlap',
+        }"></v-grid>
     </div>
 
     <div class="pagination">
@@ -55,7 +58,7 @@ function getPlatformColors(platform) {
       };
     case 'kucoin':
       return {
-        backgroundColor: '#0093DD',
+        backgroundColor: '#23AF91',
         textColor: 'white'
       };
     case 'huobi':
@@ -81,8 +84,6 @@ function getPlatformColors(platform) {
   }
 }
 
-// Supposons que paginatedItems contient les éléments paginés récupérés
-
 export default {
   name: "AdminPage",
   data() {
@@ -106,39 +107,72 @@ export default {
         { name: "Percentage Difference", prop: "percentageDifference", sortable: true, order: "desc", cellTemplate: createColoredCell },
         { name: "Current Price", prop: "currentPrice", sortable: true, order: "desc", type: 'number' },
 
-        { name: "Current Possession", prop: "currentPossession", sortable: true, order: "desc", type: 'number' },
+        { name: "Wallet", prop: "currentPossession", sortable: true, order: "desc", type: 'number' },
         { name: "Profit", prop: "profit", sortable: true, order: "desc", type: 'number' },
 
         { name: "Total sell", prop: "totalSell", sortable: true, order: "desc", type: 'number' },
         { name: "Recup shad", prop: "recupShad", sortable: true, order: "desc", type: 'number' },
-
-        { name: "Open Buy Orders", prop: "openBuyOrders", sortable: true, order: "desc", type: 'number' },
-        { name: "Open Sell Orders", prop: "openSellOrders", sortable: true, order: "desc", type: 'number' },
-
+        {
+          name: 'Open Orders',
+          children: [
+            { name: "Buy", prop: "openBuyOrders", sortable: true, order: "desc", type: 'number' },
+            { name: "Sell", prop: "openSellOrders", sortable: true, order: "desc", type: 'number' },
+          ]
+        },
         { name: "Quantite total achetee", prop: "totalQuantity", sortable: true, order: "desc", type: 'number' },
         { name: "Balance", prop: "balance", sortable: true, order: "desc", type: 'number' },
-
-        { name: "Recup tp1", prop: "recupTp1", sortable: true, order: "desc", type: 'number' },
-        { name: "Recup tpX", prop: "recupTpX", sortable: true, order: "desc", type: 'number' },
-
-        { name: "TP1 qty", prop: "qtyTp1", sortable: true, order: "desc", type: 'number' },
-        { name: "TP1 price", prop: "priceTp1", sortable: true, order: "desc", type: 'number' },
-
-        { name: "TP2 qty", prop: "qtyTp2", sortable: true, order: "desc", type: 'number' },
-        { name: "TP2 price", prop: "priceTp2", sortable: true, order: "desc", type: 'number' },
-        { name: "TP3 qty", prop: "qtyTp3", sortable: true, order: "desc", type: 'number' },
-        { name: "TP3 price", prop: "priceTp3", sortable: true, order: "desc", type: 'number' },
-        { name: "TP4 qty", prop: "qtyTp4", sortable: true, order: "desc", type: 'number' },
-        { name: "TP4 price", prop: "priceTp4", sortable: true, order: "desc", type: 'number' },
-        { name: "TP5 qty", prop: "qtyTp5", sortable: true, order: "desc", type: 'number' },
-        { name: "TP5 price", prop: "priceTp5", sortable: true, order: "desc", type: 'number' },
-
-        { name: "Percent Change 24h", prop: "cryptoPercentChange24h", sortable: true, order: "desc", cellTemplate: createColoredCell },
-        { name: "Percent Change 7d", prop: "cryptoPercentChange7d", sortable: true, order: "desc", cellTemplate: createColoredCell },
-        { name: "Percent Change 30d", prop: "cryptoPercentChange30d", sortable: true, order: "desc", cellTemplate: createColoredCell },
-        { name: "Percent Change 60d", prop: "cryptoPercentChange60d", sortable: true, order: "desc", cellTemplate: createColoredCell },
-        { name: "Percent Change 90d", prop: "cryptoPercentChange90d", sortable: true, order: "desc", cellTemplate: createColoredCell },
-
+        {
+          name: 'Recup',
+          children: [
+            { name: "tp1", prop: "recupTp1", sortable: true, order: "desc", type: 'number' },
+            { name: "tpX", prop: "recupTpX", sortable: true, order: "desc", type: 'number' },
+          ]
+        },
+        {
+          name: 'TP1',
+          children: [
+            { name: "qty", prop: "qtyTp1", sortable: true, order: "desc", type: 'number' },
+            { name: "price", prop: "priceTp1", sortable: true, order: "desc", type: 'number' },
+          ]
+        },
+        {
+          name: 'TP2',
+          children: [
+            { name: "qty", prop: "qtyTp2", sortable: true, order: "desc", type: 'number' },
+            { name: "price", prop: "priceTp2", sortable: true, order: "desc", type: 'number' },
+          ]
+        },
+        {
+          name: 'TP3',
+          children: [
+            { name: "qty", prop: "qtyTp3", sortable: true, order: "desc", type: 'number' },
+            { name: "price", prop: "priceTp3", sortable: true, order: "desc", type: 'number' },
+          ]
+        },
+        {
+          name: 'TP4',
+          children: [
+            { name: "qty", prop: "qtyTp4", sortable: true, order: "desc", type: 'number' },
+            { name: "price", prop: "priceTp4", sortable: true, order: "desc", type: 'number' },
+          ]
+        },
+        {
+          name: 'TP5',
+          children: [
+            { name: "qty", prop: "qtyTp5", sortable: true, order: "desc", type: 'number' },
+            { name: "price", prop: "priceTp5", sortable: true, order: "desc", type: 'number' },
+          ]
+        },
+        {
+          name: 'Percent Change',
+          children: [
+            { name: "24h", prop: "cryptoPercentChange24h", sortable: true, order: "desc", cellTemplate: createColoredCell },
+            { name: "7d", prop: "cryptoPercentChange7d", sortable: true, order: "desc", cellTemplate: createColoredCell },
+            { name: "30d", prop: "cryptoPercentChange30d", sortable: true, order: "desc", cellTemplate: createColoredCell },
+            { name: "60d", prop: "cryptoPercentChange60d", sortable: true, order: "desc", cellTemplate: createColoredCell },
+            { name: "90d", prop: "cryptoPercentChange90d", sortable: true, order: "desc", cellTemplate: createColoredCell },
+          ]
+        },
         { name: "Exchange", prop: "platform", pin: 'colPinEnd', sortable: true, order: "desc", cellTemplate: createPlatformColoredCell }
       ],
       paginationConfig: {
@@ -411,17 +445,17 @@ export default {
     getMaxWanted(rank, totalBuy) {
       switch (true) {
         case (rank > 1000):
-          return Math.min(totalBuy, 5);
+          return (Math.min(totalBuy, 5)).toFixed(2);
         case (rank > 800):
-          return Math.min(totalBuy, 10);
+          return (Math.min(totalBuy, 10)).toFixed(2);
         case (rank > 600):
-          return Math.min(totalBuy, 25);
+          return (Math.min(totalBuy, 25)).toFixed(2);
         case (rank > 400):
-          return Math.min(totalBuy, 50);
+          return (Math.min(totalBuy, 50)).toFixed(2);
         case (rank > 300):
-          return Math.min(totalBuy, 100);
+          return (Math.min(totalBuy, 100)).toFixed(2);
         case (rank > 200):
-          return Math.min(totalBuy, 200);
+          return (Math.min(totalBuy, 200)).toFixed(2);
         case (rank <= 200):
           return totalBuy;
       }
@@ -545,7 +579,6 @@ export default {
     this.getCmcDataFromDB();
   }
 };
-
 </script>
 
 <style scoped>
