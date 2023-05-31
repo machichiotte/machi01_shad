@@ -1,11 +1,10 @@
 {
-    "strategy1": {
-      "name": "Strategy 1",
-      "calculateNextSell": "(remainingBuyValue, remainingQuantity) => remainingBuyValue / (remainingQuantity / 2)"
-    },
-    "strategy2": {
-      "name": "Strategy 2",
-      "calculateNextSell": "(remainingBuyValue, remainingQuantity) => remainingBuyValue / (remainingQuantity / 2) * 2"
-    }
+  "strategy1": {
+    "name": "Strategy 1",
+    "nextSell": "(remainingBuyValue, remainingQuantity) => remainingBuyValue / (remainingQuantity / 2)"
+  },
+  "strategy2": {
+    "name": "Strategy 2",
+    "nextSell": "(remainingBuyValue, remainingQuantity) => remainingBuyValue / (remainingQuantity / 2) * 2"
   }
-  
+}
