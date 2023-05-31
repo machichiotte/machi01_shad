@@ -3,14 +3,6 @@
     <h1>Mise à jour des données</h1>
 
     <h2>Possibilité de mise à jour</h2>
-    <!--<table>
-      <tbody>
-        <tr v-for="(order, index) in cryptoData" :key="index">
-          <td>{{ order.name }}</td>
-          <td>{{ order['cmc_rank']}}</td>
-        </tr>
-      </tbody>
-    </table> -->
 
     <button @click="updateCmcData">Update Data</button>
     <ul v-if="cryptoData">
