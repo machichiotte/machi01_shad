@@ -6,7 +6,10 @@
       <v-grid theme="compact" :source="rows" :columns="columns" :filter="false" :pagination="paginationConfig"
         :autoSizeColumn="{
           mode: 'autoSizeOnTextOverlap',
-        }"></v-grid>
+        }">
+        <template v-slot:row-action="{ item }">
+          <button @click="afficherContenu(item)">Afficher</button>
+        </template></v-grid>
     </div>
 
     <div class="pagination">
@@ -82,6 +85,18 @@ function getPlatformColors(platform) {
         textColor: 'black'
       };
   }
+}
+
+function createButtonCell(createElement, props) {
+
+  console.log('createButtonCell');
+  //console.log('createElement ' + createElement);
+  console.log('props ' + JSON.stringify(props));
+  return createElement('button', {
+    on: {
+      click: () => this.handleButtonClick(props.model)
+    }
+  }, 'Click');
 }
 
 export default {
@@ -173,6 +188,7 @@ export default {
             { name: "90d", prop: "cryptoPercentChange90d", sortable: true, order: "desc", cellTemplate: createColoredCell },
           ]
         },
+        { name: "Actions", cellTemplate: createButtonCell },
         { name: "Exchange", prop: "platform", pin: 'colPinEnd', sortable: true, order: "desc", cellTemplate: createPlatformColoredCell }
       ],
       paginationConfig: {
@@ -214,8 +230,6 @@ export default {
         const symbol = item.symbol;
         const platform = item.platform;
         const balance = item.balance;
-
-        console.log(symbol);
 
         // Calcul des valeurs utilisées dans l'objet
         const rank = this.getCryptoRank(symbol);
@@ -355,7 +369,6 @@ export default {
         const response = await fetch(serverHost + '/get/cmcData');
         const data = await response.json();
         this.cmcData = data;
-        console.log(this.cmcData);
       } catch (err) {
         console.error(err);
       }
@@ -378,7 +391,6 @@ export default {
       return profit.toFixed(2);
     },
     getRecupShad(totalBuy, totalSell, maxWanted) {
-
       if (totalSell > 0) {
         if (maxWanted < totalBuy) {
           return Math.round(totalSell - totalBuy + maxWanted, 2);
@@ -388,7 +400,6 @@ export default {
       }
       return 0;
     },
-    //TODO PROBLEM ICI 
     getRecupTp1(totalBuy, totalSell, maxWanted, recupShad, recupTpX, totalShad) {
       let recupTp1 = (maxWanted) + (totalSell) < (totalBuy) ? (totalBuy) - (totalSell) - (maxWanted) :
         (recupTpX) - (recupShad) + (totalShad) * (recupTpX);
@@ -561,6 +572,10 @@ export default {
     getQtyTp5(balance, qtyTp1, qtyTp2, qtyTp3, qtyTp4) {
       return 0.5 * (balance - qtyTp1 - qtyTp2 - qtyTp3 - qtyTp4);
     },
+    handleButtonClick(row) {
+      console.log('JONIIIII'); // Access row elements here
+      console.log(row); // Access row elements here
+    },
     prevPage() {
       this.currentPage--;
     },
@@ -569,6 +584,10 @@ export default {
     },
     changePage(page) {
       this.currentPage = page;
+    },
+    afficherContenu(contenuLigne) {
+      alert(contenuLigne);
+      // Vous pouvez également effectuer d'autres actions avec le contenu de la ligne
     },
   },
   mounted() {
