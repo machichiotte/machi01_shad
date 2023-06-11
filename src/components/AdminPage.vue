@@ -131,7 +131,8 @@ export default {
       currentPage: 1,
       counts: [],
       columns: [
-        { name: "Symbol", prop: "symbol", pin: 'colPinStart', autoSize: true, sortable: true, order: "desc", },
+        { name: "Symbol", prop: "symbol", pin: 'colPinStart', autoSize: true, sortable: true, order: "asc", },
+        { name: "Ratio", prop: "ratioShad", autoSize: true, sortable: true, order: "desc", },
         { name: "Total shad", prop: "totalShad", sortable: true, order: "desc", type: 'number' },
         { name: "Rank", prop: "rank", sortable: true, order: "desc", type: 'number' },
         { name: "Average Entry Price", prop: "averageEntryPrice", sortable: true, order: "desc", type: 'number' },
@@ -248,6 +249,7 @@ export default {
         const { symbol, platform, balance } = item;
 
         // Calcul des valeurs utilisées dans l'objet
+        const ratioShad = this.getRatioShad(symbol, platform);
         const rank = this.getCryptoRank(symbol);
         const averageEntryPrice = this.getAverageEntryPrice(symbol);
         const totalBuy = this.getTotalBuy(symbol, platform);
@@ -268,7 +270,7 @@ export default {
         const percentageDifference = this.getPercentageDifference(currentPrice, averageEntryPrice);
         const currentPossession = this.getCurrentPossession(currentPrice, balance);
         const profit = this.getProfit(totalBuy, totalSell, currentPrice, balance);
-        const recupTpX = this.getRecupTpX(symbol, platform, maxWanted);
+        const recupTpX = this.getRecupTpX(maxWanted, ratioShad);
         const totalShad = this.getDoneShad(totalBuy, totalSell, maxWanted, recupShad, recupTpX);
         const recupTp1 = this.getRecupTp1(totalBuy, totalSell, maxWanted, recupShad, recupTpX, totalShad);
 
@@ -292,6 +294,7 @@ export default {
         // Retourne l'objet avec les valeurs calculées
         return {
           symbol,
+          ratioShad,
           totalShad,
           rank,
           averageEntryPrice,
@@ -438,8 +441,9 @@ export default {
       }
       return recupTp1;
     },
-    getRecupTpX(symbol, platform, maxWanted) {
-      return maxWanted * this.getRatioShad(symbol, platform) * .5;
+    getRecupTpX(maxWanted, ratioShad) {
+     // return maxWanted * this.getRatioShad(symbol, platform) * .5;
+      return maxWanted * ratioShad * .5;
     },
     getDoneShad(totalBuy, totalSell, maxWanted, recupShad, recupTpX) {
       if (Math.abs(totalBuy - maxWanted) > 0.5 && totalSell < 0.95 * Math.abs(totalBuy - maxWanted)) {
@@ -511,14 +515,9 @@ export default {
       return averageEntryPrice;
     },
     getRatioShad(symbol, platform) {
-      const assetStrategies = this.strats[symbol];
+      console.log(symbol);
 
-      if (!assetStrategies || !platform) {
-        //return 'NULL';
-        return 2;
-      }
-
-      const strategy = assetStrategies[platform];
+      const strategy = this.strats[0][symbol][platform];
 
       if (strategy === 'strategy1') {
         return '2';
@@ -528,7 +527,7 @@ export default {
         return '4';
       }
 
-      return 2;
+      return 'NULL';
     },
     getBalance(symbol) {
       const balance = this.sortedBalances.find(item => item.symbol === symbol);
