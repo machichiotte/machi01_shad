@@ -3,13 +3,17 @@
     <h1>SHAD</h1>
 
     <div id="table">
-      <v-grid theme="compact" :source="rows" :columns="columns" :filter="false" :pagination="paginationConfig"
-        :autoSizeColumn="{
-          mode: 'autoSizeOnTextOverlap',
-        }">
-        <template v-slot:row-action="{ item }">
-          <button @click="afficherContenu(item)">Afficher</button>
-        </template></v-grid>
+      <v-grid theme="compact" :source="rows" :columns="columns" :filter="false" :pagination="paginationConfig">
+        <template v-slot:item="{ item }">
+          <tr :key="item.symbol">
+            <!-- Render columns using the key attribute -->
+            <td v-for="column in columns" :key="column.name">
+              <!-- Render individual cells using the key attribute -->
+              <component :is="getComponentType(column)" :column="column" :model="item" />
+            </td>
+          </tr>
+        </template>
+      </v-grid>
     </div>
 
     <div class="pagination">
@@ -23,7 +27,32 @@
 
 <script>
 const serverHost = "http://localhost:3000";
-import VGrid from "@revolist/vue3-datagrid";
+import VGrid, { VGridVueTemplate } from "@revolist/vue3-datagrid";
+import { ref } from "vue";
+
+// your vue component
+const myVue = {
+  props: ["rowIndex", "model"],
+  setup(props) {
+    const countIndex = ref(0);
+
+    const iAmClicked = () => {
+      props.model.count.value++;
+    };
+
+    return {
+      countIndex,
+      iAmClicked,
+    };
+  },
+  render(props) {
+    return (
+      <button onClick={this.iAmClicked}>
+        {props.model.count.value} times.
+      </button>
+    );
+  },
+};
 
 // Fonction générique pour la création de cellules avec couleur en fonction du contenu
 function createColoredCell(createElement, props) {
@@ -87,31 +116,20 @@ function getPlatformColors(platform) {
   }
 }
 
-function createButtonCell(createElement, props) {
-
-  console.log('createButtonCell');
-  //console.log('createElement ' + createElement);
-  console.log('props ' + JSON.stringify(props));
-  return createElement('button', {
-    on: {
-      click: () => this.handleButtonClick(props.model)
-    }
-  }, 'Click');
-}
-
 export default {
   name: "AdminPage",
   data() {
     return {
-      balances: [], // Les données des ordres à récupérer depuis l'API
-      trades: [], // Les données des trades à récupérer depuis l'API
-      strats: [], // Les données des strats à récupérer depuis l'API
-      activeOrders: [], // Les données des activeOrders à récupérer depuis l'API
-      cmcData: [], // Les données des cmcData à récupérer depuis l'API
-      openBuyOrders: {}, // Nombre d'ordres d'achat ouverts par actif
-      openSellOrders: {}, // Nombre d'ordres de vente ouverts par actif
+      balances: [], 
+      trades: [], 
+      strats: [], 
+      activeOrders: [], 
+      cmcData: [], 
+      openBuyOrders: {}, 
+      openSellOrders: {},
       itemsPerPage: 100,
       currentPage: 1,
+      counts: [],
       columns: [
         { name: "Symbol", prop: "symbol", pin: 'colPinStart', autoSize: true, sortable: true, order: "desc", },
         { name: "Total shad", prop: "totalShad", sortable: true, order: "desc", type: 'number' },
@@ -188,13 +206,13 @@ export default {
             { name: "90d", prop: "cryptoPercentChange90d", sortable: true, order: "desc", cellTemplate: createColoredCell },
           ]
         },
-        { name: "Actions", cellTemplate: createButtonCell },
+        { name: "Actions", cellTemplate: VGridVueTemplate(myVue), canFocus: false },
         { name: "Exchange", prop: "platform", pin: 'colPinEnd', sortable: true, order: "desc", cellTemplate: createPlatformColoredCell }
       ],
       paginationConfig: {
-        pageSize: 10, // Nombre d'éléments par page
-        totalCount: 0, // Nombre total d'éléments
-        current: 1, // Page actuelle
+        pageSize: 10,
+        totalCount: 0, 
+        current: 1,
       },
 
     };
@@ -226,10 +244,8 @@ export default {
       });
     },
     rows() {
-      return this.paginatedItems.map(item => {
-        const symbol = item.symbol;
-        const platform = item.platform;
-        const balance = item.balance;
+      return this.paginatedItems.map((item, index) => {
+        const { symbol, platform, balance } = item;
 
         // Calcul des valeurs utilisées dans l'objet
         const rank = this.getCryptoRank(symbol);
@@ -268,6 +284,10 @@ export default {
         const qtyTp5 = this.getQtyTp5(balance, qtyTp1, qtyTp2, qtyTp3, qtyTp4);
         const priceTp5 = this.getPriceTp5(recupTpX, qtyTp5);
 
+        if (!this.counts[index]) {
+          // Initialiser le compteur individuel pour cette ligne
+          this.counts[index] = ref(0);
+        }
 
         // Retourne l'objet avec les valeurs calculées
         return {
@@ -304,12 +324,22 @@ export default {
           cryptoPercentChange30d,
           cryptoPercentChange60d,
           cryptoPercentChange90d,
-          platform
+          platform,
+          count: this.counts[index],
         };
       });
     }
   },
   methods: {
+    getComponentType(column) {
+      if (column.cellTemplate) {
+        return VGridVueTemplate(myVue);
+      }
+      return 'span';
+    },
+    beforeFocus(e) {
+      e.preventDefault();
+    },
     async getBalanceFromDB() {
       try {
         const response = await fetch(serverHost + '/get/balance');
@@ -571,10 +601,6 @@ export default {
     },
     getQtyTp5(balance, qtyTp1, qtyTp2, qtyTp3, qtyTp4) {
       return 0.5 * (balance - qtyTp1 - qtyTp2 - qtyTp3 - qtyTp4);
-    },
-    handleButtonClick(row) {
-      console.log('JONIIIII'); // Access row elements here
-      console.log(row); // Access row elements here
     },
     prevPage() {
       this.currentPage--;

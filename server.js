@@ -11,6 +11,8 @@ const { connectMDB, saveArrayDataMDB, saveObjectDataMDB, deleteMultipleDataMDB, 
 
 dotenv.config();
 const app = express();
+// Spécifiez le dossier contenant vos fichiers statiques (y compris les fichiers JavaScript)
+app.use(express.static('dist'));
 
 const isOfflineMode = process.env.OFFLINE_MODE === 'true';
 app.offlineMode = isOfflineMode;
@@ -122,13 +124,15 @@ app.get('/get/strat', async (req, res) => {
     let data;
 
     if (app.offlineMode) {
+      console.log('offline');
       const mockDataPath = './mockData/strat.json'; // Chemin vers le fichier JSON mocké
       const jsonData = fs.readFileSync(mockDataPath, 'utf8');
       data = JSON.parse(jsonData);
     } else {
+      console.log('online');
       data = await getAllDataMDB(collection);
     }
-
+    console.log('data :: ' + data);
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -293,7 +297,7 @@ app.get('/update/activeOrders/:exchangeId', async (req, res) => {
 app.get('/update/trades/:exchangeId', async (req, res) => {
   const { exchangeId } = req.params;
 */
-  app.get('/update/trades/:exchangeId/:symbol', async (req, res) => {
+app.get('/update/trades/:exchangeId/:symbol', async (req, res) => {
   const { exchangeId, symbol } = req.params;
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];

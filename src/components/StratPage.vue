@@ -3,6 +3,16 @@
         <div style="display:flex; justify-content:flex-end;">
             <button @click="updateStrat">Sauvegarder</button>
         </div>
+
+        <div>
+            <select v-model="selectedStrategy" @change="updateAllStrats">
+                <option value="">Sélectionner une stratégie</option>
+                <option value="strategy1">Shad</option>
+                <option value="strategy2">Shad skip x2</option>
+                <option value="strategy3">Strategy 3</option>
+            </select>
+        </div>
+
         <table ref="stratTable">
             <thead>
                 <tr>
@@ -37,7 +47,8 @@ export default {
             platforms: [],
             assets: [],
             strat: [],
-            stratMap: {}
+            stratMap: {},
+            selectedStrategy: "",
         };
     },
     methods: {
@@ -57,8 +68,6 @@ export default {
                 const response = await fetch(`${serverHost}/get/strat`);
                 const data = await response.json();
                 this.strat = data[0];
-                console.log("strat:: " + this.strat)
-
             } catch (err) {
                 console.error(err);
             }
@@ -93,6 +102,18 @@ export default {
                 console.error(err);
             }
         },
+        async updateAllStrats() {
+            const selectedStrategy = this.selectedStrategy;
+
+            Object.keys(this.strat).forEach(asset => {
+                Object.keys(this.strat[asset]).forEach(platform => {
+                    if (!this.isDisabled(asset, platform)) {
+                        this.strat[asset][platform] = selectedStrategy;
+                    }
+                });
+            });
+        }
+        ,
         isDisabled(asset, platform) {
             const assets = this.balance.filter(item => item.symbol === asset);
             const platforms = assets.map(item => item.platform);
