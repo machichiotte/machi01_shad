@@ -31,7 +31,7 @@ import VGrid, { VGridVueTemplate } from "@revolist/vue3-datagrid";
 import { ref } from "vue";
 
 // your vue component
-const myVue = {
+const mySellButton = {
   props: ["rowIndex", "model"],
   setup(props) {
     const countIndex = ref(0);
@@ -207,7 +207,7 @@ export default {
             { name: "90d", prop: "cryptoPercentChange90d", sortable: true, order: "desc", cellTemplate: createColoredCell },
           ]
         },
-        { name: "Actions", cellTemplate: VGridVueTemplate(myVue), canFocus: false },
+        { name: "Actions", cellTemplate: VGridVueTemplate(mySellButton), canFocus: false },
         { name: "Exchange", prop: "platform", pin: 'colPinEnd', sortable: true, order: "desc", cellTemplate: createPlatformColoredCell }
       ],
       paginationConfig: {
@@ -336,7 +336,7 @@ export default {
   methods: {
     getComponentType(column) {
       if (column.cellTemplate) {
-        return VGridVueTemplate(myVue);
+        return VGridVueTemplate(mySellButton);
       }
       return 'span';
     },
