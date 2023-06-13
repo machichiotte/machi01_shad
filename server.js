@@ -11,19 +11,19 @@ const { connectMDB, saveArrayDataMDB, saveObjectDataMDB, deleteMultipleDataMDB, 
 
 dotenv.config();
 const app = express();
-// Spécifiez le dossier contenant vos fichiers statiques (y compris les fichiers JavaScript)
+// Specify the folder containing your static files (including JavaScript files)
 app.use(express.static('dist'));
 
 const isOfflineMode = process.env.OFFLINE_MODE === 'true';
 app.offlineMode = isOfflineMode;
 
-// Utilisation de body-parser comme middleware global pour toutes les requêtes
+// Use body-parser as a global middleware for all requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const { mapBalance, mapActiveOrders, mapLoadMarkets, mapTrades } = require('./utils/mapping');
 
-// Connexion à la base de données MongoDB
+// Connect to the MongoDB database
 connectMDB();
 
 app.use(cors());
@@ -61,7 +61,7 @@ app.get('/get/balance', async (req, res) => {
     let data;
 
     if (app.offlineMode) {
-      const mockDataPath = './mockData/balance.json'; // Chemin vers le fichier JSON mocké
+      const mockDataPath = './mockData/balance.json';
       const jsonData = fs.readFileSync(mockDataPath, 'utf8');
       data = JSON.parse(jsonData);
     } else {
@@ -82,7 +82,7 @@ app.get('/get/cmcData', async (req, res) => {
     let data;
 
     if (app.offlineMode) {
-      const mockDataPath = './mockData/cmcData.json'; // Chemin vers le fichier JSON mocké
+      const mockDataPath = './mockData/cmcData.json';
       const jsonData = fs.readFileSync(mockDataPath, 'utf8');
       data = JSON.parse(jsonData);
     } else {
@@ -103,7 +103,7 @@ app.get('/get/activeOrders', async (req, res) => {
     let data;
 
     if (app.offlineMode) {
-      const mockDataPath = './mockData/activeOrders.json'; // Chemin vers le fichier JSON mocké
+      const mockDataPath = './mockData/activeOrders.json';
       const jsonData = fs.readFileSync(mockDataPath, 'utf8');
       data = JSON.parse(jsonData);
     } else {
@@ -125,7 +125,7 @@ app.get('/get/strat', async (req, res) => {
 
     if (app.offlineMode) {
       console.log('offline');
-      const mockDataPath = './mockData/strat.json'; // Chemin vers le fichier JSON mocké
+      const mockDataPath = './mockData/strat.json';
       const jsonData = fs.readFileSync(mockDataPath, 'utf8');
       data = JSON.parse(jsonData);
     } else {
@@ -148,7 +148,7 @@ app.get('/get/trades', async (req, res) => {
     console.log('trade')
 
     if (app.offlineMode) {
-      const mockDataPath = './mockData/trades.json'; // Chemin vers le fichier JSON mocké
+      const mockDataPath = './mockData/trades.json';
       const jsonData = fs.readFileSync(mockDataPath, 'utf8');
       data = JSON.parse(jsonData);
     } else {
@@ -163,22 +163,85 @@ app.get('/get/trades', async (req, res) => {
 });
 
 // POST
-app.post('/orders/:exchangeId', async (req, res) => {
-  // TODO: Add code to place order
+function createExchangeInstance(exchangeId, req) {
+  let symbol, param;
+
+  switch (exchangeId) {
+    case 'kucoin':
+      symbol = req.body.asset + '-USDT';
+      param = {
+        apiKey: process.env.KUCOIN_API_KEY,
+        secret: process.env.KUCOIN_SECRET_KEY,
+        password: process.env.KUCOIN_PASSPHRASE
+      };
+      break;
+    case 'binance':
+      symbol = req.body.asset + 'USDT';
+      param = {
+        apiKey: process.env.BINANCE_API_KEY,
+        secret: process.env.BINANCE_SECRET_KEY
+      };
+      break;
+    case 'huobi':
+      symbol = req.body.asset.toLowerCase() + 'usdt';
+      param = {
+        apiKey: process.env.HUOBI_API_KEY,
+        secret: process.env.HUOBI_SECRET_KEY
+      };
+      break;
+    case 'gateio':
+      symbol = req.body.asset.toUpperCase() + '_USDT';
+      param = {
+        apiKey: process.env.GATEIO_API_KEY,
+        secret: process.env.GATEIO_SECRET_KEY
+      };
+      break;
+    case 'okex':
+      symbol = req.body.asset + '-USDT';
+      param = {
+        apiKey: process.env.OKEX_API_KEY,
+        secret: process.env.OKEX_SECRET_KEY,
+        password: process.env.OKEX_PASSPHRASE
+      };
+      break;
+    default:
+      throw new Error(`Unsupported exchange: ${exchangeId}`);
+  }
+
+  return {
+    symbol,
+    param
+  };
+}
+
+app.post('/cancel/all-orders', async (req, res) => {
+  const exchangeId = req.body.exchangeId;
+
   try {
-    const data = //ajotuer mon appel;
-      res.json(data);
+    const { symbol, param } = createExchangeInstance(exchangeId, req);
+
+    const exchange = new ccxt[exchangeId](param);
+    const result = await exchange.cancelAllOrders(symbol);
+
+    res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
 });
 
-app.post('/bunch-orders/:exchangeId', async (req, res) => {
-  // TODO: Add code to place bunch order
+app.post('/bunch-orders', async (req, res) => {
+  const exchangeId = req.body.exchangeId;
+  const price = req.body.price;
+  const amount = req.body.amount;
+
   try {
-    const data = //ajotuer mon appel;
-      res.json(data);
+    const { symbol, param } = createExchangeInstance(exchangeId, req);
+
+    const exchange = new ccxt[exchangeId](param);
+    const result = await exchange.createLimitSellOrder(symbol, amount, price);
+
+    res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
@@ -199,6 +262,8 @@ app.post('/update/strat', async (req, res) => {
     res.status(500).send({ error: 'Internal server error' });
   }
 });
+
+
 
 app.get('/update/cmcData', async (req, res) => {
   const collection = process.env.MONGODB_COLLECTION_CMC;
@@ -293,10 +358,6 @@ app.get('/update/activeOrders/:exchangeId', async (req, res) => {
   }
 });
 
-/*
-app.get('/update/trades/:exchangeId', async (req, res) => {
-  const { exchangeId } = req.params;
-*/
 app.get('/update/trades/:exchangeId/:symbol', async (req, res) => {
   const { exchangeId, symbol } = req.params;
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
@@ -316,10 +377,10 @@ app.get('/update/trades/:exchangeId/:symbol', async (req, res) => {
 
     console.log(exchangeId + " : " + symbol);
 
-    
 
-   const data = await exchange.fetchMyTrades(symbol);
-   //const data = await exchange.fetchMyTrades();
+
+    const data = await exchange.fetchMyTrades(symbol);
+    //const data = await exchange.fetchMyTrades();
 
     res.json(data);
 

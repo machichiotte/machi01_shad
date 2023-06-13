@@ -5,7 +5,7 @@
     <div id="table">
       <v-grid theme="compact" :source="rows" :columns="columns" :filter="false" :pagination="paginationConfig">
         <template v-slot:item="{ item }">
-          <tr :key="item.symbol">
+          <tr :key="item.asset">
             <!-- Render columns using the key attribute -->
             <td v-for="column in columns" :key="column.name">
               <!-- Render individual cells using the key attribute -->
@@ -30,14 +30,28 @@ const serverHost = "http://localhost:3000";
 import VGrid, { VGridVueTemplate } from "@revolist/vue3-datagrid";
 import { ref } from "vue";
 
-// your vue component
 const mySellButton = {
   props: ["rowIndex", "model"],
   setup(props) {
     const countIndex = ref(0);
 
-    const iAmClicked = () => {
+    const iAmClicked = async () => {
       props.model.count.value++;
+
+      const asset = props.model.asset;
+      const exchangeId = props.model.exchangeId;
+
+      await cancelAllOrders(exchangeId, asset);
+
+      const amounts = [props.model.amountTp1, props.model.amountTp2, props.model.amountTp3, props.model.amountTp4, props.model.amountTp5];
+      const prices = [props.model.priceTp1, props.model.priceTp2, props.model.priceTp3, props.model.priceTp4, props.model.priceTp5];
+
+      //const amounts = [11.7591, 5.8796, 2.9398, 1.4699, 0.7349];
+      //const prices = [0.4252, 0.8504, 1.7008, 3.40161, 6.80321];
+
+      for (let i = 0; i < 5; i++) {
+        await bunchOrders(exchangeId, asset, amounts[i], prices[i]);
+      }
     };
 
     return {
@@ -54,7 +68,50 @@ const mySellButton = {
   },
 };
 
-// Fonction générique pour la création de cellules avec couleur en fonction du contenu
+async function cancelAllOrders(exchangeId, asset) {
+  try {
+    const requestBody = {
+      exchangeId: exchangeId,
+      asset: asset
+    };
+
+    const response = await fetch(`${serverHost}/cancel/all-orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    });
+
+    const data = await response.json();
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function bunchOrders(exchangeId, asset, amount, price) {
+  try {
+    const requestBody = {
+      exchangeId: exchangeId,
+      asset: asset,
+      amount: amount,
+      price: price
+    };
+
+    const response = await fetch(`${serverHost}/bunch-orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    });
+
+    const data = await response.json();
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+// Generic function for creating cells with color based on content
 function createColoredCell(createElement, props) {
   const cellContent = props.model[props.prop];
   const textColor = cellContent.includes('-') ? 'red' : 'green';
@@ -66,7 +123,7 @@ function createColoredCell(createElement, props) {
   }, cellContent);
 }
 
-// Fonction générique pour la création de cellules avec couleur de fond et texte personnalisés
+// Generic function for creating cells with custom background color and text
 function createPlatformColoredCell(createElement, props) {
   const cellContent = props.model[props.prop];
   const { backgroundColor, textColor } = getPlatformColors(cellContent);
@@ -80,9 +137,9 @@ function createPlatformColoredCell(createElement, props) {
   }, cellContent);
 }
 
-// Fonction pour définir les couleurs en fonction de la plateforme
-function getPlatformColors(platform) {
-  switch (platform) {
+// Function to define colors based on the exchangeId
+function getPlatformColors(exchangeId) {
+  switch (exchangeId) {
     case 'binance':
       return {
         backgroundColor: '#F3BA2F',
@@ -120,18 +177,57 @@ export default {
   name: "AdminPage",
   data() {
     return {
-      balances: [], 
-      trades: [], 
-      strats: [], 
-      activeOrders: [], 
-      cmcData: [], 
-      openBuyOrders: {}, 
+      balances: [],
+      trades: [],
+      strats: [],
+      activeOrders: [],
+      cmcData: [],
+      openBuyOrders: {},
       openSellOrders: {},
       itemsPerPage: 100,
       currentPage: 1,
+
+      assets: [],
+      ratioShads: [],
+      totalShads: [],
+      ranks: [],
+      averageEntryPrices: [],
+      totalBuys: [],
+      maxWanteds: [],
+      percentageDifferences: [],
+      currentPrices: [],
+      currentPossessions: [],
+      profits: [],
+      totalSells: [],
+      recupShads: [],
+      openBuyOrderss: [],
+      openSellOrderss: [],
+      totalQuantitys: [],
+      bals: [],
+      recupTp1s: [],
+      recupTpXs: [],
+      amountTp1s: [],
+      priceTp1s: [],
+      amountTp2s: [],
+      priceTp2s: [],
+      amountTp3s: [],
+      priceTp3s: [],
+      amountTp4s: [],
+      priceTp4s: [],
+      amountTp5s: [],
+      priceTp5s: [],
+      cryptoPercentChange24hs: [],
+      cryptoPercentChange7ds: [],
+      cryptoPercentChange30ds: [],
+      cryptoPercentChange60ds: [],
+      cryptoPercentChange90ds: [],
+      exchangeIds: [],
       counts: [],
+
       columns: [
-        { name: "Symbol", prop: "symbol", pin: 'colPinStart', autoSize: true, sortable: true, order: "asc", },
+        { name: "Asset", prop: "asset", pin: 'colPinStart', autoSize: true, sortable: true, order: "asc", },
+        { name: "Actions", cellTemplate: VGridVueTemplate(mySellButton), canFocus: false },
+
         { name: "Ratio", prop: "ratioShad", autoSize: true, sortable: true, order: "desc", },
         { name: "Total shad", prop: "totalShad", sortable: true, order: "desc", type: 'number' },
         { name: "Rank", prop: "rank", sortable: true, order: "desc", type: 'number' },
@@ -165,35 +261,35 @@ export default {
         {
           name: 'TP1',
           children: [
-            { name: "qty", prop: "qtyTp1", sortable: true, order: "desc", type: 'number' },
+            { name: "amount", prop: "amountTp1", sortable: true, order: "desc", type: 'number' },
             { name: "price", prop: "priceTp1", sortable: true, order: "desc", type: 'number' },
           ]
         },
         {
           name: 'TP2',
           children: [
-            { name: "qty", prop: "qtyTp2", sortable: true, order: "desc", type: 'number' },
+            { name: "amount", prop: "amountTp2", sortable: true, order: "desc", type: 'number' },
             { name: "price", prop: "priceTp2", sortable: true, order: "desc", type: 'number' },
           ]
         },
         {
           name: 'TP3',
           children: [
-            { name: "qty", prop: "qtyTp3", sortable: true, order: "desc", type: 'number' },
+            { name: "amount", prop: "amountTp3", sortable: true, order: "desc", type: 'number' },
             { name: "price", prop: "priceTp3", sortable: true, order: "desc", type: 'number' },
           ]
         },
         {
           name: 'TP4',
           children: [
-            { name: "qty", prop: "qtyTp4", sortable: true, order: "desc", type: 'number' },
+            { name: "amount", prop: "amountTp4", sortable: true, order: "desc", type: 'number' },
             { name: "price", prop: "priceTp4", sortable: true, order: "desc", type: 'number' },
           ]
         },
         {
           name: 'TP5',
           children: [
-            { name: "qty", prop: "qtyTp5", sortable: true, order: "desc", type: 'number' },
+            { name: "amount", prop: "amountTp5", sortable: true, order: "desc", type: 'number' },
             { name: "price", prop: "priceTp5", sortable: true, order: "desc", type: 'number' },
           ]
         },
@@ -207,19 +303,18 @@ export default {
             { name: "90d", prop: "cryptoPercentChange90d", sortable: true, order: "desc", cellTemplate: createColoredCell },
           ]
         },
-        { name: "Actions", cellTemplate: VGridVueTemplate(mySellButton), canFocus: false },
-        { name: "Exchange", prop: "platform", pin: 'colPinEnd', sortable: true, order: "desc", cellTemplate: createPlatformColoredCell }
+        { name: "Exchange", prop: "exchangeId", pin: 'colPinEnd', sortable: true, order: "desc", cellTemplate: createPlatformColoredCell }
       ],
       paginationConfig: {
         pageSize: 10,
-        totalCount: 0, 
+        totalCount: 0,
         current: 1,
       },
 
     };
   },
   components: {
-    VGrid,
+    VGrid, mySellButton
   },
   computed: {
     paginatedItems() {
@@ -239,95 +334,96 @@ export default {
     },
     sortedBalances() {
       return this.balances.slice().sort((a, b) => {
-        const symbolA = a.symbol.toUpperCase();
-        const symbolB = b.symbol.toUpperCase();
-        return symbolA.localeCompare(symbolB);
+        const assetA = a.symbol.toUpperCase();
+        const assetB = b.symbol.toUpperCase();
+        return assetA.localeCompare(assetB);
       });
     },
     rows() {
       return this.paginatedItems.map((item, index) => {
         const { symbol, platform, balance } = item;
 
-        // Calcul des valeurs utilisées dans l'objet
-        const ratioShad = this.getRatioShad(symbol, platform);
-        const rank = this.getCryptoRank(symbol);
-        const averageEntryPrice = this.getAverageEntryPrice(symbol);
-        const totalBuy = this.getTotalBuy(symbol, platform);
-        const currentPrice = this.getCurrentPrice(symbol);
-        const totalSell = this.getTotalSell(symbol);
-        const openBuyOrders = this.openBuyOrders[symbol] || 0;
-        const openSellOrders = this.openSellOrders[symbol] || 0;
-        const totalQuantity = this.getTotalQuantity(symbol, platform);
+        this.assets[index] = symbol;
+        this.exchangeIds[index] = platform;
+        this.bals[index] = balance;
 
-        const cryptoPercentChange24h = this.getCryptoPercentChange24h(symbol);
-        const cryptoPercentChange7d = this.getCryptoPercentChange7d(symbol);
-        const cryptoPercentChange30d = this.getCryptoPercentChange30d(symbol);
-        const cryptoPercentChange60d = this.getCryptoPercentChange60d(symbol);
-        const cryptoPercentChange90d = this.getCryptoPercentChange90d(symbol);
+        this.ratioShads[index] = this.getRatioShad(this.assets[index], this.exchangeIds[index]);
+        this.ranks[index] = this.getCryptoRank(this.assets[index]);
+        this.averageEntryPrices[index] = this.getAverageEntryPrice(this.assets[index]);
+        this.totalBuys[index] = this.getTotalBuy(this.assets[index], this.exchangeIds[index]);
+        this.currentPrices[index] = this.getCurrentPrice(this.assets[index]);
+        this.totalSells[index] = this.getTotalSell(this.assets[index]);
+        this.openBuyOrderss[index] = this.openBuyOrders[this.assets[index]] || 0;
+        this.openSellOrderss[index] = this.openSellOrders[this.assets[index]] || 0;
+        this.totalQuantitys[index] = this.getTotalQuantity(this.assets[index], this.exchangeIds[index]);
 
-        const maxWanted = this.getMaxWanted(rank, totalBuy);
-        const recupShad = this.getRecupShad(totalBuy, totalSell, maxWanted);
-        const percentageDifference = this.getPercentageDifference(currentPrice, averageEntryPrice);
-        const currentPossession = this.getCurrentPossession(currentPrice, balance);
-        const profit = this.getProfit(totalBuy, totalSell, currentPrice, balance);
-        const recupTpX = this.getRecupTpX(maxWanted, ratioShad);
-        const totalShad = this.getDoneShad(totalBuy, totalSell, maxWanted, recupShad, recupTpX);
-        const recupTp1 = this.getRecupTp1(totalBuy, totalSell, maxWanted, recupShad, recupTpX, totalShad);
+        this.cryptoPercentChange24hs[index] = this.getCryptoPercentChange24h(this.assets[index]);
+        this.cryptoPercentChange7ds[index] = this.getCryptoPercentChange7d(this.assets[index]);
+        this.cryptoPercentChange30ds[index] = this.getCryptoPercentChange30d(this.assets[index]);
+        this.cryptoPercentChange60ds[index] = this.getCryptoPercentChange60d(this.assets[index]);
+        this.cryptoPercentChange90ds[index] = this.getCryptoPercentChange90d(this.assets[index]);
 
-        const qtyTp1 = this.getQtyTp1(recupTp1, averageEntryPrice, balance, totalBuy, totalSell, totalShad)
-        const priceTp1 = this.getPriceTp1(recupTp1, qtyTp1);
+        this.maxWanteds[index] = this.getMaxWanted(this.ranks[index], this.totalBuys[index]);
+        this.recupShads[index] = this.getRecupShad(this.totalBuys[index], this.totalSells[index], this.maxWanteds[index]);
+        this.percentageDifferences[index] = this.getPercentageDifference(this.currentPrices[index], this.averageEntryPrices[index]);
+        this.currentPossessions[index] = this.getCurrentPossession(this.currentPrices[index], this.bals[index]);
+        this.profits[index] = this.getProfit(this.totalBuys[index], this.totalSells[index], this.currentPrices[index], this.bals[index]);
+        this.recupTpXs[index] = this.getRecupTpX(this.maxWanteds[index], this.ratioShads[index]);
+        this.totalShads[index] = this.getDoneShad(this.totalBuys[index], this.totalSells[index], this.maxWanteds[index], this.recupShads[index], this.recupTpXs[index]);
+        this.recupTp1s[index] = this.getRecupTp1(this.totalBuys[index], this.totalSells[index], this.maxWanteds[index], this.recupShads[index], this.recupTpXs[index], this.totalShads[index]);
 
-        const qtyTp2 = this.getQtyTp2(balance, qtyTp1);
-        const priceTp2 = this.getPriceTp2(recupTpX, qtyTp2);
-        const qtyTp3 = this.getQtyTp3(balance, qtyTp1, qtyTp2);
-        const priceTp3 = this.getPriceTp3(recupTpX, qtyTp3);
-        const qtyTp4 = this.getQtyTp4(balance, qtyTp1, qtyTp2, qtyTp3);
-        const priceTp4 = this.getPriceTp4(recupTpX, qtyTp4);
-        const qtyTp5 = this.getQtyTp5(balance, qtyTp1, qtyTp2, qtyTp3, qtyTp4);
-        const priceTp5 = this.getPriceTp5(recupTpX, qtyTp5);
+        this.amountTp1s[index] = this.getamountTp1(this.recupTp1s[index], this.averageEntryPrices[index], this.bals[index], this.totalBuys[index], this.totalSells[index], this.totalShads[index]);
+        this.priceTp1s[index] = this.getPriceTp1(this.recupTp1s[index], this.amountTp1s[index]);
+
+        this.amountTp2s[index] = this.getamountTp2(this.bals[index], this.amountTp1s[index]);
+        this.priceTp2s[index] = this.getPriceTp2(this.recupTpXs[index], this.amountTp2s[index]);
+        this.amountTp3s[index] = this.getamountTp3(this.bals[index], this.amountTp1s[index], this.amountTp2s[index]);
+        this.priceTp3s[index] = this.getPriceTp3(this.recupTpXs[index], this.amountTp3s[index]);
+        this.amountTp4s[index] = this.getamountTp4(this.bals[index], this.amountTp1s[index], this.amountTp2s[index], this.amountTp3s[index]);
+        this.priceTp4s[index] = this.getPriceTp4(this.recupTpXs[index], this.amountTp4s[index]);
+        this.amountTp5s[index] = this.getamountTp5(this.bals[index], this.amountTp1s[index], this.amountTp2s[index], this.amountTp3s[index], this.amountTp4s[index]);
+        this.priceTp5s[index] = this.getPriceTp5(this.recupTpXs[index], this.amountTp5s[index]);
 
         if (!this.counts[index]) {
-          // Initialiser le compteur individuel pour cette ligne
           this.counts[index] = ref(0);
         }
 
-        // Retourne l'objet avec les valeurs calculées
         return {
-          symbol,
-          ratioShad,
-          totalShad,
-          rank,
-          averageEntryPrice,
-          totalBuy,
-          maxWanted,
-          percentageDifference,
-          currentPrice,
-          currentPossession,
-          profit,
-          totalSell,
-          recupShad,
-          openBuyOrders,
-          openSellOrders,
-          totalQuantity,
-          balance,
-          recupTp1,
-          recupTpX,
-          qtyTp1,
-          priceTp1,
-          qtyTp2,
-          priceTp2,
-          qtyTp3,
-          priceTp3,
-          qtyTp4,
-          priceTp4,
-          qtyTp5,
-          priceTp5,
-          cryptoPercentChange24h,
-          cryptoPercentChange7d,
-          cryptoPercentChange30d,
-          cryptoPercentChange60d,
-          cryptoPercentChange90d,
-          platform,
+          asset: this.assets[index],
+          ratioShad: this.ratioShads[index],
+          totalShad: this.totalShads[index],
+          rank: this.ranks[index],
+          averageEntryPrice: this.averageEntryPrices[index],
+          totalBuy: this.totalBuys[index],
+          maxWanted: this.maxWanteds[index],
+          percentageDifference: this.percentageDifferences[index],
+          currentPrice: this.currentPrices[index],
+          currentPossession: this.currentPossessions[index],
+          profit: this.profits[index],
+          totalSell: this.totalSells[index],
+          recupShad: this.recupShads[index],
+          openBuyOrders: this.openBuyOrderss[index],
+          openSellOrders: this.openSellOrderss[index],
+          totalQuantity: this.totalQuantitys[index],
+          balance: this.bals[index],
+          recupTp1: this.recupTp1s[index],
+          recupTpX: this.recupTpXs[index],
+          amountTp1: this.amountTp1s[index],
+          priceTp1: this.priceTp1s[index],
+          amountTp2: this.amountTp2s[index],
+          priceTp2: this.priceTp2s[index],
+          amountTp3: this.amountTp3s[index],
+          priceTp3: this.priceTp3s[index],
+          amountTp4: this.amountTp4s[index],
+          priceTp4: this.priceTp4s[index],
+          amountTp5: this.amountTp5s[index],
+          priceTp5: this.priceTp5s[index],
+          cryptoPercentChange24h: this.cryptoPercentChange24hs[index],
+          cryptoPercentChange7d: this.cryptoPercentChange7ds[index],
+          cryptoPercentChange30d: this.cryptoPercentChange30ds[index],
+          cryptoPercentChange60d: this.cryptoPercentChange60ds[index],
+          cryptoPercentChange90d: this.cryptoPercentChange90ds[index],
+          exchangeId: this.exchangeIds[index],
           count: this.counts[index],
         };
       });
@@ -339,9 +435,6 @@ export default {
         return VGridVueTemplate(mySellButton);
       }
       return 'span';
-    },
-    beforeFocus(e) {
-      e.preventDefault();
     },
     async getBalanceFromDB() {
       try {
@@ -386,11 +479,11 @@ export default {
 
         // Calculer le nombre d'ordres ouverts par actif
         this.activeOrders.forEach(order => {
-          const symbol = order.symbol.split('/')[0]; // Récupérer le symbole sans la paire
+          const asset = order.symbol.split('/')[0]; // Récupérer l'asset sans la paire
           if (order.side === 'buy') {
-            this.openBuyOrders[symbol] = this.openBuyOrders[symbol] + 1 || 1; // Incrémenter le nombre d'ordres d'achat ouverts
+            this.openBuyOrders[asset] = this.openBuyOrders[asset] + 1 || 1; // Incrémenter le nombre d'ordres d'achat ouverts
           } else if (order.side === 'sell') {
-            this.openSellOrders[symbol] = this.openSellOrders[symbol] + 1 || 1; // Incrémenter le nombre d'ordres de vente ouverts
+            this.openSellOrders[asset] = this.openSellOrders[asset] + 1 || 1; // Incrémenter le nombre d'ordres de vente ouverts
           }
         });
       } catch (err) {
@@ -406,7 +499,6 @@ export default {
         console.error(err);
       }
     },
-
     getProfit(totalBuy, totalSell, currentPrice, balance) {
       const buyTotal = parseFloat(totalBuy);
       const sellTotal = parseFloat(totalSell);
@@ -442,7 +534,6 @@ export default {
       return recupTp1;
     },
     getRecupTpX(maxWanted, ratioShad) {
-     // return maxWanted * this.getRatioShad(symbol, platform) * .5;
       return maxWanted * ratioShad * .5;
     },
     getDoneShad(totalBuy, totalSell, maxWanted, recupShad, recupTpX) {
@@ -454,10 +545,10 @@ export default {
         return 0;
       }
     },
-    getPriceTp1(recupTp1, qtyTp1) {
-      return parseFloat(recupTp1) / parseFloat(qtyTp1);
+    getPriceTp1(recupTp1, amountTp1) {
+      return parseFloat(recupTp1) / parseFloat(amountTp1);
     },
-    getQtyTp1(recupTp1, averageEntryPrice, balance, totalBuy, totalSell, totalShad) {
+    getamountTp1(recupTp1, averageEntryPrice, balance, totalBuy, totalSell, totalShad) {
       const parsedRecupTp1 = parseFloat(recupTp1);
       const parsedEntryAvg = parseFloat(averageEntryPrice);
       const parsedBalance = parseFloat(balance);
@@ -472,18 +563,18 @@ export default {
         return parsedRecupTp1 * parsedBalance / (parsedTotalBuy - parsedTotalSell);
       }
     },
-    getTotalBuy(symbol, platform) {
-      const filteredTrades = this.trades.filter(trade => trade.pair === `${symbol}/USDT` && trade.type === 'buy' && trade.platform === platform);
+    getTotalBuy(asset, exchangeId) {
+      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy' && trade.platform === exchangeId);
       const buyTotal = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
       return buyTotal.toFixed(2);
     },
-    getTotalQuantity(symbol, platform) {
-      const filteredTrades = this.trades.filter(trade => trade.pair === `${symbol}/USDT` && trade.type === 'buy' && trade.platform === platform);
-      const qtyBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.amount), 0);
-      return qtyBuy;
+    getTotalQuantity(asset, exchangeId) {
+      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy' && trade.platform === exchangeId);
+      const amountBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.amount), 0);
+      return amountBuy;
     },
-    getTotalSell(symbol) {
-      const filteredTrades = this.trades.filter(trade => trade.pair === `${symbol}/USDT` && trade.type === 'sell');
+    getTotalSell(asset) {
+      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'sell');
       const sellTotal = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
       return sellTotal.toFixed(2);
     },
@@ -505,8 +596,8 @@ export default {
           return totalBuy;
       }
     },
-    getAverageEntryPrice(symbol) {
-      const filteredTrades = this.trades.filter(trade => trade.pair === `${symbol}/USDT` && trade.type === 'buy');
+    getAverageEntryPrice(asset) {
+      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy');
       if (filteredTrades.length === 0) {
         return 0;
       }
@@ -514,51 +605,50 @@ export default {
       const averageEntryPrice = entryPrices.reduce((total, price) => total + price, 0) / entryPrices.length;
       return averageEntryPrice;
     },
-    getRatioShad(symbol, platform) {
-      console.log(symbol);
+    getRatioShad(asset, exchangeId) {
+      const strategy = this.strats[0][asset][exchangeId];
 
-      const strategy = this.strats[0][symbol][platform];
-
-      if (strategy === 'strategy1') {
-        return '2';
+      switch (strategy) {
+        case 'strategy1':
+          return '2';
+        case 'strategy2':
+          return '4';
+        case 'strategy3':
+          return '8';
+        default:
+          return 'NULL';
       }
-
-      if (strategy === 'strategy2') {
-        return '4';
-      }
-
-      return 'NULL';
     },
-    getBalance(symbol) {
-      const balance = this.sortedBalances.find(item => item.symbol === symbol);
+    getBalance(asset) {
+      const balance = this.sortedBalances.find(item => item.symbol === asset);
       return balance ? balance.balance : 'N/A';
     },
-    getCryptoRank(symbol) {
-      const crypto = this.cmcData.find(item => item.symbol === symbol);
+    getCryptoRank(asset) {
+      const crypto = this.cmcData.find(item => item.symbol === asset);
       return crypto ? parseInt(crypto.cmc_rank) : 0;
     },
-    getCurrentPrice(symbol) {
-      const crypto = this.cmcData.find(item => item.symbol === symbol);
+    getCurrentPrice(asset) {
+      const crypto = this.cmcData.find(item => item.symbol === asset);
       return crypto ? crypto.quote.USD.price.toFixed(7) : 'N/A';
     },
-    getCryptoPercentChange24h(symbol) {
-      const crypto = this.cmcData.find(item => item.symbol === symbol);
+    getCryptoPercentChange24h(asset) {
+      const crypto = this.cmcData.find(item => item.symbol === asset);
       return crypto ? crypto.quote.USD.percent_change_24h.toFixed(2) + '%' : 'N/A';
     },
-    getCryptoPercentChange7d(symbol) {
-      const crypto = this.cmcData.find(item => item.symbol === symbol);
+    getCryptoPercentChange7d(asset) {
+      const crypto = this.cmcData.find(item => item.symbol === asset);
       return crypto ? crypto.quote.USD.percent_change_7d.toFixed(2) + '%' : 'N/A';
     },
-    getCryptoPercentChange30d(symbol) {
-      const crypto = this.cmcData.find(item => item.symbol === symbol);
+    getCryptoPercentChange30d(asset) {
+      const crypto = this.cmcData.find(item => item.symbol === asset);
       return crypto ? crypto.quote.USD.percent_change_30d.toFixed(2) + '%' : 'N/A';
     },
-    getCryptoPercentChange60d(symbol) {
-      const crypto = this.cmcData.find(item => item.symbol === symbol);
+    getCryptoPercentChange60d(asset) {
+      const crypto = this.cmcData.find(item => item.symbol === asset);
       return crypto ? crypto.quote.USD.percent_change_60d.toFixed(2) + '%' : 'N/A';
     },
-    getCryptoPercentChange90d(symbol) {
-      const crypto = this.cmcData.find(item => item.symbol === symbol);
+    getCryptoPercentChange90d(asset) {
+      const crypto = this.cmcData.find(item => item.symbol === asset);
       return crypto ? crypto.quote.USD.percent_change_90d.toFixed(2) + '%' : 'N/A';
     },
     getPercentageDifference(currentPrice, averageEntryPrice) {
@@ -577,30 +667,31 @@ export default {
       const currentPossession = (currentPrice * balance).toFixed(2);
       return currentPossession;
     },
-    getPriceTp2(recupTpX, qtyTp2) {
-      return recupTpX / qtyTp2;
+    getPriceTp2(recupTpX, amountTp2) {
+      return recupTpX / amountTp2;
     },
-    getPriceTp3(recupTpX, qtyTp3) {
-      return recupTpX / qtyTp3;
+    getPriceTp3(recupTpX, amountTp3) {
+      return recupTpX / amountTp3;
     },
-    getPriceTp4(recupTpX, qtyTp4) {
-      return recupTpX / qtyTp4;
+    getPriceTp4(recupTpX, amountTp4) {
+      return recupTpX / amountTp4;
     },
-    getPriceTp5(recupTpX, qtyTp5) {
-      return recupTpX / qtyTp5;
+    getPriceTp5(recupTpX, amountTp5) {
+      return recupTpX / amountTp5;
     },
-    getQtyTp2(balance, qtyTp1) {
-      return 0.5 * (balance - qtyTp1);
+    getamountTp2(balance, amountTp1) {
+      return 0.5 * (balance - amountTp1);
     },
-    getQtyTp3(balance, qtyTp1, qtyTp2) {
-      return 0.5 * (balance - qtyTp1 - qtyTp2);
+    getamountTp3(balance, amountTp1, amountTp2) {
+      return 0.5 * (balance - amountTp1 - amountTp2);
     },
-    getQtyTp4(balance, qtyTp1, qtyTp2, qtyTp3) {
-      return 0.5 * (balance - qtyTp1 - qtyTp2 - qtyTp3);
+    getamountTp4(balance, amountTp1, amountTp2, amountTp3) {
+      return 0.5 * (balance - amountTp1 - amountTp2 - amountTp3);
     },
-    getQtyTp5(balance, qtyTp1, qtyTp2, qtyTp3, qtyTp4) {
-      return 0.5 * (balance - qtyTp1 - qtyTp2 - qtyTp3 - qtyTp4);
+    getamountTp5(balance, amountTp1, amountTp2, amountTp3, amountTp4) {
+      return 0.5 * (balance - amountTp1 - amountTp2 - amountTp3 - amountTp4);
     },
+
     prevPage() {
       this.currentPage--;
     },
