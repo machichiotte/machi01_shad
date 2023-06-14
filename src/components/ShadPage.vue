@@ -46,9 +46,6 @@ const mySellButton = {
       const amounts = [props.model.amountTp1, props.model.amountTp2, props.model.amountTp3, props.model.amountTp4, props.model.amountTp5];
       const prices = [props.model.priceTp1, props.model.priceTp2, props.model.priceTp3, props.model.priceTp4, props.model.priceTp5];
 
-      //const amounts = [11.7591, 5.8796, 2.9398, 1.4699, 0.7349];
-      //const prices = [0.4252, 0.8504, 1.7008, 3.40161, 6.80321];
-
       for (let i = 0; i < 5; i++) {
         await bunchOrders(exchangeId, asset, amounts[i], prices[i]);
       }
@@ -109,7 +106,6 @@ async function bunchOrders(exchangeId, asset, amount, price) {
     console.error(err);
   }
 }
-
 
 // Generic function for creating cells with color based on content
 function createColoredCell(createElement, props) {
@@ -347,21 +343,22 @@ export default {
         this.exchangeIds[index] = platform;
         this.bals[index] = balance;
 
-        this.ratioShads[index] = this.getRatioShad(this.assets[index], this.exchangeIds[index]);
         this.ranks[index] = this.getCryptoRank(this.assets[index]);
-        this.averageEntryPrices[index] = this.getAverageEntryPrice(this.assets[index]);
-        this.totalBuys[index] = this.getTotalBuy(this.assets[index], this.exchangeIds[index]);
-        this.currentPrices[index] = this.getCurrentPrice(this.assets[index]);
         this.totalSells[index] = this.getTotalSell(this.assets[index]);
+        this.currentPrices[index] = this.getCurrentPrice(this.assets[index]);
+        this.averageEntryPrices[index] = this.getAverageEntryPrice(this.assets[index]);
         this.openBuyOrderss[index] = this.openBuyOrders[this.assets[index]] || 0;
         this.openSellOrderss[index] = this.openSellOrders[this.assets[index]] || 0;
+
+        this.ratioShads[index] = this.getRatioShad(this.assets[index], this.exchangeIds[index]);
+        this.totalBuys[index] = this.getTotalBuy(this.assets[index], this.exchangeIds[index]);
         this.totalQuantitys[index] = this.getTotalQuantity(this.assets[index], this.exchangeIds[index]);
 
-        this.cryptoPercentChange24hs[index] = this.getCryptoPercentChange24h(this.assets[index]);
-        this.cryptoPercentChange7ds[index] = this.getCryptoPercentChange7d(this.assets[index]);
-        this.cryptoPercentChange30ds[index] = this.getCryptoPercentChange30d(this.assets[index]);
-        this.cryptoPercentChange60ds[index] = this.getCryptoPercentChange60d(this.assets[index]);
-        this.cryptoPercentChange90ds[index] = this.getCryptoPercentChange90d(this.assets[index]);
+        this.cryptoPercentChange24hs[index] = this.getCryptoPercentChange(this.assets[index], '24h');
+        this.cryptoPercentChange7ds[index] = this.getCryptoPercentChange(this.assets[index], '7d');
+        this.cryptoPercentChange30ds[index] = this.getCryptoPercentChange(this.assets[index], '30d');
+        this.cryptoPercentChange60ds[index] = this.getCryptoPercentChange(this.assets[index], '60d');
+        this.cryptoPercentChange90ds[index] = this.getCryptoPercentChange(this.assets[index], '90d');
 
         this.maxWanteds[index] = this.getMaxWanted(this.ranks[index], this.totalBuys[index]);
         this.recupShads[index] = this.getRecupShad(this.totalBuys[index], this.totalSells[index], this.maxWanteds[index]);
@@ -373,15 +370,15 @@ export default {
         this.recupTp1s[index] = this.getRecupTp1(this.totalBuys[index], this.totalSells[index], this.maxWanteds[index], this.recupShads[index], this.recupTpXs[index], this.totalShads[index]);
 
         this.amountTp1s[index] = this.getamountTp1(this.recupTp1s[index], this.averageEntryPrices[index], this.bals[index], this.totalBuys[index], this.totalSells[index], this.totalShads[index]);
-        this.priceTp1s[index] = this.getPriceTp1(this.recupTp1s[index], this.amountTp1s[index]);
-
         this.amountTp2s[index] = this.getamountTp2(this.bals[index], this.amountTp1s[index]);
-        this.priceTp2s[index] = this.getPriceTp2(this.recupTpXs[index], this.amountTp2s[index]);
         this.amountTp3s[index] = this.getamountTp3(this.bals[index], this.amountTp1s[index], this.amountTp2s[index]);
-        this.priceTp3s[index] = this.getPriceTp3(this.recupTpXs[index], this.amountTp3s[index]);
         this.amountTp4s[index] = this.getamountTp4(this.bals[index], this.amountTp1s[index], this.amountTp2s[index], this.amountTp3s[index]);
-        this.priceTp4s[index] = this.getPriceTp4(this.recupTpXs[index], this.amountTp4s[index]);
         this.amountTp5s[index] = this.getamountTp5(this.bals[index], this.amountTp1s[index], this.amountTp2s[index], this.amountTp3s[index], this.amountTp4s[index]);
+        
+        this.priceTp1s[index] = this.getPriceTp1(this.recupTp1s[index], this.amountTp1s[index]);
+        this.priceTp2s[index] = this.getPriceTp2(this.recupTpXs[index], this.amountTp2s[index]);
+        this.priceTp3s[index] = this.getPriceTp3(this.recupTpXs[index], this.amountTp3s[index]);
+        this.priceTp4s[index] = this.getPriceTp4(this.recupTpXs[index], this.amountTp4s[index]);
         this.priceTp5s[index] = this.getPriceTp5(this.recupTpXs[index], this.amountTp5s[index]);
 
         if (!this.counts[index]) {
@@ -436,6 +433,7 @@ export default {
       }
       return 'span';
     },
+
     async getBalanceFromDB() {
       try {
         const response = await fetch(serverHost + '/get/balance');
@@ -499,6 +497,7 @@ export default {
         console.error(err);
       }
     },
+
     getProfit(totalBuy, totalSell, currentPrice, balance) {
       const buyTotal = parseFloat(totalBuy);
       const sellTotal = parseFloat(totalSell);
@@ -573,11 +572,7 @@ export default {
       const amountBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.amount), 0);
       return amountBuy;
     },
-    getTotalSell(asset) {
-      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'sell');
-      const sellTotal = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
-      return sellTotal.toFixed(2);
-    },
+  
     getMaxWanted(rank, totalBuy) {
       switch (true) {
         case (rank > 1000):
@@ -596,15 +591,7 @@ export default {
           return totalBuy;
       }
     },
-    getAverageEntryPrice(asset) {
-      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy');
-      if (filteredTrades.length === 0) {
-        return 0;
-      }
-      const entryPrices = filteredTrades.map(trade => parseFloat(trade.price));
-      const averageEntryPrice = entryPrices.reduce((total, price) => total + price, 0) / entryPrices.length;
-      return averageEntryPrice;
-    },
+
     getRatioShad(asset, exchangeId) {
       const strategy = this.strats[0][asset][exchangeId];
 
@@ -619,6 +606,21 @@ export default {
           return 'NULL';
       }
     },
+
+    getTotalSell(asset) {
+      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'sell');
+      const sellTotal = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
+      return sellTotal.toFixed(2);
+    },
+    getAverageEntryPrice(asset) {
+      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy');
+      if (filteredTrades.length === 0) {
+        return 0;
+      }
+      const entryPrices = filteredTrades.map(trade => parseFloat(trade.price));
+      const averageEntryPrice = entryPrices.reduce((total, price) => total + price, 0) / entryPrices.length;
+      return averageEntryPrice;
+    },
     getBalance(asset) {
       const balance = this.sortedBalances.find(item => item.symbol === asset);
       return balance ? balance.balance : 'N/A';
@@ -631,25 +633,16 @@ export default {
       const crypto = this.cmcData.find(item => item.symbol === asset);
       return crypto ? crypto.quote.USD.price.toFixed(7) : 'N/A';
     },
-    getCryptoPercentChange24h(asset) {
+
+
+    getCryptoPercentChange(asset, timePeriod) {
       const crypto = this.cmcData.find(item => item.symbol === asset);
-      return crypto ? crypto.quote.USD.percent_change_24h.toFixed(2) + '%' : 'N/A';
-    },
-    getCryptoPercentChange7d(asset) {
-      const crypto = this.cmcData.find(item => item.symbol === asset);
-      return crypto ? crypto.quote.USD.percent_change_7d.toFixed(2) + '%' : 'N/A';
-    },
-    getCryptoPercentChange30d(asset) {
-      const crypto = this.cmcData.find(item => item.symbol === asset);
-      return crypto ? crypto.quote.USD.percent_change_30d.toFixed(2) + '%' : 'N/A';
-    },
-    getCryptoPercentChange60d(asset) {
-      const crypto = this.cmcData.find(item => item.symbol === asset);
-      return crypto ? crypto.quote.USD.percent_change_60d.toFixed(2) + '%' : 'N/A';
-    },
-    getCryptoPercentChange90d(asset) {
-      const crypto = this.cmcData.find(item => item.symbol === asset);
-      return crypto ? crypto.quote.USD.percent_change_90d.toFixed(2) + '%' : 'N/A';
+      if (crypto) {
+        const percentChange = crypto.quote.USD[`percent_change_${timePeriod}`];
+        return percentChange ? percentChange.toFixed(2) + '%' : 'N/A';
+      } else {
+        return 'N/A';
+      }
     },
     getPercentageDifference(currentPrice, averageEntryPrice) {
       const price = parseFloat(currentPrice);
