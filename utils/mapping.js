@@ -21,14 +21,15 @@ function mapBalance(platform, data) {
                     platform: platform
                 }));
         case 'huobi':
-            return data.info.data.list
-                .filter((item) => parseFloat(item.balance) > 0)
-                .map((item) => ({
-                    symbol: item.currency.toUpperCase(),
-                    balance: item.balance,
-                    available: item.available,
-                    platform: platform
+            return Object.entries(data)
+                .filter(([key, value]) => key !== "info" && key !== "free" && key !== "used" && key !== "total" && value.total > 0)
+                .map(([key, value]) => ({
+                    symbol: key.toUpperCase(),
+                    balance: value.total,
+                    available: value.free,
+                    platform: platform,
                 }));
+
         case 'okex':
             return data.info.data[0].details
                 .filter((item) => parseFloat(item.cashBal) > 0)

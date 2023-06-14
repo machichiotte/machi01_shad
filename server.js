@@ -141,14 +141,18 @@ async function updateStrat(req, res) {
 }
 
 const updateData = async (req, res, exchangeId, dataFetcher, mapDataFn, collection) => {
+  console.log('exhcangeID :: ' + exchangeId);
   const exchange = createExchangeInstance(exchangeId);
+  console.log('exchange :: ' + exchange);
 
   try {
     const data = await dataFetcher(exchange);
+    console.log('data :: ' + data);
     const mappedData = mapDataFn(exchangeId, data);
 
     await deleteAndSaveData(mappedData, collection, exchangeId);
     res.json(mappedData);
+
   } catch (err) {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
@@ -245,9 +249,9 @@ async function createBunchOrders(req, res) {
   const amount = req.body.amount;
 
   try {
-    const { symbol, param } = createExchangeInstanceWithReq(exchangeId, req);
+    const { symbol, exchangeParams } = createExchangeInstanceWithReq(exchangeId, req);
 
-    const exchange = new ccxt[exchangeId](param);
+    const exchange = new ccxt[exchangeId](exchangeParams);
     const result = await exchange.createLimitSellOrder(symbol, amount, price);
 
     res.json(result);
@@ -259,11 +263,29 @@ async function createBunchOrders(req, res) {
 
 async function cancelAllOrders(req, res) {
   const exchangeId = req.body.exchangeId;
-
+  let symbol;
   try {
     const exchange = createExchangeInstance(exchangeId);
 
-    const symbol = req.body.asset;
+    switch (exchangeId) {
+      case 'kucoin':
+        symbol = req.body.asset + '-USDT';
+        break;
+      case 'binance':
+        symbol = req.body.asset + 'USDT';
+        break;
+      case 'huobi':
+        symbol = req.body.asset.toLowerCase() + 'usdt';
+        break;
+      case 'gateio':
+        symbol = req.body.asset.toUpperCase() + '_USDT';
+        break;
+      case 'okex':
+        symbol = req.body.asset + '-USDT';
+        break;
+      default:
+        throw new Error(`Unsupported exchange: ${exchangeId}`);
+    }
     const result = await exchange.cancelAllOrders(symbol);
 
     res.json(result);
@@ -280,9 +302,8 @@ function createExchangeInstance(exchangeId) {
   const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
 
   const exchangeParams = {
-    apiKey: apiKey,
-    secret: secret,
-    enableRateLimit: true,
+    apiKey,
+    secret,
     ...(passphrase && { password: passphrase }) // add passphrase to params if it exists
   };
 
@@ -299,7 +320,6 @@ function createExchangeInstanceWithReq(exchangeId, req) {
   const exchangeParams = {
     apiKey,
     secret,
-    enableRateLimit: true,
     ...(passphrase && { password: passphrase }) // add passphrase to params if it exists
   };
 
