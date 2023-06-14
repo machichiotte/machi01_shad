@@ -29,32 +29,27 @@ connectMDB();
 app.use(cors());
 
 // GET
-app.get('/deleteOrder', async (req, res) => {
+app.get('/get/balance', getBalance);
+app.get('/get/cmcData', getCmcData);
+app.get('/get/activeOrders', getActiveOrders);
+app.get('/get/strat', getStrat);
+app.get('/get/trades', getTrades);
 
-  const { exchangeId, oId, symbol } = req.query;
-  const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
-  const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
-  const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
+app.get('/deleteOrder', deleteOrder);
 
-  try {
-    const exchangeParams = {
-      apiKey,
-      secret,
-      ...(passphrase && { password: passphrase }), // add passphrase to params if it exists
+app.get('/update/cmcData', updateCmcData);
+app.get('/update/balance/:exchangeId', updateBalance);
+app.get('/update/activeOrders/:exchangeId', updateActiveOrders);
+app.get('/update/loadMarkets/:exchangeId', updateLoadMarkets);
+app.get('/update/trades/:exchangeId/:symbol', updateTrades);
 
-    };
+// POST
+app.post('/update/strat', updateStrat);
+app.post('/cancel/all-orders', cancelAllOrders);
+app.post('/bunch-orders', createBunchOrders);
 
-    const exchange = new ccxt[exchangeId](exchangeParams);
-    const data = await exchange.cancelOrder(oId, symbol.replace("/", ""));
-    res.json(data);
-    //mise a jour activeOrder si envie ?
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-});
-
-app.get('/get/balance', async (req, res) => {
+//get
+async function getBalance(req, res) {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
 
   try {
@@ -73,9 +68,9 @@ app.get('/get/balance', async (req, res) => {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
-});
+}
 
-app.get('/get/cmcData', async (req, res) => {
+async function getCmcData(req, res) {
   const collection = process.env.MONGODB_COLLECTION_CMC;
 
   try {
@@ -94,9 +89,9 @@ app.get('/get/cmcData', async (req, res) => {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
-});
+}
 
-app.get('/get/activeOrders', async (req, res) => {
+async function getActiveOrders(req, res) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
 
   try {
@@ -115,9 +110,9 @@ app.get('/get/activeOrders', async (req, res) => {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
-});
+}
 
-app.get('/get/strat', async (req, res) => {
+async function getStrat(req, res) {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
 
   try {
@@ -138,9 +133,9 @@ app.get('/get/strat', async (req, res) => {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
-});
+}
 
-app.get('/get/trades', async (req, res) => {
+async function getTrades(req, res) {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
 
   try {
@@ -160,10 +155,201 @@ app.get('/get/trades', async (req, res) => {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
-});
+}
 
-// POST
-function createExchangeInstance(exchangeId, req) {
+//update
+async function updateCmcData(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_CMC;
+  const API_KEY = process.env.CMC_APIKEY;
+  const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=5000&convert=USD`;
+
+  try {
+    const fetchInstance = createFetchInstance();
+    const response = await fetchInstance(URL, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CMC_PRO_API_KEY': API_KEY
+      }
+    });
+    const data = await response.json();
+
+    // Enregistrement des données dans MongoDB
+    await deleteAllDataMDB(collection);
+    await saveArrayDataMDB(data.data, collection);
+
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+
+async function updateStrat(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_STRAT;
+  const strat = req.body.strat;
+
+  try {
+    await deleteAllDataMDB(collection);
+    const data = await saveObjectDataMDB(strat, collection);
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+
+async function updateLoadMarkets(req, res) {
+  const { exchangeId } = req.params;
+  const exchange = createExchangeInstance(exchangeId);
+  const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
+
+  try {
+    const data = await exchange.loadMarkets();
+    const mapData = mapLoadMarkets(exchangeId, data);
+
+    await deleteAndSaveData(mapData, collection, exchangeId);
+
+    res.json(mapData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+
+async function updateTrades(req, res) {
+  const { exchangeId, symbol } = req.params;
+  const exchange = createExchangeInstance(exchangeId);
+
+  try {
+    const data = await exchange.fetchMyTrades(symbol);
+    /* const mapData = mapTrades(exchangeId, data);
+ 
+     if (mapData.length > 0) {
+       const deleteParam = { platform: exchangeId };
+       await deleteMultipleDataMDB(collection, deleteParam);
+       await saveArrayDataMDB(mapData, collection);
+     }
+ 
+     res.json(mapData);*/
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+
+async function updateBalance(req, res) {
+  const { exchangeId } = req.params;
+  const exchange = createExchangeInstance(exchangeId);
+  const collection = process.env.MONGODB_COLLECTION_BALANCE;
+
+  try {
+    const data = await exchange.fetchBalance();
+    const mapData = mapBalance(exchangeId, data);
+
+    await deleteAndSaveData(mapData, collection, exchangeId);
+    res.json(mapData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+
+async function updateActiveOrders(req, res) {
+  const { exchangeId } = req.params;
+  const exchange = createExchangeInstance(exchangeId);
+  const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
+
+  try {
+    if (exchangeId === 'binance') {
+      exchange.options["warnOnFetchOpenOrdersWithoutSymbol"] = false;
+    }
+    const data = await exchange.fetchOpenOrders();
+    const mapData = mapActiveOrders(exchangeId, data);
+
+    await deleteAndSaveData(mapData, collection, exchangeId);
+    res.json(mapData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+
+async function deleteAndSaveData(mapData, collection, exchangeId) {
+  if (mapData.length > 0) {
+    const deleteParam = { platform: exchangeId };
+    await deleteMultipleDataMDB(collection, deleteParam);
+    await saveArrayDataMDB(mapData, collection);
+  }
+}
+
+//orders
+async function deleteOrder(req, res) {
+  const { exchangeId, oId, symbol } = req.query;
+
+  try {
+    const exchange = createExchangeInstance(exchangeId);
+    const data = await exchange.cancelOrder(oId, symbol.replace("/", ""));
+    res.json(data);
+    //mise a jour activeOrder si envie ?
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+
+async function createBunchOrders(req, res) {
+  const exchangeId = req.body.exchangeId;
+  const price = req.body.price;
+  const amount = req.body.amount;
+
+  try {
+    const { symbol, param } = createExchangeInstanceWithReq(exchangeId, req);
+
+    const exchange = new ccxt[exchangeId](param);
+    const result = await exchange.createLimitSellOrder(symbol, amount, price);
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+
+async function cancelAllOrders(req, res) {
+  const exchangeId = req.body.exchangeId;
+
+  try {
+    const exchange = createExchangeInstance(exchangeId);
+
+    const symbol = req.body.asset;
+    const result = await exchange.cancelAllOrders(symbol);
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+
+// create Instances
+function createExchangeInstance(exchangeId) {
+  const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
+  const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
+  const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
+
+  const exchangeParams = {
+    apiKey,
+    secret,
+    ...(passphrase && { password: passphrase }) // add passphrase to params if it exists
+  };
+
+  const exchange = new ccxt[exchangeId](exchangeParams);
+  return exchange;
+}
+
+function createExchangeInstanceWithReq(exchangeId, req) {
   let symbol, param;
 
   switch (exchangeId) {
@@ -213,224 +399,6 @@ function createExchangeInstance(exchangeId, req) {
     param
   };
 }
-
-app.post('/cancel/all-orders', async (req, res) => {
-  const exchangeId = req.body.exchangeId;
-
-  try {
-    const { symbol, param } = createExchangeInstance(exchangeId, req);
-
-    const exchange = new ccxt[exchangeId](param);
-    const result = await exchange.cancelAllOrders(symbol);
-
-    res.json(result);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-});
-
-app.post('/bunch-orders', async (req, res) => {
-  const exchangeId = req.body.exchangeId;
-  const price = req.body.price;
-  const amount = req.body.amount;
-
-  try {
-    const { symbol, param } = createExchangeInstance(exchangeId, req);
-
-    const exchange = new ccxt[exchangeId](param);
-    const result = await exchange.createLimitSellOrder(symbol, amount, price);
-
-    res.json(result);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-});
-
-// UPDATE
-app.post('/update/strat', async (req, res) => {
-  const collection = process.env.MONGODB_COLLECTION_STRAT;
-
-  const strat = req.body.strat;
-  try {
-    await deleteAllDataMDB(collection);
-    const data = await saveObjectDataMDB(strat, collection);
-    res.json(data);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-});
-
-
-
-app.get('/update/cmcData', async (req, res) => {
-  const collection = process.env.MONGODB_COLLECTION_CMC;
-  const API_KEY = process.env.CMC_APIKEY;
-  const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=5000&convert=USD`;
-
-  try {
-    const response = await fetch(URL, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CMC_PRO_API_KEY': API_KEY
-      }
-    });
-    const data = await response.json();
-
-    // Enregistrement des données dans MongoDB
-    await deleteAllDataMDB(collection);
-    await saveArrayDataMDB(data.data, collection);
-
-    res.json(data);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-});
-
-app.get('/update/balance/:exchangeId', async (req, res) => {
-  const { exchangeId } = req.params;
-  const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
-  const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
-  const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
-
-  const collection = process.env.MONGODB_COLLECTION_BALANCE;
-
-  try {
-    const exchangeParams = {
-      apiKey,
-      secret,
-      ...(passphrase && { password: passphrase }) // add passphrase to params if it exists
-    };
-
-    const exchange = new ccxt[exchangeId](exchangeParams);
-    const data = await exchange.fetchBalance();
-    const mapData = mapBalance(exchangeId, data);
-
-    if (mapData.length > 0) {
-      const deleteParam = { platform: exchangeId };
-      await deleteMultipleDataMDB(collection, deleteParam);
-      await saveArrayDataMDB(mapData, collection);
-    }
-
-    res.json(mapData);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-});
-
-app.get('/update/activeOrders/:exchangeId', async (req, res) => {
-  const { exchangeId } = req.params;
-  const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
-  const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
-  const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
-
-  const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
-
-  try {
-    const exchangeParams = {
-      apiKey,
-      secret,
-      ...(passphrase && { password: passphrase }) // add passphrase to params if it exists
-    };
-
-    const exchange = new ccxt[exchangeId](exchangeParams);
-    if (exchangeId === 'binance') {
-      exchange.options["warnOnFetchOpenOrdersWithoutSymbol"] = false;
-    }
-    const data = await exchange.fetchOpenOrders();
-    const mapData = mapActiveOrders(exchangeId, data);
-
-    if (mapData.length > 0) {
-      const deleteParam = { platform: exchangeId };
-      await deleteMultipleDataMDB(collection, deleteParam);
-      await saveArrayDataMDB(mapData, collection);
-    }
-
-    res.json(mapData);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-});
-
-app.get('/update/trades/:exchangeId/:symbol', async (req, res) => {
-  const { exchangeId, symbol } = req.params;
-  const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
-  const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
-  const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
-
-  const collection = process.env.MONGODB_COLLECTION_TRADES;
-
-  try {
-    const exchangeParams = {
-      apiKey,
-      secret,
-      ...(passphrase && { password: passphrase }) // add passphrase to params if it exists
-    };
-
-    const exchange = new ccxt[exchangeId](exchangeParams);
-
-    console.log(exchangeId + " : " + symbol);
-
-
-
-    const data = await exchange.fetchMyTrades(symbol);
-    //const data = await exchange.fetchMyTrades();
-
-    res.json(data);
-
-    /*
-        const mapData = mapTrades(exchangeId, data);
-    
-        if (mapData.length > 0) {
-          const deleteParam = { platform: exchangeId };
-          await deleteMultipleDataMDB(collection, deleteParam);
-          await saveArrayDataMDB(mapData, collection);
-        }
-    
-        res.json(mapData);*/
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-});
-
-app.get('/update/loadMarkets/:exchangeId', async (req, res) => {
-
-  const { exchangeId } = req.params;
-  const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
-  const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
-  const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
-
-  const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
-
-  try {
-    const exchangeParams = {
-      apiKey,
-      secret,
-      ...(passphrase && { password: passphrase }) // add passphrase to params if it exists
-    };
-
-    const exchange = new ccxt[exchangeId](exchangeParams);
-    const data = await exchange.loadMarkets();
-    const mapData = mapLoadMarkets(exchangeId, data);
-
-    if (mapData.length > 0) {
-      const deleteParam = { platform: exchangeId };
-      await deleteMultipleDataMDB(collection, deleteParam);
-      await saveArrayDataMDB(mapData, collection);
-    }
-
-    res.json(mapData);
-  } catch (err) {
-    console.error(err);
-  }
-});
 
 const PORT = process.env.PORT || 3000;
 
