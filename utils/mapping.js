@@ -1,5 +1,6 @@
 // utils/mapping.js
 function mapBalance(platform, data) {
+    console.log('map balance :: ' + JSON.stringify(data));
     switch (platform) {
         case 'binance':
             return data.info.balances
@@ -29,7 +30,7 @@ function mapBalance(platform, data) {
                     platform: platform
                 }));
         case 'okex':
-            return data.info.data
+            return data.info.data[0].details
                 .filter((item) => parseFloat(item.cashBal) > 0)
                 .map((item) => ({
                     symbol: item.ccy,
@@ -104,6 +105,7 @@ function mapTrades(platform, data) {
 }
 
 function mapActiveOrders(platform, data) {
+    console.log('map active orders :: ' + JSON.stringify(data));
     return data
         .map((item) => ({
             oId: item.id,
@@ -118,6 +120,8 @@ function mapActiveOrders(platform, data) {
 }
 
 function mapLoadMarkets(platform, data) {
+    console.log('map load markets :: ' + JSON.stringify(data));
+
     let objArray = [];
 
     for (const symbol in data) {
