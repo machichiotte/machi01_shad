@@ -23,8 +23,11 @@
             <tbody>
                 <tr v-for="(asset, assetIndex) in assets" :key="assetIndex">
                     <td>{{ asset }}</td>
+
                     <td v-for="(platform, platformIndex) in platforms" :key="platformIndex">
-                        <select v-model="strat[asset][platform]" :disabled="isDisabled(asset, platform)">
+                        <select :value="getStratValue(asset, platform)"
+                            @input="setStratValue(asset, platform, $event.target.value)"
+                            :disabled="isDisabled(asset, platform)">
                             <option value=""></option>
                             <option value="strategy1">Shad</option>
                             <option value="strategy2">Shad skip x2</option>
@@ -46,7 +49,7 @@ export default {
             balance: [],
             platforms: [],
             assets: [],
-            strat: [],
+            strat: {},
             stratMap: {},
             selectedStrategy: "",
         };
@@ -67,7 +70,18 @@ export default {
             try {
                 const response = await fetch(`${serverHost}/get/strat`);
                 const data = await response.json();
-                this.strat = data[0];
+
+                if (data.length === 0) {
+                    this.assets.forEach(asset => {
+                        const assetStrat = {};
+                        this.platforms.forEach(platform => {
+                            assetStrat[platform] = "";
+                        });
+                        this.strat[asset] = assetStrat;
+                    });
+                } else {
+                    this.strat = data[0];
+                }
             } catch (err) {
                 console.error(err);
             }
@@ -105,15 +119,31 @@ export default {
         async updateAllStrats() {
             const selectedStrategy = this.selectedStrategy;
 
-            Object.keys(this.strat).forEach(asset => {
-                Object.keys(this.strat[asset]).forEach(platform => {
+            Object.keys(this.strat).forEach((asset) => {
+                if (!this.strat[asset]) {
+                    // Si la clé n'existe pas dans this.strat, créez une nouvelle entrée avec les plateformes vides
+                    this.strat[asset] = {};
+                    this.platforms.forEach((platform) => {
+                        this.strat[asset][platform] = '';
+                    });
+                }
+
+                Object.keys(this.strat[asset]).forEach((platform) => {
                     if (!this.isDisabled(asset, platform)) {
                         this.strat[asset][platform] = selectedStrategy;
                     }
                 });
             });
-        }
-        ,
+        },
+
+        getStratValue(asset, platform) {
+            return this.strat[asset] ? this.strat[asset][platform] : '';
+        },
+        setStratValue(asset, platform, value) {
+            if (this.strat[asset]) {
+                this.strat[asset][platform] = value;
+            }
+        },
         isDisabled(asset, platform) {
             const assets = this.balance.filter(item => item.symbol === asset);
             const platforms = assets.map(item => item.platform);

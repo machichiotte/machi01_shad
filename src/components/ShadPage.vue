@@ -374,7 +374,7 @@ export default {
         this.amountTp3s[index] = this.getamountTp3(this.bals[index], this.amountTp1s[index], this.amountTp2s[index]);
         this.amountTp4s[index] = this.getamountTp4(this.bals[index], this.amountTp1s[index], this.amountTp2s[index], this.amountTp3s[index]);
         this.amountTp5s[index] = this.getamountTp5(this.bals[index], this.amountTp1s[index], this.amountTp2s[index], this.amountTp3s[index], this.amountTp4s[index]);
-        
+
         this.priceTp1s[index] = this.getPriceTp1(this.recupTp1s[index], this.amountTp1s[index]);
         this.priceTp2s[index] = this.getPriceTp2(this.recupTpXs[index], this.amountTp2s[index]);
         this.priceTp3s[index] = this.getPriceTp3(this.recupTpXs[index], this.amountTp3s[index]);
@@ -572,7 +572,7 @@ export default {
       const amountBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.amount), 0);
       return amountBuy;
     },
-  
+
     getMaxWanted(rank, totalBuy) {
       switch (true) {
         case (rank > 1000):
@@ -595,15 +595,20 @@ export default {
     getRatioShad(asset, exchangeId) {
       const strategy = this.strats[0][asset][exchangeId];
 
-      switch (strategy) {
-        case 'strategy1':
-          return '2';
-        case 'strategy2':
-          return '4';
-        case 'strategy3':
-          return '8';
-        default:
-          return 'NULL';
+      if (strategy) {
+        switch (strategy) {
+          case 'strategy1':
+            return 2;
+          case 'strategy2':
+            return 4;
+          case 'strategy3':
+            return 8;
+          default:
+            return '8'; //'NULL'
+        }
+      } else {
+        // Handle the case when strategy doesn't exist
+        return '8'; //'NULL' or a default value of your choice
       }
     },
 
