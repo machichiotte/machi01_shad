@@ -39,7 +39,7 @@ app.get('/get/loadMarkets', getLoadMarkets);
 app.get('/update/cmcData', updateCmcData);
 app.get('/update/balance/:exchangeId', updateBalance);
 app.get('/update/activeOrders/:exchangeId', updateActiveOrders);
-app.get('/update/strat', updateStrat);
+app.post('/update/strat', updateStrat);
 app.get('/update/trades/:exchangeId/:symbol', updateTrades);
 app.get('/update/loadMarkets/:exchangeId', updateLoadMarkets);
 
@@ -70,32 +70,32 @@ async function getData(req, res, collection, mockDataFile) {
 
 async function getBalance(req, res) {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
-  await getData(req, res, collection, 'balance.json');
+  await getData(req, res, collection, 'db_machi_shad.collection_balance.json');
 }
 
 async function getCmcData(req, res) {
   const collection = process.env.MONGODB_COLLECTION_CMC;
-  await getData(req, res, collection, 'cmcData.json');
+  await getData(req, res, collection, 'db_machi_shad.collection_cmc.json');
 }
 
 async function getActiveOrders(req, res) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
-  await getData(req, res, collection, 'activeOrders.json');
+  await getData(req, res, collection, 'db_machi_shad.collection_active_orders.json');
 }
 
 async function getStrat(req, res) {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
-  await getData(req, res, collection, 'strat.json');
+  await getData(req, res, collection, 'db_machi_shad.collection_strategy.json');
 }
 
 async function getTrades(req, res) {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
-  await getData(req, res, collection, 'trades.json');
+  await getData(req, res, collection, 'db_machi_shad.collection_trades.json');
 }
 
 async function getLoadMarkets(req, res) {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
-  await getData(req, res, collection, 'loadMarkets.json');
+  await getData(req, res, collection, 'db_machi_shad.collection_load_markets.json');
 }
 
 
@@ -106,8 +106,7 @@ async function updateCmcData(req, res) {
   const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=5000&convert=USD`;
 
   try {
-    const fetchInstance = createFetchInstance();
-    const response = await fetchInstance(URL, {
+    const response = await fetch(URL, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -300,6 +299,7 @@ function createExchangeInstanceWithReq(exchangeId, req) {
   const exchangeParams = {
     apiKey,
     secret,
+    enableRateLimit: true,
     ...(passphrase && { password: passphrase }) // add passphrase to params if it exists
   };
 
