@@ -263,30 +263,46 @@ async function createBunchOrders(req, res) {
 
 async function cancelAllOrders(req, res) {
   const exchangeId = req.body.exchangeId;
-  let symbol;
+  let symbol , result;
   try {
     const exchange = createExchangeInstance(exchangeId);
 
     switch (exchangeId) {
       case 'kucoin':
         symbol = req.body.asset + '-USDT';
+        result = await exchange.cancelAllOrders(symbol)
         break;
       case 'binance':
         symbol = req.body.asset + 'USDT';
+        result = await exchange.cancelAllOrders(symbol)
         break;
       case 'huobi':
         symbol = req.body.asset.toLowerCase() + 'usdt';
+        result = await exchange.cancelAllOrders(symbol)
         break;
       case 'gateio':
         symbol = req.body.asset.toUpperCase() + '_USDT';
+        result = await exchange.cancelAllOrders(symbol)
         break;
       case 'okex':
         symbol = req.body.asset + '-USDT';
+
+        // Obtenir les ordres ouverts pour l'actif spécifié
+        const orders = await exchange.fetchOpenOrders(symbol);
+
+        // Obtenir les IDs des ordres
+        const orderIds = orders.map(order => order.id);
+
+        if (orderIds.length === 0) {
+         result = { message: 'Aucun ordre ouvert pour cet actif' };
+        } else {
+          // Appeler la méthode cancelOrders() de CCXT pour OKEx avec les IDs des ordres à annuler
+          result = await exchange.cancelOrders(orderIds, symbol);
+        }
         break;
       default:
         throw new Error(`Unsupported exchange: ${exchangeId}`);
     }
-    const result = await exchange.cancelAllOrders(symbol);
 
     res.json(result);
   } catch (err) {
