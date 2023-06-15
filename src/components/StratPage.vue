@@ -87,16 +87,6 @@ export default {
             }
         },
         async updateStrat() {
-            // Afficher une alerte avec un spin initial
-           /* this.$swal({
-                title: 'Traitement en cours',
-                text: 'Veuillez patienter...',
-                allowOutsideClick: false,
-                onBeforeOpen: () => {
-                    this.$swal.showLoading();
-                }
-            });*/
-
             const stratMap = {};
             try {
                 const rows = this.$refs.stratTable.querySelectorAll('tbody tr');
@@ -117,42 +107,35 @@ export default {
                     stratMap[asset] = rowData;
                 });
 
-                // Effectuer l'appel API
+                // Make the API call
                 const response = await fetch(`${serverHost}/update/strat`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ strat: stratMap }),
                 });
 
-                console.log('000');
-                console.log('resp :: ' + response);
-                console.log('resp2 :: ' + JSON.stringify(response));
-
-                // Récupérer le résultat de l'appel API
+                // Get the API call result
                 const result = await response.json();
-                console.log('AAA');
-                console.log(result);
-                console.log(JSON.stringify(result));
-                console.log('BBB');
 
-                // Mettre à jour le contenu de l'alerte avec le résultat
+                // Update the content of the alert with the result
                 this.$swal({
-                    title: 'Sauvegarde terminée',
+                    title: 'Save completed',
                     icon: 'success',
                     allowOutsideClick: true,
                     showConfirmButton: true
                 });
             } catch (err) {
                 console.error(err);
-                // Afficher une alerte d'erreur dans l'alerte existante
+                // Show an error alert within the existing alert
                 this.$swal({
-                    title: 'Erreur',
-                    text: 'Une erreur s\'est produite lors du traitement.',
+                    title: 'Error',
+                    text: 'An error occurred during processing.',
                     icon: 'error',
                     allowOutsideClick: false,
                     showConfirmButton: true
                 });
             }
+
         },
         async updateAllStrats() {
             const selectedStrategy = this.selectedStrategy;
