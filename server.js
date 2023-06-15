@@ -226,7 +226,7 @@ async function updateActiveOrders(req, res) {
           'currentPage': currentPage,
         }
         const orders = await exchange.fetchOpenOrders(undefined, undefined, limit, { 'currentPage': currentPage });
-        data = allOrders.concat(orders);
+        data = data.concat(orders);
         console.log('ord :: ' + orders.length);
         if (orders.length < pageSize) {
           break;
