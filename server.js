@@ -146,7 +146,8 @@ const updateData = async (req, res, exchangeId, dataFetcher, mapDataFn, collecti
   console.log('exchange :: ' + exchange);
 
   try {
-    const data = await dataFetcher(exchange);
+    data = await dataFetcher(exchange);
+
     console.log('data :: ' + data);
     const mappedData = mapDataFn(exchangeId, data);
 
@@ -157,6 +158,7 @@ const updateData = async (req, res, exchangeId, dataFetcher, mapDataFn, collecti
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
+
 };
 
 async function updateLoadMarkets(req, res) {
@@ -204,12 +206,76 @@ async function updateBalance(req, res) {
 async function updateActiveOrders(req, res) {
   const { exchangeId } = req.params;
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
+  let data;
+  try {
+    const exchange = createExchangeInstance(exchangeId);
+    console.log('exchange :: ' + exchange);
+
+    if (exchangeId === 'binance') {
+      exchange.options.warnOnFetchOpenOrdersWithoutSymbol = false;
+    }
+
+    if (exchangeId === 'kucoin') {
+      console.log('kuc');
+      const pageSize = 50; // Nombre d'ordres par page
+      let currentPage = 1;
+      let allOrders = [];
+
+      while (true) {
+        const limit = 50 // change for your limit
+        const params = {
+            'currentPage': currentPage, // exchange-specific non-unified parameter name
+        }
+        const orders = await exchange.fetchOpenOrders(undefined, undefined, limit, { 'currentPage': currentPage });
+        allOrders = allOrders.concat(orders);
+        console.log('ord :: ' + orders.length);
+        if (orders.length < pageSize) {
+          // Tous les ordres ont été récupérés, sortir de la boucle
+          break;
+        }
+
+        currentPage++;
+        console.log('currentPage : ' + currentPage);
+
+      }
+
+      // Traiter les données des ordres actifs ici
+      console.log(allOrders.length);
+      console.log(allOrders[5]);
+      console.log(allOrders[88]);
+      const mappedData = mapActiveOrders(exchangeId, allOrders);
+      await deleteAndSaveData(mappedData, collection, exchangeId);
+
+      res.json(mappedData);
+    } else {
+      data = await exchange.fetchOpenOrders();
+      //console.log('data :: ' + data);
+
+      const mappedData = mapActiveOrders(exchangeId, data);
+      await deleteAndSaveData(mappedData, collection, exchangeId);
+
+      res.json(mappedData);
+    }
+
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+
+
+/*
+async function updateActiveOrders(req, res) {
+  const { exchangeId } = req.params;
+  const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
 
   await updateData(
     req,
     res,
     exchangeId,
     async exchange => {
+
       if (exchangeId === 'binance') {
         exchange.options.warnOnFetchOpenOrdersWithoutSymbol = false;
       }
@@ -218,7 +284,7 @@ async function updateActiveOrders(req, res) {
     mapActiveOrders,
     collection
   );
-};
+};*/
 
 async function deleteAndSaveData(mapData, collection, exchangeId) {
   if (mapData.length > 0) {
@@ -263,7 +329,7 @@ async function createBunchOrders(req, res) {
 
 async function cancelAllOrders(req, res) {
   const exchangeId = req.body.exchangeId;
-  let symbol , result;
+  let symbol, result;
   try {
     const exchange = createExchangeInstance(exchangeId);
 
@@ -294,7 +360,7 @@ async function cancelAllOrders(req, res) {
         const orderIds = orders.map(order => order.id);
 
         if (orderIds.length === 0) {
-         result = { message: 'Aucun ordre ouvert pour cet actif' };
+          result = { message: 'Aucun ordre ouvert pour cet actif' };
         } else {
           // Appeler la méthode cancelOrders() de CCXT pour OKEx avec les IDs des ordres à annuler
           result = await exchange.cancelOrders(orderIds, symbol);
