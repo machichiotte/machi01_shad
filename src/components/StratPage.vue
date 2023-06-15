@@ -115,7 +115,7 @@ export default {
                 });
 
                 // Get the API call result
-                const result = await response.json();
+                await response.json();
 
                 // Update the content of the alert with the result
                 this.$swal({
