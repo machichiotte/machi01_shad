@@ -87,6 +87,16 @@ export default {
             }
         },
         async updateStrat() {
+            // Afficher une alerte avec un spin initial
+           /* this.$swal({
+                title: 'Traitement en cours',
+                text: 'Veuillez patienter...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    this.$swal.showLoading();
+                }
+            });*/
+
             const stratMap = {};
             try {
                 const rows = this.$refs.stratTable.querySelectorAll('tbody tr');
@@ -107,13 +117,41 @@ export default {
                     stratMap[asset] = rowData;
                 });
 
-                await fetch(`${serverHost}/update/strat`, {
+                // Effectuer l'appel API
+                const response = await fetch(`${serverHost}/update/strat`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ strat: stratMap }),
                 });
+
+                console.log('000');
+                console.log('resp :: ' + response);
+                console.log('resp2 :: ' + JSON.stringify(response));
+
+                // Récupérer le résultat de l'appel API
+                const result = await response.json();
+                console.log('AAA');
+                console.log(result);
+                console.log(JSON.stringify(result));
+                console.log('BBB');
+
+                // Mettre à jour le contenu de l'alerte avec le résultat
+                this.$swal({
+                    title: 'Sauvegarde terminée',
+                    icon: 'success',
+                    allowOutsideClick: true,
+                    showConfirmButton: true
+                });
             } catch (err) {
                 console.error(err);
+                // Afficher une alerte d'erreur dans l'alerte existante
+                this.$swal({
+                    title: 'Erreur',
+                    text: 'Une erreur s\'est produite lors du traitement.',
+                    icon: 'error',
+                    allowOutsideClick: false,
+                    showConfirmButton: true
+                });
             }
         },
         async updateAllStrats() {

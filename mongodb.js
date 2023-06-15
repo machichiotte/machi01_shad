@@ -21,6 +21,7 @@ async function saveArrayDataMDB(data, collectionName) {
         const collection = db.collection(collectionName);
         await collection.insertMany(data);
         console.log(`Data saved to MongoDB in collection ${collectionName}!`);
+        return data;
     } catch (err) {
         console.error(err);
     }
@@ -31,8 +32,10 @@ async function saveObjectDataMDB(data, collectionName) {
         const collection = db.collection(collectionName);
         await collection.insertOne(data);
         console.log(`Data saved to MongoDB in collection ${collectionName}!`);
+        return data;
     } catch (err) {
         console.error(err);
+        return err;
     }
 }
 
@@ -44,6 +47,7 @@ async function getDataMDB(collectionName) {
         return data;
     } catch (err) {
         console.error(err);
+        return err;
     }
 }
 
@@ -53,8 +57,10 @@ async function insertDataMDB(collectionName, document) {
         const collection = db.collection(collectionName);
         const result = await collection.insertOne(document);
         console.log(`Inserted document with ID ${result.insertedId} into collection ${collectionName}`);
+        return result.insertedId;
     } catch (err) {
         console.error(err);
+        return err;
     }
 }
 
@@ -68,6 +74,7 @@ async function getAllDataMDB(collectionName) {
         return documents;
     } catch (err) {
         console.error(err);
+        return err;
     }
 }
 
@@ -77,8 +84,10 @@ async function updateDataMDB(collectionName, filter, update) {
         const collection = db.collection(collectionName);
         const result = await collection.updateOne(filter, update);
         console.log(`Updated ${result.modifiedCount} document in collection ${collectionName}`);
+        return result.modifiedCount;
     } catch (err) {
         console.error(err);
+        return err;
     }
 }
 
@@ -88,8 +97,10 @@ async function deleteDataMDB(collectionName, filter) {
         const collection = db.collection(collectionName);
         const result = await collection.deleteOne(filter);
         console.log(`Deleted ${result.deletedCount} document from collection ${collectionName}`);
+        return result.deletedCount;
     } catch (err) {
         console.error(err);
+        return err;
     }
 }
 
@@ -98,8 +109,10 @@ async function deleteMultipleDataMDB(collectionName, deleteParam) {
         const collection = db.collection(collectionName);
         const result = await collection.deleteMany(deleteParam);
         console.log(`Deleted ${result.deletedCount} documents from collection ${collectionName}`);
+        return result.deletedCount;
     } catch (err) {
         console.error(err);
+        return err;
     }
 }
 
@@ -109,8 +122,10 @@ async function deleteAllDataMDB(collectionName) {
         const collection = db.collection(collectionName);
         const result = await collection.deleteMany({});
         console.log(`Deleted ${result.deletedCount} documents from collection ${collectionName}`);
+        return result.deletedCount;
     } catch (err) {
         console.error(err);
+        return err;
     }
 }
 

@@ -131,8 +131,9 @@ async function updateStrat(req, res) {
   const strat = req.body.strat;
 
   try {
-    await deleteAllDataMDB(collection);
+    const del = await deleteAllDataMDB(collection);
     const data = await saveObjectDataMDB(strat, collection);
+
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -209,28 +210,25 @@ async function updateActiveOrders(req, res) {
   let data;
   try {
     const exchange = createExchangeInstance(exchangeId);
-    console.log('exchange :: ' + exchange);
 
     if (exchangeId === 'binance') {
       exchange.options.warnOnFetchOpenOrdersWithoutSymbol = false;
     }
 
     if (exchangeId === 'kucoin') {
-      console.log('kuc');
-      const pageSize = 50; // Nombre d'ordres par page
+      const pageSize = 50;
       let currentPage = 1;
-      let allOrders = [];
+      data = [];
 
       while (true) {
-        const limit = 50 // change for your limit
+        const limit = 50
         const params = {
-            'currentPage': currentPage, // exchange-specific non-unified parameter name
+          'currentPage': currentPage,
         }
         const orders = await exchange.fetchOpenOrders(undefined, undefined, limit, { 'currentPage': currentPage });
-        allOrders = allOrders.concat(orders);
+        data = allOrders.concat(orders);
         console.log('ord :: ' + orders.length);
         if (orders.length < pageSize) {
-          // Tous les ordres ont été récupérés, sortir de la boucle
           break;
         }
 
@@ -238,53 +236,18 @@ async function updateActiveOrders(req, res) {
         console.log('currentPage : ' + currentPage);
 
       }
-
-      // Traiter les données des ordres actifs ici
-      console.log(allOrders.length);
-      console.log(allOrders[5]);
-      console.log(allOrders[88]);
-      const mappedData = mapActiveOrders(exchangeId, allOrders);
-      await deleteAndSaveData(mappedData, collection, exchangeId);
-
-      res.json(mappedData);
     } else {
       data = await exchange.fetchOpenOrders();
-      //console.log('data :: ' + data);
-
-      const mappedData = mapActiveOrders(exchangeId, data);
-      await deleteAndSaveData(mappedData, collection, exchangeId);
-
-      res.json(mappedData);
     }
 
-
+    const mappedData = mapActiveOrders(exchangeId, data);
+    await deleteAndSaveData(mappedData, collection, exchangeId);
+    res.json(mappedData);
   } catch (err) {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
 }
-
-
-/*
-async function updateActiveOrders(req, res) {
-  const { exchangeId } = req.params;
-  const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
-
-  await updateData(
-    req,
-    res,
-    exchangeId,
-    async exchange => {
-
-      if (exchangeId === 'binance') {
-        exchange.options.warnOnFetchOpenOrdersWithoutSymbol = false;
-      }
-      return exchange.fetchOpenOrders();
-    },
-    mapActiveOrders,
-    collection
-  );
-};*/
 
 async function deleteAndSaveData(mapData, collection, exchangeId) {
   if (mapData.length > 0) {
@@ -295,7 +258,7 @@ async function deleteAndSaveData(mapData, collection, exchangeId) {
 }
 
 //orders
-async function deleteOrder(req, res) {
+/*async function deleteOrder(req, res) {
   const { exchangeId, oId, symbol } = req.body;
 
   try {
@@ -307,7 +270,7 @@ async function deleteOrder(req, res) {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
-}
+}*/
 
 async function createBunchOrders(req, res) {
   const exchangeId = req.body.exchangeId;
@@ -431,7 +394,7 @@ function createExchangeInstanceWithReq(exchangeId, req) {
   };
 }
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;  
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
