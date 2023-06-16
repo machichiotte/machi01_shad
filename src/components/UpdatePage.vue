@@ -238,7 +238,7 @@ export default {
         // Update the content of the alert with the result
         this.$swal({
           title: 'Save completed',
-          text: `Résultat : ${data.length}`,
+          text: `Résultat : ${data.data.length}`,
           icon: 'success',
           allowOutsideClick: true,
           showConfirmButton: true

@@ -122,7 +122,7 @@ async function updateCmcData(req, res) {
     res.json(data);
   } catch (err) {
     console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
+    res.status(500).json({ error: err.name + ': ' + err.message });
   }
 }
 
@@ -137,7 +137,7 @@ async function updateStrat(req, res) {
     res.json(data);
   } catch (err) {
     console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
+    res.status(500).send({ error: err.name + ': ' + err.message });
   }
 }
 
