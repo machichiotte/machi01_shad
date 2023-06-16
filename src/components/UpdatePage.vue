@@ -222,22 +222,72 @@ export default {
     },
 
     async updateCmcData() {
-      try {
-        const response = await fetch(serverHost + '/update/cmcData');
-        const data = await response.json();
+      // Afficher une alerte avec un spin initial
+      this.$swal({
+        title: 'Traitement en cours',
+        text: 'Veuillez patienter...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          this.$swal.showLoading();
+        }
+      });
+      const response = await fetch(serverHost + '/update/cmcData');
+      const data = await response.json();
+      if (response.status === 200) {
         this.cryptoData = data.data;
-      } catch (err) {
-        console.error(err);
+        // Update the content of the alert with the result
+        this.$swal({
+          title: 'Save completed',
+          text: `Résultat : ${data.length}`,
+          icon: 'success',
+          allowOutsideClick: true,
+          showConfirmButton: true
+        });
+      } else {
+        // Show an error alert within the existing alert
+        this.$swal({
+          title: 'Error',
+          text: `${data.error}`,
+          icon: 'error',
+          allowOutsideClick: false,
+          showConfirmButton: true
+        });
       }
     },
 
     async updateBalance(exchange) {
-      try {
-        const response = await fetch(`${serverHost}/update/balance/${exchange}`);
-        const data = await response.json();
+      // Afficher une alerte avec un spin initial
+      this.$swal({
+        title: 'Traitement en cours',
+        text: 'Veuillez patienter...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          this.$swal.showLoading();
+        }
+      });
+
+      const response = await fetch(`${serverHost}/update/balance/${exchange}`);
+      const data = await response.json();
+
+      if (response.status === 200) {
         this[`${exchange}Balance`] = data.balance;
-      } catch (err) {
-        console.error(err);
+        // Update the content of the alert with the result
+        this.$swal({
+          title: 'Save completed',
+          text: `Résultat : ${data.length}`,
+          icon: 'success',
+          allowOutsideClick: true,
+          showConfirmButton: true
+        });
+      } else {
+        // Show an error alert within the existing alert
+        this.$swal({
+          title: 'Error',
+          text: `${data.error}`,
+          icon: 'error',
+          allowOutsideClick: false,
+          showConfirmButton: true
+        });
       }
     },
 
@@ -246,7 +296,7 @@ export default {
       const ending = ['USDT', 'BUSD', 'BTC', 'ETH'];
       await this.getBalance();
       this.balance.forEach(async (item) => {
-
+  
         if (item.platform === exchange) {
           const symbol = item.symbol;
           for (let i = 0; i < ending.length; i++) {
@@ -268,7 +318,7 @@ export default {
         }
       });
     },
-
+  
     getExchangeSymbol(exchange, symbol, ending) {
       let exchangeSymbol;
       switch (exchange) {
@@ -286,7 +336,7 @@ export default {
       }
       return exchangeSymbol;
     },
-
+  
     async updateTrades(exchange, symbol) {
       try {
         const response = await fetch(`${serverHost}/update/trades/${exchange}/${symbol}`);
@@ -298,24 +348,75 @@ export default {
     },*/
 
     async updateActiveOrders(exchange) {
-      try {
-        const response = await fetch(`${serverHost}/update/activeOrders/${exchange}`);
-        const data = await response.json();
+      // Afficher une alerte avec un spin initial
+      this.$swal({
+        title: 'Traitement en cours',
+        text: 'Veuillez patienter...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          this.$swal.showLoading();
+        }
+      });
+
+      const response = await fetch(`${serverHost}/update/activeOrders/${exchange}`);
+      const data = await response.json();
+
+      if (response.status === 200) {
         this[`${exchange}ActiveOrders`] = data;
-      } catch (err) {
-        console.error(err);
+        // Update the content of the alert with the result
+        this.$swal({
+          title: 'Save completed',
+          text: `Résultat : ${data.length}`,
+          icon: 'success',
+          allowOutsideClick: true,
+          showConfirmButton: true
+        });
+      } else {
+        // Show an error alert within the existing alert
+        this.$swal({
+          title: 'Error',
+          text: `${data.error}`,
+          icon: 'error',
+          allowOutsideClick: false,
+          showConfirmButton: true
+        });
       }
     },
 
     async updateLoadMarkets(exchange) {
-      try {
-        const response = await fetch(`${serverHost}/update/loadMarkets/${exchange}`);
-        const data = await response.json();
+      // Afficher une alerte avec un spin initial
+      this.$swal({
+        title: 'Traitement en cours',
+        text: 'Veuillez patienter...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          this.$swal.showLoading();
+        }
+      });
+      const response = await fetch(`${serverHost}/update/loadMarkets/${exchange}`);
+      const data = await response.json();
+
+      if (response.status === 200) {
         this[`${exchange}LoadMarkets`] = data;
-      } catch (err) {
-        console.error(err);
+        // Update the content of the alert with the result
+        this.$swal({
+          title: 'Save completed',
+          text: `Résultat : ${data.length}`,
+          icon: 'success',
+          allowOutsideClick: true,
+          showConfirmButton: true
+        });
+      } else {
+        // Show an error alert within the existing alert
+        this.$swal({
+          title: 'Error',
+          text: `${data.error}`,
+          icon: 'error',
+          allowOutsideClick: false,
+          showConfirmButton: true
+        });
       }
     }
   }
-};
+}
 </script>

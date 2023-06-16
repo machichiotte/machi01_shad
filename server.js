@@ -142,24 +142,15 @@ async function updateStrat(req, res) {
 }
 
 const updateData = async (req, res, exchangeId, dataFetcher, mapDataFn, collection) => {
-  console.log('exhcangeID :: ' + exchangeId);
   const exchange = createExchangeInstance(exchangeId);
-  console.log('exchange :: ' + exchange);
-
   try {
     data = await dataFetcher(exchange);
-
-    console.log('data :: ' + data);
     const mappedData = mapDataFn(exchangeId, data);
-
     await deleteAndSaveData(mappedData, collection, exchangeId);
-    res.json(mappedData);
-
+    res.status(200).json(mappedData);
   } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
+    res.status(500).json({ error: err.name + ': ' + err.message });
   }
-
 };
 
 async function updateLoadMarkets(req, res) {
@@ -227,14 +218,10 @@ async function updateActiveOrders(req, res) {
         }
         const orders = await exchange.fetchOpenOrders(undefined, undefined, limit, { 'currentPage': currentPage });
         data = data.concat(orders);
-        console.log('ord :: ' + orders.length);
         if (orders.length < pageSize) {
           break;
         }
-
         currentPage++;
-        console.log('currentPage : ' + currentPage);
-
       }
     } else {
       data = await exchange.fetchOpenOrders();
@@ -242,10 +229,10 @@ async function updateActiveOrders(req, res) {
 
     const mappedData = mapActiveOrders(exchangeId, data);
     await deleteAndSaveData(mappedData, collection, exchangeId);
-    res.json(mappedData);
+    res.status(200).json(mappedData);
   } catch (err) {
     console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
+    res.status(500).json({ error: err.name + ': ' + err.message });
   }
 }
 
@@ -258,7 +245,7 @@ async function deleteAndSaveData(mapData, collection, exchangeId) {
 }
 
 //orders
-/*async function deleteOrder(req, res) {
+async function deleteOrder(req, res) {
   const { exchangeId, oId, symbol } = req.body;
 
   try {
@@ -270,7 +257,7 @@ async function deleteAndSaveData(mapData, collection, exchangeId) {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
-}*/
+}
 
 async function createBunchOrders(req, res) {
   const exchangeId = req.body.exchangeId;
@@ -394,7 +381,7 @@ function createExchangeInstanceWithReq(exchangeId, req) {
   };
 }
 
-const PORT = process.env.PORT || 3000;  
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
