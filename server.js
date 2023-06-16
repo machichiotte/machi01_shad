@@ -270,10 +270,11 @@ async function createBunchOrders(req, res) {
     const exchange = new ccxt[exchangeId](exchangeParams);
     const result = await exchange.createLimitSellOrder(symbol, amount, price);
 
-    res.json(result);
+    res.status(200).json({message: result, status: 200})
+
   } catch (err) {
     console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error', status: 500 });
   }
 }
 
@@ -320,10 +321,10 @@ async function cancelAllOrders(req, res) {
         throw new Error(`Unsupported exchange: ${exchangeId}`);
     }
 
-    res.json(result);
+    res.status(200).json({message: result, status: 200})
   } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
+    console.error(err); 
+    res.status(500).json({ error: 'Internal server error', status: 500 });
   }
 }
 

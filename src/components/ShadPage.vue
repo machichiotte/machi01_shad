@@ -29,6 +29,8 @@
 const serverHost = "http://localhost:3000";
 import VGrid, { VGridVueTemplate } from "@revolist/vue3-datagrid";
 import { ref } from "vue";
+// ES6 Modules or TypeScript
+import Swal from 'sweetalert2'
 
 const mySellButton = {
   props: ["rowIndex", "model"],
@@ -36,19 +38,59 @@ const mySellButton = {
     const countIndex = ref(0);
 
     const iAmClicked = async () => {
+
+      // Afficher une alerte avec un spin initial
+      Swal.fire({
+        title: 'Traitement en cours',
+        text: 'Veuillez patienter...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          this.$swal.showLoading();
+        }
+      });
+
       props.model.count.value++;
 
       const asset = props.model.asset;
       const exchangeId = props.model.exchangeId;
 
-      await cancelAllOrders(exchangeId, asset);
+      const cancel = await cancelAllOrders(exchangeId, asset);
 
-      const amounts = [props.model.amountTp1, props.model.amountTp2, props.model.amountTp3, props.model.amountTp4, props.model.amountTp5];
-      const prices = [props.model.priceTp1, props.model.priceTp2, props.model.priceTp3, props.model.priceTp4, props.model.priceTp5];
+      console.log('canc :: ' + cancel.status);
+      let resultText = `Cancel : ${cancel.status}<br>`;
 
-      for (let i = 0; i < 5; i++) {
-        await bunchOrders(exchangeId, asset, amounts[i], prices[i]);
+      if (cancel.status == 200) {
+        console.log('canc IS 200');
+
+        const amounts = [props.model.amountTp1, props.model.amountTp2, props.model.amountTp3, props.model.amountTp4, props.model.amountTp5];
+        const prices = [props.model.priceTp1, props.model.priceTp2, props.model.priceTp3, props.model.priceTp4, props.model.priceTp5];
+
+        let res = [];
+        for (let i = 0; i < 5; i++) {
+          res[i] = await bunchOrders(exchangeId, asset, amounts[i], prices[i]);
+          resultText += `TP${i} : ${res[i].status}<br>`;
+        }
+
+        // Update the content of the alert with the result
+        Swal.fire({
+          title: 'Save completed',
+          html: resultText,
+          icon: 'success',
+          allowOutsideClick: true,
+          showConfirmButton: true
+        });
+
+      } else {
+        // Show an error alert within the existing alert
+        Swal.fire({
+          title: 'Error',
+          text: `Cancel order : ${cancel.error}`,
+          icon: 'error',
+          allowOutsideClick: false,
+          showConfirmButton: true
+        });
       }
+
     };
 
     return {
@@ -66,45 +108,40 @@ const mySellButton = {
 };
 
 async function cancelAllOrders(exchangeId, asset) {
-  try {
-    const requestBody = {
-      exchangeId: exchangeId,
-      asset: asset
-    };
+  const requestBody = {
+    exchangeId: exchangeId,
+    asset: asset
+  };
 
-    const response = await fetch(`${serverHost}/cancel/all-orders`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody)
-    });
+  const response = await fetch(`${serverHost}/cancel/all-orders`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestBody)
+  });
 
-    const data = await response.json();
-    console.log(data);
-  } catch (err) {
-    console.error(err);
-  }
+  const data = await response.json();
+  console.log('cancel :: ' + JSON.stringify(data));
+
+  return data;
 }
 
 async function bunchOrders(exchangeId, asset, amount, price) {
-  try {
-    const requestBody = {
-      exchangeId: exchangeId,
-      asset: asset,
-      amount: amount,
-      price: price
-    };
+  const requestBody = {
+    exchangeId: exchangeId,
+    asset: asset,
+    amount: amount,
+    price: price
+  };
 
-    const response = await fetch(`${serverHost}/bunch-orders`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody)
-    });
+  const response = await fetch(`${serverHost}/bunch-orders`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestBody)
+  });
 
-    const data = await response.json();
-    console.log(data);
-  } catch (err) {
-    console.error(err);
-  }
+  const data = await response.json();
+  console.log('bunch :: ' + JSON.stringify(data));
+  return data;
 }
 
 // Generic function for creating cells with color based on content
@@ -302,7 +339,7 @@ export default {
         { name: "Exchange", prop: "exchangeId", pin: 'colPinEnd', sortable: true, order: "desc", cellTemplate: createPlatformColoredCell }
       ],
       paginationConfig: {
-        pageSize: 10,
+        pageSize: 500,
         totalCount: 0,
         current: 1,
       },
@@ -439,7 +476,7 @@ export default {
         const response = await fetch(serverHost + '/get/balance');
         const data = await response.json();
         this.balances = data;
-        console.log(this.balances);
+        //console.log(this.balances);
       } catch (err) {
         console.error(err);
       }
@@ -449,7 +486,7 @@ export default {
         const response = await fetch(serverHost + '/get/trades');
         const data = await response.json();
         this.trades = data;
-        console.log(this.trades);
+        // console.log(this.trades);
       } catch (err) {
         console.error(err);
       }
@@ -459,7 +496,7 @@ export default {
         const response = await fetch(serverHost + '/get/strat');
         const data = await response.json();
         this.strats = data;
-        console.log(this.strats);
+        // console.log(this.strats);
       } catch (err) {
         console.error(err);
       }
@@ -469,7 +506,7 @@ export default {
         const response = await fetch(serverHost + '/get/activeOrders');
         const data = await response.json();
         this.activeOrders = data;
-        console.log(this.activeOrders);
+        // console.log(this.activeOrders);
 
         // Réinitialiser les propriétés openBuyOrders et openSellOrders
         this.openBuyOrders = {};
