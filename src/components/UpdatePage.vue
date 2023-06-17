@@ -236,10 +236,6 @@ export default {
       if (response.status === 200) {
         this.cryptoData = data.data;
 
-console.log(data);
-console.log(JSON.stringify(data));
-
-
         // Update the content of the alert with the result
         this.$swal({
           title: 'Save completed',
