@@ -235,10 +235,15 @@ export default {
       const data = await response.json();
       if (response.status === 200) {
         this.cryptoData = data.data;
+
+console.log(data);
+console.log(JSON.stringify(data));
+
+
         // Update the content of the alert with the result
         this.$swal({
           title: 'Save completed',
-          text: `Résultat : ${data.data.length}`,
+          text: `Résultat : ${data.totalCount}`,
           icon: 'success',
           allowOutsideClick: true,
           showConfirmButton: true

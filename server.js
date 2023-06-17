@@ -99,27 +99,48 @@ async function getLoadMarkets(req, res) {
 }
 
 
-//update
 async function updateCmcData(req, res) {
   const collection = process.env.MONGODB_COLLECTION_CMC;
   const API_KEY = process.env.CMC_APIKEY;
-  const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=5000&convert=USD`;
+  const limit = 5000;
+  const baseStart = 1;
+  const convert = 'USD';
 
   try {
-    const response = await fetch(URL, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CMC_PRO_API_KEY': API_KEY
+    let start = baseStart;
+    const allData = [];
+
+    while (true) {
+      const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=${start}&limit=${limit}&convert=${convert}`;
+      
+      const response = await fetch(URL, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CMC_PRO_API_KEY': API_KEY
+        }
+      });
+
+      const data = await response.json();
+
+      if (data.data.length === 0) {
+        break; // Pas de données supplémentaires, arrêter la boucle
       }
-    });
-    const data = await response.json();
+
+      allData.push(...data.data);
+      start += limit;
+    }
 
     // Enregistrement des données dans MongoDB
-    await deleteAllDataMDB(collection);
-    await saveArrayDataMDB(data.data, collection);
+    const deleteResult = await deleteAllDataMDB(collection);
+    const saveResult = await saveArrayDataMDB(allData, collection);
 
-    res.json(data);
+    res.status(200).json({ 
+      data: allData,
+      deleteResult: deleteResult,
+      saveResult: saveResult,
+      totalCount: allData.length
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.name + ': ' + err.message });
