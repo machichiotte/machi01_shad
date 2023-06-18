@@ -68,6 +68,16 @@ async function getData(req, res, collection, mockDataFile) {
   }
 }
 
+async function getPriceBtc(req, res) {
+  const collection = 'price_btc';
+  await getData(req, res, collection, 'db_machi_shad.price_btc.json');
+}
+
+async function getPriceEth(req, res) {
+  const collection = 'price_eth';
+  await getData(req, res, collection, 'db_machi_shad.price_eth.json');
+}
+
 async function getBalance(req, res) {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
   await getData(req, res, collection, 'db_machi_shad.collection_balance.json');
@@ -98,7 +108,6 @@ async function getLoadMarkets(req, res) {
   await getData(req, res, collection, 'db_machi_shad.collection_load_markets.json');
 }
 
-
 async function updateCmcData(req, res) {
   const collection = process.env.MONGODB_COLLECTION_CMC;
   const API_KEY = process.env.CMC_APIKEY;
@@ -112,7 +121,7 @@ async function updateCmcData(req, res) {
 
     while (true) {
       const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=${start}&limit=${limit}&convert=${convert}`;
-      
+
       const response = await fetch(URL, {
         method: 'GET',
         headers: {
@@ -135,7 +144,7 @@ async function updateCmcData(req, res) {
     const deleteResult = await deleteAllDataMDB(collection);
     const saveResult = await saveArrayDataMDB(allData, collection);
 
-    res.status(200).json({ 
+    res.status(200).json({
       data: allData,
       deleteResult: deleteResult,
       saveResult: saveResult,
@@ -191,16 +200,25 @@ async function updateLoadMarkets(req, res) {
 async function updateTrades(req, res) {
   const { exchangeId, symbol } = req.params;
   const collection = process.env.MONGODB_COLLECTION_TRADES;
+  const exchange = createExchangeInstance(exchangeId);
 
-  await updateData(
-    req,
-    res,
-    exchangeId,
-    exchange => exchange.fetchMyTrades(symbol),
-    mapTrades,
-    collection
-  );
-};
+  try {
+    const data = await exchange.fetchMyTrades(symbol);
+    if (data.length < 0) {
+      const mappedData = mapTrades(exchangeId, data);
+      res.status(200).json(mappedData);
+    } else {
+      res.status(201).json({ empty: 'empty' });
+    }
+
+
+    //await deleteAndSaveData(mappedData, collection, exchangeId);
+
+  } catch (err) {
+    res.status(500).json({ error: err.name + ': ' + err.message });
+  }
+}
+
 
 async function updateBalance(req, res) {
   const { exchangeId } = req.params;
@@ -291,7 +309,7 @@ async function createBunchOrders(req, res) {
     const exchange = new ccxt[exchangeId](exchangeParams);
     const result = await exchange.createLimitSellOrder(symbol, amount, price);
 
-    res.status(200).json({message: result, status: 200})
+    res.status(200).json({ message: result, status: 200 })
 
   } catch (err) {
     console.error(err);
@@ -342,9 +360,9 @@ async function cancelAllOrders(req, res) {
         throw new Error(`Unsupported exchange: ${exchangeId}`);
     }
 
-    res.status(200).json({message: result, status: 200})
+    res.status(200).json({ message: result, status: 200 })
   } catch (err) {
-    console.error(err); 
+    console.error(err);
     res.status(500).json({ error: 'Internal server error', status: 500 });
   }
 }
