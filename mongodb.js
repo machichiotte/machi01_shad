@@ -84,9 +84,6 @@ async function updateDataMDB(collectionName, filter, update) {
     try {
         const collection = db.collection(collectionName);
         const result = await collection.updateOne(filter, update);
-        console.log('result :: ');
-        console.log('result :: ' + JSON.stringify(result));
-        console.log('result :: ' + result.modifiedCount);
         if (result.modifiedCount > 0) {
             console.log(`Updated ${result.modifiedCount} document in collection ${collectionName}`);
         } else {

@@ -412,26 +412,6 @@ export default {
       }
     },
 
-    async getLastUpdateExchangeId(exchangeId) {
-      try {
-        const response = await fetch(`${serverHost}/get/lastUpdate`);
-        const data = await response.json();
-        console.log('dataaaa : ' + data);
-
-        const document = data.find(item => item.platform === exchangeId);
-        if (document) {
-          console.log(JSON.stringify(document))
-          const oid = document._id;
-          console.log(`getLastUpdateExchangeId: OID for platform ${exchangeId}: ${oid}`);
-          return oid;
-        } else {
-          console.log(`getLastUpdateExchangeId: No document found for platform ${exchangeId}`);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    },
-
     async updateLoadMarkets(exchangeId) {
       // Afficher une alerte avec un spin initial
       this.$swal({
