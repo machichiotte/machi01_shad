@@ -1,6 +1,6 @@
 // utils/mapping.js
 function mapBalance(platform, data) {
-    console.log('map balance :: ' + JSON.stringify(data));
+    //console.log('map balance :: ' + JSON.stringify(data));
     switch (platform) {
         case 'binance':
             return data.info.balances
@@ -52,7 +52,7 @@ function mapBalance(platform, data) {
 }
 
 function mapTrades(platform, data) {
-    console.log('map platform :: ' + platform);
+    //console.log('map platform :: ' + platform);
     // console.log('map trades :: ' + JSON.stringify(data));
     switch (platform) {
 
@@ -90,7 +90,7 @@ function mapTrades(platform, data) {
 }
 
 function mapActiveOrders(platform, data) {
-    console.log('map active orders :: ' + JSON.stringify(data));
+   // console.log('map active orders :: ' + JSON.stringify(data));
     return data
         .map((item) => ({
             oId: item.id,
@@ -105,7 +105,7 @@ function mapActiveOrders(platform, data) {
 }
 
 function mapLoadMarkets(platform, data) {
-    console.log('map load markets :: ' + JSON.stringify(data));
+   // console.log('map load markets :: ' + JSON.stringify(data));
 
     let objArray = [];
 
