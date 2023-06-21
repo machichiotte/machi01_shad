@@ -37,6 +37,9 @@ app.get('/get/trades', getTrades);
 app.get('/get/loadMarkets', getLoadMarkets);
 app.get('/get/lastUpdate', getLastUpdate);
 
+app.get('/get/history/price/btc', getPriceBtc);
+app.get('/get/history/price/eth', getPriceEth);
+
 app.get('/update/cmcData', updateCmcData);
 app.get('/update/balance/:exchangeId', updateBalance);
 app.get('/update/activeOrders/:exchangeId', updateActiveOrders);
@@ -207,7 +210,6 @@ async function updateLastUpdate(exchangeId, param) {
   await updateDataMDB(collection, filter, update);
 }
 
-
 async function updateBalance(req, res) {
   const { exchangeId } = req.params;
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
@@ -226,14 +228,11 @@ async function updateBalance(req, res) {
   }
 }
 
-
 async function updateTrades(req, res) {
   const { exchangeId } = req.params;
   const collection = process.env.MONGODB_COLLECTION_TRADES;
   const exchange = createExchangeInstance(exchangeId);
 
-  //console.log('has :: ' + JSON.stringify(exchange.has));
-  console.log('ex::' + exchangeId + '!!');
   try {
     const mappedData = [];
 
@@ -261,7 +260,6 @@ async function updateTrades(req, res) {
         const windowSize = 48 * 60 * 60 * 1000; // Taille de la fenêtre de recherche (48 heures)
         const totalDuration = 1 * 365 * 24 * 60 * 60 * 1000; // Durée totale de recherche (4 ans)
         const iterations = Math.ceil(totalDuration / windowSize);
-        console.log('it :: ' + iterations);
 
         for (let i = 0; i < iterations; i++) {
           console.log(i);

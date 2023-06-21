@@ -225,73 +225,30 @@ export default {
     },
 
     async updateCmcData() {
-      // Afficher une alerte avec un spin initial
-      this.$swal({
-        title: 'Traitement en cours',
-        text: 'Veuillez patienter...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-          this.$swal.showLoading();
-        }
-      });
+      this.loadingSpin();
+
       const response = await fetch(serverHost + '/update/cmcData');
       const data = await response.json();
+
       if (response.status === 200) {
         this.cryptoData = data.data;
-
-        // Update the content of the alert with the result
-        this.$swal({
-          title: 'Save completed',
-          text: `Résultat : ${data.totalCount}`,
-          icon: 'success',
-          allowOutsideClick: true,
-          showConfirmButton: true
-        });
+        this.successSpin('Save completed', `Résultat : ${data.totalCount}`, true, true);
       } else {
-        // Show an error alert within the existing alert
-        this.$swal({
-          title: 'Error',
-          text: `${data.error}`,
-          icon: 'error',
-          allowOutsideClick: false,
-          showConfirmButton: true
-        });
+        this.errorSpin('Error', `${data.error}`, false, true);
       }
     },
 
     async updateBalance(exchange) {
-      // Afficher une alerte avec un spin initial
-      this.$swal({
-        title: 'Traitement en cours',
-        text: 'Veuillez patienter...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-          this.$swal.showLoading();
-        }
-      });
+      this.loadingSpin();
 
       const response = await fetch(`${serverHost}/update/balance/${exchange}`);
       const data = await response.json();
 
       if (response.status === 200) {
         this[`${exchange}Balance`] = data.balance;
-        // Update the content of the alert with the result
-        this.$swal({
-          title: 'Save completed',
-          text: `Résultat : ${data.length}`,
-          icon: 'success',
-          allowOutsideClick: true,
-          showConfirmButton: true
-        });
+        this.successSpin('Save completed', `Résultat : ${data.length}`, true, true);
       } else {
-        // Show an error alert within the existing alert
-        this.$swal({
-          title: 'Error',
-          text: `${data.error}`,
-          icon: 'error',
-          allowOutsideClick: false,
-          showConfirmButton: true
-        });
+        this.errorSpin('Error', `${data.error}`, false, true);
       }
     },
 
@@ -322,22 +279,10 @@ export default {
         }
       });
     },
-  
-    
-  */
-
+    */
 
     async updateAllTrades() {
-      // Afficher une alerte avec un spin initial
-      this.$swal({
-        title: 'Traitement en cours',
-        text: 'Veuillez patienter...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-          this.$swal.showLoading();
-        }
-      });
-
+      this.loadingSpin();
 
       // const exchanges = ['binance', 'kucoin', 'huobi', 'okex', 'gateio'];
       const exchanges = ['huobi'];
@@ -355,14 +300,7 @@ export default {
         console.log(exch);
       }
 
-      // Update the content of the alert with the result
-      this.$swal({
-        title: 'Save completed',
-        text: `Résultat : ${tradesData.length}`,
-        icon: 'success',
-        allowOutsideClick: true,
-        showConfirmButton: true
-      });
+      this.successSpin('Save completed', `Résultat : ${tradesData.length}`, true, true);
     },
 
     async updateTrades(exchange) {
@@ -377,43 +315,34 @@ export default {
     },
 
     async updateActiveOrders(exchange) {
-      // Afficher une alerte avec un spin initial
-      this.$swal({
-        title: 'Traitement en cours',
-        text: 'Veuillez patienter...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-          this.$swal.showLoading();
-        }
-      });
+      this.loadingSpin();
 
       const response = await fetch(`${serverHost}/update/activeOrders/${exchange}`);
       const data = await response.json();
 
       if (response.status === 200) {
         this[`${exchange}ActiveOrders`] = data;
-        // Update the content of the alert with the result
-        this.$swal({
-          title: 'Save completed',
-          text: `Résultat : ${data.length}`,
-          icon: 'success',
-          allowOutsideClick: true,
-          showConfirmButton: true
-        });
+        this.successSpin('Save completed', `Résultat : ${data.length}`, true, true);
       } else {
-        // Show an error alert within the existing alert
-        this.$swal({
-          title: 'Error',
-          text: `${data.error}`,
-          icon: 'error',
-          allowOutsideClick: false,
-          showConfirmButton: true
-        });
+        this.errorSpin('Error', `${data.error}`, false, true);
       }
     },
 
     async updateLoadMarkets(exchangeId) {
-      // Afficher une alerte avec un spin initial
+      this.loadingSpin();
+
+      const response = await fetch(`${serverHost}/update/loadMarkets/${exchangeId}`);
+      const data = await response.json();
+
+      if (response.status === 200) {
+        this[`${exchangeId}LoadMarkets`] = data;
+        this.successSpin('Save completed', `Résultat : ${data.length}`, true, true);
+      } else {
+        this.errorSpin('Error', `${data.error}`, false, true);
+      }
+    },
+
+    loadingSpin() {
       this.$swal({
         title: 'Traitement en cours',
         text: 'Veuillez patienter...',
@@ -422,32 +351,27 @@ export default {
           this.$swal.showLoading();
         }
       });
+    },
 
-      const response = await fetch(`${serverHost}/update/loadMarkets/${exchangeId}`);
-      const data = await response.json();
+    successSpin(title, text, outsideClick, confirmBtn) {
+      this.$swal({
+        title: title,
+        text: text,
+        icon: 'success',
+        allowOutsideClick: outsideClick,
+        showConfirmButton: confirmBtn
+      });
+    },
 
-      if (response.status === 200) {
-
-        this[`${exchangeId}LoadMarkets`] = data;
-        // Update the content of the alert with the result
-        this.$swal({
-          title: 'Save completed',
-          text: `Résultat : ${data.length}`,
-          icon: 'success',
-          allowOutsideClick: true,
-          showConfirmButton: true
-        });
-      } else {
-        // Show an error alert within the existing alert
-        this.$swal({
-          title: 'Error',
-          text: `${data.error}`,
-          icon: 'error',
-          allowOutsideClick: false,
-          showConfirmButton: true
-        });
-      }
-    }
+    errorSpin(title, text, outsideClick, confirmBtn) {
+      this.$swal({
+        title: title,
+        text: text,
+        icon: 'error',
+        allowOutsideClick: outsideClick,
+        showConfirmButton: confirmBtn
+      });
+    },
   }
 }
 </script>
