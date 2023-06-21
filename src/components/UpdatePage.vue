@@ -127,6 +127,9 @@
       </ul>
     </div>
 
+
+    <button @click="updateAllTrades()">Update All Trades</button>
+
     <!--<div>
       <button @click="updateAllTrades('binance')">Update Binance Trades</button>
       <ul v-if="binanceTrades">
@@ -293,7 +296,7 @@ export default {
     },
 
     /*
-    async updateAllTrades(exchange) {
+    async updateAllTradesByAsset(exchange) {
       const ending = ['USDT', 'BUSD', 'BTC', 'ETH'];
       await this.getBalance();
       this.balance.forEach(async (item) => {
@@ -320,33 +323,58 @@ export default {
       });
     },
   
-    getExchangeSymbol(exchange, symbol, ending) {
-      let exchangeSymbol;
-      switch (exchange) {
-        case 'binance':
-          exchangeSymbol = symbol + ending;
-          break;
-        case 'gateio':
-          exchangeSymbol = symbol + '_' + ending;
-          break;
-        case 'kucoin':
-        case 'huobi':
-        case 'okex':
-          exchangeSymbol = symbol + '-' + ending;
-          break;
+    
+  */
+
+
+    async updateAllTrades() {
+      // Afficher une alerte avec un spin initial
+      this.$swal({
+        title: 'Traitement en cours',
+        text: 'Veuillez patienter...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          this.$swal.showLoading();
+        }
+      });
+
+
+      // const exchanges = ['binance', 'kucoin', 'huobi', 'okex', 'gateio'];
+      const exchanges = ['huobi'];
+      const tradesData = [];
+      const exchData = [];
+
+      for (const exch of exchanges) {
+
+        const result = await this.updateTrades(exch);
+        console.log(result);
+        if (result.status === 200 && result.length > 0) {
+          tradesData.push(...result.data);
+        }
+        exchData.push(exch + ' ' + result.status + ' ' + result.length);
+        console.log(exch);
       }
-      return exchangeSymbol;
+
+      // Update the content of the alert with the result
+      this.$swal({
+        title: 'Save completed',
+        text: `Résultat : ${tradesData.length}`,
+        icon: 'success',
+        allowOutsideClick: true,
+        showConfirmButton: true
+      });
     },
-  
-    async updateTrades(exchange, symbol) {
-      try {
-        const response = await fetch(`${serverHost}/update/trades/${exchange}/${symbol}`);
-        const data = await response.json();
-        this[`${exchange}Trades`] = data;
-      } catch (err) {
-        console.error(err);
+
+    async updateTrades(exchange) {
+      const response = await fetch(`${serverHost}/update/trades/${exchange}`);
+      const data = await response.json();
+
+      if (response.status === 200) {
+        return { exchange, 'status': response.status, data };
+      } else {
+        return { exchange, 'status': response.status };
       }
-    },*/
+    },
 
     async updateActiveOrders(exchange) {
       // Afficher une alerte avec un spin initial
@@ -384,7 +412,27 @@ export default {
       }
     },
 
-    async updateLoadMarkets(exchange) {
+    async getLastUpdateExchangeId(exchangeId) {
+      try {
+        const response = await fetch(`${serverHost}/get/lastUpdate`);
+        const data = await response.json();
+        console.log('dataaaa : ' + data);
+
+        const document = data.find(item => item.platform === exchangeId);
+        if (document) {
+          console.log(JSON.stringify(document))
+          const oid = document._id;
+          console.log(`getLastUpdateExchangeId: OID for platform ${exchangeId}: ${oid}`);
+          return oid;
+        } else {
+          console.log(`getLastUpdateExchangeId: No document found for platform ${exchangeId}`);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    async updateLoadMarkets(exchangeId) {
       // Afficher une alerte avec un spin initial
       this.$swal({
         title: 'Traitement en cours',
@@ -394,11 +442,13 @@ export default {
           this.$swal.showLoading();
         }
       });
-      const response = await fetch(`${serverHost}/update/loadMarkets/${exchange}`);
+
+      const response = await fetch(`${serverHost}/update/loadMarkets/${exchangeId}`);
       const data = await response.json();
 
       if (response.status === 200) {
-        this[`${exchange}LoadMarkets`] = data;
+
+        this[`${exchangeId}LoadMarkets`] = data;
         // Update the content of the alert with the result
         this.$swal({
           title: 'Save completed',

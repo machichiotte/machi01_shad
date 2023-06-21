@@ -52,56 +52,40 @@ function mapBalance(platform, data) {
 }
 
 function mapTrades(platform, data) {
-    console.log('map trades :: ' + JSON.stringify(data));
+    console.log('map platform :: ' + platform);
+    // console.log('map trades :: ' + JSON.stringify(data));
     switch (platform) {
-        case 'binance':
+
+        case 'kucoin':
             return data
                 .map((item) => ({
-                    timestamp: item.timestamp,
-                    datetime: item.datetime,
                     symbol: item.symbol,
-                    id: item.id,
+                    timestamp: item.timestamp,
+                    type: item.type,
                     side: item.side,
                     price: item.price,
                     amount: item.amount,
                     cost: item.cost,
-                }));
-        case 'kucoin':
-            return data.info.data
-                .filter((item) => parseFloat(item.balance) > 0)
-                .map((item) => ({
-                    symbol: item.currency,
-                    balance: item.balance,
-                    available: item.available,
+                    fee: item.fee.cost,
+                    feeCurrency: item.fee.currency,
+                    feeRate: item.fee.rate,
                     platform: platform
                 }));
         case 'huobi':
-            return data.info.data.list
-                .filter((item) => parseFloat(item.balance) > 0)
+            return data
                 .map((item) => ({
-                    symbol: item.currency.toUpperCase(),
-                    balance: item.balance,
-                    available: item.available,
-                    platform: platform
+                    symbol: item.symbol,
+                    timestamp: item.timestamp,
+                    type: item.type,
+                    side: item.side,
+                    price: item.price,
+                    amount: item.amount,
+                    cost: item.cost,
+                    fee: item.fee.cost,
+                    feeCurrency: item.fee.currency,
+                    feeRate: item.fee.rate,
                 }));
-        case 'okex':
-            return data.info.data
-                .filter((item) => parseFloat(item.cashBal) > 0)
-                .map((item) => ({
-                    symbol: item.ccy,
-                    balance: item.cashBal,
-                    available: item.availBal,
-                    platform: platform
-                }));
-        case 'gateio':
-            return data.info
-                .filter((item) => parseFloat(item.available) > 0 || parseFloat(item.locked))
-                .map((item) => ({
-                    symbol: item.currency,
-                    balance: item.available + item.locked,
-                    available: item.available,
-                    platform: platform
-                }));
+
     }
 }
 

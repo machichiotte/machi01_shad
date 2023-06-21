@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "64930c45299550a380858eae"
+  },
+  "platform": "binance",
+  "timestamp": {
+    "trades": "",
+    "openOrders": "",
+    "balance": "",
+    "loadMarket": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "64930c45299550a380858eaf"
+  },
+  "platform": "kucoin",
+  "timestamp": {
+    "trades": "",
+    "openOrders": "",
+    "balance": "",
+    "loadMarket": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "64930c45299550a380858eb0"
+  },
+  "platform": "huobi",
+  "timestamp": {
+    "trades": "",
+    "openOrders": "",
+    "balance": "",
+    "loadMarket": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "64930c45299550a380858eb1"
+  },
+  "platform": "okex",
+  "timestamp": {
+    "trades": "",
+    "openOrders": "",
+    "balance": "",
+    "loadMarket": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "64930c45299550a380858eb2"
+  },
+  "platform": "gateio",
+  "timestamp": {
+    "trades": "",
+    "openOrders": "",
+    "balance": "",
+    "loadMarket": ""
+  }
+}]

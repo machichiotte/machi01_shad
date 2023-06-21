@@ -7,7 +7,7 @@ const cors = require('cors');
 const ccxt = require('ccxt');
 const fs = require('fs');
 
-const { connectMDB, saveArrayDataMDB, saveObjectDataMDB, deleteMultipleDataMDB, getAllDataMDB, deleteAllDataMDB } = require('./mongodb.js');
+const { connectMDB, saveArrayDataMDB, saveObjectDataMDB, deleteMultipleDataMDB, getAllDataMDB, deleteAllDataMDB, updateDataMDB } = require('./mongodb.js');
 
 dotenv.config();
 const app = express();
@@ -35,12 +35,13 @@ app.get('/get/activeOrders', getActiveOrders);
 app.get('/get/strat', getStrat);
 app.get('/get/trades', getTrades);
 app.get('/get/loadMarkets', getLoadMarkets);
+app.get('/get/lastUpdate', getLastUpdate);
 
 app.get('/update/cmcData', updateCmcData);
 app.get('/update/balance/:exchangeId', updateBalance);
 app.get('/update/activeOrders/:exchangeId', updateActiveOrders);
 app.post('/update/strat', updateStrat);
-app.get('/update/trades/:exchangeId/:symbol', updateTrades);
+app.get('/update/trades/:exchangeId', updateTrades);
 app.get('/update/loadMarkets/:exchangeId', updateLoadMarkets);
 
 // POST
@@ -58,6 +59,7 @@ async function getData(req, res, collection, mockDataFile) {
       const jsonData = fs.readFileSync(mockDataPath, 'utf8');
       data = JSON.parse(jsonData);
     } else {
+      console.log(collection);
       data = await getAllDataMDB(collection);
     }
 
@@ -66,6 +68,11 @@ async function getData(req, res, collection, mockDataFile) {
     console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
+}
+
+async function getLastUpdate(req, res) {
+  const collection = 'last_update';
+  await getData(req, res, collection, 'db_machi_shad.last_update.json');
 }
 
 async function getPriceBtc(req, res) {
@@ -171,48 +178,48 @@ async function updateStrat(req, res) {
   }
 }
 
-const updateData = async (req, res, exchangeId, dataFetcher, mapDataFn, collection) => {
+async function updateLoadMarkets(req, res) {
+  const { exchangeId, updateId } = req.params;
+
+  const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   const exchange = createExchangeInstance(exchangeId);
+
   try {
-    data = await dataFetcher(exchange);
-    const mappedData = mapDataFn(exchangeId, data);
+    const data = await exchange.loadMarkets();
+    const mappedData = mapLoadMarkets(exchangeId, data);
     await deleteAndSaveData(mappedData, collection, exchangeId);
+
+    updateLastUpdate(exchangeId, 'loadMarket');
+
     res.status(200).json(mappedData);
   } catch (err) {
     res.status(500).json({ error: err.name + ': ' + err.message });
   }
-};
+}
 
-async function updateLoadMarkets(req, res) {
+async function updateLastUpdate(exchangeId, param) {
+  const collection = 'last_update';
+  const filter = {
+    platform: exchangeId
+  }
+
+  const update = { $set: { [`timestamp.${param}`]: Date.now() } };
+  await updateDataMDB(collection, filter, update);
+}
+
+
+async function updateBalance(req, res) {
   const { exchangeId } = req.params;
-  const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
-
-  await updateData(
-    req,
-    res,
-    exchangeId,
-    exchange => exchange.loadMarkets(),
-    mapLoadMarkets,
-    collection
-  );
-};
-
-async function updateTrades(req, res) {
-  const { exchangeId, symbol } = req.params;
-  const collection = process.env.MONGODB_COLLECTION_TRADES;
+  const collection = process.env.MONGODB_COLLECTION_BALANCE;
   const exchange = createExchangeInstance(exchangeId);
 
   try {
-    const data = await exchange.fetchMyTrades(symbol);
-    if (data.length < 0) {
-      const mappedData = mapTrades(exchangeId, data);
-      res.status(200).json(mappedData);
-    } else {
-      res.status(201).json({ empty: 'empty' });
-    }
+    const data = await exchange.fetchBalance();
+    const mappedData = mapBalance(exchangeId, data);
+    await deleteAndSaveData(mappedData, collection, exchangeId);
+    res.status(200).json(mappedData);
 
-
-    //await deleteAndSaveData(mappedData, collection, exchangeId);
+    updateLastUpdate(exchangeId, 'balance');
 
   } catch (err) {
     res.status(500).json({ error: err.name + ': ' + err.message });
@@ -220,19 +227,88 @@ async function updateTrades(req, res) {
 }
 
 
-async function updateBalance(req, res) {
+async function updateTrades(req, res) {
   const { exchangeId } = req.params;
-  const collection = process.env.MONGODB_COLLECTION_BALANCE;
+  const collection = process.env.MONGODB_COLLECTION_TRADES;
+  const exchange = createExchangeInstance(exchangeId);
 
-  await updateData(
-    req,
-    res,
-    exchangeId,
-    exchange => exchange.fetchBalance(),
-    mapBalance,
-    collection
-  );
-};
+  //console.log('has :: ' + JSON.stringify(exchange.has));
+  console.log('ex::' + exchangeId + '!!');
+  try {
+    const mappedData = [];
+
+    switch (exchangeId) {
+      case 'kucoin':
+        const weeksBack = 4 * 52;
+        for (let i = weeksBack; i > 1; i--) {
+          try {
+            const trades = await exchange.fetchMyTrades(undefined, Date.now() - i * 7 * 86400 * 1000, 500);
+
+            if (trades.length > 0) {
+              mappedData.push(...mapTrades(exchangeId, trades));
+            }
+          } catch (err) {
+            console.log('Erreur lors de la récupération des trades:', err);
+            res.status(500).json({ error: err.name + ': ' + err.message });
+          }
+        }
+        break;
+      case 'huobi':
+        console.log('inside huobi');
+
+        //const types = 'buy-market,sell-market,buy-limit,sell-limit'; // Les types d'ordre à inclure dans la recherche, séparés par des virgules
+        const currentTime = Date.now();
+        const windowSize = 48 * 60 * 60 * 1000; // Taille de la fenêtre de recherche (48 heures)
+        const totalDuration = 1 * 365 * 24 * 60 * 60 * 1000; // Durée totale de recherche (4 ans)
+        const iterations = Math.ceil(totalDuration / windowSize);
+        console.log('it :: ' + iterations);
+
+        for (let i = 0; i < iterations; i++) {
+          console.log(i);
+          const startTime = currentTime - (i + 1) * windowSize;
+          const endTime = currentTime - i * windowSize;
+
+          param = {
+            'start-time': startTime,
+            'end-time': endTime,
+          }
+
+          try {
+            console.log('st :: ' + startTime);
+            const trades = await exchange.fetchMyTrades(undefined, undefined, 1000, param);
+            console.log('tr :: ' + JSON.stringify(trades));
+            if (trades.length > 0) {
+              mappedData.push(...mapTrades(exchangeId, trades));
+            }
+
+          } catch (err) {
+            console.log('Erreur lors de la récupération des commandes:', err);
+            res.status(500).json({ error: err.name + ': ' + err.message });
+          }
+        }
+        break;
+    }
+
+    try {
+      await deleteAndSaveData(mappedData, collection, exchangeId);
+    } catch (err) {
+      console.log('Error suppression sauvegarde:', err);
+      res.status(500).json({ error: err.name + ': ' + err.message });
+    }
+
+    if (tradesData.length > 0) {
+      res.status(200).json(tradesData);
+    } else {
+      res.status(201).json({ empty: 'empty' });
+    }
+
+    updateLastUpdate(exchangeId, 'trades');
+
+
+  } catch (err) {
+    res.status(500).json({ error: err.name + ': ' + err.message });
+  }
+}
 
 async function updateActiveOrders(req, res) {
   const { exchangeId } = req.params;
@@ -269,6 +345,9 @@ async function updateActiveOrders(req, res) {
     const mappedData = mapActiveOrders(exchangeId, data);
     await deleteAndSaveData(mappedData, collection, exchangeId);
     res.status(200).json(mappedData);
+
+    updateLastUpdate(exchangeId, 'activeOrders');
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.name + ': ' + err.message });

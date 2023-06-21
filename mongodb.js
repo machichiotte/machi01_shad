@@ -80,16 +80,26 @@ async function getAllDataMDB(collectionName) {
 
 // Update a document in a collection
 async function updateDataMDB(collectionName, filter, update) {
+    console.log('entre update MDB');
     try {
         const collection = db.collection(collectionName);
         const result = await collection.updateOne(filter, update);
-        console.log(`Updated ${result.modifiedCount} document in collection ${collectionName}`);
+        console.log('result :: ');
+        console.log('result :: ' + JSON.stringify(result));
+        console.log('result :: ' + result.modifiedCount);
+        if (result.modifiedCount > 0) {
+            console.log(`Updated ${result.modifiedCount} document in collection ${collectionName}`);
+        } else {
+            console.log(`No document was modified in collection ${collectionName}`);
+        }
+
         return result.modifiedCount;
     } catch (err) {
         console.error(err);
         return err;
     }
 }
+
 
 // Delete a document from a collection
 async function deleteDataMDB(collectionName, filter) {

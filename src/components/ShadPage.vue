@@ -7,9 +7,9 @@
         <template v-slot:item="{ item }">
           <tr :key="item.asset">
             <!-- Render columns using the key attribute -->
-            <td v-for="column in columns" :key="column.name">
+            <td v-for="column in columns" :key="column.name" @mousedown.prevent>
               <!-- Render individual cells using the key attribute -->
-              <component :is="getComponentType(column)" :column="column" :model="item" />
+              <component :is="getComponentType(column)" :column="column" :model="item" @click="handleCellClick(column, item)" />
             </td>
           </tr>
         </template>
@@ -464,6 +464,15 @@ export default {
     }
   },
   methods: {
+    handleCellClick(column, item) {
+      console.log(column);
+      console.log(item);
+      if (column.name === this.columns[0].name) {
+        // Logique à exécuter lorsque la première colonne est cliquée
+        // Vous pouvez remplacer cette logique par ce que vous souhaitez faire avec le clic sur l'élément
+        console.log("Clic sur l'élément :", item[column.name]);
+      }
+    },
     getComponentType(column) {
       if (column.cellTemplate) {
         return VGridVueTemplate(mySellButton);
