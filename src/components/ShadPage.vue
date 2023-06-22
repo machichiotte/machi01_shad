@@ -9,7 +9,8 @@
             <!-- Render columns using the key attribute -->
             <td v-for="column in columns" :key="column.name" @mousedown.prevent>
               <!-- Render individual cells using the key attribute -->
-              <component :is="getComponentType(column)" :column="column" :model="item" @click="handleCellClick(column, item)" />
+              <component :is="getComponentType(column)" :column="column" :model="item"
+                @click="handleCellClick(column, item)" />
             </td>
           </tr>
         </template>
@@ -26,9 +27,14 @@
 </template>
 
 <script>
-const serverHost = "http://localhost:3000";
 import VGrid, { VGridVueTemplate } from "@revolist/vue3-datagrid";
 import { ref } from "vue";
+import { bunchOrders, cancelAllOrders } from '../../orders.js';
+import { getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB } from '../../fromDB.js';
+
+import { getProfit, getRecupShad, getRecupTp1, getRecupTpX, getDoneShad, getPriceTp1, getAmountTp1, getTotalBuy, getTotalQuantity, getMaxWanted, getRatioShad, getTotalSell, getAverageEntryPrice, getCryptoRank, getCurrentPrice, getCryptoPercentChange, getPercentageDifference, getCurrentPossession, getPriceTp2, getPriceTp3, getPriceTp4, getPriceTp5, getAmountTp2, getAmountTp3, getAmountTp4, getAmountTp5 } from '../../calcul.js';
+
+
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
@@ -106,43 +112,6 @@ const mySellButton = {
     );
   },
 };
-
-async function cancelAllOrders(exchangeId, asset) {
-  const requestBody = {
-    exchangeId: exchangeId,
-    asset: asset
-  };
-
-  const response = await fetch(`${serverHost}/cancel/all-orders`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(requestBody)
-  });
-
-  const data = await response.json();
-  console.log('cancel :: ' + JSON.stringify(data));
-
-  return data;
-}
-
-async function bunchOrders(exchangeId, asset, amount, price) {
-  const requestBody = {
-    exchangeId: exchangeId,
-    asset: asset,
-    amount: amount,
-    price: price
-  };
-
-  const response = await fetch(`${serverHost}/bunch-orders`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(requestBody)
-  });
-
-  const data = await response.json();
-  console.log('bunch :: ' + JSON.stringify(data));
-  return data;
-}
 
 // Generic function for creating cells with color based on content
 function createColoredCell(createElement, props) {
@@ -380,43 +349,43 @@ export default {
         this.exchangeIds[index] = platform;
         this.bals[index] = balance;
 
-        this.ranks[index] = this.getCryptoRank(this.assets[index]);
-        this.totalSells[index] = this.getTotalSell(this.assets[index]);
-        this.currentPrices[index] = this.getCurrentPrice(this.assets[index]);
-        this.averageEntryPrices[index] = this.getAverageEntryPrice(this.assets[index]);
+        this.ranks[index] = getCryptoRank(this.assets[index], this.cmcData);
+        this.totalSells[index] = getTotalSell(this.assets[index], this.trades);
+        this.currentPrices[index] = getCurrentPrice(this.assets[index], this.cmcData);
+        this.averageEntryPrices[index] = getAverageEntryPrice(this.assets[index], this.trades);
         this.openBuyOrderss[index] = this.openBuyOrders[this.assets[index]] || 0;
         this.openSellOrderss[index] = this.openSellOrders[this.assets[index]] || 0;
 
-        this.ratioShads[index] = this.getRatioShad(this.assets[index], this.exchangeIds[index]);
-        this.totalBuys[index] = this.getTotalBuy(this.assets[index], this.exchangeIds[index]);
-        this.totalQuantitys[index] = this.getTotalQuantity(this.assets[index], this.exchangeIds[index]);
+        this.ratioShads[index] = getRatioShad(this.assets[index], this.exchangeIds[index], this.strats);
+        this.totalBuys[index] = getTotalBuy(this.assets[index], this.exchangeIds[index], this.trades);
+        this.totalQuantitys[index] = getTotalQuantity(this.assets[index], this.exchangeIds[index], this.trades);
 
-        this.cryptoPercentChange24hs[index] = this.getCryptoPercentChange(this.assets[index], '24h');
-        this.cryptoPercentChange7ds[index] = this.getCryptoPercentChange(this.assets[index], '7d');
-        this.cryptoPercentChange30ds[index] = this.getCryptoPercentChange(this.assets[index], '30d');
-        this.cryptoPercentChange60ds[index] = this.getCryptoPercentChange(this.assets[index], '60d');
-        this.cryptoPercentChange90ds[index] = this.getCryptoPercentChange(this.assets[index], '90d');
+        this.cryptoPercentChange24hs[index] = getCryptoPercentChange(this.assets[index], '24h', this.cmcData);
+        this.cryptoPercentChange7ds[index] = getCryptoPercentChange(this.assets[index], '7d', this.cmcData);
+        this.cryptoPercentChange30ds[index] = getCryptoPercentChange(this.assets[index], '30d', this.cmcData);
+        this.cryptoPercentChange60ds[index] = getCryptoPercentChange(this.assets[index], '60d', this.cmcData);
+        this.cryptoPercentChange90ds[index] = getCryptoPercentChange(this.assets[index], '90d', this.cmcData);
 
-        this.maxWanteds[index] = this.getMaxWanted(this.ranks[index], this.totalBuys[index]);
-        this.recupShads[index] = this.getRecupShad(this.totalBuys[index], this.totalSells[index], this.maxWanteds[index]);
-        this.percentageDifferences[index] = this.getPercentageDifference(this.currentPrices[index], this.averageEntryPrices[index]);
-        this.currentPossessions[index] = this.getCurrentPossession(this.currentPrices[index], this.bals[index]);
-        this.profits[index] = this.getProfit(this.totalBuys[index], this.totalSells[index], this.currentPrices[index], this.bals[index]);
-        this.recupTpXs[index] = this.getRecupTpX(this.maxWanteds[index], this.ratioShads[index]);
-        this.totalShads[index] = this.getDoneShad(this.totalBuys[index], this.totalSells[index], this.maxWanteds[index], this.recupShads[index], this.recupTpXs[index]);
-        this.recupTp1s[index] = this.getRecupTp1(this.totalBuys[index], this.totalSells[index], this.maxWanteds[index], this.recupShads[index], this.recupTpXs[index], this.totalShads[index]);
+        this.maxWanteds[index] = getMaxWanted(this.ranks[index], this.totalBuys[index]);
+        this.recupShads[index] = getRecupShad(this.totalBuys[index], this.totalSells[index], this.maxWanteds[index]);
+        this.percentageDifferences[index] = getPercentageDifference(this.currentPrices[index], this.averageEntryPrices[index]);
+        this.currentPossessions[index] = getCurrentPossession(this.currentPrices[index], this.bals[index]);
+        this.profits[index] = getProfit(this.totalBuys[index], this.totalSells[index], this.currentPrices[index], this.bals[index]);
+        this.recupTpXs[index] = getRecupTpX(this.maxWanteds[index], this.ratioShads[index]);
+        this.totalShads[index] = getDoneShad(this.totalBuys[index], this.totalSells[index], this.maxWanteds[index], this.recupShads[index], this.recupTpXs[index]);
+        this.recupTp1s[index] = getRecupTp1(this.totalBuys[index], this.totalSells[index], this.maxWanteds[index], this.recupShads[index], this.recupTpXs[index], this.totalShads[index]);
 
-        this.amountTp1s[index] = this.getamountTp1(this.recupTp1s[index], this.averageEntryPrices[index], this.bals[index], this.totalBuys[index], this.totalSells[index], this.totalShads[index]);
-        this.amountTp2s[index] = this.getamountTp2(this.bals[index], this.amountTp1s[index]);
-        this.amountTp3s[index] = this.getamountTp3(this.bals[index], this.amountTp1s[index], this.amountTp2s[index]);
-        this.amountTp4s[index] = this.getamountTp4(this.bals[index], this.amountTp1s[index], this.amountTp2s[index], this.amountTp3s[index]);
-        this.amountTp5s[index] = this.getamountTp5(this.bals[index], this.amountTp1s[index], this.amountTp2s[index], this.amountTp3s[index], this.amountTp4s[index]);
+        this.amountTp1s[index] = getAmountTp1(this.recupTp1s[index], this.averageEntryPrices[index], this.bals[index], this.totalBuys[index], this.totalSells[index], this.totalShads[index]);
+        this.amountTp2s[index] = getAmountTp2(this.bals[index], this.amountTp1s[index]);
+        this.amountTp3s[index] = getAmountTp3(this.bals[index], this.amountTp1s[index], this.amountTp2s[index]);
+        this.amountTp4s[index] = getAmountTp4(this.bals[index], this.amountTp1s[index], this.amountTp2s[index], this.amountTp3s[index]);
+        this.amountTp5s[index] = getAmountTp5(this.bals[index], this.amountTp1s[index], this.amountTp2s[index], this.amountTp3s[index], this.amountTp4s[index]);
 
-        this.priceTp1s[index] = this.getPriceTp1(this.recupTp1s[index], this.amountTp1s[index]);
-        this.priceTp2s[index] = this.getPriceTp2(this.recupTpXs[index], this.amountTp2s[index]);
-        this.priceTp3s[index] = this.getPriceTp3(this.recupTpXs[index], this.amountTp3s[index]);
-        this.priceTp4s[index] = this.getPriceTp4(this.recupTpXs[index], this.amountTp4s[index]);
-        this.priceTp5s[index] = this.getPriceTp5(this.recupTpXs[index], this.amountTp5s[index]);
+        this.priceTp1s[index] = getPriceTp1(this.recupTp1s[index], this.amountTp1s[index]);
+        this.priceTp2s[index] = getPriceTp2(this.recupTpXs[index], this.amountTp2s[index]);
+        this.priceTp3s[index] = getPriceTp3(this.recupTpXs[index], this.amountTp3s[index]);
+        this.priceTp4s[index] = getPriceTp4(this.recupTpXs[index], this.amountTp4s[index]);
+        this.priceTp5s[index] = getPriceTp5(this.recupTpXs[index], this.amountTp5s[index]);
 
         if (!this.counts[index]) {
           this.counts[index] = ref(0);
@@ -480,261 +449,20 @@ export default {
       return 'span';
     },
 
-    async getBalanceFromDB() {
-      try {
-        const response = await fetch(serverHost + '/get/balance');
-        const data = await response.json();
-        this.balances = data;
-        //console.log(this.balances);
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    async getTradesFromDB() {
-      try {
-        const response = await fetch(serverHost + '/get/trades');
-        const data = await response.json();
-        this.trades = data;
-        // console.log(this.trades);
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    async getStratsFromDB() {
-      try {
-        const response = await fetch(serverHost + '/get/strat');
-        const data = await response.json();
-        this.strats = data;
-        // console.log(this.strats);
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    async getActiveOrdersFromDB() {
-      try {
-        const response = await fetch(serverHost + '/get/activeOrders');
-        const data = await response.json();
-        this.activeOrders = data;
-        // console.log(this.activeOrders);
+    async getDataFromDB() {
+      this.balances = await getBalanceFromDB();
+      this.trades = await getTradesFromDB();
+      this.strats = await getStratsFromDB();
 
-        // Réinitialiser les propriétés openBuyOrders et openSellOrders
-        this.openBuyOrders = {};
-        this.openSellOrders = {};
+      this.cmcData = await getCmcDataFromDB();
 
-        // Calculer le nombre d'ordres ouverts par actif
-        this.activeOrders.forEach(order => {
-          const asset = order.symbol.split('/')[0]; // Récupérer l'asset sans la paire
-          if (order.side === 'buy') {
-            this.openBuyOrders[asset] = this.openBuyOrders[asset] + 1 || 1; // Incrémenter le nombre d'ordres d'achat ouverts
-          } else if (order.side === 'sell') {
-            this.openSellOrders[asset] = this.openSellOrders[asset] + 1 || 1; // Incrémenter le nombre d'ordres de vente ouverts
-          }
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    async getCmcDataFromDB() {
-      try {
-        const response = await fetch(serverHost + '/get/cmcData');
-        const data = await response.json();
-        this.cmcData = data;
-      } catch (err) {
-        console.error(err);
-      }
+      const { data, openBuyOrders, openSellOrders } = await getActiveOrdersFromDB();
+      this.activeOrders = data;
+      this.openBuyOrders = openBuyOrders;
+      this.openSellOrders = openSellOrders;
     },
 
-    getProfit(totalBuy, totalSell, currentPrice, balance) {
-      const buyTotal = parseFloat(totalBuy);
-      const sellTotal = parseFloat(totalSell);
-      const price = parseFloat(currentPrice);
-      const bal = parseFloat(balance);
-
-      if (isNaN(buyTotal) || isNaN(sellTotal) || isNaN(price) || isNaN(bal)) {
-        return 'N/A';
-      }
-
-      const totalInvestment = buyTotal - sellTotal;
-      const currentValue = price * bal;
-      const profit = currentValue - totalInvestment;
-
-      return profit.toFixed(2);
-    },
-    getRecupShad(totalBuy, totalSell, maxWanted) {
-      if (totalSell > 0) {
-        if (maxWanted < totalBuy) {
-          return Math.round(totalSell - totalBuy + maxWanted, 2);
-        } else {
-          return Math.round(totalSell, 2);
-        }
-      }
-      return 0;
-    },
-    getRecupTp1(totalBuy, totalSell, maxWanted, recupShad, recupTpX, totalShad) {
-      let recupTp1 = (maxWanted) + (totalSell) < (totalBuy) ? (totalBuy) - (totalSell) - (maxWanted) :
-        (recupTpX) - (recupShad) + (totalShad) * (recupTpX);
-      if ((recupTp1) <= 1) {
-        recupTp1 = (recupTpX);
-      }
-      return recupTp1;
-    },
-    getRecupTpX(maxWanted, ratioShad) {
-      return maxWanted * ratioShad * .5;
-    },
-    getDoneShad(totalBuy, totalSell, maxWanted, recupShad, recupTpX) {
-      if (Math.abs(totalBuy - maxWanted) > 0.5 && totalSell < 0.95 * Math.abs(totalBuy - maxWanted)) {
-        return -1;
-      } else if (recupShad >= 0.95 * recupTpX) {
-        return -1 + Math.round(1.1 + recupShad / recupTpX, 2);
-      } else {
-        return 0;
-      }
-    },
-    getPriceTp1(recupTp1, amountTp1) {
-      return parseFloat(recupTp1) / parseFloat(amountTp1);
-    },
-    getamountTp1(recupTp1, averageEntryPrice, balance, totalBuy, totalSell, totalShad) {
-      const parsedRecupTp1 = parseFloat(recupTp1);
-      const parsedEntryAvg = parseFloat(averageEntryPrice);
-      const parsedBalance = parseFloat(balance);
-      const parsedTotalBuy = parseFloat(totalBuy);
-      const parsedTotalSell = parseFloat(totalSell);
-
-      if (totalShad > -1) {
-        return 0.5 * parsedBalance;
-      } else if (parsedRecupTp1 / parsedEntryAvg < parsedBalance) {
-        return parsedRecupTp1 / parsedEntryAvg;
-      } else {
-        return parsedRecupTp1 * parsedBalance / (parsedTotalBuy - parsedTotalSell);
-      }
-    },
-    getTotalBuy(asset, exchangeId) {
-      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy' && trade.platform === exchangeId);
-      const buyTotal = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
-      return buyTotal.toFixed(2);
-    },
-    getTotalQuantity(asset, exchangeId) {
-      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy' && trade.platform === exchangeId);
-      const amountBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.amount), 0);
-      return amountBuy;
-    },
-
-    getMaxWanted(rank, totalBuy) {
-      switch (true) {
-        case (rank > 1000):
-          return (Math.min(totalBuy, 5)).toFixed(2);
-        case (rank > 800):
-          return (Math.min(totalBuy, 10)).toFixed(2);
-        case (rank > 600):
-          return (Math.min(totalBuy, 25)).toFixed(2);
-        case (rank > 400):
-          return (Math.min(totalBuy, 50)).toFixed(2);
-        case (rank > 300):
-          return (Math.min(totalBuy, 100)).toFixed(2);
-        case (rank > 200):
-          return (Math.min(totalBuy, 200)).toFixed(2);
-        case (rank <= 200):
-          return totalBuy;
-      }
-    },
-
-    getRatioShad(asset, exchangeId) {
-      const strategy = this.strats[0][asset][exchangeId];
-
-      if (strategy) {
-        switch (strategy) {
-          case 'strategy1':
-            return 2;
-          case 'strategy2':
-            return 4;
-          case 'strategy3':
-            return 8;
-          default:
-            return '8'; //'NULL'
-        }
-      } else {
-        // Handle the case when strategy doesn't exist
-        return '8'; //'NULL' or a default value of your choice
-      }
-    },
-
-    getTotalSell(asset) {
-      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'sell');
-      const sellTotal = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
-      return sellTotal.toFixed(2);
-    },
-    getAverageEntryPrice(asset) {
-      const filteredTrades = this.trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy');
-      if (filteredTrades.length === 0) {
-        return 0;
-      }
-      const entryPrices = filteredTrades.map(trade => parseFloat(trade.price));
-      const averageEntryPrice = entryPrices.reduce((total, price) => total + price, 0) / entryPrices.length;
-      return averageEntryPrice;
-    },
-    getBalance(asset) {
-      const balance = this.sortedBalances.find(item => item.symbol === asset);
-      return balance ? balance.balance : 'N/A';
-    },
-    getCryptoRank(asset) {
-      const crypto = this.cmcData.find(item => item.symbol === asset);
-      return crypto ? parseInt(crypto.cmc_rank) : 0;
-    },
-    getCurrentPrice(asset) {
-      const crypto = this.cmcData.find(item => item.symbol === asset);
-      return crypto ? crypto.quote.USD.price.toFixed(7) : 'N/A';
-    },
-
-
-    getCryptoPercentChange(asset, timePeriod) {
-      const crypto = this.cmcData.find(item => item.symbol === asset);
-      if (crypto) {
-        const percentChange = crypto.quote.USD[`percent_change_${timePeriod}`];
-        return percentChange ? percentChange.toFixed(2) + '%' : 'N/A';
-      } else {
-        return 'N/A';
-      }
-    },
-    getPercentageDifference(currentPrice, averageEntryPrice) {
-      const price = parseFloat(currentPrice);
-      const avgEntryPrice = parseFloat(averageEntryPrice);
-      if (isNaN(price) || isNaN(avgEntryPrice)) {
-        return 'N/A';
-      }
-      const percentageDifference = ((price - avgEntryPrice) / avgEntryPrice) * 100;
-      return percentageDifference.toFixed(2) + '%';
-    },
-    getCurrentPossession(currentPrice, balance) {
-      if (isNaN(currentPrice) || isNaN(balance)) {
-        return 0;
-      }
-      const currentPossession = (currentPrice * balance).toFixed(2);
-      return currentPossession;
-    },
-    getPriceTp2(recupTpX, amountTp2) {
-      return recupTpX / amountTp2;
-    },
-    getPriceTp3(recupTpX, amountTp3) {
-      return recupTpX / amountTp3;
-    },
-    getPriceTp4(recupTpX, amountTp4) {
-      return recupTpX / amountTp4;
-    },
-    getPriceTp5(recupTpX, amountTp5) {
-      return recupTpX / amountTp5;
-    },
-    getamountTp2(balance, amountTp1) {
-      return 0.5 * (balance - amountTp1);
-    },
-    getamountTp3(balance, amountTp1, amountTp2) {
-      return 0.5 * (balance - amountTp1 - amountTp2);
-    },
-    getamountTp4(balance, amountTp1, amountTp2, amountTp3) {
-      return 0.5 * (balance - amountTp1 - amountTp2 - amountTp3);
-    },
-    getamountTp5(balance, amountTp1, amountTp2, amountTp3, amountTp4) {
-      return 0.5 * (balance - amountTp1 - amountTp2 - amountTp3 - amountTp4);
-    },
+    
 
     prevPage() {
       this.currentPage--;
@@ -751,11 +479,7 @@ export default {
     },
   },
   mounted() {
-    this.getBalanceFromDB();
-    this.getTradesFromDB();
-    this.getStratsFromDB();
-    this.getActiveOrdersFromDB();
-    this.getCmcDataFromDB();
+    this.getDataFromDB();
   }
 };
 </script>
