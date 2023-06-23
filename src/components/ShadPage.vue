@@ -29,9 +29,9 @@
 <script>
 import VGrid from "@revolist/vue3-datagrid";
 
-import { getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB } from '../../fromDB.js';
-import { getAllCalculs } from '../../calcul.js';
-import { columns } from "../../shadColumns.js";
+import { getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB } from '../js/fromDB.js';
+import { getAllCalculs } from '../js/calcul.js';
+import { columns } from "../js/shadColumns.js";
 
 export default {
   name: "ShadPage",

@@ -5,8 +5,8 @@
 </template>
   
 <script>
-import { bunchOrders, cancelAllOrders } from '../../orders.js';
-import { loadingSpin, successSpinHtml, errorSpin } from '../../spinner.js'
+import { bunchOrders, cancelAllOrders } from '../js/orders.js';
+import { loadingSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
 
 export default {
     props: ["rowIndex", "model"],

@@ -111,7 +111,7 @@
 
 <script>
 const serverHost = "http://localhost:3000";
-import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../../spinner.js'
+import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
 //let lastUpdateTimestamp = 0;
 
 export default {

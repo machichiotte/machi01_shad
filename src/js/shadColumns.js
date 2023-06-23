@@ -1,7 +1,7 @@
 // shadColumns.js
 
 import { VGridVueTemplate } from "@revolist/vue3-datagrid";
-import MySellButton from "./src/components/MySellButton.vue";
+import MySellButton from "../components/MySellButton.vue";
 import { createColoredCell, createPlatformColoredCell } from "./cells.js";
 
 export const columns = [
