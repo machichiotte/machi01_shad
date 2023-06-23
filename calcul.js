@@ -75,7 +75,7 @@ function getTotalBuy(asset, exchangeId, trades) {
     return buyTotal.toFixed(2);
 }
 
-function getTotalQuantity(asset, exchangeId, trades) {
+function getTotalAmount(asset, exchangeId, trades) {
     const filteredTrades = trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy' && trade.platform === exchangeId);
     const amountBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.amount), 0);
     return amountBuy;
@@ -211,5 +211,89 @@ function getAmountTp5(balance, amountTp1, amountTp2, amountTp3, amountTp4) {
     return 0.5 * (balance - amountTp1 - amountTp2 - amountTp3 - amountTp4);
 }
 
-module.exports = { getProfit, getRecupShad, getRecupTp1, getRecupTpX, getDoneShad, getPriceTp1, getAmountTp1, getTotalBuy, getTotalQuantity, getMaxWanted, getRatioShad, getTotalSell, getAverageEntryPrice, getBalance, getCryptoRank, getCurrentPrice, getCryptoPercentChange, getPercentageDifference, getCurrentPossession, getPriceTp2, getPriceTp3, getPriceTp4, getPriceTp5, getAmountTp2, getAmountTp3, getAmountTp4, getAmountTp5 };
+function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
+    console.log(item);
+    const { symbol, platform, balance } = item;
+
+    const asset = symbol;
+    const exchangeId = platform;
+
+    const rank = getCryptoRank(asset, cmcData);
+    const totalSell = getTotalSell(asset, trades);
+    const currentPrice = getCurrentPrice(asset, cmcData);
+    const averageEntryPrice = getAverageEntryPrice(asset, trades);
+    const openBuyOrders = buyOrders[asset] || 0;
+    const openSellOrders = sellOrders[asset] || 0;
+
+    const ratioShad = getRatioShad(asset, exchangeId, strats);
+    const totalBuy = getTotalBuy(asset, exchangeId, trades);
+    const totalAmount = getTotalAmount(asset, exchangeId, trades);
+
+    const cryptoPercentChange24h = getCryptoPercentChange(asset, '24h', cmcData);
+    const cryptoPercentChange7d = getCryptoPercentChange(asset, '7d', cmcData);
+    const cryptoPercentChange30d = getCryptoPercentChange(asset, '30d', cmcData);
+    const cryptoPercentChange60d = getCryptoPercentChange(asset, '60d', cmcData);
+    const cryptoPercentChange90d = getCryptoPercentChange(asset, '90d', cmcData);
+
+    const maxWanted = getMaxWanted(rank, totalBuy);
+    const recupShad = getRecupShad(totalBuy, totalSell, maxWanted);
+    const percentageDifference = getPercentageDifference(currentPrice, averageEntryPrice);
+    const currentPossession = getCurrentPossession(currentPrice, balance);
+    const profit = getProfit(totalBuy, totalSell, currentPrice, balance);
+    const recupTpX = getRecupTpX(maxWanted, ratioShad);
+    const totalShad = getDoneShad(totalBuy, totalSell, maxWanted, recupShad, recupTpX);
+    const recupTp1 = getRecupTp1(totalBuy, totalSell, maxWanted, recupShad, recupTpX, totalShad);
+
+    const amountTp1 = getAmountTp1(recupTp1, averageEntryPrice, balance, totalBuy, totalSell, totalShad);
+    const amountTp2 = getAmountTp2(balance, amountTp1);
+    const amountTp3 = getAmountTp3(balance, amountTp1, amountTp2);
+    const amountTp4 = getAmountTp4(balance, amountTp1, amountTp2, amountTp3);
+    const amountTp5 = getAmountTp5(balance, amountTp1, amountTp2, amountTp3, amountTp4);
+
+    const priceTp1 = getPriceTp1(recupTp1, amountTp1);
+    const priceTp2 = getPriceTp2(recupTpX, amountTp2);
+    const priceTp3 = getPriceTp3(recupTpX, amountTp3);
+    const priceTp4 = getPriceTp4(recupTpX, amountTp4);
+    const priceTp5 = getPriceTp5(recupTpX, amountTp5);
+
+    return {
+        asset,
+        ratioShad,
+        totalShad,
+        rank,
+        averageEntryPrice,
+        totalBuy,
+        maxWanted,
+        percentageDifference,
+        currentPrice,
+        currentPossession,
+        profit,
+        totalSell,
+        recupShad,
+        openBuyOrders,
+        openSellOrders,
+        totalAmount,
+        balance,
+        recupTp1,
+        recupTpX,
+        amountTp1,
+        priceTp1,
+        amountTp2,
+        priceTp2,
+        amountTp3,
+        priceTp3,
+        amountTp4,
+        priceTp4,
+        amountTp5,
+        priceTp5,
+        cryptoPercentChange24h,
+        cryptoPercentChange7d,
+        cryptoPercentChange30d,
+        cryptoPercentChange60d,
+        cryptoPercentChange90d,
+        exchangeId
+    };
+}
+
+module.exports = { getAllCalculs, getProfit, getRecupShad, getRecupTp1, getRecupTpX, getDoneShad, getPriceTp1, getAmountTp1, getTotalBuy, getTotalAmount, getMaxWanted, getRatioShad, getTotalSell, getAverageEntryPrice, getBalance, getCryptoRank, getCurrentPrice, getCryptoPercentChange, getPercentageDifference, getCurrentPossession, getPriceTp2, getPriceTp3, getPriceTp4, getPriceTp5, getAmountTp2, getAmountTp3, getAmountTp4, getAmountTp5 };
 
