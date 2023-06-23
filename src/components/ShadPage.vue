@@ -10,7 +10,7 @@
             <td v-for="column in columns" :key="column.name" @mousedown.prevent>
               <!-- Render individual cells using the key attribute -->
               <component :is="getComponentType(column)" :column="column" :model="item"
-                @click="handleCellClick(column, item)" />
+                @click="handleCellClick(column, item)" :tabindex="column.name === columns[0].name ? -1 : null" />
             </td>
           </tr>
         </template>
