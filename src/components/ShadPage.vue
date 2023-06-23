@@ -31,22 +31,13 @@ import VGrid, { VGridVueTemplate } from "@revolist/vue3-datagrid";
 import { bunchOrders, cancelAllOrders } from '../../orders.js';
 import { getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB } from '../../fromDB.js';
 import { getAllCalculs } from '../../calcul.js';
-
-// ES6 Modules or TypeScript
-import Swal from 'sweetalert2'
+import { loadingSpin, successSpinHtml, errorSpin } from '../../spinner.js'
 
 const mySellButton = {
   props: ["rowIndex", "model"],
   setup(props) {
     const iAmClicked = async () => {
-      Swal.fire({
-        title: 'Traitement en cours',
-        text: 'Veuillez patienter...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-          this.$swal.showLoading();
-        }
-      });
+      loadingSpin();
 
       const asset = props.model.asset;
       const exchangeId = props.model.exchangeId;
@@ -68,24 +59,10 @@ const mySellButton = {
           resultText += `TP${i} : ${res[i].status}<br>`;
         }
 
-        // Update the content of the alert with the result
-        Swal.fire({
-          title: 'Save completed',
-          html: resultText,
-          icon: 'success',
-          allowOutsideClick: true,
-          showConfirmButton: true
-        });
+        successSpinHtml('Save completed', resultText, true, true);
 
       } else {
-        // Show an error alert within the existing alert
-        Swal.fire({
-          title: 'Error',
-          text: `Cancel order : ${cancel.error}`,
-          icon: 'error',
-          allowOutsideClick: false,
-          showConfirmButton: true
-        });
+        errorSpin('Error', `Cancel order : ${cancel.error}`, false, true);
       }
 
     };

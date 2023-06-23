@@ -110,8 +110,8 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2'
 const serverHost = "http://localhost:3000";
+import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../../spinner.js'
 //let lastUpdateTimestamp = 0;
 
 export default {
@@ -149,21 +149,21 @@ export default {
     },
 
     async updateCmcData() {
-      this.loadingSpin();
+      loadingSpin();
 
       const response = await fetch(serverHost + '/update/cmcData');
       const data = await response.json();
 
       if (response.status === 200) {
         this.cryptoData = data.data;
-        this.successSpin('Save completed', `Résultat : ${data.totalCount}`, true, true);
+        successSpin('Save completed', `Résultat : ${data.totalCount}`, true, true);
       } else {
-        this.errorSpin('Error', `${data.error}`, false, true);
+        errorSpin('Error', `${data.error}`, false, true);
       }
     },
 
     async updateAllByExchange(exchangeId) {
-      this.loadingSpin();
+      loadingSpin();
 
       let resultText = `<b>${exchangeId.toUpperCase()}</b><br>`;
 
@@ -196,7 +196,7 @@ export default {
         resultText += `<b>LoadMarkets :</b> ${loadMarkets.status} - ${loadMarkets_data.error}<br>`;
       }
 
-      this.successSpinHtml('Save completed', resultText, true, true);
+      successSpinHtml('Save completed', resultText, true, true);
     },
 
     async updateBalance(exchangeId) {
@@ -214,48 +214,48 @@ export default {
 
     //TODO remove when binance & gateio are working
     async updateBalance222(exchange) {
-      this.loadingSpin();
+      loadingSpin();
 
       const response = await fetch(`${serverHost}/update/balance/${exchange}`);
       const data = await response.json();
 
       if (response.status === 200) {
         this[`${exchange}Balance`] = data.balance;
-        this.successSpin('Save completed', `Résultat : ${data.length}`, true, true);
+        successSpin('Save completed', `Résultat : ${data.length}`, true, true);
       } else {
-        this.errorSpin('Error', `${data.error}`, false, true);
+        errorSpin('Error', `${data.error}`, false, true);
       }
     },
     async updateActiveOrders222(exchange) {
-      this.loadingSpin();
+      loadingSpin();
 
       const response = await fetch(`${serverHost}/update/activeOrders/${exchange}`);
       const data = await response.json();
 
       if (response.status === 200) {
         this[`${exchange}ActiveOrders`] = data;
-        this.successSpin('Save completed', `Résultat : ${data.length}`, true, true);
+        successSpin('Save completed', `Résultat : ${data.length}`, true, true);
       } else {
-        this.errorSpin('Error', `${data.error}`, false, true);
+        errorSpin('Error', `${data.error}`, false, true);
       }
     },
     async updateLoadMarkets222(exchangeId) {
-      this.loadingSpin();
+      loadingSpin();
 
       const response = await fetch(`${serverHost}/update/loadMarkets/${exchangeId}`);
       const data = await response.json();
 
       if (response.status === 200) {
         this[`${exchangeId}LoadMarkets`] = data;
-        this.successSpin('Save completed', `Résultat : ${data.length}`, true, true);
+        successSpin('Save completed', `Résultat : ${data.length}`, true, true);
       } else {
-        this.errorSpin('Error', `${data.error}`, false, true);
+        errorSpin('Error', `${data.error}`, false, true);
       }
     },
 
     //TODO complete trades part
     async updateAllTrades() {
-      this.loadingSpin();
+      loadingSpin();
 
       // const exchanges = ['binance', 'kucoin', 'huobi', 'okex', 'gateio'];
       const exchanges = ['huobi'];
@@ -273,7 +273,7 @@ export default {
         console.log(exch);
       }
 
-      this.successSpin('Save completed', `Résultat : ${tradesData.length}`, true, true);
+      successSpin('Save completed', `Résultat : ${tradesData.length}`, true, true);
     },
 
     /*
@@ -316,44 +316,6 @@ export default {
       }
     },
 
-    // Spinners
-    loadingSpin() {
-      Swal.fire({
-        title: 'Traitement en cours',
-        text: 'Veuillez patienter...',
-        allowOutsideClick: false
-      });
-    },
-
-    successSpin(title, text, outsideClick, confirmBtn) {
-      Swal.fire({
-        title: title,
-        text: text,
-        icon: 'success',
-        allowOutsideClick: outsideClick,
-        showConfirmButton: confirmBtn
-      });
-    },
-
-    successSpinHtml(title, html, outsideClick, confirmBtn) {
-      Swal.fire({
-        title: title,
-        html: html,
-        icon: 'success',
-        allowOutsideClick: outsideClick,
-        showConfirmButton: confirmBtn
-      });
-    },
-
-    errorSpin(title, text, outsideClick, confirmBtn) {
-      Swal.fire({
-        title: title,
-        text: text,
-        icon: 'error',
-        allowOutsideClick: outsideClick,
-        showConfirmButton: confirmBtn
-      });
-    },
   }
 }
 </script>
