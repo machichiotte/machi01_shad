@@ -28,58 +28,11 @@
 
 <script>
 import VGrid, { VGridVueTemplate } from "@revolist/vue3-datagrid";
-import { bunchOrders, cancelAllOrders } from '../../orders.js';
+
 import { getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB } from '../../fromDB.js';
 import { getAllCalculs } from '../../calcul.js';
-import { loadingSpin, successSpinHtml, errorSpin } from '../../spinner.js'
 import { createColoredCell, createPlatformColoredCell } from '../../cells.js'
-
-const mySellButton = {
-  props: ["rowIndex", "model"],
-  setup(props) {
-    const iAmClicked = async () => {
-      loadingSpin();
-
-      const asset = props.model.asset;
-      const exchangeId = props.model.exchangeId;
-
-      const cancel = await cancelAllOrders(exchangeId, asset);
-
-      console.log('canc :: ' + cancel.status);
-      let resultText = `Cancel : ${cancel.status}<br>`;
-
-      if (cancel.status == 200) {
-        console.log('canc IS 200');
-
-        const amounts = [props.model.amountTp1, props.model.amountTp2, props.model.amountTp3, props.model.amountTp4, props.model.amountTp5];
-        const prices = [props.model.priceTp1, props.model.priceTp2, props.model.priceTp3, props.model.priceTp4, props.model.priceTp5];
-
-        let res = [];
-        for (let i = 0; i < 5; i++) {
-          res[i] = await bunchOrders(exchangeId, asset, amounts[i], prices[i]);
-          resultText += `TP${i} : ${res[i].status}<br>`;
-        }
-
-        successSpinHtml('Save completed', resultText, true, true);
-
-      } else {
-        errorSpin('Error', `Cancel order : ${cancel.error}`, false, true);
-      }
-
-    };
-
-    return {
-      iAmClicked,
-    };
-  },
-  render() {
-    return (
-      <button onClick={this.iAmClicked}>
-        Add sell orders
-      </button>
-    );
-  },
-};
+import MySellButton from "./MySellButton.vue";
 
 export default {
   name: "ShadPage",
@@ -97,7 +50,7 @@ export default {
 
       columns: [
         { name: "Asset", prop: "asset", pin: 'colPinStart', autoSize: true, sortable: true, order: "asc", },
-        { name: "Actions", cellTemplate: VGridVueTemplate(mySellButton), autoSize: true,canFocus: false },
+        { name: "Actions", cellTemplate: VGridVueTemplate(MySellButton), autoSize: true, canFocus: false },
 
         { name: "Ratio", prop: "ratioShad", autoSize: true, sortable: true, order: "desc", },
         { name: "Total shad", prop: "totalShad", sortable: true, order: "desc", type: 'number' },
@@ -185,7 +138,7 @@ export default {
     };
   },
   components: {
-    VGrid, mySellButton
+    VGrid, MySellButton
   },
   computed: {
     paginatedItems() {
@@ -211,10 +164,13 @@ export default {
       });
     },
     rows() {
-      
-      return this.paginatedItems.map((item) => {
-        return getAllCalculs(item, this.cmcData, this.trades, this.strats, this.openBuyOrders, this.openSellOrders);
-      });
+      if (this.strats && this.strats.length > 0) {
+        return this.paginatedItems.map((item) => {
+          return getAllCalculs(item, this.cmcData, this.trades, this.strats, this.openBuyOrders, this.openSellOrders);
+        });
+      } else {
+        return [];
+      }
     }
   },
   methods: {
@@ -226,12 +182,6 @@ export default {
         // Vous pouvez remplacer cette logique par ce que vous souhaitez faire avec le clic sur l'élément
         console.log("Clic sur l'élément :", item[column.name]);
       }
-    },
-    getComponentType(column) {
-      if (column.cellTemplate) {
-        return VGridVueTemplate(mySellButton);
-      }
-      return 'span';
     },
     async getDataFromDB() {
       this.balances = await getBalanceFromDB();

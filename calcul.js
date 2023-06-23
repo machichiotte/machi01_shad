@@ -212,7 +212,7 @@ function getAmountTp5(balance, amountTp1, amountTp2, amountTp3, amountTp4) {
 }
 
 function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
-    console.log(item);
+    //console.log(item);
     const { symbol, platform, balance } = item;
 
     const asset = symbol;
