@@ -5,7 +5,22 @@ import MySellButton from "../components/MySellButton.vue";
 import { createColoredCell, createPlatformColoredCell } from "./cells.js";
 
 export const columns = [
-  { name: "Asset", prop: "asset", pin: 'colPinStart', autoSize: true, sortable: true, order: "asc", readonly: "true"},
+  {
+    name: 'Icon',
+    prop: "iconUrl",
+    readonly: true,
+    pin: 'colPinStart',
+    cellTemplate: (createElement, ctx) => {
+      return createElement('img', {
+        src: ctx.model.iconUrl,
+        style: {
+          width: '32px',
+          height: '32px',
+        },
+      })
+    },
+  },
+  { name: "Asset", prop: "asset", autoSize: true, sortable: true, order: "asc", readonly: "true",  pin: 'colPinStart', },
   { name: "Actions", cellTemplate: VGridVueTemplate(MySellButton), autoSize: true, canFocus: false },
 
   { name: "Ratio", prop: "ratioShad", autoSize: true, sortable: true, order: "asc", readonly: "true", },

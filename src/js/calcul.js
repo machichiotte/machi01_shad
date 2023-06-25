@@ -146,6 +146,11 @@ function getCryptoRank(asset, cmcData) {
     return crypto ? parseInt(crypto.cmc_rank) : 0;
 }
 
+function getCryptoIconUrl(asset, cmcData) {
+    const crypto = cmcData.find(item => item.symbol === asset);
+    return crypto ? 'https://s2.coinmarketcap.com/static/img/coins/32x32/'+ parseInt(crypto.id)+'.png' : '';
+}
+
 function getCurrentPrice(asset, cmcData) {
     const crypto = cmcData.find(item => item.symbol === asset);
     return crypto ? crypto.quote.USD.price.toFixed(7) : 'N/A';
@@ -221,6 +226,7 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     const rank = getCryptoRank(asset, cmcData);
     const totalSell = getTotalSell(asset, trades);
     const currentPrice = getCurrentPrice(asset, cmcData);
+    const iconUrl = getCryptoIconUrl(asset, cmcData);
     const averageEntryPrice = getAverageEntryPrice(asset, trades);
     const openBuyOrders = buyOrders[asset] || 0;
     const openSellOrders = sellOrders[asset] || 0;
@@ -257,6 +263,7 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     const priceTp5 = getPriceTp5(recupTpX, amountTp5);
 
     return {
+        iconUrl,
         asset,
         ratioShad,
         totalShad,

@@ -2,8 +2,12 @@
   <div class="shad-page">
     <h1>SHAD</h1>
 
+    <div class="search-bar">
+      <input type="text" v-model="searchTerm" @input="performSearch" placeholder="Search..." />
+    </div>
+
     <div id="table">
-      <v-grid theme="compact" :source="rows" :columns="columns" :filter="false" :pagination="paginationConfig">
+      <v-grid theme="compact" :source="filteredRows" :columns="columns" :filter="false" :pagination="paginationConfig">
         <template v-slot:item="{ item }">
           <tr :key="item.asset">
             <!-- Render columns using the key attribute -->
@@ -37,6 +41,8 @@ export default {
   name: "ShadPage",
   data() {
     return {
+      searchTerm: '', // Terme de recherche saisi par l'utilisateur
+
       balances: [],
       trades: [],
       strats: [],
@@ -44,7 +50,7 @@ export default {
       cmcData: [],
       openBuyOrders: {},
       openSellOrders: {},
-      itemsPerPage: 100,
+      itemsPerPage: 1000,
       currentPage: 1,
 
       columns: columns,
@@ -90,7 +96,27 @@ export default {
       } else {
         return [];
       }
-    }
+    },
+    filteredRows() {
+      if (this.searchTerm) {
+        // Filter the rows based on the search term
+        return this.rows.filter((row) => {
+          // Check if any of the column values contain the search term
+          return this.columns.some((column, index) => {
+            // Check if the column is the second column
+            if (index === 1) {
+              const value = row[column.prop].toString().toLowerCase();
+              return value.includes(this.searchTerm.toLowerCase());
+            }
+            return false;
+          });
+        });
+      } else {
+        // No search term entered, return all rows
+        return this.rows;
+      }
+    },
+
   },
   methods: {
     handleCellClick(column, item) {
@@ -127,6 +153,26 @@ export default {
       alert(contenuLigne);
       // Vous pouvez également effectuer d'autres actions avec le contenu de la ligne
     },
+    performSearch() {
+      // Update the filtered rows based on the search term
+      if (this.searchTerm) {
+        this.filteredRows = this.rows.filter((row) => {
+          // Check if any of the column values contain the search term
+          return this.columns.some((column) => {
+            const value = row[column.prop];
+            if (value) {
+              const valueString = value.toString().toLowerCase();
+              return valueString.includes(this.searchTerm.toLowerCase());
+            }
+            return false;
+          });
+        });
+      } else {
+        // No search term entered, display all rows
+        this.filteredRows = this.rows;
+      }
+    },
+
   },
   mounted() {
     this.getDataFromDB();
@@ -140,11 +186,12 @@ export default {
 }
 
 #table {
-  height: 500px;
+  height: 700px;
   width: auto;
 }
 
 revo-grid {
   height: 100%;
 }
+
 </style>
