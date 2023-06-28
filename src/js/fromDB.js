@@ -37,25 +37,31 @@ async function getActiveOrdersFromDB() {
         const openBuyOrders = {};
         const openSellOrders = {};
 
-        // Calculer le nombre d'ordres ouverts par actif
+        // Stocker tous les ordres ouverts par actif
         data.forEach(order => {
             const asset = order.symbol.split('/')[0]; // Récupérer l'asset sans la paire
             if (order.side === 'buy') {
-                openBuyOrders[asset] = openBuyOrders[asset] + 1 || 1; // Incrémenter le nombre d'ordres d'achat ouverts
+                openBuyOrders[asset] = openBuyOrders[asset] || [];
+                openBuyOrders[asset].push(order); // Ajouter l'ordre d'achat au tableau
             } else if (order.side === 'sell') {
-                openSellOrders[asset] = openSellOrders[asset] + 1 || 1; // Incrémenter le nombre d'ordres de vente ouverts
+                openSellOrders[asset] = openSellOrders[asset] || [];
+                openSellOrders[asset].push(order); // Ajouter l'ordre de vente au tableau
             }
+
+            console.log(asset + '--0--' + JSON.stringify(openSellOrders[asset]));
+            console.log(asset + '--1--' + openSellOrders[asset].length);
         });
 
         return {
             data,
             openBuyOrders,
             openSellOrders
-        }
+        };
     } catch (err) {
         console.error(err);
     }
 }
+
 async function getCmcDataFromDB() {
     try {
         const response = await fetch(serverHost + '/get/cmcData');
@@ -66,4 +72,4 @@ async function getCmcDataFromDB() {
     }
 }
 
-module.exports = {getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB};
+module.exports = { getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB };

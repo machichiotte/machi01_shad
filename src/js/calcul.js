@@ -49,8 +49,6 @@ function getDoneShad(totalBuy, totalSell, maxWanted, recupShad, recupTpX) {
     }
 }
 
-
-
 function getTotalAmountAndBuy(asset, exchangeId, trades) {
     const filteredTrades = trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy' && trade.platform === exchangeId);
     const totalBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
@@ -121,18 +119,24 @@ function getBalance(asset, sortedBalances) {
     return balance ? balance.balance : 'N/A';
 }
 
+function getIconUrl(id) {
+    const baseIconUrl = 'https://s2.coinmarketcap.com/static/img/coins/32x32/';
+    return `<img src='${baseIconUrl}${parseInt(id)}.png' alt="Icon"  width="32" height="32"></img>`
+}
+
 function getCmcValues(asset, cmcData) {
+
     const crypto = cmcData.find(item => item.symbol === asset);
     if (crypto) {
         return {
             rank: crypto.cmc_rank ? parseInt(crypto.cmc_rank) : 0,
             currentPrice: crypto.quote.USD.price ? crypto.quote.USD.price.toFixed(7) : 'N/A',
-            iconUrl: crypto.id ? 'https://s2.coinmarketcap.com/static/img/coins/32x32/' + parseInt(crypto.id) + '.png' : '',
-            cryptoPercentChange24h: crypto.quote.USD.percent_change_24h ? crypto.quote.USD.percent_change_24h.toFixed(2) + '%' : 'N/A',
-            cryptoPercentChange7d: crypto.quote.USD.percent_change_7d ? crypto.quote.USD.percent_change_7d.toFixed(2) + '%' : 'N/A',
-            cryptoPercentChange30d: crypto.quote.USD.percent_change_30d ? crypto.quote.USD.percent_change_30d.toFixed(2) + '%' : 'N/A',
-            cryptoPercentChange60d: crypto.quote.USD.percent_change_60d ? crypto.quote.USD.percent_change_60d.toFixed(2) + '%' : 'N/A',
-            cryptoPercentChange90d: crypto.quote.USD.percent_change_90d ? crypto.quote.USD.percent_change_90d.toFixed(2) + '%' : 'N/A'
+            iconUrl: crypto.id ? getIconUrl(crypto.id) : '',
+            cryptoPercentChange24h: crypto.quote.USD.percent_change_24h ? crypto.quote.USD.percent_change_24h / 100 : 'N/A',
+            cryptoPercentChange7d: crypto.quote.USD.percent_change_7d ? crypto.quote.USD.percent_change_7d / 100 : 'N/A',
+            cryptoPercentChange30d: crypto.quote.USD.percent_change_30d ? crypto.quote.USD.percent_change_30d / 100 : 'N/A',
+            cryptoPercentChange60d: crypto.quote.USD.percent_change_60d ? crypto.quote.USD.percent_change_60d / 100 : 'N/A',
+            cryptoPercentChange90d: crypto.quote.USD.percent_change_90d ? crypto.quote.USD.percent_change_90d / 100 : 'N/A'
         };
     } else {
         return {
@@ -151,8 +155,8 @@ function getPercentageDifference(currentPrice, averageEntryPrice) {
     if (isNaN(price) || isNaN(avgEntryPrice)) {
         return 'N/A';
     }
-    const percentageDifference = ((price - avgEntryPrice) / avgEntryPrice) * 100;
-    return percentageDifference.toFixed(2) + '%';
+    const percentageDifference = ((price - avgEntryPrice) / avgEntryPrice);
+    return percentageDifference.toFixed(2);
 }
 
 function getCurrentPossession(currentPrice, balance) {
@@ -198,6 +202,15 @@ function calculateAmountsAndPrices(recupTp1, averageEntryPrice, balance, totalBu
     };
 }
 
+function getAssetId(asset, cmcData) {
+    const crypto = cmcData.find(item => item.symbol === asset);
+    if (crypto)
+        return crypto.id;
+}
+
+function getTradesHistory(asset, exchangeId, trades) {
+    return trades.filter(trade => trade.pair === `${asset}/USDT` && trade.platform === exchangeId);
+}
 
 function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     //console.log(item);
@@ -219,8 +232,8 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
 
     const totalSell = getTotalSell(asset, trades);
     const averageEntryPrice = getAverageEntryPrice(asset, trades);
-    const openBuyOrders = buyOrders[asset] || 0;
-    const openSellOrders = sellOrders[asset] || 0;
+    const openBuyOrders = buyOrders[asset] ? buyOrders[asset].length : 0;
+    const openSellOrders =sellOrders[asset] ?  sellOrders[asset].length  : 0;
 
     const ratioShad = getRatioShad(asset, exchangeId, strats);
 
@@ -282,5 +295,5 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     };
 }
 
-module.exports = { getAllCalculs, getProfit, getRecupShad, getRecupTp1, getRecupTpX, getDoneShad, getTotalAmountAndBuy, getMaxWanted, getRatioShad, getTotalSell, getAverageEntryPrice, getBalance, getCmcValues, getPercentageDifference, getCurrentPossession };
+module.exports = { getAllCalculs, getBalance, getAssetId, getTradesHistory };
 

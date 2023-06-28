@@ -1,103 +1,96 @@
 // shadColumns.js
 
-import { VGridVueTemplate } from "@revolist/vue3-datagrid";
-import MySellButton from "../components/MySellButton.vue";
-import { createColoredCell, createPlatformColoredCell } from "./cells.js";
+//import { VGridVueTemplate } from "@revolist/vue3-datagrid";
+//import MySellButton from "../components/MySellButton.vue";
+//import { createColoredCell, createOnClickCell, createPlatformColoredCell } from "./cells.js";
+//import { createColoredCell, createPlatformColoredCell, createOnClickCell } from "./cells.js";
 
 export const columns = [
   {
-    name: 'Icon',
-    prop: "iconUrl",
-    readonly: true,
-    pin: 'colPinStart',
-    cellTemplate: (createElement, ctx) => {
-      return createElement('img', {
-        src: ctx.model.iconUrl,
-        style: {
-          width: '32px',
-          height: '32px',
-        },
-      })
-    },
+    label: 'Icon',
+    field: "iconUrl",
+    html: true,
   },
-  { name: "Asset", prop: "asset", autoSize: true, sortable: true, order: "asc", readonly: "true",  pin: 'colPinStart', },
-  { name: "Actions", cellTemplate: VGridVueTemplate(MySellButton), autoSize: true, canFocus: false },
+  {
+    label: "Asset", field: "asset",
+  },
+  { label: "Ratio", field: "ratioShad" },
+  { label: "Total shad", field: "totalShad" },
+  { label: "Rank", field: "rank" },
+  { label: "Average Entry Price", field: "averageEntryPrice" },
+  { label: "Total buy", field: "totalBuy" },
+  { label: "Max wanted", field: "maxWanted" },
+  {
+    label: "Percentage Difference", field: "percentageDifference", type: "percentage"
+  },
+  { label: "Current Price", field: "currentPrice" },
 
-  { name: "Ratio", prop: "ratioShad", autoSize: true, sortable: true, order: "asc", readonly: "true", },
-  { name: "Total shad", prop: "totalShad", sortable: true, order: "asc", readonly: "true", type: 'number' },
-  { name: "Rank", prop: "rank", sortable: true, order: "asc", readonly: "true", type: 'number' },
-  { name: "Average Entry Price", prop: "averageEntryPrice", sortable: true, order: "asc", readonly: "true", type: 'number' },
-  { name: "Total buy", prop: "totalBuy", sortable: true, order: "asc", readonly: "true", type: 'number' },
-  { name: "Max wanted", prop: "maxWanted", sortable: true, order: "asc", readonly: "true", type: 'number' },
-  { name: "Percentage Difference", prop: "percentageDifference", sortable: true, order: "asc", readonly: "true", cellTemplate: createColoredCell },
-  { name: "Current Price", prop: "currentPrice", sortable: true, order: "asc", readonly: "true", type: 'number' },
+  { label: "Wallet", field: "currentPossession" },
+  { label: "Profit", field: "profit" },
 
-  { name: "Wallet", prop: "currentPossession", sortable: true, order: "asc", readonly: "true", type: 'number' },
-  { name: "Profit", prop: "profit", sortable: true, order: "asc", readonly: "true", type: 'number' },
-
-  { name: "Total sell", prop: "totalSell", sortable: true, order: "asc", readonly: "true", type: 'number' },
-  { name: "Recup shad", prop: "recupShad", sortable: true, order: "asc", readonly: "true", type: 'number' },
-  {
-    name: 'Open Orders',
-    children: [
-      { name: "Buy", prop: "openBuyOrders", sortable: true, order: "asc", readonly: "true", type: 'number' },
-      { name: "Sell", prop: "openSellOrders", sortable: true, order: "asc", readonly: "true", type: 'number' },
-    ]
-  },
-  { name: "Quantite total achetee", prop: "totalAmount", sortable: true, order: "asc", readonly: "true", type: 'number' },
-  { name: "Balance", prop: "balance", sortable: true, order: "asc", readonly: "true", type: 'number' },
-  {
-    name: 'Recup',
-    children: [
-      { name: "tp1", prop: "recupTp1", sortable: true, order: "asc", readonly: "true", type: 'number' },
-      { name: "tpX", prop: "recupTpX", sortable: true, order: "asc", readonly: "true", type: 'number' },
-    ]
-  },
-  {
-    name: 'TP1',
-    children: [
-      { name: "amount", prop: "amountTp1", sortable: true, order: "asc", readonly: "true", type: 'number' },
-      { name: "price", prop: "priceTp1", sortable: true, order: "asc", readonly: "true", type: 'number' },
-    ]
-  },
-  {
-    name: 'TP2',
-    children: [
-      { name: "amount", prop: "amountTp2", sortable: true, order: "asc", readonly: "true", type: 'number' },
-      { name: "price", prop: "priceTp2", sortable: true, order: "asc", readonly: "true", type: 'number' },
-    ]
-  },
-  {
-    name: 'TP3',
-    children: [
-      { name: "amount", prop: "amountTp3", sortable: true, order: "asc", readonly: "true", type: 'number' },
-      { name: "price", prop: "priceTp3", sortable: true, order: "asc", readonly: "true", type: 'number' },
-    ]
-  },
-  {
-    name: 'TP4',
-    children: [
-      { name: "amount", prop: "amountTp4", sortable: true, order: "asc", readonly: "true", type: 'number' },
-      { name: "price", prop: "priceTp4", sortable: true, order: "asc", readonly: "true", type: 'number' },
-    ]
-  },
-  {
-    name: 'TP5',
-    children: [
-      { name: "amount", prop: "amountTp5", sortable: true, order: "asc", readonly: "true", type: 'number' },
-      { name: "price", prop: "priceTp5", sortable: true, order: "asc", readonly: "true", type: 'number' },
-    ]
-  },
-  {
-    name: 'Percent Change',
-    children: [
-      { name: "24h", prop: "cryptoPercentChange24h", sortable: true, order: "asc", readonly: "true", cellTemplate: createColoredCell },
-      { name: "7d", prop: "cryptoPercentChange7d", sortable: true, order: "asc", readonly: "true", cellTemplate: createColoredCell },
-      { name: "30d", prop: "cryptoPercentChange30d", sortable: true, order: "asc", readonly: "true", cellTemplate: createColoredCell },
-      { name: "60d", prop: "cryptoPercentChange60d", sortable: true, order: "asc", readonly: "true", cellTemplate: createColoredCell },
-      { name: "90d", prop: "cryptoPercentChange90d", sortable: true, order: "asc", readonly: "true", cellTemplate: createColoredCell },
-    ]
-  },
-  { name: "Exchange", prop: "exchangeId", pin: 'colPinEnd', sortable: true, order: "asc", readonly: "true", cellTemplate: createPlatformColoredCell }
+  { label: "Total sell", field: "totalSell" },
+  { label: "Recup shad", field: "recupShad" },
+  /*{
+    label:'Open Orders',
+    children: [*/
+  { label: "Buy", field: "openBuyOrders" },
+  { label: "Sell", field: "openSellOrders" },
+  /*]
+},*/
+  { label: "Quantite total achetee", field: "totalAmount" },
+  { label: "Balance", field: "balance" },
+  /*{
+    label:'Recup',
+    children: [*/
+  { label: "tp1", field: "recupTp1" },
+  { label: "tpX", field: "recupTpX" },
+  /* ]
+ },*/
+  /*{
+    label:'TP1',
+    children: [*/
+  { label: "amount", field: "amountTp1" },
+  { label: "price", field: "priceTp1" },
+  /*]
+},
+{
+  label:'TP2',
+  children: [*/
+  { label: "amount", field: "amountTp2" },
+  { label: "price", field: "priceTp2" },
+  /* ]
+ },
+ {
+   label:'TP3',
+   children: [*/
+  { label: "amount", field: "amountTp3" },
+  { label: "price", field: "priceTp3" },
+  /*]
+},
+{
+  label:'TP4',
+  children: [*/
+  { label: "amount", field: "amountTp4" },
+  { label: "price", field: "priceTp4" },
+  /*]
+},
+{
+  label:'TP5',
+  children: [*/
+  { label: "amount", field: "amountTp5" },
+  { label: "price", field: "priceTp5" },
+  /*]
+},
+{
+  label:'Percent Change',
+  children: [*/
+  { label: "24h", field: "cryptoPercentChange24h", type: "percentage" },
+  { label: "7d", field: "cryptoPercentChange7d", type: "percentage" },
+  { label: "30d", field: "cryptoPercentChange30d", type: "percentage" },
+  { label: "60d", field: "cryptoPercentChange60d", type: "percentage" },
+  { label: "90d", field: "cryptoPercentChange90d", type: "percentage" },
+  /*]
+},*/
+  { label: "Exchange", field: "exchangeId" }
 
 ];

@@ -2,54 +2,101 @@
   <div class="shad-page">
     <h1>SHAD</h1>
 
-    <div class="search-bar">
-      <input type="text" v-model="searchTerm" @input="performSearch" placeholder="Search..." />
-    </div>
-
     <div id="table">
-      <v-grid theme="compact" :source="filteredRows" :columns="columns" :filter="false" :pagination="paginationConfig">
-        <template v-slot:item="{ item }">
-          <tr :key="item.asset">
-            <!-- Render columns using the key attribute -->
-            <td v-for="column in columns" :key="column.name" @mousedown.prevent>
-              <!-- Render individual cells using the key attribute -->
-              <component :is="getComponentType(column)" :column="column" :model="item"
-                @click="handleCellClick(column, item)" :tabindex="column.name === columns[0].name ? -1 : null" />
-            </td>
-          </tr>
+      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
+        :search-options="{ enabled: true }" :pagination-options="{ enabled: true }"
+        v-on:selected-rows-change="selectionChanged" v-on:cell-click="onCellClick">
+        <template #selected-row-actions>
+          <MySellButtonVue :model="allRows" />
         </template>
-      </v-grid>
+      </vue-good-table>
     </div>
 
-    <div class="pagination">
-      <button v-if="currentPage > 1" @click="prevPage">Prev</button>
-      <button v-for="page in pages" :key="page" @click="changePage(page)" :class="{ active: currentPage === page }">{{
-        page }}</button>
-      <button v-if="currentPage < pageCount" @click="nextPage">Next</button>
+    <div class="overlay" v-if="showOverlay">
+      <div class="overlay-content">
+        <h2>{{ selectedAsset.asset }}</h2>
+
+        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/11568.png" alt="Icon" width="32" height="32" />
+
+        <p>ID: {{ selectedAsset.id }}</p>
+
+
+        <p>Ratio: {{ selectedAsset.ratioShad }}</p>
+        <p>Total shad: {{ selectedAsset.totalShad }}</p>
+        <p>Rank: {{ selectedAsset.rank }}</p>
+        <p>Average Entry Price: {{ selectedAsset.averageEntryPrice }}</p>
+        <p>Total buy: {{ selectedAsset.totalBuy }}</p>
+        <p>Max wanted: {{ selectedAsset.maxWanted }}</p>
+        <p>Percentage Difference: {{ selectedAsset.percentageDifference }}</p>
+        <p>Current Price: {{ selectedAsset.currentPrice }}</p>
+        <p>Wallet: {{ selectedAsset.currentPossession }}</p>
+        <p>Profit: {{ selectedAsset.profit }}</p>
+        <p>Total sell: {{ selectedAsset.totalSell }}</p>
+        <p>Recup shad: {{ selectedAsset.recupShad }}</p>
+        <p>Buy: {{ selectedAsset.openBuyOrders }}</p>
+        <p>Sell: {{ selectedAsset.openSellOrders }}</p>
+        <p>Quantite total achetee: {{ selectedAsset.totalAmount }}</p>
+        <p>Balance: {{ selectedAsset.balance }}</p>
+
+       <!-- <button @click="toggleHistoricLines">
+          {{ showHistoricLines ? 'Hide Historique' : 'Show Historique' }}
+        </button>
+
+        <div v-if="showHistoricLines">
+          <p v-for="buyOrder in this.openBuyOrders[selectedAsset.asset]" :key="buyOrder.id">{{ buyOrder.symbol }}</p>
+          <p v-for="sellOrder in this.openSellOrders[selectedAsset.asset]" :key="sellOrder.id">{{ sellOrder.symbol }}</p>
+        </div>-->
+
+        <button @click="toggleActiveOrdersLines">
+          {{ showActiveOrdersLines ? 'Hide Open Orders' : 'Show Open Orders' }}
+        </button>
+
+        <div v-if="showActiveOrdersLines">
+          <p v-for="buyOrder in this.openBuyOrders[selectedAsset.asset]" :key="buyOrder.id">aaaa</p>
+          <p v-for="sellOrder in this.openSellOrders[selectedAsset.asset]" :key="sellOrder.id">{{JSON.stringify(sellOrder)}}</p>
+        </div>
+
+
+        <button @click="togglePercentageLines">
+          {{ showPercentageLines ? 'Hide Percentage' : 'Show Percentage' }}
+        </button>
+
+        <div v-if="showPercentageLines">
+          <p>24h: {{ formatPercentage(selectedAsset.cryptoPercentChange24h) }}</p>
+          <p>7d: {{ formatPercentage(selectedAsset.cryptoPercentChange7d) }}</p>
+          <p>30d: {{ formatPercentage(selectedAsset.cryptoPercentChange30d) }}</p>
+          <p>60d: {{ formatPercentage(selectedAsset.cryptoPercentChange60d) }}</p>
+          <p>90d: {{ formatPercentage(selectedAsset.cryptoPercentChange90d) }}</p>
+        </div>
+
+        <div v-else>
+          <p>{{ selectedTime }}: {{ selectedAsset['cryptoPercentChange' + selectedTime] }}</p>
+        </div>
+        <!-- Affichez les autres propriétés de la ligne ici -->
+        <button @click="showOverlay = false">Close</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import VGrid from "@revolist/vue3-datagrid";
-
 import { getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB } from '../js/fromDB.js';
-import { getAllCalculs } from '../js/calcul.js';
+//import { getAllCalculs, getAssetId, getTradesHistory } from '../js/calcul.js';
+import { getAllCalculs, getAssetId } from '../js/calcul.js';
 import { columns } from "../js/shadColumns.js";
+import MySellButtonVue from './MySellButton.vue';
 
 export default {
   name: "ShadPage",
   data() {
     return {
-      searchTerm: '', // Terme de recherche saisi par l'utilisateur
-
       balances: [],
       trades: [],
       strats: [],
       activeOrders: [],
       cmcData: [],
-      openBuyOrders: {},
-      openSellOrders: {},
+      openBuyOrders: [],
+      openSellOrders: [],
       itemsPerPage: 1000,
       currentPage: 1,
 
@@ -59,11 +106,18 @@ export default {
         totalCount: 0,
         current: 1,
       },
+      showOverlay: false,
+      selectedAsset: {},
+      allRows: [],
+
+      showPercentageLines: false,
+      showHistoricLines: false,
+      showActiveOrdersLines: false,
 
     };
   },
   components: {
-    VGrid
+    MySellButtonVue
   },
   computed: {
     paginatedItems() {
@@ -97,35 +151,37 @@ export default {
         return [];
       }
     },
-    filteredRows() {
-      if (this.searchTerm) {
-        // Filter the rows based on the search term
-        return this.rows.filter((row) => {
-          // Check if any of the column values contain the search term
-          return this.columns.some((column, index) => {
-            // Check if the column is the second column
-            if (index === 1) {
-              const value = row[column.prop].toString().toLowerCase();
-              return value.includes(this.searchTerm.toLowerCase());
-            }
-            return false;
-          });
-        });
-      } else {
-        // No search term entered, return all rows
-        return this.rows;
-      }
-    },
+    iconId(asset) {
+      return getAssetId(asset, this.cmcData);
+    }
 
   },
   methods: {
-    handleCellClick(column, item) {
-      console.log(column);
-      console.log(item);
-      if (column.name === this.columns[0].name) {
-        // Logique à exécuter lorsque la première colonne est cliquée
-        // Vous pouvez remplacer cette logique par ce que vous souhaitez faire avec le clic sur l'élément
-        console.log("Clic sur l'élément :", item[column.name]);
+    formatPercentage(value) {
+      return (value * 100).toFixed(2) + '%';
+    },
+    togglePercentageLines() {
+      this.showPercentageLines = !this.showPercentageLines;
+    },
+    toggleHistoricLines() {
+      this.showHistoricLines = !this.showHistoricLines;
+    },
+    toggleActiveOrdersLines() {
+      this.showActiveOrdersLines = !this.showActiveOrdersLines;
+    },
+    selectionChanged(rows) {
+      console.log('ici on entre !!!!!!!!!!!');
+      // Handle the selected rows
+      console.log(rows);
+      this.allRows = rows;
+    },
+    onCellClick(params) {
+      // Vérifiez si la colonne cliquée est la colonne "asset"
+      if (params.column.field === 'asset') {
+        // Affichez l'overlay
+        this.showOverlay = true;
+        // Définissez la ligne sélectionnée
+        this.selectedAsset = params.row;
       }
     },
     async getDataFromDB() {
@@ -139,6 +195,9 @@ export default {
       this.openBuyOrders = openBuyOrders;
       this.openSellOrders = openSellOrders;
     },
+    getIconUrl(asset) {
+      return `<img src="${this.getAssetId(asset, this.cmc_data)}" alt="Icon" width="32" height="32"></p>`
+    },
 
     prevPage() {
       this.currentPage--;
@@ -148,29 +207,6 @@ export default {
     },
     changePage(page) {
       this.currentPage = page;
-    },
-    afficherContenu(contenuLigne) {
-      alert(contenuLigne);
-      // Vous pouvez également effectuer d'autres actions avec le contenu de la ligne
-    },
-    performSearch() {
-      // Update the filtered rows based on the search term
-      if (this.searchTerm) {
-        this.filteredRows = this.rows.filter((row) => {
-          // Check if any of the column values contain the search term
-          return this.columns.some((column) => {
-            const value = row[column.prop];
-            if (value) {
-              const valueString = value.toString().toLowerCase();
-              return valueString.includes(this.searchTerm.toLowerCase());
-            }
-            return false;
-          });
-        });
-      } else {
-        // No search term entered, display all rows
-        this.filteredRows = this.rows;
-      }
     },
 
   },
@@ -194,4 +230,35 @@ revo-grid {
   height: 100%;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  /* Add this line to enable scrolling */
+
+}
+
+.overlay-content {
+  background-color: white;
+  padding: 20px;
+  width: 70%;
+  height: 70%;
+  overflow-y: auto;
+  /* Add this line to enable vertical scrolling */
+}
+
+.overlay h2 {
+  margin-top: 0;
+}
+
+#table td {
+  user-select: none;
+}
 </style>

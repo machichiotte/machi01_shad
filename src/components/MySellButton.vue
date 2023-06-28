@@ -9,36 +9,48 @@ import { bunchOrders, cancelAllOrders } from '../js/orders.js';
 import { loadingSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
 
 export default {
-    props: ["rowIndex", "model"],
+    props: {
+        model: {
+            type: Object,
+            required: true,
+        },
+    },
     methods: {
         async iAmClicked() {
             loadingSpin();
 
-            const asset = this.model.asset;
-            const exchangeId = this.model.exchangeId;
+            const selectedRows = this.model.selectedRows;
 
-            const cancel = await cancelAllOrders(exchangeId, asset);
+            for (let rows in selectedRows) {
+                const asset = selectedRows[rows].asset;
+                const exchangeId = selectedRows[rows].exchangeId;
 
-            console.log('canc :: ' + cancel.status);
-            let resultText = `Cancel : ${cancel.status}<br>`;
+                console.log(asset);
+                console.log(exchangeId);
 
-            if (cancel.status == 200) {
-                console.log('canc IS 200');
 
-                const amounts = [this.model.amountTp1, this.model.amountTp2, this.model.amountTp3, this.model.amountTp4, this.model.amountTp5];
-                const prices = [this.model.priceTp1, this.model.priceTp2, this.model.priceTp3, this.model.priceTp4, this.model.priceTp5];
+                const cancel = await cancelAllOrders(exchangeId, asset);
 
-                let res = [];
-                for (let i = 0; i < 5; i++) {
-                    res[i] = await bunchOrders(exchangeId, asset, amounts[i], prices[i]);
-                    resultText += `TP${i} : ${res[i].status}<br>`;
+                let resultText = `Cancel : ${cancel.status}<br>`;
+
+                if (cancel.status == 200) {
+
+                    const amounts = [selectedRows[rows].amountTp1, selectedRows[rows].amountTp2, selectedRows[rows].amountTp3, selectedRows[rows].amountTp4, selectedRows[rows].amountTp5];
+                    const prices = [selectedRows[rows].priceTp1, selectedRows[rows].priceTp2, selectedRows[rows].priceTp3, selectedRows[rows].priceTp4, selectedRows[rows].priceTp5];
+
+                    let res = [];
+                    for (let i = 0; i < 5; i++) {
+                        res[i] = await bunchOrders(exchangeId, asset, amounts[i], prices[i]);
+                        resultText += `TP${i} : ${res[i].status}<br>`;
+                    }
+
+                    successSpinHtml('Save completed', resultText, true, true);
+
+                } else {
+                    errorSpin('Error', `Cancel order : ${cancel.error}`, false, true);
                 }
-
-                successSpinHtml('Save completed', resultText, true, true);
-
-            } else {
-                errorSpin('Error', `Cancel order : ${cancel.error}`, false, true);
             }
+
         }
     }
 };
