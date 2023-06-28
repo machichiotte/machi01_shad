@@ -38,14 +38,13 @@
         <p>Quantite total achetee: {{ selectedAsset.totalAmount }}</p>
         <p>Balance: {{ selectedAsset.balance }}</p>
 
-       <!-- <button @click="toggleHistoricLines">
+        <button @click="toggleHistoricLines">
           {{ showHistoricLines ? 'Hide Historique' : 'Show Historique' }}
         </button>
 
         <div v-if="showHistoricLines">
-          <p v-for="buyOrder in this.openBuyOrders[selectedAsset.asset]" :key="buyOrder.id">{{ buyOrder.symbol }}</p>
-          <p v-for="sellOrder in this.openSellOrders[selectedAsset.asset]" :key="sellOrder.id">{{ sellOrder.symbol }}</p>
-        </div>-->
+          <p v-for="trade in this.getTrades(selectedAsset.asset)" :key="trade.id">{{ JSON.stringify(trade) }}</p>
+        </div>
 
         <button @click="toggleActiveOrdersLines">
           {{ showActiveOrdersLines ? 'Hide Open Orders' : 'Show Open Orders' }}
@@ -53,7 +52,8 @@
 
         <div v-if="showActiveOrdersLines">
           <p v-for="buyOrder in this.openBuyOrders[selectedAsset.asset]" :key="buyOrder.id">aaaa</p>
-          <p v-for="sellOrder in this.openSellOrders[selectedAsset.asset]" :key="sellOrder.id">{{JSON.stringify(sellOrder)}}</p>
+          <p v-for="sellOrder in this.openSellOrders[selectedAsset.asset]" :key="sellOrder.id">
+            {{ JSON.stringify(sellOrder) }}</p>
         </div>
 
 
@@ -69,10 +69,6 @@
           <p>90d: {{ formatPercentage(selectedAsset.cryptoPercentChange90d) }}</p>
         </div>
 
-        <div v-else>
-          <p>{{ selectedTime }}: {{ selectedAsset['cryptoPercentChange' + selectedTime] }}</p>
-        </div>
-        <!-- Affichez les autres propriétés de la ligne ici -->
         <button @click="showOverlay = false">Close</button>
       </div>
     </div>
@@ -81,8 +77,7 @@
 
 <script>
 import { getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB } from '../js/fromDB.js';
-//import { getAllCalculs, getAssetId, getTradesHistory } from '../js/calcul.js';
-import { getAllCalculs, getAssetId } from '../js/calcul.js';
+import { getAllCalculs, getTradesHistory } from '../js/calcul.js';
 import { columns } from "../js/shadColumns.js";
 import MySellButtonVue from './MySellButton.vue';
 
@@ -151,10 +146,6 @@ export default {
         return [];
       }
     },
-    iconId(asset) {
-      return getAssetId(asset, this.cmcData);
-    }
-
   },
   methods: {
     formatPercentage(value) {
@@ -170,9 +161,6 @@ export default {
       this.showActiveOrdersLines = !this.showActiveOrdersLines;
     },
     selectionChanged(rows) {
-      console.log('ici on entre !!!!!!!!!!!');
-      // Handle the selected rows
-      console.log(rows);
       this.allRows = rows;
     },
     onCellClick(params) {
@@ -197,6 +185,9 @@ export default {
     },
     getIconUrl(asset) {
       return `<img src="${this.getAssetId(asset, this.cmc_data)}" alt="Icon" width="32" height="32"></p>`
+    },
+    getTrades(asset) {
+      return getTradesHistory(asset, this.trades);
     },
 
     prevPage() {

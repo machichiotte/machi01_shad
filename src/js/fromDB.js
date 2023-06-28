@@ -33,23 +33,18 @@ async function getActiveOrdersFromDB() {
         const response = await fetch(serverHost + '/get/activeOrders');
         const data = await response.json();
 
-        // Réinitialiser les propriétés openBuyOrders et openSellOrders
         const openBuyOrders = {};
         const openSellOrders = {};
 
-        // Stocker tous les ordres ouverts par actif
         data.forEach(order => {
-            const asset = order.symbol.split('/')[0]; // Récupérer l'asset sans la paire
+            const asset = order.symbol.split('/')[0];
             if (order.side === 'buy') {
                 openBuyOrders[asset] = openBuyOrders[asset] || [];
-                openBuyOrders[asset].push(order); // Ajouter l'ordre d'achat au tableau
+                openBuyOrders[asset].push(order);
             } else if (order.side === 'sell') {
                 openSellOrders[asset] = openSellOrders[asset] || [];
-                openSellOrders[asset].push(order); // Ajouter l'ordre de vente au tableau
+                openSellOrders[asset].push(order);
             }
-
-            console.log(asset + '--0--' + JSON.stringify(openSellOrders[asset]));
-            console.log(asset + '--1--' + openSellOrders[asset].length);
         });
 
         return {

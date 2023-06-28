@@ -208,12 +208,11 @@ function getAssetId(asset, cmcData) {
         return crypto.id;
 }
 
-function getTradesHistory(asset, exchangeId, trades) {
-    return trades.filter(trade => trade.pair === `${asset}/USDT` && trade.platform === exchangeId);
+function getTradesHistory(asset, trades) {
+    return trades.filter(trade => trade.pair === `${asset}/USDT`);
 }
 
 function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
-    //console.log(item);
     const { symbol, platform, balance } = item;
 
     const asset = symbol;
