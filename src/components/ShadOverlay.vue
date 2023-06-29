@@ -62,14 +62,33 @@
                     {{ showActiveOrdersLines ? 'Hide Open Orders' : 'Show Open Orders' }}
                 </button>
 
-                <div v-if="showActiveOrdersLines">
-                    <p v-for="buyOrder in getActiveBuyOrders" :key="buyOrder.id">{{
-                        JSON.stringify(buyOrder) }}
-                    </p>
-                    <p v-for="sellOrder in getActiveSellOrders" :key="sellOrder.id">
-                        {{ JSON.stringify(sellOrder) }}
-                    </p>
-                </div>
+                <table v-if="showActiveOrdersLines" class="open-orders-table">
+                    <thead>
+                        <tr>
+                            <th>Platform</th>
+                            <th>Symbol</th>
+                            <th>Side</th>
+                            <th>Amount</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="buyOrder in getActiveBuyOrders" :key="buyOrder._id.$oid">
+                            <td>{{ buyOrder.platform }}</td>
+                            <td>{{ buyOrder.symbol }}</td>
+                            <td>{{ buyOrder.side }}</td>
+                            <td>{{ buyOrder.amount }}</td>
+                            <td>{{ buyOrder.price }}</td>
+                        </tr>
+                        <tr v-for="sellOrder in getActiveSellOrders" :key="sellOrder._id.$oid">
+                            <td>{{ sellOrder.platform }}</td>
+                            <td>{{ sellOrder.symbol }}</td>
+                            <td>{{ sellOrder.side }}</td>
+                            <td>{{ sellOrder.amount }}</td>
+                            <td>{{ sellOrder.price }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="block trade-history">
@@ -78,11 +97,32 @@
                     {{ showHistoricLines ? 'Hide Historique' : 'Show Historique' }}
                 </button>
 
-                <div v-if="showHistoricLines">
-                    <p v-for="trade in getTrades" :key="trade.id">
-                        {{ JSON.stringify(trade) }}
-                    </p>
-                </div>
+                <table v-if="showHistoricLines" class="trade-history-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Pair</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Amount</th>
+                            <th>Total</th>
+                            <th>Fee</th>
+                            <th>Platform</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="trade in getTrades" :key="trade._id.$oid">
+                            <td>{{ trade.date }}</td>
+                            <td>{{ trade.pair }}</td>
+                            <td>{{ trade.type }}</td>
+                            <td>{{ parseFloat(trade.price).toFixed(6) }}</td>
+                            <td>{{ trade.amount }}</td>
+                            <td>{{ trade.total }}</td>
+                            <td>{{ trade.fee }} {{ trade.feecoin }}</td>
+                            <td>{{ trade.platform }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="block graph">
@@ -148,7 +188,9 @@ export default {
     },
     computed: {
         getTrades() {
-            return getTradesHistory(this.selectedAsset.asset, this.trades);
+            return getTradesHistory(this.selectedAsset.asset, this.trades).sort(
+                (a, b) => new Date(b.date) - new Date(a.date)
+            );
         },
         getActiveBuyOrders() {
             return this.openBuyOrders[this.selectedAsset.asset];
@@ -422,6 +464,22 @@ export default {
     grid-column: 1 / 4;
     text-align: center;
     overflow-x: auto;
+}
+
+.open-orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.open-orders-table th,
+.open-orders-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.open-orders-table th {
+    background-color: #f2f2f2;
 }
 
 .trade-history {
