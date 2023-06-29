@@ -208,6 +208,15 @@ function getAssetId(asset, cmcData) {
         return crypto.id;
 }
 
+function getDataBTC(cmcData) {
+    return cmcData.find(item => item.symbol === 'BTC');
+}
+
+function getDataETH(cmcData) {
+    return cmcData.find(item => item.symbol === 'ETH');
+}
+
+
 function getTradesHistory(asset, trades) {
     return trades.filter(trade => trade.pair === `${asset}/USDT`);
 }
@@ -294,5 +303,5 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     };
 }
 
-module.exports = { getAllCalculs, getBalance, getAssetId, getTradesHistory };
+module.exports = { getDataBTC, getDataETH, getAllCalculs, getBalance, getAssetId, getTradesHistory };
 

@@ -13,7 +13,7 @@
     </div>
 
     <Overlay v-if="showOverlay" :selectedAsset="selectedAsset" :openBuyOrders="this.openBuyOrders"
-      :openSellOrders="this.openSellOrders" :trades="this.trades" @close="showOverlay = false" />
+      :openSellOrders="this.openSellOrders" :trades="this.trades" :cmc="this.cmcData" @close="showOverlay = false" />
 
   </div>
 </template>

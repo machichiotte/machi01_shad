@@ -11,25 +11,39 @@
                     <h2 class="title">{{ selectedAsset.asset }}</h2>
                 </div>
                 <div class="description-container">
-                    <p class="description">Your description text here</p>
+                    <p class="description">{{ assetName }}</p>
                 </div>
             </div>
 
+
             <div class="block wallet">
-                <p class="block-title">Wallet</p>
-                <p class="exchange">{{ selectedAsset.exchangeId }}</p>
-                <div class="unit-value">
-                    <p class="value">{{ selectedAsset.balance }}</p>
-                    <p class="unit" @click="toggleCurrency">{{ currency }}</p>
+                <div class="left-section">
+                    <p class="block-title">Wallet</p>
+                </div>
+                <div class="center-section">
+                    <div class="unit-value">
+                        <p class="value">{{ balance }}</p>
+                        <p class="unit" @click="toggleBalanceCurrency">{{ balanceCurrency }}</p>
+                    </div>
+                </div>
+                <div class="right-section">
+                    <p class="exchange">{{ selectedAsset.exchangeId }}</p>
                 </div>
             </div>
 
             <div class="block current-value">
-                <p class="block-title">Current Value</p>
-                <p class="exchange">{{ selectedAsset.currentPrice }}</p>
-                <div class="unit-value">
-                    <p class="value" :class="getPercentageClass()">{{ percentageValue }}</p>
-                    <p class="unit" @click="togglePercentage">{{ percentage }}</p>
+                <div class="left-section">
+                    <p class="block-title">Current Value</p>
+                </div>
+                <div class="center-section">
+                    <div class="unit-value">
+                        <p class="current-price">{{ currentPrice }}</p>
+                        <p class="unit" @click="toggleCurrentCurrency">{{ currentCurrency }}</p>
+                    </div>
+                </div>
+                <div class="right-section">
+                    <p class="percentage-value" :class="getPercentageClass()">{{ percentageValue }}</p>
+                    <p class="percentage" @click="togglePercentageCurrent">/{{ percentage }}</p>
                 </div>
             </div>
 
@@ -76,28 +90,13 @@
                 <!-- Placeholder for the graph component -->
             </div>
 
-            <div class="block percentage">
-                <p class="block-title">Percentage</p>
-                <button @click="togglePercentageLines">
-                    {{ showPercentageLines ? 'Hide Percentage' : 'Show Percentage' }}
-                </button>
-
-                <div v-if="showPercentageLines">
-                    <p>24h: {{ formatPercentage(selectedAsset.cryptoPercentChange24h) }}</p>
-                    <p>7d: {{ formatPercentage(selectedAsset.cryptoPercentChange7d) }}</p>
-                    <p>30d: {{ formatPercentage(selectedAsset.cryptoPercentChange30d) }}</p>
-                    <p>60d: {{ formatPercentage(selectedAsset.cryptoPercentChange60d) }}</p>
-                    <p>90d: {{ formatPercentage(selectedAsset.cryptoPercentChange90d) }}</p>
-                </div>
-            </div>
-
             <button class="close-button" @click="showOverlay = false">Close</button>
         </div>
     </div>
 </template>
   
 <script>
-import { getTradesHistory } from '../js/calcul.js';
+import { getTradesHistory, getDataBTC, getDataETH } from '../js/calcul.js';
 
 export default {
     name: "ShadOverlay",
@@ -106,10 +105,18 @@ export default {
             showPercentageLines: false,
             showHistoricLines: false,
             showActiveOrdersLines: false,
-            currency: '$',
             percentage: '24h',
-            //percentageValue: this.formatPercentage(this.selectedAsset.cryptoPercentChange24h)
-            percentageValue: null
+            percentageValue: null,
+            currentBTC: null,
+            currentETH: null,
+
+            balance: null,
+            balanceCurrency: '$',
+
+            currentPrice: null,
+            currentCurrency: '$',
+
+            assetName: null
         }
     },
     props: {
@@ -129,10 +136,15 @@ export default {
             type: Object,
             required: true
         },
+        cmc: {
+            type: Object,
+            required: true
+        },
 
     },
     created() {
         this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange24h);
+
     },
     computed: {
         getTrades() {
@@ -144,10 +156,31 @@ export default {
         getActiveSellOrders() {
             return this.openSellOrders[this.selectedAsset.asset];
         },
+
+
+    },
+    mounted() {
+        this.getNeededValues();
     },
     methods: {
-        togglePercentageLines() {
-            this.showPercentageLines = !this.showPercentageLines;
+        getNeededValues() {
+            this.currentBTC = getDataBTC(this.cmc);
+            this.currentETH = getDataETH(this.cmc);
+
+            this.currentPrice = this.selectedAsset.currentPrice;
+            this.balance = this.selectedAsset.currentPossession;
+
+            this.currentPriceUSD = parseFloat(this.currentPrice);
+            this.currentPriceBTC = parseFloat(this.currentPrice / this.currentBTC.quote.USD.price).toFixed(8);
+            this.currentPriceETH = parseFloat(this.currentPrice / this.currentETH.quote.USD.price).toFixed(8);
+
+            this.balanceUSD = parseFloat(this.balance).toFixed(2);
+            this.balanceBTC = parseFloat(this.balance / this.currentBTC.quote.USD.price).toFixed(8);
+            this.balanceETH = parseFloat(this.balance / this.currentETH.quote.USD.price).toFixed(8);
+
+            const assetCmc = this.cmc.find(item => item.symbol === this.selectedAsset.asset)
+            this.assetName = assetCmc.name;
+
         },
         toggleHistoricLines() {
             this.showHistoricLines = !this.showHistoricLines;
@@ -159,16 +192,35 @@ export default {
         formatPercentage(value) {
             return (value * 100).toFixed(2) + '%';
         },
-        toggleCurrency() {
-            switch (this.currency) {
+        toggleBalanceCurrency() {
+            switch (this.balanceCurrency) {
                 case '$':
-                    this.currency = 'BTC';
+                    this.balanceCurrency = 'BTC';
+                    this.balance = this.balanceBTC;
                     break;
                 case 'BTC':
-                    this.currency = 'ETH';
+                    this.balanceCurrency = 'ETH';
+                    this.balance = this.balanceETH;
                     break;
                 case 'ETH':
-                    this.currency = '$';
+                    this.balanceCurrency = '$';
+                    this.balance = this.balanceUSD;
+                    break;
+            }
+        },
+        toggleCurrentCurrency() {
+            switch (this.currentCurrency) {
+                case '$':
+                    this.currentCurrency = 'BTC';
+                    this.currentPrice = this.currentPriceBTC;
+                    break;
+                case 'BTC':
+                    this.currentCurrency = 'ETH';
+                    this.currentPrice = this.currentPriceETH;
+                    break;
+                case 'ETH':
+                    this.currentCurrency = '$';
+                    this.currentPrice = this.currentPriceUSD;
                     break;
             }
         },
@@ -283,63 +335,77 @@ export default {
     text-align: center;
 }
 
-.wallet {
-    /* Styles for the wallet block */
-    grid-column: 1 / 4;
+.block.current-value,
+.block.wallet {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+}
+
+.left-section,
+.center-section,
+.right-section {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
 }
 
-.wallet .exchange {
-    margin-top: 4px;
+.left-section {
+    grid-column: 1;
 }
 
-.unit-value {
+.center-section {
+    grid-column: 2;
+}
+
+.right-section {
+    grid-column: 3;
+}
+
+.block .unit-value {
     display: flex;
     align-items: center;
-
-    /* Styles supplémentaires pour ajuster la mise en page de unit et value */
 }
 
-.value {
-    margin-top: 4px;
+.wallet .value {
     margin-right: 8px;
     font-size: 32px;
-    /* Augmentation de la taille de police */
 }
 
-.unit {
-    margin-top: 4px;
+.wallet .unit {
     font-size: 26px;
-    /* Augmentation de la taille de police */
-    cursor: pointer;
-    /* Curseur en forme de main pour indiquer un élément cliquable */
-}
-
-.unit:hover {
     text-decoration: underline;
-    /* Soulignement au survol de l'élément */
+    cursor: pointer;
 }
 
-.current-value {
-    /* Styles for the current value block */
-    grid-column: 1 / 4;
-    text-align: center;
+.current-value .current-percentage {
+    display: flex;
+    align-items: center;
 }
 
-.current-value .value {
-    text-align: left;
+.current-value .current-price {
+    margin-right: 8px;
+    font-size: 32px;
+}
+
+.current-value .unit {
+    font-size: 26px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.current-value .percentage-value {
+    margin-right: 8px;
+    font-size: 16px;
 }
 
 .current-value .percentage {
-    text-align: right;
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .strategy {
-    /* Styles for the strategy block */
     grid-column: 1 / 4;
     text-align: center;
 }
@@ -353,46 +419,37 @@ export default {
 }
 
 .open-orders {
-    /* Styles for the open orders block */
     grid-column: 1 / 4;
     text-align: center;
     overflow-x: auto;
 }
 
 .trade-history {
-    /* Styles for the trade history block */
     grid-column: 1 / 4;
     text-align: center;
     overflow-x: auto;
 }
 
 .graph {
-    /* Styles for the graph block */
     grid-column: 1 / 4;
     text-align: center;
     border: 1px solid black;
     height: 300px;
 }
 
-.percentage {
-    /* Styles for the percentage block */
-    grid-column: 1 / 4;
-    text-align: center;
-}
-
 .close-button {
-    /* Styles for the close button */
     grid-column: 1 / 4;
     width: auto;
     margin-top: 10px;
     text-align: center;
 }
+
 .positive {
-  color: green;
+    color: green;
 }
 
 .negative {
-  color: red;
+    color: red;
 }
 </style>
   
