@@ -20,16 +20,16 @@
                 <p class="exchange">{{ selectedAsset.exchangeId }}</p>
                 <div class="unit-value">
                     <p class="value">{{ selectedAsset.balance }}</p>
-                    <p class="unit">$</p>
+                    <p class="unit" @click="toggleCurrency">{{ currency }}</p>
                 </div>
             </div>
 
             <div class="block current-value">
                 <p class="block-title">Current Value</p>
-                <p class="value">{{ selectedAsset.currentPrice }}</p>
-                <div class="percentage">
-                    <p class="percentage-value">24h</p>
-                    <a href="#" class="clickable-space">Clickable Space</a>
+                <p class="exchange">{{ selectedAsset.currentPrice }}</p>
+                <div class="unit-value">
+                    <p class="value" :class="getPercentageClass()">{{ percentageValue }}</p>
+                    <p class="unit" @click="togglePercentage">{{ percentage }}</p>
                 </div>
             </div>
 
@@ -99,26 +99,6 @@
 <script>
 import { getTradesHistory } from '../js/calcul.js';
 
-/*
-// Obtenez une référence à l'élément .unit
-const unitElement = document.querySelector('.wallet .unit');
-
-// Ajoutez un gestionnaire d'événements de clic à l'élément .unit
-unitElement.addEventListener('click', () => {
-    // Vérifiez la valeur actuelle de l'élément .unit
-    switch (unitElement.textContent) {
-        case '$':
-            unitElement.textContent = 'BTC';
-            break;
-        case 'BTC':
-            unitElement.textContent = 'ETH';
-            break;
-        case 'ETH':
-            unitElement.textContent = '$';
-            break;
-    }
-}); */
-
 export default {
     name: "ShadOverlay",
     data() {
@@ -126,6 +106,10 @@ export default {
             showPercentageLines: false,
             showHistoricLines: false,
             showActiveOrdersLines: false,
+            currency: '$',
+            percentage: '24h',
+            //percentageValue: this.formatPercentage(this.selectedAsset.cryptoPercentChange24h)
+            percentageValue: null
         }
     },
     props: {
@@ -146,6 +130,9 @@ export default {
             required: true
         },
 
+    },
+    created() {
+        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange24h);
     },
     computed: {
         getTrades() {
@@ -171,6 +158,54 @@ export default {
 
         formatPercentage(value) {
             return (value * 100).toFixed(2) + '%';
+        },
+        toggleCurrency() {
+            switch (this.currency) {
+                case '$':
+                    this.currency = 'BTC';
+                    break;
+                case 'BTC':
+                    this.currency = 'ETH';
+                    break;
+                case 'ETH':
+                    this.currency = '$';
+                    break;
+            }
+        },
+        togglePercentage() {
+            if (this.selectedAsset) {
+                switch (this.percentage) {
+                    case '24h':
+                        this.percentage = '7d';
+                        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange7d);
+                        break;
+                    case '7d':
+                        this.percentage = '30d';
+                        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange30d);
+                        break;
+                    case '30d':
+                        this.percentage = '60d';
+                        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange60d);
+                        break;
+                    case '60d':
+                        this.percentage = '90d';
+                        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange90d);
+                        break;
+                    case '90d':
+                        this.percentage = '24h';
+                        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange24h);
+                        break;
+                }
+            }
+        },
+        getPercentageClass() {
+            if (parseFloat(this.percentageValue) > 0) {
+                return 'positive';
+            } else if (parseFloat(this.percentageValue) < 0) {
+                return 'negative';
+            } else {
+                return '';
+            }
         },
 
     }
@@ -269,14 +304,14 @@ export default {
     /* Styles supplémentaires pour ajuster la mise en page de unit et value */
 }
 
-.wallet .value {
+.value {
     margin-top: 4px;
     margin-right: 8px;
     font-size: 32px;
     /* Augmentation de la taille de police */
 }
 
-.wallet .unit {
+.unit {
     margin-top: 4px;
     font-size: 26px;
     /* Augmentation de la taille de police */
@@ -284,7 +319,7 @@ export default {
     /* Curseur en forme de main pour indiquer un élément cliquable */
 }
 
-.wallet .unit:hover {
+.unit:hover {
     text-decoration: underline;
     /* Soulignement au survol de l'élément */
 }
@@ -351,6 +386,13 @@ export default {
     width: auto;
     margin-top: 10px;
     text-align: center;
+}
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
 }
 </style>
   
