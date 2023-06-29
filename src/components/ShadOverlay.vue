@@ -5,8 +5,7 @@
             <div class="block asset">
                 <div class="asset-header">
                     <div class="logo">
-                        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/11568.png" alt="Icon" width="32"
-                            height="32" />
+                        <img :src="'https://s2.coinmarketcap.com/static/img/coins/64x64/' + assetId + '.png'" alt="Icon" width="32" height="32" />
                     </div>
                     <h2 class="title">{{ selectedAsset.asset }}</h2>
                 </div>
@@ -130,7 +129,7 @@
                 <!-- Placeholder for the graph component -->
             </div>
 
-            <button class="close-button" @click="showOverlay = false">Close</button>
+            <button class="close-button" @close="$emit('close')">Close</button>
         </div>
     </div>
 </template>
@@ -156,7 +155,8 @@ export default {
             currentPrice: null,
             currentCurrency: '$',
 
-            assetName: null
+            assetName: null,
+            assetId:null
         }
     },
     props: {
@@ -212,6 +212,7 @@ export default {
             this.currentPrice = this.selectedAsset.currentPrice;
             this.balance = this.selectedAsset.currentPossession;
 
+            console.log('currentPrice ' + this.currentPrice);
             this.currentPriceUSD = parseFloat(this.currentPrice);
             this.currentPriceBTC = parseFloat(this.currentPrice / this.currentBTC.quote.USD.price).toFixed(8);
             this.currentPriceETH = parseFloat(this.currentPrice / this.currentETH.quote.USD.price).toFixed(8);
@@ -222,6 +223,7 @@ export default {
 
             const assetCmc = this.cmc.find(item => item.symbol === this.selectedAsset.asset)
             this.assetName = assetCmc.name;
+            this.assetId = assetCmc.id;
 
         },
         toggleHistoricLines() {

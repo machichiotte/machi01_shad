@@ -13,7 +13,7 @@
     </div>
 
     <Overlay v-if="showOverlay" :selectedAsset="selectedAsset" :openBuyOrders="this.openBuyOrders"
-      :openSellOrders="this.openSellOrders" :trades="this.trades" :cmc="this.cmcData" @close="showOverlay = false" />
+      :openSellOrders="this.openSellOrders" :trades="this.trades" :cmc="this.cmcData" @close="closeOverlay" />
 
   </div>
 </template>
@@ -88,6 +88,10 @@ export default {
     },
   },
   methods: {
+    closeOverlay() {
+      console.log('close or not');
+      this.showOverlay = false;
+    },
     selectionChanged(rows) {
       this.allRows = rows;
     },
