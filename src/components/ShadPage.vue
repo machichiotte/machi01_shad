@@ -12,74 +12,18 @@
       </vue-good-table>
     </div>
 
-    <div class="overlay" v-if="showOverlay">
-      <div class="overlay-content">
-        <h2>{{ selectedAsset.asset }}</h2>
+    <Overlay v-if="showOverlay" :selectedAsset="selectedAsset" :openBuyOrders="this.openBuyOrders"
+      :openSellOrders="this.openSellOrders" :trades="this.trades" @close="showOverlay = false" />
 
-        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/11568.png" alt="Icon" width="32" height="32" />
-
-        <p>ID: {{ selectedAsset.id }}</p>
-
-
-        <p>Ratio: {{ selectedAsset.ratioShad }}</p>
-        <p>Total shad: {{ selectedAsset.totalShad }}</p>
-        <p>Rank: {{ selectedAsset.rank }}</p>
-        <p>Average Entry Price: {{ selectedAsset.averageEntryPrice }}</p>
-        <p>Total buy: {{ selectedAsset.totalBuy }}</p>
-        <p>Max wanted: {{ selectedAsset.maxWanted }}</p>
-        <p>Percentage Difference: {{ selectedAsset.percentageDifference }}</p>
-        <p>Current Price: {{ selectedAsset.currentPrice }}</p>
-        <p>Wallet: {{ selectedAsset.currentPossession }}</p>
-        <p>Profit: {{ selectedAsset.profit }}</p>
-        <p>Total sell: {{ selectedAsset.totalSell }}</p>
-        <p>Recup shad: {{ selectedAsset.recupShad }}</p>
-        <p>Buy: {{ selectedAsset.openBuyOrders }}</p>
-        <p>Sell: {{ selectedAsset.openSellOrders }}</p>
-        <p>Quantite total achetee: {{ selectedAsset.totalAmount }}</p>
-        <p>Balance: {{ selectedAsset.balance }}</p>
-
-        <button @click="toggleHistoricLines">
-          {{ showHistoricLines ? 'Hide Historique' : 'Show Historique' }}
-        </button>
-
-        <div v-if="showHistoricLines">
-          <p v-for="trade in this.getTrades(selectedAsset.asset)" :key="trade.id">{{ JSON.stringify(trade) }}</p>
-        </div>
-
-        <button @click="toggleActiveOrdersLines">
-          {{ showActiveOrdersLines ? 'Hide Open Orders' : 'Show Open Orders' }}
-        </button>
-
-        <div v-if="showActiveOrdersLines">
-          <p v-for="buyOrder in this.openBuyOrders[selectedAsset.asset]" :key="buyOrder.id">aaaa</p>
-          <p v-for="sellOrder in this.openSellOrders[selectedAsset.asset]" :key="sellOrder.id">
-            {{ JSON.stringify(sellOrder) }}</p>
-        </div>
-
-
-        <button @click="togglePercentageLines">
-          {{ showPercentageLines ? 'Hide Percentage' : 'Show Percentage' }}
-        </button>
-
-        <div v-if="showPercentageLines">
-          <p>24h: {{ formatPercentage(selectedAsset.cryptoPercentChange24h) }}</p>
-          <p>7d: {{ formatPercentage(selectedAsset.cryptoPercentChange7d) }}</p>
-          <p>30d: {{ formatPercentage(selectedAsset.cryptoPercentChange30d) }}</p>
-          <p>60d: {{ formatPercentage(selectedAsset.cryptoPercentChange60d) }}</p>
-          <p>90d: {{ formatPercentage(selectedAsset.cryptoPercentChange90d) }}</p>
-        </div>
-
-        <button @click="showOverlay = false">Close</button>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 import { getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB } from '../js/fromDB.js';
-import { getAllCalculs, getTradesHistory } from '../js/calcul.js';
+import { getAllCalculs } from '../js/calcul.js';
 import { columns } from "../js/shadColumns.js";
 import MySellButtonVue from './MySellButton.vue';
+import Overlay from './ShadOverlay.vue';
 
 export default {
   name: "ShadPage",
@@ -105,14 +49,10 @@ export default {
       selectedAsset: {},
       allRows: [],
 
-      showPercentageLines: false,
-      showHistoricLines: false,
-      showActiveOrdersLines: false,
-
     };
   },
   components: {
-    MySellButtonVue
+    MySellButtonVue, Overlay
   },
   computed: {
     paginatedItems() {
@@ -148,18 +88,6 @@ export default {
     },
   },
   methods: {
-    formatPercentage(value) {
-      return (value * 100).toFixed(2) + '%';
-    },
-    togglePercentageLines() {
-      this.showPercentageLines = !this.showPercentageLines;
-    },
-    toggleHistoricLines() {
-      this.showHistoricLines = !this.showHistoricLines;
-    },
-    toggleActiveOrdersLines() {
-      this.showActiveOrdersLines = !this.showActiveOrdersLines;
-    },
     selectionChanged(rows) {
       this.allRows = rows;
     },
@@ -182,12 +110,6 @@ export default {
       this.activeOrders = data;
       this.openBuyOrders = openBuyOrders;
       this.openSellOrders = openSellOrders;
-    },
-    getIconUrl(asset) {
-      return `<img src="${this.getAssetId(asset, this.cmc_data)}" alt="Icon" width="32" height="32"></p>`
-    },
-    getTrades(asset) {
-      return getTradesHistory(asset, this.trades);
     },
 
     prevPage() {
@@ -215,41 +137,5 @@ export default {
 #table {
   height: 700px;
   width: auto;
-}
-
-revo-grid {
-  height: 100%;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: auto;
-  /* Add this line to enable scrolling */
-
-}
-
-.overlay-content {
-  background-color: white;
-  padding: 20px;
-  width: 70%;
-  height: 70%;
-  overflow-y: auto;
-  /* Add this line to enable vertical scrolling */
-}
-
-.overlay h2 {
-  margin-top: 0;
-}
-
-#table td {
-  user-select: none;
 }
 </style>
