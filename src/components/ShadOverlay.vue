@@ -126,6 +126,7 @@
 
             <div class="block graph">
                 <p class="block-title">Graph</p>
+                <Graph></Graph>
                 <!-- Placeholder for the graph component -->
             </div>
 
@@ -136,6 +137,7 @@
   
 <script>
 import { getTradesHistory, getDataBTC, getDataETH } from '../js/calcul.js';
+import Graph from './ShadOverlayGraph.vue';
 
 export default {
     name: "ShadOverlay",
@@ -158,6 +160,9 @@ export default {
             assetName: null,
             assetId:null
         }
+    },
+    components: {
+        Graph
     },
     props: {
         selectedAsset: {
