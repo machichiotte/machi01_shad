@@ -11,63 +11,14 @@
       </li>
     </ul>
 
-    <div>
-      <button @click="updateBalance222('binance')">Update Binance Balance</button>
-      <ul v-if="binanceBalance">
-        <li v-for="order in binanceBalance" :key="order.symbol">
-          {{ order.symbol }} - {{ order.balance }} - {{ order.available }}
-        </li>
-      </ul>
-
-      <button @click="updateBalance222('gateio')">Update Gateio Balance</button>
-      <ul v-if="gateioBalance">
-        <li v-for="order in gateioBalance" :key="order.symbol">
-          {{ order.symbol }} - {{ order.balance }} - {{ order.available }}
-        </li>
-      </ul>
-    </div>
-
-    <div>
-      <button @click="updateActiveOrders222('binance')">Update Binance Active Orders</button>
-      <ul v-if="binanceActiveOrders">
-        <li v-for="order in binanceActiveOrders" :key="order.symbol">
-          {{ order.symbol }} - {{ order.balance }}
-        </li>
-      </ul>
-
-      <button @click="updateActiveOrders222('gateio')">Update Gateio Active Orders</button>
-      <ul v-if="gateioActiveOrders">
-        <li v-for="order in gateioActiveOrders" :key="order.symbol">
-          {{ order.balance }} - {{ order.symbol }}
-        </li>
-      </ul>
-    </div>
-
-    <div>
-      <button @click="updateLoadMarkets222('binance')">Update Binance Load Market</button>
-      <ul v-if="binanceLoadMarkets">
-        <li v-for="order in binanceLoadMarkets" :key="order.symbol">
-          {{ order.base }} - {{ order.quote }} - {{ order.amountMin }} - {{ order.priceMin }} - {{
-            order.precisionAmount }} - {{ order.precisionPrice }}
-        </li>
-      </ul>
-
-      <button @click="updateLoadMarkets222('gateio')">Update Gateio Load Market</button>
-      <ul v-if="gateioLoadMarkets">
-        <li v-for="order in gateioLoadMarkets" :key="order.symbol">
-          {{ order.base }} - {{ order.quote }} - {{ order.amountMin }} - {{ order.priceMin }} - {{
-            order.precisionAmount }} - {{ order.precisionPrice }}
-        </li>
-      </ul>
-    </div>
-
-
     <button @click="updateAllTrades()">Update All Trades</button>
 
     <div>
+      <button @click="updateAllByExchange('binance')">Update All Binance</button>
       <button @click="updateAllByExchange('kucoin')">Update All Kucoin</button>
       <button @click="updateAllByExchange('huobi')">Update All Huobi</button>
       <button @click="updateAllByExchange('okex')">Update All Okex</button>
+      <button @click="updateAllByExchange('gateio')">Update All Gate IO</button>
     </div>
 
     <!--<div>
@@ -210,47 +161,6 @@ export default {
     async updateActiveOrders(exchangeId) {
       const response = await fetch(`${serverHost}/update/activeOrders/${exchangeId}`);
       return response;
-    },
-
-    //TODO remove when binance & gateio are working
-    async updateBalance222(exchange) {
-      loadingSpin();
-
-      const response = await fetch(`${serverHost}/update/balance/${exchange}`);
-      const data = await response.json();
-
-      if (response.status === 200) {
-        this[`${exchange}Balance`] = data.balance;
-        successSpin('Save completed', `Résultat : ${data.length}`, true, true);
-      } else {
-        errorSpin('Error', `${data.error}`, false, true);
-      }
-    },
-    async updateActiveOrders222(exchange) {
-      loadingSpin();
-
-      const response = await fetch(`${serverHost}/update/activeOrders/${exchange}`);
-      const data = await response.json();
-
-      if (response.status === 200) {
-        this[`${exchange}ActiveOrders`] = data;
-        successSpin('Save completed', `Résultat : ${data.length}`, true, true);
-      } else {
-        errorSpin('Error', `${data.error}`, false, true);
-      }
-    },
-    async updateLoadMarkets222(exchangeId) {
-      loadingSpin();
-
-      const response = await fetch(`${serverHost}/update/loadMarkets/${exchangeId}`);
-      const data = await response.json();
-
-      if (response.status === 200) {
-        this[`${exchangeId}LoadMarkets`] = data;
-        successSpin('Save completed', `Résultat : ${data.length}`, true, true);
-      } else {
-        errorSpin('Error', `${data.error}`, false, true);
-      }
     },
 
     //TODO complete trades part

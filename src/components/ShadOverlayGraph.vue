@@ -1,44 +1,54 @@
 <template>
-    <div class="graph">
-        <!-- Code HTML/CSS pour afficher le graphique -->
-        <Bar :data="data" :options="options" />
-
+    <div>
+        <canvas ref="chart"></canvas>
     </div>
 </template>
   
 <script>
-import {
-    Chart as ChartJS,
-    Title,
-    Tooltip,
-    Legend,
-    BarElement,
-    CategoryScale,
-    LinearScale
-} from 'chart.js'
-import { Bar } from 'vue-chartjs'
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+import { Chart, LinearScale } from 'chart.js/auto';
+Chart.register(LinearScale);
 
 export default {
-    name: 'App',
-    components: {
-        Bar
+    name: "ShadOverlayGraph",
+    mounted() {
+        this.renderChart();
     },
-    data() {
-        return {
-            data: {
-                labels: ['January', 'February', 'March'],
-                datasets: [{ data: [40, 20, 12] }]
-            },
-            options: {
-                responsive: true
-            }
-        }
-    }
-}
+    methods: {
+        renderChart() {
+            const ctx = this.$refs.chart.getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [
+                        {
+                            label: 'Sales',
+                            data: [120, 150, 180, 170, 200, 250, 210, 250, 150, 140],
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+        },
+    },
+};
 </script>
   
 <style scoped>
-/* Styles spécifiques au graphique */
+canvas {
+    max-width: 600px;
+    margin: 0 auto;
+}
 </style>
+  
