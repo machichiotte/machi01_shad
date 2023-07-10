@@ -216,7 +216,6 @@ function getDataETH(cmcData) {
     return cmcData.find(item => item.symbol === 'ETH');
 }
 
-
 function getTradesHistory(asset, trades) {
     return trades.filter(trade => trade.pair === `${asset}/USDT`);
 }
@@ -250,7 +249,6 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
         totalBuy
     } = getTotalAmountAndBuy(asset, exchangeId, trades);
 
-
     const maxWanted = getMaxWanted(rank, totalBuy);
     const recupShad = getRecupShad(totalBuy, totalSell, maxWanted);
     const percentageDifference = getPercentageDifference(currentPrice, averageEntryPrice);
@@ -261,7 +259,6 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     const recupTp1 = getRecupTp1(totalBuy, totalSell, maxWanted, recupShad, recupTpX, totalShad);
 
     const { amountTp1, amountTp2, amountTp3, amountTp4, amountTp5, priceTp1, priceTp2, priceTp3, priceTp4, priceTp5 } = calculateAmountsAndPrices(recupTp1, averageEntryPrice, balance, totalBuy, totalSell, totalShad, recupTpX);
-
 
     return {
         iconUrl,

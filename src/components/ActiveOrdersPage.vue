@@ -1,55 +1,37 @@
 <template>
-  <div class="market-page">
-    <h1>Gestion des ordres</h1>
-    <h2>Ordres en cours</h2>
-
-    <div class="pagination">
-      <button v-if="currentPage > 1" @click="prevPage">Prev</button>
-      <button v-for="page in pages" :key="page" @click="changePage(page)" :class="{ active: currentPage === page }">{{
-        page }}</button>
-      <button v-if="currentPage < pageCount" @click="nextPage">Next</button>
+  <div class="activeorders-page">
+    <h1>Ordres en cours</h1>
+    <div id="table">
+      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
+        :search-options="{ enabled: true }" :pagination-options="{ enabled: true }"
+        v-on:selected-rows-change="selectionChanged" v-on:cell-click="onCellClick">
+        <template #selected-row-actions>
+          <MySellButtonVue :model="allRows" />
+        </template>
+      </vue-good-table>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>oId</th>
-          <th>Platform</th>
-          <th>Symbol</th>
-          <th>Type</th>
-          <th>Side</th>
-          <th>Amount</th>
-          <th>Price</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in paginatedItems" :key="item.id">
-          <td>{{ item.oId }}</td>
-          <td>{{ item.platform }}</td>
-          <td>{{ item.symbol }}</td>
-          <td>{{ item.type }}</td>
-          <td>{{ item.side }}</td>
-          <td>{{ item.amount }}</td>
-          <td>{{ item.price }}</td>
-          <td><button @click="deleteItem(item)">Cancel</button></td>
-        </tr>
-      </tbody>
-    </table>
-    
   </div>
 </template>
 
 <script>
+//TODO myDeleteButton instead of MySellButton
 const serverHost = "http://localhost:3000";
+import { activeOrdersColumns } from "../js/shadColumns.js";
+import MySellButtonVue from './MySellButton.vue';
 
 export default {
   name: "ActiveOrdersPage",
   data() {
     return {
       items: [],
-      itemsPerPage: 20,
+      itemsPerPage: 2000,
       currentPage: 1,
+      columns: activeOrdersColumns,
+
     };
+  },
+  components: {
+    MySellButtonVue
   },
   computed: {
     paginatedItems() {
@@ -67,8 +49,33 @@ export default {
       }
       return pages;
     },
+    rows() {
+      return this.paginatedItems.map((item) => {
+        return {
+          'oId': item['oId'],
+          'platform': item['platform'],
+          'symbol': item['symbol'],
+          'type': item['type'],
+          'side': item['side'],
+          'amount': item['amount'],
+          'price': item['price'],
+        };
+      });
+    },
   },
   methods: {
+    selectionChanged(rows) {
+      this.allRows = rows;
+    },
+    onCellClick(params) {
+      // Vérifiez si la colonne cliquée est la colonne "asset"
+      if (params.column.field === 'asset') {
+        // Affichez l'overlay
+        this.showOverlay = true;
+        // Définissez la ligne sélectionnée
+        this.selectedAsset = params.row;
+      }
+    },
     async deleteItem(item) {
       // Appeler l'API pour annuler l'ordre à l'index donné
       try {
@@ -105,26 +112,12 @@ export default {
 </script>
 
 <style scoped>
-.market-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.activeorders-page {
+  overflow-x: auto;
 }
 
-table {
-  border-collapse: collapse;
-  width: 80%;
-  margin-top: 20px;
-}
-
-th {
-  font-size: 20px;
-}
-
-td,
-th {
-  border: 1px solid black;
-  padding: 10px;
-  text-align: center;
+#table {
+  height: 700px;
+  width: auto;
 }
 </style>

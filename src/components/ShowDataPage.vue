@@ -1,44 +1,26 @@
 <template>
-  <div>
-    <h1>Show data</h1>
-    <h2>CMC</h2>
-
-    
-    <table>
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Name</th>
-          <th>Symbol</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in paginatedItems" :key="item.name">
-          <td>{{ item['cmc_rank'] }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.symbol }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="pagination">
-      <button v-if="currentPage > 1" @click="prevPage">Prev</button>
-      <button v-for="page in pages" :key="page" @click="changePage(page)" :class="{ active: currentPage === page }">{{
-        page }}</button>
-      <button v-if="currentPage < pageCount" @click="nextPage">Next</button>
+  <div class="showcmc-page">
+    <h1>CMC</h1>
+    <div id="table">
+      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true"
+        :search-options="{ enabled: true }" :pagination-options="{ enabled: true }">
+      </vue-good-table>
     </div>
   </div>
 </template>
 
 <script>
 const serverHost = "http://localhost:3000";
+import { cmcColumns } from "../js/shadColumns.js";
 
 export default {
   name: "ShowDataPage",
   data() {
     return {
       items: [],
-      itemsPerPage: 100,
+      itemsPerPage: 20000,
       currentPage: 1,
+      columns: cmcColumns,
     };
   },
   computed: {
@@ -56,6 +38,15 @@ export default {
         pages.push(i);
       }
       return pages;
+    },
+    rows() {
+      return this.paginatedItems.map((item) => {
+        return {
+          'rank': item['cmc_rank'],
+          'name': item['name'],
+          'symbol': item['symbol']
+        };
+      });
     },
   },
   methods: {
@@ -85,26 +76,13 @@ export default {
 </script>
 
 <style scoped>
-.market-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.showcmc-page {
+  overflow-x: auto;
 }
 
-table {
-  border-collapse: collapse;
-  width: 80%;
-  margin-top: 20px;
+#table {
+  height: 700px;
+  width: auto;
 }
 
-th {
-  font-size: 20px;
-}
-
-td,
-th {
-  border: 1px solid black;
-  padding: 10px;
-  text-align: center;
-}
 </style>

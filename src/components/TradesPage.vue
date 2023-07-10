@@ -1,61 +1,26 @@
 <template>
-  <div class="market-page">
+  <div class="trades-page">
     <h1>Liste des trades</h1>
-
-    <div class="pagination">
-      <button v-if="currentPage > 1" @click="prevPage">Prev</button>
-      <button v-for="page in pages" :key="page" @click="changePage(page)" :class="{ active: currentPage === page }">{{
-        page }}</button>
-      <button v-if="currentPage < pageCount" @click="nextPage">Next</button>
+    <div id="table">
+      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
+        :search-options="{ enabled: true }" :pagination-options="{ enabled: true }">
+      </vue-good-table>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>altA</th>
-          <th>altB</th>
-          <th>date</th>
-          <th>pair</th>
-          <th>type</th>
-          <th>price</th>
-          <th>amount</th>
-          <th>total</th>
-          <th>fee</th>
-          <th>feecoin</th>
-          <th>platform</th>
-          <th>explatform</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in paginatedItems" :key="item.id"
-          :class="{ 'sell-row': item.type === 'sell', 'buy-row': item.type === 'buy' }">
-          <td>{{ item.altA }}</td>
-          <td>{{ item.altB }}</td>
-          <td>{{ item.date }}</td>
-          <td>{{ item.pair }}</td>
-          <td>{{ item.type }}</td>
-          <td>{{ item.price }}</td>
-          <td>{{ item.amount }}</td>
-          <td>{{ item.total }}</td>
-          <td>{{ item.fee }}</td>
-          <td>{{ item.feecoin }}</td>
-          <td>{{ item.platform }}</td>
-          <td>{{ item.explatform }}</td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </template>
 
 <script>
 const serverHost = "http://localhost:3000";
+import { tradesColumns } from "../js/shadColumns.js";
 
 export default {
   name: "TradesPage",
   data() {
     return {
       items: [],
-      itemsPerPage: 100,
+      itemsPerPage: 10000,
       currentPage: 1,
+      columns: tradesColumns,
     };
   },
   computed: {
@@ -74,6 +39,24 @@ export default {
       }
       return pages;
     },
+    rows() {
+      return this.paginatedItems.map((item) => {
+        return {
+          'altA': item['altA'],
+          'altB': item['altB'],
+          'date': item['date'],
+          'pair': item['pair'],
+          'type': item['type'],
+          'price': item['price'],
+          'amount': item['amount'],
+          'total': item['total'],
+          'fee': item['fee'],
+          'feecoin': item['feecoin'],
+          'platform': item['platform'],
+          'explatform': item['explatform']
+        };
+      })
+    }
   },
   methods: {
     async getTradesFromDB() {
@@ -111,27 +94,13 @@ export default {
 </script>
 
 <style scoped>
-.market-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.trades-page {
+  overflow-x: auto;
 }
 
-table {
-  border-collapse: collapse;
-  width: 80%;
-  margin-top: 20px;
-}
-
-th {
-  font-size: 20px;
-}
-
-td,
-th {
-  border: 1px solid black;
-  padding: 10px;
-  text-align: center;
+#table {
+  height: 700px;
+  width: auto;
 }
 
 .sell-row {

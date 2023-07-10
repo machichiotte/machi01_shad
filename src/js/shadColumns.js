@@ -5,7 +5,38 @@
 //import { createColoredCell, createOnClickCell, createPlatformColoredCell } from "./cells.js";
 //import { createColoredCell, createPlatformColoredCell, createOnClickCell } from "./cells.js";
 
-export const columns = [
+const cmcColumns = [
+  { label:'Rank', field : 'rank'},
+  { label:'Name', field : 'name'},
+  { label:'Symbol', field : 'symbol'},
+]
+
+const activeOrdersColumns = [
+  { label: 'oId', field: 'oId' },
+  { label: 'Platform', field: 'platform' },
+  { label: 'Symbol', field: 'symbol' },
+  { label: 'Type', field: 'type' },
+  { label: 'Side', field: 'side' },
+  { label: 'Amount', field: 'amount' },
+  { label: 'Price', field: 'price' },
+]
+
+const tradesColumns = [
+  { label: 'altA', field: 'altA' },
+  { label: 'altB', field: 'altB' },
+  { label: 'Date', field: 'date' },
+  { label: 'Pair', field: 'pair' },
+  { label: 'Type', field: 'type' },
+  { label: 'Price', field: 'price' },
+  { label: 'Amount', field: 'amount' },
+  { label: 'Total', field: 'total' },
+  { label: 'Fee', field: 'fee' },
+  { label: 'Feecoin', field: 'feecoin' },
+  { label: 'Platform', field: 'platform' },
+  { label: 'Explatform', field: 'explatform' }
+]
+
+const shadColumns = [
   {
     label: 'Icon',
     field: "iconUrl",
@@ -94,3 +125,5 @@ export const columns = [
   { label: "Exchange", field: "exchangeId" }
 
 ];
+
+module.exports = { cmcColumns, activeOrdersColumns, tradesColumns, shadColumns }

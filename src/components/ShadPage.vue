@@ -21,7 +21,7 @@
 <script>
 import { getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB } from '../js/fromDB.js';
 import { getAllCalculs } from '../js/calcul.js';
-import { columns } from "../js/shadColumns.js";
+import { shadColumns } from "../js/shadColumns.js";
 import MySellButtonVue from './MySellButton.vue';
 import Overlay from './ShadOverlay.vue';
 
@@ -39,12 +39,7 @@ export default {
       itemsPerPage: 1000,
       currentPage: 1,
 
-      columns: columns,
-      paginationConfig: {
-        pageSize: 500,
-        totalCount: 0,
-        current: 1,
-      },
+      columns: shadColumns,
       showOverlay: false,
       selectedAsset: {},
       allRows: [],
@@ -89,7 +84,6 @@ export default {
   },
   methods: {
     closeOverlay() {
-      console.log('close or not');
       this.showOverlay = false;
     },
     selectionChanged(rows) {
