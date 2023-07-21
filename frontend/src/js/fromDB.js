@@ -2,7 +2,7 @@ const serverHost = "http://localhost:3000";
 
 async function getBalanceFromDB() {
     try {
-        const response = await fetch(serverHost + '/get/balance');
+        const response = await fetch(`${serverHost}/get/balance`);
         const data = await response.json();
         return data;
     } catch (err) {
@@ -12,7 +12,7 @@ async function getBalanceFromDB() {
 
 async function getTradesFromDB() {
     try {
-        const response = await fetch(serverHost + '/get/trades');
+        const response = await fetch(`${serverHost}/get/trades`);
         const data = await response.json();
         return data;
     } catch (err) {
@@ -21,7 +21,7 @@ async function getTradesFromDB() {
 }
 async function getStratsFromDB() {
     try {
-        const response = await fetch(serverHost + '/get/strat');
+        const response = await fetch(`${serverHost}/get/strat`);
         const data = await response.json();
         return data
     } catch (err) {
@@ -30,7 +30,7 @@ async function getStratsFromDB() {
 }
 async function getActiveOrdersFromDB() {
     try {
-        const response = await fetch(serverHost + '/get/activeOrders');
+        const response = await fetch(`${serverHost}/get/activeOrders`);
         const data = await response.json();
 
         const openBuyOrders = {};
@@ -59,7 +59,7 @@ async function getActiveOrdersFromDB() {
 
 async function getCmcDataFromDB() {
     try {
-        const response = await fetch(serverHost + '/get/cmcData');
+        const response = await fetch(`${serverHost}/get/cmcData`);
         const data = await response.json();
         return data;
     } catch (err) {

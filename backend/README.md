@@ -77,7 +77,7 @@ The backend relies on the following Node.js packages:
 
 ## License
 
-This project is licensed under the MIT License. See the [MIT License](https://www.mit.edu/~amini/LICENSE.md) file for more information.
+This project is licensed under the ISC License. See the [ISC License](https://opensource.org/license/isc-license-txt/) file for more information.
 
 ## Contact
 
