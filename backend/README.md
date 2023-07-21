@@ -24,7 +24,7 @@ Replace `your_mongodb_connection_string` with the actual connection string for y
 
 To start the backend server, run the following command:
 
-npm start
+`node server.js`
 
 The server will start running on `http://localhost:3000`. The backend is now ready to handle incoming requests.
 
