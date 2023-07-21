@@ -64,9 +64,6 @@ export default {
     mounted() {
         // Récupération des données des trades et des prix depuis vos sources de données
 
-        // Calcul des quantités
-        this.calculateQuantities();
-
         // Préparation des données pour le graphique
         this.prepareChartData();
 
@@ -74,10 +71,6 @@ export default {
         this.initChart();
     },
     methods: {
-        calculateQuantities() {
-            // Calcul des quantités à chaque date
-            // Parcourez les trades et effectuez les calculs appropriés
-        },
         prepareChartData() {
             // Préparation des données pour le graphique
             this.chartData = {
