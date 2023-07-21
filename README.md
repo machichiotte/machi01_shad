@@ -79,5 +79,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-If you have any questions or need further assistance, please feel free to contact us at [contact@machi-gpt-shad.com](mailto:contact@machi-gpt-shad.com).
+If you have any questions or need further assistance, please feel free to contact us at [machichiotte@gmail.com](mailto:machichiotte@gmail.com).
 
