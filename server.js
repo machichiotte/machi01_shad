@@ -501,7 +501,7 @@ function createExchangeInstanceWithReq(exchangeId, req) {
   };
 }
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000; //3000 before
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
