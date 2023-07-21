@@ -15,8 +15,8 @@ The backend is built using Node.js and Express.js, along with other necessary li
 
 Before running the backend, make sure to set up the environment variables. Create a `.env` file in the root directory of the backend with the following content:
 
-MONGODB_URI=your_mongodb_connection_string
-CMC_APIKEY=your_coinmarketcap_api_key
+- MONGODB_URI=your_mongodb_connection_string
+- CMC_APIKEY=your_coinmarketcap_api_key
 
 Replace `your_mongodb_connection_string` with the actual connection string for your MongoDB database, and `your_coinmarketcap_api_key` with your API key for CoinMarketCap.
 
@@ -77,7 +77,7 @@ The backend relies on the following Node.js packages:
 
 ## License
 
-This project is licensed under the ISC License. See the [LICENSE](LICENSE) file for more information.
+This project is licensed under the MIT License. See the [MIT License](https://www.mit.edu/~amini/LICENSE.md) file for more information.
 
 ## Contact
 
