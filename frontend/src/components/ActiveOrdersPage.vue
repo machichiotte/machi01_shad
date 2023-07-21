@@ -88,7 +88,7 @@ export default {
     },
     async getActiveOrderFromDB() {
       try {
-        const response = await fetch(serverHost + '/get/activeOrders');
+        const response = await fetch(`${serverHost}/get/activeOrders`);
         const data = await response.json();
         this.items = data;
       } catch (err) {

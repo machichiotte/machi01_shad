@@ -52,7 +52,7 @@ export default {
   methods: {
     async getCmcData() {
       try {
-        const response = await fetch(serverHost + '/get/cmcData');
+        const response = await fetch(`${serverHost}/get/cmcData`);
         const data = await response.json();
         this.items = data;
       } catch (err) {

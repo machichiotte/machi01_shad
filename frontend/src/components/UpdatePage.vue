@@ -91,7 +91,7 @@ export default {
 
     async getBalance() {
       try {
-        const response = await fetch(serverHost + '/get/balance');
+        const response = await fetch(`${serverHost}/get/balance`);
         const data = await response.json();
         this.balance = data;
       } catch (err) {
@@ -102,7 +102,7 @@ export default {
     async updateCmcData() {
       loadingSpin();
 
-      const response = await fetch(serverHost + '/update/cmcData');
+      const response = await fetch(`${serverHost}/update/cmcData`);
       const data = await response.json();
 
       if (response.status === 200) {

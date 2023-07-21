@@ -61,7 +61,7 @@ export default {
   methods: {
     async getTradesFromDB() {
       try {
-        const response = await fetch(serverHost + '/get/trades');
+        const response = await fetch(`${serverHost}/get/trades`);
         console.log("resp :: " + response)
         const data = await response.json();
         this.items = data;
