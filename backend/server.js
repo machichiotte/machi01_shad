@@ -21,7 +21,7 @@ app.offlineMode = isOfflineMode;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const { mapBalance, mapActiveOrders, mapLoadMarkets, mapTrades } = require('./utils/mapping');
+const { mapBalance, mapActiveOrders, mapLoadMarkets, mapTrades } = require('./utils/mapping.js');
 
 // Connect to the MongoDB database
 connectMDB();
@@ -370,7 +370,8 @@ async function deleteOrder(req, res) {
     res.json(data);
     //mise a jour activeOrder si envie ?
   } catch (err) {
-    console.error(err);
+    console.log('errorrr : ' + err);
+    //console.error(err);
     res.status(500).send({ error: 'Internal server error' });
   }
 }
@@ -389,7 +390,8 @@ async function createBunchOrders(req, res) {
     res.status(200).json({ message: result, status: 200 })
 
   } catch (err) {
-    console.error(err);
+    //console.error(err);
+    console.log('error cre :: ' + err);
     res.status(500).json({ error: 'Internal server error', status: 500 });
   }
 }
@@ -439,7 +441,8 @@ async function cancelAllOrders(req, res) {
 
     res.status(200).json({ message: result, status: 200 })
   } catch (err) {
-    console.error(err);
+    console.log('del err :: ' + err)
+    //console.error(err);
     res.status(500).json({ error: 'Internal server error', status: 500 });
   }
 }

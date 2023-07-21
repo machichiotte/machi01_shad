@@ -25,15 +25,25 @@ export default {
                 const asset = selectedRows[rows].asset;
                 const exchangeId = selectedRows[rows].exchangeId;
 
+                let resultText = `${asset}<br>`
+
                 console.log(asset);
                 console.log(exchangeId);
+                console.log(selectedRows[rows].openSellOrders);
+                console.log(selectedRows[rows].openBuyOrders);
 
+                let isNeedCancel = false;
+                let cancel;
 
-                const cancel = await cancelAllOrders(exchangeId, asset);
+                //TODO check pour ne suppr que les sell orders 
+                if (selectedRows[rows].openSellOrders > 0) {
+                    isNeedCancel = true;
+                    cancel = await cancelAllOrders(exchangeId, asset);
 
-                let resultText = `Cancel : ${cancel.status}<br>`;
+                    resultText += `Cancel : ${cancel.status}<br>`;
+                }
 
-                if (cancel.status == 200) {
+                if (!isNeedCancel || cancel.status == 200) {
 
                     const amounts = [selectedRows[rows].amountTp1, selectedRows[rows].amountTp2, selectedRows[rows].amountTp3, selectedRows[rows].amountTp4, selectedRows[rows].amountTp5];
                     const prices = [selectedRows[rows].priceTp1, selectedRows[rows].priceTp2, selectedRows[rows].priceTp3, selectedRows[rows].priceTp4, selectedRows[rows].priceTp5];

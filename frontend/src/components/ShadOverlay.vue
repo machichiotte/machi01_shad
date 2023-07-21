@@ -126,7 +126,7 @@
 
             <div class="block graph">
                 <p class="block-title">Graph</p>
-                <Graph></Graph>
+                <ShadOverlayGraph :trades="getTrades"></ShadOverlayGraph>
                 <!-- Placeholder for the graph component -->
             </div>
 
@@ -137,7 +137,7 @@
   
 <script>
 import { getTradesHistory, getDataBTC, getDataETH } from '../js/calcul.js';
-import Graph from './ShadOverlayGraph.vue';
+import ShadOverlayGraph from './ShadOverlayGraph.vue';
 
 export default {
     name: "ShadOverlay",
@@ -162,7 +162,7 @@ export default {
         }
     },
     components: {
-        Graph
+        ShadOverlayGraph
     },
     props: {
         selectedAsset: {
