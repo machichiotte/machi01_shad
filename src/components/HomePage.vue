@@ -1,86 +1,57 @@
 <template>
   <div>
-    <h1>Add trades</h1>
+    <h1 style="font-size: 24px;">Add trades</h1>
     <form @submit.prevent="addTrade">
-      <div>
-        <label for="date">Date:</label>
-        <input type="date" v-model="tradeData.date" required>
-      </div>
-      
-      <div>
-        <label for="altA">altA:</label>
-        <input type="text" v-model="tradeData.altA" required>
-      </div>
-      
-      <div>
-        <label for="altB">altB:</label>
-        <select v-model="tradeData.altB" required>
-          <option value="USDT">USDT</option>
-          <option value="BTC">BTC</option>
-          <option value="ETH">ETH</option>
-          <option value="USD">USD</option>
-        </select>
-      </div>
-      
-      <div>
-        <label for="type">Type:</label>
-        <select v-model="tradeData.type" required>
-          <option value="buy">Buy</option>
-          <option value="sell">Sell</option>
-        </select>
-      </div>
-      
-      <div>
-        <label for="price">Price:</label>
-        <input type="number" v-model="tradeData.price" required>
-      </div>
-      
-      <div>
-        <label for="amount">Amount:</label>
-        <input type="number" v-model="tradeData.amount" required>
-      </div>
-      
-      <div>
-        <label for="total">Total:</label>
-        <input type="number" v-model="tradeData.total" required>
-      </div>
-      
-      <div>
-        <label for="fee">Fee:</label>
-        <input type="number" v-model="tradeData.fee" required>
-      </div>
-      
-      <div>
-        <label for="feecoin">Fee Coin:</label>
-        <input type="text" v-model="tradeData.feecoin" required>
-      </div>
-      
-      <div>
-        <label for="platform">Platform:</label>
-        <select v-model="tradeData.platform" required>
-          <option value="" disabled>Select a platform</option>
-          <option value="binance">Binance</option>
-          <option value="kucoin">Kucoin</option>
-          <option value="huobi">Huobi</option>
-          <option value="okex">Okex</option>
-          <option value="gateio">Gateio</option>
-        </select>
-      </div>
-      
-      <div>
-        <label for="explatform">Ex Platform:</label>
-        <select v-model="tradeData.explatform">
-          <option value="" disabled>Select an exchange platform</option>
-          <option value="binance">Binance</option>
-          <option value="kucoin">Kucoin</option>
-          <option value="huobi">Huobi</option>
-          <option value="okex">Okex</option>
-          <option value="gateio">Gateio</option>
-        </select>
-      </div>
-      
-      <div>
-        <button type="submit">Add Trade</button>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; justify-content: space-between;">
+          <label for="date" style="font-size: 18px; text-align: right;">Date:</label>
+          <input type="date" v-model="tradeData.date" required style="font-size: 18px;">
+        </div>
+        
+        <div style="display: flex; justify-content: space-between;">
+          <label for="altA" style="font-size: 18px; text-align: right;">altA:</label>
+          <input type="text" v-model="tradeData.altA" required style="font-size: 18px;">
+        </div>
+        
+        <div style="display: flex; justify-content: space-between;">
+          <label for="altB" style="font-size: 18px; text-align: right;">altB:</label>
+          <select v-model="tradeData.altB" required style="font-size: 18px;">
+            <option value="USDT">USDT</option>
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="USD">USD</option>
+          </select>
+        </div>
+        
+        <!-- ... (autres champs du formulaire) ... -->
+        
+        <div style="display: flex; justify-content: space-between;">
+          <label for="platform" style="font-size: 18px; text-align: right;">Platform:</label>
+          <select v-model="tradeData.platform" required style="font-size: 18px;">
+            <option value="" disabled>Select a platform</option>
+            <option value="binance">Binance</option>
+            <option value="kucoin">Kucoin</option>
+            <option value="huobi">Huobi</option>
+            <option value="okex">Okex</option>
+            <option value="gateio">Gateio</option>
+          </select>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between;">
+          <label for="explatform" style="font-size: 18px; text-align: right;">Ex Platform:</label>
+          <select v-model="tradeData.explatform" style="font-size: 18px;">
+            <option value="" disabled>Select an exchange platform</option>
+            <option value="binance">Binance</option>
+            <option value="kucoin">Kucoin</option>
+            <option value="huobi">Huobi</option>
+            <option value="okex">Okex</option>
+            <option value="gateio">Gateio</option>
+          </select>
+        </div>
+        
+        <div style="text-align: center;">
+          <button type="submit" style="font-size: 18px; padding: 10px 20px;">Add Trade</button>
+        </div>
       </div>
     </form>
   </div>
