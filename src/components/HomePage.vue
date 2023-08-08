@@ -73,13 +73,14 @@ export default {
         if (response.ok) {
           // Réinitialiser le formulaire ou afficher un message de succès
           // this.tradeData = { ... } // Réinitialiser les champs
-          // alert('Trade ajouté avec succès !');
+          successSpin('Save completed', 'Trade added successfully.', true, true);
         } else {
-          // Gérer les erreurs ici, par exemple afficher un message d'erreur
+          const responseData = await response.json();
+          errorSpin('Error', responseData.error, false, true);
         }
       } catch (error) {
         console.error(error);
-        // Gérer les erreurs ici, par exemple afficher un message d'erreur
+        errorSpin('Error', 'An error occurred while adding the trade.', false, true);
       }
     },
   },
