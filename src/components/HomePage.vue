@@ -1,4 +1,4 @@
-<template>
+Oi<template>
   <div>
     <h1 style="font-size: 24px;">Add trades</h1>
     <form @submit.prevent="addTrade">
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
+import {successSpin, errorSpin } from '../js/spinner.js'
 
 export default {
   methods: {
