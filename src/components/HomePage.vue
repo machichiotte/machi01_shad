@@ -97,17 +97,9 @@ export default {
   methods: {
     async addTrade() {
       try {
-        const response = await fetch('/add/trade', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(this.tradeData),
-        });
+        const response = await fetch('/add/trade', this.tradeData);
 
         if (response.ok) {
-          // Réinitialiser le formulaire ou afficher un message de succès
-          // this.tradeData = { ... } // Réinitialiser les champs
           successSpin('Save completed', 'Trade added successfully.', true, true);
         } else {
           const responseData = await response.json();
