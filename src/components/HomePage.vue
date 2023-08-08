@@ -72,7 +72,7 @@
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <label for="explatform" style="font-size: 18px; text-align: right;">Ex Platform:</label>
             <select v-model="tradeData.explatform" style="font-size: 18px;">
-              <option value="" disabled>Select an exchange platform</option>
+              <option value="" disabled>Select a platform</option>
               <option value="binance">Binance</option>
               <option value="kucoin">Kucoin</option>
               <option value="huobi">Huobi</option>
