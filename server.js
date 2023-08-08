@@ -458,7 +458,7 @@ async function addTrade(req, res) {
     res.status(200).json(savedTrade);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Erreur lors de l\'ajout du trade' });
+    res.status(500).json({ error: 'Erreur lors de l\'ajout du trade : ' + tradeData + '-' + JSON.stringify(trade data)});
   }
 }
 
