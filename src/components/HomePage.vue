@@ -97,8 +97,10 @@ export default {
   methods: {
     async addTrade() {
       try {
-        const response = await fetch('/add/trade', this.tradeData);
-
+        const response = await fetch('/add/trade', { method: 'POST', 
+          headers: { 'Content-Type': 'application/json' }, 
+          body: JSON.stringify({ tradeData: this.tradeData }), 
+ });
         if (response.ok) {
           successSpin('Save completed', 'Trade added successfully.', true, true);
         } else {
@@ -107,7 +109,7 @@ export default {
         }
       } catch (error) {
         console.error(error);
-        errorSpin('Error', 'An error occurred while adding the trade. : ' + error + ' -- ' + 'td:: ' + this.tradeData +' std:: ' + JSON.stringify(this.tradeData), false, true);
+        errorSpin('Error', 'An error occurred while adding the trade : ' + error, false, true);
       }
     },
   },
