@@ -34,22 +34,22 @@
           
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <label for="price" style="font-size: 18px; text-align: right;">Price:</label>
-            <input type="number" v-model="tradeData.price" required style="font-size: 18px;">
+            <input type="number" v-model="tradeData.price" step="any" required style="font-size: 18px;">
           </div>
           
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <label for="amount" style="font-size: 18px; text-align: right;">Amount:</label>
-            <input type="number" v-model="tradeData.amount" required style="font-size: 18px;">
+            <input type="number" v-model="tradeData.amount" step="any" required style="font-size: 18px;">
           </div>
           
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <label for="total" style="font-size: 18px; text-align: right;">Total:</label>
-            <input type="number" v-model="tradeData.total" required style="font-size: 18px;">
+            <input type="number" v-model="tradeData.total" step="any" required style="font-size: 18px;">
           </div>
           
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <label for="fee" style="font-size: 18px; text-align: right;">Fee:</label>
-            <input type="number" v-model="tradeData.fee" required style="font-size: 18px;">
+            <input type="number" v-model="tradeData.fee" step="any" required style="font-size: 18px;">
           </div>
           
           <div style="display: flex; justify-content: space-between; align-items: center;">
