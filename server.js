@@ -52,6 +52,8 @@ app.post('/cancel/order', deleteOrder);
 app.post('/cancel/all-orders', cancelAllOrders);
 app.post('/bunch-orders', createBunchOrders);
 
+app.post('/add/trade', addTrade);
+
 //get
 async function getData(req, res, collection, mockDataFile) {
   try {
@@ -444,6 +446,19 @@ async function cancelAllOrders(req, res) {
     console.log('del err :: ' + err)
     //console.error(err);
     res.status(500).json({ error: 'Internal server error', status: 500 });
+  }
+}
+
+async function addTrade(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_TRADES;
+  const tradeData = req.body;
+
+  try {
+    const savedTrade = await saveObjectDataMDB(tradeData, collection);
+    res.status(200).json(savedTrade);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erreur lors de l\'ajout du trade' });
   }
 }
 
