@@ -107,7 +107,7 @@ export default {
         }
       } catch (error) {
         console.error(error);
-        errorSpin('Error', 'An error occurred while adding the trade.', false, true);
+        errorSpin('Error', 'An error occurred while adding the trade. : ' + error + ' -- ' + this.tradeData, false, true);
       }
     },
   },
