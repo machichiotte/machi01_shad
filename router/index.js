@@ -1,6 +1,6 @@
 // router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '@/components/HomePage';
+import Home from '@/components/HomePage';
 import Shad from '@/components/ShadPage';
 import ActiveOrders from '@/components/ActiveOrdersPage';
 import ShowData from '@/components/ShowDataPage';
