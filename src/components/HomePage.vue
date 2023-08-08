@@ -2,48 +2,86 @@
   <div>
     <h1>Add trades</h1>
     <form @submit.prevent="addTrade">
-      <label for="date">Date:</label>
-      <input type="date" v-model="tradeData.date" required>
+      <div>
+        <label for="date">Date:</label>
+        <input type="date" v-model="tradeData.date" required>
+      </div>
       
-      <label for="altA">altA:</label>
-      <input type="text" v-model="tradeData.altA" required>
+      <div>
+        <label for="altA">altA:</label>
+        <input type="text" v-model="tradeData.altA" required>
+      </div>
       
-      <label for="altB">altB:</label>
-      <select v-model="tradeData.altB" required>
-        <option value="USDT">USDT</option>
-        <option value="BTC">BTC</option>
-        <option value="ETH">ETH</option>
-        <option value="USD">USD</option>
-      </select>
+      <div>
+        <label for="altB">altB:</label>
+        <select v-model="tradeData.altB" required>
+          <option value="USDT">USDT</option>
+          <option value="BTC">BTC</option>
+          <option value="ETH">ETH</option>
+          <option value="USD">USD</option>
+        </select>
+      </div>
       
-      <label for="type">Type:</label>
-      <select v-model="tradeData.type" required>
-        <option value="buy">Buy</option>
-        <option value="sell">Sell</option>
-      </select>
+      <div>
+        <label for="type">Type:</label>
+        <select v-model="tradeData.type" required>
+          <option value="buy">Buy</option>
+          <option value="sell">Sell</option>
+        </select>
+      </div>
       
-      <label for="price">Price:</label>
-      <input type="number" v-model="tradeData.price" required>
+      <div>
+        <label for="price">Price:</label>
+        <input type="number" v-model="tradeData.price" required>
+      </div>
       
-      <label for="amount">Amount:</label>
-      <input type="number" v-model="tradeData.amount" required>
+      <div>
+        <label for="amount">Amount:</label>
+        <input type="number" v-model="tradeData.amount" required>
+      </div>
       
-      <label for="total">Total:</label>
-      <input type="number" v-model="tradeData.total" required>
+      <div>
+        <label for="total">Total:</label>
+        <input type="number" v-model="tradeData.total" required>
+      </div>
       
-      <label for="fee">Fee:</label>
-      <input type="number" v-model="tradeData.fee" required>
+      <div>
+        <label for="fee">Fee:</label>
+        <input type="number" v-model="tradeData.fee" required>
+      </div>
       
-      <label for="feecoin">Fee Coin:</label>
-      <input type="text" v-model="tradeData.feecoin" required>
+      <div>
+        <label for="feecoin">Fee Coin:</label>
+        <input type="text" v-model="tradeData.feecoin" required>
+      </div>
       
-      <label for="platform">Platform:</label>
-      <input type="text" v-model="tradeData.platform" required>
+      <div>
+        <label for="platform">Platform:</label>
+        <select v-model="tradeData.platform" required>
+          <option value="" disabled>Select a platform</option>
+          <option value="binance">Binance</option>
+          <option value="kucoin">Kucoin</option>
+          <option value="huobi">Huobi</option>
+          <option value="okex">Okex</option>
+          <option value="gateio">Gateio</option>
+        </select>
+      </div>
       
-      <label for="explatform">Exchange Platform:</label>
-      <input type="text" v-model="tradeData.explatform">
+      <div>
+        <label for="explatform">Ex Platform:</label>
+        <select v-model="tradeData.explatform">
+          <option value="" disabled>Select an exchange platform</option>
+          <option value="binance">Binance</option>
+          <option value="kucoin">Kucoin</option>
+          <option value="huobi">Huobi</option>
+          <option value="okex">Okex</option>
+          <option value="gateio">Gateio</option>
+        </select>
+      </div>
       
-      <button type="submit">Add Trade</button>
+      <div>
+        <button type="submit">Add Trade</button>
+      </div>
     </form>
   </div>
 </template>
