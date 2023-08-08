@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
+
 export default {
   methods: {
     async addTrade() {
