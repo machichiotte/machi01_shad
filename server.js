@@ -454,7 +454,7 @@ async function addTrade(req, res) {
   const tradeData = req.body.tradeData;
 
   try {
-    const savedTrade = await saveObjectDataMDB(tradeData, collection);
+    const savedTrade = await saveObjectDataMDB(JSON.stringify(tradeData), collection);
     res.status(200).json(savedTrade);
   } catch (err) {
     console.error(err);
