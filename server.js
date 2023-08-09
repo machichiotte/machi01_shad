@@ -455,7 +455,8 @@ async function addTradesManually(req, res) {
 
   try {
     const savedTrade = await saveArrayDataMDB(tradeData, collection);
-    res.status(200).json(savedTrade);
+   // res.status(200).json(savedTrade);
+res.status(200).json("TD :: " + tradeData + " --- " + JSON stringify(tradeData));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erreur lors de l\'ajout du trade : ' + err + '!!!!' + 'tdddd:: ' + JSON.stringify(tradeData)});
