@@ -459,7 +459,7 @@ async function addTradesManually(req, res) {
 res.status(200).json("TD :: " + tradesData + " --- " + JSON.stringify(tradesData));
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Erreur lors de l\'ajout du trade : ' + err + '!!!!' + 'tdddd:: ' + JSON.stringify(tradesData)});
+    res.status(500).json({ error: 'Erreur lors de l\'ajout du trade : ' + err + '!!!!' + 'tdddd:: ' + tradesData});
   }
 }
 
