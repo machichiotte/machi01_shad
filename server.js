@@ -52,7 +52,7 @@ app.post('/cancel/order', deleteOrder);
 app.post('/cancel/all-orders', cancelAllOrders);
 app.post('/bunch-orders', createBunchOrders);
 
-app.post('/add/trade', addTradesManually);
+app.post('/add/trades', addTradesManually);
 
 //get
 async function getData(req, res, collection, mockDataFile) {
