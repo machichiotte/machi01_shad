@@ -106,7 +106,8 @@
             }),
           });
           if (response.ok) {
-            successSpin('Save completed', 'Trades added successfully.', true, true);
+            const responseData = await response.json();
+            successSpin('Save completed', 'Trades added successfully.' + responseData, true, true);
           } else {
             const responseData = await response.json();
             errorSpin('Error', responseData.error, false, true);
