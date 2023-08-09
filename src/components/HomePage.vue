@@ -78,7 +78,7 @@
                 </select>
               </td>
  <td>
-        <input type="text" v-model="trade.pair" :value="trade.altA + ' / ' + trade.altB" readonly style="font-size: 18px;">
+        <input type="text" v-model="trade.pair" :value="trade.altA + '/' + trade.altB" readonly style="font-size: 18px;">
       </td>
             </tr>
           </tbody>
