@@ -99,6 +99,7 @@
   export default {
     methods: {
       async addTrades() {
+const dataTrades={this.trades};
         try {
           const response = await fetch('/add/trades', {
             method: 'POST',
@@ -106,7 +107,7 @@
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              tradesData: {this.trades}
+              tradesData: dataTrades
             }),
           });
           if (response.ok) {
