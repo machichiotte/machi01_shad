@@ -106,7 +106,7 @@
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              tradesData: this.trades
+              tradesData: {this.trades}
             }),
           });
           if (response.ok) {
