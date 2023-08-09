@@ -451,8 +451,7 @@ async function cancelAllOrders(req, res) {
 
 async function addTradesManually(req, res) {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
-  const tradesData = {};
-tradesData.push(req.body.tradesData);
+  const tradesData = {req.body.tradesData};
 
   try {
     const savedTrade = await saveArrayDataMDB(tradesData, collection);
