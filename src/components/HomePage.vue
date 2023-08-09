@@ -137,22 +137,12 @@ pair: ''
         });
       },
     },
+mounted() {
+this.addRow();
+},
     data() {
       return {
-        trades: [{
-          date: '',
-          altA: '',
-          altB: 'USDT',
-          type: 'buy',
-          price: 0,
-          amount: 0,
-          total: 0,
-          fee: 0,
-          feecoin: '',
-          platform: '',
-          explatform: '',
-pair: ''
-        }],
+        trades: [],
       };
     },
   };
