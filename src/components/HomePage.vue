@@ -17,6 +17,7 @@
               <th>Fee Coin</th>
               <th>Platform</th>
               <th>Ex Platform</th>
+<th>Pair</th>
             </tr>
           </thead>
           <tbody>
@@ -77,6 +78,9 @@
                 </select>
               </td>
             </tr>
+ <td>
+        <input type="text" v-model="trade.pair" :value="trade.altA + ' / ' + trade.altB" readonly style="font-size: 18px;">
+      </td>
           </tbody>
         </table>
         <div style="text-align: center; margin-top: 10px;">
@@ -130,6 +134,7 @@
           feecoin: '',
           platform: '',
           explatform: '',
+pair: ''
         });
       },
     },
@@ -147,6 +152,7 @@
           feecoin: '',
           platform: '',
           explatform: '',
+pair: ''
         }],
       };
     },
