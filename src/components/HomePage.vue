@@ -147,7 +147,7 @@
           feecoin: '',
           platform: '',
           explatform: '',
-        }, ],
+        }],
       };
     },
   };
