@@ -451,15 +451,15 @@ async function cancelAllOrders(req, res) {
 
 async function addTradesManually(req, res) {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
-  const tradeData = req.body.tradeData;
+  const tradesData = req.body.tradesData;
 
   try {
-    const savedTrade = await saveArrayDataMDB(tradeData, collection);
+    const savedTrade = await saveArrayDataMDB(tradesData, collection);
    // res.status(200).json(savedTrade);
-res.status(200).json("TD :: " + tradeData + " --- " + JSON.stringify(tradeData));
+res.status(200).json("TD :: " + tradesData + " --- " + JSON.stringify(tradesData));
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Erreur lors de l\'ajout du trade : ' + err + '!!!!' + 'tdddd:: ' + JSON.stringify(tradeData)});
+    res.status(500).json({ error: 'Erreur lors de l\'ajout du trade : ' + err + '!!!!' + 'tdddd:: ' + JSON.stringify(tradesData)});
   }
 }
 
