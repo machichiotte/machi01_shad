@@ -77,10 +77,10 @@
                   <option value="gateio">Gateio</option>
                 </select>
               </td>
-            </tr>
  <td>
         <input type="text" v-model="trade.pair" :value="trade.altA + ' / ' + trade.altB" readonly style="font-size: 18px;">
       </td>
+            </tr>
           </tbody>
         </table>
         <div style="text-align: center; margin-top: 10px;">
