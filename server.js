@@ -449,12 +449,12 @@ async function cancelAllOrders(req, res) {
   }
 }
 
-async function addTrade(req, res) {
+async function addTradesManually(req, res) {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
   const tradeData = req.body.tradeData;
 
   try {
-    const savedTrade = await saveObjectDataMDB(tradeData, collection);
+    const savedTrade = await saveArrayDataMDB(tradeData, collection);
     res.status(200).json(savedTrade);
   } catch (err) {
     console.error(err);
