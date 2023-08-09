@@ -102,7 +102,7 @@
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              trades: this.trades
+              tradesData: this.trades
             }),
           });
           if (response.ok) {
@@ -114,7 +114,7 @@
           }
         } catch (error) {
           console.error(error);
-          errorSpin('Error', 'An error occurred while adding the trades: ' + error, false, true);
+          errorSpin('Error', 'An error occurred while adding the trades: ' + error + "---" +JSON.stringify(this.trades), false, true);
         }
       },
       addRow() {
