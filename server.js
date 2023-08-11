@@ -21,7 +21,7 @@ app.offlineMode = isOfflineMode;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const { mapBalance, mapActiveOrders, mapLoadMarkets, mapTrades } = require('./utils/mapping.js');
+const { mapBalance, mapActiveOrders, mapLoadMarkets, mapTrades, mapTradesAddedManually } = require('./utils/mapping.js');
 
 // Connect to the MongoDB database
 connectMDB();
@@ -452,14 +452,14 @@ async function cancelAllOrders(req, res) {
 async function addTradesManually(req, res) {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
   const tradesData = req.body.tradesData;
-
+const mappedData = mapTradesAddedManually(tradesData);
   try {
-    const savedTrade = await saveArrayDataMDB(tradesData, collection);
+    const savedTrade = await saveArrayDataMDB(mappedData, collection);
    // res.status(200).json(savedTrade);
-res.status(200).json("TD :: " + tradesData + " --- ");
+res.status(200).json("TD :: " + mappedData + " --- ");
   } catch (err) {
     //console.error(err);
-    res.status(500).json({ error: 'Erreur lors de l\'ajout du trade : ' + err + '!!!'});
+    res.status(500).json({ error: 'Erreur lors de l\'ajout du trade : ' + err + '!!!' + mappedData});
   }
 }
 
