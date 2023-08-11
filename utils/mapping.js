@@ -133,4 +133,21 @@ function mapLoadMarkets(platform, data) {
     return filteredArray;
 }
 
-module.exports = { mapBalance, mapActiveOrders, mapLoadMarkets, mapTrades };
+function mapTradesAddedManually(data) {
+    return data.map((item) => ({
+        date: item.date,
+        altA: item.altA,
+        altB: item.altB,
+        type: item.type,
+        price: item.price,
+        amount: item.amount,
+        total: item.total,
+        fee: item.fee,
+        feecoin: item.feecoin,
+        platform: item.platform,
+        explatform: item.explatform,
+        pair: item.pair
+    }));
+}
+
+module.exports = { mapBalance, mapActiveOrders, mapLoadMarkets, mapTrades, mapTradesAddedManually };
