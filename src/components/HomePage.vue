@@ -1,6 +1,5 @@
 <template>
-  <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <div style="width: 800px;">
+  <div>
       <h1 style="font-size: 24px; text-align: center;">Add trades</h1>
       <form @submit.prevent="addTrades">
         <table>
