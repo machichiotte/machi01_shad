@@ -26,10 +26,10 @@
                 <input type="date" v-model="trade.date" required style="font-size: 18px;">
               </td>
               <td>
-                <input type="text" v-model="trade.altA" required style="font-size: 18px;">
+                <input type="text" v-model="trade.altA" @input="trade.altA = trade.altA.toUpperCase()" required style="font-size: 18px;">
               </td>
               <td>
-                <select v-model="trade.altB" required style="font-size: 18px;">
+                <select v-model="trade.altB"   @input="trade.altB = trade.altB.toUpperCase()" required style="font-size: 18px;">
                   <option value="USDT">USDT</option>
                   <option value="BTC">BTC</option>
                   <option value="ETH">ETH</option>
@@ -55,7 +55,7 @@
                 <input type="number" v-model="trade.fee" step="any" required style="font-size: 18px;">
               </td>
               <td>
-                <input type="text" v-model="trade.feecoin" required style="font-size: 18px;">
+                <input type="text" v-model="trade.feecoin" @input="trade.feecoin = trade.feecoin.toUpperCase()" required style="font-size: 18px;">
               </td>
               <td>
                 <select v-model="trade.platform" required style="font-size: 18px;">
