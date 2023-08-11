@@ -110,13 +110,16 @@
               tradesData:this.trades
             }),
           });
-          if (response.ok) {
+
+successSpin('Save completed', 'response :: ' + response, true, true);
+
+        /*  if (response.ok) {
             const responseData = await response.json();
             successSpin('Save completed', 'Trades added successfully.' + responseData, true, true);
           } else {
             const responseData = await response.json();
             errorSpin('Error', responseData.error, false, true);
-          }
+          } */
         } catch (error) {
           errorSpin('Error', 'An error occurred while adding the trades: ' + error, false, true);
         }
