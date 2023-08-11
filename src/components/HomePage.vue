@@ -99,6 +99,7 @@
   export default {
     methods: {
       async addTrades() {
+        successSpin('calcul test', `Résultat : ${this.trades.totalCount}`, true, true);
         try {
           const response = await fetch('/add/trades', {
             method: 'POST',
