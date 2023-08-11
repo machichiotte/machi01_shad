@@ -111,7 +111,7 @@
             }),
           });
 
-successSpin('Save completed', 'response :: ' + response, true, true);
+successSpin('Save completed', 'response :: ' + JSON stringify(response), true, true);
 
         /*  if (response.ok) {
             const responseData = await response.json();
