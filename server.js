@@ -456,8 +456,7 @@ const mappedData = mapTradesAddedManually(tradesData);
 
   try {
     const savedTrade = await saveArrayDataMDB(mappedData, collection);
-   // res.status(200).json(savedTrade);
-res.status(200).json("TD :: " + mappedData + " --- ");
+    res.status(200).json({ message: savedTrade, status: 200 });
   } catch (err) {
     res.status(500).json({ error: 'Erreur lors de l\'ajout du trade : ' + err + '!!!' + mappedData});
   }
