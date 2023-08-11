@@ -71,14 +71,6 @@ export default {
   data() {
     return {
       cryptoData: null,
-      binanceBalance: null,
-      gateioBalance: null,
-
-      binanceActiveOrders: null,
-      gateioActiveOrders: null,
-
-      binanceLoadMarkets: null,
-      gateioLoadMarkets: null,
 
       kucoinTrades: null,
       binanceTrades: null,
