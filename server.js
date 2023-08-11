@@ -454,16 +454,13 @@ async function addTradesManually(req, res) {
   const tradesData = req.body.tradesData;
 const mappedData = mapTradesAddedManually(tradesData);
 
-
-  res.status(200).json(mappedData);
-  /*try {
+  try {
     const savedTrade = await saveArrayDataMDB(mappedData, collection);
    // res.status(200).json(savedTrade);
 res.status(200).json("TD :: " + mappedData + " --- ");
   } catch (err) {
-    //console.error(err);
     res.status(500).json({ error: 'Erreur lors de l\'ajout du trade : ' + err + '!!!' + mappedData});
-  }*/
+  }
 }
 
 // create Instances
