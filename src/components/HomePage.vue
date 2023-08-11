@@ -1,6 +1,6 @@
 <template>
-  <div>
-<div style="width: 800px;"</div>
+<div>
+<div style="width: 800px;">
       <h1 style="font-size: 24px; text-align: center;">Add trades</h1>
       <form @submit.prevent="addTrades">
         <table>
