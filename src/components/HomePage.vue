@@ -117,7 +117,7 @@
             errorSpin('Error', responseData.error, false, true);
           }
         } catch (error) {
-          errorSpin('Error', 'An error occurred while adding the trades: ' + error + " --- trstring: " +JSON.stringify(this.trades), false, true);
+          errorSpin('Error', 'An error occurred while adding the trades: ' + error, false, true);
         }
       },
       addRow() {
