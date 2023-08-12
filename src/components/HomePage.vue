@@ -113,7 +113,7 @@
               tradesData:this.trades
             }),
           });
-const responseData = await response.json();
+//const responseData = await response.json();
 successSpin('Save completed', 'response :: ' + response.status, true, true);
 
         /*  if (response.ok) {
