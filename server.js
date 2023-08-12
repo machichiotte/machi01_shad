@@ -452,10 +452,10 @@ async function cancelAllOrders(req, res) {
 async function addTradesManually(req, res) {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
   const tradesData = req.body.tradesData;
-const mappedData = mapTradesAddedManually(tradesData);
+//const mappedData = mapTradesAddedManually(tradesData);
 
   try {
-    const savedTrade = await saveArrayDataMDB(mappedData, collection);
+    const savedTrade = await saveArrayDataMDB(JSON.parse(tradesData), collection);
     if (savedTrade != "" && savedTrade != [])
     res.status(200).json({ message: savedTrade, status: 200 });
     else 
