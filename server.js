@@ -459,9 +459,9 @@ const mappedData = mapTradesAddedManually(tradesData);
     if (savedTrade != "" && savedTrade != [])
     res.status(200).json({ message: savedTrade, status: 200 });
     else 
-      res.status(300).json({message: "que dalle", status:200});
+      res.status(300).json({message: "que dalle", status:300});
   } catch (err) {
-    res.status(500).json({ error: 'Erreur lors de l\'ajout du trade : ' + err + '!!!' + mappedData});
+        res.status(500).json({ error: err.name + ': ' + err.message });
   }
 }
 
