@@ -80,6 +80,9 @@
  <td>
         <input type="text" v-model="trade.pair" :value="trade.altA + '/' + trade.altB" readonly style="font-size: 18px;">
       </td>
+  <td>
+    <button @click="removeRow(index)" style="font-size: 14px;">Supprimer</button>
+  </td>
             </tr>
           </tbody>
         </table>
@@ -124,6 +127,9 @@ successSpin('Save completed', 'response :: ' + responseData.message, true, true)
           errorSpin('Error', 'An error occurred while adding the trades: ' + error, false, true);
         }
       },
+removeRow(index) {
+      this.trades.splice(index, 1);
+    },
       addRow() {
         this.trades.push({
           date: '',
