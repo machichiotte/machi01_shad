@@ -43,16 +43,16 @@
                 </select>
               </td>
               <td>
-                <input type="number" v-model="trade.price" step="any" required style="font-size: 18px;">
+                <input type="text" v-model="trade.price" step="any" required style="font-size: 18px;">
               </td>
               <td>
-                <input type="number" v-model="trade.amount" step="any" required style="font-size: 18px;">
+                <input type="text" v-model="trade.amount" step="any" required style="font-size: 18px;">
               </td>
               <td>
-                <input type="number" v-model="trade.total" step="any" required style="font-size: 18px;">
+                <input type="text" v-model="trade.total" step="any" required style="font-size: 18px;">
               </td>
               <td>
-                <input type="number" v-model="trade.fee" step="any" required style="font-size: 18px;">
+                <input type="text" v-model="trade.fee" step="any" required style="font-size: 18px;">
               </td>
               <td>
                 <input type="text" v-model="trade.feecoin" @input="trade.feecoin = trade.feecoin.toUpperCase()" required style="font-size: 18px;">
@@ -132,18 +132,18 @@ removeRow(index) {
     },
       addRow() {
         this.trades.push({
-          date: '',
-          altA: '',
-          altB: 'USDT',
-          type: 'buy',
-          price: 0,
-          amount: 0,
-          total: 0,
-          fee: 0,
-          feecoin: '',
-          platform: '',
-          explatform: '',
-pair: ''
+          date: "",
+          altA: "",
+          altB: "USDT",
+          type: "buy",
+          price: "0",
+          amount: "0",
+          total: "0",
+          fee: "0",
+          feecoin: "",
+          platform: "",
+          explatform: "",
+          pair: ""
         });
       },
     },
