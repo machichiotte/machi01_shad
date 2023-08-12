@@ -456,7 +456,7 @@ const mappedData = mapTradesAddedManually(tradesData);
 
   try {
     const savedTrade = await saveArrayDataMDB(mappedData, collection);
-    if (savedTrade != "")
+    if (savedTrade != "" && savedTrade != [])
     res.status(200).json({ message: savedTrade, status: 200 });
     else 
       res.status(300).json({message: "que dalle", status:200});
