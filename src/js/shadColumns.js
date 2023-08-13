@@ -47,69 +47,64 @@ const shadColumns = [
   },
   { label: "Ratio", field: "ratioShad" },
   { label: "Total shad", field: "totalShad" },
-  { label: "Rank", field: "rank", numeric: true},  { label: "Average Entry Price", field: "averageEntryPrice", numeric: true },
-  { label: "Total buy", field: "totalBuy" , type: 'number'},
+  { label: "Rank", field: "rank" , type: 'number'},,  { label: "Average Entry Price", field: "averageEntryPrice"
+ , type: 'number'},  { label: "Total buy", field: "totalBuy" , type: 'number'},
   { label: "Max wanted", field: "maxWanted" , numeric: true},
   {
     label: "Percentage Difference", field: "percentageDifference", type: "percentage"
-  , numeric: true},
-  { label: "Current Price", field: "currentPrice" , numeric: true},
-
-  { label: "Wallet", field: "currentPossession" , numeric: true},
-  { label: "Profit", field: "profit" , numeric: true},
-
-  { label: "Total sell", field: "totalSell" , numeric: true},
-  { label: "Recup shad", field: "recupShad" , numeric: true},
-  /*{
+  , type: 'number'} ,
+  { label: "Current Price", field: "currentPrice" , type: 'number'},  { label: "Wallet", field: "currentPossession", type: 'number'},  { label: "Profit", field: "profit"
+ , type: 'number'},
+  { label: "Total sell", field: "totalSell", type: 'number'},  { label: "Recup shad", field: "recupShad", type: 'number'},  /*{
     label:'Open Orders',
     children: [*/
-  { label: "Buy", field: "openBuyOrders" },
-  { label: "Sell", field: "openSellOrders" },
-  /*]
+  { label: "Buy", field: "openBuyOrders"
+ , type: 'number'},  { label: "Sell", field: "openSellOrders" 
+ , type: 'number'},  /*]
 },*/
-  { label: "Quantite total achetee", field: "totalAmount" , numeric: true},
-  { label: "Balance", field: "balance" , numeric: true},
-  /*{
+  { label: "Quantite total achetee", field: "totalAmount" 
+ , type: 'number'},  { label: "Balance", field: "balance" 
+ , type: 'number'},  /*{
     label:'Recup',
     children: [*/
-  { label: "tp1", field: "recupTp1" },
-  { label: "tpX", field: "recupTpX" },
-  /* ]
+  { label: "tp1", field: "recupTp1" 
+ , type: 'number'},  { label: "tpX", field: "recupTpX" 
+ , type: 'number'},  /* ]
  },*/
   /*{
     label:'TP1',
     children: [*/
-  { label: "amount", field: "amountTp1" },
-  { label: "price", field: "priceTp1" },
-  /*]
+  { label: "amount", field: "amountTp1" 
+ , type: 'number'},  { label: "price", field: "priceTp1" 
+ , type: 'number'},  /*]
 },
 {
   label:'TP2',
   children: [*/
-  { label: "amount", field: "amountTp2" },
-  { label: "price", field: "priceTp2" },
-  /* ]
+  { label: "amount", field: "amountTp2" 
+ , type: 'number'},  { label: "price", field: "priceTp2" 
+ , type: 'number'},  /* ]
  },
  {
    label:'TP3',
    children: [*/
-  { label: "amount", field: "amountTp3" },
-  { label: "price", field: "priceTp3" },
-  /*]
+  { label: "amount", field: "amountTp3" 
+ , type: 'number'},  { label: "price", field: "priceTp3" 
+ , type: 'number'},  /*]
 },
 {
   label:'TP4',
   children: [*/
-  { label: "amount", field: "amountTp4" },
-  { label: "price", field: "priceTp4" },
-  /*]
+  { label: "amount", field: "amountTp4" 
+ , type: 'number'},  { label: "price", field: "priceTp4" 
+ , type: 'number'},  /*]
 },
 {
   label:'TP5',
   children: [*/
-  { label: "amount", field: "amountTp5" },
-  { label: "price", field: "priceTp5" },
-  /*]
+  { label: "amount", field: "amountTp5" 
+ , type: 'number'},  { label: "price", field: "priceTp5" 
+ , type: 'number'},  /*]
 },
 {
   label:'Percent Change',
