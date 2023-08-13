@@ -6,7 +6,7 @@
 //import { createColoredCell, createPlatformColoredCell, createOnClickCell } from "./cells.js";
 
 const cmcColumns = [
-  { label:'Rank', field : 'rank'},
+  { label:'Rank', field : 'rank', numeric: true},
   { label:'Name', field : 'name'},
   { label:'Symbol', field : 'symbol'},
 ]
@@ -17,8 +17,8 @@ const activeOrdersColumns = [
   { label: 'Symbol', field: 'symbol' },
   { label: 'Type', field: 'type' },
   { label: 'Side', field: 'side' },
-  { label: 'Amount', field: 'amount' },
-  { label: 'Price', field: 'price' },
+  { label: 'Amount', field: 'amount' , numeric: true},
+  { label: 'Price', field: 'price' , numeric: true},
 ]
 
 const tradesColumns = [
@@ -47,20 +47,19 @@ const shadColumns = [
   },
   { label: "Ratio", field: "ratioShad" },
   { label: "Total shad", field: "totalShad" },
-  { label: "Rank", field: "rank" },
-  { label: "Average Entry Price", field: "averageEntryPrice" },
-  { label: "Total buy", field: "totalBuy" },
-  { label: "Max wanted", field: "maxWanted" },
+  { label: "Rank", field: "rank", numeric: true},  { label: "Average Entry Price", field: "averageEntryPrice", numeric: true },
+  { label: "Total buy", field: "totalBuy" , numeric: true},
+  { label: "Max wanted", field: "maxWanted" , numeric: true},
   {
     label: "Percentage Difference", field: "percentageDifference", type: "percentage"
-  },
-  { label: "Current Price", field: "currentPrice" },
+  , numeric: true},
+  { label: "Current Price", field: "currentPrice" , numeric: true},
 
-  { label: "Wallet", field: "currentPossession" },
-  { label: "Profit", field: "profit" },
+  { label: "Wallet", field: "currentPossession" , numeric: true},
+  { label: "Profit", field: "profit" , numeric: true},
 
-  { label: "Total sell", field: "totalSell" },
-  { label: "Recup shad", field: "recupShad" },
+  { label: "Total sell", field: "totalSell" , numeric: true},
+  { label: "Recup shad", field: "recupShad" , numeric: true},
   /*{
     label:'Open Orders',
     children: [*/
@@ -68,8 +67,8 @@ const shadColumns = [
   { label: "Sell", field: "openSellOrders" },
   /*]
 },*/
-  { label: "Quantite total achetee", field: "totalAmount" },
-  { label: "Balance", field: "balance" },
+  { label: "Quantite total achetee", field: "totalAmount" , numeric: true},
+  { label: "Balance", field: "balance" , numeric: true},
   /*{
     label:'Recup',
     children: [*/
