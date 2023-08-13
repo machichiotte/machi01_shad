@@ -115,7 +115,7 @@
           });
 //const responseData = await response.json();
 successSpin('Save completed', 'response :: ' + "response.status" + "--" +"responseData", true, true);
-
+console.log(responde);
         /*  if (response.ok) {
             const responseData = await response.json();
             successSpin('Save completed', 'Trades added successfully.' + responseData, true, true);
