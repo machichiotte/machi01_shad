@@ -67,13 +67,13 @@ console.log("coll:: "+collection);
 
     const tradesData = req.body.trades_data;  
 
-console.log("tradedataaa::: " + tradesData);
+//console.log("tradedataaa::: " + tradesData);
 
     try {  
-      const savedTrade = await saveArrayDataMDB(JSON.stringify(tradesData), collection);  
+      const savedTrade = await saveArrayDataMDB(tradesData, collection);  
 console.log("savearr");
       if (savedTrade != "" && savedTrade != [])  
-      res.status(200).json({ message: savedTrade, status: 200 });  
+      res.status(200)//.json({ message: savedTrade, status: 200 });  
       else   
         res.status(300).json({message: "que dalle", status:300});  
     } catch (err) {  
