@@ -14,8 +14,8 @@
       </tr>
     </template>
  <template #body-row="props">
-  <tr :class="getRowClass(props.row)">
-    <td v-for="(column, index) in props.columns" :key="index" :class="getRowClass(props.row)">
+  <tr :class="props.row._rowVariant">
+    <td v-for="(column, index) in props.columns" :key="index">
       {{ props.formattedRow[column.field] }}
     </td>
   </tr>
@@ -156,7 +156,11 @@ export default {
     },
   },
   mounted() {
-    this.getDataFromDB();
+this.getDataFromDB().then(() => {
+      this.rows.forEach(row => {
+        row._rowVariant = this.getRowClass(row);
+      });
+    });
   }
 };
 </script>
