@@ -37,12 +37,21 @@
 </template>
 
 <script>
-import { getBalanceFromDB, getTradesFromDB, getStratsFromDB, getActiveOrdersFromDB, getCmcDataFromDB } from '../js/fromDB.js';
-import { getAllCalculs } from '../js/calcul.js';
-import { shadColumns } from "../js/shadColumns.js";
+import {
+  getBalanceFromDB,
+  getTradesFromDB,
+  getStratsFromDB,
+  getActiveOrdersFromDB,
+  getCmcDataFromDB
+} from '../js/fromDB.js';
+import {
+  getAllCalculs
+} from '../js/calcul.js';
+import {
+  shadColumns
+} from "../js/shadColumns.js";
 import MySellButtonVue from './MySellButton.vue';
 import Overlay from './ShadOverlay.vue';
-
 export default {
   name: "ShadPage",
   data() {
@@ -56,20 +65,19 @@ export default {
       openSellOrders: [],
       itemsPerPage: 1000,
       currentPage: 1,
-
       columns: shadColumns,
       showOverlay: false,
       selectedAsset: {},
       allRows: [],
-
     };
   },
   components: {
-    MySellButtonVue, Overlay
+    MySellButtonVue,
+    Overlay
   },
   computed: {
-fixedColumns() {
-      return this.columns.slice(0, 2); // Les deux premières colonnes
+    fixedColumns() {
+      return this.columns.slice(0, 2); // Les deux premières colonnes 
     },
     paginatedItems() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -104,20 +112,20 @@ fixedColumns() {
     },
   },
   methods: {
-getRowClass(row) {
-    const totalShad = row.totalShad;
-    if (totalShad >= 2) {
-      return "blue-row";
-    } else if (totalShad === 1) {
-      return "green-row";
-    } else if (totalShad === 0) {
-      return "orange-row";
-    } else if (totalShad === -1) {
-      return "red-row";
-    } else {
-      return "";
-    }
-  },
+    getRowClass(row) {
+      const totalShad = row.totalShad;
+      if (totalShad >= 2) {
+        return "blue-row";
+      } else if (totalShad === 1) {
+        return "green-row";
+      } else if (totalShad === 0) {
+        return "orange-row";
+      } else if (totalShad === -1) {
+        return "red-row";
+      } else {
+        return "";
+      }
+    },
     closeOverlay() {
       this.showOverlay = false;
     },
@@ -125,11 +133,11 @@ getRowClass(row) {
       this.allRows = rows;
     },
     onCellClick(params) {
-      // Vérifiez si la colonne cliquée est la colonne "asset"
+      // Vérifiez si la colonne cliquée est la colonne "asset" 
       if (params.column.field === 'asset') {
-        // Affichez l'overlay
+        // Affichez l'overlay 
         this.showOverlay = true;
-        // Définissez la ligne sélectionnée
+        // Définissez la ligne sélectionnée 
         this.selectedAsset = params.row;
       }
     },
@@ -138,13 +146,15 @@ getRowClass(row) {
       this.trades = await getTradesFromDB();
       this.strats = await getStratsFromDB();
       this.cmcData = await getCmcDataFromDB();
-
-      const { data, openBuyOrders, openSellOrders } = await getActiveOrdersFromDB();
+      const {
+        data,
+        openBuyOrders,
+        openSellOrders
+      } = await getActiveOrdersFromDB();
       this.activeOrders = data;
       this.openBuyOrders = openBuyOrders;
       this.openSellOrders = openSellOrders;
     },
-
     prevPage() {
       this.currentPage--;
     },
@@ -154,7 +164,6 @@ getRowClass(row) {
     changePage(page) {
       this.currentPage = page;
     },
-
   },
   mounted() {
     this.getDataFromDB();
