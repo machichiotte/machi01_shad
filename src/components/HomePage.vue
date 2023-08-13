@@ -110,7 +110,7 @@
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              trades_data: this.trades
+              trades_data: '[bla: 'bla']'
             }),
           });
 const responseData = await response.json();
