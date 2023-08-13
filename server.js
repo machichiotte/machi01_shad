@@ -454,8 +454,9 @@ async function addTradesManually(req, res) {
   const tradesData = req.body.trades_data;
 //const mappedData = mapTradesAddedManually(tradesData);
 
-  try {
-    const savedTrade = await saveArrayDataMDB(JSON.parse(tradesData), collection);
+res.status(200).json({message: tradesData});
+  /*try {
+    const savedTrade = await saveArrayDataMDB(tradesColumns, collection);
     if (savedTrade != "" && savedTrade != [])
     res.status(200).json({ message: savedTrade, status: 200 });
     else 
@@ -463,7 +464,7 @@ async function addTradesManually(req, res) {
   } catch (err) {
         res.status(500).json({ error: err.name + ': ' + err.message });
   }
-}
+}*/
 
 // create Instances
 function createExchangeInstance(exchangeId) {
