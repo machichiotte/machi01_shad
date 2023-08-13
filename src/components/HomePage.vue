@@ -88,7 +88,7 @@
         </table>
         <div style="text-align: center; margin-top: 10px;">
           <button type="button" @click="addRow" style="font-size: 18px; padding: 10px 20px;">Add Row</button>
-          <button type="submit" style="font-size: 18px; padding: 10px 20px;">Add Trades</button>
+          <button type="submit"  style="font-size: 18px; padding: 10px 20px;">Add Trades</button>
         </div>
       </form>
     </div>
@@ -102,9 +102,6 @@
   export default {
     methods: {
       async addTrades() {
-console.log("addtrade");
-const tdd= this.tradesData;
-console.log("add :: "+ tdd);
         successSpin('calcul test', `Résultat : ${JSON.stringify(this.trades)}`, true, true);
         try {
           const response = await fetch('/add/trades', {
@@ -113,13 +110,9 @@ console.log("add :: "+ tdd);
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              trades_data: tdd
+              trades_data: this.trades
             })
           });
-console.log("befrep");
-//const responseData = await response.json();
-successSpin('Save completed', 'response :: ' + response + "--" +"responseData", true, true);
-console.log(response);
         /*  if (response.ok) {
             const responseData = await response.json();
             successSpin('Save completed', 'Trades added successfully.' + responseData, true, true);
