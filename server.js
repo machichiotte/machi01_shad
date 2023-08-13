@@ -35,7 +35,7 @@ async function addTradesManually(req, res) {
    const collection = process.env.MONGODB_COLLECTION_TRADES; 
    const tradesData = req.body.trades_data; 
    try { 
-     const savedTrade = await saveArrayDataMDB(tradesData, collection); 
+     const savedTrade = await saveArrayDataMDB(JSON.stringify(tradesData), collection); 
      if (savedTrade != "" && savedTrade != []) 
      res.status(200).json({ message: savedTrade, status: 200 }); 
      else  
