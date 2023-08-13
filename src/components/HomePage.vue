@@ -110,8 +110,8 @@
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              trades_data: '[bla: 'bla']'
-            }),
+              trades_data: 'tr'
+            })
           });
 const responseData = await response.json();
 successSpin('Save completed', 'response :: ' + response.status + "--" +responseData, true, true);
