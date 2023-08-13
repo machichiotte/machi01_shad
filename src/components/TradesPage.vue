@@ -2,7 +2,7 @@
   <div class="trades-page">
     <h1>Liste des trades</h1>
     <div id="table">
-      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
+      <vue-good-table :columns="tradesColumns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
         :search-options="{ enabled: true }" :pagination-options="{ enabled: true }">
       </vue-good-table>
     </div>
@@ -20,7 +20,7 @@ export default {
       items: [],
       itemsPerPage: 10000,
       currentPage: 1,
-      columns: tradesColumns,
+      tradesColumns: tradesColumns,
     };
   },
   computed: {
