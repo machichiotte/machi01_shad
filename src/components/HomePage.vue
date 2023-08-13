@@ -114,7 +114,7 @@
             })
           });
 //const responseData = await response.json();
-successSpin('Save completed', 'response :: ' + response.status + "--" +"responseData", true, true);
+successSpin('Save completed', 'response :: ' + "response.status" + "--" +"responseData", true, true);
 
         /*  if (response.ok) {
             const responseData = await response.json();
