@@ -1,21 +1,14 @@
 <template>
   <div class="shad-page">
     <h1>SHAD</h1>
-
-    <div id="table">
-      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
-        :search-options="{ enabled: true }" :pagination-options="{ enabled: true }"
-        v-on:selected-rows-change="selectionChanged" v-on:cell-click="onCellClick">
+    <div id="table"> <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
+        :search-options="{ enabled: true }" :pagination-options="{ enabled: true }"        v-on:selected-rows-change="selectionChanged" v-on:cell-click="onCellClick">
         <template #selected-row-actions>
           <MySellButtonVue :model="allRows" />
         </template>
 <template #fixed>
       <tr>
-        <th
-          v-for="(column, index) in fixedColumns"
-          :key="index"
-          :style="column.style"
-        >
+        <th v-for="(column, index) in fixedColumns" :key="index" :style="column.style">
           {{ column.label }}
         </th>
       </tr>
@@ -29,10 +22,8 @@
   </template>
       </vue-good-table>
     </div>
-
     <Overlay v-if="showOverlay" :selectedAsset="selectedAsset" :openBuyOrders="this.openBuyOrders"
       :openSellOrders="this.openSellOrders" :trades="this.trades" :cmc="this.cmcData" @close="closeOverlay" />
-
   </div>
 </template>
 <script>
