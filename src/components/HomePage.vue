@@ -102,6 +102,7 @@
   export default {
     methods: {
       async addTrades() {
+const tdd= this.tradesData;
         successSpin('calcul test', `Résultat : ${JSON.stringify(this.trades)}`, true, true);
         try {
           const response = await fetch('/add/trades', {
@@ -110,7 +111,7 @@
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              trades_data: "[]"
+              trades_data: tdd
             })
           });
 //const responseData = await response.json();
