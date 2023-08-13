@@ -132,18 +132,18 @@ removeRow(index) {
     },
       addRow() {
         this.trades.push({
-          date: "",
-          altA: "",
-          altB: "USDT",
-          type: "buy",
-          price: "0",
-          amount: "0",
-          total: "0",
-          fee: "0",
-          feecoin: "",
-          platform: "",
-          explatform: "",
-          pair: ""
+          "date": "",
+          "altA": "",
+          "altB": "USDT",
+          "pair": "",
+          "type": "buy",
+          "price": "0",
+          "amount": "0",
+          "total": "0",
+          "fee": "0",
+          "feecoin": "",
+          "platform": "",
+          "explatform": "" 
         });
       },
     },
