@@ -48,7 +48,8 @@ const shadColumns = [
   { label: "Ratio", field: "ratioShad" },
   { label: "Total shad", field: "totalShad" },
   { label: "Rank", field: "rank", numeric: true},  { label: "Average Entry Price", field: "averageEntryPrice", numeric: true },
-  { label: "Total buy", field: "totalBuy" , numeric: true},
+  { label: "Total buy", field: "totalBuy" , numeric: true, sortable: true,
+  'sort-method': (a, b) => parseFloat(a) - parseFloat(b)},
   { label: "Max wanted", field: "maxWanted" , numeric: true},
   {
     label: "Percentage Difference", field: "percentageDifference", type: "percentage"
