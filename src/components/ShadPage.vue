@@ -20,8 +20,12 @@
         </th>
       </tr>
     </template>
-<template #body-cell="props">
-    <div :class="getRowColor(props.row['totalShad'])">{{ props.formattedRow[props.column.field] }}</div>
+<template #body-row="props">
+    <tr :class="getRowColor(props.row.totalShad)">
+      <td v-for="(column, index) in props.columns" :key="index">
+        {{ props.formattedRow[column.field] }}
+      </td>
+    </tr>
   </template>
       </vue-good-table>
     </div>
