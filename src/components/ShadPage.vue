@@ -20,8 +20,8 @@
         </th>
       </tr>
     </template>
-<template #body-row="props">
-    <tr :class="getRowColor(props.row.totalShad)">
+ <template #body-row="props">
+    <tr :class="getRowClass(props.row)">
       <td v-for="(column, index) in props.columns" :key="index">
         {{ props.formattedRow[column.field] }}
       </td>
@@ -104,19 +104,21 @@ fixedColumns() {
     },
   },
   methods: {
-getRowColor(totalShad) {
+getRowClass(row) {
+    const totalShad = row.totalShad;
     if (totalShad >= 2) {
-      return "row-color-blue";
+      return "blue-row";
     } else if (totalShad === 1) {
-      return "row-color-green";
+      return "green-row";
     } else if (totalShad === 0) {
-      return "row-color-orange";
+      return "orange-row";
     } else if (totalShad === -1) {
-      return "row-color-red";
+      return "red-row";
     } else {
       return "";
     }
-  },
+  }
+},
     closeOverlay() {
       this.showOverlay = false;
     },
@@ -171,19 +173,19 @@ getRowColor(totalShad) {
   width: auto;
 }
 
-.row-color-blue {
+.blue-row {
   background-color: #e6f7ff; /* Couleur bleue pâle */
 }
 
-.row-color-green {
+.green-row {
   background-color: #d9f2e6; /* Couleur verte pâle */
 }
 
-.row-color-orange {
+.orange-row {
   background-color: #ffe0b3; /* Couleur orange pâle */
 }
 
-.row-color-red {
+.red-row {
   background-color: #f2dede; /* Couleur rouge pâle */
 }
 </style>
