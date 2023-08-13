@@ -17,6 +17,7 @@ async function connectMDB() {
 }
 
 async function saveArrayDataMDB(data, collectionName) {
+console.log("saveArrayDataMDB enter");
     try {
         const collection = db.collection(collectionName);
         const result = await collection.insertMany(data);
