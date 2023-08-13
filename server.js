@@ -454,7 +454,7 @@ async function addTradesManually(req, res) {
   //const tradesData = req.body.trades_data;
 //const mappedData = mapTradesAddedManually(tradesData);
 const tradesData="iciii";
-res.status(200).json({message: tradesData});
+res.status(200).json(tradesData);
   /*try {
     const savedTrade = await saveArrayDataMDB(tradesColumns, collection);
     if (savedTrade != "" && savedTrade != [])
