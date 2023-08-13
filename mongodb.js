@@ -19,9 +19,9 @@ async function connectMDB() {
 async function saveArrayDataMDB(data, collectionName) {
     try {
         const collection = db.collection(collectionName);
-        await collection.insertMany(data);
+        const result = await collection.insertMany(data);
         console.log(`Data saved to MongoDB in collection ${collectionName}!`);
-        return data;
+        return result;
     } catch (err) {
         console.error(err);
     }
@@ -30,9 +30,9 @@ async function saveArrayDataMDB(data, collectionName) {
 async function saveObjectDataMDB(data, collectionName) {
     try {
         const collection = db.collection(collectionName);
-        await collection.insertOne(data);
+        const result = await collection.insertOne(data);
         console.log(`Data saved to MongoDB in collection ${collectionName}!`);
-        return data;
+        return result;
     } catch (err) {
         console.error(err);
         return err;
@@ -42,9 +42,9 @@ async function saveObjectDataMDB(data, collectionName) {
 async function getDataMDB(collectionName) {
     try {
         const collection = db.collection(collectionName);
-        const data = await collection.find().toArray();
-        console.log(`Data retrieved from MongoDB in collection ${collectionName}:`, data);
-        return data;
+        const result = await collection.find().toArray();
+        console.log(`Data retrieved from MongoDB in collection ${collectionName}:`, result);
+        return result;
     } catch (err) {
         console.error(err);
         return err;
@@ -69,9 +69,9 @@ async function getAllDataMDB(collectionName) {
     console.log("getAllDataMDB mongodb");
     try {
         const collection = db.collection(collectionName);
-        const documents = await collection.find().toArray();
-        console.log(`Found ${documents.length} documents in collection ${collectionName}`);
-        return documents;
+        const result = await collection.find().toArray();
+        console.log(`Found ${result.length} documents in collection ${collectionName}`);
+        return result;
     } catch (err) {
         console.error(err);
         return err;
