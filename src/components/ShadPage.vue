@@ -14,12 +14,12 @@
       </tr>
     </template>
  <template #body-row="props">
-    <tr :class="getRowClass(props.row)">
-      <td v-for="(column, index) in props.columns" :key="index">
-        {{ props.formattedRow[column.field] }}
-      </td>
-    </tr>
-  </template>
+  <tr :class="getRowClass(props.row)">
+    <td v-for="(column, index) in props.columns" :key="index" :class="getRowClass(props.row)">
+      {{ props.formattedRow[column.field] }}
+    </td>
+  </tr>
+</template>
       </vue-good-table>
     </div>
     <Overlay v-if="showOverlay" :selectedAsset="selectedAsset" :openBuyOrders="this.openBuyOrders"
