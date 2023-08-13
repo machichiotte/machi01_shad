@@ -47,12 +47,12 @@ const shadColumns = [
   },
   { label: "Ratio", field: "ratioShad" },
   { label: "Total shad", field: "totalShad" },
-  { label: "Rank", field: "rank" , type: 'number'},,  { label: "Average Entry Price", field: "averageEntryPrice"
+  { label: "Rank", field: "rank" , type: 'number'},
+ { label: "Average Entry Price", field: "averageEntryPrice"
  , type: 'number'},  { label: "Total buy", field: "totalBuy" , type: 'number'},
   { label: "Max wanted", field: "maxWanted" , numeric: true},
   {
-    label: "Percentage Difference", field: "percentageDifference", type: "percentage"
-  , type: 'number'} ,
+    label: "Percentage Difference", field: "percentageDifference", type: "percentage"} ,
   { label: "Current Price", field: "currentPrice" , type: 'number'},  { label: "Wallet", field: "currentPossession", type: 'number'},  { label: "Profit", field: "profit"
  , type: 'number'},
   { label: "Total sell", field: "totalSell", type: 'number'},  { label: "Recup shad", field: "recupShad", type: 'number'},  /*{
