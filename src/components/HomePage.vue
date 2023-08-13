@@ -113,8 +113,8 @@
               trades_data: "[]"
             })
           });
-const responseData = await response.json();
-successSpin('Save completed', 'response :: ' + response.status + "--" +responseData, true, true);
+//const responseData = await response.json();
+successSpin('Save completed', 'response :: ' + response.status + "--" +"responseData", true, true);
 
         /*  if (response.ok) {
             const responseData = await response.json();
