@@ -28,28 +28,6 @@ connectMDB();
 
 app.use(cors());
 
-
-
-
-async function addTradesManually(req, res) { 
-   const collection = process.env.MONGODB_COLLECTION_TRADES_2; 
-   const tradesData = req.body.trades_data; 
-   try { 
-     const savedTrade = await saveArrayDataMDB(JSON.stringify(tradesData), collection); 
-     if (savedTrade != "" && savedTrade != []) 
-     res.status(200).json({ message: savedTrade, status: 200 }); 
-     else  
-       res.status(300).json({message: "que dalle", status:300}); 
-   } catch (err) { 
-         res.status(500).json({ error: err.name + ': ' + err.message }); 
-   }
- }
-
-
-
-
-
-
 // GET
 app.get('/get/balance', getBalance);
 app.get('/get/cmcData', getCmcData);
@@ -75,6 +53,35 @@ app.post('/cancel/all-orders', cancelAllOrders);
 app.post('/bunch-orders', createBunchOrders);
 
 app.post('/add/trades', addTradesManually);
+
+
+
+
+
+async function addTradesManually(req, res) {
+console.log("qddtramanu");  
+
+    const collection = process.env.MONGODB_COLLECTION_TRADES_2; 
+
+console.log("coll:: "+collection);
+
+    const tradesData = req.body.trades_data;  
+
+console.log("tradedataaa::: " + tradesData);
+
+    try {  
+      const savedTrade = await saveArrayDataMDB(JSON.stringify(tradesData), collection);  
+console.log("savearr");
+      if (savedTrade != "" && savedTrade != [])  
+      res.status(200).json({ message: savedTrade, status: 200 });  
+      else   
+        res.status(300).json({message: "que dalle", status:300});  
+    } catch (err) {  
+          res.status(500).json({ error: err.name + ': ' + err.message });  
+    } 
+  }
+
+
 
 //get
 async function getData(req, res, collection, mockDataFile) {
