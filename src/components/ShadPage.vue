@@ -117,8 +117,7 @@ getRowClass(row) {
     } else {
       return "";
     }
-  }
-},
+  },
     closeOverlay() {
       this.showOverlay = false;
     },
