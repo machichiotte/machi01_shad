@@ -463,8 +463,8 @@ res.status(200).json({message: tradesData});
       res.status(300).json({message: "que dalle", status:300});
   } catch (err) {
         res.status(500).json({ error: err.name + ': ' + err.message });
-  }
-}*/
+  }*/
+}
 
 // create Instances
 function createExchangeInstance(exchangeId) {
