@@ -9,6 +9,17 @@
         <template #selected-row-actions>
           <MySellButtonVue :model="allRows" />
         </template>
+<template #fixed>
+      <tr>
+        <th
+          v-for="(column, index) in fixedColumns"
+          :key="index"
+          :style="column.style"
+        >
+          {{ column.label }}
+        </th>
+      </tr>
+    </template>
       </vue-good-table>
     </div>
 
@@ -50,6 +61,9 @@ export default {
     MySellButtonVue, Overlay
   },
   computed: {
+fixedColumns() {
+      return this.columns.slice(0, 2); // Les deux premières colonnes
+    },
     paginatedItems() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
