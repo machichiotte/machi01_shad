@@ -130,7 +130,7 @@
                 <!-- Placeholder for the graph component -->
             </div>
 
-            <button class="close-button" @close="$emit('close')">Close</button>
+            <button class="close-button" @click="$emit('close')">Close</button>
         </div>
     </div>
 </template>
