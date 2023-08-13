@@ -32,7 +32,7 @@ app.use(cors());
 
 
 async function addTradesManually(req, res) { 
-   const collection = process.env.MONGODB_COLLECTION_TRADES; 
+   const collection = process.env.MONGODB_COLLECTION_TRADES_2; 
    const tradesData = req.body.trades_data; 
    try { 
      const savedTrade = await saveArrayDataMDB(JSON.stringify(tradesData), collection); 
