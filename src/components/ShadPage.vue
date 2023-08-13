@@ -20,6 +20,9 @@
         </th>
       </tr>
     </template>
+<template #body-cell="props">
+    <div :class="getRowColor(props.row['total shad'])">{{ props.formattedRow[props.column.field] }}</div>
+  </template>
       </vue-good-table>
     </div>
 
@@ -97,6 +100,19 @@ fixedColumns() {
     },
   },
   methods: {
+getRowColor(totalShad) {
+    if (totalShad >= 2) {
+      return "row-color-blue";
+    } else if (totalShad === 1) {
+      return "row-color-green";
+    } else if (totalShad === 0) {
+      return "row-color-orange";
+    } else if (totalShad === -1) {
+      return "row-color-red";
+    } else {
+      return "";
+    }
+  },
     closeOverlay() {
       this.showOverlay = false;
     },
@@ -149,5 +165,21 @@ fixedColumns() {
 #table {
   height: 700px;
   width: auto;
+}
+
+.row-color-blue {
+  background-color: #e6f7ff; /* Couleur bleue pâle */
+}
+
+.row-color-green {
+  background-color: #d9f2e6; /* Couleur verte pâle */
+}
+
+.row-color-orange {
+  background-color: #ffe0b3; /* Couleur orange pâle */
+}
+
+.row-color-red {
+  background-color: #f2dede; /* Couleur rouge pâle */
 }
 </style>
