@@ -21,7 +21,7 @@
       </tr>
     </template>
 <template #body-cell="props">
-    <div :class="getRowColor(props.row['total shad'])">{{ props.formattedRow[props.column.field] }}</div>
+    <div :class="getRowColor(props.row['totalShad'])">{{ props.formattedRow[props.column.field] }}</div>
   </template>
       </vue-good-table>
     </div>
