@@ -28,6 +28,28 @@ connectMDB();
 
 app.use(cors());
 
+
+
+
+async function addTradesManually(req, res) { 
+   const collection = process.env.MONGODB_COLLECTION_TRADES; 
+   const tradesData = req.body.trades_data; 
+   try { 
+     const savedTrade = await saveArrayDataMDB(tradesData, collection); 
+     if (savedTrade != "" && savedTrade != []) 
+     res.status(200).json({ message: savedTrade, status: 200 }); 
+     else  
+       res.status(300).json({message: "que dalle", status:300}); 
+   } catch (err) { 
+         res.status(500).json({ error: err.name + ': ' + err.message }); 
+   }
+ }
+
+
+
+
+
+
 // GET
 app.get('/get/balance', getBalance);
 app.get('/get/cmcData', getCmcData);
@@ -447,23 +469,6 @@ async function cancelAllOrders(req, res) {
     //console.error(err);
     res.status(500).json({ error: 'Internal server error', status: 500 });
   }
-}
-
-async function addTradesManually(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_TRADES;
-  //const tradesData = req.body.trades_data;
-//const mappedData = mapTradesAddedManually(tradesData);
-const tradesData="iciii";
-res.status(200).json(tradesData);
-  /*try {
-    const savedTrade = await saveArrayDataMDB(tradesColumns, collection);
-    if (savedTrade != "" && savedTrade != [])
-    res.status(200).json({ message: savedTrade, status: 200 });
-    else 
-      res.status(300).json({message: "que dalle", status:300});
-  } catch (err) {
-        res.status(500).json({ error: err.name + ': ' + err.message });
-  }*/
 }
 
 // create Instances
