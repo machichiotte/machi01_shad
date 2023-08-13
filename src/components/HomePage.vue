@@ -102,7 +102,9 @@
   export default {
     methods: {
       async addTrades() {
+console.log("addtrade");
 const tdd= this.tradesData;
+console.log("add :: "+ tdd);
         successSpin('calcul test', `Résultat : ${JSON.stringify(this.trades)}`, true, true);
         try {
           const response = await fetch('/add/trades', {
@@ -114,6 +116,7 @@ const tdd= this.tradesData;
               trades_data: tdd
             })
           });
+console.log("befrep");
 //const responseData = await response.json();
 successSpin('Save completed', 'response :: ' + response + "--" +"responseData", true, true);
 console.log(response);
