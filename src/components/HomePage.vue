@@ -113,6 +113,7 @@
               trades_data: this.trades
             })
           });
+console.log("resp:: "+response);
         /*  if (response.ok) {
             const responseData = await response.json();
             successSpin('Save completed', 'Trades added successfully.' + responseData, true, true);
