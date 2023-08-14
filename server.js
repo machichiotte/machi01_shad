@@ -451,7 +451,10 @@ async function cancelAllOrders(req, res) {
 
 async function addTradesManually(req, res) { 
 console.log("qddtramanu");   
-const collection = process.env.MONGODB_COLLECTION_TEST;  
+//const collection = process.env.MONGODB_COLLECTION_TEST;  
+
+const collection = "collection_test";
+
 console.log("coll:: "+collection);
 const tradesData = req.body.trades_data;   
 //console.log("tradedataaa::: " + tradesData); 
