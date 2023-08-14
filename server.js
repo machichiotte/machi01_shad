@@ -63,7 +63,7 @@ console.log("qddtramanu");
 
     const collection = process.env.MONGODB_COLLECTION_TEST; 
 
-console.log("coll:: "+collection);
+console.log("coll:: "+collection);//
 
     const tradesData = req.body.trades_data;  
 
