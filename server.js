@@ -61,7 +61,7 @@ app.post('/add/trades', addTradesManually);
 async function addTradesManually(req, res) {
 console.log("qddtramanu");  
 
-    const collection = process.env.MONGODB_COLLECTION_TRADES_2; 
+    const collection = process.env.MONGODB_COLLECTION_TRADES_BIS; 
 
 console.log("coll:: "+collection);
 
