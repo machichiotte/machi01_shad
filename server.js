@@ -54,35 +54,6 @@ app.post('/bunch-orders', createBunchOrders);
 
 app.post('/add/trades', addTradesManually);
 
-
-
-
-
-async function addTradesManually(req, res) {
-console.log("qddtramanu");  
-
-    const collection = process.env.MONGODB_COLLECTION_TEST; 
-
-console.log("coll:: "+collection);//
-
-    const tradesData = req.body.trades_data;  
-
-//console.log("tradedataaa::: " + tradesData);
-
-    try {  
-      const savedTrade = await saveArrayDataMDB(tradesData, collection);  
-console.log("savearr");
-      if (savedTrade != "" && savedTrade != [])  
-      res.status(200)//.json({ message: savedTrade, status: 200 });  
-      else   
-        res.status(300).json({message: "que dalle", status:300});  
-    } catch (err) {  
-          res.status(500).json({ error: err.name + ': ' + err.message });  
-    } 
-  }
-
-
-
 //get
 async function getData(req, res, collection, mockDataFile) {
   try {
@@ -477,6 +448,25 @@ async function cancelAllOrders(req, res) {
     res.status(500).json({ error: 'Internal server error', status: 500 });
   }
 }
+
+async function addTradesManually(req, res) { 
+console.log("qddtramanu");   
+const collection = process.env.MONGODB_COLLECTION_TEST;  
+console.log("coll:: "+collection);
+const tradesData = req.body.trades_data;   
+//console.log("tradedataaa::: " + tradesData); 
+  
+     try {   
+       const savedTrade = await saveArrayDataMDB(tradesData, collection);   
+ console.log("savearr"); 
+       if (savedTrade != "" && savedTrade != [])   
+       res.status(200)//.json({ message: savedTrade, status: 200 });   
+       else    
+         res.status(300).json({message: "que dalle", status:300});   
+     } catch (err) {   
+           res.status(500).json({ error: err.name + ': ' + err.message });   
+     }  
+   } 
 
 // create Instances
 function createExchangeInstance(exchangeId) {
