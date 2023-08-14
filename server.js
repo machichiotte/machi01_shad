@@ -450,17 +450,42 @@ async function cancelAllOrders(req, res) {
 }
 
 async function addTradesManually(req, res) { 
-console.log("qddtramanu");   
 //const collection = process.env.MONGODB_COLLECTION_TEST;  
-
 const collection = "collection_test";
-
 console.log("coll:: "+collection);
-const tradesData = req.body.trades_data;   
-//console.log("tradedataaa::: " + tradesData); 
-  
+const tradesData = req.body.trades_data; 
+const data = [
+  {
+    "altA": "ADA",
+    "altB": "USDT",
+    "date": "8/8/2020",
+    "pair": "ADA/USDT",
+    "type": "buy",
+    "price": "0.14378146",
+    "amount": "595",
+    "total": "85.5499687",
+    "fee": "0.595",
+    "feecoin": "ADA",
+    "platform": "binance",
+    "explatform": ""
+  },
+  {
+    "altA": "BTC",
+    "altB": "USDT",
+    "date": "8/8/2020",
+    "pair": "BTC/USDT",
+    "type": "buy",
+    "price": "11697.54",
+    "amount": "0.01",
+    "total": "116.9754",
+    "fee": "0.15",
+    "feecoin": "EUR",
+    "platform": "binance",
+    "explatform": ""
+  }
+];   
      try {   
-       const savedTrade = await saveArrayDataMDB(tradesData, collection);   
+       const savedTrade = await saveArrayDataMDB(data, collection);   
  console.log("savearr"); 
        if (savedTrade != "" && savedTrade != [])   
        res.status(200)//.json({ message: savedTrade, status: 200 });   
