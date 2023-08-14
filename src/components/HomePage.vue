@@ -99,12 +99,15 @@
     successSpin,
     errorSpin
   } from '../js/spinner.js';
+
+const serverHost = process.env.VUE_APP_SERVER_HOST;
+
   export default {
     methods: {
       async addTrades() {
         successSpin('calcul test', `Résultat : ${JSON.stringify(this.trades)}`, true, true);
         try {
-          const response = await fetch('/add/trades', {
+          const response = await fetch(`@{serverHost}/add/trades`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
