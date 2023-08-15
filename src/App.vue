@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+<div class="site-title">
+         <img src="@/assets/logo_machi.svg" alt="Titre de votre site" />
+       </div>
     <header>
       <nav>
         <router-link to="/" active-class="selected-link">Accueil</router-link>
@@ -41,6 +44,7 @@ header {
 }
 
 nav {
+max-height: 64px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -61,4 +65,18 @@ nav a:hover {
   color: #2c3e50;
   padding: 10px;
 }
+
+.site-title {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-color: lightgray;
+   max-height: 80px;
+   padding: 4px 0;
+ }
+ 
+ .site-title img {
+   max-height: 100%;
+   width: auto;
+ }
 </style>
