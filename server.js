@@ -451,16 +451,13 @@ async function cancelAllOrders(req, res) {
 
 async function addTradesManually(req, res) { 
 const collection = process.env.MONGODB_COLLECTION_TEST;  
-console.log("coll:: "+collection);
+//TODO modifier nom bdd
 const tradesData = req.body.trades_data; 
 
      try {   
-       const savedTrade = await saveArrayDataMDB(tradesData, collection);   
- console.log("savearr"); 
-       if (savedTrade != "" && savedTrade != [])   
-       res.status(200)//.json({ message: savedTrade, status: 200 });   
-       else    
-         res.status(300).json({message: "que dalle", status:300});   
+       const savedTrade = await saveArrayDataMDB(tradesData, collection); 
+const result = await savedTrades.json();   
+res.status(200).json({ message: result, data: savedTrade, status: 200 });   
      } catch (err) {   
            res.status(500).json({ error: err.name + ': ' + err.message });   
      }  
