@@ -158,3 +158,14 @@ this.addRow();
     },
   };
 </script>
+
+<style scoped> 
+ .addtrades-page { 
+   overflow-x: auto; 
+ } 
+  
+ #table { 
+   height: 700px; 
+   width: auto; 
+ } 
+ </style>
