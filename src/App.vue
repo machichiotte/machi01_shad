@@ -1,10 +1,11 @@
 <template>
   <div id="app">
-<div class="site-title">
-         <img src="@/assets/logo_machi.svg" alt="Titre de votre site" />
-       </div>
+    <div class="site-title">
+      <img src="@/assets/logo_machi.svg" alt="Titre de votre site" />
+    </div>
     <header>
-      <nav>
+      <button class="menu-button" @click="toggleMenu">☰</button>
+      <nav :class="{ 'show-menu': isMenuOpen }">
         <router-link to="/" active-class="selected-link">Accueil</router-link>
         <router-link to="/update" active-class="selected-link">Mise à jour</router-link>
         <router-link to="/active-orders" active-class="selected-link">Ordres ouverts</router-link>
@@ -23,10 +24,19 @@ import { default as router } from '../router/index';
 
 export default {
   name: "App",
-  router
+  router,
+  data() {
+    return {
+      isMenuOpen: false,
+    };
+  },
+  methods: {
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
+    },
+  },
 };
 </script>
-
 
 <style>
 #app {
@@ -41,28 +51,43 @@ header {
   background-color: #2c3e50;
   color: white;
   padding: 10px;
+  position: relative;
 }
 
-nav {
-  max-height: 64px;
+.menu-button {
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.show-menu {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap; /* Ajoutez cette ligne pour gérer le retour à la ligne des éléments du menu */
+  flex-direction: column;
+  position: absolute;
+  top: 64px;
+  right: 0;
+  width: 100%;
+  background-color: #2c3e50;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(100%);
 }
 
-nav a {
+.show-menu.show {
+  transform: translateX(0);
+}
+
+.show-menu a {
   color: white;
   padding: 10px;
-  text-decoration: none; /* Changez "solid" en "none" pour la propriété text-decoration */
-  display: block; /* Ajoutez cette ligne pour occuper toute la largeur du menu */
-  text-align: center; /* Centrez le texte horizontalement */
-  width: 100%; /* Occupe toute la largeur disponible */
-  box-sizing: border-box; /* Incluez les bordures et les rembourrages dans la largeur */
-}
-
-nav a:hover {
-  text-decoration: underline;
+  text-align: center;
+  width: 100%;
+  text-decoration: none;
 }
 
 .selected-link {
@@ -72,16 +97,16 @@ nav a:hover {
 }
 
 .site-title {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   background-color: lightgray;
-   max-height: 80px;
-   padding: 4px 0;
- }
- 
- .site-title img {
-   max-height: 100%;
-   width: auto;
- }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgray;
+  max-height: 80px;
+  padding: 4px 0;
+}
+
+.site-title img {
+  max-height: 100%;
+  width: auto;
+}
 </style>
