@@ -44,16 +44,21 @@ header {
 }
 
 nav {
-max-height: 64px;
+  max-height: 64px;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap; /* Ajoutez cette ligne pour gérer le retour à la ligne des éléments du menu */
 }
 
 nav a {
   color: white;
   padding: 10px;
-  text-decoration: solid;
+  text-decoration: none; /* Changez "solid" en "none" pour la propriété text-decoration */
+  display: block; /* Ajoutez cette ligne pour occuper toute la largeur du menu */
+  text-align: center; /* Centrez le texte horizontalement */
+  width: 100%; /* Occupe toute la largeur disponible */
+  box-sizing: border-box; /* Incluez les bordures et les rembourrages dans la largeur */
 }
 
 nav a:hover {
