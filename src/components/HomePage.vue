@@ -86,13 +86,13 @@
             </tr>
           </tbody>
         </table>
-        <div style="text-align: center; margin-top: 10px;">
-          <button type="button" @click="addRow" style="font-size: 18px; padding: 10px 20px;">Add Row</button>
-          <button type="submit"  style="font-size: 18px; padding: 10px 20px;">Add Trades</button>
-        </div>
       </form>
     </div>
   </div>
+        <div style="text-align: center; margin-top: 10px;"> 
+           <button type="button" @click="addRow" style="font-size: 18px; padding: 10px 20px;">Add Row</button> 
+           <button type="submit"  style="font-size: 18px; padding: 10px 20px;">Add Trades</button> 
+         </div>
 </template>
 <script>
   import {
