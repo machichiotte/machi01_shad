@@ -4,53 +4,53 @@
 
     <h2>Possibilité de mise à jour</h2>
 
-    <button @click="updateCmcData">Update Data</button>
+    <button @click="fetchAndUpdateCoinMarketCapData">Update Data</button>
     <ul v-if="cryptoData">
       <li v-for="crypto in cryptoData" :key="crypto.name">
         {{ crypto['cmc_rank'] }} - {{ crypto.name }}
       </li>
     </ul>
 
-    <button @click="updateAllTrades()">Update All Trades</button>
+    <button @click="updateAllExchangeTrades()">Update All Trades</button>
 
     <div>
-      <button @click="updateAllByExchange('binance')">Update All Binance</button>
-      <button @click="updateAllByExchange('kucoin')">Update All Kucoin</button>
-      <button @click="updateAllByExchange('huobi')">Update All Huobi</button>
-      <button @click="updateAllByExchange('okex')">Update All Okex</button>
-      <button @click="updateAllByExchange('gateio')">Update All Gate IO</button>
+      <button @click="updateExchangeData('binance')">Update All Binance</button>
+      <button @click="updateExchangeData('kucoin')">Update All Kucoin</button>
+      <button @click="updateExchangeData('huobi')">Update All Huobi</button>
+      <button @click="updateExchangeData('okex')">Update All Okex</button>
+      <button @click="updateExchangeData('gateio')">Update All Gate IO</button>
     </div>
 
     <!--<div>
-      <button @click="updateAllTrades('binance')">Update Binance Trades</button>
+      <button @click="updateAllExchangeTrades('binance')">Update Binance Trades</button>
       <ul v-if="binanceTrades">
         <li v-for="order in binanceTrades" :key="order.symbol">
           {{ order.symbol }} - {{ order.balance }}
         </li>
       </ul>
 
-      <button @click="updateAllTrades('kucoin')">Update Kucoin Trades</button>
+      <button @click="updateAllExchangeTrades('kucoin')">Update Kucoin Trades</button>
       <ul v-if="kucoinTrades">
         <li v-for="order in kucoinTrades" :key="order.symbol">
           {{ order.balance }} - {{ order.symbol }}
         </li>
       </ul>
 
-      <button @click="updateAllTrades('huobi')">Update Huobi Trades</button>
+      <button @click="updateAllExchangeTrades('huobi')">Update Huobi Trades</button>
       <ul v-if="huobiTrades">
         <li v-for="order in huobiTrades" :key="order.symbol">
           {{ order.balance }} - {{ order.symbol }}
         </li>
       </ul>
 
-      <button @click="updateAllTrades('okex')">Update Okex Trades</button>
+      <button @click="updateAllExchangeTrades('okex')">Update Okex Trades</button>
       <ul v-if="okexTrades">
         <li v-for="order in okexTrades" :key="order.symbol">
           {{ order.balance }} - {{ order.symbol }}
         </li>
       </ul>
 
-      <button @click="updateAllTrades('gateio')">Update Gateio Trades</button>
+      <button @click="updateAllExchangeTrades('gateio')">Update Gateio Trades</button>
       <ul v-if="gateioTrades">
         <li v-for="order in gateioTrades" :key="order.symbol">
           {{ order.balance }} - {{ order.symbol }}
@@ -76,47 +76,34 @@ export default {
       binanceTrades: null,
       huobiTrades: null,
       okexTrades: null,
-      gateioTrades: null,
+      gateioTrades: null
     };
   },
   methods: {
-
-    async getBalance() {
-      try {
-        const response = await fetch(`${serverHost}/get/balance`);
-        const data = await response.json();
-        this.balance = data;
-      } catch (err) {
-        console.error(err);
-      }
-    },
-
-    async updateCmcData() {
-      loadingSpin();
-
-      const response = await fetch(`${serverHost}/update/cmcData`);
-      const data = await response.json();
-
-      if (response.status === 200) {
-        this.cryptoData = data.data;
-        successSpin('Save completed', `Résultat : ${data.totalCount}`, true, true);
-      } else {
-        errorSpin('Error', `${data.error}`, false, true);
-      }
-    },
-
-    async updateAllByExchange(exchangeId) {
+    async updateExchangeData(exchangeId) {
       loadingSpin();
 
       let resultText = `<b>${exchangeId.toUpperCase()}</b><br>`;
 
-      const balance = await this.updateBalance(exchangeId);
-      const activeOrders = await this.updateActiveOrders(exchangeId);
-      const loadMarkets = await this.updateLoadMarkets(exchangeId);
 
+      const balance = await this.fetchAndUpdateBalance(exchangeId);
       const balance_data = await balance.json();
+
+      // Vérifier si les éléments de la balance actuelle correspondent à ceux de la balance précédente
+      //const previousBalance = await this.fetchPreviousBalanceByExchange(exchangeId);
+      //const modifiedAssets = this.findModifiedAssets(previousBalance, balance_data);
+      // TODO si et seulement si modifiedAssets nest pas nul, alors on doit rechercher les trades des assets concernes, sur l'exchangeId uniquement. via ccxt
+      // TODO faire fonction qui recherche via ccxt les trades de chaque asset de lexchangeId presents dans modifiedAssets. Certains exhcanges necessitent seulemnt lasset comme par exemple BTC, dadutre veulent la paire par exemple btc/usdt ou btc/eth.
+      // TODO il faudra faire attention a bien gere lappel 
+
+
+      const activeOrders = await this.fetchAndUpdateActiveOrders(exchangeId);
       const activeOrders_data = await activeOrders.json();
+      //const activeOrders_data = await activeOrders;
+
+      const loadMarkets = await this.fetchAndUpdateExchangeMarkets(exchangeId);
       const loadMarkets_data = await loadMarkets.json();
+      //const loadMarkets_data = await loadMarkets;
 
       if (balance.status === 200) {
         this[`${exchangeId}Balance`] = balance_data;
@@ -142,41 +129,110 @@ export default {
       successSpinHtml('Save completed', resultText, true, true);
     },
 
-    async updateBalance(exchangeId) {
-      const response = await fetch(`${serverHost}/update/balance/${exchangeId}`);
-      return response;
+    async fetchPreviousBalanceByExchange(exchangeId) {
+      try {
+        const response = await fetch(`${serverHost}/get/balance`);
+        const data = await response.json();
+        return data.filter(item => item.platform === exchangeId);
+      } catch (err) {
+        console.error(err);
+        return [];
+      }
     },
-    async updateLoadMarkets(exchangeId) {
-      const response = await fetch(`${serverHost}/update/loadMarkets/${exchangeId}`);
-      return response;
+
+    async fetchAndUpdateCoinMarketCapData() {
+      loadingSpin();
+
+      const response = await fetch(`${serverHost}/update/cmcData`);
+      const data = await response.json();
+
+      if (response.status === 200) {
+        this.cryptoData = data.data;
+        successSpin('Save completed', `Résultat : ${data.totalCount}`, true, true);
+      } else {
+        errorSpin('Error', `${data.error}`, false, true);
+      }
     },
-    async updateActiveOrders(exchangeId) {
-      const response = await fetch(`${serverHost}/update/activeOrders/${exchangeId}`);
-      return response;
+    async fetchAndUpdateBalance(exchangeId) {
+      try {
+        console.log("Fetching balance from:", `${serverHost}/update/balance/${exchangeId}`);
+        const response = await fetch(`${serverHost}/update/balance/${exchangeId}`);
+        return response;
+      } catch (error) {
+        console.error("Error fetching balance:", error);
+        throw error;
+      }
+    },
+    async fetchAndUpdateExchangeMarkets(exchangeId) {
+      try {
+        console.log("Fetching exchange markets from:", `${serverHost}/update/loadMarkets/${exchangeId}`);
+        const response = await fetch(`${serverHost}/update/loadMarkets/${exchangeId}`);
+
+        if (!response.ok) {
+          throw new Error(`Error fetching exchange markets: ${response.statusText}`);
+        }
+        return response;
+      } catch (error) {
+        console.error("Error fetching exchange markets:", error);
+        throw error;
+      }
+    },
+
+    async fetchAndUpdateActiveOrders(exchangeId) {
+      try {
+        console.log("Fetching active orders from:", `${serverHost}/update/activeOrders/${exchangeId}`);
+        const response = await fetch(`${serverHost}/update/activeOrders/${exchangeId}`);
+
+        if (!response.ok) {
+          throw new Error(`Error fetching active orders: ${response.statusText}`);
+        }
+        return response;
+      } catch (error) {
+        console.error("Error fetching active orders:", error);
+        throw error;
+      }
     },
 
     //TODO complete trades part
-    async updateAllTrades() {
+    async updateAllExchangeTrades() {
       loadingSpin();
 
-      // const exchanges = ['binance', 'kucoin', 'huobi', 'okex', 'gateio'];
-      const exchanges = ['huobi'];
+      const exchanges = ['binance', 'kucoin', 'huobi', 'okex', 'gateio'];
+      //const exchanges = ['huobi'];
       const tradesData = [];
       const exchData = [];
 
       for (const exch of exchanges) {
 
-        const result = await this.updateTrades(exch);
+        const result = await this.fetchAndUpdateTrades(exch);
         console.log(result);
-        if (result.status === 200 && result.length > 0) {
+        if (result.status === 200 && result.data && result.data.length > 0) {
           tradesData.push(...result.data);
         }
-        exchData.push(exch + ' ' + result.status + ' ' + result.length);
+        exchData.push(`${exch} ${result.status} ${result.data ? result.data.length : 0}`);
         console.log(exch);
       }
 
       successSpin('Save completed', `Résultat : ${tradesData.length}`, true, true);
     },
+
+    findModifiedAssets(previousBalance, currentBalance) {
+      const modifiedAssets = [];
+
+      // Comparer chaque asset de la balance actuelle avec la balance précédente pour l'exchange spécifié
+      if (previousBalance && currentBalance) {
+
+        currentBalance.forEach((currentAsset) => {
+          const previousAsset = previousBalance.find((asset) => asset.symbol === currentAsset.symbol);
+          if (!previousAsset || currentAsset.balance !== previousAsset.balance) {
+            modifiedAssets.push(currentAsset.symbol);
+          }
+        });
+      }
+
+      return modifiedAssets;
+    },
+
 
     /*
     async updateAllTradesByAsset(exchange) {
@@ -196,7 +252,7 @@ export default {
                 console.log(`Delaying ${exchangeSymbol} update for ${minimumTimeBetweenUpdates - timeSinceLastUpdate}ms`);
                 await new Promise(resolve => setTimeout(resolve, minimumTimeBetweenUpdates - timeSinceLastUpdate));
               }
-              await this.updateTrades(exchange, exchangeSymbol);
+              await this.fetchAndUpdateTrades(exchange, exchangeSymbol);
               lastUpdateTimestamp = now;
             } catch (err) {
               console.error(err);
@@ -207,15 +263,15 @@ export default {
     },
     */
 
-    async updateTrades(exchange) {
-      const response = await fetch(`${serverHost}/update/trades/${exchange}`);
+    async fetchAndUpdateTrades(exchangeId) {
+      const response = await fetch(`${serverHost}/update/trades/${exchangeId}`);
       const data = await response.json();
 
-      if (response.status === 200) {
-        return { exchange, 'status': response.status, data };
-      } else {
-        return { exchange, 'status': response.status };
-      }
+      return {
+        exchangeId,
+        status: response.status,
+        data: response.status === 200 ? data : null,
+      };
     },
 
   }

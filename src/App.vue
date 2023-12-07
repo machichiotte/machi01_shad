@@ -52,6 +52,9 @@ header {
   color: white;
   padding: 10px;
   position: relative;
+  display: flex; /* Permet d'utiliser justify-content et align-items */
+  justify-content: space-between; /* Aligne les éléments à l'extrémité des côtés */
+  align-items: center; /* Centre les éléments verticalement */
 }
 
 .menu-button {
@@ -59,54 +62,69 @@ header {
   background: none;
   border: none;
   color: white;
-  cursor: pointer;
+  cursor: default; /* Rend le curseur non cliquable */
   padding: 10px;
   position: absolute;
-  top: 10px;
+  top: 50%;
   right: 10px;
+  transform: translateY(-50%); /* Centre le bouton verticalement */
+  display: none; /* Cacher le bouton du menu par défaut */
 }
 
-.show-menu {
+/* Style pour les grands écrans */
+nav {
   display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 64px;
-  right: 0;
+  justify-content: space-between;
   width: 100%;
-  background-color: #2c3e50;
-  transition: transform 0.3s ease-in-out;
-  transform: translateX(100%);
 }
 
-.show-menu.show {
-  transform: translateX(0);
-}
-
-.show-menu a {
-  color: white;
+nav a {
+  color: white; /* Texte blanc par défaut */
   padding: 10px;
   text-align: center;
-  width: 100%;
   text-decoration: none;
 }
 
-.selected-link {
+nav a.selected-link {
+  color: black; /* Texte noir lorsqu'il est sélectionné */
   background-color: white;
-  color: #2c3e50;
-  padding: 10px;
 }
 
-.site-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: lightgray;
-  max-height: 80px;
-  padding: 4px 0;
+/* Style pour les petits écrans */
+.show-menu {
+  display: none;
 }
 
-.site-title img {
-  max-height: 100%;
-  width: auto;
+@media only screen and (max-width: 768px) {
+  .menu-button {
+    display: block; /* Afficher le bouton du menu pour les petits écrans */
+  }
+
+  nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    right: 0;
+    width: 100%;
+    background-color: #2c3e50;
+  }
+
+  nav.show-menu {
+    display: flex;
+  }
+
+  nav a {
+    color: white;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  nav a.selected-link {
+    color: black;
+    background-color: white;
+  }
 }
 </style>

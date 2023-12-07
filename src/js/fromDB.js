@@ -1,6 +1,4 @@
 const serverHost = process.env.VUE_APP_SERVER_HOST;
-//require('dotenv').config();
-//const serverHost = `https://${process.env.HOST}`;
 
 async function getBalanceFromDB() {
     try {
