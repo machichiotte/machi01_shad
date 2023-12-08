@@ -222,6 +222,7 @@
 
     try {
       console.log('AAA');
+      console.log('AAA : '+exchange);
       const data = await exchange.fetchBalance();
       console.log('BBB');
 
