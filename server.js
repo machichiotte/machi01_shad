@@ -221,9 +221,17 @@
     const exchange = createExchangeInstance(exchangeId);
 
     try {
+      console.log('AAA');
       const data = await exchange.fetchBalance();
+      console.log('BBB');
+
       const mappedData = mapBalance(exchangeId, data);
+      console.log('CCC');
+      console.log('mappedData:: ' + mappedData);
+
       await deleteAndSaveData(mappedData, collection, exchangeId);
+      console.log('DDD');
+
       res.status(200).json(mappedData);
 
       updateLastUpdate(exchangeId, 'balance');
