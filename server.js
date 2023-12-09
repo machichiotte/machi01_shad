@@ -2,7 +2,7 @@
   const dotenv = require('dotenv');
   const express = require('express');
   const bodyParser = require('body-parser');
-  const fetch = require('node-fetch');
+  //const fetch = require('node-fetch');
   const cors = require('cors');
   const ccxt = require('ccxt');
   const fs = require('fs');
@@ -458,7 +458,7 @@
 
       res.status(200).json({ message: result, status: 200 })
     } catch (err) {
-      console.log('del err :: ' + err)
+      console.log('Error cancelAllOrders :: ' + err)
       //console.error(err);
       res.status(500).json({ error: 'Internal server error', status: 500 });
     }
