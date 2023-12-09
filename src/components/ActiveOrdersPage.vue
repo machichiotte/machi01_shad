@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       items: [],
-      itemsPerPage: 2000,
+      pageSize: 2000,
       currentPage: 1,
       columns: activeOrdersColumns,
 
@@ -35,12 +35,19 @@ export default {
   },
   computed: {
     paginatedItems() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.items.slice(startIndex, endIndex);
+      if (Array.isArray(this.items)) {
+        return this.items.slice(
+          (this.currentPage - 1) * this.pageSize,
+          this.currentPage * this.pageSize
+        );
+      } else {
+        // Gérez le cas où this.items n'est pas un tableau
+        console.error("this.items is not an array:", this.items);
+        return [];
+      }
     },
     pageCount() {
-      return Math.ceil(this.items.length / this.itemsPerPage);
+      return Math.ceil(this.items.length / this.pageSize);
     },
     pages() {
       const pages = [];
