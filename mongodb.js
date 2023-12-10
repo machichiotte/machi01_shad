@@ -113,6 +113,8 @@ async function deleteDataMDB(collectionName, filter) {
 }
 
 async function deleteMultipleDataMDB(collectionName, deleteParam) {
+    console.log('deleteMultipleDataMDB collectionName ' + collectionName);
+    console.log('deleteMultipleDataMDB deleteParam ' + deleteParam);
     try {
         const collection = db.collection(collectionName);
         const result = await collection.deleteMany(deleteParam);

@@ -224,7 +224,7 @@ async function updateBalance(req, res) {
     const data = await exchange.fetchBalance();
 
     const mappedData = mapBalance(exchangeId, data);
-    console.log('mappedData:: ' + mappedData);
+    console.log('updateBalance mappedData:: ' + mappedData);
 
     await deleteAndSaveData(mappedData, collection, exchangeId);
     res.status(200).json(mappedData);
@@ -369,6 +369,7 @@ async function updateActiveOrders(req, res) {
 
 async function deleteAndSaveData(mapData, collection, exchangeId) {
   console.log("delete and save data : " + mapData.length);
+  console.log("exchangeId : " + exchangeId);
   if (mapData.length > 0) {
     const deleteParam = { platform: exchangeId };
     await deleteMultipleDataMDB(collection, deleteParam);
