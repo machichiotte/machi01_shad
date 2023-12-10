@@ -1,23 +1,33 @@
 // mongodb.js
 require('dotenv').config();
-const MongoClient = require('mongodb').MongoClient;
-
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}.mongodb.net/test?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(uri, {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
+});
 let db;
 
 async function connectMDB() {
     try {
         await client.connect();
-        db = client.db(process.env.MONGODB_DATABASE);
+        await client.db("admin").command({ ping: 1 });
+        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        await client.db(process.env.MONGODB_DATABASE);
         console.log("Connected to MongoDB!");
     } catch (err) {
         console.error(err);
+    } finally {
+        // Ensures that the client will close when you finish/error
+        await client.close();
     }
 }
 
 async function saveArrayDataMDB(data, collectionName) {
-console.log("saveArrayDataMDB enter");
+    console.log("saveArrayDataMDB enter");
     try {
         const collection = db.collection(collectionName);
         const result = await collection.insertMany(data);
