@@ -174,7 +174,7 @@ async function updateStrat(req, res) {
   const strat = req.body.strat;
 
   try {
-    const del = await deleteAllDataMDB(collection);
+    await deleteAllDataMDB(collection);
     const data = await saveObjectDataMDB(strat, collection);
 
     res.json(data);
@@ -195,9 +195,7 @@ async function updateLoadMarkets(req, res) {
     const data = await exchange.loadMarkets();
     const mappedData = mapLoadMarkets(exchangeId, data);
     await deleteAndSaveData(mappedData, collection, exchangeId);
-
     updateLastUpdate(exchangeId, 'loadMarket');
-
     res.status(200).json(mappedData);
   } catch (err) {
     console.log('Error updateLoadMarkets:', err);
@@ -222,15 +220,10 @@ async function updateBalance(req, res) {
 
   try {
     const data = await exchange.fetchBalance();
-
     const mappedData = mapBalance(exchangeId, data);
-    console.log('updateBalance mappedData:: ' + mappedData);
-
     await deleteAndSaveData(mappedData, collection, exchangeId);
     res.status(200).json(mappedData);
-
     updateLastUpdate(exchangeId, 'balance');
-
   } catch (err) {
     console.log('Erreur lors de updateBalance:', err);
     res.status(500).json({ error: err.name + ': ' + err.message });
@@ -281,9 +274,7 @@ async function updateTrades(req, res) {
           }
 
           try {
-            console.log('st :: ' + startTime);
             const trades = await exchange.fetchMyTrades(undefined, undefined, 1000, param);
-            console.log('tr :: ' + JSON.stringify(trades));
             if (trades.length > 0) {
               mappedData.push(...mapTrades(exchangeId, trades));
             }
@@ -302,25 +293,19 @@ async function updateTrades(req, res) {
       console.log('Error suppression sauvegarde:', err);
       res.status(500).json({ error: err.name + ': ' + err.message });
     }
-
     if (tradesData.length > 0) {
       res.status(200).json(tradesData);
     } else {
       res.status(201).json({ empty: 'empty' });
     }
-
     updateLastUpdate(exchangeId, 'trades');
-
-
   } catch (err) {
     res.status(500).json({ error: err.name + ': ' + err.message });
   }
 }
 
 async function updateActiveOrders(req, res) {
-  console.log('updateActiveOrders');
   const { exchangeId } = req.params;
-  console.log('exchangeId ' + exchangeId);
 
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
   let data;
@@ -353,7 +338,6 @@ async function updateActiveOrders(req, res) {
     }
 
     const mappedData = mapActiveOrders(exchangeId, data);
-    console.log('mappedData :: ' + mappedData);
     await deleteAndSaveData(mappedData, collection, exchangeId);
     res.status(200).json(mappedData);
 
@@ -368,8 +352,6 @@ async function updateActiveOrders(req, res) {
 }
 
 async function deleteAndSaveData(mapData, collection, exchangeId) {
-  console.log("delete and save data : " + mapData.length);
-  console.log("exchangeId : " + exchangeId);
   if (mapData.length > 0) {
     const deleteParam = { platform: exchangeId };
     await deleteMultipleDataMDB(collection, deleteParam);

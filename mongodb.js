@@ -18,7 +18,6 @@ async function connectMDB() {
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
         db = client.db(process.env.MONGODB_DATABASE);
         console.log("Connected to MongoDB!");
-        console.log('db :: ' + db);
     } catch (err) {
         console.error(err);
     }/* finally {
@@ -28,8 +27,6 @@ async function connectMDB() {
 }
 
 async function saveArrayDataMDB(data, collectionName) {
-    console.log("saveArrayDataMDB enter");
-    console.log('dbbb :: ' + db);
     try {
         const collection = db.collection(collectionName);
         const result = await collection.insertMany(data);
@@ -79,7 +76,6 @@ async function insertDataMDB(collectionName, document) {
 
 // Get all documents from a collection
 async function getAllDataMDB(collectionName) {
-    console.log("getAllDataMDB mongodb");
     try {
         const collection = db.collection(collectionName);
         const result = await collection.find().toArray();
@@ -93,7 +89,6 @@ async function getAllDataMDB(collectionName) {
 
 // Update a document in a collection
 async function updateDataMDB(collectionName, filter, update) {
-    console.log('entre update MDB');
     try {
         const collection = db.collection(collectionName);
         const result = await collection.updateOne(filter, update);
@@ -125,8 +120,6 @@ async function deleteDataMDB(collectionName, filter) {
 }
 
 async function deleteMultipleDataMDB(collectionName, deleteParam) {
-    console.log('deleteMultipleDataMDB collectionName ' + collectionName);
-    console.log('deleteMultipleDataMDB deleteParam ' + deleteParam);
     try {
         const collection = db.collection(collectionName);
         const result = await collection.deleteMany(deleteParam);
