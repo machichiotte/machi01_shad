@@ -221,18 +221,12 @@
     const exchange = createExchangeInstance(exchangeId);
 
     try {
-      console.log('AAA');
-      console.log('AAA : '+exchange);
       const data = await exchange.fetchBalance();
-      console.log('BBB');
 
       const mappedData = mapBalance(exchangeId, data);
-      console.log('CCC');
       console.log('mappedData:: ' + mappedData);
 
       await deleteAndSaveData(mappedData, collection, exchangeId);
-      console.log('DDD');
-
       res.status(200).json(mappedData);
 
       updateLastUpdate(exchangeId, 'balance');
@@ -370,6 +364,7 @@
   }
 
   async function deleteAndSaveData(mapData, collection, exchangeId) {
+    console.log("delete and save data : " + mapData.length);
     if (mapData.length > 0) {
       const deleteParam = { platform: exchangeId };
       await deleteMultipleDataMDB(collection, deleteParam);
