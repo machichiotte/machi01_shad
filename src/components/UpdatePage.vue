@@ -21,47 +21,15 @@
       <button @click="updateExchangeData('gateio')">Update All Gate IO</button>
     </div>
 
-    <!--<div>
-      <button @click="updateAllExchangeTrades('binance')">Update Binance Trades</button>
-      <ul v-if="binanceTrades">
-        <li v-for="order in binanceTrades" :key="order.symbol">
-          {{ order.symbol }} - {{ order.balance }}
-        </li>
-      </ul>
-
-      <button @click="updateAllExchangeTrades('kucoin')">Update Kucoin Trades</button>
-      <ul v-if="kucoinTrades">
-        <li v-for="order in kucoinTrades" :key="order.symbol">
-          {{ order.balance }} - {{ order.symbol }}
-        </li>
-      </ul>
-
-      <button @click="updateAllExchangeTrades('huobi')">Update Huobi Trades</button>
-      <ul v-if="huobiTrades">
-        <li v-for="order in huobiTrades" :key="order.symbol">
-          {{ order.balance }} - {{ order.symbol }}
-        </li>
-      </ul>
-
-      <button @click="updateAllExchangeTrades('okex')">Update Okex Trades</button>
-      <ul v-if="okexTrades">
-        <li v-for="order in okexTrades" :key="order.symbol">
-          {{ order.balance }} - {{ order.symbol }}
-        </li>
-      </ul>
-
-      <button @click="updateAllExchangeTrades('gateio')">Update Gateio Trades</button>
-      <ul v-if="gateioTrades">
-        <li v-for="order in gateioTrades" :key="order.symbol">
-          {{ order.balance }} - {{ order.symbol }}
-        </li>
-      </ul>
-    </div> -->
   </div>
 </template>
 
 <script>
 const serverHost = process.env.VUE_APP_SERVER_HOST;
+const GET_BALANCE_ENDPOINT = `${serverHost}/get/balance`;
+const UPD_BALANCE_ENDPOINT = `${serverHost}/update/balance/`;
+const CMC_DATA_ENDPOINT = `${serverHost}/update/cmcData`;
+
 import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
 //let lastUpdateTimestamp = 0;
 
@@ -131,7 +99,7 @@ export default {
 
     async fetchPreviousBalanceByExchange(exchangeId) {
       try {
-        const response = await fetch(`${serverHost}/get/balance`);
+        const response = await fetch(GET_BALANCE_ENDPOINT);
         const data = await response.json();
         return data.filter(item => item.platform === exchangeId);
       } catch (err) {
@@ -143,23 +111,37 @@ export default {
     async fetchAndUpdateCoinMarketCapData() {
       loadingSpin();
 
-      const response = await fetch(`${serverHost}/update/cmcData`);
-      const data = await response.json();
+      try {
+        const response = await fetch(CMC_DATA_ENDPOINT);
+        const data = await response.json();
 
-      if (response.status === 200) {
-        this.cryptoData = data.data;
-        successSpin('Save completed', `Résultat : ${data.totalCount}`, true, true);
-      } else {
-        errorSpin('Error', `${data.error}`, false, true);
+        if (response.status === 200) {
+          this.cryptoData = data.data;
+          successSpin('Save completed', `Résultat : ${data.totalCount}`, true, true);
+        } else {
+          errorSpin('Error', `${data.error}`, false, true);
+        }
+      } catch (error) {
+        console.error('Error fetching and updating CoinMarketCap data:', error);
+        errorSpin('Error', 'Failed to fetch and update CoinMarketCap data.', false, true);
       }
     },
+
+
     async fetchAndUpdateBalance(exchangeId) {
       try {
-        console.log("Fetching balance from:", `${serverHost}/update/balance/${exchangeId}`);
-        const response = await fetch(`${serverHost}/update/balance/${exchangeId}`);
+        console.log("Fetching balance from:", `${UPD_BALANCE_ENDPOINT}${exchangeId}`);
+        const response = await fetch(`${UPD_BALANCE_ENDPOINT}${exchangeId}`, {
+          method: 'GET',
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error fetching balance: ${response.statusText}`);
+        }
+
         return response;
       } catch (error) {
-        console.error("Error fetching balance:", error);
+        console.error("Error fetching balance:", error.message);
         throw error;
       }
     },
@@ -198,7 +180,6 @@ export default {
       loadingSpin();
 
       const exchanges = ['binance', 'kucoin', 'huobi', 'okex', 'gateio'];
-      //const exchanges = ['huobi'];
       const tradesData = [];
       const exchData = [];
 
@@ -232,36 +213,6 @@ export default {
 
       return modifiedAssets;
     },
-
-
-    /*
-    async updateAllTradesByAsset(exchange) {
-      const ending = ['USDT', 'BUSD', 'BTC', 'ETH'];
-      await this.getBalance();
-      this.balance.forEach(async (item) => {
-  
-        if (item.platform === exchange) {
-          const symbol = item.symbol;
-          for (let i = 0; i < ending.length; i++) {
-            const exchangeSymbol = this.getExchangeSymbol(exchange, symbol, ending[i]);
-            try {
-              const now = Date.now();
-              const timeSinceLastUpdate = now - lastUpdateTimestamp;
-              const minimumTimeBetweenUpdates = 1000 / (3600 / 60); // 1000ms / (1800 requests/60s) = 33.33ms
-              if (timeSinceLastUpdate < minimumTimeBetweenUpdates) {
-                console.log(`Delaying ${exchangeSymbol} update for ${minimumTimeBetweenUpdates - timeSinceLastUpdate}ms`);
-                await new Promise(resolve => setTimeout(resolve, minimumTimeBetweenUpdates - timeSinceLastUpdate));
-              }
-              await this.fetchAndUpdateTrades(exchange, exchangeSymbol);
-              lastUpdateTimestamp = now;
-            } catch (err) {
-              console.error(err);
-            }
-          }
-        }
-      });
-    },
-    */
 
     async fetchAndUpdateTrades(exchangeId) {
       const response = await fetch(`${serverHost}/update/trades/${exchangeId}`);
