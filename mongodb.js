@@ -18,16 +18,18 @@ async function connectMDB() {
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
         db = client.db(process.env.MONGODB_DATABASE);
         console.log("Connected to MongoDB!");
+        console.log('db :: ' + db);
     } catch (err) {
         console.error(err);
-    } finally {
+    }/* finally {
         // Ensures that the client will close when you finish/error
         await client.close();
-    }
+    }*/
 }
 
 async function saveArrayDataMDB(data, collectionName) {
     console.log("saveArrayDataMDB enter");
+    console.log('dbbb :: ' + db);
     try {
         const collection = db.collection(collectionName);
         const result = await collection.insertMany(data);
