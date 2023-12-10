@@ -16,7 +16,7 @@ async function connectMDB() {
         await client.connect();
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
-        db = await client.db(process.env.MONGODB_DATABASE);
+        db = client.db(process.env.MONGODB_DATABASE);
         console.log("Connected to MongoDB!");
     } catch (err) {
         console.error(err);
