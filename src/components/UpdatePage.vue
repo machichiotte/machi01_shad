@@ -26,12 +26,10 @@
 
 <script>
 const serverHost = process.env.VUE_APP_SERVER_HOST;
-const GET_BALANCE_ENDPOINT = `${serverHost}/get/balance`;
 const UPD_BALANCE_ENDPOINT = `${serverHost}/update/balance/`;
 const CMC_DATA_ENDPOINT = `${serverHost}/update/cmcData`;
 
 import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
-//let lastUpdateTimestamp = 0;
 
 export default {
   name: "UpdatePage",
@@ -39,12 +37,6 @@ export default {
   data() {
     return {
       cryptoData: null,
-
-      kucoinTrades: null,
-      binanceTrades: null,
-      huobiTrades: null,
-      okexTrades: null,
-      gateioTrades: null
     };
   },
   methods: {
@@ -53,25 +45,14 @@ export default {
 
       let resultText = `<b>${exchangeId.toUpperCase()}</b><br>`;
 
-
       const balance = await this.fetchAndUpdateBalance(exchangeId);
       const balance_data = await balance.json();
 
-      // Vérifier si les éléments de la balance actuelle correspondent à ceux de la balance précédente
-      //const previousBalance = await this.fetchPreviousBalanceByExchange(exchangeId);
-      //const modifiedAssets = this.findModifiedAssets(previousBalance, balance_data);
-      // TODO si et seulement si modifiedAssets nest pas nul, alors on doit rechercher les trades des assets concernes, sur l'exchangeId uniquement. via ccxt
-      // TODO faire fonction qui recherche via ccxt les trades de chaque asset de lexchangeId presents dans modifiedAssets. Certains exhcanges necessitent seulemnt lasset comme par exemple BTC, dadutre veulent la paire par exemple btc/usdt ou btc/eth.
-      // TODO il faudra faire attention a bien gere lappel 
-
-
       const activeOrders = await this.fetchAndUpdateActiveOrders(exchangeId);
       const activeOrders_data = await activeOrders.json();
-      //const activeOrders_data = await activeOrders;
 
       const loadMarkets = await this.fetchAndUpdateExchangeMarkets(exchangeId);
       const loadMarkets_data = await loadMarkets.json();
-      //const loadMarkets_data = await loadMarkets;
 
       if (balance.status === 200) {
         this[`${exchangeId}Balance`] = balance_data;
@@ -95,17 +76,6 @@ export default {
       }
 
       successSpinHtml('Save completed', resultText, true, true);
-    },
-
-    async fetchPreviousBalanceByExchange(exchangeId) {
-      try {
-        const response = await fetch(GET_BALANCE_ENDPOINT);
-        const data = await response.json();
-        return data.filter(item => item.platform === exchangeId);
-      } catch (err) {
-        console.error(err);
-        return [];
-      }
     },
 
     async fetchAndUpdateCoinMarketCapData() {
@@ -173,56 +143,6 @@ export default {
         console.error("Error fetching active orders:", error);
         throw error;
       }
-    },
-
-    //TODO complete trades part
-    async updateAllExchangeTrades() {
-      loadingSpin();
-
-      const exchanges = ['binance', 'kucoin', 'huobi', 'okex', 'gateio'];
-      const tradesData = [];
-      const exchData = [];
-
-      for (const exch of exchanges) {
-
-        const result = await this.fetchAndUpdateTrades(exch);
-        console.log(result);
-        if (result.status === 200 && result.data && result.data.length > 0) {
-          tradesData.push(...result.data);
-        }
-        exchData.push(`${exch} ${result.status} ${result.data ? result.data.length : 0}`);
-        console.log(exch);
-      }
-
-      successSpin('Save completed', `Résultat : ${tradesData.length}`, true, true);
-    },
-
-    findModifiedAssets(previousBalance, currentBalance) {
-      const modifiedAssets = [];
-
-      // Comparer chaque asset de la balance actuelle avec la balance précédente pour l'exchange spécifié
-      if (previousBalance && currentBalance) {
-
-        currentBalance.forEach((currentAsset) => {
-          const previousAsset = previousBalance.find((asset) => asset.symbol === currentAsset.symbol);
-          if (!previousAsset || currentAsset.balance !== previousAsset.balance) {
-            modifiedAssets.push(currentAsset.symbol);
-          }
-        });
-      }
-
-      return modifiedAssets;
-    },
-
-    async fetchAndUpdateTrades(exchangeId) {
-      const response = await fetch(`${serverHost}/update/trades/${exchangeId}`);
-      const data = await response.json();
-
-      return {
-        exchangeId,
-        status: response.status,
-        data: response.status === 200 ? data : null,
-      };
     },
 
   }
