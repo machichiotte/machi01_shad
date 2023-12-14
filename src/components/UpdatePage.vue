@@ -29,7 +29,9 @@ const serverHost = process.env.VUE_APP_SERVER_HOST;
 const UPD_BALANCE_ENDPOINT = `${serverHost}/update/balance/`;
 const CMC_DATA_ENDPOINT = `${serverHost}/update/cmcData`;
 
-import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
+import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../js/spinner.js';
+//import { saveDataToIndexedDB, saveCryptoDataToIndexedDB } from '../js/indexedDB';
+import { saveCryptoDataToIndexedDB } from '../js/indexedDB';
 
 export default {
   name: "UpdatePage",
@@ -40,6 +42,29 @@ export default {
     };
   },
   methods: {
+    async fetchAndUpdateCoinMarketCapData() {
+      loadingSpin();
+
+      try {
+        const response = await fetch(CMC_DATA_ENDPOINT);
+        const data = await response.json();
+
+        if (response.status === 200) {
+          this.cryptoData = data.data;
+
+          // Enregistrez les données dans IndexedDB
+          await saveCryptoDataToIndexedDB('cryptoData', this.cryptoData);
+
+          successSpin('Save completed', `Résultat : ${data.totalCount}`, true, true);
+        } else {
+          errorSpin('Error', `${data.error}`, false, true);
+        }
+      } catch (error) {
+        console.error('Error fetching and updating CoinMarketCap data:', error);
+        errorSpin('Error', 'Failed to fetch and update CoinMarketCap data.', false, true);
+      }
+    },
+
     async updateExchangeData(exchangeId) {
       loadingSpin();
 
@@ -47,12 +72,15 @@ export default {
 
       const balance = await this.fetchAndUpdateBalance(exchangeId);
       const balance_data = await balance.json();
+      //await saveDataToIndexedDB(`${exchangeId}Balances`, balance_data);
 
       const activeOrders = await this.fetchAndUpdateActiveOrders(exchangeId);
       const activeOrders_data = await activeOrders.json();
+      //await saveDataToIndexedDB(`${exchangeId}ActiveOrders`, activeOrders_data);
 
       const loadMarkets = await this.fetchAndUpdateExchangeMarkets(exchangeId);
       const loadMarkets_data = await loadMarkets.json();
+      //await saveDataToIndexedDB(`${exchangeId}LoadMarkets`, loadMarkets_data);
 
       if (balance.status === 200) {
         this[`${exchangeId}Balance`] = balance_data;
@@ -77,27 +105,6 @@ export default {
 
       successSpinHtml('Save completed', resultText, true, true);
     },
-
-    async fetchAndUpdateCoinMarketCapData() {
-      loadingSpin();
-
-      try {
-        const response = await fetch(CMC_DATA_ENDPOINT);
-        const data = await response.json();
-
-        if (response.status === 200) {
-          this.cryptoData = data.data;
-          successSpin('Save completed', `Résultat : ${data.totalCount}`, true, true);
-        } else {
-          errorSpin('Error', `${data.error}`, false, true);
-        }
-      } catch (error) {
-        console.error('Error fetching and updating CoinMarketCap data:', error);
-        errorSpin('Error', 'Failed to fetch and update CoinMarketCap data.', false, true);
-      }
-    },
-
-
     async fetchAndUpdateBalance(exchangeId) {
       try {
         console.log("Fetching balance from:", `${UPD_BALANCE_ENDPOINT}${exchangeId}`);
@@ -129,7 +136,6 @@ export default {
         throw error;
       }
     },
-
     async fetchAndUpdateActiveOrders(exchangeId) {
       try {
         console.log("Fetching active orders from:", `${serverHost}/update/activeOrders/${exchangeId}`);
