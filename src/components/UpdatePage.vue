@@ -78,8 +78,8 @@ export default {
       const activeOrders_data = await activeOrders.json();
       //await saveDataToIndexedDB(`${exchangeId}ActiveOrders`, activeOrders_data);
 
-      const loadMarkets = await this.fetchAndUpdateExchangeMarkets(exchangeId);
-      const loadMarkets_data = await loadMarkets.json();
+      //const loadMarkets = await this.fetchAndUpdateExchangeMarkets(exchangeId);
+      //const loadMarkets_data = await loadMarkets.json();
       //await saveDataToIndexedDB(`${exchangeId}LoadMarkets`, loadMarkets_data);
 
       if (balance.status === 200) {
@@ -96,12 +96,14 @@ export default {
         resultText += `<b>ActiveOrders :</b> ${activeOrders.status} - ${activeOrders_data.error}<br>`;
       }
 
+      /*
       if (loadMarkets.status === 200) {
         this[`${exchangeId}LoadMarkets`] = loadMarkets_data;
         resultText += `<b>LoadMarkets :</b> ${loadMarkets.status} - ${loadMarkets_data.length} paires<br>`;
       } else {
         resultText += `<b>LoadMarkets :</b> ${loadMarkets.status} - ${loadMarkets_data.error}<br>`;
       }
+      */
 
       successSpinHtml('Save completed', resultText, true, true);
     },
@@ -122,7 +124,7 @@ export default {
         throw error;
       }
     },
-    async fetchAndUpdateExchangeMarkets(exchangeId) {
+    /*async fetchAndUpdateExchangeMarkets(exchangeId) {
       try {
         console.log("Fetching exchange markets from:", `${serverHost}/update/loadMarkets/${exchangeId}`);
         const response = await fetch(`${serverHost}/update/loadMarkets/${exchangeId}`);
@@ -135,7 +137,7 @@ export default {
         console.error("Error fetching exchange markets:", error);
         throw error;
       }
-    },
+    },*/
     async fetchAndUpdateActiveOrders(exchangeId) {
       try {
         console.log("Fetching active orders from:", `${serverHost}/update/activeOrders/${exchangeId}`);
