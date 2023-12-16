@@ -1,25 +1,26 @@
 <template>
-  <div class="shad-page">
+  <div class="page">
     <h1>SHAD</h1>
-    <div id="table"> <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
-        :search-options="{ enabled: true }" :pagination-options="{ enabled: true }"        v-on:selected-rows-change="selectionChanged" v-on:cell-click="onCellClick">
+    <div id="table"> <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true"
+        :select-options="{ enabled: true }" :search-options="{ enabled: true }" :pagination-options="{ enabled: true }"
+        v-on:selected-rows-change="selectionChanged" v-on:cell-click="onCellClick">
         <template #selected-row-actions>
           <MySellButtonVue :model="allRows" />
         </template>
-<template #fixed>
-      <tr>
-        <th v-for="(column, index) in fixedColumns" :key="index" :style="column.style">
-          {{ column.label }}
-        </th>
-      </tr>
-    </template>
- <template #body-row="props">
-  <tr :class="props.row._rowVariant">
-    <td v-for="(column, index) in props.columns" :key="index">
-      {{ props.formattedRow[column.field] }}
-    </td>
-  </tr>
-</template>
+        <template #fixed>
+          <tr>
+            <th v-for="(column, index) in fixedColumns" :key="index" :style="column.style">
+              {{ column.label }}
+            </th>
+          </tr>
+        </template>
+        <template #body-row="props">
+          <tr :class="props.row._rowVariant">
+            <td v-for="(column, index) in props.columns" :key="index">
+              {{ props.formattedRow[column.field] }}
+            </td>
+          </tr>
+        </template>
       </vue-good-table>
     </div>
     <Overlay v-if="showOverlay" :selectedAsset="selectedAsset" :openBuyOrders="this.openBuyOrders"
@@ -43,7 +44,7 @@ import {
 import MySellButtonVue from './MySellButton.vue';
 import Overlay from './ShadOverlay.vue';
 export default {
-  name: "ShadPage",
+  name: "Shad",
   data() {
     return {
       balances: [],
@@ -156,7 +157,7 @@ export default {
     },
   },
   mounted() {
-this.getDataFromDB().then(() => {
+    this.getDataFromDB().then(() => {
       this.rows.forEach(row => {
         row._rowVariant = this.getRowClass(row);
       });
@@ -166,7 +167,7 @@ this.getDataFromDB().then(() => {
 </script>
 
 <style scoped>
-.shad-page {
+.page {
   overflow-x: auto;
 }
 
@@ -176,18 +177,22 @@ this.getDataFromDB().then(() => {
 }
 
 .blue-row {
-  background-color: #e6f7ff; /* Couleur bleue pâle */
+  background-color: #e6f7ff;
+  /* Couleur bleue pâle */
 }
 
 .green-row {
-  background-color: #d9f2e6; /* Couleur verte pâle */
+  background-color: #d9f2e6;
+  /* Couleur verte pâle */
 }
 
 .orange-row {
-  background-color: #ffe0b3; /* Couleur orange pâle */
+  background-color: #ffe0b3;
+  /* Couleur orange pâle */
 }
 
 .red-row {
-  background-color: #f2dede; /* Couleur rouge pâle */
+  background-color: #f2dede;
+  /* Couleur rouge pâle */
 }
 </style>

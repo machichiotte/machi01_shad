@@ -1,5 +1,5 @@
 <template>
-  <div class="trades-page">
+  <div class="page">
     <h1>Liste des trades</h1>
     <div id="table">
       <vue-good-table :columns="tradesColumns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
@@ -15,7 +15,7 @@ import { tradesColumns } from "../js/shadColumns.js";
 import { fetchDataWithCache, saveTradesDataToIndexedDB } from '../js/indexedDB';
 
 export default {
-  name: "TradesPage",
+  name: "Trades",
   data() {
     return {
       items: [],
@@ -94,7 +94,7 @@ export default {
 </script>
 
 <style scoped>
-.trades-page {
+.page {
   overflow-x: auto;
 }
 

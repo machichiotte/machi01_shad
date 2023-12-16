@@ -36,7 +36,7 @@ const openDatabase = async () => {
 
             if (!db.objectStoreNames.contains(ACTIVE_ORDERS)) {
                 console.log('create activeOrders');
-                db.createObjectStore(ACTIVE_ORDERS, { keyPath: 'oId' });
+                db.createObjectStore(ACTIVE_ORDERS, { keyPath: '_id' });
             }
 
             if (!db.objectStoreNames.contains(TRADES)) {
@@ -151,8 +151,7 @@ const fetchDataFromIndexedDB = async (storeName) => {
     }
 };
 
-//async shouldFetchFromServer(types) {
-    //TODO CHECK AVEC INDEXEDDB plutot que call server a chaque fois
+//TODO CHECK AVEC INDEXEDDB plutot que call server a chaque fois
 const shouldFetchFromServer = async (types) => {
     const currentTimestamp = Date.now();
     const collection = await fetch(`${serverHost}/get/lastUpdate/`);
@@ -211,39 +210,39 @@ const shouldFetchFromServer = async (types) => {
 
 
 // Create a generic method for fetching data
-const fetchDataWithCache = async(dataType, apiEndpoint, saveToIndexedDBFunction) => {
+const fetchDataWithCache = async (dataType, apiEndpoint, saveToIndexedDBFunction) => {
     try {
-      const shouldFetch = await shouldFetchFromServer([dataType]);
-  
-      if (shouldFetch) {
-        const response = await fetch(apiEndpoint);
-        const data = await response.json();
-  
-        // Save the data to IndexedDB
-        await saveToIndexedDBFunction(data);
-  
-        return data;
-      } else {
-        // Use the data from IndexedDB
-        const indexedDBData = await fetchDataFromIndexedDB(dataType);
-  
-        if (indexedDBData && indexedDBData.length > 0) {
-          return indexedDBData;
+        const shouldFetch = await shouldFetchFromServer([dataType]);
+
+        if (shouldFetch) {
+            const response = await fetch(apiEndpoint);
+            const data = await response.json();
+
+            // Save the data to IndexedDB
+            await saveToIndexedDBFunction(data);
+
+            return data;
         } else {
-          console.log(`No data available in IndexedDB for ${dataType}. Triggering a new server request.`);
-          const response = await fetch(apiEndpoint);
-          const data = await response.json();
-  
-          // Save the data to IndexedDB
-          await saveToIndexedDBFunction(data);
-  
-          return data;
+            // Use the data from IndexedDB
+            const indexedDBData = await fetchDataFromIndexedDB(dataType);
+
+            if (indexedDBData && indexedDBData.length > 0) {
+                return indexedDBData;
+            } else {
+                console.log(`No data available in IndexedDB for ${dataType}. Triggering a new server request.`);
+                const response = await fetch(apiEndpoint);
+                const data = await response.json();
+
+                // Save the data to IndexedDB
+                await saveToIndexedDBFunction(data);
+
+                return data;
+            }
         }
-      }
     } catch (err) {
-      console.error(`Error fetching ${dataType} data: ${err}`);
-      throw err;
+        console.error(`Error fetching ${dataType} data: ${err}`);
+        throw err;
     }
-  }
+}
 
 export { openDatabase, fetchDataWithCache, fetchDataFromIndexedDB, saveCmcDataToIndexedDB, saveActiveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveTradesDataToIndexedDB };

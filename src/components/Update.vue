@@ -33,7 +33,7 @@ import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../js/spin
 import { saveActiveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveCmcDataToIndexedDB } from '../js/indexedDB';
 
 export default {
-  name: "UpdatePage",
+  name: "Update",
 
   data() {
     return {

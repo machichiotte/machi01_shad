@@ -1,5 +1,5 @@
 <template>
-  <div class="showcmc-page">
+  <div class="page">
     <h1>CMC</h1>
     <div id="table">
       <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :search-options="{ enabled: true }"
@@ -15,7 +15,7 @@ import { cmcColumns } from "../js/shadColumns.js";
 import { fetchDataWithCache, saveCmcDataToIndexedDB } from '../js/indexedDB';
 
 export default {
-  name: "ShowDataPage",
+  name: "Cmc",
   data() {
     return {
       items: [],
@@ -79,7 +79,7 @@ export default {
 </script>
 
 <style scoped>
-.showcmc-page {
+.page {
   overflow-x: auto;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="activeorders-page">
+  <div class="page">
     <h1>Ordres en cours</h1>
     <div id="table">
       <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
@@ -21,7 +21,7 @@ import MySellButtonVue from './MySellButton.vue';
 import { fetchDataWithCache, saveActiveOrdersDataToIndexedDB } from '../js/indexedDB.js'
 
 export default {
-  name: "ActiveOrdersPage",
+  name: "Orders",
   data() {
     return {
       items: [],
@@ -121,7 +121,7 @@ export default {
 </script>
 
 <style scoped>
-.activeorders-page {
+.page {
   overflow-x: auto;
 }
 
