@@ -1,11 +1,12 @@
 // indexedDB.js
 const INDEXED_DB_NAME = 'db_test_7';
-const INDEXED_DB_VERSION = 3;
+const INDEXED_DB_VERSION = 5;
 const serverHost = process.env.VUE_APP_SERVER_HOST;
 
 const CMC = 'cmcData';
 const BALANCE = 'balances';
 const ACTIVE_ORDERS = 'activeOrders';
+const TRADES = 'trades';
 
 const openDatabase = async () => {
     return new Promise((resolve, reject) => {
@@ -36,6 +37,11 @@ const openDatabase = async () => {
             if (!db.objectStoreNames.contains(ACTIVE_ORDERS)) {
                 console.log('create activeOrders');
                 db.createObjectStore(ACTIVE_ORDERS, { keyPath: 'oId' });
+            }
+
+            if (!db.objectStoreNames.contains(TRADES)) {
+                console.log('create trades');
+                db.createObjectStore(TRADES, { keyPath: '_id' });
             }
         };
 
@@ -115,6 +121,10 @@ const saveBalancesDataToIndexedDB = async (data) => {
     await saveDataToIndexedDB(BALANCE, data, '_id');
 };
 
+const saveTradesDataToIndexedDB = async (data) => {
+    await saveDataToIndexedDB(TRADES, data, '_id');
+};
+
 const fetchDataFromIndexedDB = async (storeName) => {
     try {
         const db = await openDatabase();
@@ -166,6 +176,7 @@ const shouldFetchFromServer = async (types) => {
     // Définir les valeurs de rafraîchissement pour chaque type
     const refreshValues = {
         cmcData: 6 * 60 * 60 * 1000,
+        trades: 6 * 60 * 60 * 1000,
         activeOrders: 6 * 60 * 60 * 1000,
         balance: 6 * 60 * 60 * 1000,
     };
@@ -235,4 +246,4 @@ const fetchDataWithCache = async(dataType, apiEndpoint, saveToIndexedDBFunction)
     }
   }
 
-export { openDatabase, fetchDataWithCache, fetchDataFromIndexedDB, saveCmcDataToIndexedDB, saveActiveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB };
+export { openDatabase, fetchDataWithCache, fetchDataFromIndexedDB, saveCmcDataToIndexedDB, saveActiveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveTradesDataToIndexedDB };

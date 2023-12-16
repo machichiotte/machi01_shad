@@ -12,6 +12,7 @@
 <script>
 const serverHost = process.env.VUE_APP_SERVER_HOST;
 import { tradesColumns } from "../js/shadColumns.js";
+import { fetchDataWithCache, saveTradesDataToIndexedDB } from '../js/indexedDB';
 
 export default {
   name: "TradesPage",
@@ -59,13 +60,12 @@ export default {
     }
   },
   methods: {
-    async getTradesFromDB() {
+    async getTrades() {
+      const DATA_TYPE = "trades";
+      const ENDPOINT = `${serverHost}/get/${DATA_TYPE}`;
+
       try {
-        const response = await fetch(`${serverHost}/get/trades`);
-        console.log("resp :: " + response)
-        const data = await response.json();
-        this.items = data;
-        this.sortItemsByDate(); // Appel pour trier les éléments par date décroissante
+        this.items = await fetchDataWithCache(DATA_TYPE, ENDPOINT, saveTradesDataToIndexedDB);
       } catch (err) {
         console.error(err);
       }
@@ -88,7 +88,7 @@ export default {
     }
   },
   mounted() {
-    this.getTradesFromDB();
+    this.getTrades();
   }
 };
 </script>
