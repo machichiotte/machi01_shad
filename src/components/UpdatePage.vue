@@ -30,8 +30,7 @@ const UPD_BALANCE_ENDPOINT = `${serverHost}/update/balance/`;
 const CMC_DATA_ENDPOINT = `${serverHost}/update/cmcData`;
 
 import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../js/spinner.js';
-//import { saveDataToIndexedDB, saveCryptoDataToIndexedDB } from '../js/indexedDB';
-import { saveCryptoDataToIndexedDB } from '../js/indexedDB';
+import { saveActiveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveCmcDataToIndexedDB } from '../js/indexedDB';
 
 export default {
   name: "UpdatePage",
@@ -53,7 +52,7 @@ export default {
           this.cryptoData = data.data;
 
           // Enregistrez les données dans IndexedDB
-          await saveCryptoDataToIndexedDB('cryptoData', this.cryptoData);
+          await saveCmcDataToIndexedDB(this.cryptoData);
 
           successSpin('Save completed', `Résultat : ${data.totalCount}`, true, true);
         } else {
@@ -72,11 +71,11 @@ export default {
 
       const balance = await this.fetchAndUpdateBalance(exchangeId);
       const balance_data = await balance.json();
-      //await saveDataToIndexedDB(`${exchangeId}Balances`, balance_data);
+      await saveBalancesDataToIndexedDB(balance_data);
 
       const activeOrders = await this.fetchAndUpdateActiveOrders(exchangeId);
       const activeOrders_data = await activeOrders.json();
-      //await saveDataToIndexedDB(`${exchangeId}ActiveOrders`, activeOrders_data);
+      await saveActiveOrdersDataToIndexedDB(activeOrders_data);
 
       //const loadMarkets = await this.fetchAndUpdateExchangeMarkets(exchangeId);
       //const loadMarkets_data = await loadMarkets.json();

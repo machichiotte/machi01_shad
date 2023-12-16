@@ -2,8 +2,8 @@
   <div class="showcmc-page">
     <h1>CMC</h1>
     <div id="table">
-      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true"
-        :search-options="{ enabled: true }" :pagination-options="{ enabled: true }">
+      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :search-options="{ enabled: true }"
+        :pagination-options="{ enabled: true }">
       </vue-good-table>
     </div>
   </div>
@@ -12,7 +12,7 @@
 <script>
 const serverHost = process.env.VUE_APP_SERVER_HOST;
 import { cmcColumns } from "../js/shadColumns.js";
-import { saveCryptoDataToIndexedDB } from '../js/indexedDB';
+import { fetchDataWithCache, saveCmcDataToIndexedDB } from '../js/indexedDB';
 
 export default {
   name: "ShowDataPage",
@@ -51,39 +51,14 @@ export default {
     },
   },
   methods: {
-    async getCmcDataFromAPI() {
-      try {
-        const response = await fetch(`${serverHost}/get/cmcData`);
-        const data = await response.json();
-        this.items = data;
+    async getCmcData() {
+      const DATA_TYPE = "cmcData";
+      const ENDPOINT = `${serverHost}/get/${DATA_TYPE}`;
 
-        // Save data to IndexedDB for future use
-        await saveCryptoDataToIndexedDB('cryptoData', data);
+      try {
+        this.items = await fetchDataWithCache(DATA_TYPE, ENDPOINT, saveCmcDataToIndexedDB);
       } catch (err) {
         console.error(err);
-      }
-    },
-    async getCmcDataFromIndexedDB() {
-      try {
-        const db = await openDatabase();
-        const transaction = db.transaction(['cryptoData'], 'readonly');
-        const objectStore = transaction.objectStore('cryptoData');
-        const request = objectStore.getAll();
-
-        request.onsuccess = (event) => {
-          const data = event.target.result;
-          this.items = data;
-        };
-
-        request.onerror = (error) => {
-          console.error('Error retrieving data from IndexedDB:', error);
-          // If there's an error, fall back to fetching from API
-          this.getCmcDataFromAPI();
-        };
-      } catch (error) {
-        console.error('Error opening database:', error);
-        // If there's an error, fall back to fetching from API
-        this.getCmcDataFromAPI();
       }
     },
     prevPage() {
@@ -98,7 +73,7 @@ export default {
   },
   async mounted() {
     // Try to get data from IndexedDB first
-    await this.getCmcDataFromIndexedDB();
+    await this.getCmcData();
   }
 };
 </script>
@@ -112,5 +87,4 @@ export default {
   height: 700px;
   width: auto;
 }
-
 </style>
