@@ -1,5 +1,6 @@
 //server.js
 const dotenv = require('dotenv');
+const cron = require('node-cron');
 const express = require('express');
 const bodyParser = require('body-parser');
 //const fetch = require('node-fetch');
@@ -10,6 +11,42 @@ const fs = require('fs');
 const { connectMDB, saveArrayDataMDB, saveObjectDataMDB, deleteMultipleDataMDB, getAllDataMDB, deleteAllDataMDB, updateDataMDB } = require('./mongodb.js');
 
 dotenv.config();
+
+
+
+// Tableau d'échanges à mettre à jour
+const exchangesToUpdate = ['binance', 'kucoin', 'huobi', 'okex', 'gateio'];
+const CRON_LOAD_MARKETS = '40 10 * * *';
+
+// Ajoutez la tâche cron dans votre fichier server.js
+cron.schedule(CRON_LOAD_MARKETS, async () => {
+  console.log('Running the cron job for updateLoadMarkets...');
+
+  // Boucle sur chaque échange et appelle updateLoadMarkets
+  for (const exchangeId of exchangesToUpdate) {
+    try {
+      await cronLoadMarkets(exchangeId);
+      console.log(`updateLoadMarkets completed for ${exchangeId}`);
+    } catch (error) {
+      console.error(`Error updating markets for ${exchangeId}:`, error);
+    }
+  }
+});
+
+async function cronLoadMarkets(exchangeId) {
+  const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
+  const exchange = createExchangeInstance(exchangeId);
+
+  try {
+    const data = await exchange.loadMarkets();
+    const mappedData = mapLoadMarkets(exchangeId, data);
+    await deleteAndSaveData(mappedData, collection, exchangeId);
+    saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, exchangeId);
+  } catch (err) {
+    console.log('Error updateLoadMarkets:', err);
+  }
+}
+
 const app = express();
 // Specify the folder containing your static files (including JavaScript files)
 app.use(express.static('dist'));
@@ -28,98 +65,39 @@ connectMDB();
 
 app.use(cors());
 
-// GET
+//balance
 app.get('/get/balance', getBalance);
-app.get('/get/cmcData', getCmcData);
-app.get('/get/activeOrders', getActiveOrders);
-app.get('/get/strat', getStrat);
-app.get('/get/trades', getTrades);
-app.get('/get/loadMarkets', getLoadMarkets);
-app.get('/get/lastUpdate', getLastUpdate);
-
-app.get('/get/history/price/btc', getPriceBtc);
-app.get('/get/history/price/eth', getPriceEth);
-
-app.get('/update/cmcData', updateCmcData);
 app.get('/update/balance/:exchangeId', updateBalance);
-app.get('/update/activeOrders/:exchangeId', updateActiveOrders);
-app.post('/update/strat', updateStrat);
-app.get('/update/trades/:exchangeId', updateTrades);
-app.get('/update/loadMarkets/:exchangeId', updateLoadMarkets);
-
-// POST
-app.post('/cancel/order', deleteOrder);
-app.post('/cancel/all-orders', cancelAllOrders);
-app.post('/bunch-orders', createBunchOrders);
-
-app.post('/add/trades', addTradesManually);
-
-//get
-async function getData(req, res, collection, mockDataFile) {
-  try {
-    let data;
-
-    if (app.offlineMode) {
-      const mockDataPath = `./mockData/${mockDataFile}`;
-      const jsonData = fs.readFileSync(mockDataPath, 'utf8');
-      data = JSON.parse(jsonData);
-    } else {
-      console.log(collection);
-      data = await getAllDataMDB(collection);
-    }
-
-    res.json(data);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-}
-
-async function getLastUpdate(req, res) {
-  const collection = 'last_update';
-  await getData(req, res, collection, 'db_machi_shad.last_update.json');
-}
-
-async function getPriceBtc(req, res) {
-  const collection = 'price_btc';
-  await getData(req, res, collection, 'db_machi_shad.price_btc.json');
-}
-
-async function getPriceEth(req, res) {
-  const collection = 'price_eth';
-  await getData(req, res, collection, 'db_machi_shad.price_eth.json');
-}
 
 async function getBalance(req, res) {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
   await getData(req, res, collection, 'db_machi_shad.collection_balance.json');
 }
+async function updateBalance(req, res) {
+  const { exchangeId } = req.params;
+  const collection = process.env.MONGODB_COLLECTION_BALANCE;
+  const exchange = createExchangeInstance(exchangeId);
+
+  try {
+    const data = await exchange.fetchBalance();
+    const mappedData = mapBalance(exchangeId, data);
+    await deleteAndSaveData(mappedData, collection, exchangeId);
+    res.status(200).json(mappedData);
+    saveLastUpdateToMongoDB(process.env.TYPE_BALANCE, exchangeId);
+  } catch (err) {
+    console.log('Erreur lors de updateBalance:', err);
+    res.status(500).json({ error: err.name + ': ' + err.message });
+  }
+}
+
+//cmc
+app.get('/get/cmcData', getCmcData);
+app.get('/update/cmcData', updateCmcData);
 
 async function getCmcData(req, res) {
   const collection = process.env.MONGODB_COLLECTION_CMC;
   await getData(req, res, collection, 'db_machi_shad.collection_cmc.json');
 }
-
-async function getActiveOrders(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
-  await getData(req, res, collection, 'db_machi_shad.collection_active_orders.json');
-}
-
-async function getStrat(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_STRAT;
-  await getData(req, res, collection, 'db_machi_shad.collection_strategy.json');
-}
-
-async function getTrades(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_TRADES;
-  await getData(req, res, collection, 'db_machi_shad.collection_trades.json');
-}
-
-async function getLoadMarkets(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
-  await getData(req, res, collection, 'db_machi_shad.collection_load_markets.json');
-}
-
 async function updateCmcData(req, res) {
   const collection = process.env.MONGODB_COLLECTION_CMC;
   const API_KEY = process.env.CMC_APIKEY;
@@ -155,6 +133,7 @@ async function updateCmcData(req, res) {
     // Enregistrement des données dans MongoDB
     const deleteResult = await deleteAllDataMDB(collection);
     const saveResult = await saveArrayDataMDB(allData, collection);
+    saveLastUpdateToMongoDB(process.env.TYPE_CMC, "");
 
     res.status(200).json({
       data: allData,
@@ -169,6 +148,14 @@ async function updateCmcData(req, res) {
   }
 }
 
+//strat
+app.get('/get/strat', getStrat);
+app.post('/update/strat', updateStrat);
+
+async function getStrat(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_STRAT;
+  await getData(req, res, collection, 'db_machi_shad.collection_strategy.json');
+}
 async function updateStrat(req, res) {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
   const strat = req.body.strat;
@@ -185,8 +172,71 @@ async function updateStrat(req, res) {
   }
 }
 
+//active orders
+app.get('/get/activeOrders', getActiveOrders);
+app.get('/update/activeOrders/:exchangeId', updateActiveOrders);
+
+async function getActiveOrders(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
+  await getData(req, res, collection, 'db_machi_shad.collection_active_orders.json');
+}
+async function updateActiveOrders(req, res) {
+  const { exchangeId } = req.params;
+
+  const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
+  let data;
+  try {
+    const exchange = createExchangeInstance(exchangeId);
+
+    if (exchangeId === 'binance') {
+      exchange.options.warnOnFetchOpenOrdersWithoutSymbol = false;
+    }
+
+    if (exchangeId === 'kucoin') {
+      const pageSize = 50;
+      let currentPage = 1;
+      data = [];
+
+      while (true) {
+        const limit = 50
+        const params = {
+          'currentPage': currentPage,
+        }
+        const orders = await exchange.fetchOpenOrders(undefined, undefined, limit, { 'currentPage': currentPage });
+        data = data.concat(orders);
+        if (orders.length < pageSize) {
+          break;
+        }
+        currentPage++;
+      }
+    } else {
+      data = await exchange.fetchOpenOrders();
+    }
+
+    const mappedData = mapActiveOrders(exchangeId, data);
+    await deleteAndSaveData(mappedData, collection, exchangeId);
+    res.status(200).json(mappedData);
+
+    saveLastUpdateToMongoDB(process.env.TYPE_ACTIVE_ORDERS, exchangeId);
+
+  } catch (err) {
+    console.error(err);
+    console.log('Error updateActiveOrders : ' + err);
+
+    res.status(500).json({ error: err.name + ': ' + err.message });
+  }
+}
+
+//load markets
+app.get('/get/loadMarkets', getLoadMarkets);
+app.get('/update/loadMarkets/:exchangeId', updateLoadMarkets);
+
+async function getLoadMarkets(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
+  await getData(req, res, collection, 'db_machi_shad.collection_load_markets.json');
+}
 async function updateLoadMarkets(req, res) {
-  const { exchangeId, updateId } = req.params;
+  const { exchangeId } = req.params;
 
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   const exchange = createExchangeInstance(exchangeId);
@@ -195,7 +245,7 @@ async function updateLoadMarkets(req, res) {
     const data = await exchange.loadMarkets();
     const mappedData = mapLoadMarkets(exchangeId, data);
     await deleteAndSaveData(mappedData, collection, exchangeId);
-    updateLastUpdate(exchangeId, 'loadMarket');
+    saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, exchangeId);
     res.status(200).json(mappedData);
   } catch (err) {
     console.log('Error updateLoadMarkets:', err);
@@ -203,33 +253,130 @@ async function updateLoadMarkets(req, res) {
   }
 }
 
-async function updateLastUpdate(exchangeId, param) {
-  const collection = 'last_update';
-  const filter = {
-    platform: exchangeId
-  }
+//orders
+app.post('/cancel/order', deleteOrder);
+app.post('/bunch-orders', createBunchOrders);
+app.post('/cancel/all-orders', cancelAllOrders);
 
-  const update = { $set: { [`timestamp.${param}`]: Date.now() } };
-  await updateDataMDB(collection, filter, update);
-}
-
-async function updateBalance(req, res) {
-  const { exchangeId } = req.params;
-  const collection = process.env.MONGODB_COLLECTION_BALANCE;
-  const exchange = createExchangeInstance(exchangeId);
+async function deleteOrder(req, res) {
+  const { exchangeId, oId, symbol } = req.body;
 
   try {
-    const data = await exchange.fetchBalance();
-    const mappedData = mapBalance(exchangeId, data);
-    await deleteAndSaveData(mappedData, collection, exchangeId);
-    res.status(200).json(mappedData);
-    updateLastUpdate(exchangeId, 'balance');
+    const exchange = createExchangeInstance(exchangeId);
+    const data = await exchange.cancelOrder(oId, symbol.replace("/", ""));
+    res.json(data);
+    //mise a jour activeOrder si envie ?
   } catch (err) {
-    console.log('Erreur lors de updateBalance:', err);
+    console.log('Error deleteOrder : ' + err);
+    //console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+async function createBunchOrders(req, res) {
+  const exchangeId = req.body.exchangeId;
+  const price = req.body.price;
+  const amount = req.body.amount;
+
+  try {
+    const { symbol, exchangeParams } = createExchangeInstanceWithReq(exchangeId, req);
+
+    const exchange = new ccxt[exchangeId](exchangeParams);
+    const result = await exchange.createLimitSellOrder(symbol, amount, price);
+
+    res.status(200).json({ message: result, status: 200 })
+
+  } catch (err) {
+    //console.error(err);
+    console.log('Error createBunchOrders :: ' + err);
+    res.status(500).json({ error: 'Internal server error', status: 500 });
+  }
+}
+async function cancelAllOrders(req, res) {
+  const exchangeId = req.body.exchangeId;
+  let symbol, result;
+  try {
+    const exchange = createExchangeInstance(exchangeId);
+
+    switch (exchangeId) {
+      case 'kucoin':
+        symbol = req.body.asset + '-USDT';
+        result = await exchange.cancelAllOrders(symbol)
+        break;
+      case 'binance':
+        symbol = req.body.asset + 'USDT';
+        result = await exchange.cancelAllOrders(symbol)
+        break;
+      case 'huobi':
+        symbol = req.body.asset.toLowerCase() + 'usdt';
+        result = await exchange.cancelAllOrders(symbol)
+        break;
+      case 'gateio':
+        symbol = req.body.asset.toUpperCase() + '_USDT';
+        result = await exchange.cancelAllOrders(symbol)
+        break;
+      case 'okex':
+        symbol = req.body.asset + '-USDT';
+
+        // Obtenir les ordres ouverts pour l'actif spécifié
+        const orders = await exchange.fetchOpenOrders(symbol);
+
+        // Obtenir les IDs des ordres
+        const orderIds = orders.map(order => order.id);
+
+        if (orderIds.length === 0) {
+          result = { message: 'Aucun ordre ouvert pour cet actif' };
+        } else {
+          // Appeler la méthode cancelOrders() de CCXT pour OKEx avec les IDs des ordres à annuler
+          result = await exchange.cancelOrders(orderIds, symbol);
+        }
+        break;
+      default:
+        throw new Error(`Unsupported exchange: ${exchangeId}`);
+    }
+
+    res.status(200).json({ message: result, status: 200 })
+  } catch (err) {
+    console.log('Error cancelAllOrders :: ' + err)
+    //console.error(err);
+    res.status(500).json({ error: 'Internal server error', status: 500 });
+  }
+}
+
+//prices
+app.get('/get/history/price/btc', getPriceBtc);
+app.get('/get/history/price/eth', getPriceEth);
+
+async function getPriceBtc(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_PRICE_BTC;
+  await getData(req, res, collection, 'db_machi_shad.price_btc.json');
+}
+async function getPriceEth(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_PRICE_ETH;
+  await getData(req, res, collection, 'db_machi_shad.price_eth.json');
+}
+
+//trades
+app.get('/get/trades', getTrades);
+app.post('/add/trades', addTradesManually);
+app.get('/update/trades/:exchangeId', updateTrades);
+
+async function getTrades(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_TRADES;
+  await getData(req, res, collection, 'db_machi_shad.collection_trades.json');
+}
+async function addTradesManually(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_TEST;
+  //TODO modifier nom bdd
+  const tradesData = req.body.trades_data;
+
+  try {
+    const savedTrade = await saveArrayDataMDB(tradesData, collection);
+    const result = await savedTrades.json();
+    res.status(200).json({ message: result, data: savedTrade, status: 200 });
+  } catch (err) {
     res.status(500).json({ error: err.name + ': ' + err.message });
   }
 }
-
 async function updateTrades(req, res) {
   const { exchangeId } = req.params;
   const collection = process.env.MONGODB_COLLECTION_TRADES;
@@ -298,56 +445,91 @@ async function updateTrades(req, res) {
     } else {
       res.status(201).json({ empty: 'empty' });
     }
-    updateLastUpdate(exchangeId, 'trades');
+    saveLastUpdateToMongoDB(process.env.TYPE_TRADES, exchangeId);
   } catch (err) {
     res.status(500).json({ error: err.name + ': ' + err.message });
   }
 }
 
-async function updateActiveOrders(req, res) {
-  const { exchangeId } = req.params;
+//last update
+app.get('/get/lastUpdate', getLastUpdate);
+app.get('/get/lastUpdate/:type/:exchangeId', getUniqueLastUpdate);
 
-  const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
-  let data;
+async function getUniqueLastUpdate(req, res) {
   try {
-    const exchange = createExchangeInstance(exchangeId);
+    const { exchangeId, type } = req.params;
+    const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
 
-    if (exchangeId === 'binance') {
-      exchange.options.warnOnFetchOpenOrdersWithoutSymbol = false;
-    }
+    // Assurez-vous que le type est un type valide que vous gérez (par exemple, "loadMarkets" ou "balance")
+    // Ajoutez d'autres types au besoin
 
-    if (exchangeId === 'kucoin') {
-      const pageSize = 50;
-      let currentPage = 1;
-      data = [];
+    const filter = { exchangeId, type };
+    const lastUpdateData = await getDataMDB(collectionName, filter);
 
-      while (true) {
-        const limit = 50
-        const params = {
-          'currentPage': currentPage,
-        }
-        const orders = await exchange.fetchOpenOrders(undefined, undefined, limit, { 'currentPage': currentPage });
-        data = data.concat(orders);
-        if (orders.length < pageSize) {
-          break;
-        }
-        currentPage++;
-      }
+    if (lastUpdateData.length > 0) {
+      res.json(lastUpdateData[0]); // Prenez le premier document trouvé (il ne devrait y en avoir qu'un)
     } else {
-      data = await exchange.fetchOpenOrders();
+      res.json({ exchangeId, type, timestamp: null });
     }
-
-    const mappedData = mapActiveOrders(exchangeId, data);
-    await deleteAndSaveData(mappedData, collection, exchangeId);
-    res.status(200).json(mappedData);
-
-    updateLastUpdate(exchangeId, 'activeOrders');
-
   } catch (err) {
     console.error(err);
-    console.log('Error updateActiveOrders : ' + err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+async function getLastUpdate(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_LAST_UPDATE;
+  await getData(req, res, collection, 'db_machi_shad.last_update.json');
+}
 
-    res.status(500).json({ error: err.name + ': ' + err.message });
+async function updateTimestampInMongoDB(collectionName, filter, update) {
+  try {
+    await updateDataMDB(collectionName, filter, update);
+  } catch (err) {
+    console.error(err);
+  }
+}
+async function saveLastUpdateToMongoDB(type, exchangeId) {
+  const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
+
+  // Récupérer les données actuelles dans la collection
+  const existingData = (await getAllDataMDB(collectionName))[0] || {};
+
+  // Mettre à jour les données avec le nouveau timestamp
+  if (!exchangeId) {
+    existingData[type] = Date.now();
+  } else {
+    if (!existingData[type]) {
+      existingData[type] = {};
+    }
+
+    existingData[type][exchangeId] = Date.now();
+  }
+
+  // Enregistrer les données mises à jour dans MongoDB
+  const filter = {};
+  const update = { $set: existingData };
+
+  await updateTimestampInMongoDB(collectionName, filter, update);
+}
+
+//global stuff
+async function getData(req, res, collection, mockDataFile) {
+  try {
+    let data;
+
+    if (app.offlineMode) {
+      const mockDataPath = `./mockData/${mockDataFile}`;
+      const jsonData = fs.readFileSync(mockDataPath, 'utf8');
+      data = JSON.parse(jsonData);
+    } else {
+      console.log(collection);
+      data = await getAllDataMDB(collection);
+    }
+
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
   }
 }
 
@@ -356,107 +538,6 @@ async function deleteAndSaveData(mapData, collection, exchangeId) {
     const deleteParam = { platform: exchangeId };
     await deleteMultipleDataMDB(collection, deleteParam);
     await saveArrayDataMDB(mapData, collection);
-  }
-}
-
-//orders
-async function deleteOrder(req, res) {
-  const { exchangeId, oId, symbol } = req.body;
-
-  try {
-    const exchange = createExchangeInstance(exchangeId);
-    const data = await exchange.cancelOrder(oId, symbol.replace("/", ""));
-    res.json(data);
-    //mise a jour activeOrder si envie ?
-  } catch (err) {
-    console.log('Error deleteOrder : ' + err);
-    //console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-}
-
-async function createBunchOrders(req, res) {
-  const exchangeId = req.body.exchangeId;
-  const price = req.body.price;
-  const amount = req.body.amount;
-
-  try {
-    const { symbol, exchangeParams } = createExchangeInstanceWithReq(exchangeId, req);
-
-    const exchange = new ccxt[exchangeId](exchangeParams);
-    const result = await exchange.createLimitSellOrder(symbol, amount, price);
-
-    res.status(200).json({ message: result, status: 200 })
-
-  } catch (err) {
-    //console.error(err);
-    console.log('Error createBunchOrders :: ' + err);
-    res.status(500).json({ error: 'Internal server error', status: 500 });
-  }
-}
-
-async function cancelAllOrders(req, res) {
-  const exchangeId = req.body.exchangeId;
-  let symbol, result;
-  try {
-    const exchange = createExchangeInstance(exchangeId);
-
-    switch (exchangeId) {
-      case 'kucoin':
-        symbol = req.body.asset + '-USDT';
-        result = await exchange.cancelAllOrders(symbol)
-        break;
-      case 'binance':
-        symbol = req.body.asset + 'USDT';
-        result = await exchange.cancelAllOrders(symbol)
-        break;
-      case 'huobi':
-        symbol = req.body.asset.toLowerCase() + 'usdt';
-        result = await exchange.cancelAllOrders(symbol)
-        break;
-      case 'gateio':
-        symbol = req.body.asset.toUpperCase() + '_USDT';
-        result = await exchange.cancelAllOrders(symbol)
-        break;
-      case 'okex':
-        symbol = req.body.asset + '-USDT';
-
-        // Obtenir les ordres ouverts pour l'actif spécifié
-        const orders = await exchange.fetchOpenOrders(symbol);
-
-        // Obtenir les IDs des ordres
-        const orderIds = orders.map(order => order.id);
-
-        if (orderIds.length === 0) {
-          result = { message: 'Aucun ordre ouvert pour cet actif' };
-        } else {
-          // Appeler la méthode cancelOrders() de CCXT pour OKEx avec les IDs des ordres à annuler
-          result = await exchange.cancelOrders(orderIds, symbol);
-        }
-        break;
-      default:
-        throw new Error(`Unsupported exchange: ${exchangeId}`);
-    }
-
-    res.status(200).json({ message: result, status: 200 })
-  } catch (err) {
-    console.log('Error cancelAllOrders :: ' + err)
-    //console.error(err);
-    res.status(500).json({ error: 'Internal server error', status: 500 });
-  }
-}
-
-async function addTradesManually(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_TEST;
-  //TODO modifier nom bdd
-  const tradesData = req.body.trades_data;
-
-  try {
-    const savedTrade = await saveArrayDataMDB(tradesData, collection);
-    const result = await savedTrades.json();
-    res.status(200).json({ message: result, data: savedTrade, status: 200 });
-  } catch (err) {
-    res.status(500).json({ error: err.name + ': ' + err.message });
   }
 }
 
