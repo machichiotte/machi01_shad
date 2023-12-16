@@ -1,7 +1,7 @@
 const Swal = require('sweetalert2');
 
 // Spinners
-function loadingSpin() {
+const loadingSpin = () => {
     Swal.fire({
         title: 'Traitement en cours',
         text: 'Veuillez patienter...',
@@ -9,7 +9,7 @@ function loadingSpin() {
     });
 }
 
-function successSpin(title, text, outsideClick, confirmBtn) {
+const successSpin = (title, text, outsideClick, confirmBtn) => {
     Swal.fire({
         title: title,
         text: text,
@@ -19,7 +19,7 @@ function successSpin(title, text, outsideClick, confirmBtn) {
     });
 }
 
-function successSpinHtml(title, html, outsideClick, confirmBtn) {
+const successSpinHtml = (title, html, outsideClick, confirmBtn) => {
     Swal.fire({
         title: title,
         html: html,
@@ -29,7 +29,7 @@ function successSpinHtml(title, html, outsideClick, confirmBtn) {
     });
 }
 
-function errorSpin(title, text, outsideClick, confirmBtn) {
+const errorSpin = (title, text, outsideClick, confirmBtn) => {
     Swal.fire({
         title: title,
         text: text,
@@ -39,5 +39,5 @@ function errorSpin(title, text, outsideClick, confirmBtn) {
     });
 }
 
-module.exports = { loadingSpin, successSpin, successSpinHtml, errorSpin };
+export { loadingSpin, successSpin, successSpinHtml, errorSpin };
 

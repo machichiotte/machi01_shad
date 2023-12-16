@@ -57,11 +57,11 @@
 
             <div class="block open-orders">
                 <p class="block-title">Open Orders</p>
-                <button @click="toggleActiveOrdersLines">
-                    {{ showActiveOrdersLines ? 'Hide Open Orders' : 'Show Open Orders' }}
+                <button @click="toggleOrdersLines">
+                    {{ showOrdersLines ? 'Hide Open Orders' : 'Show Open Orders' }}
                 </button>
 
-                <table v-if="showActiveOrdersLines" class="open-orders-table">
+                <table v-if="showOrdersLines" class="open-orders-table">
                     <thead>
                         <tr>
                             <th>Platform</th>
@@ -72,14 +72,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="buyOrder in getActiveBuyOrders" :key="buyOrder._id.$oid">
+                        <tr v-for="buyOrder in getBuyOrders" :key="buyOrder._id.$oid">
                             <td>{{ buyOrder.platform }}</td>
                             <td>{{ buyOrder.symbol }}</td>
                             <td>{{ buyOrder.side }}</td>
                             <td>{{ buyOrder.amount }}</td>
                             <td>{{ buyOrder.price }}</td>
                         </tr>
-                        <tr v-for="sellOrder in getActiveSellOrders" :key="sellOrder._id.$oid">
+                        <tr v-for="sellOrder in getSellOrders" :key="sellOrder._id.$oid">
                             <td>{{ sellOrder.platform }}</td>
                             <td>{{ sellOrder.symbol }}</td>
                             <td>{{ sellOrder.side }}</td>
@@ -145,7 +145,7 @@ export default {
         return {
             showPercentageLines: false,
             showHistoricLines: false,
-            showActiveOrdersLines: false,
+            showOrdersLines: false,
             percentage: '24h',
             percentageValue: null,
             currentBTC: null,
@@ -197,10 +197,10 @@ export default {
                 (a, b) => new Date(b.date) - new Date(a.date)
             );
         },
-        getActiveBuyOrders() {
+        getBuyOrders() {
             return this.openBuyOrders[this.selectedAsset.asset];
         },
-        getActiveSellOrders() {
+        getSellOrders() {
             return this.openSellOrders[this.selectedAsset.asset];
         },
 
@@ -234,8 +234,8 @@ export default {
         toggleHistoricLines() {
             this.showHistoricLines = !this.showHistoricLines;
         },
-        toggleActiveOrdersLines() {
-            this.showActiveOrdersLines = !this.showActiveOrdersLines;
+        toggleOrdersLines() {
+            this.showOrdersLines = !this.showOrdersLines;
         },
 
         formatPercentage(value) {

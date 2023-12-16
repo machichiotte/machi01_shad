@@ -1,6 +1,6 @@
 const serverHost = "http://localhost:3000";
 
-async function cancelAllOrders(exchangeId, asset) {
+const cancelAllOrders = async (exchangeId, asset) => {
     const requestBody = {
         exchangeId: exchangeId,
         asset: asset
@@ -18,7 +18,7 @@ async function cancelAllOrders(exchangeId, asset) {
     return data;
 }
 
-async function bunchOrders(exchangeId, asset, amount, price) {
+const bunchOrders = async (exchangeId, asset, amount, price) => {
     const requestBody = {
         exchangeId: exchangeId,
         asset: asset,
@@ -37,4 +37,4 @@ async function bunchOrders(exchangeId, asset, amount, price) {
     return data;
 }
 
-module.exports = { cancelAllOrders, bunchOrders };
+export { cancelAllOrders, bunchOrders };

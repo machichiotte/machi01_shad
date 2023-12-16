@@ -4,7 +4,7 @@ This project is the frontend part of the Machi GPT Shad application. It is a web
 
 ### Key Features
 
-- **Display active orders**
+- **Display orders**
 - **Visualize market data**
 - **Manage trading strategies**
 - **Track transactions**

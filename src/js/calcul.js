@@ -167,6 +167,13 @@ function getCurrentPossession(currentPrice, balance) {
     return currentPossession;
 }
 
+function calculateAmountAndPrice(parsedRecup, parsedBalance, factor) {
+    const amount = factor * parsedBalance;
+    const price = parsedRecup / amount;
+
+    return { amount, price };
+}
+
 function calculateAmountsAndPrices(recupTp1, averageEntryPrice, balance, totalBuy, totalSell, totalShad, recupTpX) {
     const parsedRecupTp1 = parseFloat(recupTp1);
     const parsedEntryAvg = parseFloat(averageEntryPrice);
@@ -175,18 +182,13 @@ function calculateAmountsAndPrices(recupTp1, averageEntryPrice, balance, totalBu
     const parsedTotalSell = parseFloat(totalSell);
     const parsedRecupTpX = parseFloat(recupTpX);
 
-    const amountTp1 = (totalShad > -1) ? 0.5 * parsedBalance : (parsedRecupTp1 / parsedEntryAvg < parsedBalance) ? parsedRecupTp1 / parsedEntryAvg : parsedRecupTp1 * parsedBalance / (parsedTotalBuy - parsedTotalSell);
-
-    const amountTp2 = 0.5 * (parsedBalance - amountTp1);
-    const amountTp3 = 0.5 * (parsedBalance - amountTp1 - amountTp2);
-    const amountTp4 = 0.5 * (parsedBalance - amountTp1 - amountTp2 - amountTp3);
-    const amountTp5 = 0.5 * (parsedBalance - amountTp1 - amountTp2 - amountTp3 - amountTp4);
+    const amountTp1 = (totalShad > -1) ? 0.5 * parsedBalance : parsedRecupTp1 / parsedEntryAvg < parsedBalance ? parsedRecupTp1 / parsedEntryAvg : parsedRecupTp1 * parsedBalance / (parsedTotalBuy - parsedTotalSell);
 
     const priceTp1 = parsedRecupTp1 / parseFloat(amountTp1);
-    const priceTp2 = parsedRecupTpX / amountTp2;
-    const priceTp3 = parsedRecupTpX / amountTp3;
-    const priceTp4 = parsedRecupTpX / amountTp4;
-    const priceTp5 = parsedRecupTpX / amountTp5;
+    const { amount: amountTp2, price: priceTp2 } = calculateAmountAndPrice(parsedRecupTpX, parsedBalance - amountTp1, 0.5);
+    const { amount: amountTp3, price: priceTp3 } = calculateAmountAndPrice(parsedRecupTpX, parsedBalance - amountTp1 - amountTp2, 0.5);
+    const { amount: amountTp4, price: priceTp4 } = calculateAmountAndPrice(parsedRecupTpX, parsedBalance - amountTp1 - amountTp2 - amountTp3, 0.5);
+    const { amount: amountTp5, price: priceTp5 } = calculateAmountAndPrice(parsedRecupTpX, parsedBalance - amountTp1 - amountTp2 - amountTp3 - amountTp4, 0.5);
 
     return {
         amountTp1,
@@ -222,8 +224,6 @@ function getTradesHistory(asset, trades) {
 
 function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     const { symbol, platform, balance } = item;
-
-    const asset = symbol;
     const exchangeId = platform;
 
     const {
@@ -235,19 +235,19 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
         cryptoPercentChange30d,
         cryptoPercentChange60d,
         cryptoPercentChange90d
-    } = getCmcValues(asset, cmcData);
+    } = getCmcValues(symbol, cmcData);
 
-    const totalSell = getTotalSell(asset, trades);
-    const averageEntryPrice = getAverageEntryPrice(asset, trades);
-    const openBuyOrders = buyOrders[asset] ? buyOrders[asset].length : 0;
-    const openSellOrders =sellOrders[asset] ?  sellOrders[asset].length  : 0;
+    const totalSell = getTotalSell(symbol, trades);
+    const averageEntryPrice = getAverageEntryPrice(symbol, trades);
+    const openBuyOrders = buyOrders && buyOrders[symbol] ? buyOrders[symbol].length : 0;
+    const openSellOrders = sellOrders && sellOrders[symbol] ? sellOrders[symbol].length : 0;
 
-    const ratioShad = getRatioShad(asset, exchangeId, strats);
+    const ratioShad = getRatioShad(symbol, exchangeId, strats);
 
     const {
         totalAmount,
         totalBuy
-    } = getTotalAmountAndBuy(asset, exchangeId, trades);
+    } = getTotalAmountAndBuy(symbol, exchangeId, trades);
 
     const maxWanted = getMaxWanted(rank, totalBuy);
     const recupShad = getRecupShad(totalBuy, totalSell, maxWanted);
@@ -262,7 +262,7 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
 
     return {
         iconUrl,
-        asset,
+        asset: symbol,
         ratioShad,
         totalShad,
         rank,
@@ -300,5 +300,4 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     };
 }
 
-module.exports = { getDataBTC, getDataETH, getAllCalculs, getBalance, getAssetId, getTradesHistory };
-
+export { getDataBTC, getDataETH, getAllCalculs, getBalance, getAssetId, getTradesHistory };

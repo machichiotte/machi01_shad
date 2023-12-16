@@ -97,11 +97,9 @@
     <button type="submit" style="font-size: 18px; padding: 10px 20px;">Add Trades</button>
   </div>
 </template>
+
 <script>
-import {
-  successSpin,
-  errorSpin
-} from '../js/spinner.js';
+import { successSpin, errorSpin } from '../js/spinner.js';
 
 const serverHost = process.env.VUE_APP_SERVER_HOST;
 

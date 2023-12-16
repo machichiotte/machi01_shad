@@ -30,7 +30,7 @@ const UPD_BALANCE_ENDPOINT = `${serverHost}/update/balance/`;
 const CMC_DATA_ENDPOINT = `${serverHost}/update/cmcData`;
 
 import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../js/spinner.js';
-import { saveActiveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveCmcDataToIndexedDB } from '../js/indexedDB';
+import { saveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveCmcDataToIndexedDB } from '../js/indexedDB';
 
 export default {
   name: "UpdatePage",
@@ -73,9 +73,9 @@ export default {
       const balance_data = await balance.json();
       await saveBalancesDataToIndexedDB(balance_data);
 
-      const activeOrders = await this.fetchAndUpdateActiveOrders(exchangeId);
-      const activeOrders_data = await activeOrders.json();
-      await saveActiveOrdersDataToIndexedDB(activeOrders_data);
+      const orders = await this.fetchAndUpdateOrders(exchangeId);
+      const orders_data = await orders.json();
+      await saveOrdersDataToIndexedDB(orders_data);
 
       //const loadMarkets = await this.fetchAndUpdateExchangeMarkets(exchangeId);
       //const loadMarkets_data = await loadMarkets.json();
@@ -88,11 +88,11 @@ export default {
         resultText += `<b>Balance :</b> ${balance.status} - ${balance_data.error}<br>`;
       }
 
-      if (activeOrders.status === 200) {
-        this[`${exchangeId}ActiveOrders`] = activeOrders_data;
-        resultText += `<b>ActiveOrders :</b> ${activeOrders.status} - ${activeOrders_data.length} ordres<br>`;
+      if (orders.status === 200) {
+        this[`${exchangeId}Orders`] = orders_data;
+        resultText += `<b>Orders :</b> ${orders.status} - ${orders_data.length} ordres<br>`;
       } else {
-        resultText += `<b>ActiveOrders :</b> ${activeOrders.status} - ${activeOrders_data.error}<br>`;
+        resultText += `<b>Orders :</b> ${orders.status} - ${orders_data.error}<br>`;
       }
 
       /*
@@ -137,17 +137,17 @@ export default {
         throw error;
       }
     },*/
-    async fetchAndUpdateActiveOrders(exchangeId) {
+    async fetchAndUpdateOrders(exchangeId) {
       try {
-        console.log("Fetching active orders from:", `${serverHost}/update/activeOrders/${exchangeId}`);
-        const response = await fetch(`${serverHost}/update/activeOrders/${exchangeId}`);
+        console.log("Fetching orders from:", `${serverHost}/update/orders/${exchangeId}`);
+        const response = await fetch(`${serverHost}/update/orders/${exchangeId}`);
 
         if (!response.ok) {
-          throw new Error(`Error fetching active orders: ${response.statusText}`);
+          throw new Error(`Error fetching orders: ${response.statusText}`);
         }
         return response;
       } catch (error) {
-        console.error("Error fetching active orders:", error);
+        console.error("Error fetching orders:", error);
         throw error;
       }
     },

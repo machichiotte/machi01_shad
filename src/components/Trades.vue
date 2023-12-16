@@ -10,9 +10,8 @@
 </template>
 
 <script>
-const serverHost = process.env.VUE_APP_SERVER_HOST;
 import { tradesColumns } from "../js/shadColumns.js";
-import { fetchDataWithCache, saveTradesDataToIndexedDB } from '../js/indexedDB';
+import { getTrades } from '../js/getter.js';
 
 export default {
   name: "TradesPage",
@@ -60,15 +59,8 @@ export default {
     }
   },
   methods: {
-    async getTrades() {
-      const DATA_TYPE = "trades";
-      const ENDPOINT = `${serverHost}/get/${DATA_TYPE}`;
-
-      try {
-        this.items = await fetchDataWithCache(DATA_TYPE, ENDPOINT, saveTradesDataToIndexedDB);
-      } catch (err) {
-        console.error(err);
-      }
+    async getData() {
+      this.items = await getTrades();
     },
     sortItemsByDate() {
       this.items.sort((a, b) => {
@@ -88,7 +80,7 @@ export default {
     }
   },
   mounted() {
-    this.getTrades();
+    this.getData();
   }
 };
 </script>

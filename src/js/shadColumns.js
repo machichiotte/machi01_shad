@@ -1,17 +1,11 @@
 // shadColumns.js
-
-//import { VGridVueTemplate } from "@revolist/vue3-datagrid";
-//import MySellButton from "../components/MySellButton.vue";
-//import { createColoredCell, createOnClickCell, createPlatformColoredCell } from "./cells.js";
-//import { createColoredCell, createPlatformColoredCell, createOnClickCell } from "./cells.js";
-
 const cmcColumns = [
   { label:'Rank', field : 'rank', numeric: true},
   { label:'Name', field : 'name'},
   { label:'Symbol', field : 'symbol'},
 ]
 
-const activeOrdersColumns = [
+const ordersColumns = [
   { label: 'oId', field: 'oId' },
   { label: 'Platform', field: 'platform' },
   { label: 'Symbol', field: 'symbol' },
@@ -120,4 +114,4 @@ const shadColumns = [
 
 ];
 
-module.exports = { cmcColumns, activeOrdersColumns, tradesColumns, shadColumns }
+export { cmcColumns, ordersColumns, tradesColumns, shadColumns }

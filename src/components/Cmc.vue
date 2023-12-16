@@ -10,9 +10,8 @@
 </template>
 
 <script>
-const serverHost = process.env.VUE_APP_SERVER_HOST;
 import { cmcColumns } from "../js/shadColumns.js";
-import { fetchDataWithCache, saveCmcDataToIndexedDB } from '../js/indexedDB';
+import { getCmcData } from "../js/getter.js"
 
 export default {
   name: "CmcPage",
@@ -51,15 +50,8 @@ export default {
     },
   },
   methods: {
-    async getCmcData() {
-      const DATA_TYPE = "cmcData";
-      const ENDPOINT = `${serverHost}/get/${DATA_TYPE}`;
-
-      try {
-        this.items = await fetchDataWithCache(DATA_TYPE, ENDPOINT, saveCmcDataToIndexedDB);
-      } catch (err) {
-        console.error(err);
-      }
+    async getData() {
+      this.items = await getCmcData();
     },
     prevPage() {
       this.currentPage--;
@@ -71,9 +63,8 @@ export default {
       this.currentPage = page;
     }
   },
-  async mounted() {
-    // Try to get data from IndexedDB first
-    await this.getCmcData();
+  mounted() {
+    this.getData();
   }
 };
 </script>

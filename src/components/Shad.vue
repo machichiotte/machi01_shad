@@ -27,22 +27,15 @@
       :openSellOrders="this.openSellOrders" :trades="this.trades" :cmc="this.cmcData" @close="closeOverlay" />
   </div>
 </template>
+
 <script>
-import {
-  getBalanceFromDB,
-  getTradesFromDB,
-  getStratsFromDB,
-  getActiveOrdersFromDB,
-  getCmcDataFromDB
-} from '../js/fromDB.js';
-import {
-  getAllCalculs
-} from '../js/calcul.js';
-import {
-  shadColumns
-} from "../js/shadColumns.js";
+import { getStratsFromDB } from '../js/fromDB.js';
+import { getCmcData, getBalances, getTrades, getOrders } from '../js/getter.js';
+import { getAllCalculs } from '../js/calcul.js';
+import { shadColumns } from "../js/shadColumns.js";
 import MySellButtonVue from './MySellButton.vue';
 import Overlay from './ShadOverlay.vue';
+
 export default {
   name: "ShadPage",
   data() {
@@ -50,7 +43,7 @@ export default {
       balances: [],
       trades: [],
       strats: [],
-      activeOrders: [],
+      orders: [],
       cmcData: [],
       openBuyOrders: [],
       openSellOrders: [],
@@ -70,7 +63,7 @@ export default {
     fixedColumns() {
       return this.columns.slice(0, 2); // Les deux premières colonnes 
     },
-    paginatedItems() {
+    displayedBalances() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
       return this.sortedBalances.slice(startIndex, endIndex);
@@ -86,15 +79,19 @@ export default {
       return pages;
     },
     sortedBalances() {
-      return this.balances.slice().sort((a, b) => {
-        const assetA = a.symbol.toUpperCase();
-        const assetB = b.symbol.toUpperCase();
-        return assetA.localeCompare(assetB);
-      });
+      if (this.balances && this.balances.length > 0) {
+        return this.balances.slice().sort((a, b) => {
+          const assetA = a.symbol.toUpperCase();
+          const assetB = b.symbol.toUpperCase();
+          return assetA.localeCompare(assetB);
+        });
+      } else {
+        return [];
+      }
     },
     rows() {
       if (this.strats && this.strats.length > 0) {
-        return this.paginatedItems.map((item) => {
+        return this.displayedBalances.map((item) => {
           return getAllCalculs(item, this.cmcData, this.trades, this.strats, this.openBuyOrders, this.openSellOrders);
         });
       } else {
@@ -103,8 +100,13 @@ export default {
     },
   },
   methods: {
-    getRowClass(row) {
-      const totalShad = row.totalShad;
+    applyRowClasses() {
+      this.rows.forEach(row => {
+        const totalShad = row.totalShad;
+        row._rowVariant = this.getRowClass(totalShad);
+      });
+    },
+    getRowClass(totalShad) {
       if (totalShad >= 2) {
         return "blue-row";
       } else if (totalShad === 1) {
@@ -132,20 +134,26 @@ export default {
         this.selectedAsset = params.row;
       }
     },
-    async getDataFromDB() {
-      this.balances = await getBalanceFromDB();
-      this.trades = await getTradesFromDB();
-      this.strats = await getStratsFromDB();
-      this.cmcData = await getCmcDataFromDB();
-      const {
-        data,
-        openBuyOrders,
-        openSellOrders
-      } = await getActiveOrdersFromDB();
-      this.activeOrders = data;
-      this.openBuyOrders = openBuyOrders;
-      this.openSellOrders = openSellOrders;
+    async getData() {
+      try {
+        this.balances = await getBalances();
+        this.trades = await getTrades();
+        this.strats = await getStratsFromDB();
+        this.cmcData = await getCmcData();
+        const {
+          data,
+          openBuyOrders,
+          openSellOrders
+        } = await getOrders();
+        this.orders = data;
+        this.openBuyOrders = openBuyOrders;
+        this.openSellOrders = openSellOrders;
+      } catch (error) {
+        console.error("Une erreur s'est produite lors de la récupération des données :", error);
+        // Affichez un message d'erreur à l'utilisateur si nécessaire
+      }
     },
+
     prevPage() {
       this.currentPage--;
     },
@@ -156,17 +164,26 @@ export default {
       this.currentPage = page;
     },
   },
-  mounted() {
-    this.getDataFromDB().then(() => {
-      this.rows.forEach(row => {
-        row._rowVariant = this.getRowClass(row);
-      });
-    });
+  async mounted() {
+    try {
+      await this.getData();
+      this.applyRowClasses();
+    } catch (error) {
+      console.error("Une erreur s'est produite lors de la récupération des données :", error);
+      // Affichez un message d'erreur à l'utilisateur si nécessaire
+    }
   }
 };
 </script>
 
 <style scoped>
+:root {
+  --blue-light: #e6f7ff;
+  --green-light: #d9f2e6;
+  --orange-light: #ffe0b3;
+  --red-light: #f2dede;
+}
+
 .page {
   overflow-x: auto;
 }
@@ -177,22 +194,18 @@ export default {
 }
 
 .blue-row {
-  background-color: #e6f7ff;
-  /* Couleur bleue pâle */
+  background-color: var(--blue-light);
 }
 
 .green-row {
-  background-color: #d9f2e6;
-  /* Couleur verte pâle */
+  background-color: var(--green-light);
 }
 
 .orange-row {
-  background-color: #ffe0b3;
-  /* Couleur orange pâle */
+  background-color: var(--orange-light);
 }
 
 .red-row {
-  background-color: #f2dede;
-  /* Couleur rouge pâle */
+  background-color: var(--red-light);
 }
 </style>

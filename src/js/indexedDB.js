@@ -1,11 +1,10 @@
 // indexedDB.js
-const INDEXED_DB_NAME = 'db_test_7';
-const INDEXED_DB_VERSION = 5;
-const serverHost = process.env.VUE_APP_SERVER_HOST;
+const INDEXED_DB_NAME = 'db_test_8';
+const INDEXED_DB_VERSION = 2;
 
 const CMC = 'cmcData';
-const BALANCE = 'balances';
-const ACTIVE_ORDERS = 'activeOrders';
+const BALANCE = 'balance';
+const ORDERS = 'orders';
 const TRADES = 'trades';
 
 const openDatabase = async () => {
@@ -34,9 +33,9 @@ const openDatabase = async () => {
                 db.createObjectStore(BALANCE, { keyPath: '_id' });
             }
 
-            if (!db.objectStoreNames.contains(ACTIVE_ORDERS)) {
-                console.log('create activeOrders');
-                db.createObjectStore(ACTIVE_ORDERS, { keyPath: '_id' });
+            if (!db.objectStoreNames.contains(ORDERS)) {
+                console.log('create orders');
+                db.createObjectStore(ORDERS, { keyPath: '_id' });
             }
 
             if (!db.objectStoreNames.contains(TRADES)) {
@@ -113,8 +112,8 @@ const saveCmcDataToIndexedDB = async (data) => {
     await saveDataToIndexedDB(CMC, data, 'id');
 };
 
-const saveActiveOrdersDataToIndexedDB = async (data) => {
-    await saveDataToIndexedDB(ACTIVE_ORDERS, data, '_id');
+const saveOrdersDataToIndexedDB = async (data) => {
+    await saveDataToIndexedDB(ORDERS, data, '_id');
 };
 
 const saveBalancesDataToIndexedDB = async (data) => {
@@ -151,98 +150,4 @@ const fetchDataFromIndexedDB = async (storeName) => {
     }
 };
 
-//TODO CHECK AVEC INDEXEDDB plutot que call server a chaque fois
-const shouldFetchFromServer = async (types) => {
-    const currentTimestamp = Date.now();
-    const collection = await fetch(`${serverHost}/get/lastUpdate/`);
-
-    // Fonction générique pour mettre à jour les données pour un type donné
-    const updateData = async (type, exchange, refreshValue) => {
-        const timestamp = collection[type][exchange];
-
-        if (currentTimestamp - timestamp > refreshValue) {
-            try {
-                await fetch(`${serverHost}/update/${type}/${exchange}`);
-                console.log(`Mise à jour réussie pour ${exchange}. Nouveau timestamp : ${currentTimestamp}`);
-            } catch (err) {
-                console.error(`Erreur lors de la mise à jour pour ${exchange}: ${err}`);
-            }
-        } else {
-            console.log(`Pas besoin de mise à jour pour ${exchange}. Timestamp actuel : ${timestamp}`);
-        }
-    };
-
-    // Définir les valeurs de rafraîchissement pour chaque type
-    const refreshValues = {
-        cmcData: 6 * 60 * 60 * 1000,
-        trades: 6 * 60 * 60 * 1000,
-        activeOrders: 6 * 60 * 60 * 1000,
-        balance: 6 * 60 * 60 * 1000,
-    };
-
-    // Mettre à jour les données pour chaque type spécifié dans le tableau "types"
-    for (const type of types) {
-        const refreshValue = refreshValues[type];
-
-        if (type === CMC) {
-            // Mettez en œuvre la logique spécifique pour "cmc"
-            const timestamp = collection[type];
-            if (currentTimestamp - timestamp > refreshValue) {
-                try {
-                    await fetch(`${serverHost}/update/${type}`);
-                    console.log(`Mise à jour réussie pour ${type}. Nouveau timestamp : ${currentTimestamp}`);
-                } catch (err) {
-                    console.error(`Erreur lors de la mise à jour pour ${type}: ${err}`);
-                }
-            } else {
-                console.log(`Pas besoin de mise à jour pour ${type}. Timestamp actuel : ${timestamp}`);
-            }
-        } else {
-            // Pour les autres types, procédez comme auparavant
-            for (const exchange in collection[type]) {
-                if (Object.prototype.hasOwnProperty.call(collection[type], exchange)) {
-                    await updateData(type, exchange, refreshValue);
-                }
-            }
-        }
-    }
-}
-
-
-// Create a generic method for fetching data
-const fetchDataWithCache = async (dataType, apiEndpoint, saveToIndexedDBFunction) => {
-    try {
-        const shouldFetch = await shouldFetchFromServer([dataType]);
-
-        if (shouldFetch) {
-            const response = await fetch(apiEndpoint);
-            const data = await response.json();
-
-            // Save the data to IndexedDB
-            await saveToIndexedDBFunction(data);
-
-            return data;
-        } else {
-            // Use the data from IndexedDB
-            const indexedDBData = await fetchDataFromIndexedDB(dataType);
-
-            if (indexedDBData && indexedDBData.length > 0) {
-                return indexedDBData;
-            } else {
-                console.log(`No data available in IndexedDB for ${dataType}. Triggering a new server request.`);
-                const response = await fetch(apiEndpoint);
-                const data = await response.json();
-
-                // Save the data to IndexedDB
-                await saveToIndexedDBFunction(data);
-
-                return data;
-            }
-        }
-    } catch (err) {
-        console.error(`Error fetching ${dataType} data: ${err}`);
-        throw err;
-    }
-}
-
-export { openDatabase, fetchDataWithCache, fetchDataFromIndexedDB, saveCmcDataToIndexedDB, saveActiveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveTradesDataToIndexedDB };
+export { openDatabase, fetchDataFromIndexedDB, saveCmcDataToIndexedDB, saveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveTradesDataToIndexedDB };

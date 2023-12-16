@@ -4,7 +4,7 @@
     <div id="table">
       <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
         :search-options="{ enabled: true }" :pagination-options="{ enabled: true }"
-        v-on:selected-rows-change="selectionChanged" v-on:cell-click="onCellClick">
+        v-on:selected-rows-change="selectionChanged" v-on:cell-click="showAssetDetails">
         <template #selected-row-actions>
           <MySellButtonVue :model="allRows" />
         </template>
@@ -14,21 +14,26 @@
 </template>
 
 <script>
-//TODO myDeleteButton instead of MySellButton
-const serverHost = process.env.VUE_APP_SERVER_HOST;
-import { activeOrdersColumns } from '../js/shadColumns.js';
+import { ordersColumns } from '../js/shadColumns.js';
+import { getOrders } from '../js/getter.js';
+
 import MySellButtonVue from './MySellButton.vue';
-import { fetchDataWithCache, saveActiveOrdersDataToIndexedDB } from '../js/indexedDB.js'
+
+const ITEMS_PER_PAGE = 2000;
+
+//TODO myDeleteButton instead of MySellButton
 
 export default {
   name: "OrdersPage",
   data() {
     return {
       items: [],
-      pageSize: 2000,
+      pageSize: ITEMS_PER_PAGE,
       currentPage: 1,
-      columns: activeOrdersColumns,
-
+      columns: ordersColumns,
+      showOverlay: false,
+      allRows: null,
+      selectedAsset: null,
     };
   },
   components: {
@@ -43,8 +48,7 @@ export default {
         );
       } else {
         // Gérez le cas où this.items n'est pas un tableau
-        console.error("this.items is not an array:", this.items);
-        return [];
+        throw new Error("this.items is not an array:", this.items);
       }
     },
     pageCount() {
@@ -72,10 +76,13 @@ export default {
     },
   },
   methods: {
+    async getData() {
+      this.items = await getOrders();
+    },
     selectionChanged(rows) {
       this.allRows = rows;
     },
-    onCellClick(params) {
+    showAssetDetails(params) {
       // Vérifiez si la colonne cliquée est la colonne "asset"
       if (params.column.field === 'asset') {
         // Affichez l'overlay
@@ -84,26 +91,10 @@ export default {
         this.selectedAsset = params.row;
       }
     },
-    async deleteItem(item) {
-      // Appeler l'API pour annuler l'ordre à l'index donné
-      try {
-        const response = await fetch(`${serverHost}/deleteOrder?exchangeId=${item.platform}&oId=${item.oId}&symbol=${item.symbol}`);
-        const data = await response.json();
-        console.log("code :: " + data.code);
-      } catch (err) {
-        console.error(err);
-      }
+    closeOverlay() {
+      this.showOverlay = false;
     },
-    async getActiveOrders() {
-      const DATA_TYPE = "activeOrders";
-      const ENDPOINT = `${serverHost}/get/${DATA_TYPE}`;
 
-      try {
-        this.items = await fetchDataWithCache(DATA_TYPE, ENDPOINT, saveActiveOrdersDataToIndexedDB);
-      } catch (err) {
-        console.error(err);
-      }
-    },
     prevPage() {
       this.currentPage--;
     },
@@ -115,7 +106,7 @@ export default {
     },
   },
   mounted() {
-    this.getActiveOrders();
+    this.getData();
   }
 };
 </script>
