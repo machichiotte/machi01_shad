@@ -12,8 +12,6 @@ const { connectMDB, saveArrayDataMDB, saveObjectDataMDB, deleteMultipleDataMDB, 
 
 dotenv.config();
 
-
-
 // Tableau d'échanges à mettre à jour
 const exchangesToUpdate = ['binance', 'kucoin', 'huobi', 'okex', 'gateio'];
 const CRON_LOAD_MARKETS = '40 10 * * *';
@@ -58,7 +56,7 @@ app.offlineMode = isOfflineMode;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const { mapBalance, mapActiveOrders, mapLoadMarkets, mapTrades, mapTradesAddedManually } = require('./utils/mapping.js');
+const { mapBalance, mapOrders, mapLoadMarkets, mapTrades, mapTradesAddedManually } = require('./utils/mapping.js');
 
 // Connect to the MongoDB database
 connectMDB();
@@ -172,15 +170,15 @@ async function updateStrat(req, res) {
   }
 }
 
-//active orders
-app.get('/get/activeOrders', getActiveOrders);
-app.get('/update/activeOrders/:exchangeId', updateActiveOrders);
+//orders
+app.get('/get/orders', getOrders);
+app.get('/update/orders/:exchangeId', updateOrders);
 
-async function getActiveOrders(req, res) {
+async function getOrders(req, res) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
   await getData(req, res, collection, 'db_machi_shad.collection_active_orders.json');
 }
-async function updateActiveOrders(req, res) {
+async function updateOrders(req, res) {
   const { exchangeId } = req.params;
 
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
@@ -213,7 +211,7 @@ async function updateActiveOrders(req, res) {
       data = await exchange.fetchOpenOrders();
     }
 
-    const mappedData = mapActiveOrders(exchangeId, data);
+    const mappedData = mapOrders(exchangeId, data);
     await deleteAndSaveData(mappedData, collection, exchangeId);
     res.status(200).json(mappedData);
 
@@ -221,7 +219,7 @@ async function updateActiveOrders(req, res) {
 
   } catch (err) {
     console.error(err);
-    console.log('Error updateActiveOrders : ' + err);
+    console.log('Error updateOrders : ' + err);
 
     res.status(500).json({ error: err.name + ': ' + err.message });
   }
@@ -265,7 +263,7 @@ async function deleteOrder(req, res) {
     const exchange = createExchangeInstance(exchangeId);
     const data = await exchange.cancelOrder(oId, symbol.replace("/", ""));
     res.json(data);
-    //mise a jour activeOrder si envie ?
+    //mise a jour order si envie ?
   } catch (err) {
     console.log('Error deleteOrder : ' + err);
     //console.error(err);

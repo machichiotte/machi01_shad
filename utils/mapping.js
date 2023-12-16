@@ -89,7 +89,7 @@ function mapTrades(platform, data) {
     }
 }
 
-function mapActiveOrders(platform, data) {
+function mapOrders(platform, data) {
    // console.log('map active orders :: ' + JSON.stringify(data));
     return data
         .map((item) => ({
@@ -150,4 +150,4 @@ function mapTradesAddedManually(data) {
     }));
 }
 
-module.exports = { mapBalance, mapActiveOrders, mapLoadMarkets, mapTrades, mapTradesAddedManually };
+module.exports = { mapBalance, mapOrders, mapLoadMarkets, mapTrades, mapTradesAddedManually };
