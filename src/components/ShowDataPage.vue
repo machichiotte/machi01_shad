@@ -2,8 +2,8 @@
   <div class="showcmc-page">
     <h1>CMC</h1>
     <div id="table">
-      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true"
-        :search-options="{ enabled: true }" :pagination-options="{ enabled: true }">
+      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :search-options="{ enabled: true }"
+        :pagination-options="{ enabled: true }">
       </vue-good-table>
     </div>
   </div>
@@ -12,6 +12,7 @@
 <script>
 const serverHost = process.env.VUE_APP_SERVER_HOST;
 import { cmcColumns } from "../js/shadColumns.js";
+import { fetchDataWithCache, saveCmcDataToIndexedDB } from '../js/indexedDB';
 
 export default {
   name: "ShowDataPage",
@@ -51,10 +52,11 @@ export default {
   },
   methods: {
     async getCmcData() {
+      const DATA_TYPE = "cmcData";
+      const ENDPOINT = `${serverHost}/get/${DATA_TYPE}`;
+
       try {
-        const response = await fetch(`${serverHost}/get/cmcData`);
-        const data = await response.json();
-        this.items = data;
+        this.items = await fetchDataWithCache(DATA_TYPE, ENDPOINT, saveCmcDataToIndexedDB);
       } catch (err) {
         console.error(err);
       }
@@ -69,8 +71,9 @@ export default {
       this.currentPage = page;
     }
   },
-  mounted() {
-    this.getCmcData();
+  async mounted() {
+    // Try to get data from IndexedDB first
+    await this.getCmcData();
   }
 };
 </script>
@@ -84,5 +87,4 @@ export default {
   height: 700px;
   width: auto;
 }
-
 </style>

@@ -16,8 +16,9 @@
 <script>
 //TODO myDeleteButton instead of MySellButton
 const serverHost = process.env.VUE_APP_SERVER_HOST;
-import { activeOrdersColumns } from "../js/shadColumns.js";
+import { activeOrdersColumns } from '../js/shadColumns.js';
 import MySellButtonVue from './MySellButton.vue';
+import { fetchDataWithCache, saveActiveOrdersDataToIndexedDB } from '../js/indexedDB.js'
 
 export default {
   name: "ActiveOrdersPage",
@@ -65,7 +66,7 @@ export default {
           'type': item['type'],
           'side': item['side'],
           'amount': item['amount'],
-          'price': item['price'],
+          'price': item['price']
         };
       });
     },
@@ -93,11 +94,12 @@ export default {
         console.error(err);
       }
     },
-    async getActiveOrderFromDB() {
+    async getActiveOrders() {
+      const DATA_TYPE = "activeOrders";
+      const ENDPOINT = `${serverHost}/get/${DATA_TYPE}`;
+
       try {
-        const response = await fetch(`${serverHost}/get/activeOrders`);
-        const data = await response.json();
-        this.items = data;
+        this.items = await fetchDataWithCache(DATA_TYPE, ENDPOINT, saveActiveOrdersDataToIndexedDB);
       } catch (err) {
         console.error(err);
       }
@@ -113,7 +115,7 @@ export default {
     },
   },
   mounted() {
-    this.getActiveOrderFromDB();
+    this.getActiveOrders();
   }
 };
 </script>
