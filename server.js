@@ -16,9 +16,10 @@ dotenv.config();
 
 // Tableau d'échanges à mettre à jour
 const exchangesToUpdate = ['binance', 'kucoin', 'huobi', 'okex', 'gateio'];
+const CRON_LOAD_MARKETS = '40 10 * * *';
 
 // Ajoutez la tâche cron dans votre fichier server.js
-cron.schedule('40 18 * * *', async () => {
+cron.schedule(CRON_LOAD_MARKETS, async () => {
   console.log('Running the cron job for updateLoadMarkets...');
 
   // Boucle sur chaque échange et appelle updateLoadMarkets
@@ -454,6 +455,32 @@ async function updateTrades(req, res) {
 app.get('/get/lastUpdate', getLastUpdate);
 app.get('/get/lastUpdate/:type/:exchangeId', getUniqueLastUpdate);
 
+async function getUniqueLastUpdate(req, res) {
+  try {
+    const { exchangeId, type } = req.params;
+    const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
+
+    // Assurez-vous que le type est un type valide que vous gérez (par exemple, "loadMarkets" ou "balance")
+    // Ajoutez d'autres types au besoin
+
+    const filter = { exchangeId, type };
+    const lastUpdateData = await getDataMDB(collectionName, filter);
+
+    if (lastUpdateData.length > 0) {
+      res.json(lastUpdateData[0]); // Prenez le premier document trouvé (il ne devrait y en avoir qu'un)
+    } else {
+      res.json({ exchangeId, type, timestamp: null });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+  }
+}
+async function getLastUpdate(req, res) {
+  const collection = process.env.MONGODB_COLLECTION_LAST_UPDATE;
+  await getData(req, res, collection, 'db_machi_shad.last_update.json');
+}
+
 async function updateTimestampInMongoDB(collectionName, filter, update) {
   try {
     await updateDataMDB(collectionName, filter, update);
@@ -483,32 +510,6 @@ async function saveLastUpdateToMongoDB(type, exchangeId) {
   const update = { $set: existingData };
 
   await updateTimestampInMongoDB(collectionName, filter, update);
-}
-
-async function getUniqueLastUpdate(req, res) {
-  try {
-    const { exchangeId, type } = req.params;
-    const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
-
-    // Assurez-vous que le type est un type valide que vous gérez (par exemple, "loadMarkets" ou "balance")
-    // Ajoutez d'autres types au besoin
-
-    const filter = { exchangeId, type };
-    const lastUpdateData = await getDataMDB(collectionName, filter);
-
-    if (lastUpdateData.length > 0) {
-      res.json(lastUpdateData[0]); // Prenez le premier document trouvé (il ne devrait y en avoir qu'un)
-    } else {
-      res.json({ exchangeId, type, timestamp: null });
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'Internal server error' });
-  }
-}
-async function getLastUpdate(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_LAST_UPDATE;
-  await getData(req, res, collection, 'db_machi_shad.last_update.json');
 }
 
 //global stuff
