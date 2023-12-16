@@ -1,20 +1,20 @@
 // router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '@/components/HomePage';
-import Shad from '@/components/ShadPage';
-import ActiveOrders from '@/components/ActiveOrdersPage';
-import ShowData from '@/components/ShowDataPage';
-import Update from '@/components/UpdatePage';
-import Strat from '@/components/StratPage';
-import Trades from '@/components/TradesPage';
+import Home from '@/components/Home';
+import Shad from '@/components/Shad';
+import Orders from '@/components/Orders';
+import Cmc from '@/components/Cmc';
+import Update from '@/components/Update';
+import Strategy from '@/components/Strategy';
+import Trades from '@/components/Trades';
 
 const routes = [
   { path: '/', component: Home },
   { path: '/update', component: Update },
-  { path: '/active-orders', component: ActiveOrders },
-  { path: '/show-data', component: ShowData },
+  { path: '/orders', component: Orders },
+  { path: '/cmc', component: Cmc },
   { path: '/shad', component: Shad },
-  { path: '/strat', component: Strat },
+  { path: '/strategy', component: Strategy },
   { path: '/trades', component: Trades },
 ];
 

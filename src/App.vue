@@ -8,8 +8,8 @@
       <nav :class="{ 'show-menu': isMenuOpen }">
         <router-link to="/" active-class="selected-link">Accueil</router-link>
         <router-link to="/update" active-class="selected-link">Mise à jour</router-link>
-        <router-link to="/active-orders" active-class="selected-link">Ordres ouverts</router-link>
-        <router-link to="/show-data" active-class="selected-link">Montrer données</router-link>
+        <router-link to="/orders" active-class="selected-link">Ordres ouverts</router-link>
+        <router-link to="/cmc" active-class="selected-link">Montrer données</router-link>
         <router-link to="/shad" active-class="selected-link">SHAD</router-link>
         <router-link to="/strat" active-class="selected-link">Stratégie</router-link>
         <router-link to="/trades" active-class="selected-link">Trades</router-link>
