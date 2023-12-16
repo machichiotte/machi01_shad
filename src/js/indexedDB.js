@@ -114,7 +114,7 @@ const saveCmcDataToIndexedDB = async (data) => {
 };
 
 const saveActiveOrdersDataToIndexedDB = async (data) => {
-    await saveDataToIndexedDB(ACTIVE_ORDERS, data, 'oId');
+    await saveDataToIndexedDB(ACTIVE_ORDERS, data, '_id');
 };
 
 const saveBalancesDataToIndexedDB = async (data) => {
