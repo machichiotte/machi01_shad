@@ -15,7 +15,7 @@ import { tradesColumns } from "../js/shadColumns.js";
 import { fetchDataWithCache, saveTradesDataToIndexedDB } from '../js/indexedDB';
 
 export default {
-  name: "Trades",
+  name: "TradesPage",
   data() {
     return {
       items: [],

@@ -44,7 +44,7 @@ import {
 import MySellButtonVue from './MySellButton.vue';
 import Overlay from './ShadOverlay.vue';
 export default {
-  name: "Shad",
+  name: "ShadPage",
   data() {
     return {
       balances: [],

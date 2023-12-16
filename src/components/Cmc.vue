@@ -15,7 +15,7 @@ import { cmcColumns } from "../js/shadColumns.js";
 import { fetchDataWithCache, saveCmcDataToIndexedDB } from '../js/indexedDB';
 
 export default {
-  name: "Cmc",
+  name: "CmcPage",
   data() {
     return {
       items: [],

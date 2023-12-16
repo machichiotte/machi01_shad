@@ -44,6 +44,7 @@
 const serverHost = process.env.VUE_APP_SERVER_HOST;
 
 export default {
+    name: "StrategyPage",
     data() {
         return {
             balance: [],

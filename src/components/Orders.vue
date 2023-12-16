@@ -21,7 +21,7 @@ import MySellButtonVue from './MySellButton.vue';
 import { fetchDataWithCache, saveActiveOrdersDataToIndexedDB } from '../js/indexedDB.js'
 
 export default {
-  name: "Orders",
+  name: "OrdersPage",
   data() {
     return {
       items: [],

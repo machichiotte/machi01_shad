@@ -106,6 +106,7 @@ import {
 const serverHost = process.env.VUE_APP_SERVER_HOST;
 
 export default {
+  name: 'HomePage',
   methods: {
     async addTrades() {
       successSpin('calcul test', `Résultat : ${JSON.stringify(this.trades)}`, true, true);

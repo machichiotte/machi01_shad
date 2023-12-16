@@ -11,7 +11,7 @@
         <router-link to="/orders" active-class="selected-link">Ordres ouverts</router-link>
         <router-link to="/cmc" active-class="selected-link">Montrer données</router-link>
         <router-link to="/shad" active-class="selected-link">SHAD</router-link>
-        <router-link to="/strat" active-class="selected-link">Stratégie</router-link>
+        <router-link to="/strategy" active-class="selected-link">Stratégie</router-link>
         <router-link to="/trades" active-class="selected-link">Trades</router-link>
       </nav>
     </header>
