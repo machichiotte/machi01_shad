@@ -78,7 +78,10 @@ async function updateBalance(req, res) {
 
   try {
     const data = await exchange.fetchBalance();
+    console.log('data update balance ', data);
     const mappedData = mapBalance(exchangeId, data);
+    console.log('mappedData ', mappedData);
+
     await deleteAndSaveData(mappedData, collection, exchangeId);
     res.status(200).json(mappedData);
     saveLastUpdateToMongoDB(process.env.TYPE_BALANCE, exchangeId);
@@ -147,8 +150,8 @@ async function updateCmcData(req, res) {
 }
 
 //strat
-app.get('/get/strat', getStrat);
-app.post('/update/strat', updateStrat);
+app.get('/get/strategy', getStrat);
+app.post('/update/strategy', updateStrat);
 
 async function getStrat(req, res) {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
@@ -156,11 +159,12 @@ async function getStrat(req, res) {
 }
 async function updateStrat(req, res) {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
-  const strat = req.body.strat;
+  const strat = req.body;
 
   try {
     await deleteAllDataMDB(collection);
-    const data = await saveObjectDataMDB(strat, collection);
+    const data = await saveArrayDataMDB(strat, collection);
+    saveLastUpdateToMongoDB(process.env.TYPE_STRATEGY, "");
 
     res.json(data);
   } catch (err) {

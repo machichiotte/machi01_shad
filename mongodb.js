@@ -18,12 +18,41 @@ async function connectMDB() {
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
         db = client.db(process.env.MONGODB_DATABASE);
         console.log("Connected to MongoDB!");
+
+        // Liste des collections à créer
+        const collectionsToCreate = [
+            'collection_active_orders',
+            'collection_balance',
+            'collection_cmc',
+            'collection_load_markets',
+            'collection_strategy',
+            'collection_trades',
+            'collection_last_update'
+        ];
+
+        // Créer les collections si elles n'existent pas
+        for (const collectionName of collectionsToCreate) {
+            await createCollectionIfNotExists(collectionName);
+        }
     } catch (err) {
         console.error(err);
-    }/* finally {
-        // Ensures that the client will close when you finish/error
-        await client.close();
-    }*/
+    }
+}
+
+async function createCollectionIfNotExists(collectionName) {
+    try {
+        const collections = await db.listCollections({ name: collectionName }).toArray();
+
+        if (collections.length === 0) {
+            await db.createCollection(collectionName);
+            console.log(`Collection ${collectionName} created in MongoDB!`);
+        } else {
+            console.log(`Collection ${collectionName} already exists in MongoDB.`);
+        }
+    } catch (err) {
+        console.error(err);
+        return err;
+    }
 }
 
 async function saveArrayDataMDB(data, collectionName) {
