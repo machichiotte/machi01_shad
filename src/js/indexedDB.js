@@ -1,6 +1,6 @@
 // indexedDB.js
 const INDEXED_DB_NAME = 'db_test_0';
-const INDEXED_DB_VERSION = 1;
+const INDEXED_DB_VERSION = 4;
 
 const CMC = 'cmcData';
 const BALANCE = 'balance';
@@ -18,8 +18,6 @@ const openDatabase = async () => {
         };
 
         request.onupgradeneeded = (event) => {
-            console.log('onupgradeneeded!');
-
             const db = event.target.result;
             console.log('Upgrade needed!');
 
@@ -52,20 +50,25 @@ const openDatabase = async () => {
 
         request.onsuccess = (event) => {
             const db = event.target.result;
-            console.log('db sucess ' + db);
+            console.log('openDatabase onsuccess', db);
             resolve(db);
         };
     });
 };
 
 const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterExchange) => {
+    console.log('saveDataToIndexedDBInternal storeName', storeName);
+    console.log('saveDataToIndexedDBInternal data', data);
+    console.log('saveDataToIndexedDBInternal keyField', keyField);
+    console.log('saveDataToIndexedDBInternal filterExchange', filterExchange);
+
     try {
         const db = await openDatabase();
         const transaction = db.transaction([storeName], 'readwrite');
         const objectStore = transaction.objectStore(storeName);
 
-        const shouldFilterExchange = filterExchange !== null;
-        console.log('should', shouldFilterExchange);
+        const shouldFilterExchange = filterExchange !== null && filterExchange !== undefined;
+        console.log('saveDataToIndexedDBInternal shouldFilterExchange', shouldFilterExchange);
 
         if (!shouldFilterExchange) {
             await clearObjectStore(objectStore);

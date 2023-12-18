@@ -76,14 +76,16 @@ const cancelOrder = async (item) => {
 }
 
 const shouldFetchFromServer = async (types) => {
+    console.log('shouldFetchFromServer types', types);
     const currentTimestamp = Date.now();
     const collection = await fetch(`${serverHost}/get/lastUpdate/`);
 
     // Fonction générique pour mettre à jour les données pour un type donné
     const updateData = async (type, exchange, refreshValue) => {
+        console.log('shouldFetchFromServer exchange', exchange);
         const timestamp = collection[type][exchange];
 
-        if (currentTimestamp - timestamp > refreshValue) {
+        if (timestamp === undefined || currentTimestamp - timestamp > refreshValue) {
             try {
                 await fetch(`${serverHost}/update/${type}/${exchange}`);
                 console.log(`Mise à jour réussie pour ${exchange}. Nouveau timestamp : ${currentTimestamp}`);
@@ -101,6 +103,7 @@ const shouldFetchFromServer = async (types) => {
         trades: 6 * 60 * 60 * 1000,
         orders: 6 * 60 * 60 * 1000,
         balance: 6 * 60 * 60 * 1000,
+        strategy: 6 * 60 * 60 * 1000,
     };
 
     // Mettre à jour les données pour chaque type spécifié dans le tableau "types"
@@ -133,8 +136,11 @@ const shouldFetchFromServer = async (types) => {
 
 // Create a generic method for fetching data
 const fetchDataWithCache = async (dataType, apiEndpoint, saveToIndexedDBFunction) => {
+    console.log('fetchDataWithCache datatype', dataType);
     try {
         const shouldFetch = await shouldFetchFromServer([dataType]);
+
+        console.log('fetchDataWithCache shouldFetch', shouldFetch);
 
         if (shouldFetch) {
             const response = await fetch(apiEndpoint);
