@@ -27,6 +27,7 @@
 <script>
 const serverHost = process.env.VUE_APP_SERVER_HOST;
 const UPD_BALANCE_ENDPOINT = `${serverHost}/update/balance/`;
+const ORDERS_ENDPOINT = `${serverHost}/update/orders/`;
 const CMC_DATA_ENDPOINT = `${serverHost}/update/cmcData`;
 
 import { loadingSpin, successSpin, successSpinHtml, errorSpin } from '../js/spinner.js';
@@ -71,11 +72,12 @@ export default {
 
       const balance = await this.fetchAndUpdateBalance(exchangeId);
       const balance_data = await balance.json();
-      await saveBalancesDataToIndexedDB(balance_data);
+      console.log('bal data', balance_data)
+      await saveBalancesDataToIndexedDB(balance_data, exchangeId);
 
       const orders = await this.fetchAndUpdateOrders(exchangeId);
       const orders_data = await orders.json();
-      await saveOrdersDataToIndexedDB(orders_data);
+      await saveOrdersDataToIndexedDB(orders_data, exchangeId);
 
       //const loadMarkets = await this.fetchAndUpdateExchangeMarkets(exchangeId);
       //const loadMarkets_data = await loadMarkets.json();
@@ -139,8 +141,8 @@ export default {
     },*/
     async fetchAndUpdateOrders(exchangeId) {
       try {
-        console.log("Fetching orders from:", `${serverHost}/update/orders/${exchangeId}`);
-        const response = await fetch(`${serverHost}/update/orders/${exchangeId}`);
+        console.log(`Fetching orders from: ${ORDERS_ENDPOINT}${exchangeId}`);
+        const response = await fetch(`${ORDERS_ENDPOINT}${exchangeId}`);
 
         if (!response.ok) {
           throw new Error(`Error fetching orders: ${response.statusText}`);

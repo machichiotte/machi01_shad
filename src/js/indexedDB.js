@@ -1,11 +1,12 @@
 // indexedDB.js
-const INDEXED_DB_NAME = 'db_test_8';
-const INDEXED_DB_VERSION = 2;
+const INDEXED_DB_NAME = 'db_test_0';
+const INDEXED_DB_VERSION = 1;
 
 const CMC = 'cmcData';
 const BALANCE = 'balance';
 const ORDERS = 'orders';
 const TRADES = 'trades';
+const STRATEGY = 'strategy';
 
 const openDatabase = async () => {
     return new Promise((resolve, reject) => {
@@ -25,7 +26,7 @@ const openDatabase = async () => {
             // Créez un object store pour stocker les données de crypto (CMC)
             if (!db.objectStoreNames.contains(CMC)) {
                 console.log('create cmcData');
-                db.createObjectStore(CMC, { keyPath: 'id' });
+                db.createObjectStore(CMC, { keyPath: 'cmc_rank' });
             }
 
             if (!db.objectStoreNames.contains(BALANCE)) {
@@ -42,6 +43,11 @@ const openDatabase = async () => {
                 console.log('create trades');
                 db.createObjectStore(TRADES, { keyPath: '_id' });
             }
+
+            if (!db.objectStoreNames.contains(STRATEGY)) {
+                console.log('create trades');
+                db.createObjectStore(STRATEGY, { keyPath: 'asset' });
+            }
         };
 
         request.onsuccess = (event) => {
@@ -52,43 +58,29 @@ const openDatabase = async () => {
     });
 };
 
-const saveDataToIndexedDB = async (storeName, data, keyField) => {
-    console.log(`saveDataToIndexedDB for ${storeName}`);
+const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterExchange) => {
     try {
         const db = await openDatabase();
-
-        console.log('Object Stores:', db.objectStoreNames);
-
-        const transaction = await db.transaction([storeName], 'readwrite');
-
-        transaction.oncomplete = () => {
-            console.log('Transaction completed.');
-        };
-
-        transaction.onerror = (event) => {
-            console.error('Transaction error:', event.target.error);
-        };
-
+        const transaction = db.transaction([storeName], 'readwrite');
         const objectStore = transaction.objectStore(storeName);
 
-        // Clear all existing data in the object store
-        const clearRequest = objectStore.clear();
+        const shouldFilterExchange = filterExchange !== null;
+        console.log('should', shouldFilterExchange);
 
-        clearRequest.onsuccess = () => {
-            // Serialize and add new data
+        if (!shouldFilterExchange) {
+            await clearObjectStore(objectStore);
+        } else {
+            await clearObjectStoreByExchange(objectStore, filterExchange);
+        }
+
+        if (data && data.length > 0) {
             data.forEach((item) => {
-                // Ensure that the key field exists and has a value
-                if (item && item[keyField] !== undefined && item[keyField] !== null) {
-                    const itemToSave = {};
+                if (isValidItem(item, keyField)) {
+                    const itemToSave = createItemToSave(item, keyField);
 
-                    // Create a new object with the specified key field and other properties
-                    itemToSave[keyField] = item[keyField];
-
-                    // Add other properties to the object
-                    for (const prop in item) {
-                        if (prop !== keyField) {
-                            itemToSave[prop] = item[prop];
-                        }
+                    if (shouldFilterExchange && itemToSave['platform'] !== filterExchange) {
+                        console.log(`Skipping item with platform ${itemToSave['platform']}.`);
+                        return;
                     }
 
                     objectStore.put(itemToSave);
@@ -98,30 +90,104 @@ const saveDataToIndexedDB = async (storeName, data, keyField) => {
             });
 
             console.log(`Data saved to IndexedDB for ${storeName}`);
-        };
-
-        clearRequest.onerror = (error) => {
-            console.error('Error clearing data from object store:', error);
-        };
+        } else {
+            console.log(`No data saved to IndexedDB for ${storeName}`);
+        }
     } catch (error) {
         console.error(`Error saving data to IndexedDB for ${storeName}:`, error);
     }
 };
 
+const clearObjectStore = (objectStore) => {
+    return new Promise((resolve, reject) => {
+        const clearRequest = objectStore.clear();
+
+        clearRequest.onsuccess = () => {
+            console.log('Object store cleared.');
+            resolve();
+        };
+
+        clearRequest.onerror = (error) => {
+            console.error('Error clearing data from object store:', error);
+            reject(error);
+        };
+    });
+};
+
+const clearObjectStoreByExchange = (objectStore, filterExchange) => {
+    return new Promise((resolve, reject) => {
+        const clearRequest = objectStore.openCursor();
+
+        clearRequest.onsuccess = (event) => {
+            const cursor = event.target.result;
+
+            if (cursor) {
+                const item = cursor.value;
+
+                if (item && item.platform === filterExchange) {
+                    const deleteRequest = cursor.delete();
+
+                    deleteRequest.onsuccess = () => {
+                        console.log('Element deleted:', item);
+                    };
+
+                    deleteRequest.onerror = (error) => {
+                        console.error('Error deleting element:', error);
+                        reject(error);
+                    };
+                }
+
+                cursor.continue();
+            } else {
+                console.log('Cursor has reached the end of the object store.');
+                resolve();
+            }
+        };
+
+        clearRequest.onerror = (error) => {
+            console.error('Error opening cursor:', error);
+            reject(error);
+        };
+    });
+};
+
+const isValidItem = (item, keyField) => {
+    return item && item[keyField] !== undefined && item[keyField] !== null;
+};
+
+const createItemToSave = (item, keyField) => {
+    const itemToSave = { [keyField]: item[keyField] };
+
+    for (const prop in item) {
+        if (prop !== keyField) {
+            itemToSave[prop] = item[prop];
+        }
+    }
+
+    return itemToSave;
+};
+
 const saveCmcDataToIndexedDB = async (data) => {
-    await saveDataToIndexedDB(CMC, data, 'id');
+    await saveDataToIndexedDBInternal(CMC, data, 'cmc_rank', null);
 };
 
-const saveOrdersDataToIndexedDB = async (data) => {
-    await saveDataToIndexedDB(ORDERS, data, '_id');
+const saveOrdersDataToIndexedDB = async (data, exchange) => {
+    await saveDataToIndexedDBInternal(ORDERS, data, '_id', exchange);
 };
 
-const saveBalancesDataToIndexedDB = async (data) => {
-    await saveDataToIndexedDB(BALANCE, data, '_id');
+const saveBalancesDataToIndexedDB = async (data, exchange) => {
+    console.log('saveBalancesDataToIndexedDB');
+    await saveDataToIndexedDBInternal(BALANCE, data, '_id', exchange);
 };
 
 const saveTradesDataToIndexedDB = async (data) => {
-    await saveDataToIndexedDB(TRADES, data, '_id');
+    console.log('saveTradesDataToIndexedDB');
+    await saveDataToIndexedDBInternal(TRADES, data, '_id', null);
+};
+
+const saveStrategyToIndexedDB = async (data) => {
+    console.log('saveStrategyToIndexedDB');
+    await saveDataToIndexedDBInternal(STRATEGY, data, 'asset', null);
 };
 
 const fetchDataFromIndexedDB = async (storeName) => {
@@ -150,4 +216,4 @@ const fetchDataFromIndexedDB = async (storeName) => {
     }
 };
 
-export { openDatabase, fetchDataFromIndexedDB, saveCmcDataToIndexedDB, saveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveTradesDataToIndexedDB };
+export { openDatabase, fetchDataFromIndexedDB, saveCmcDataToIndexedDB, saveStrategyToIndexedDB, saveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveTradesDataToIndexedDB };

@@ -41,6 +41,10 @@
 </template>
   
 <script>
+import { getBalances, getStrategy } from '../js/getter.js';
+import { successSpin, errorSpin } from '../js/spinner.js';
+import { saveStrategyToIndexedDB } from '../js/indexedDB';
+
 const serverHost = process.env.VUE_APP_SERVER_HOST;
 
 export default {
@@ -50,91 +54,95 @@ export default {
             balance: [],
             platforms: [],
             assets: [],
-            strat: {},
-            stratMap: {},
+            strat: [],
+            stratMap: [],
             selectedStrategy: "",
         };
     },
     methods: {
-        async getBalance() {
+        async getData() {
             try {
-                const response = await fetch(`${serverHost}/get/balance`);
-                const data = await response.json();
-                this.balance = data;
-                this.platforms = [...new Set(data.map(item => item.platform))].sort();
-                this.assets = [...new Set(data.map(item => item.symbol))].sort();
+                this.balance = await getBalances();
+                // console.log('ball', this.balance);
+                this.platforms = [...new Set(this.balance.map(item => item.platform))].sort();
+                // console.log('platforms', this.platforms);
+                this.assets = [...new Set(this.balance.map(item => item.symbol))].sort();
+                // console.log('assets', this.assets);
+
             } catch (err) {
                 console.error(err);
             }
         },
         async getStrat() {
             try {
-                const response = await fetch(`${serverHost}/get/strat`);
-                const data = await response.json();
+                const data = await getStrategy();
 
                 if (data.length === 0) {
-                    this.assets.forEach(asset => {
-                        const assetStrat = {};
-                        this.platforms.forEach(platform => {
-                            assetStrat[platform] = "";
+                    this.assets.forEach((asset) => {
+                        let assetStrat = {
+                            symbol: asset,
+                            strategies: {},
+                        };
+                        this.platforms.forEach((platform) => {
+                            assetStrat.strategies[platform] = "";
                         });
-                        this.strat[asset] = assetStrat;
+                        this.strat.push(assetStrat);
                     });
                 } else {
-                    this.strat = data[0];
+                    this.strat = data;
                 }
             } catch (err) {
                 console.error(err);
             }
         },
         async updateStrat() {
-            const stratMap = {};
+            this.stratMap = [];
             try {
                 const rows = this.$refs.stratTable.querySelectorAll('tbody tr');
 
                 rows.forEach((row) => {
-                    const rowData = {};
-                    const cells = row.querySelectorAll('td');
                     let asset = "";
+                    let strategies = {};
+
+                    const cells = row.querySelectorAll('td');
+
                     cells.forEach((cell, index) => {
                         if (index === 0) {
                             asset = cell.textContent;
                         } else {
                             const colName = this.platforms[index - 1];
                             const selectEl = cell.querySelector('select');
-                            rowData[colName] = selectEl.value;
+                            strategies[colName] = selectEl.value;
                         }
                     });
-                    stratMap[asset] = rowData;
+                    let rowData = {
+                        asset: asset,
+                        strategies: strategies,
+                    };
+                    //console.log('rowData', rowData)
+                    this.stratMap.push(rowData);
                 });
 
                 // Make the API call
-                const response = await fetch(`${serverHost}/update/strat`, {
+                const response = await fetch(`${serverHost}/update/strategy`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ strat: stratMap }),
+                    body: JSON.stringify(this.stratMap),
                 });
 
+                console.log('stringify',JSON.stringify(this.stratMap));
                 // Get the API call result
-                await response.json();
+                const data = await response.json();
 
-                // Update the content of the alert with the result
-                this.$swal({
-                    title: 'Save completed',
-                    icon: 'success',
-                    allowOutsideClick: true,
-                    showConfirmButton: true
-                });
+                // Enregistrez les données dans IndexedDB
+                await saveStrategyToIndexedDB(data);
+
+                successSpin('Save completed', `Strat : ${this.stratMap.length}`, true, true);
+
             } catch (err) {
                 console.error(err);
                 // Show an error alert within the existing alert
-                this.$swal({
-                    title: 'Error',
-                    text: 'An error occurred during processing.',
-                    icon: 'error',
-                    allowOutsideClick: false,
-                    showConfirmButton: true
-                });
+                errorSpin('Error', `${err}`, false, true);
             }
 
         },
@@ -172,9 +180,9 @@ export default {
             return !platforms.includes(platform);
         },
     },
-    mounted() {
-        this.getBalance();
-        this.getStrat();
+    async mounted() {
+        await this.getData();
+        await this.getStrat();
     },
 };
 </script>

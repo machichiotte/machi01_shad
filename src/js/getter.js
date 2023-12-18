@@ -1,8 +1,20 @@
-
-import { fetchDataFromIndexedDB, saveBalancesDataToIndexedDB, saveTradesDataToIndexedDB, saveOrdersDataToIndexedDB, saveCmcDataToIndexedDB } from "../js/indexedDB"
+import { fetchDataFromIndexedDB, saveBalancesDataToIndexedDB, saveStrategyToIndexedDB, saveTradesDataToIndexedDB, saveOrdersDataToIndexedDB, saveCmcDataToIndexedDB } from "../js/indexedDB"
 
 const serverHost = process.env.VUE_APP_SERVER_HOST;
 const CMC = 'cmcData';
+const STRATEGY = 'strategy';
+
+const getStrategy = async () => {
+    const DATA_TYPE = "strategy";
+    const ENDPOINT = `${serverHost}/get/${DATA_TYPE}`;
+
+    try {
+        const items = await fetchDataWithCache(DATA_TYPE, ENDPOINT, saveStrategyToIndexedDB);
+        return items;
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 const getCmcData = async () => {
     const DATA_TYPE = "cmcData";
@@ -95,7 +107,7 @@ const shouldFetchFromServer = async (types) => {
     for (const type of types) {
         const refreshValue = refreshValues[type];
 
-        if (type === CMC) {
+        if (type === CMC || type == STRATEGY) {
             // Mettez en œuvre la logique spécifique pour "cmc"
             const timestamp = collection[type];
             if (currentTimestamp - timestamp > refreshValue) {
@@ -155,4 +167,4 @@ const fetchDataWithCache = async (dataType, apiEndpoint, saveToIndexedDBFunction
     }
 }
 
-export { cancelOrder, getCmcData, getBalances, getTrades, getOrders };
+export { cancelOrder, getStrategy, getCmcData, getBalances, getTrades, getOrders };

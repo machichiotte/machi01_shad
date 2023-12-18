@@ -29,8 +29,7 @@
 </template>
 
 <script>
-import { getStratsFromDB } from '../js/fromDB.js';
-import { getCmcData, getBalances, getTrades, getOrders } from '../js/getter.js';
+import { getCmcData, getBalances, getTrades, getOrders, getStrategy } from '../js/getter.js';
 import { getAllCalculs } from '../js/calcul.js';
 import { shadColumns } from "../js/shadColumns.js";
 import MySellButtonVue from './MySellButton.vue';
@@ -138,7 +137,7 @@ export default {
       try {
         this.balances = await getBalances();
         this.trades = await getTrades();
-        this.strats = await getStratsFromDB();
+        this.strats = await getStrategy();
         this.cmcData = await getCmcData();
         const {
           data,
