@@ -73,6 +73,7 @@ async function getBalance(req, res) {
 }
 async function updateBalance(req, res) {
   const { exchangeId } = req.params;
+  console.log('exchangeId', exchangeId);
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
   const exchange = createExchangeInstance(exchangeId);
 
