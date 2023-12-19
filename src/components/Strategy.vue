@@ -63,11 +63,8 @@ export default {
         async getData() {
             try {
                 this.balance = await getBalances();
-                // console.log('ball', this.balance);
                 this.platforms = [...new Set(this.balance.map(item => item.platform))].sort();
-                // console.log('platforms', this.platforms);
                 this.assets = [...new Set(this.balance.map(item => item.symbol))].sort();
-                // console.log('assets', this.assets);
 
             } catch (err) {
                 console.error(err);
@@ -76,7 +73,7 @@ export default {
         async getStrat() {
             try {
                 const data = await getStrategy();
-
+                console.log('data', data)
                 if (data.length === 0) {
                     this.assets.forEach((asset) => {
                         let assetStrat = {
@@ -119,7 +116,6 @@ export default {
                         asset: asset,
                         strategies: strategies,
                     };
-                    //console.log('rowData', rowData)
                     this.stratMap.push(rowData);
                 });
 
@@ -130,7 +126,6 @@ export default {
                     body: JSON.stringify(this.stratMap),
                 });
 
-                console.log('stringify',JSON.stringify(this.stratMap));
                 // Get the API call result
                 const data = await response.json();
 
@@ -149,29 +144,27 @@ export default {
         async updateAllStrats() {
             const selectedStrategy = this.selectedStrategy;
 
-            Object.keys(this.strat).forEach((asset) => {
-                if (!this.strat[asset]) {
-                    // Si la clé n'existe pas dans this.strat, créez une nouvelle entrée avec les plateformes vides
-                    this.strat[asset] = {};
-                    this.platforms.forEach((platform) => {
-                        this.strat[asset][platform] = '';
-                    });
-                }
+            this.strat.forEach((item) => {
+                const asset = item.asset;
+                const strategies = item.strategies || {};
 
-                Object.keys(this.strat[asset]).forEach((platform) => {
+                this.platforms.forEach((platform) => {
                     if (!this.isDisabled(asset, platform)) {
-                        this.strat[asset][platform] = selectedStrategy;
+                        strategies[platform] = selectedStrategy;
                     }
                 });
+
+                item.strategies = strategies;
             });
         },
-
         getStratValue(asset, platform) {
-            return this.strat[asset] ? this.strat[asset][platform] : '';
+            const item = this.strat.find((item) => item.asset === asset);
+            return item ? item.strategies[platform] || '' : '';
         },
         setStratValue(asset, platform, value) {
-            if (this.strat[asset]) {
-                this.strat[asset][platform] = value;
+            const item = this.strat.find((item) => item.asset === asset);
+            if (item) {
+                item.strategies[platform] = value;
             }
         },
         isDisabled(asset, platform) {

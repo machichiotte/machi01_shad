@@ -68,7 +68,7 @@ const cancelOrder = async (item) => {
     try {
         const response = await fetch(`${serverHost}/deleteOrder?exchangeId=${item.platform}&oId=${item.oId}&symbol=${item.symbol}`);
         const data = await response.json();
-        console.log("code :: " + data.code);
+        console.log("cancelOrder data.code :: ",data.code);
     } catch (err) {
         console.error("Erreur lors de la suppression de l'ordre :", err);
         // Affichez un message d'erreur à l'utilisateur si nécessaire

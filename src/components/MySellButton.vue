@@ -27,11 +27,13 @@ export default {
 
                 let resultText = `${asset}<br>`
 
+                /*
                 console.log(asset);
                 console.log(exchangeId);
                 console.log(selectedRows[rows].openSellOrders);
                 console.log(selectedRows[rows].openBuyOrders);
-
+                */
+               
                 let isNeedCancel = false;
                 let cancel;
 

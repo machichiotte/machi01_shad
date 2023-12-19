@@ -78,37 +78,17 @@ function getMaxWanted(rank, totalBuy) {
     }
 }
 
-/*
-function getRatioShad(asset, exchangeId, strats) {
-    const strategy = strats[0][asset][exchangeId];
-
-    if (strategy) {
-        switch (strategy) {
-            case 'strategy1':
-                return 2;
-            case 'strategy2':
-                return 4;
-            case 'strategy3':
-                return 8;
-            default:
-                return '8'; //'NULL'
-        }
-    } else {
-        // Handle the case when strategy doesn't exist
-        return '/'; //'NULL' or a default value of your choice
-    }
-}
-*/
-
 function getRatioShad(asset, exchangeId, strats) {
     // Assurez-vous que strats est défini et a la structure attendue
     if (strats && typeof strats === 'object') {
         // Assurez-vous que la clé asset existe dans l'objet strats
-        const assetData = strats[asset];
-        if (assetData && typeof assetData === 'object') {
+        const assetData = strats.find((item) => item.asset === asset);
+
+        if (assetData && assetData.strategies && typeof assetData.strategies === 'object') {
             // Assurez-vous que la clé exchangeId existe dans les données de l'actif
-            const strategy = assetData[exchangeId];
-            if (strategy) {
+            const strategy = assetData.strategies[exchangeId];
+
+            if (strategy !== undefined) {
                 // Mettez à jour les valeurs de retour en fonction de la stratégie
                 switch (strategy) {
                     case 'strategy1':
@@ -127,6 +107,7 @@ function getRatioShad(asset, exchangeId, strats) {
     // Gérez le cas où la structure n'est pas conforme à ce que vous attendez
     return '/'; // 'NULL' ou une valeur par défaut de votre choix
 }
+
 
 
 function getTotalSell(asset, trades) {

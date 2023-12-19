@@ -5,7 +5,8 @@
             <div class="block asset">
                 <div class="asset-header">
                     <div class="logo">
-                        <img :src="'https://s2.coinmarketcap.com/static/img/coins/64x64/' + assetId + '.png'" alt="Icon" width="32" height="32" />
+                        <img :src="'https://s2.coinmarketcap.com/static/img/coins/64x64/' + assetId + '.png'" alt="Icon"
+                            width="32" height="32" />
                     </div>
                     <h2 class="title">{{ selectedAsset.asset }}</h2>
                 </div>
@@ -158,7 +159,7 @@ export default {
             currentCurrency: '$',
 
             assetName: null,
-            assetId:null
+            assetId: null
         }
     },
     components: {
@@ -217,7 +218,7 @@ export default {
             this.currentPrice = this.selectedAsset.currentPrice;
             this.balance = this.selectedAsset.currentPossession;
 
-            console.log('currentPrice ' + this.currentPrice);
+            console.log('method getNeededValues currentPrice ', this.currentPrice);
             this.currentPriceUSD = parseFloat(this.currentPrice);
             this.currentPriceBTC = parseFloat(this.currentPrice / this.currentBTC.quote.USD.price).toFixed(8);
             this.currentPriceETH = parseFloat(this.currentPrice / this.currentETH.quote.USD.price).toFixed(8);

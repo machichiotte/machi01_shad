@@ -1,6 +1,6 @@
 // indexedDB.js
-const INDEXED_DB_NAME = 'db_test_0';
-const INDEXED_DB_VERSION = 4;
+const INDEXED_DB_NAME = 'db_test_1';
+const INDEXED_DB_VERSION = 1;
 
 const CMC = 'cmcData';
 const BALANCE = 'balance';
@@ -23,27 +23,22 @@ const openDatabase = async () => {
 
             // Créez un object store pour stocker les données de crypto (CMC)
             if (!db.objectStoreNames.contains(CMC)) {
-                console.log('create cmcData');
                 db.createObjectStore(CMC, { keyPath: 'cmc_rank' });
             }
 
             if (!db.objectStoreNames.contains(BALANCE)) {
-                console.log('create balances');
                 db.createObjectStore(BALANCE, { keyPath: '_id' });
             }
 
             if (!db.objectStoreNames.contains(ORDERS)) {
-                console.log('create orders');
                 db.createObjectStore(ORDERS, { keyPath: '_id' });
             }
 
             if (!db.objectStoreNames.contains(TRADES)) {
-                console.log('create trades');
                 db.createObjectStore(TRADES, { keyPath: '_id' });
             }
 
             if (!db.objectStoreNames.contains(STRATEGY)) {
-                console.log('create trades');
                 db.createObjectStore(STRATEGY, { keyPath: 'asset' });
             }
         };
@@ -57,11 +52,6 @@ const openDatabase = async () => {
 };
 
 const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterExchange) => {
-    console.log('saveDataToIndexedDBInternal storeName', storeName);
-    console.log('saveDataToIndexedDBInternal data', data);
-    console.log('saveDataToIndexedDBInternal keyField', keyField);
-    console.log('saveDataToIndexedDBInternal filterExchange', filterExchange);
-
     try {
         const db = await openDatabase();
         const transaction = db.transaction([storeName], 'readwrite');
@@ -76,6 +66,8 @@ const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterExch
             await clearObjectStoreByExchange(objectStore, filterExchange);
         }
 
+        console.log('dataaaa',data);
+        console.log('dataaaa length',data.length);
         if (data && data.length > 0) {
             data.forEach((item) => {
                 if (isValidItem(item, keyField)) {
