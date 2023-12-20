@@ -117,14 +117,24 @@ function getTotalSell(asset, trades) {
 }
 
 function getAverageEntryPrice(asset, trades) {
-    const filteredTrades = trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy');
-    if (filteredTrades.length === 0) {
+    // Filtrer les transactions d'achat pour l'actif spécifié
+    const filteredBuyTrades = trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy');
+
+    // Si aucune transaction d'achat n'est trouvée, la moyenne est nulle
+    if (filteredBuyTrades.length === 0) {
         return 0;
     }
-    const entryPrices = filteredTrades.map(trade => parseFloat(trade.price));
-    const averageEntryPrice = entryPrices.reduce((total, price) => total + price, 0) / entryPrices.length;
+
+    // Calculer la somme totale des valeurs d'entrée (total) et des quantités (amount)
+    const totalEntryValue = filteredBuyTrades.reduce((total, buyTrade) => total + parseFloat(buyTrade.total), 0);
+    const totalEntryQuantity = filteredBuyTrades.reduce((total, buyTrade) => total + parseFloat(buyTrade.amount), 0);
+
+    // Si la somme totale des quantités est nulle, la moyenne est également nulle pour éviter une division par zéro
+    const averageEntryPrice = totalEntryQuantity === 0 ? 0 : totalEntryValue / totalEntryQuantity;
+
     return averageEntryPrice;
 }
+
 
 function getBalance(asset, sortedBalances) {
     const balance = sortedBalances.find(item => item.symbol === asset);
