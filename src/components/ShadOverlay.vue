@@ -140,8 +140,6 @@
 import { getTradesHistory, getDataBTC, getDataETH } from '../js/calcul.js';
 import ShadOverlayGraph from './ShadOverlayGraph.vue';
 
-const tradingCurrencies = ['/USDT', '/ETH', '/BTC', '/USDC', '/BUSD']; // Ajoutez d'autres devises au besoin
-
 export default {
     name: "ShadOverlay",
     data() {
@@ -172,12 +170,12 @@ export default {
             type: Object,
             required: true
         },
-        openBuyOrders: {
+        buyOrders: {
             type: Object,
             required: true,
             default: () => null
         },
-        openSellOrders: {
+        sellOrders: {
             type: Object,
             required: true,
             default: () => null
@@ -203,38 +201,32 @@ export default {
             );
         },
         getBuyOrders() {
-            for (const currency of tradingCurrencies) {
-                const tradingPair = this.selectedAsset.asset + currency;
-
-                if (tradingPair in this.openBuyOrders) {
-                    const buyOrdersForAsset = this.openBuyOrders[tradingPair];
-                    return buyOrdersForAsset;
-                }
-            }
-
-            console.error(`Aucun ordre trouvé pour 'asset' (${this.selectedAsset.asset}) dans openBuyOrders.`);
-            return null; // Ou return []; selon vos besoins
-        }
-        ,
+            return this.getOrdersBySide(this.buyOrders, 'buy');
+        },
         getSellOrders() {
-            for (const currency of tradingCurrencies) {
-                const tradingPair = this.selectedAsset.asset + currency;
-
-                if (tradingPair in this.openSellOrders) {
-                    const sellOrdersForAsset = this.openSellOrders[tradingPair];
-                    return sellOrdersForAsset;
-                }
-            }
-
-            console.error(`Aucun ordre trouvé pour 'asset' (${this.selectedAsset.asset}) dans openSellOrders.`);
-            return null; // Ou return []; selon vos besoins
-        }
-
+            return this.getOrdersBySide(this.sellOrders, 'sell');
+        },
     },
     mounted() {
         this.getNeededValues();
     },
     methods: {
+        // Fonction générique pour obtenir les ordres en fonction du côté (buy/sell)
+        getOrdersBySide(orders, side) {
+            // Construire le préfixe de la paire de trading
+            const tradingPairPrefix = this.selectedAsset.asset + '/';
+
+            // Filtrer les ordres en fonction du préfixe de la paire de trading et du côté (buy/sell)
+            const filteredOrders = orders.filter(order => order.symbol.includes(tradingPairPrefix) && order.side === side);
+
+            if (filteredOrders.length > 0) {
+                // Retourner les ordres correspondants
+                return filteredOrders;
+            } else {
+                console.error(`Aucun ordre trouvé pour 'asset' (${tradingPairPrefix}) dans open${side}Orders.`);
+                return null;
+            }
+        },
         getNeededValues() {
             this.currentBTC = getDataBTC(this.cmc);
             this.currentETH = getDataETH(this.cmc);
@@ -356,7 +348,7 @@ export default {
 
     background-color: white;
     padding: 0px;
-    width: 30%;
+    width: 70%;
     height: 70%;
     overflow: auto;
 }

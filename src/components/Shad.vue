@@ -23,8 +23,8 @@
         </template>
       </vue-good-table>
     </div>
-    <Overlay v-if="showOverlay" :selectedAsset="selectedAsset" :openBuyOrders="this.openBuyOrders"
-      :openSellOrders="this.openSellOrders" :trades="this.trades" :cmc="this.cmcData" @close="closeOverlay" />
+    <Overlay v-if="showOverlay" :selectedAsset="selectedAsset" :buyOrders="this.buyOrders"
+      :sellOrders="this.sellOrders" :trades="this.trades" :cmc="this.cmcData" @close="closeOverlay" />
   </div>
 </template>
 
@@ -44,8 +44,8 @@ export default {
       strats: [],
       orders: [],
       cmcData: [],
-      openBuyOrders: [],
-      openSellOrders: [],
+      buyOrders: [],
+      sellOrders: [],
       itemsPerPage: 1000,
       currentPage: 1,
       columns: shadColumns,
@@ -91,7 +91,7 @@ export default {
     rows() {
       if (this.strats && this.strats.length > 0) {
         return this.displayedBalances.map((item) => {
-          return getAllCalculs(item, this.cmcData, this.trades, this.strats, this.openBuyOrders, this.openSellOrders);
+          return getAllCalculs(item, this.cmcData, this.trades, this.strats, this.buyOrders, this.sellOrders);
         });
       } else {
         return [];
@@ -143,27 +143,9 @@ export default {
         this.cmcData = await getCmcData();
         this.orders = await getOrders();
 
-        console.log('ordersssss', this.orders);
+        this.buyOrders =this.orders.filter(order => order.side === 'buy');
+        this.sellOrders = this.orders.filter(order => order.side === 'sell');
 
-        this.openBuyOrders = {};
-        this.openSellOrders = {};
-
-        // Utilisez reduce pour diviser les éléments en deux tableaux en fonction de la propriété "side"
-        this.orders.reduce((accumulator, order) => {
-          // Assignez à la propriété appropriée en fonction de la valeur de "side"
-          const targetOrders = order.side === 'sell' ? this.openSellOrders : this.openBuyOrders;
-
-          // Assurez-vous que la propriété symbol existe dans l'objet cible
-          if (!targetOrders[order.symbol]) {
-            targetOrders[order.symbol] = [];
-          }
-
-          // Ajoutez l'ordre à l'objet cible
-          targetOrders[order.symbol].push(order);
-
-          // Retournez l'accumulateur pour la prochaine itération
-          return accumulator;
-        }, {});
       } catch (error) {
         console.error("Une erreur s'est produite lors de la récupération des données :", error);
         // Affichez un message d'erreur à l'utilisateur si nécessaire
