@@ -261,8 +261,8 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
 
     const totalSell = getTotalSell(symbol, trades);
     const averageEntryPrice = getAverageEntryPrice(symbol, trades);
-    const openBuyOrders = buyOrders && buyOrders[symbol] ? buyOrders[symbol].length : 0;
-    const openSellOrders = sellOrders && sellOrders[symbol] ? sellOrders[symbol].length : 0;
+    const openBuyOrders = buyOrders.filter(order => order.symbol.includes(symbol)).length;
+    const openSellOrders = sellOrders.filter(order => order.symbol.includes(symbol)).length;
 
     const ratioShad = getRatioShad(symbol, exchangeId, strats);
 
