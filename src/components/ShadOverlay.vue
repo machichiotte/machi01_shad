@@ -140,6 +140,8 @@
 import { getTradesHistory, getDataBTC, getDataETH } from '../js/calcul.js';
 import ShadOverlayGraph from './ShadOverlayGraph.vue';
 
+const tradingCurrencies = ['/USDT', '/ETH', '/BTC', '/USDC', '/BUSD']; // Ajoutez d'autres devises au besoin
+
 export default {
     name: "ShadOverlay",
     data() {
@@ -201,10 +203,6 @@ export default {
             );
         },
         getBuyOrders() {
-            // Liste des devises avec lesquelles vous souhaitez combiner la paire
-            const tradingCurrencies = ['/USDT', '/ETH', '/BTC', '/USDC', '/BUSD']; // Ajoutez d'autres devises au besoin
-
-            // Itérer sur chaque devise et chercher la correspondance
             for (const currency of tradingCurrencies) {
                 const tradingPair = this.selectedAsset.asset + currency;
 
@@ -219,10 +217,6 @@ export default {
         }
         ,
         getSellOrders() {
-            // Liste des devises avec lesquelles vous souhaitez combiner la paire
-            const tradingCurrencies = ['/USDT', '/ETH', '/BTC', '/USDC', '/BUSD']; // Ajoutez d'autres devises au besoin
-
-            // Itérer sur chaque devise et chercher la correspondance
             for (const currency of tradingCurrencies) {
                 const tradingPair = this.selectedAsset.asset + currency;
 
