@@ -172,11 +172,13 @@ export default {
         },
         openBuyOrders: {
             type: Object,
-            required: true
+            required: true,
+            default: () => null
         },
         openSellOrders: {
             type: Object,
-            required: true
+            required: true,
+            default: () => null
         },
         trades: {
             type: Object,
@@ -199,12 +201,40 @@ export default {
             );
         },
         getBuyOrders() {
-            return this.openBuyOrders[this.selectedAsset.asset];
-        },
-        getSellOrders() {
-            return this.openSellOrders[this.selectedAsset.asset];
-        },
+            // Liste des devises avec lesquelles vous souhaitez combiner la paire
+            const tradingCurrencies = ['/USDT', '/ETH', '/BTC', '/USDC', '/BUSD']; // Ajoutez d'autres devises au besoin
 
+            // Itérer sur chaque devise et chercher la correspondance
+            for (const currency of tradingCurrencies) {
+                const tradingPair = this.selectedAsset.asset + currency;
+
+                if (tradingPair in this.openBuyOrders) {
+                    const buyOrdersForAsset = this.openBuyOrders[tradingPair];
+                    return buyOrdersForAsset;
+                }
+            }
+
+            console.error(`Aucun ordre trouvé pour 'asset' (${this.selectedAsset.asset}) dans openBuyOrders.`);
+            return null; // Ou return []; selon vos besoins
+        }
+        ,
+        getSellOrders() {
+            // Liste des devises avec lesquelles vous souhaitez combiner la paire
+            const tradingCurrencies = ['/USDT', '/ETH', '/BTC', '/USDC', '/BUSD']; // Ajoutez d'autres devises au besoin
+
+            // Itérer sur chaque devise et chercher la correspondance
+            for (const currency of tradingCurrencies) {
+                const tradingPair = this.selectedAsset.asset + currency;
+
+                if (tradingPair in this.openSellOrders) {
+                    const sellOrdersForAsset = this.openSellOrders[tradingPair];
+                    return sellOrdersForAsset;
+                }
+            }
+
+            console.error(`Aucun ordre trouvé pour 'asset' (${this.selectedAsset.asset}) dans openSellOrders.`);
+            return null; // Ou return []; selon vos besoins
+        }
 
     },
     mounted() {

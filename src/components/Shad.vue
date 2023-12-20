@@ -134,19 +134,36 @@ export default {
       }
     },
     async getData() {
+      console.log('getData');
+
       try {
         this.balances = await getBalances();
         this.trades = await getTrades();
         this.strats = await getStrategy();
         this.cmcData = await getCmcData();
-        const {
-          data,
-          openBuyOrders,
-          openSellOrders
-        } = await getOrders();
-        this.orders = data;
-        this.openBuyOrders = openBuyOrders;
-        this.openSellOrders = openSellOrders;
+        this.orders = await getOrders();
+
+        console.log('ordersssss', this.orders);
+
+        this.openBuyOrders = {};
+        this.openSellOrders = {};
+
+        // Utilisez reduce pour diviser les éléments en deux tableaux en fonction de la propriété "side"
+        this.orders.reduce((accumulator, order) => {
+          // Assignez à la propriété appropriée en fonction de la valeur de "side"
+          const targetOrders = order.side === 'sell' ? this.openSellOrders : this.openBuyOrders;
+
+          // Assurez-vous que la propriété symbol existe dans l'objet cible
+          if (!targetOrders[order.symbol]) {
+            targetOrders[order.symbol] = [];
+          }
+
+          // Ajoutez l'ordre à l'objet cible
+          targetOrders[order.symbol].push(order);
+
+          // Retournez l'accumulateur pour la prochaine itération
+          return accumulator;
+        }, {});
       } catch (error) {
         console.error("Une erreur s'est produite lors de la récupération des données :", error);
         // Affichez un message d'erreur à l'utilisateur si nécessaire
