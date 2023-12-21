@@ -93,7 +93,7 @@
             </div>
 
             <div class="block trade-history center-content">
-                <p class="block-title"  @click="toggleHistoricLines">
+                <p class="block-title" @click="toggleHistoricLines">
                     <span class="title-text">Trade History</span>
                     <span class="toggle-icon">{{ showHistoricLines ? '▲' : '▼' }}</span>
                 </p>
@@ -126,9 +126,12 @@
                 </table>
             </div>
 
-            <div class="block graph">
-                <p class="block-title">Graph</p>
-                <ShadOverlayGraph :trades="getTrades"></ShadOverlayGraph>
+            <div class="block graph center-content">
+                <p class="block-title" @click="toggleGraph">
+                    <span class="title-text">Graph</span>
+                    <span class="toggle-icon">{{ showGraph ? '▲' : '▼' }}</span>
+                </p>
+                <ShadOverlayGraph v-if="showGraph" :trades="getTrades"></ShadOverlayGraph>
                 <!-- Placeholder for the graph component -->
             </div>
 
@@ -148,6 +151,8 @@ export default {
             showPercentageLines: false,
             showHistoricLines: false,
             showOrdersLines: false,
+            showGraph:false,
+            
             percentage: '24h',
             percentageValue: null,
             currentBTC: null,
@@ -212,16 +217,10 @@ export default {
         this.getNeededValues();
     },
     methods: {
-        // Fonction générique pour obtenir les ordres en fonction du côté (buy/sell)
         getOrdersBySide(orders, side) {
-            // Construire le préfixe de la paire de trading
             const tradingPairPrefix = this.selectedAsset.asset + '/';
-
-            // Filtrer les ordres en fonction du préfixe de la paire de trading et du côté (buy/sell)
             const filteredOrders = orders.filter(order => order.symbol.includes(tradingPairPrefix) && order.side === side);
-
             if (filteredOrders.length > 0) {
-                // Retourner les ordres correspondants
                 return filteredOrders;
             } else {
                 console.error(`Aucun ordre trouvé pour 'asset' (${tradingPairPrefix}) dans open${side}Orders.`);
@@ -235,7 +234,6 @@ export default {
             this.currentPrice = this.selectedAsset.currentPrice;
             this.balance = this.selectedAsset.currentPossession;
 
-            console.log('method getNeededValues currentPrice ', this.currentPrice);
             this.currentPriceUSD = parseFloat(this.currentPrice);
             this.currentPriceBTC = parseFloat(this.currentPrice / this.currentBTC.quote.USD.price).toFixed(8);
             this.currentPriceETH = parseFloat(this.currentPrice / this.currentETH.quote.USD.price).toFixed(8);
@@ -254,6 +252,9 @@ export default {
         },
         toggleOrdersLines() {
             this.showOrdersLines = !this.showOrdersLines;
+        },
+        toggleGraph() {
+            this.showGraph = !this.showGraph;
         },
 
         formatPercentage(value) {
@@ -399,15 +400,18 @@ export default {
 }
 
 .center-content {
-    text-align: center; /* Centrer horizontalement le contenu de la balise <div> */
+    text-align: center;
+    /* Centrer horizontalement le contenu de la balise <div> */
 }
 
 .block-title {
-    display: inline-block; /* Permet de centrer le texte indépendamment du bouton */
+    display: inline-block;
+    /* Permet de centrer le texte indépendamment du bouton */
 }
 
 .title-text {
-    display: inline-block; /* Permet de centrer le texte indépendamment du bouton */
+    display: inline-block;
+    /* Permet de centrer le texte indépendamment du bouton */
 }
 
 .block.current-value,
@@ -507,9 +511,12 @@ export default {
 
 /* Ajoutez un style pour l'icône */
 .toggle-icon {
-    font-size: 12px; /* Ajustez la taille de la police selon vos préférences */
-    margin-left: 5px; /* Ajoutez une marge entre le texte et l'icône selon vos préférences */
-    transition: transform 0.3s ease; /* Ajoutez une transition pour une animation fluide */
+    font-size: 12px;
+    /* Ajustez la taille de la police selon vos préférences */
+    margin-left: 5px;
+    /* Ajoutez une marge entre le texte et l'icône selon vos préférences */
+    transition: transform 0.3s ease;
+    /* Ajoutez une transition pour une animation fluide */
 }
 
 /* Changez la rotation de l'icône en fonction de l'état */
@@ -548,6 +555,5 @@ export default {
 
 .negative {
     color: red;
-}
-</style>
+}</style>
   
