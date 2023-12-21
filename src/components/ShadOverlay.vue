@@ -47,13 +47,19 @@
                 </div>
             </div>
 
-            <div class="block strategy">
+            <div class="block strategy" @click="toggleStrategy">
                 <p class="block-title">Strategy</p>
                 <select class="dropdown">
                     <option value="">Choose a strategy</option>
                     <!-- Add your strategy options here -->
                 </select>
-                <button class="toggle-button">Show/Hide Next Sell</button>
+                <span class="toggle-icon">{{ showStrategy ? '▲' : '▼' }}</span>
+
+            </div>
+
+            <div class="block next-sells" @click="toggleNextSells">
+                <p class="block-title">Next Sells</p>
+                <span class="toggle-icon">{{ showNextSells ? '▲' : '▼' }}</span>
             </div>
 
             <div class="block open-orders center-content">
@@ -152,7 +158,9 @@ export default {
             showHistoricLines: false,
             showOrdersLines: false,
             showGraph:false,
-            
+            showStrategy:false,
+            showNextSells:false,
+
             percentage: '24h',
             percentageValue: null,
             currentBTC: null,
@@ -255,6 +263,12 @@ export default {
         },
         toggleGraph() {
             this.showGraph = !this.showGraph;
+        },
+        toggleStrategy() {
+            this.showStrategy = !this.showStrategy;
+        },
+        toggleNextSells() {
+            this.showNextSells = !this.showNextSells;
         },
 
         formatPercentage(value) {
