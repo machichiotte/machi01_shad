@@ -56,13 +56,14 @@
                 <button class="toggle-button">Show/Hide Next Sell</button>
             </div>
 
-            <div class="block open-orders">
-                <p class="block-title">Open Orders</p>
-                <button @click="toggleOrdersLines">
-                    {{ showOrdersLines ? 'Hide Open Orders' : 'Show Open Orders' }}
-                </button>
+            <div class="block open-orders center-content">
+                <p class="block-title" @click="toggleOrdersLines">
+                    <span class="title-text">Open Orders</span>
+                    <span class="toggle-icon">{{ showOrdersLines ? '▲' : '▼' }}</span>
 
-                <table v-if="showOrdersLines" class="open-orders-table">
+                </p>
+
+                <table v-if="showOrdersLines" class="my-table">
                     <thead>
                         <tr>
                             <th>Platform</th>
@@ -91,13 +92,13 @@
                 </table>
             </div>
 
-            <div class="block trade-history">
-                <p class="block-title">Trade History</p>
-                <button @click="toggleHistoricLines">
-                    {{ showHistoricLines ? 'Hide Historique' : 'Show Historique' }}
-                </button>
+            <div class="block trade-history center-content">
+                <p class="block-title"  @click="toggleHistoricLines">
+                    <span class="title-text">Trade History</span>
+                    <span class="toggle-icon">{{ showHistoricLines ? '▲' : '▼' }}</span>
+                </p>
 
-                <table v-if="showHistoricLines" class="trade-history-table">
+                <table v-if="showHistoricLines" class="my-table">
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -397,8 +398,16 @@ export default {
     justify-content: center;
 }
 
+.center-content {
+    text-align: center; /* Centrer horizontalement le contenu de la balise <div> */
+}
+
 .block-title {
-    text-align: center;
+    display: inline-block; /* Permet de centrer le texte indépendamment du bouton */
+}
+
+.title-text {
+    display: inline-block; /* Permet de centrer le texte indépendamment du bouton */
 }
 
 .block.current-value,
@@ -482,6 +491,7 @@ export default {
 
 .strategy .toggle-button {
     margin-top: 4px;
+
 }
 
 .open-orders {
@@ -490,26 +500,32 @@ export default {
     overflow-x: auto;
 }
 
-.open-orders-table {
+.my-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.open-orders-table th,
-.open-orders-table td {
+/* Ajoutez un style pour l'icône */
+.toggle-icon {
+    font-size: 12px; /* Ajustez la taille de la police selon vos préférences */
+    margin-left: 5px; /* Ajoutez une marge entre le texte et l'icône selon vos préférences */
+    transition: transform 0.3s ease; /* Ajoutez une transition pour une animation fluide */
+}
+
+/* Changez la rotation de l'icône en fonction de l'état */
+.showHistoricLines .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.my-table th,
+.my-table td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-.open-orders-table th {
+.my-table th {
     background-color: #f2f2f2;
-}
-
-.trade-history {
-    grid-column: 1 / 4;
-    text-align: center;
-    overflow-x: auto;
 }
 
 .graph {
