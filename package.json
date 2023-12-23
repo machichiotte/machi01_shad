@@ -18,6 +18,7 @@
     "pagination": "^0.4.6",
     "path": "^0.12.7",
     "portal-vue": "^3.0.0-beta.0",
+    "v-click-outside": "^3.2.0",
     "vue": "^3.2.47",
     "vue-chartjs": "^5.2.0",
     "vue-good-table": "^2.21.11",

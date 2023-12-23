@@ -1,4 +1,4 @@
-const serverHost = "http://localhost:3000";
+const serverHost = process.env.VUE_APP_SERVER_HOST;
 
 const cancelAllOrders = async (exchangeId, asset) => {
     const requestBody = {
@@ -31,9 +31,9 @@ const bunchOrders = async (exchangeId, asset, amount, price) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody)
     });
-
     const data = await response.json();
-    console.log('bunch :: ' + JSON.stringify(data));
+    console.log('bunchOrders :: ' + JSON.stringify(data));
+
     return data;
 }
 

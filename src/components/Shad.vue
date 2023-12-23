@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" >
     <h1>SHAD</h1>
     <div id="table"> <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true"
         :select-options="{ enabled: true }" :search-options="{ enabled: true }" :pagination-options="{ enabled: true }"
@@ -23,8 +23,8 @@
         </template>
       </vue-good-table>
     </div>
-    <Overlay v-if="showOverlay" :selectedAsset="selectedAsset" :buyOrders="this.buyOrders"
-      :sellOrders="this.sellOrders" :trades="this.trades" :cmc="this.cmcData" @close="closeOverlay" />
+    <Overlay v-if="showOverlay" :selectedAsset="selectedAsset" :buyOrders="this.buyOrders" :sellOrders="this.sellOrders"
+      :trades="this.trades" :cmc="this.cmcData" @close="closeOverlay"/>
   </div>
 </template>
 
@@ -99,6 +99,10 @@ export default {
     },
   },
   methods: {
+    onClickOutside(event) {
+      this.showOverlay=false;
+            console.log('Clicked outside. Event: ', event)
+        },
     applyRowClasses() {
       this.rows.forEach(row => {
         const totalShad = row.totalShad;
@@ -119,7 +123,8 @@ export default {
       }
     },
     closeOverlay() {
-      this.showOverlay = false;
+      if (this.showOverlay)
+        this.showOverlay = false;
     },
     selectionChanged(rows) {
       this.allRows = rows;
@@ -143,7 +148,7 @@ export default {
         this.cmcData = await getCmcData();
         this.orders = await getOrders();
 
-        this.buyOrders =this.orders.filter(order => order.side === 'buy');
+        this.buyOrders = this.orders.filter(order => order.side === 'buy');
         this.sellOrders = this.orders.filter(order => order.side === 'sell');
 
       } catch (error) {

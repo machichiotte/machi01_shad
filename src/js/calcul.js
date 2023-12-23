@@ -15,10 +15,10 @@ function getProfit(totalBuy, totalSell, currentPrice, balance) {
     return profit.toFixed(2);
 }
 
-function getRecupShad(totalBuy, totalSell, maxWanted) {
+function getRecupShad(totalBuy, totalSell, maxExposition) {
     if (totalSell > 0) {
-        if (maxWanted < totalBuy) {
-            return Math.round(totalSell - totalBuy + maxWanted, 2);
+        if (maxExposition < totalBuy) {
+            return Math.round(totalSell - totalBuy + maxExposition, 2);
         } else {
             return Math.round(totalSell, 2);
         }
@@ -26,21 +26,19 @@ function getRecupShad(totalBuy, totalSell, maxWanted) {
     return 0;
 }
 
-function getRecupTp1(totalBuy, totalSell, maxWanted, recupShad, recupTpX, totalShad) {
-    let recupTp1 = (maxWanted) + (totalSell) < (totalBuy) ? (totalBuy) - (totalSell) - (maxWanted) :
-        (recupTpX) - (recupShad) + (totalShad) * (recupTpX);
-    if ((recupTp1) <= 1) {
-        recupTp1 = (recupTpX);
+function getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX) {
+    if (maxExposition < totalBuy && maxExposition + totalSell < totalBuy) {
+        return totalBuy - maxExposition - totalSell;
     }
-    return recupTp1;
+    return recupTpX;
 }
 
-function getRecupTpX(maxWanted, ratioShad) {
-    return maxWanted * ratioShad * .5;
+function getRecupTpX(maxExposition, ratioShad) {
+    return maxExposition * ratioShad * .5;
 }
 
-function getDoneShad(totalBuy, totalSell, maxWanted, recupShad, recupTpX) {
-    if (Math.abs(totalBuy - maxWanted) > 0.5 && totalSell < 0.95 * Math.abs(totalBuy - maxWanted)) {
+function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
+    if (Math.abs(totalBuy - maxExposition) > 0.5 && totalSell < 0.95 * Math.abs(totalBuy - maxExposition)) {
         return -1;
     } else if (recupShad >= 0.95 * recupTpX) {
         return -1 + Math.round(1.1 + recupShad / recupTpX, 2);
@@ -59,20 +57,20 @@ function getTotalAmountAndBuy(asset, exchangeId, trades) {
     };
 }
 
-function getMaxWanted(rank, totalBuy) {
+function getMaxExposition(rank, totalBuy) {
     switch (true) {
         case (rank > 1000):
-            return (Math.min(totalBuy, 5)).toFixed(2);
+            return (Math.min(totalBuy, 5));
         case (rank > 800):
-            return (Math.min(totalBuy, 10)).toFixed(2);
+            return (Math.min(totalBuy, 10));
         case (rank > 600):
-            return (Math.min(totalBuy, 25)).toFixed(2);
+            return (Math.min(totalBuy, 25));
         case (rank > 400):
-            return (Math.min(totalBuy, 50)).toFixed(2);
+            return (Math.min(totalBuy, 50));
         case (rank > 300):
-            return (Math.min(totalBuy, 100)).toFixed(2);
+            return (Math.min(totalBuy, 100));
         case (rank > 200):
-            return (Math.min(totalBuy, 200)).toFixed(2);
+            return (Math.min(totalBuy, 200));
         case (rank <= 200):
             return totalBuy;
     }
@@ -108,33 +106,19 @@ function getRatioShad(asset, exchangeId, strats) {
     return '/'; // 'NULL' ou une valeur par défaut de votre choix
 }
 
-
-
 function getTotalSell(asset, trades) {
     const filteredTrades = trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'sell');
     const sellTotal = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
-    return sellTotal.toFixed(2);
+
+    return Math.round(sellTotal, 2);
 }
 
-function getAverageEntryPrice(asset, trades) {
-    // Filtrer les transactions d'achat pour l'actif spécifié
-    const filteredBuyTrades = trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy');
-
-    // Si aucune transaction d'achat n'est trouvée, la moyenne est nulle
-    if (filteredBuyTrades.length === 0) {
-        return 0;
-    }
-
-    // Calculer la somme totale des valeurs d'entrée (total) et des quantités (amount)
-    const totalEntryValue = filteredBuyTrades.reduce((total, buyTrade) => total + parseFloat(buyTrade.total), 0);
-    const totalEntryQuantity = filteredBuyTrades.reduce((total, buyTrade) => total + parseFloat(buyTrade.amount), 0);
-
-    // Si la somme totale des quantités est nulle, la moyenne est également nulle pour éviter une division par zéro
-    const averageEntryPrice = totalEntryQuantity === 0 ? 0 : totalEntryValue / totalEntryQuantity;
-
-    return averageEntryPrice;
+function getAverageEntryPrice(totalShad, priceTp1, recupTpX, balance) {
+    if (totalShad < 0)
+        return parseFloat(priceTp1.toFixed(8)); // Convertir en nombre avec au maximum 8 chiffres après la virgule
+    else
+        return parseFloat((recupTpX / balance).toFixed(8)); // Convertir en nombre avec au maximum 8 chiffres après la virgule
 }
-
 
 function getBalance(asset, sortedBalances) {
     const balance = sortedBalances.find(item => item.symbol === asset);
@@ -147,29 +131,20 @@ function getIconUrl(id) {
 }
 
 function getCmcValues(asset, cmcData) {
+    const crypto = cmcData.find(item => item.symbol === asset) || {};
 
-    const crypto = cmcData.find(item => item.symbol === asset);
-    if (crypto) {
-        return {
-            rank: crypto.cmc_rank ? parseInt(crypto.cmc_rank) : 0,
-            currentPrice: crypto.quote.USD.price ? crypto.quote.USD.price.toFixed(7) : 'N/A',
-            iconUrl: crypto.id ? getIconUrl(crypto.id) : '',
-            cryptoPercentChange24h: crypto.quote.USD.percent_change_24h ? crypto.quote.USD.percent_change_24h / 100 : 'N/A',
-            cryptoPercentChange7d: crypto.quote.USD.percent_change_7d ? crypto.quote.USD.percent_change_7d / 100 : 'N/A',
-            cryptoPercentChange30d: crypto.quote.USD.percent_change_30d ? crypto.quote.USD.percent_change_30d / 100 : 'N/A',
-            cryptoPercentChange60d: crypto.quote.USD.percent_change_60d ? crypto.quote.USD.percent_change_60d / 100 : 'N/A',
-            cryptoPercentChange90d: crypto.quote.USD.percent_change_90d ? crypto.quote.USD.percent_change_90d / 100 : 'N/A'
-        };
-    } else {
-        return {
-            cryptoPercentChange24h: 'N/A',
-            cryptoPercentChange7d: 'N/A',
-            cryptoPercentChange30d: 'N/A',
-            cryptoPercentChange60d: 'N/A',
-            cryptoPercentChange90d: 'N/A'
-        };
-    }
+    return {
+        rank: parseInt(crypto.cmc_rank) || 0,
+        currentPrice: (crypto.quote?.USD?.price.toFixed(7) || 'N/A'),
+        iconUrl: crypto.id ? getIconUrl(crypto.id) : '',
+        cryptoPercentChange24h: (crypto.quote?.USD?.percent_change_24h / 100 || 'N/A'),
+        cryptoPercentChange7d: (crypto.quote?.USD?.percent_change_7d / 100 || 'N/A'),
+        cryptoPercentChange30d: (crypto.quote?.USD?.percent_change_30d / 100 || 'N/A'),
+        cryptoPercentChange60d: (crypto.quote?.USD?.percent_change_60d / 100 || 'N/A'),
+        cryptoPercentChange90d: (crypto.quote?.USD?.percent_change_90d / 100 || 'N/A'),
+    };
 }
+
 
 function getPercentageDifference(currentPrice, averageEntryPrice) {
     const price = parseFloat(currentPrice);
@@ -196,17 +171,23 @@ function calculateAmountAndPrice(parsedRecup, parsedBalance, factor) {
     return { amount, price };
 }
 
-function calculateAmountsAndPrices(recupTp1, averageEntryPrice, balance, totalBuy, totalSell, totalShad, recupTpX) {
+function calculateAmountsAndPrices(recupTp1, balance, totalBuy, totalShad, recupTpX) {
     const parsedRecupTp1 = parseFloat(recupTp1);
-    const parsedEntryAvg = parseFloat(averageEntryPrice);
     const parsedBalance = parseFloat(balance);
     const parsedTotalBuy = parseFloat(totalBuy);
-    const parsedTotalSell = parseFloat(totalSell);
     const parsedRecupTpX = parseFloat(recupTpX);
 
-    const amountTp1 = (totalShad > -1) ? 0.5 * parsedBalance : parsedRecupTp1 / parsedEntryAvg < parsedBalance ? parsedRecupTp1 / parsedEntryAvg : parsedRecupTp1 * parsedBalance / (parsedTotalBuy - parsedTotalSell);
+    let amountTp1;
+    let priceTp1;
 
-    const priceTp1 = parsedRecupTp1 / parseFloat(amountTp1);
+    if (totalShad > -1) {
+        amountTp1 = 0.5 * parsedBalance;
+        priceTp1 = parsedRecupTp1 / parseFloat(amountTp1);
+    } else {
+        amountTp1 = (parsedRecupTp1 / parsedTotalBuy) * parsedBalance;
+        priceTp1 = parsedRecupTp1 / amountTp1;
+    }
+
     const { amount: amountTp2, price: priceTp2 } = calculateAmountAndPrice(parsedRecupTpX, parsedBalance - amountTp1, 0.5);
     const { amount: amountTp3, price: priceTp3 } = calculateAmountAndPrice(parsedRecupTpX, parsedBalance - amountTp1 - amountTp2, 0.5);
     const { amount: amountTp4, price: priceTp4 } = calculateAmountAndPrice(parsedRecupTpX, parsedBalance - amountTp1 - amountTp2 - amountTp3, 0.5);
@@ -260,7 +241,6 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     } = getCmcValues(symbol, cmcData);
 
     const totalSell = getTotalSell(symbol, trades);
-    const averageEntryPrice = getAverageEntryPrice(symbol, trades);
     const openBuyOrders = buyOrders.filter(order => order.symbol.includes(symbol)).length;
     const openSellOrders = sellOrders.filter(order => order.symbol.includes(symbol)).length;
 
@@ -271,16 +251,20 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
         totalBuy
     } = getTotalAmountAndBuy(symbol, exchangeId, trades);
 
-    const maxWanted = getMaxWanted(rank, totalBuy);
-    const recupShad = getRecupShad(totalBuy, totalSell, maxWanted);
-    const percentageDifference = getPercentageDifference(currentPrice, averageEntryPrice);
+    const maxExposition = getMaxExposition(rank, Math.round(totalBuy));
+    const recupShad = getRecupShad(totalBuy, totalSell, maxExposition);
     const currentPossession = getCurrentPossession(currentPrice, balance);
     const profit = getProfit(totalBuy, totalSell, currentPrice, balance);
-    const recupTpX = getRecupTpX(maxWanted, ratioShad);
-    const totalShad = getDoneShad(totalBuy, totalSell, maxWanted, recupShad, recupTpX);
-    const recupTp1 = getRecupTp1(totalBuy, totalSell, maxWanted, recupShad, recupTpX, totalShad);
+    const recupTpX = getRecupTpX(maxExposition, ratioShad);
+    const totalShad = getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX);
+    const recupTp1 = getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX);
 
-    const { amountTp1, amountTp2, amountTp3, amountTp4, amountTp5, priceTp1, priceTp2, priceTp3, priceTp4, priceTp5 } = calculateAmountsAndPrices(recupTp1, averageEntryPrice, balance, totalBuy, totalSell, totalShad, recupTpX);
+
+
+    const { amountTp1, amountTp2, amountTp3, amountTp4, amountTp5, priceTp1, priceTp2, priceTp3, priceTp4, priceTp5 } = calculateAmountsAndPrices(recupTp1, balance, totalBuy, totalShad, recupTpX);
+
+    const averageEntryPrice = getAverageEntryPrice(totalShad, priceTp1, recupTpX, balance);
+    const percentageDifference = getPercentageDifference(currentPrice, averageEntryPrice);
 
     return {
         iconUrl,
@@ -290,7 +274,7 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
         rank,
         averageEntryPrice,
         totalBuy,
-        maxWanted,
+        maxExposition,
         percentageDifference,
         currentPrice,
         currentPossession,

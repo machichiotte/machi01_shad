@@ -15,7 +15,6 @@
                 </div>
             </div>
 
-
             <div class="block wallet">
                 <div class="left-section">
                     <p class="block-title">Wallet</p>
@@ -57,45 +56,20 @@
 
             </div>
 
-            <div class="block next-sells" @click="toggleNextSells">
-                <p class="block-title">Next Sells</p>
-                <span class="toggle-icon">{{ showNextSells ? '▲' : '▼' }}</span>
+            <div class="block next-sells center-content">
+                <p class="block-title" @click="toggleNextSells">
+                    <span class="title-text">Next Sells</span>
+                    <span class="toggle-icon">{{ showNextSells ? '▲' : '▼' }}</span>
+                </p>
+                <NextSellsTable v-if="showNextSells" :showNextSells="showNextSells" :nextSells="nextSells" />
             </div>
 
             <div class="block open-orders center-content">
                 <p class="block-title" @click="toggleOrdersLines">
                     <span class="title-text">Open Orders</span>
                     <span class="toggle-icon">{{ showOrdersLines ? '▲' : '▼' }}</span>
-
                 </p>
-
-                <table v-if="showOrdersLines" class="my-table">
-                    <thead>
-                        <tr>
-                            <th>Platform</th>
-                            <th>Symbol</th>
-                            <th>Side</th>
-                            <th>Amount</th>
-                            <th>Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="buyOrder in getBuyOrders" :key="buyOrder._id.$oid">
-                            <td>{{ buyOrder.platform }}</td>
-                            <td>{{ buyOrder.symbol }}</td>
-                            <td>{{ buyOrder.side }}</td>
-                            <td>{{ buyOrder.amount }}</td>
-                            <td>{{ buyOrder.price }}</td>
-                        </tr>
-                        <tr v-for="sellOrder in getSellOrders" :key="sellOrder._id.$oid">
-                            <td>{{ sellOrder.platform }}</td>
-                            <td>{{ sellOrder.symbol }}</td>
-                            <td>{{ sellOrder.side }}</td>
-                            <td>{{ sellOrder.amount }}</td>
-                            <td>{{ sellOrder.price }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <OrdersTable v-if="showOrdersLines" :orders="getAssetOrders" />
             </div>
 
             <div class="block trade-history center-content">
@@ -103,33 +77,7 @@
                     <span class="title-text">Trade History</span>
                     <span class="toggle-icon">{{ showHistoricLines ? '▲' : '▼' }}</span>
                 </p>
-
-                <table v-if="showHistoricLines" class="my-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Pair</th>
-                            <th>Type</th>
-                            <th>Price</th>
-                            <th>Amount</th>
-                            <th>Total</th>
-                            <th>Fee</th>
-                            <th>Platform</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="trade in getTrades" :key="trade._id.$oid">
-                            <td>{{ trade.date }}</td>
-                            <td>{{ trade.pair }}</td>
-                            <td>{{ trade.type }}</td>
-                            <td>{{ parseFloat(trade.price).toFixed(6) }}</td>
-                            <td>{{ trade.amount }}</td>
-                            <td>{{ trade.total }}</td>
-                            <td>{{ trade.fee }} {{ trade.feecoin }}</td>
-                            <td>{{ trade.platform }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <TradesTable v-if="showHistoricLines" :trades="getTrades" />
             </div>
 
             <div class="block graph center-content">
@@ -141,7 +89,9 @@
                 <!-- Placeholder for the graph component -->
             </div>
 
-            <button class="close-button" @click="$emit('close')">Close</button>
+            <div class="close-button" @click="$emit('close')">
+                &#10006;
+            </div>
         </div>
     </div>
 </template>
@@ -149,6 +99,9 @@
 <script>
 import { getTradesHistory, getDataBTC, getDataETH } from '../js/calcul.js';
 import ShadOverlayGraph from './ShadOverlayGraph.vue';
+import NextSellsTable from './NextSellsTable.vue';
+import OrdersTable from './OrdersTable.vue';
+import TradesTable from './TradesTable.vue';
 
 export default {
     name: "ShadOverlay",
@@ -157,9 +110,11 @@ export default {
             showPercentageLines: false,
             showHistoricLines: false,
             showOrdersLines: false,
-            showGraph:false,
-            showStrategy:false,
-            showNextSells:false,
+            showGraph: false,
+            showStrategy: false,
+            showNextSells: false,
+
+            nextSells: [],
 
             percentage: '24h',
             percentageValue: null,
@@ -177,7 +132,7 @@ export default {
         }
     },
     components: {
-        ShadOverlayGraph
+        ShadOverlayGraph, NextSellsTable, OrdersTable, TradesTable
     },
     props: {
         selectedAsset: {
@@ -214,17 +169,20 @@ export default {
                 (a, b) => new Date(b.date) - new Date(a.date)
             );
         },
-        getBuyOrders() {
-            return this.getOrdersBySide(this.buyOrders, 'buy');
-        },
-        getSellOrders() {
-            return this.getOrdersBySide(this.sellOrders, 'sell');
+        getAssetOrders() {
+            const buyOrders = this.getOrdersBySide(this.buyOrders, 'buy') || [];
+            const sellOrders = this.getOrdersBySide(this.sellOrders, 'sell') || [];
+            return [...buyOrders, ...sellOrders];
         },
     },
     mounted() {
         this.getNeededValues();
     },
     methods: {
+        updateNextSells() {
+            // Utilisez votre fonction calculateAmountsAndPrices pour mettre à jour this.nextSells
+            //this.nextSells = calculateAmountsAndPrices(/* ... */);
+        },
         getOrdersBySide(orders, side) {
             const tradingPairPrefix = this.selectedAsset.asset + '/';
             const filteredOrders = orders.filter(order => order.symbol.includes(tradingPairPrefix) && order.side === side);
@@ -274,37 +232,39 @@ export default {
         formatPercentage(value) {
             return (value * 100).toFixed(2) + '%';
         },
-        toggleBalanceCurrency() {
-            switch (this.balanceCurrency) {
-                case '$':
-                    this.balanceCurrency = 'BTC';
-                    this.balance = this.balanceBTC;
+        toggleCurrency(type) {
+            switch (type) {
+                case 'balance':
+                    this.balanceCurrency = this.getNextCurrency(this.balanceCurrency);
+                    this.balance = this.getConvertedBalance(this.balance, this.balanceCurrency);
                     break;
-                case 'BTC':
-                    this.balanceCurrency = 'ETH';
-                    this.balance = this.balanceETH;
-                    break;
-                case 'ETH':
-                    this.balanceCurrency = '$';
-                    this.balance = this.balanceUSD;
+                case 'current':
+                    this.currentCurrency = this.getNextCurrency(this.currentCurrency);
+                    this.currentPrice = this.getConvertedPrice(this.currentPrice, this.currentCurrency);
                     break;
             }
         },
-        toggleCurrentCurrency() {
-            switch (this.currentCurrency) {
-                case '$':
-                    this.currentCurrency = 'BTC';
-                    this.currentPrice = this.currentPriceBTC;
-                    break;
-                case 'BTC':
-                    this.currentCurrency = 'ETH';
-                    this.currentPrice = this.currentPriceETH;
-                    break;
-                case 'ETH':
-                    this.currentCurrency = '$';
-                    this.currentPrice = this.currentPriceUSD;
-                    break;
-            }
+        getNextCurrency(currency) {
+            const currencies = ['$', 'BTC', 'ETH'];
+            const currentIndex = currencies.indexOf(currency);
+            const nextIndex = (currentIndex + 1) % currencies.length;
+            return currencies[nextIndex];
+        },
+        getConvertedBalance(balance, currency) {
+            const conversionRates = {
+                '$': 1,
+                'BTC': this.balanceBTC,
+                'ETH': this.balanceETH
+            };
+            return parseFloat(balance / conversionRates[currency]).toFixed(2);
+        },
+        getConvertedPrice(price, currency) {
+            const conversionRates = {
+                '$': 1,
+                'BTC': this.currentPriceBTC,
+                'ETH': this.currentPriceETH
+            };
+            return parseFloat(price / conversionRates[currency]).toFixed(8);
         },
         togglePercentage() {
             if (this.selectedAsset) {
@@ -360,8 +320,8 @@ export default {
 }
 
 .overlay-content {
+    position: relative;
     border: 2px solid black;
-
     background-color: white;
     padding: 0px;
     width: 70%;
@@ -526,11 +486,8 @@ export default {
 /* Ajoutez un style pour l'icône */
 .toggle-icon {
     font-size: 12px;
-    /* Ajustez la taille de la police selon vos préférences */
     margin-left: 5px;
-    /* Ajoutez une marge entre le texte et l'icône selon vos préférences */
     transition: transform 0.3s ease;
-    /* Ajoutez une transition pour une animation fluide */
 }
 
 /* Changez la rotation de l'icône en fonction de l'état */
@@ -549,18 +506,17 @@ export default {
     background-color: #f2f2f2;
 }
 
-.graph {
-    grid-column: 1 / 4;
-    text-align: center;
-    border: 1px solid black;
-    height: 300px;
-}
-
 .close-button {
-    grid-column: 1 / 4;
-    width: auto;
-    margin-top: 10px;
-    text-align: center;
+    position: absolute;
+    top: 10px;
+    /* Ajustez la valeur selon votre mise en page */
+    right: 10px;
+    /* Ajustez la valeur selon votre mise en page */
+    cursor: pointer;
+    font-size: 20px;
+    /* Ajustez la taille de la police selon vos besoins */
+    z-index: 1000;
+    /* Assurez-vous que le bouton est au-dessus du contenu de l'overlay */
 }
 
 .positive {
@@ -569,5 +525,6 @@ export default {
 
 .negative {
     color: red;
-}</style>
+}
+</style>
   

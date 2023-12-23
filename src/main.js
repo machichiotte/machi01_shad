@@ -9,9 +9,12 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import VueGoodTablePlugin from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 
+import vClickOutside from 'v-click-outside'
+
 const app = createApp(App);
 
-app.use(router);
-app.use(VueSweetalert2);
-app.use(VueGoodTablePlugin);
-app.mount('#app');
+app.use(router)
+app.use(VueSweetalert2)
+app.use(VueGoodTablePlugin)
+app.use(vClickOutside)
+app.mount('#app')
