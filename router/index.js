@@ -7,6 +7,7 @@ import Cmc from '@/components/Cmc';
 import Update from '@/components/Update';
 import Strategy from '@/components/Strategy';
 import Trades from '@/components/Trades';
+import Converter from '@/components/Converter';
 
 const routes = [
   { path: '/', component: Home },
@@ -16,6 +17,7 @@ const routes = [
   { path: '/shad', component: Shad },
   { path: '/strategy', component: Strategy },
   { path: '/trades', component: Trades },
+  { path: '/converter', component: Converter },
 ];
 
 const router = createRouter({

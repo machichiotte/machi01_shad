@@ -61,7 +61,7 @@
                     <span class="title-text">Next Sells</span>
                     <span class="toggle-icon">{{ showNextSells ? '▲' : '▼' }}</span>
                 </p>
-                <NextSellsTable v-if="showNextSells" :showNextSells="showNextSells" :nextSells="nextSells" />
+                <NextSellsTable v-if="showNextSells" :data="getNextSellsData" />
             </div>
 
             <div class="block open-orders center-content">

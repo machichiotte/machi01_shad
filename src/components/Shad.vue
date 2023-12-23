@@ -99,10 +99,6 @@ export default {
     },
   },
   methods: {
-    onClickOutside(event) {
-      this.showOverlay=false;
-            console.log('Clicked outside. Event: ', event)
-        },
     applyRowClasses() {
       this.rows.forEach(row => {
         const totalShad = row.totalShad;

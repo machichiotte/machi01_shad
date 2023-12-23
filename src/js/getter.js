@@ -4,6 +4,30 @@ const serverHost = process.env.VUE_APP_SERVER_HOST;
 const CMC = 'cmcData';
 const STRATEGY = 'strategy';
 
+const getConvertedCsv = async (formData) => {
+    const DATA_TYPE = "converter";
+    const ENDPOINT = `${serverHost}/post/${DATA_TYPE}`;
+
+    console.log('getter getConvertedCsv formData', formData.get('csvFile'));
+    try {
+        const response = await fetch(ENDPOINT, {
+            method: "POST",
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error("Échec de la requête au serveur");
+        }
+
+        const data = await response.json();
+        console.log("getter getConvertedCsv data", data);
+        return data;
+    } catch (err) {
+        console.error("Erreur lors de la suppression de l'ordre :", err);
+        // Affichez un message d'erreur à l'utilisateur si nécessaire
+    }
+};
+
 const getStrategy = async () => {
     const DATA_TYPE = "strategy";
     const ENDPOINT = `${serverHost}/get/${DATA_TYPE}`;
@@ -68,7 +92,7 @@ const cancelOrder = async (item) => {
     try {
         const response = await fetch(`${serverHost}/deleteOrder?exchangeId=${item.platform}&oId=${item.oId}&symbol=${item.symbol}`);
         const data = await response.json();
-        console.log("cancelOrder data.code :: ",data.code);
+        console.log("cancelOrder data.code :: ", data.code);
     } catch (err) {
         console.error("Erreur lors de la suppression de l'ordre :", err);
         // Affichez un message d'erreur à l'utilisateur si nécessaire
@@ -173,4 +197,4 @@ const fetchDataWithCache = async (dataType, apiEndpoint, saveToIndexedDBFunction
     }
 }
 
-export { cancelOrder, getStrategy, getCmcData, getBalances, getTrades, getOrders };
+export { getConvertedCsv, cancelOrder, getStrategy, getCmcData, getBalances, getTrades, getOrders };
