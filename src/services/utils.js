@@ -1,4 +1,4 @@
-// utils.js
+// src/services/utils.js
 const ccxt = require('ccxt');
 const fs = require('fs').promises; // Ajout de l'import pour fs.promises
 const {

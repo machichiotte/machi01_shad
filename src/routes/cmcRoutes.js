@@ -1,4 +1,4 @@
-// cmcRoutes.js
+// src/routes/cmcRoutes.js
 const express = require('express');
 const { getCmcData, updateCmcData } = require('../controllers/cmcController.js');
 

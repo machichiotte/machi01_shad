@@ -1,4 +1,4 @@
-// fileUploadMiddleware.js
+// src/middlewares/fileUploadMiddleware.js
 
 // Middleware function to handle file uploads
 function fileUploadMiddleware(req, res, next) {

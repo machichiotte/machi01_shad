@@ -1,4 +1,4 @@
-// tradesController.js
+// src/controllers/tradesController.js
 const { saveArrayDataMDB } = require('../services/mongodb.js');
 const { createExchangeInstance, getData, deleteAndSaveData, saveLastUpdateToMongoDB } = require('../services/utils.js');
 const { mapTrades } = require('../services/mapping.js');

@@ -1,4 +1,4 @@
-// balanceRoutes.js
+// src/routes/balanceRoutes.js
 const express = require('express');
 const { getBalance, updateBalance } = require('../controllers/balanceController.js');
 

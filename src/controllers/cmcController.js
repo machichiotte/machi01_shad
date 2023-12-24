@@ -1,4 +1,4 @@
-// cmcController.js
+// src/controllers/cmcController.js
 const { getData, saveLastUpdateToMongoDB } = require('../services/utils.js');
 
 async function getCmcData(req, res) {

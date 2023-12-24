@@ -1,4 +1,4 @@
-// ordersRoutes.js
+// src/routes/ordersRoutes.js
 const express = require('express');
 const { getOrders, updateOrders, deleteOrder, createBunchOrders, cancelAllOrders} = require('../controllers/ordersController.js');
 

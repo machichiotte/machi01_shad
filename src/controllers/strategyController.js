@@ -1,4 +1,4 @@
-// strategyController.js
+// src/controllers/strategyController.js
 const { getData, saveLastUpdateToMongoDB } = require('../services/utils.js');
 const { deleteAllDataMDB, saveArrayDataMDB } = require('../services/mongodb.js');
 

@@ -1,4 +1,4 @@
-// tradesRoutes.js
+// src/routes/tradesRoutes.js
 const express = require('express');
 const { getTrades, addTradesManually, updateTrades} = require('../controllers/tradesController.js');
 

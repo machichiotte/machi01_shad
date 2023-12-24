@@ -1,4 +1,4 @@
-// utils/mapping.js
+// src/services/mapping.js
 function mapBalance(platform, data) {
     //console.log('map balance :: ' + JSON.stringify(data));
     switch (platform) {

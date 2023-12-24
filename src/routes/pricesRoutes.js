@@ -1,4 +1,4 @@
-// pricesRoutes.js
+// src/routes/pricesRoutes.js
 const express = require('express');
 const { getPriceBtc, getPriceEth} = require('../controllers/pricesController.js');
 

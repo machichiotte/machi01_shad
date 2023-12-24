@@ -1,4 +1,4 @@
-// lastUpdateController.js
+// src/controllers/lastUpdateController.js
 const { getData } = require('../services/utils.js');
 const { getDataMDB } = require('../services/mongodb.js');
 

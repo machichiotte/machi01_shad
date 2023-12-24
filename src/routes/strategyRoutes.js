@@ -1,4 +1,4 @@
-// strategyRoutes.js
+// src/routes/strategyRoutes.js
 const express = require('express');
 const { getStrat, updateStrat } = require('../controllers/strategyController.js');
 
