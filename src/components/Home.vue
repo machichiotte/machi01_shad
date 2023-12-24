@@ -66,7 +66,7 @@
                   <option value="binance">Binance</option>
                   <option value="kucoin">Kucoin</option>
                   <option value="huobi">Huobi</option>
-                  <option value="okex">Okex</option>
+                  <option value="okx">Okx</option>
                   <option value="gateio">Gateio</option>
                 </select>
               </td>
@@ -76,7 +76,7 @@
                   <option value="binance">Binance</option>
                   <option value="kucoin">Kucoin</option>
                   <option value="huobi">Huobi</option>
-                  <option value="okex">Okex</option>
+                  <option value="okx">Okx</option>
                   <option value="gateio">Gateio</option>
                 </select>
               </td>

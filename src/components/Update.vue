@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       cryptoData: null,
-      exchangeIds: ['binance', 'kucoin', 'huobi', 'okex', 'gateio'],
+      exchangeIds: ['binance', 'kucoin', 'huobi', 'okx', 'gateio'],
     };
   },
   methods: {
@@ -79,11 +79,38 @@ export default {
 
     async fetchData(url) {
       const response = await fetch(url);
+
+      console.log(response);
+      console.log('response.ok', response.ok);
+      console.log('response.status', response.status);
       if (!response.ok) {
-        throw new Error(`Error fetching data: ${response.statusText}`);
+        const errorMessage = `Error fetching data: ${response.statusText}`;
+
+        // Gérer les erreurs HTTP spécifiques
+        if (response.status === 401) {
+          // Rediriger vers la page de connexion
+          this.handleUnauthorizedError(errorMessage);
+        } else {
+          // Gérer d'autres erreurs HTTP
+          this.handleErrorHttp(errorMessage);
+        }
       }
+
       return response.json();
     },
+
+    handleUnauthorizedError(message) {
+      // Logique pour gérer les erreurs d'authentification et rediriger vers la page de connexion
+      console.error('handleUnauthorizedError', message);
+      // Redirection vers la page de connexion
+    },
+
+    handleErrorHttp(message) {
+      // Logique générale pour gérer les erreurs
+      console.error('handleErrorHttp', message);
+      // Autres actions à effectuer en cas d'erreur
+    },
+
 
     showUpdateResult(exchangeId, balance_data, orders_data) {
       const resultText = `

@@ -62,7 +62,7 @@ function getPlatformColors(exchangeId) {
         backgroundColor: '#2D8CF0',
         textColor: 'white'
       };
-    case 'okex':
+    case 'okx':
       return {
         backgroundColor: '#1A9924',
         textColor: 'black'

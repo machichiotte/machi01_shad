@@ -89,7 +89,7 @@ const getOrders = async () => {
 
 const cancelOrder = async (item) => {
     try {
-        const response = await fetch(`${serverHost}/${ORDERS}/deleteOrder?exchangeId=${item.platform}&oId=${item.oId}&symbol=${item.symbol}`);
+        const response = await fetch(`${serverHost}/${ORDERS}/cancel?exchangeId=${item.platform}&oId=${item.oId}&symbol=${item.symbol}`);
         const data = await response.json();
         console.log("cancelOrder data.code :: ", data.code);
     } catch (err) {
