@@ -23,9 +23,9 @@
 
 <script>
 const serverHost = process.env.VUE_APP_SERVER_HOST;
-const UPD_BALANCE_ENDPOINT = `${serverHost}/update/balance/`;
-const ORDERS_ENDPOINT = `${serverHost}/update/orders/`;
-const CMC_DATA_ENDPOINT = `${serverHost}/update/cmcData`;
+const UPD_BALANCE_ENDPOINT = `${serverHost}/api/balance/update/balance/`;
+const ORDERS_ENDPOINT = `${serverHost}/api/orders/update/orders/`;
+const CMC_DATA_ENDPOINT = `${serverHost}/api/cmc/update/cmcData`;
 
 import { loadingSpin, successSpinHtml, errorSpin } from '../js/spinner.js';
 import { saveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveCmcDataToIndexedDB } from '../js/indexedDB';

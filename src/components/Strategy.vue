@@ -120,7 +120,7 @@ export default {
                 });
 
                 // Make the API call
-                const response = await fetch(`${serverHost}/update/strategy`, {
+                const response = await fetch(`${serverHost}/api/strategy/update/strategy`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(this.stratMap),
