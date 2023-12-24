@@ -6,7 +6,7 @@ const cancelAllOrders = async (exchangeId, asset) => {
         asset: asset
     };
 
-    const response = await fetch(`${serverHost}/cancel/all-orders`, {
+    const response = await fetch(`${serverHost}/cancel/all`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody)
