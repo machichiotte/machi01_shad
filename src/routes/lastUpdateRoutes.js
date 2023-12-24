@@ -4,7 +4,7 @@ const { getLastUpdate, getUniqueLastUpdate} = require('../controllers/lastUpdate
 
 const router = express.Router();
 
-router.get('/get/lastUpdate', getLastUpdate);
-router.get('/get/lastUpdate/:type/:exchangeId', getUniqueLastUpdate);
+router.get('/get', getLastUpdate);
+router.get('/get/:type/:exchangeId', getUniqueLastUpdate);
 
 module.exports = router;

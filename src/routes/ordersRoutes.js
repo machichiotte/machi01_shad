@@ -4,10 +4,10 @@ const { getOrders, updateOrders, deleteOrder, createBunchOrders, cancelAllOrders
 
 const router = express.Router();
 
-router.get('/get/orders', getOrders);
-router.get('/update/orders/:exchangeId', updateOrders);
-router.post('/cancel/order', deleteOrder);
+router.get('/get', getOrders);
+router.get('/update/:exchangeId', updateOrders);
+router.post('/cancel', deleteOrder);
 router.post('/bunch-orders', createBunchOrders);
-router.post('/cancel/all-orders', cancelAllOrders);
+router.post('/cancel/all', cancelAllOrders);
 
 module.exports = router;

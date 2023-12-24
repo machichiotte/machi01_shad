@@ -4,6 +4,6 @@ const { getCmcData, updateCmcData } = require('../controllers/cmcController.js')
 
 const router = express.Router();
 
-router.get('/get/cmcData', getCmcData);
-router.get('/update/cmcData', updateCmcData);
+router.get('/get', getCmcData);
+router.get('/update', updateCmcData);
 module.exports = router;

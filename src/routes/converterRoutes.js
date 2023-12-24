@@ -7,6 +7,6 @@ const { fileUploadMiddleware } = require('../middlewares/fileUploadMiddleware.js
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.post('/post/converter', upload.single('csvFile'), fileUploadMiddleware, getConvertedCsv);
+router.post('/post', upload.single('csvFile'), fileUploadMiddleware, getConvertedCsv);
 
 module.exports = router;

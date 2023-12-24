@@ -5,7 +5,6 @@ const { saveLastUpdateToMongoDB } = require('../services/utils.js');
 const { createExchangeInstance, createExchangeInstanceWithReq, getData, deleteAndSaveData } = require('../services/utils.js');
 const { mapOrders } = require('../services/mapping.js');
 
-
 async function getOrders(req, res) {
     const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
     await getData(req, res, collection, 'db_machi_shad.collection_active_orders.json');
@@ -141,5 +140,3 @@ async function cancelAllOrders(req, res) {
 }
 
 module.exports = { getOrders, updateOrders, deleteOrder, createBunchOrders, cancelAllOrders };
-
-

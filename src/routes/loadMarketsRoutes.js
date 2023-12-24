@@ -4,7 +4,7 @@ const { getLoadMarkets, updateLoadMarkets} = require('../controllers/loadMarkets
 
 const router = express.Router();
 
-router.get('/get/loadMarkets', getLoadMarkets);
-router.get('/update/loadMarkets/:exchangeId', updateLoadMarkets);
+router.get('/get', getLoadMarkets);
+router.get('/update/:exchangeId', updateLoadMarkets);
 
 module.exports = router;

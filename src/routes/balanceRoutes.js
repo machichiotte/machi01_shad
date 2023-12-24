@@ -4,7 +4,7 @@ const { getBalance, updateBalance } = require('../controllers/balanceController.
 
 const router = express.Router();
 
-router.get('/get/balance', getBalance);
-router.get('/update/balance/:exchangeId', updateBalance);
+router.get('/get', getBalance);
+router.get('/update/:exchangeId', updateBalance);
 
 module.exports = router;

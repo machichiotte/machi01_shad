@@ -4,6 +4,6 @@ const { getStrat, updateStrat } = require('../controllers/strategyController.js'
 
 const router = express.Router();
 
-router.get('/get/strategy', getStrat);
-router.post('/update/strategy', updateStrat);
+router.get('/get', getStrat);
+router.post('/update', updateStrat);
 module.exports = router;

@@ -4,8 +4,8 @@ const { getTrades, addTradesManually, updateTrades} = require('../controllers/tr
 
 const router = express.Router();
 
-router.get('/get/trades', getTrades);
-router.post('/add/trades', addTradesManually);
-router.get('/update/trades/:exchangeId', updateTrades);
+router.get('/get', getTrades);
+router.post('/add', addTradesManually);
+router.get('/update/:exchangeId', updateTrades);
 
 module.exports = router;
