@@ -3,7 +3,6 @@ const { saveArrayDataMDB } = require('../services/mongodb.js');
 const { createExchangeInstance, getData, deleteAndSaveData, saveLastUpdateToMongoDB } = require('../services/utils.js');
 const { mapTrades } = require('../services/mapping.js');
 
-
 async function getTrades(req, res) {
     const collection = process.env.MONGODB_COLLECTION_TRADES;
     await getData(req, res, collection, 'db_machi_shad.collection_trades.json');

@@ -1,5 +1,7 @@
 // src/services/utils.js
 const ccxt = require('ccxt');
+const { AuthenticationError } = require('ccxt');
+
 const fs = require('fs').promises; // Ajout de l'import pour fs.promises
 const {
   saveArrayDataMDB,
@@ -15,14 +17,60 @@ function createExchangeInstance(exchangeId) {
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
   const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
 
-  const exchangeParams = {
-    apiKey,
-    secret,
-    ...(passphrase && { password: passphrase }) // Ajout de passphrase aux paramètres s'il existe
-  };
+  if (!apiKey || !secret) {
+    throw new Error(`API key or secret missing for exchange: ${exchangeId}`);
+  }
 
-  const exchange = new ccxt[exchangeId](exchangeParams);
-  return exchange;
+  try {
+    // Vérifier si la classe CCXT existe
+    if (!(exchangeId in ccxt)) {
+      throw new Error(`Unsupported exchange: ${exchangeId}`);
+    }
+
+    const exchangeParams = {
+      apiKey,
+      secret,
+      ...(passphrase && { password: passphrase }) // Ajout de passphrase aux paramètres s'il existe
+    };
+
+    const exchange = new ccxt[exchangeId](exchangeParams);
+
+    return exchange;
+  } catch (error) {
+    if (error instanceof AuthenticationError) {
+      // Gérer spécifiquement les erreurs d'authentification
+      throw new AuthenticationError(`Authentication error for ${exchangeId}: ${error.message}`);
+    } else {
+      // Gérer les autres erreurs
+      throw new Error(`Error creating exchange instance for ${exchangeId}: ${error.message}`);
+    }
+  }
+}
+
+function getSymbolForExchange(exchangeId, asset) {
+  let symbol;
+
+  switch (exchangeId) {
+    case 'kucoin':
+      symbol = `${asset}-USDT`;
+      break;
+    case 'binance':
+      symbol = `${asset}USDT`;
+      break;
+    case 'huobi':
+      symbol = `${asset.toLowerCase()}usdt`;
+      break;
+    case 'gateio':
+      symbol = `${asset.toUpperCase()}_USDT`;
+      break;
+    case 'okex':
+      symbol = `${asset}-USDT`;
+      break;
+    default:
+      throw new Error(`Unsupported exchange: ${exchangeId}`);
+  }
+
+  return symbol;
 }
 
 // Fonction utilitaire pour créer une instance d'échange avec la demande
@@ -30,33 +78,14 @@ function createExchangeInstanceWithReq(exchangeId, req) {
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
   const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
-  let symbol;
+  const asset = req.body.asset;
+  const symbol = getSymbolForExchange(exchangeId, asset);
 
   const exchangeParams = {
     apiKey,
     secret,
     ...(passphrase && { password: passphrase }) // Ajout de passphrase aux paramètres s'il existe
   };
-
-  switch (exchangeId) {
-    case 'kucoin':
-      symbol = req.body.asset + '-USDT';
-      break;
-    case 'binance':
-      symbol = req.body.asset + 'USDT';
-      break;
-    case 'huobi':
-      symbol = req.body.asset.toLowerCase() + 'usdt';
-      break;
-    case 'gateio':
-      symbol = req.body.asset.toUpperCase() + '_USDT';
-      break;
-    case 'okex':
-      symbol = req.body.asset + '-USDT';
-      break;
-    default:
-      throw new Error(`Unsupported exchange: ${exchangeId}`);
-  }
 
   return {
     symbol,

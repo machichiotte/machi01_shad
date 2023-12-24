@@ -1,5 +1,6 @@
 // src/controllers/cmcController.js
 const { getData, saveLastUpdateToMongoDB } = require('../services/utils.js');
+const { deleteAllDataMDB, saveArrayDataMDB } = require('../services/mongodb.js');
 
 async function getCmcData(req, res) {
     const collection = process.env.MONGODB_COLLECTION_CMC;
