@@ -40,18 +40,29 @@ function convertToJSON(data) {
 }
 
 function detectModelType(data) {
+  console.log('data[0]', data[0]);
+  console.log('id',  data[0]['Order id']);
+  console.log('Instrument',  data[0]['Instrument']);
+  console.log('Time',  data[0]['Time']);
   // Votre logique pour détecter le modèle de fichier CSV
   // Par exemple, vous pouvez vérifier la présence de certaines colonnes
   if (data[0] && data[0]['Order ID'] && data[0]['Order Time(UTC-03:00)']) {
+  console.log('model1');
+
     return 'model1';
-  } else if (data[0] && data[0]['UID'] && data[0]['Name'] && data[0]['Time']) {
+  } else if (data[0] && data[0]['Order id'] && data[0]['Instrument'] && data[0]['Time']) {
+  console.log('model2');
+
     return 'model2';
   } else {
+  console.log('unknown');
+
     return 'unknown';
   }
 }
 
 function convertModel1(data) {
+  console.log('convertModel1');
   return data.map((item) => {
     if (item && item.Symbol && item.Symbol.includes('-')) {
       return {
@@ -73,20 +84,21 @@ function convertModel1(data) {
 }
 
 function convertModel2(data) {
+  console.log('convertModel2');
   return data.map((item) => {
-    if (item['Order id'] && item['Time'] && item.Instrument && item.Instrument.includes('-')) {
+    if (item['Order id'] && item['Instrument'] && item['Time'] && item.Instrument && item.Instrument.includes('-')) {
       return {
-        altA: item.Symbol.split('-')[0],
-        altB: item.Symbol.split('-')[1],
+        altA: item['Trading Unit'],
+        altA: item['Balance Unit'],
         date: item['Time'],
         pair: item['Instrument'],
         type: item['Action'].toLowerCase(),
         price: parseFloat(item['Fill Price']),
-        amount: parseFloat(item['Amount']),
-        total: parseFloat(item['Balance Change']),  // Vous devrez ajuster en fonction de votre logique
+        amount: parseFloat(item['Balance']),
+        total: parseFloat(item['Amount']),  // Vous devrez ajuster en fonction de votre logique
         fee: parseFloat(item['Fee']),
         feecoin: item['Balance Unit'],  // Vous devrez spécifier la valeur appropriée pour feecoin
-        platform: 'okex',  // Vous devrez spécifier la valeur appropriée pour platform
+        platform: 'okx',  // Vous devrez spécifier la valeur appropriée pour platform
       };
     }
     return null;

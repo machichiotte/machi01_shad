@@ -1697,7 +1697,7 @@
   "symbol": "USDT",
   "balance": "205.8379813869615",
   "available": "205.8379813869615",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1706,7 +1706,7 @@
   "symbol": "RFUEL",
   "balance": "10279.062756284",
   "available": "32.122154284001226",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1715,7 +1715,7 @@
   "symbol": "DGB",
   "balance": "2026.6478302706",
   "available": "63.33278927059996",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1724,7 +1724,7 @@
   "symbol": "LET",
   "balance": "11214.428970188732",
   "available": "339.3516701887329",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1733,7 +1733,7 @@
   "symbol": "DIA",
   "balance": "32.9938438088",
   "available": "1.0310608087999995",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1742,7 +1742,7 @@
   "symbol": "BAT",
   "balance": "36.9871131394",
   "available": "1.1558021394000022",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1751,7 +1751,7 @@
   "symbol": "BADGER",
   "balance": "2.9221137286",
   "available": "0.0913177286000004",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1760,7 +1760,7 @@
   "symbol": "CVP",
   "balance": "17.6242259314",
   "available": "1.101515931399998",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1769,7 +1769,7 @@
   "symbol": "LEO",
   "balance": "0.9992",
   "available": "0.9992",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1778,7 +1778,7 @@
   "symbol": "MINA",
   "balance": "6.842465685",
   "available": "1.7106176849999999",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1787,7 +1787,7 @@
   "symbol": "APIX",
   "balance": "244.095571656",
   "available": "15.255975656000004",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1796,7 +1796,7 @@
   "symbol": "OMG",
   "balance": "2.708943708",
   "available": "2.708943708",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -1805,7 +1805,7 @@
   "symbol": "OMI",
   "balance": "0.001546",
   "available": "0.001546",
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {

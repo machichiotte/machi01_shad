@@ -5910,7 +5910,7 @@
   "total": "49.99",
   "fee": "0.00263227",
   "feecoin": "BADGER",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -5944,7 +5944,7 @@
   "total": "50.01",
   "fee": "0.04443786",
   "feecoin": "BAT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -5961,7 +5961,7 @@
   "total": "50.01",
   "fee": "57.08107845",
   "feecoin": "BLOC",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -5978,7 +5978,7 @@
   "total": "50.01",
   "fee": "0.5800464",
   "feecoin": "DGB",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": "binance"
 },
 {
@@ -5995,7 +5995,7 @@
   "total": "50.01",
   "fee": "0.01980819",
   "feecoin": "DIA",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -6012,7 +6012,7 @@
   "total": "50.01",
   "fee": "0.00677629",
   "feecoin": "OMG",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -6029,7 +6029,7 @@
   "total": "50.01",
   "fee": "1.24595066",
   "feecoin": "RFUEL",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -6318,7 +6318,7 @@
   "total": "50.01",
   "fee": "0.02999385",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -6454,7 +6454,7 @@
   "total": "50.02",
   "fee": "0.04000241",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -6692,7 +6692,7 @@
   "total": "40",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -7168,7 +7168,7 @@
   "total": "50.03",
   "fee": "0.02929115",
   "feecoin": "CVP",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -7219,7 +7219,7 @@
   "total": "50.03",
   "fee": "2.94695481",
   "feecoin": "LBA",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -7236,7 +7236,7 @@
   "total": "50.03",
   "fee": "2.63388937",
   "feecoin": "LET",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -7882,7 +7882,7 @@
   "total": "50.01",
   "fee": "13.067454",
   "feecoin": "OMI",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -7967,7 +7967,7 @@
   "total": "50.02",
   "fee": "0.36760484",
   "feecoin": "APIX",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -8137,7 +8137,7 @@
   "total": "149.976",
   "fee": "0.14578499",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -8613,7 +8613,7 @@
   "total": "25",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -8647,7 +8647,7 @@
   "total": "24.75",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -8953,7 +8953,7 @@
   "total": "50",
   "fee": "0.42658501",
   "feecoin": "APIX",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -9004,7 +9004,7 @@
   "total": "50",
   "fee": "0.02477291",
   "feecoin": "CVP",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -9106,7 +9106,7 @@
   "total": "50",
   "fee": "3.68098159",
   "feecoin": "LBA",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -9123,7 +9123,7 @@
   "total": "50.00001",
   "fee": "3.70127733",
   "feecoin": "LET",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -9276,7 +9276,7 @@
   "total": "59.9995843022952",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -9412,7 +9412,7 @@
   "total": "49.987",
   "fee": "0.02999236",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -9429,7 +9429,7 @@
   "total": "49.97402",
   "fee": "0.0299844",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -9514,7 +9514,7 @@
   "total": "49.988",
   "fee": "0.03999037",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -9599,7 +9599,7 @@
   "total": "49.982",
   "fee": "0.02998938",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -10602,7 +10602,7 @@
   "total": "50.2482",
   "fee": "0.0502482",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": "kraken"
 },
 {
@@ -10653,7 +10653,7 @@
   "total": "49.98508",
   "fee": "0.02999104",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -10687,7 +10687,7 @@
   "total": "50.3096979",
   "fee": "0.04024775",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -10891,7 +10891,7 @@
   "total": "49.99793469",
   "fee": "0.09999586",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -11758,7 +11758,7 @@
   "total": "50.00740512",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -12217,7 +12217,7 @@
   "total": "149.9904",
   "fee": "0.08999423",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -12268,7 +12268,7 @@
   "total": "49.955931",
   "fee": "0.03996474",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -12506,7 +12506,7 @@
   "total": "99.9952",
   "fee": "0.07999615",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -12540,7 +12540,7 @@
   "total": "49.99772",
   "fee": "0.02999862",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -12676,7 +12676,7 @@
   "total": "49.99255",
   "fee": "0.02999553",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -13509,7 +13509,7 @@
   "total": "50.04",
   "fee": "0.43103448",
   "feecoin": "APIX",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -13577,7 +13577,7 @@
   "total": "50.04",
   "fee": "5.14954086",
   "feecoin": "LET",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -13645,7 +13645,7 @@
   "total": "50.04",
   "fee": "6",
   "feecoin": "LBA",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -13764,7 +13764,7 @@
   "total": "50",
   "fee": "0.63667232",
   "feecoin": "DGB",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -15753,7 +15753,7 @@
   "total": "4.999606",
   "fee": "0.00399968",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -16416,7 +16416,7 @@
   "total": "74.99999999",
   "fee": "0.60899319",
   "feecoin": "NAS",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -16637,7 +16637,7 @@
   "total": "49.9998608",
   "fee": "0.09998608",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -19629,7 +19629,7 @@
   "total": "10.974268",
   "fee": "0.01097426",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -20037,7 +20037,7 @@
   "total": "5.173",
   "fee": "0.0008",
   "feecoin": "LEO",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -20054,7 +20054,7 @@
   "total": "5",
   "fee": "0.00684931",
   "feecoin": "MINA",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -20581,7 +20581,7 @@
   "total": "4.9992",
   "fee": "0.00399941",
   "feecoin": "USDT",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {
@@ -21601,7 +21601,7 @@
   "total": "50.01",
   "fee": "7.23327305",
   "feecoin": "RFUEL",
-  "platform": "okex",
+  "platform": "okx",
   "explatform": ""
 },
 {

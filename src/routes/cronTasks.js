@@ -2,7 +2,7 @@
 const cron = require('node-cron');
 const { cronLoadMarkets } = require('../services/utils.js');
 
-const exchangesToUpdate = ['binance', 'kucoin', 'huobi', 'okex', 'gateio'];
+const exchangesToUpdate = ['binance', 'kucoin', 'huobi', 'okx', 'gateio'];
 const CRON_LOAD_MARKETS = '40 10 * * *';
 
 async function updateMarketsForExchange(exchangeId) {

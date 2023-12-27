@@ -13,6 +13,7 @@ const { mapLoadMarkets } = require('./mapping.js');
 
 // Fonction utilitaire pour créer une instance d'échange
 function createExchangeInstance(exchangeId) {
+  console.log('createExcccc', `${exchangeId.toUpperCase()}_API_KEY`);
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
   const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
@@ -63,7 +64,7 @@ function getSymbolForExchange(exchangeId, asset) {
     case 'gateio':
       symbol = `${asset.toUpperCase()}_USDT`;
       break;
-    case 'okex':
+    case 'okx':
       symbol = `${asset}-USDT`;
       break;
     default:
@@ -150,7 +151,7 @@ async function getData(req, res, collection, mockDataFile) {
 
 // Fonction utilitaire pour supprimer et sauvegarder des données
 async function deleteAndSaveData(mapData, collection, exchangeId) {
-  if (mapData.length > 0) {
+  if (mapData && mapData.length > 0) {
     const deleteParam = { platform: exchangeId };
     await deleteMultipleDataMDB(collection, deleteParam);
     await saveArrayDataMDB(mapData, collection);
@@ -172,6 +173,16 @@ async function cronLoadMarkets(exchangeId) {
   }
 }
 
+function handleErrorResponse(res, error, functionName) {
+  if (error instanceof AuthenticationError) {
+    console.error(`Authentication error in ${functionName}:`, error.message);
+    res.status(401).json({ success: false, error: `Authentication error in ${functionName}`, message: error.message });
+  } else {
+    console.error(`Error in ${functionName}:`, error);
+    res.status(500).json({ success: false, error: 'Server error' });
+  }
+}
+
 module.exports = {
   createExchangeInstance,
   createExchangeInstanceWithReq,
@@ -179,5 +190,6 @@ module.exports = {
   saveLastUpdateToMongoDB,
   getData,
   deleteAndSaveData,
-  cronLoadMarkets
+  cronLoadMarkets,
+  handleErrorResponse
 };

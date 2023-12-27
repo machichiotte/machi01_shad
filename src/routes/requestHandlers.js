@@ -21,7 +21,7 @@ app.use('/api/balance', balanceRoutes);
 
 //cmc
 const cmcRoutes  = require('../routes/cmcRoutes.js');
-app.use('/api/cmc', cmcRoutes);
+app.use('/api/cmcData', cmcRoutes);
 
 //strat
 const strategyRoutes  = require('../routes/strategyRoutes.js');

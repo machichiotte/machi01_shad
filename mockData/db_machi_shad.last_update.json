@@ -38,7 +38,7 @@
   "_id": {
     "$oid": "64930c45299550a380858eb1"
   },
-  "platform": "okex",
+  "platform": "okx",
   "timestamp": {
     "trades": "",
     "openOrders": "",

@@ -30380,7 +30380,7 @@
   "maker": 0.001,
   "precisionAmount": 1e-8,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30398,7 +30398,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30416,7 +30416,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30434,7 +30434,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30452,7 +30452,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30470,7 +30470,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30488,7 +30488,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30506,7 +30506,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30524,7 +30524,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-10,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30542,7 +30542,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30560,7 +30560,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30578,7 +30578,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30596,7 +30596,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30614,7 +30614,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30632,7 +30632,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30650,7 +30650,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30668,7 +30668,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30686,7 +30686,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30704,7 +30704,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30724,7 +30724,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-12,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30742,7 +30742,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-10,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30760,7 +30760,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30778,7 +30778,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30796,7 +30796,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30814,7 +30814,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30832,7 +30832,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30850,7 +30850,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30868,7 +30868,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30886,7 +30886,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30904,7 +30904,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30922,7 +30922,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30940,7 +30940,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30958,7 +30958,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30976,7 +30976,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -30994,7 +30994,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31012,7 +31012,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31030,7 +31030,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31048,7 +31048,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31066,7 +31066,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31084,7 +31084,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31102,7 +31102,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31120,7 +31120,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-12,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31138,7 +31138,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31156,7 +31156,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31174,7 +31174,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31192,7 +31192,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31210,7 +31210,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31228,7 +31228,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31246,7 +31246,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31264,7 +31264,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31282,7 +31282,7 @@
   "maker": 0.001,
   "precisionAmount": 0.001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31300,7 +31300,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31318,7 +31318,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31336,7 +31336,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31354,7 +31354,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31372,7 +31372,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31390,7 +31390,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31408,7 +31408,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31426,7 +31426,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31444,7 +31444,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-9,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31462,7 +31462,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31480,7 +31480,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31498,7 +31498,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31516,7 +31516,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31534,7 +31534,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31552,7 +31552,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31570,7 +31570,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31588,7 +31588,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31606,7 +31606,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31624,7 +31624,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31642,7 +31642,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31660,7 +31660,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31678,7 +31678,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31696,7 +31696,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31714,7 +31714,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31732,7 +31732,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31750,7 +31750,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31768,7 +31768,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31786,7 +31786,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31804,7 +31804,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31822,7 +31822,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31840,7 +31840,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31858,7 +31858,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31876,7 +31876,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31894,7 +31894,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31912,7 +31912,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31930,7 +31930,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31948,7 +31948,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31966,7 +31966,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -31984,7 +31984,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32002,7 +32002,7 @@
   "maker": 0.001,
   "precisionAmount": 1e-8,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32020,7 +32020,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32038,7 +32038,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32056,7 +32056,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32074,7 +32074,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32092,7 +32092,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32110,7 +32110,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32128,7 +32128,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32146,7 +32146,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32164,7 +32164,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32182,7 +32182,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32200,7 +32200,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32218,7 +32218,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32236,7 +32236,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32254,7 +32254,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32272,7 +32272,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32290,7 +32290,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-10,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32308,7 +32308,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32326,7 +32326,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32344,7 +32344,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32362,7 +32362,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32380,7 +32380,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32398,7 +32398,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32416,7 +32416,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32434,7 +32434,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32452,7 +32452,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32470,7 +32470,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32488,7 +32488,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32506,7 +32506,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32524,7 +32524,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-9,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32542,7 +32542,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32560,7 +32560,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32578,7 +32578,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32596,7 +32596,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32614,7 +32614,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32632,7 +32632,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32650,7 +32650,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32668,7 +32668,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32686,7 +32686,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32704,7 +32704,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32722,7 +32722,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32740,7 +32740,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32758,7 +32758,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32776,7 +32776,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32794,7 +32794,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32812,7 +32812,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32830,7 +32830,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32848,7 +32848,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-8,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32866,7 +32866,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32884,7 +32884,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32902,7 +32902,7 @@
   "maker": 0.001,
   "precisionAmount": 0.001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32920,7 +32920,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32938,7 +32938,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32956,7 +32956,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32974,7 +32974,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -32992,7 +32992,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33010,7 +33010,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33028,7 +33028,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33046,7 +33046,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33064,7 +33064,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33082,7 +33082,7 @@
   "maker": 0.001,
   "precisionAmount": 0.001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33100,7 +33100,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33118,7 +33118,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33136,7 +33136,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33154,7 +33154,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33172,7 +33172,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33190,7 +33190,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33208,7 +33208,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33226,7 +33226,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33244,7 +33244,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33262,7 +33262,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33280,7 +33280,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33298,7 +33298,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33316,7 +33316,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33334,7 +33334,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33352,7 +33352,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33370,7 +33370,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33388,7 +33388,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-12,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33406,7 +33406,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33424,7 +33424,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33442,7 +33442,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33460,7 +33460,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33478,7 +33478,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33496,7 +33496,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33514,7 +33514,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33532,7 +33532,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33550,7 +33550,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33568,7 +33568,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33586,7 +33586,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33604,7 +33604,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33622,7 +33622,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33640,7 +33640,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 1e-7,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33658,7 +33658,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33676,7 +33676,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33694,7 +33694,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33712,7 +33712,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33730,7 +33730,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33748,7 +33748,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33766,7 +33766,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33784,7 +33784,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33802,7 +33802,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33820,7 +33820,7 @@
   "maker": 0.001,
   "precisionAmount": 1e-8,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33838,7 +33838,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-8,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33856,7 +33856,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33874,7 +33874,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33892,7 +33892,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33910,7 +33910,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33928,7 +33928,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33946,7 +33946,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33964,7 +33964,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -33982,7 +33982,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34000,7 +34000,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34018,7 +34018,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34036,7 +34036,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-11,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34054,7 +34054,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34072,7 +34072,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34090,7 +34090,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34108,7 +34108,7 @@
   "maker": 0.001,
   "precisionAmount": 1e-8,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34126,7 +34126,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34144,7 +34144,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34162,7 +34162,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34180,7 +34180,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34198,7 +34198,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34216,7 +34216,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34234,7 +34234,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34252,7 +34252,7 @@
   "maker": 0.001,
   "precisionAmount": 1e-8,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34270,7 +34270,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34288,7 +34288,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-10,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34306,7 +34306,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34324,7 +34324,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34342,7 +34342,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34360,7 +34360,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34378,7 +34378,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34396,7 +34396,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34414,7 +34414,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34432,7 +34432,7 @@
   "maker": 0.001,
   "precisionAmount": 0.001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34450,7 +34450,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34468,7 +34468,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34486,7 +34486,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34504,7 +34504,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34522,7 +34522,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34540,7 +34540,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34558,7 +34558,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34576,7 +34576,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34594,7 +34594,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34612,7 +34612,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34630,7 +34630,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34648,7 +34648,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34666,7 +34666,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-12,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34684,7 +34684,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 1e-7,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34702,7 +34702,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34720,7 +34720,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34738,7 +34738,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-11,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34756,7 +34756,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34774,7 +34774,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34792,7 +34792,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34810,7 +34810,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-10,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34828,7 +34828,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34846,7 +34846,7 @@
   "maker": 0.001,
   "precisionAmount": 0.001,
   "precisionPrice": 1e-7,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34864,7 +34864,7 @@
   "maker": 0.001,
   "precisionAmount": 0.001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34882,7 +34882,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34900,7 +34900,7 @@
   "maker": 0.001,
   "precisionAmount": 0.001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34918,7 +34918,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34936,7 +34936,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34954,7 +34954,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34972,7 +34972,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -34990,7 +34990,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35008,7 +35008,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35026,7 +35026,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35044,7 +35044,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35062,7 +35062,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35080,7 +35080,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35098,7 +35098,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35116,7 +35116,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35134,7 +35134,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35152,7 +35152,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35170,7 +35170,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35188,7 +35188,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-9,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35206,7 +35206,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35224,7 +35224,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 1e-7,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35242,7 +35242,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35260,7 +35260,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35278,7 +35278,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35296,7 +35296,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35314,7 +35314,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-11,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35332,7 +35332,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35350,7 +35350,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35368,7 +35368,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35386,7 +35386,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-9,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35404,7 +35404,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35422,7 +35422,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35440,7 +35440,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35458,7 +35458,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35476,7 +35476,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35494,7 +35494,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 1e-7,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35512,7 +35512,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35530,7 +35530,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35548,7 +35548,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35566,7 +35566,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35584,7 +35584,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35602,7 +35602,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35620,7 +35620,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35638,7 +35638,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35656,7 +35656,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35674,7 +35674,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35692,7 +35692,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35710,7 +35710,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35728,7 +35728,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35746,7 +35746,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35764,7 +35764,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35782,7 +35782,7 @@
   "maker": 0.001,
   "precisionAmount": 0.01,
   "precisionPrice": 1e-7,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35800,7 +35800,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35818,7 +35818,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35836,7 +35836,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35854,7 +35854,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35872,7 +35872,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35890,7 +35890,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35908,7 +35908,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35926,7 +35926,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35944,7 +35944,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35962,7 +35962,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35980,7 +35980,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -35998,7 +35998,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36016,7 +36016,7 @@
   "maker": 0.001,
   "precisionAmount": 1e-8,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36034,7 +36034,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36052,7 +36052,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36070,7 +36070,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36088,7 +36088,7 @@
   "maker": 0.001,
   "precisionAmount": 0.001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36106,7 +36106,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36124,7 +36124,7 @@
   "maker": 0.001,
   "precisionAmount": 1,
   "precisionPrice": 1e-7,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36142,7 +36142,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36160,7 +36160,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36178,7 +36178,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36196,7 +36196,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36214,7 +36214,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36232,7 +36232,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36250,7 +36250,7 @@
   "maker": 0.001,
   "precisionAmount": 0.1,
   "precisionPrice": 1e-8,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36268,7 +36268,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36286,7 +36286,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36304,7 +36304,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36322,7 +36322,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36340,7 +36340,7 @@
   "maker": 0.001,
   "precisionAmount": 0.0001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36358,7 +36358,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36376,7 +36376,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36394,7 +36394,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36412,7 +36412,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36430,7 +36430,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36448,7 +36448,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36466,7 +36466,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36484,7 +36484,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36502,7 +36502,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36520,7 +36520,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36538,7 +36538,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36556,7 +36556,7 @@
   "maker": 0.001,
   "precisionAmount": 0.000001,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36574,7 +36574,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36592,7 +36592,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36610,7 +36610,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36628,7 +36628,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36646,7 +36646,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36664,7 +36664,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36682,7 +36682,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36700,7 +36700,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36718,7 +36718,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36736,7 +36736,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36754,7 +36754,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36772,7 +36772,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36790,7 +36790,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36808,7 +36808,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36826,7 +36826,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36844,7 +36844,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36862,7 +36862,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36880,7 +36880,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36898,7 +36898,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36916,7 +36916,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36934,7 +36934,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36952,7 +36952,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36970,7 +36970,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -36988,7 +36988,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37006,7 +37006,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37024,7 +37024,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37042,7 +37042,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37060,7 +37060,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37078,7 +37078,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37096,7 +37096,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37114,7 +37114,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37132,7 +37132,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37150,7 +37150,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37168,7 +37168,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 1e-10,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37186,7 +37186,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37204,7 +37204,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37222,7 +37222,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37240,7 +37240,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37258,7 +37258,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37276,7 +37276,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37294,7 +37294,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 1e-12,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37312,7 +37312,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37330,7 +37330,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37348,7 +37348,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37366,7 +37366,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37384,7 +37384,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37402,7 +37402,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37420,7 +37420,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37438,7 +37438,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37456,7 +37456,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37474,7 +37474,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37492,7 +37492,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37510,7 +37510,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37528,7 +37528,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37546,7 +37546,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37564,7 +37564,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37582,7 +37582,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37600,7 +37600,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37618,7 +37618,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37636,7 +37636,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37654,7 +37654,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37672,7 +37672,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37690,7 +37690,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37708,7 +37708,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37726,7 +37726,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37744,7 +37744,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37762,7 +37762,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37780,7 +37780,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37798,7 +37798,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37816,7 +37816,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37834,7 +37834,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37852,7 +37852,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37870,7 +37870,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37888,7 +37888,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37906,7 +37906,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37924,7 +37924,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37942,7 +37942,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37960,7 +37960,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37978,7 +37978,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -37996,7 +37996,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38014,7 +38014,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38032,7 +38032,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38050,7 +38050,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38068,7 +38068,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38086,7 +38086,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 1e-8,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38104,7 +38104,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38122,7 +38122,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38140,7 +38140,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38158,7 +38158,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38176,7 +38176,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38194,7 +38194,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38212,7 +38212,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38230,7 +38230,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38248,7 +38248,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38266,7 +38266,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38284,7 +38284,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38302,7 +38302,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38320,7 +38320,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 1e-12,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38338,7 +38338,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38356,7 +38356,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38374,7 +38374,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38392,7 +38392,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38410,7 +38410,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38428,7 +38428,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38446,7 +38446,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38464,7 +38464,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38482,7 +38482,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38500,7 +38500,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 1e-8,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38518,7 +38518,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38536,7 +38536,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38554,7 +38554,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38572,7 +38572,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38590,7 +38590,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38608,7 +38608,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38626,7 +38626,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38644,7 +38644,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38662,7 +38662,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 1e-10,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38680,7 +38680,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38698,7 +38698,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38716,7 +38716,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38734,7 +38734,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38752,7 +38752,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38770,7 +38770,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38788,7 +38788,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38806,7 +38806,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38824,7 +38824,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38842,7 +38842,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38860,7 +38860,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38878,7 +38878,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38896,7 +38896,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 1e-9,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38914,7 +38914,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.000001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38932,7 +38932,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38950,7 +38950,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 1e-9,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38968,7 +38968,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -38986,7 +38986,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39004,7 +39004,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39022,7 +39022,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 1e-7,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39040,7 +39040,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39058,7 +39058,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39076,7 +39076,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39094,7 +39094,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39112,7 +39112,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39130,7 +39130,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39148,7 +39148,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39166,7 +39166,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39184,7 +39184,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39202,7 +39202,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39220,7 +39220,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39238,7 +39238,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39256,7 +39256,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39274,7 +39274,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39292,7 +39292,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39310,7 +39310,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.1,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39328,7 +39328,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39346,7 +39346,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.01,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39364,7 +39364,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39382,7 +39382,7 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.00001,
-  "platform": "okex"
+  "platform": "okx"
 },
 {
   "_id": {
@@ -39400,5 +39400,5 @@
   "maker": 0.0002,
   "precisionAmount": 1,
   "precisionPrice": 0.0001,
-  "platform": "okex"
+  "platform": "okx"
 }]

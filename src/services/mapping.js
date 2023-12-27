@@ -29,8 +29,8 @@ function mapBalance(platform, data) {
                     available: value.free,
                     platform: platform,
                 }));
-
-        case 'okex':
+        case 'okx':
+            console.log('okxokxokxokxokxokx', JSON.stringify(data));
             return data.info.data[0].details
                 .filter((item) => parseFloat(item.cashBal) > 0)
                 .map((item) => ({
@@ -52,10 +52,7 @@ function mapBalance(platform, data) {
 }
 
 function mapTrades(platform, data) {
-    //console.log('map platform :: ' + platform);
-    // console.log('map trades :: ' + JSON.stringify(data));
     switch (platform) {
-
         case 'kucoin':
             return data
                 .map((item) => ({
@@ -85,7 +82,6 @@ function mapTrades(platform, data) {
                     feeCurrency: item.fee.currency,
                     feeRate: item.fee.rate,
                 }));
-
     }
 }
 
