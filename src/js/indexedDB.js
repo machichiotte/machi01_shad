@@ -66,8 +66,6 @@ const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterExch
             await clearObjectStoreByExchange(objectStore, filterExchange);
         }
 
-        console.log('dataaaa',data);
-        console.log('dataaaa length',data.length);
         if (data && data.length > 0) {
             data.forEach((item) => {
                 if (isValidItem(item, keyField)) {

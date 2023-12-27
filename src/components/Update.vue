@@ -22,13 +22,24 @@
 </template>
 
 <script>
-const serverHost = process.env.VUE_APP_SERVER_HOST;
-const UPD_BALANCE_ENDPOINT = `${serverHost}/balance/update/`;
-const ORDERS_ENDPOINT = `${serverHost}/orders/update/`;
-const CMC_DATA_ENDPOINT = `${serverHost}/cmc/update/`;
+import {
+  loadingSpin,
+  successSpinHtml,
+  errorSpinHtml,
+  errorSpin
+} from '../js/spinner.js';
+import {
+  saveOrdersDataToIndexedDB,
+  saveBalancesDataToIndexedDB,
+  saveCmcDataToIndexedDB
+} from '../js/indexedDB';
 
-import { loadingSpin, successSpinHtml, errorSpin } from '../js/spinner.js';
-import { saveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveCmcDataToIndexedDB } from '../js/indexedDB';
+const serverHost = process.env.VUE_APP_SERVER_HOST;
+const API_ENDPOINTS = {
+  UPD_BALANCE: `${serverHost}/balance/update/`,
+  ORDERS: `${serverHost}/orders/update/`,
+  CMC_DATA: `${serverHost}/cmc/update/`
+};
 
 export default {
   name: "UpdatePage",
@@ -43,7 +54,10 @@ export default {
     async fetchAndUpdateCoinMarketCapData() {
       try {
         loadingSpin();
-        const { data, totalCount } = await this.fetchData(CMC_DATA_ENDPOINT);
+        const {
+          data,
+          totalCount
+        } = (await this.fetchData(API_ENDPOINTS.CMC_DATA)).json();
         this.cryptoData = data;
         await saveCmcDataToIndexedDB(data);
         successSpinHtml('Save completed', `Résultat : ${totalCount}`, true, true);
@@ -61,17 +75,32 @@ export default {
     async updateExchangeData(exchangeId) {
       try {
         loadingSpin();
-        const [balance_data, orders_data] = await Promise.all([
-          this.fetchData(`${UPD_BALANCE_ENDPOINT}${exchangeId}`),
-          this.fetchData(`${ORDERS_ENDPOINT}${exchangeId}`),
+        const [balance_data_response, orders_data_response] = await Promise.all([
+          this.fetchData(`${API_ENDPOINTS.UPD_BALANCE}${exchangeId}`),
+          this.fetchData(`${API_ENDPOINTS.ORDERS}${exchangeId}`),
         ]);
 
-        await Promise.all([
-          saveBalancesDataToIndexedDB(balance_data, exchangeId),
-          saveOrdersDataToIndexedDB(orders_data, exchangeId),
-        ]);
+        const balance_data = await balance_data_response.json();
+        const orders_data = await orders_data_response.json();
 
-        this.showUpdateResult(exchangeId, balance_data, orders_data);
+        if (balance_data_response.ok) {
+          saveBalancesDataToIndexedDB(balance_data, exchangeId);
+        }
+
+        if (orders_data_response.ok) {
+          saveOrdersDataToIndexedDB(orders_data, exchangeId);
+        }
+
+        if (balance_data_response.ok && orders_data_response.ok) {
+          this.showUpdateResult(exchangeId, balance_data, orders_data);
+        } else if (balance_data_response.ok) {
+          this.showUpdateResultWithError(exchangeId, true, balance_data, orders_data);
+        } else if (orders_data_response.ok) {
+          this.showUpdateResultWithError(exchangeId, false, orders_data, balance_data);
+        } else {
+          this.showUpdateError(exchangeId, orders_data, balance_data);
+        }
+
       } catch (error) {
         this.handleError(`Error updating ${exchangeId}:`, error);
       }
@@ -79,46 +108,47 @@ export default {
 
     async fetchData(url) {
       const response = await fetch(url);
-
-      console.log(response);
-      console.log('response.ok', response.ok);
-      console.log('response.status', response.status);
-      if (!response.ok) {
-        const errorMessage = `Error fetching data: ${response.statusText}`;
-
-        // Gérer les erreurs HTTP spécifiques
-        if (response.status === 401) {
-          // Rediriger vers la page de connexion
-          this.handleUnauthorizedError(errorMessage);
-        } else {
-          // Gérer d'autres erreurs HTTP
-          this.handleErrorHttp(errorMessage);
-        }
-      }
-
-      return response.json();
+      return response;
     },
-
-    handleUnauthorizedError(message) {
-      // Logique pour gérer les erreurs d'authentification et rediriger vers la page de connexion
-      console.error('handleUnauthorizedError', message);
-      // Redirection vers la page de connexion
-    },
-
-    handleErrorHttp(message) {
-      // Logique générale pour gérer les erreurs
-      console.error('handleErrorHttp', message);
-      // Autres actions à effectuer en cas d'erreur
-    },
-
 
     showUpdateResult(exchangeId, balance_data, orders_data) {
       const resultText = `
         <b>${exchangeId.toUpperCase()}</b><br>
-        <b>Balance :</b> ${balance_data.length} assets<br>
-        <b>Orders :</b> ${orders_data.length} ordres<br>
+        <b>Solde :</b> ${balance_data.length} actifs<br>
+        <b>Ordres :</b> ${orders_data.length} ordres<br>
       `;
-      successSpinHtml('Save completed', resultText, true, true);
+      successSpinHtml('Sauvegarde terminée', resultText, true, true);
+    },
+
+    showUpdateError(exchangeId, balance_data, orders_data) {
+      const balanceErrorMessage = balance_data.error || 'Unknown error';
+      const ordersErrorMessage = orders_data.error || 'Unknown error';
+
+      const resultText = `
+    <b>${exchangeId.toUpperCase()}</b><br>
+    <b>Solde :</b> ${balanceErrorMessage} <br>
+    <b>Ordres :</b> ${ordersErrorMessage} <br>
+  `;
+  errorSpinHtml('Échec de la sauvegarde', resultText, true, true);
+    },
+
+    showUpdateResultWithError(exchangeId, isBalanceOk, good_data, bad_data) {
+      const badDataErrorMessage = bad_data.error || 'Unknown error';
+
+      const okValue = isBalanceOk ? `<b>Solde :</b> ${good_data.length} actifs` : `<b>Ordres :</b> ${good_data.length} ordres`;
+      const nokValue = isBalanceOk ? `<b>Ordres :</b> ${badDataErrorMessage}` : `<b>Solde :</b> ${badDataErrorMessage}`;
+
+      const resultText = `
+        <b>${exchangeId.toUpperCase()}</b><br>
+        ${okValue}<br>
+        ${nokValue}<br>
+      `;
+      errorSpin('Sauvegarde partiellement terminée', resultText, true, true);
+    },
+
+    handleHttpResponseError(message, response) {
+      console.error(message, response.status, response.statusText);
+      // Other actions to perform on HTTP error
     },
 
     handleError(message, error) {

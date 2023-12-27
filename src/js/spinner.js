@@ -39,5 +39,15 @@ const errorSpin = (title, text, outsideClick, confirmBtn) => {
     });
 }
 
-export { loadingSpin, successSpin, successSpinHtml, errorSpin };
+const errorSpinHtml = (title, html, outsideClick, confirmBtn) => {
+    Swal.fire({
+        title: title,
+        html: html,
+        icon: 'error',
+        allowOutsideClick: outsideClick,
+        showConfirmButton: confirmBtn
+    });
+}
+
+export { loadingSpin, successSpin, successSpinHtml, errorSpinHtml, errorSpin };
 
