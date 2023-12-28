@@ -1,6 +1,7 @@
 // src/controllers/converterController.js
 const Papa = require('papaparse');
 
+
 async function getConvertedCsv(req, res) {
   try {
     const { file } = req;
@@ -29,10 +30,12 @@ function convertToJSON(data) {
   const modelType = detectModelType(data);
 
   switch (modelType) {
-    case 'model1':
-      return convertModel1(data);
-    case 'model2':
-      return convertModel2(data);
+    case 'model_kucoin':
+      return convertModelKucoin(data);
+    case 'model_okx':
+      return convertModelOkx(data);
+    case 'model_binance':
+      return convertModelBinance(data);
     default:
       console.error('Modèle de fichier CSV non pris en charge');
       return [];
@@ -41,28 +44,57 @@ function convertToJSON(data) {
 
 function detectModelType(data) {
   console.log('data[0]', data[0]);
-  console.log('id',  data[0]['Order id']);
-  console.log('Instrument',  data[0]['Instrument']);
-  console.log('Time',  data[0]['Time']);
+  console.log('Date(UTC)', data[0]['Date(UTC)']);
+  console.log('Pair', data[0]['Pair']);
+  console.log('Side', data[0]['Side']);
+  console.log('Price', data[0]['Price']);
+  console.log('Executed', data[0]['Executed']);
+  console.log('Amount', data[0]['Amount']);
+  console.log('Fee', data[0]['Fee']);
   // Votre logique pour détecter le modèle de fichier CSV
   // Par exemple, vous pouvez vérifier la présence de certaines colonnes
   if (data[0] && data[0]['Order ID'] && data[0]['Order Time(UTC-03:00)']) {
-  console.log('model1');
-
-    return 'model1';
+    console.log('model_kucoin');
+    return 'model_kucoin';
   } else if (data[0] && data[0]['Order id'] && data[0]['Instrument'] && data[0]['Time']) {
-  console.log('model2');
-
-    return 'model2';
+    console.log('model_okx');
+    return 'model_okx';
+  } else if (data[0] && data[0]['Date(UTC)'] && data[0]['Pair'] && data[0]['Side'] && data[0]['Price'] && data[0]['Executed'] && data[0]['Amount'] && data[0]['Fee']) {
+    console.log('model_binance');
+    return 'model_binance';
   } else {
-  console.log('unknown');
-
+    console.log('unknown');
     return 'unknown';
   }
 }
 
-function convertModel1(data) {
-  console.log('convertModel1');
+function convertModelBinance(data) {
+  console.log('convertModelBinance');
+  return data.map((item) => {
+    if (item && item['Date(UTC)'] && item['Pair'] && item['Side'] && item['Price'] && item['Executed'] && item['Amount'] && item['Fee']) {
+      // Séparer la paire en alta et altb en utilisant les éléments de 'Executed'
+      const [executedAmount, executedAsset] = item['Executed'].match(/([0-9.]+)([A-Za-z]+)/).slice(1, 3);
+
+      return {
+        altA: executedAsset,
+        altB: item['Pair'].replace(executedAsset, ''),
+        date: item['Date(UTC)'],
+        pair: item['Pair'],
+        type: item['Side'].toLowerCase(),
+        price: parseFloat(item['Price']),
+        amount: parseFloat(executedAmount),
+        total: parseFloat(item['Amount'].replace(item['Fee'], '')),  // Vous devrez ajuster en fonction de votre logique
+        fee: parseFloat(item['Fee']),
+        feecoin: item['Fee'].match(/[A-Za-z]+/)[0],  // Récupérer la devise de frais
+        platform: 'binance',
+      };
+    }
+    return null;
+  }).filter(Boolean);
+}
+
+function convertModelKucoin(data) {
+  console.log('convertModelKucoin');
   return data.map((item) => {
     if (item && item.Symbol && item.Symbol.includes('-')) {
       return {
@@ -83,8 +115,8 @@ function convertModel1(data) {
   }).filter(Boolean);
 }
 
-function convertModel2(data) {
-  console.log('convertModel2');
+function convertModelOkx(data) {
+  console.log('convertModelOkx');
   return data.map((item) => {
     if (item['Order id'] && item['Instrument'] && item['Time'] && item.Instrument && item.Instrument.includes('-')) {
       return {
