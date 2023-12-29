@@ -36,6 +36,8 @@ function convertToJSON(data) {
       return convertModelOkx(data);
     case 'model_binance':
       return convertModelBinance(data);
+    case 'model_htx':
+      return convertModelHTX(data);
     default:
       console.error('Modèle de fichier CSV non pris en charge');
       return [];
@@ -43,17 +45,12 @@ function convertToJSON(data) {
 }
 
 function detectModelType(data) {
-  console.log('data[0]', data[0]);
-  console.log('Date(UTC)', data[0]['Date(UTC)']);
-  console.log('Pair', data[0]['Pair']);
-  console.log('Side', data[0]['Side']);
-  console.log('Price', data[0]['Price']);
-  console.log('Executed', data[0]['Executed']);
-  console.log('Amount', data[0]['Amount']);
-  console.log('Fee', data[0]['Fee']);
   // Votre logique pour détecter le modèle de fichier CSV
   // Par exemple, vous pouvez vérifier la présence de certaines colonnes
-  if (data[0] && data[0]['Order ID'] && data[0]['Order Time(UTC-03:00)']) {
+  if (data[0] && data[0]['uid'] && data[0]['symbol'] && data[0]['deal_type'] && data[0]['deal_time']) {
+    console.log('model_htx');
+    return 'model_htx';
+  } else if (data[0] && data[0]['Order ID'] && data[0]['Order Time(UTC-03:00)']) {
     console.log('model_kucoin');
     return 'model_kucoin';
   } else if (data[0] && data[0]['Order id'] && data[0]['Instrument'] && data[0]['Time']) {
@@ -66,6 +63,31 @@ function detectModelType(data) {
     console.log('unknown');
     return 'unknown';
   }
+}
+
+function convertModelHTX(data) {
+  console.log('convertModelHTX');
+  return data.map((item) => {
+    if (item && item['uid'] && item['symbol'] && item['deal_type'] && item['deal_time']) {
+      // Séparer la paire en alta et altb en utilisant les éléments de 'symbol'
+      const [altA, altB] = item['symbol'].split('/');
+
+      return {
+        altA: altA,
+        altB: altB,
+        date: item['deal_time'],
+        pair: item['symbol'],
+        type: item['deal_type'].toLowerCase(),
+        price: parseFloat(item['price']),
+        amount: parseFloat(item['volume']),
+        total: parseFloat(item['amount']),
+        fee: parseFloat(item['fee_amount']),
+        feecoin: item['fee_currency'].toUpperCase(),
+        platform: 'htx',
+      };
+    }
+    return null;
+  }).filter(Boolean);
 }
 
 function convertModelBinance(data) {
@@ -105,7 +127,7 @@ function convertModelKucoin(data) {
         type: item.Side.toLowerCase(),
         price: parseFloat(item['Avg. Filled Price']),
         amount: parseFloat(item['Filled Amount']),
-        total: parseFloat(item['Filled Volume(USDT)']),
+        total: parseFloat(item['Filled Volume (USDT)']),
         fee: parseFloat(item.Fee),
         feecoin: item['Fee Currency'],
         platform: 'kucoin',
