@@ -9,6 +9,7 @@
                 <th>Price</th>
                 <th>Amount</th>
                 <th>Total</th>
+                <th>Total (USDT)</th>
                 <th>Fee</th>
                 <th>Platform</th>
             </tr>
@@ -21,6 +22,7 @@
                 <td>{{ parseFloat(trade.price).toFixed(6) }}</td>
                 <td>{{ trade.amount }}</td>
                 <td>{{ trade.total }}</td>
+                <td>{{ trade.totalUSDT }}</td>
                 <td>{{ trade.fee }} {{ trade.feecoin }}</td>
                 <td>{{ trade.platform }}</td>
             </tr>

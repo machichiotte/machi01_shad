@@ -50,6 +50,7 @@ export default {
           'price': item['price'],
           'amount': item['amount'],
           'total': item['total'],
+          'totalUSDT': item['totalUSDT'],
           'fee': item['fee'],
           'feecoin': item['feecoin'],
           'platform': item['platform'],

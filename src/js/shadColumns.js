@@ -24,6 +24,7 @@ const tradesColumns = [
   { label: 'Price', field: 'price' },
   { label: 'Amount', field: 'amount' },
   { label: 'Total', field: 'total' },
+  { label: 'Total (USDT)', field: 'totalUSDT' },
   { label: 'Fee', field: 'fee' },
   { label: 'Feecoin', field: 'feecoin' },
   { label: 'Platform', field: 'platform' },

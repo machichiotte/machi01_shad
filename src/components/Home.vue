@@ -13,6 +13,7 @@
               <th>Price</th>
               <th>Amount</th>
               <th>Total</th>
+              <th>Total (USDT)</th>
               <th>Fee</th>
               <th>Fee Coin</th>
               <th>Platform</th>
@@ -54,6 +55,9 @@
                 <input type="text" v-model="trade.total" step="any" required style="font-size: 18px;">
               </td>
               <td>
+                <input type="text" v-model="trade.totalUSDT" step="any" required style="font-size: 18px;">
+              </td>
+              <td>
                 <input type="text" v-model="trade.fee" step="any" required style="font-size: 18px;">
               </td>
               <td>
@@ -65,7 +69,7 @@
                   <option value="" disabled>Select a platform</option>
                   <option value="binance">Binance</option>
                   <option value="kucoin">Kucoin</option>
-                  <option value="huobi">Huobi</option>
+                  <option value="htx">Htx</option>
                   <option value="okx">Okx</option>
                   <option value="gateio">Gateio</option>
                 </select>
@@ -75,7 +79,7 @@
                   <option value="" disabled>Select a platform</option>
                   <option value="binance">Binance</option>
                   <option value="kucoin">Kucoin</option>
-                  <option value="huobi">Huobi</option>
+                  <option value="htx">Htx</option>
                   <option value="okx">Okx</option>
                   <option value="gateio">Gateio</option>
                 </select>

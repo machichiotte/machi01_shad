@@ -48,9 +48,16 @@ function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
 }
 
 function getTotalAmountAndBuy(asset, exchangeId, trades) {
-    const filteredTrades = trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'buy' && trade.platform === exchangeId);
-    const totalBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
+    console.log('asset', asset);
+    console.log('exchangeId', exchangeId);
+    console.log('trades', trades);
+    const filteredTrades = trades.filter(trade => trade.altA === asset && trade.type === 'buy' && trade.platform === exchangeId);
+    const totalBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.totalUSDT), 0);
     const totalAmount = filteredTrades.reduce((total, trade) => total + parseFloat(trade.amount), 0);
+
+    console.log('totalAmount', totalAmount);
+    console.log('totalBuy', totalBuy);
+
     return {
         totalAmount,
         totalBuy: totalBuy.toFixed(2)
@@ -229,7 +236,6 @@ function getTradesHistory(cryptoSymbol, trades) {
     return trades.filter(trade => pairRegex.test(trade.pair));
 }
 
-
 function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     const { symbol, platform, balance } = item;
     const exchangeId = platform;
@@ -246,6 +252,7 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     } = getCmcValues(symbol, cmcData);
 
     const totalSell = getTotalSell(symbol, trades);
+
     const openBuyOrders = buyOrders.filter(order => order.symbol.includes(symbol)).length;
     const openSellOrders = sellOrders.filter(order => order.symbol.includes(symbol)).length;
 
@@ -255,7 +262,7 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
         totalAmount,
         totalBuy
     } = getTotalAmountAndBuy(symbol, exchangeId, trades);
-
+    
     const maxExposition = getMaxExposition(rank, Math.round(totalBuy));
     const recupShad = getRecupShad(totalBuy, totalSell, maxExposition);
     const currentPossession = getCurrentPossession(currentPrice, balance);
@@ -263,8 +270,6 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     const recupTpX = getRecupTpX(maxExposition, ratioShad);
     const totalShad = getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX);
     const recupTp1 = getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX);
-
-
 
     const { amountTp1, amountTp2, amountTp3, amountTp4, amountTp5, priceTp1, priceTp2, priceTp3, priceTp4, priceTp5 } = calculateAmountsAndPrices(recupTp1, balance, totalBuy, totalShad, recupTpX);
 
