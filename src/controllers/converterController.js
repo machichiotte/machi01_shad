@@ -92,7 +92,7 @@ async function getTotalUSDTFromAPI(dealTime, altB, total) {
 
 async function convertModelHTX(data) {
   console.log('convertModelHTX');
-  return await Promise.all(data.map(async (item) => {
+  const convertedData =  await Promise.all(data.map(async (item) => {
     if (item && item['uid'] && item['symbol'] && item['deal_type'] && item['deal_time']) {
       // Séparer la paire en alta et altb en utilisant les éléments de 'symbol'
       const [altA, altB] = item['symbol'].split('/');
@@ -116,23 +116,24 @@ async function convertModelHTX(data) {
       };
     }
     return null;
-  })).filter(Boolean);
-
+  }));
+  return convertedData.filter(Boolean);
 }
 
 async function convertModelBinance(data) {
   console.log('convertModelBinance');
-  return await Promise.all(data.map(async (item) => {
+  const convertedData = await Promise.all(data.map(async (item) => {
     if (item && item['Date(UTC)'] && item['Pair'] && item['Side'] && item['Price'] && item['Executed'] && item['Amount'] && item['Fee']) {
       // Séparer la paire en alta et altb en utilisant les éléments de 'Executed'
       const [executedAmount, executedAsset] = item['Executed'].match(/([0-9.]+)([A-Za-z]+)/).slice(1, 3);
       const date = item['Date(UTC)'];
       const total = parseFloat(item['Amount'].replace(item['Fee'], ''));
+      const altB = item['Pair'].replace(executedAsset, '');
       const totalUSDT = await getTotalUSDTFromAPI(date, altB, total);
 
       return {
         altA: executedAsset,
-        altB: item['Pair'].replace(executedAsset, ''),
+        altB: altB,
         date: date,
         pair: item['Pair'],
         type: item['Side'].toLowerCase(),
@@ -146,12 +147,13 @@ async function convertModelBinance(data) {
       };
     }
     return null;
-  })).filter(Boolean);
+  }));
+  return convertedData.filter(Boolean);
 }
 
 async function convertModelKucoin(data) {
   console.log('convertModelKucoin');
-  return await Promise.all(data.map(async (item) => {
+  const convertedData = await Promise.all(data.map(async (item) => {
     if (item && item.Symbol && item.Symbol.includes('-')) {
       return {
         altA: item.Symbol.split('-')[0],
@@ -169,21 +171,23 @@ async function convertModelKucoin(data) {
       };
     }
     return null;
-  })).filter(Boolean);
+  }));
+  return convertedData.filter(Boolean);
 }
 
 async function convertModelOkx(data) {
   console.log('convertModelOkx');
-  return await Promise.all(data.map(async (item) => {
+  const convertedData = await Promise.all(data.map(async (item) => {
     if (item['Order id'] && item['Instrument'] && item['Time'] && item.Instrument && item.Instrument.includes('-')) {
       const date = item['Time'];
       const total = parseFloat(item['Amount']);
-      const totalUSDT = await getTotalUSDTFromAPI(deal_time, altB, total);
+      const altB = item['Balance Unit'];
+      const totalUSDT = await getTotalUSDTFromAPI(date, altB, total);
 
       console.log()
       return {
         altA: item['Trading Unit'],
-        altA: item['Balance Unit'],
+        altB: altB,
         date: date,
         pair: item['Instrument'],
         type: item['Action'].toLowerCase(),
@@ -197,7 +201,8 @@ async function convertModelOkx(data) {
       };
     }
     return null;
-  })).filter(Boolean);
+  }));
+  return convertedData.filter(Boolean);
 }
 
 module.exports = { getConvertedCsv };
