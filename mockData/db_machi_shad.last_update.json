@@ -26,7 +26,7 @@
   "_id": {
     "$oid": "64930c45299550a380858eb0"
   },
-  "platform": "huobi",
+  "platform": "htx",
   "timestamp": {
     "trades": "",
     "openOrders": "",

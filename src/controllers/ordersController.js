@@ -63,7 +63,7 @@ async function cancelAllOrders(req, res) {
         switch (exchangeId) {
             case 'kucoin':
             case 'binance':
-            case 'huobi':
+            case 'htx':
             case 'gateio':
                 result = await exchange.cancelAllOrders(symbol);
                 break;
@@ -134,7 +134,7 @@ function getSymbolForExchange(exchangeId, asset) {
             return `${asset}-USDT`;
         case 'binance':
             return `${asset}USDT`;
-        case 'huobi':
+        case 'htx':
             return `${asset.toLowerCase()}usdt`;
         case 'gateio':
             return `${asset.toUpperCase()}_USDT`;

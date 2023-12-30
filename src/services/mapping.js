@@ -20,7 +20,7 @@ function mapBalance(platform, data) {
                     available: item.available,
                     platform: platform
                 }));
-        case 'huobi':
+        case 'htx':
             return Object.entries(data)
                 .filter(([key, value]) => key !== "info" && key !== "free" && key !== "used" && key !== "total" && value.total > 0)
                 .map(([key, value]) => ({
@@ -68,7 +68,7 @@ function mapTrades(platform, data) {
                     feeRate: item.fee.rate,
                     platform: platform
                 }));
-        case 'huobi':
+        case 'htx':
             return data
                 .map((item) => ({
                     symbol: item.symbol,

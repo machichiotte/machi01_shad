@@ -1814,7 +1814,7 @@
   "symbol": "IOI",
   "balance": "7.123483226266952168",
   "available": "7.123483226266952168",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1823,7 +1823,7 @@
   "symbol": "KCASH",
   "balance": "43482.24129644126119308",
   "available": "43482.24129644126119308",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1832,7 +1832,7 @@
   "symbol": "EGT",
   "balance": "0.00206876344085882",
   "available": "0.00206876344085882",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1841,7 +1841,7 @@
   "symbol": "SOFI",
   "balance": "119.78859512367491166",
   "available": "119.78859512367491166",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1850,7 +1850,7 @@
   "symbol": "AAC",
   "balance": "371.0916",
   "available": "371.0916",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1859,7 +1859,7 @@
   "symbol": "AAC",
   "balance": "5295.09",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1868,7 +1868,7 @@
   "symbol": "GOF",
   "balance": "131.472198665506669917",
   "available": "131.472198665506669917",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1877,7 +1877,7 @@
   "symbol": "EKT",
   "balance": "24409.9800804755944484",
   "available": "24409.9800804755944484",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1886,7 +1886,7 @@
   "symbol": "PAI",
   "balance": "22939.4601623981373372",
   "available": "22939.4601623981373372",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1895,7 +1895,7 @@
   "symbol": "REN",
   "balance": "1.879925150374248104",
   "available": "1.879925150374248104",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1904,7 +1904,7 @@
   "symbol": "REN",
   "balance": "13.09",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1913,7 +1913,7 @@
   "symbol": "ELA",
   "balance": "0.059644544749277097",
   "available": "0.059644544749277097",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1922,7 +1922,7 @@
   "symbol": "ELA",
   "balance": "1.7",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1931,7 +1931,7 @@
   "symbol": "CHR",
   "balance": "1.619502131866934061",
   "available": "1.619502131866934061",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1940,7 +1940,7 @@
   "symbol": "CHR",
   "balance": "11.33",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1949,7 +1949,7 @@
   "symbol": "SAND",
   "balance": "0.123346884820511636",
   "available": "0.123346884820511636",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1958,7 +1958,7 @@
   "symbol": "SAND",
   "balance": "1.8499",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1967,7 +1967,7 @@
   "symbol": "XRT",
   "balance": "0.275616",
   "available": "0.275616",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1976,7 +1976,7 @@
   "symbol": "XRT",
   "balance": "1.1136",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1985,7 +1985,7 @@
   "symbol": "ENS",
   "balance": "0.010891773454339985",
   "available": "0.010891773454339985",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -1994,7 +1994,7 @@
   "symbol": "ENS",
   "balance": "0.3372",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2003,7 +2003,7 @@
   "symbol": "XTM",
   "balance": "14.745421742367833113",
   "available": "14.745421742367833113",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2012,7 +2012,7 @@
   "symbol": "XTM",
   "balance": "1400.6482",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2021,7 +2021,7 @@
   "symbol": "CKB",
   "balance": "15.745110034322632582",
   "available": "15.745110034322632582",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2030,7 +2030,7 @@
   "symbol": "CKB",
   "balance": "487.99",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2039,7 +2039,7 @@
   "symbol": "FLOW",
   "balance": "0.11954858796030195",
   "available": "0.11954858796030195",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2048,7 +2048,7 @@
   "symbol": "FLOW",
   "balance": "0.8365",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2057,7 +2057,7 @@
   "symbol": "NAS",
   "balance": "0.000000009562575704",
   "available": "0.000000009562575704",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2066,7 +2066,7 @@
   "symbol": "VRA",
   "balance": "8.088452222625654586",
   "available": "8.088452222625654586",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2075,7 +2075,7 @@
   "symbol": "VRA",
   "balance": "250.7424",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2084,7 +2084,7 @@
   "symbol": "TNB",
   "balance": "5885.97894555974094704",
   "available": "5885.97894555974094704",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2093,7 +2093,7 @@
   "symbol": "TNB",
   "balance": "21742.35",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2102,7 +2102,7 @@
   "symbol": "CMT",
   "balance": "0.000000003566708318",
   "available": "0.000000003566708318",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2111,7 +2111,7 @@
   "symbol": "RLC",
   "balance": "2.797085201793721968",
   "available": "2.797085201793721968",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2120,7 +2120,7 @@
   "symbol": "XYO",
   "balance": "29.346128789075724748",
   "available": "29.346128789075724748",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2129,7 +2129,7 @@
   "symbol": "XYO",
   "balance": "820.3034",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2138,7 +2138,7 @@
   "symbol": "TRB",
   "balance": "0.008887433982881078",
   "available": "0.008887433982881078",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2147,7 +2147,7 @@
   "symbol": "TRB",
   "balance": "0.2751",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2156,7 +2156,7 @@
   "symbol": "TRIBE",
   "balance": "0.314383870967741855",
   "available": "0.314383870967741855",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2165,7 +2165,7 @@
   "symbol": "TRIBE",
   "balance": "9.7461",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2174,7 +2174,7 @@
   "symbol": "NGL",
   "balance": "2.351052385386568152",
   "available": "2.351052385386568152",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2183,7 +2183,7 @@
   "symbol": "NGL",
   "balance": "91.7299",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2192,7 +2192,7 @@
   "symbol": "CRE",
   "balance": "171.1758052434456841",
   "available": "171.1758052434456841",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2201,7 +2201,7 @@
   "symbol": "CRE",
   "balance": "5669.18",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2210,7 +2210,7 @@
   "symbol": "ANC",
   "balance": "0.000000388366339294",
   "available": "0.000000388366339294",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2219,7 +2219,7 @@
   "symbol": "CRU",
   "balance": "2.94847172560880626",
   "available": "2.94847172560880626",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2228,7 +2228,7 @@
   "symbol": "CRU",
   "balance": "56.0197",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2237,7 +2237,7 @@
   "symbol": "LAMB",
   "balance": "7.778887522336570636",
   "available": "7.778887522336570636",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2246,7 +2246,7 @@
   "symbol": "LAMB",
   "balance": "3316.0375",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2255,7 +2255,7 @@
   "symbol": "APN",
   "balance": "0.000000008832907668",
   "available": "0.000000008832907668",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2264,7 +2264,7 @@
   "symbol": "YAM",
   "balance": "78.494581039537485995",
   "available": "78.494581039537485995",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2273,7 +2273,7 @@
   "symbol": "NEST",
   "balance": "61.6192436974789895",
   "available": "61.6192436974789895",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2282,7 +2282,7 @@
   "symbol": "NEST",
   "balance": "3111.38",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2291,7 +2291,7 @@
   "symbol": "AST",
   "balance": "143.712",
   "available": "143.712",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2300,7 +2300,7 @@
   "symbol": "ATP",
   "balance": "15018.87206",
   "available": "15018.87206",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2309,7 +2309,7 @@
   "symbol": "VIDY",
   "balance": "109455.74633204633195",
   "available": "109455.74633204633195",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2318,7 +2318,7 @@
   "symbol": "PERP",
   "balance": "0.123164172568976334",
   "available": "0.123164172568976334",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2327,7 +2327,7 @@
   "symbol": "PERP",
   "balance": "3.8183",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2336,7 +2336,7 @@
   "symbol": "YEE",
   "balance": "183882.2628292097043076",
   "available": "183882.2628292097043076",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2345,7 +2345,7 @@
   "symbol": "ERN",
   "balance": "0.037662054345731354",
   "available": "0.037662054345731354",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2354,7 +2354,7 @@
   "symbol": "ERN",
   "balance": "1.1644",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2363,7 +2363,7 @@
   "symbol": "HOTCROSS",
   "balance": "3528.438784313725490145",
   "available": "3528.438784313725490145",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2372,7 +2372,7 @@
   "symbol": "VALUE",
   "balance": "9.31647491432685332",
   "available": "9.31647491432685332",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2381,7 +2381,7 @@
   "symbol": "ALICE",
   "balance": "0.052190400219212424",
   "available": "0.052190400219212424",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2390,7 +2390,7 @@
   "symbol": "ALICE",
   "balance": "1.6136",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2399,7 +2399,7 @@
   "symbol": "YGG",
   "balance": "0.272492485656912422",
   "available": "0.272492485656912422",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2408,7 +2408,7 @@
   "symbol": "YGG",
   "balance": "8.4435",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2417,7 +2417,7 @@
   "symbol": "EPIK",
   "balance": "378.80993785507542445",
   "available": "378.80993785507542445",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2426,7 +2426,7 @@
   "symbol": "EPIK",
   "balance": "1136.4295",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2435,7 +2435,7 @@
   "symbol": "LOL",
   "balance": "1633980.392156862737388",
   "available": "1633980.392156862737388",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2444,7 +2444,7 @@
   "symbol": "LPT",
   "balance": "0.006647776398038431",
   "available": "0.006647776398038431",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2453,7 +2453,7 @@
   "symbol": "LPT",
   "balance": "0.2034",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2462,7 +2462,7 @@
   "symbol": "DAC",
   "balance": "0.00411289345630142",
   "available": "0.00411289345630142",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2471,7 +2471,7 @@
   "symbol": "PYR",
   "balance": "0.334039947754079265",
   "available": "0.334039947754079265",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2480,7 +2480,7 @@
   "symbol": "PYR",
   "balance": "1.0022",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2489,7 +2489,7 @@
   "symbol": "HIT",
   "balance": "2310963.66704708820838",
   "available": "2310963.66704708820838",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2498,7 +2498,7 @@
   "symbol": "USDT",
   "balance": "633.614889695164759135",
   "available": "633.614889695164759135",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2507,7 +2507,7 @@
   "symbol": "USDT",
   "balance": "0.000000000000000097",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2516,7 +2516,7 @@
   "symbol": "NSURE",
   "balance": "205.714549816519174862",
   "available": "205.714549816519174862",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2525,7 +2525,7 @@
   "symbol": "NSURE",
   "balance": "1233.7662",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2534,7 +2534,7 @@
   "symbol": "MOVR",
   "balance": "0.014689909080335692",
   "available": "0.014689909080335692",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2543,7 +2543,7 @@
   "symbol": "MOVR",
   "balance": "1.3745",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2552,7 +2552,7 @@
   "symbol": "WNXM",
   "balance": "0.074914248810602386",
   "available": "0.074914248810602386",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2561,7 +2561,7 @@
   "symbol": "WNXM",
   "balance": "2.3571",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2570,7 +2570,7 @@
   "symbol": "HPT",
   "balance": "0.0000386057253386",
   "available": "0.0000386057253386",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2579,7 +2579,7 @@
   "symbol": "DHT",
   "balance": "42.842694595079594224",
   "available": "42.842694595079594224",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2588,7 +2588,7 @@
   "symbol": "WOO",
   "balance": "4.824554647968470395",
   "available": "4.824554647968470395",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2597,7 +2597,7 @@
   "symbol": "WOO",
   "balance": "14.49",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2606,7 +2606,7 @@
   "symbol": "EM",
   "balance": "77.3377935943059898",
   "available": "77.3377935943059898",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2615,7 +2615,7 @@
   "symbol": "EM",
   "balance": "2397.25",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2624,7 +2624,7 @@
   "symbol": "DKA",
   "balance": "13.973905584145573182",
   "available": "13.973905584145573182",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2633,7 +2633,7 @@
   "symbol": "DKA",
   "balance": "462.6",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2642,7 +2642,7 @@
   "symbol": "FOR",
   "balance": "26.17",
   "available": "26.17",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2651,7 +2651,7 @@
   "symbol": "FOR",
   "balance": "811.31",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2660,7 +2660,7 @@
   "symbol": "HBC",
   "balance": "27.073937880126985921",
   "available": "27.073937880126985921",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2669,7 +2669,7 @@
   "symbol": "HT",
   "balance": "0.3282474",
   "available": "0.3282474",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2678,7 +2678,7 @@
   "symbol": "HT",
   "balance": "10.177",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2687,7 +2687,7 @@
   "symbol": "BIX",
   "balance": "4.569726692996639652",
   "available": "4.569726692996639652",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2696,7 +2696,7 @@
   "symbol": "BIX",
   "balance": "868.0635",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2705,7 +2705,7 @@
   "symbol": "OCN",
   "balance": "0.0000000049299648",
   "available": "0.0000000049299648",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2714,7 +2714,7 @@
   "symbol": "FSN",
   "balance": "0.972018480199785924",
   "available": "0.972018480199785924",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2723,7 +2723,7 @@
   "symbol": "FSN",
   "balance": "34.5613",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2732,7 +2732,7 @@
   "symbol": "SMT",
   "balance": "69.993",
   "available": "69.993",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2741,7 +2741,7 @@
   "symbol": "SMT",
   "balance": "1249.875",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2750,7 +2750,7 @@
   "symbol": "SNT",
   "balance": "46.90495446261055338",
   "available": "46.90495446261055338",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2759,7 +2759,7 @@
   "symbol": "SNT",
   "balance": "1470.4199",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2768,7 +2768,7 @@
   "symbol": "MDS",
   "balance": "0.0026410835213886",
   "available": "0.0026410835213886",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2777,7 +2777,7 @@
   "symbol": "NULS",
   "balance": "1.465505432860373454",
   "available": "1.465505432860373454",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2786,7 +2786,7 @@
   "symbol": "NULS",
   "balance": "48.06",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2795,7 +2795,7 @@
   "symbol": "MDX",
   "balance": "18.787436283338985891",
   "available": "18.787436283338985891",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2804,7 +2804,7 @@
   "symbol": "MDX",
   "balance": "510.06",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2813,7 +2813,7 @@
   "symbol": "DTA",
   "balance": "2717.338211429535932",
   "available": "2717.338211429535932",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2822,7 +2822,7 @@
   "symbol": "DTA",
   "balance": "86778.2432",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2831,7 +2831,7 @@
   "symbol": "UUU",
   "balance": "3300.205474945533656",
   "available": "3300.205474945533656",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2840,7 +2840,7 @@
   "symbol": "UUU",
   "balance": "1052247.2",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2849,7 +2849,7 @@
   "symbol": "STN",
   "balance": "64.572757582263185283",
   "available": "64.572757582263185283",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2858,7 +2858,7 @@
   "symbol": "NODE",
   "balance": "45729.518571428571286",
   "available": "45729.518571428571286",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2867,7 +2867,7 @@
   "symbol": "BSV",
   "balance": "0.0150636",
   "available": "0.0150636",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2876,7 +2876,7 @@
   "symbol": "BSV",
   "balance": "0.5021",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2885,7 +2885,7 @@
   "symbol": "MIR",
   "balance": "34.3655991319282445",
   "available": "34.3655991319282445",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2894,7 +2894,7 @@
   "symbol": "PEOPLE",
   "balance": "7.271211181572320938",
   "available": "7.271211181572320938",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2903,7 +2903,7 @@
   "symbol": "PEOPLE",
   "balance": "109.0675",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2912,7 +2912,7 @@
   "symbol": "RUFF",
   "balance": "11613.3245287688139421",
   "available": "11613.3245287688139421",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2921,7 +2921,7 @@
   "symbol": "RUFF",
   "balance": "546161.2642",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2930,7 +2930,7 @@
   "symbol": "WICC",
   "balance": "3.4512",
   "available": "3.4512",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2939,7 +2939,7 @@
   "symbol": "WICC",
   "balance": "146.2488",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2948,7 +2948,7 @@
   "symbol": "ZEN",
   "balance": "0.060371061911440521",
   "available": "0.060371061911440521",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2957,7 +2957,7 @@
   "symbol": "ZEN",
   "balance": "1.8668",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2966,7 +2966,7 @@
   "symbol": "JASMY",
   "balance": "7.522753572290027694",
   "available": "7.522753572290027694",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2975,7 +2975,7 @@
   "symbol": "JASMY",
   "balance": "233.2028",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2984,7 +2984,7 @@
   "symbol": "MASK",
   "balance": "0.040515795357059294",
   "available": "0.040515795357059294",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -2993,7 +2993,7 @@
   "symbol": "MASK",
   "balance": "1.2567",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3002,7 +3002,7 @@
   "symbol": "INSUR",
   "balance": "0.984118673110257573",
   "available": "0.984118673110257573",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3011,7 +3011,7 @@
   "symbol": "INSUR",
   "balance": "72.1611",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3020,7 +3020,7 @@
   "symbol": "PUSH",
   "balance": "0.819346606203518951",
   "available": "0.819346606203518951",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3029,7 +3029,7 @@
   "symbol": "PUSH",
   "balance": "12.2883",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3038,7 +3038,7 @@
   "symbol": "ZKS",
   "balance": "10.23302518765637983",
   "available": "10.23302518765637983",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3047,7 +3047,7 @@
   "symbol": "ZKS",
   "balance": "644.9752",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3056,7 +3056,7 @@
   "symbol": "POLC",
   "balance": "0.898806916426512936",
   "available": "0.898806916426512936",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3065,7 +3065,7 @@
   "symbol": "POLC",
   "balance": "27.862",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3074,7 +3074,7 @@
   "symbol": "SEELE",
   "balance": "1060.66068394645941266",
   "available": "1060.66068394645941266",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3083,7 +3083,7 @@
   "symbol": "COTI",
   "balance": "0.756608863198458529",
   "available": "0.756608863198458529",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3092,7 +3092,7 @@
   "symbol": "COTI",
   "balance": "23.28",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3101,7 +3101,7 @@
   "symbol": "POLS",
   "balance": "62.705129773363236428",
   "available": "62.705129773363236428",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3110,7 +3110,7 @@
   "symbol": "POLS",
   "balance": "4.1697",
   "available": null,
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {
@@ -3119,7 +3119,7 @@
   "symbol": "WILD",
   "balance": "14.543804768951412787",
   "available": "14.543804768951412787",
-  "platform": "huobi"
+  "platform": "htx"
 },
 {
   "_id": {

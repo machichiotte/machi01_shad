@@ -44,8 +44,8 @@ async function updateTrades(req, res) {
                     }
                 }
                 break;
-            case 'huobi':
-                console.log('inside huobi');
+            case 'htx':
+                console.log('inside htx');
 
                 //const types = 'buy-market,sell-market,buy-limit,sell-limit'; // Les types d'ordre à inclure dans la recherche, séparés par des virgules
                 const currentTime = Date.now();

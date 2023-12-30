@@ -58,7 +58,7 @@ function getSymbolForExchange(exchangeId, asset) {
     case 'binance':
       symbol = `${asset}USDT`;
       break;
-    case 'huobi':
+    case 'htx':
       symbol = `${asset.toLowerCase()}usdt`;
       break;
     case 'gateio':

@@ -2800,7 +2800,7 @@
   "total": "100.0126",
   "fee": "1.4210854715202E-14",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -2834,7 +2834,7 @@
   "total": "100.035",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -5604,7 +5604,7 @@
   "total": "50",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -5638,7 +5638,7 @@
   "total": "50",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -5876,7 +5876,7 @@
   "total": "200",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -6199,7 +6199,7 @@
   "total": "50.0055",
   "fee": "31.8",
   "feecoin": "TNB",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -6233,7 +6233,7 @@
   "total": "49.89734",
   "fee": "10.94",
   "feecoin": "AAC",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -6267,7 +6267,7 @@
   "total": "49.70322",
   "fee": "2.52",
   "feecoin": "FOR",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -6352,7 +6352,7 @@
   "total": "49.70322",
   "fee": "0.09940644",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -6675,7 +6675,7 @@
   "total": "40",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -6709,7 +6709,7 @@
   "total": "40",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -6726,7 +6726,7 @@
   "total": "40",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -6743,7 +6743,7 @@
   "total": "40",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -6760,7 +6760,7 @@
   "total": "40",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -6794,7 +6794,7 @@
   "total": "40",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -6828,7 +6828,7 @@
   "total": "40",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -7254,7 +7254,7 @@
   "fee": "90.84880034",
   "feecoin": "OCN",
   "platform": "gateio",
-  "explatform": "ex huobi"
+  "explatform": "ex htx"
 },
 {
   "_id": {
@@ -7338,7 +7338,7 @@
   "total": "49.99999999",
   "fee": "154.54114814",
   "feecoin": "UUU",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8562,7 +8562,7 @@
   "total": "24.9978",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8579,7 +8579,7 @@
   "total": "24.975",
   "fee": "11.1",
   "feecoin": "EM",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8630,7 +8630,7 @@
   "total": "24.99",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8664,7 +8664,7 @@
   "total": "24.615",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8681,7 +8681,7 @@
   "total": "24.75",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8715,7 +8715,7 @@
   "total": "24.98925",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8732,7 +8732,7 @@
   "total": "24.9975",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8749,7 +8749,7 @@
   "total": "25.0008",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8766,7 +8766,7 @@
   "total": "24.9",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8783,7 +8783,7 @@
   "total": "24.9",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8800,7 +8800,7 @@
   "total": "24.9864",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -8817,7 +8817,7 @@
   "total": "24.955",
   "fee": "0.062",
   "feecoin": "ZKS",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -9293,7 +9293,7 @@
   "total": "59.9981043380907",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -9310,7 +9310,7 @@
   "total": "59.9993792871116",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -9327,7 +9327,7 @@
   "total": "74.994289185144",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -9344,7 +9344,7 @@
   "total": "199.9998",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -9378,7 +9378,7 @@
   "total": "59.9959288135077",
   "fee": "0",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -9565,7 +9565,7 @@
   "total": "74.99999999",
   "fee": "0.30848798",
   "feecoin": "NULS",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -9582,7 +9582,7 @@
   "total": "49.994594",
   "fee": "0.09998918",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -9616,7 +9616,7 @@
   "total": "74.99999999",
   "fee": "482.63434831",
   "feecoin": "DTA",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -10109,7 +10109,7 @@
   "total": "49.996956",
   "fee": "0.09999391",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -10279,7 +10279,7 @@
   "total": "14.99997724",
   "fee": "0.02999995",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -10466,7 +10466,7 @@
   "total": "49.99778491",
   "fee": "0.09999556",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -10568,7 +10568,7 @@
   "total": "49.98715999",
   "fee": "0.09997431",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -10976,7 +10976,7 @@
   "total": "49.99959255",
   "fee": "0.09999918",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -11214,7 +11214,7 @@
   "total": "49.99934248",
   "fee": "0.09999868",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -12132,7 +12132,7 @@
   "total": "98.36238",
   "fee": "0.19672476",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -12183,7 +12183,7 @@
   "total": "49.99999999",
   "fee": "0.00318421",
   "feecoin": "CRU",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -12727,7 +12727,7 @@
   "total": "25.111676",
   "fee": "0.05022335",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -12880,7 +12880,7 @@
   "total": "49.99999999",
   "fee": "39.16514755",
   "feecoin": "TNB",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -12897,7 +12897,7 @@
   "total": "24.99994",
   "fee": "7.14284",
   "feecoin": "AAC",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -13628,7 +13628,7 @@
   "total": "24.99967368",
   "fee": "0.04999934",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -13900,7 +13900,7 @@
   "total": "40.00004331",
   "fee": "0.08000008",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -14002,7 +14002,7 @@
   "total": "99.502777",
   "fee": "0.19900555",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -14461,7 +14461,7 @@
   "total": "74.99999999",
   "fee": "64.79188513",
   "feecoin": "SEELE",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -14716,7 +14716,7 @@
   "total": "99.99985",
   "fee": "0.0210526",
   "feecoin": "HT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -15192,7 +15192,7 @@
   "total": "49.999968",
   "fee": "1438.848",
   "feecoin": "DTA",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -15277,7 +15277,7 @@
   "total": "74.99999999",
   "fee": "2.51273117",
   "feecoin": "SNT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -15311,7 +15311,7 @@
   "total": "59.99999999",
   "fee": "2.61762973",
   "feecoin": "BIX",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -15396,7 +15396,7 @@
   "total": "25.0958392",
   "fee": "0.05019167",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -15447,7 +15447,7 @@
   "total": "75.003164",
   "fee": "0.15000632",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -15532,7 +15532,7 @@
   "total": "74.99999999",
   "fee": "2.04359673",
   "feecoin": "NSURE",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -15719,7 +15719,7 @@
   "total": "74.9916716",
   "fee": "0.14998334",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -15787,7 +15787,7 @@
   "total": "75.4199999",
   "fee": "2.32910216",
   "feecoin": "NSURE",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -15872,7 +15872,7 @@
   "total": "49.99987026",
   "fee": "0.09999974",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -16280,7 +16280,7 @@
   "total": "49.99999999",
   "fee": "89.04719501",
   "feecoin": "RUFF",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -16314,7 +16314,7 @@
   "total": "59.99999999",
   "fee": "0.00365811",
   "feecoin": "WNXM",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -16365,7 +16365,7 @@
   "total": "74.99999999",
   "fee": "88.96797153",
   "feecoin": "EM",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -16382,7 +16382,7 @@
   "total": "74.99999999",
   "fee": "0.24383683",
   "feecoin": "INSUR",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -16399,7 +16399,7 @@
   "total": "99.99999999",
   "fee": "89.93797038",
   "feecoin": "KCASH",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -16433,7 +16433,7 @@
   "total": "74.99999999",
   "fee": "0.88425469",
   "feecoin": "SOFI",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -16450,7 +16450,7 @@
   "total": "74.99999999",
   "fee": "1.25104253",
   "feecoin": "ZKS",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -16518,7 +16518,7 @@
   "total": "149.99999999",
   "fee": "0.98814229",
   "feecoin": "MDX",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -16620,7 +16620,7 @@
   "total": "74.99243752",
   "fee": "0.14998487",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17130,7 +17130,7 @@
   "total": "49.99661138",
   "fee": "0.09999322",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17147,7 +17147,7 @@
   "total": "49.99886336",
   "fee": "0.09999772",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17215,7 +17215,7 @@
   "total": "49.99999999",
   "fee": "1960.78431372",
   "feecoin": "UUU",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17368,7 +17368,7 @@
   "total": "4.99999999",
   "fee": "0.00352634",
   "feecoin": "ELA",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17385,7 +17385,7 @@
   "total": "4.99999999",
   "fee": "0.18240519",
   "feecoin": "EPIK",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17402,7 +17402,7 @@
   "total": "4.99999999",
   "fee": "0.0490196",
   "feecoin": "HOTCROSS",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17419,7 +17419,7 @@
   "total": "4.99999999",
   "fee": "0.01424704",
   "feecoin": "NGL",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17436,7 +17436,7 @@
   "total": "4.99999999",
   "fee": "0.05763688",
   "feecoin": "POLC",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17453,7 +17453,7 @@
   "total": "4.99999999",
   "fee": "0.00906947",
   "feecoin": "PUSH",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17470,7 +17470,7 @@
   "total": "4.99999999",
   "fee": "0.5186991",
   "feecoin": "VRA",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17487,7 +17487,7 @@
   "total": "4.99999999",
   "fee": "0.07446016",
   "feecoin": "XTM",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -17504,7 +17504,7 @@
   "total": "4.99999999",
   "fee": "0.56427039",
   "feecoin": "XYO",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18252,7 +18252,7 @@
   "total": "4.99999999",
   "fee": "0.0016219",
   "feecoin": "ALICE",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18422,7 +18422,7 @@
   "total": "4.99999999",
   "fee": "0.00171635",
   "feecoin": "ALICE",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18456,7 +18456,7 @@
   "total": "4.99999999",
   "fee": "0.0259509",
   "feecoin": "CHR",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18473,7 +18473,7 @@
   "total": "4.99999999",
   "fee": "1.00948919",
   "feecoin": "CKB",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18490,7 +18490,7 @@
   "total": "4.99999999",
   "fee": "0.04816955",
   "feecoin": "COTI",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18507,7 +18507,7 @@
   "total": "4.99999999",
   "fee": "0.00069757",
   "feecoin": "ENS",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18524,7 +18524,7 @@
   "total": "4.99999999",
   "fee": "0.00240894",
   "feecoin": "ERN",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18541,7 +18541,7 @@
   "total": "4.99999999",
   "fee": "0.00191592",
   "feecoin": "FLOW",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18558,7 +18558,7 @@
   "total": "4.99999999",
   "fee": "0.48241593",
   "feecoin": "JASMY",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18575,7 +18575,7 @@
   "total": "4.99999999",
   "fee": "0.00042093",
   "feecoin": "LPT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18592,7 +18592,7 @@
   "total": "4.99999999",
   "fee": "0.00259963",
   "feecoin": "MASK",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18609,7 +18609,7 @@
   "total": "4.99999999",
   "fee": "0.00021454",
   "feecoin": "MOVR",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18626,7 +18626,7 @@
   "total": "4.99999999",
   "fee": "0.2331437",
   "feecoin": "PEOPLE",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18643,7 +18643,7 @@
   "total": "4.99999999",
   "fee": "0.00272086",
   "feecoin": "PERP",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18660,7 +18660,7 @@
   "total": "4.99999999",
   "fee": "0.00862589",
   "feecoin": "POLS",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18677,7 +18677,7 @@
   "total": "4.99999999",
   "fee": "0.00097882",
   "feecoin": "PYR",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18694,7 +18694,7 @@
   "total": "4.99999999",
   "fee": "0.02999985",
   "feecoin": "REN",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18711,7 +18711,7 @@
   "total": "4.99999999",
   "fee": "0.00560538",
   "feecoin": "RLC",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18728,7 +18728,7 @@
   "total": "4.99999999",
   "fee": "0.0039544",
   "feecoin": "SAND",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18745,7 +18745,7 @@
   "total": "4.99999999",
   "fee": "0.00056911",
   "feecoin": "TRB",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18762,7 +18762,7 @@
   "total": "4.99999999",
   "fee": "0.02016129",
   "feecoin": "TRIBE",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18779,7 +18779,7 @@
   "total": "4.99999999",
   "fee": "0.02428245",
   "feecoin": "WOO",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18796,7 +18796,7 @@
   "total": "4.99999999",
   "fee": "0.00582818",
   "feecoin": "YGG",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18813,7 +18813,7 @@
   "total": "4.99999999",
   "fee": "0.00030436",
   "feecoin": "ZEN",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18831,7 +18831,7 @@
   "fee": "65817.14547324",
   "feecoin": "OCN",
   "platform": "gateio",
-  "explatform": "ex huobi"
+  "explatform": "ex htx"
 },
 {
   "_id": {
@@ -18881,7 +18881,7 @@
   "total": "4.99999999",
   "fee": "0.00517785",
   "feecoin": "PERP",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -18949,7 +18949,7 @@
   "total": "4.99999999",
   "fee": "0.01163873",
   "feecoin": "YGG",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -19153,7 +19153,7 @@
   "total": "99.623316",
   "fee": "0.19924663",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -19204,7 +19204,7 @@
   "total": "21.23121011",
   "fee": "0.04246242",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -19289,7 +19289,7 @@
   "total": "20.00069742",
   "fee": "0.04000139",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -19306,7 +19306,7 @@
   "total": "61.2554395",
   "fee": "0.12251087",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": "swap GTO : 1gto = 1gft"
 },
 {
@@ -19357,7 +19357,7 @@
   "total": "10.00046464",
   "fee": "0.02000092",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -19459,7 +19459,7 @@
   "total": "49.99999999",
   "fee": "4.31294746",
   "feecoin": "BIX",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -19476,7 +19476,7 @@
   "total": "49.94933152",
   "fee": "0.09989862",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -19510,7 +19510,7 @@
   "total": "5.00421217",
   "fee": "0.01000842",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -19612,7 +19612,7 @@
   "total": "9.17781045",
   "fee": "0.01468449",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -19731,7 +19731,7 @@
   "total": "10.00043671",
   "fee": "0.01600069",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -19748,7 +19748,7 @@
   "total": "49.999944",
   "fee": "0.09195392",
   "feecoin": "CRU",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -19782,7 +19782,7 @@
   "total": "10.00083825",
   "fee": "0.01600134",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -20020,7 +20020,7 @@
   "total": "84.99997039",
   "fee": "0.13599995",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -20105,7 +20105,7 @@
   "total": "1.31528388",
   "fee": "0.29850416",
   "feecoin": "XYO",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -20122,7 +20122,7 @@
   "total": "25.00058424",
   "fee": "0.04000093",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -20139,7 +20139,7 @@
   "total": "3.66984648",
   "fee": "0.83287296",
   "feecoin": "XYO",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -20224,7 +20224,7 @@
   "total": "9.99998696",
   "fee": "0.01999997",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -20479,7 +20479,7 @@
   "total": "19.998",
   "fee": "0.039996",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -20632,7 +20632,7 @@
   "total": "10.0027851",
   "fee": "0.02000557",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -21193,7 +21193,7 @@
   "total": "10.0022",
   "fee": "2.6",
   "feecoin": "EPIK",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -21210,7 +21210,7 @@
   "total": "19.99999999",
   "fee": "0.17429193",
   "feecoin": "NGL",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -21227,7 +21227,7 @@
   "total": "24.9961",
   "fee": "2.762",
   "feecoin": "XTM",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -21244,7 +21244,7 @@
   "total": "19.99999999",
   "fee": "0.0035577",
   "feecoin": "ZEN",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -21261,7 +21261,7 @@
   "total": "11.18125775",
   "fee": "0.02236251",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -21278,7 +21278,7 @@
   "total": "99.9999999",
   "fee": "1143.94988161",
   "feecoin": "RUFF",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -21669,7 +21669,7 @@
   "total": "9.99999999",
   "fee": "79.05138339",
   "feecoin": "TNB",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -21737,7 +21737,7 @@
   "total": "9.99999999",
   "fee": "0.0025694",
   "feecoin": "MOVR",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22213,7 +22213,7 @@
   "total": "44.9997264",
   "fee": "0.0257952",
   "feecoin": "PYR",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22230,7 +22230,7 @@
   "total": "1.971812",
   "fee": "0.0111088",
   "feecoin": "PUSH",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22247,7 +22247,7 @@
   "total": "12.183955",
   "fee": "0.068642",
   "feecoin": "PUSH",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22264,7 +22264,7 @@
   "total": "15.265",
   "fee": "0.086",
   "feecoin": "PUSH",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22281,7 +22281,7 @@
   "total": "15.579033",
   "fee": "0.0877692",
   "feecoin": "PUSH",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22298,7 +22298,7 @@
   "total": "44.99999999",
   "fee": "0.36280082",
   "feecoin": "WOO",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22315,7 +22315,7 @@
   "total": "0.9862566",
   "fee": "0.00197251",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22332,7 +22332,7 @@
   "total": "44.0139658",
   "fee": "0.08802793",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22417,7 +22417,7 @@
   "total": "44.99982",
   "fee": "0.08999964",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22468,7 +22468,7 @@
   "total": "0.61413994",
   "fee": "0.3093904",
   "feecoin": "HOTCROSS",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22485,7 +22485,7 @@
   "total": "35.00000029",
   "fee": "12.4003544",
   "feecoin": "EPIK",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22502,7 +22502,7 @@
   "total": "10.99501064",
   "fee": "0.02199002",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22519,7 +22519,7 @@
   "total": "10.17532279",
   "fee": "5.1261072",
   "feecoin": "HOTCROSS",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22536,7 +22536,7 @@
   "total": "3.14920726",
   "fee": "1.5865024",
   "feecoin": "HOTCROSS",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22825,7 +22825,7 @@
   "total": "6.07652208",
   "fee": "0.01215304",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22842,7 +22842,7 @@
   "total": "31.17645288",
   "fee": "0.0623529",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22859,7 +22859,7 @@
   "total": "7.74674712",
   "fee": "0.01549349",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22876,7 +22876,7 @@
   "total": "0.00003816",
   "fee": "0.00000007",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22893,7 +22893,7 @@
   "total": "0.00003816",
   "fee": "0.00000007",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22910,7 +22910,7 @@
   "total": "0.00003816",
   "fee": "0.00000007",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22927,7 +22927,7 @@
   "total": "0.00003816",
   "fee": "0.00000007",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22944,7 +22944,7 @@
   "total": "0.00003816",
   "fee": "0.00000007",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22961,7 +22961,7 @@
   "total": "0.00003816",
   "fee": "0.00000007",
   "feecoin": "USDT",
-  "platform": "huobi",
+  "platform": "htx",
   "explatform": ""
 },
 {
@@ -22978,5 +22978,5 @@
   "total": "0.00003816",
   "fee": "0.00000007",
   "feecoin": "USDT",
-  "platform": "huobi"
+  "platform": "htx"
 }]
