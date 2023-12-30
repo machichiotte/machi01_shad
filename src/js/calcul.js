@@ -221,9 +221,14 @@ function getDataETH(cmcData) {
     return cmcData.find(item => item.symbol === 'ETH');
 }
 
-function getTradesHistory(asset, trades) {
-    return trades.filter(trade => trade.pair === `${asset}/USDT`);
+function getTradesHistory(cryptoSymbol, trades) {
+    const supportedSymbols = ['USDT', 'BUSD', 'USDC', 'BTC', 'ETH'];
+    const symbolRegex = supportedSymbols.map(symbol => `${symbol}[-/]?`).join('|');
+    const pairRegex = new RegExp(`^${cryptoSymbol}(${symbolRegex})$`, 'i');
+
+    return trades.filter(trade => pairRegex.test(trade.pair));
 }
+
 
 function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     const { symbol, platform, balance } = item;

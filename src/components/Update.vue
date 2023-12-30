@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       cryptoData: null,
-      exchangeIds: ['binance', 'kucoin', 'huobi', 'okx', 'gateio'],
+      exchangeIds: ['binance', 'kucoin', 'htx', 'okx', 'gateio'],
     };
   },
   methods: {

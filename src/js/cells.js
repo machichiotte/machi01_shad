@@ -57,7 +57,7 @@ function getPlatformColors(exchangeId) {
         backgroundColor: '#23AF91',
         textColor: 'white'
       };
-    case 'huobi':
+    case 'htx':
       return {
         backgroundColor: '#2D8CF0',
         textColor: 'white'
