@@ -48,15 +48,9 @@ function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
 }
 
 function getTotalAmountAndBuy(asset, exchangeId, trades) {
-    console.log('asset', asset);
-    console.log('exchangeId', exchangeId);
-    console.log('trades', trades);
-    const filteredTrades = trades.filter(trade => trade.altA === asset && trade.type === 'buy' && trade.platform === exchangeId);
+    const filteredTrades = trades.filter(trade => trade.altA === asset && trade.type === 'buy');
     const totalBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.totalUSDT), 0);
     const totalAmount = filteredTrades.reduce((total, trade) => total + parseFloat(trade.amount), 0);
-
-    console.log('totalAmount', totalAmount);
-    console.log('totalBuy', totalBuy);
 
     return {
         totalAmount,
@@ -229,11 +223,7 @@ function getDataETH(cmcData) {
 }
 
 function getTradesHistory(cryptoSymbol, trades) {
-    const supportedSymbols = ['USDT', 'BUSD', 'USDC', 'BTC', 'ETH'];
-    const symbolRegex = supportedSymbols.map(symbol => `${symbol}[-/]?`).join('|');
-    const pairRegex = new RegExp(`^${cryptoSymbol}(${symbolRegex})$`, 'i');
-
-    return trades.filter(trade => pairRegex.test(trade.pair));
+    return trades.filter(trade => trade.altA === cryptoSymbol);
 }
 
 function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
