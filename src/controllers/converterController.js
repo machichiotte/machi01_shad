@@ -9,10 +9,9 @@ async function getConvertedCsv(req, res) {
     // Utilisation de PapaParse pour lire les données CSV depuis le buffer
     Papa.parse(buffer.toString(), {
       complete: async (result) => {
-        console.log('getConvertedCsv result', result);
-        //console.log('getConvertedCsv result');
+        //console.log('getConvertedCsv result', result);
         const jsonData = result ? await convertToJSON(result.data) : [];
-        console.log('getConvertedCsv jsonData', jsonData);
+        //console.log('getConvertedCsv jsonData', jsonData);
 
         res.json({ success: true, data: jsonData });
       },
@@ -71,10 +70,8 @@ function detectModelType(data) {
 
 async function getTotalUSDTFromAPI(dealTime, altB, total) {
   console.log('getTotalUSDTFromAPI');
-  console.log('dealTime', dealTime);
-  console.log('altB', altB);
-  console.log('total', total);
-  if (!["USDT", "BUSD", "USDC"].includes(altB.toUpperCase())) {
+
+  if (altB && !["USDT", "BUSD", "USDC"].includes(altB.toUpperCase())) {
     /*try {
       const response = await axios.get('URL_DE_L_API', {
         params: { date: dealTime, altB },
@@ -92,7 +89,7 @@ async function getTotalUSDTFromAPI(dealTime, altB, total) {
 
 async function convertModelHTX(data) {
   console.log('convertModelHTX');
-  const convertedData =  await Promise.all(data.map(async (item) => {
+  const convertedData = await Promise.all(data.map(async (item) => {
     if (item && item['uid'] && item['symbol'] && item['deal_type'] && item['deal_time']) {
       // Séparer la paire en alta et altb en utilisant les éléments de 'symbol'
       const [altA, altB] = item['symbol'].split('/');
@@ -124,15 +121,22 @@ async function convertModelBinance(data) {
   console.log('convertModelBinance');
   const convertedData = await Promise.all(data.map(async (item) => {
     if (item && item['Date(UTC)'] && item['Pair'] && item['Side'] && item['Price'] && item['Executed'] && item['Amount'] && item['Fee']) {
-      // Séparer la paire en alta et altb en utilisant les éléments de 'Executed'
-      const [executedAmount, executedAsset] = item['Executed'].match(/([0-9.]+)([A-Za-z]+)/).slice(1, 3);
+      // Récupérer les éléments de 'Executed'
+      const [executedAmount, altB] = item['Amount'].match(/([0-9.]+)?([A-Za-z]+)([A-Za-z0-9]+)?/).slice(1, 3).filter(Boolean);
+
+      // Récupérer altA à partir de la paire et altB
+      const altA = (() => {
+        const altAStartIndex = item['Pair'].indexOf(altB);
+        return item['Pair'].substring(0, altAStartIndex).toUpperCase();
+      })();
+
       const date = item['Date(UTC)'];
       const total = parseFloat(item['Amount'].replace(item['Fee'], ''));
-      const altB = item['Pair'].replace(executedAsset, '');
       const totalUSDT = await getTotalUSDTFromAPI(date, altB, total);
+      const feecoin = item['Fee'].includes(altA) ? altA : (item['Fee'].includes(altB) ? altB : '/');
 
       return {
-        altA: executedAsset,
+        altA: altA,
         altB: altB,
         date: date,
         pair: item['Pair'],
@@ -142,7 +146,7 @@ async function convertModelBinance(data) {
         total: total,
         totalUSDT: totalUSDT,
         fee: parseFloat(item['Fee']),
-        feecoin: item['Fee'].match(/[A-Za-z]+/)[0],
+        feecoin: feecoin,
         platform: 'binance',
       };
     }
@@ -150,6 +154,7 @@ async function convertModelBinance(data) {
   }));
   return convertedData.filter(Boolean);
 }
+
 
 async function convertModelKucoin(data) {
   console.log('convertModelKucoin');
