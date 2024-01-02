@@ -122,7 +122,7 @@ async function convertModelBinance(data) {
   const convertedData = await Promise.all(data.map(async (item) => {
     if (item && item['Date(UTC)'] && item['Pair'] && item['Side'] && item['Price'] && item['Executed'] && item['Amount'] && item['Fee']) {
       // Récupérer les éléments de 'Executed'
-      const [executedAmount, altB] = item['Amount'].match(/([0-9.]+)?([A-Za-z]+)([A-Za-z0-9]+)?/).slice(1, 3).filter(Boolean);
+      const [total, altB] = item['Amount'].match(/([0-9.]+)?([A-Za-z]+)([A-Za-z0-9]+)?/).slice(1, 3).filter(Boolean);
 
       // Récupérer altA à partir de la paire et altB
       const altA = (() => {
@@ -131,7 +131,7 @@ async function convertModelBinance(data) {
       })();
 
       const date = item['Date(UTC)'];
-      const total = parseFloat(item['Amount'].replace(item['Fee'], ''));
+      const amount = parseFloat(item['Executed'].replace(altA, ''));
       const totalUSDT = await getTotalUSDTFromAPI(date, altB, total);
       const feecoin = item['Fee'].includes(altA) ? altA : (item['Fee'].includes(altB) ? altB : '/');
 
@@ -142,7 +142,7 @@ async function convertModelBinance(data) {
         pair: item['Pair'],
         type: item['Side'].toLowerCase(),
         price: parseFloat(item['Price']),
-        amount: parseFloat(executedAmount),
+        amount: amount,
         total: total,
         totalUSDT: totalUSDT,
         fee: parseFloat(item['Fee']),
@@ -187,9 +187,8 @@ async function convertModelOkx(data) {
       const date = item['Time'];
       const total = parseFloat(item['Amount']);
       const altB = item['Balance Unit'];
-      const totalUSDT = await getTotalUSDTFromAPI(date, altB, total);
+      const totalUSDT = parseFloat(await getTotalUSDTFromAPI(date, altB, total));
 
-      console.log()
       return {
         altA: item['Trading Unit'],
         altB: altB,
