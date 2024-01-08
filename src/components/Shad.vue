@@ -31,7 +31,7 @@
 <script>
 import { getCmcData, getBalances, getTrades, getOrders, getStrategy } from '../js/getter.js';
 import { getAllCalculs } from '../js/calcul.js';
-import { shadColumns } from "../js/shadColumns.js";
+import { shadColumns } from "../js/columns.js";
 import MySellButtonVue from './MySellButton.vue';
 import Overlay from './ShadOverlay.vue';
 

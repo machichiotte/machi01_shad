@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { tradesColumns } from "../js/shadColumns.js";
+import { tradesColumns } from "../js/columns.js";
 import { getTrades } from '../js/getter.js';
 
 export default {

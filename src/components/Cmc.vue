@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { cmcColumns } from "../js/shadColumns.js";
+import { cmcColumns } from "../js/columns.js";
 import { getCmcData } from "../js/getter.js"
 
 export default {

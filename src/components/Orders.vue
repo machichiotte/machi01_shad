@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { ordersColumns } from '../js/shadColumns.js';
+import { ordersColumns } from '../js/columns.js';
 import { getOrders } from '../js/getter.js';
 
 import MySellButtonVue from './MySellButton.vue';
