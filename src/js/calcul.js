@@ -226,6 +226,7 @@ function getTradesHistory(cryptoSymbol, trades) {
     return trades.filter(trade => trade.altA === cryptoSymbol);
 }
 
+
 function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     const { symbol, platform, balance } = item;
     const exchangeId = platform;

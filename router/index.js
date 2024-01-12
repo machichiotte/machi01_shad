@@ -1,6 +1,7 @@
 // router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/components/Home';
+import AddTrades from '@/components/AddTrades';
 import Shad from '@/components/Shad';
 import Orders from '@/components/Orders';
 import Cmc from '@/components/Cmc';
@@ -11,6 +12,7 @@ import Converter from '@/components/Converter';
 
 const routes = [
   { path: '/', component: Home },
+  { path: '/addtrades', component: AddTrades },
   { path: '/update', component: Update },
   { path: '/orders', component: Orders },
   { path: '/cmc', component: Cmc },

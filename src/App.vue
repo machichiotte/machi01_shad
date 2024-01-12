@@ -13,6 +13,7 @@
         <router-link to="/shad" active-class="selected-link">SHAD</router-link>
         <router-link to="/strategy" active-class="selected-link">Stratégie</router-link>
         <router-link to="/trades" active-class="selected-link">Trades</router-link>
+        <router-link to="/addtrades" active-class="selected-link">Add Trades</router-link>
         <router-link to="/converter" active-class="selected-link">Converter</router-link>
       </nav>
     </header>
