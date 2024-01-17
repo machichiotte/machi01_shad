@@ -1,4 +1,4 @@
-<!-- OrdersTable.vue -->
+<!-- src/components/OrdersTable.vue -->
 <template>
     <table class="my-table">
         <thead>

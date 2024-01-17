@@ -1,4 +1,5 @@
-<template>
+<!-- src/components/AddTrades.vue -->
+<template> 
     <div class="page">
       <h1>Add new trades</h1>
       <div id="table">

@@ -1,4 +1,4 @@
-import { fetchDataFromIndexedDB, saveBalancesDataToIndexedDB, saveStrategyToIndexedDB, saveTradesDataToIndexedDB, saveOrdersDataToIndexedDB, saveCmcDataToIndexedDB } from "../js/indexedDB"
+import { fetchDataFromIndexedDB, saveTickersToIndexedDB, saveBalancesDataToIndexedDB, saveStrategyToIndexedDB, saveTradesDataToIndexedDB, saveOrdersDataToIndexedDB, saveCmcDataToIndexedDB } from "../js/indexedDB"
 
 const serverHost = process.env.VUE_APP_SERVER_HOST;
 const CMC = 'cmcData';
@@ -8,6 +8,7 @@ const BALANCE = "balance";
 const TRADES = "trades";
 const ORDERS = 'orders';
 const LAST_UPDATE = "lastUpdate";
+const TICKERS = "tickers";
 
 const getConvertedCsv = async (formData) => {
     const ENDPOINT = `${serverHost}/${CONVERTER}/post`;
@@ -38,6 +39,42 @@ const getStrategy = async () => {
     try {
         const items = await fetchDataWithCache(STRATEGY, ENDPOINT, saveStrategyToIndexedDB);
         return items;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+const getTickers = async () => {
+    const ENDPOINT = `${serverHost}/${TICKERS}/get`;
+
+    try {
+        const items = await fetchDataWithCache(TICKERS, ENDPOINT, saveTickersToIndexedDB);
+        return items;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+const getTickersByExchange = async (exchangeId) => {
+    const ENDPOINT = `${serverHost}/${TICKERS}/get/${exchangeId}`;
+
+    try {
+        const items = await fetchDataWithCache(TICKERS, ENDPOINT, saveTickersToIndexedDB);
+        return items;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+const getTickersBySymbolAndExchange = async (exchangeId, symbol) => {
+    const ENDPOINT = `${serverHost}/${TICKERS}/get/${exchangeId}`;
+
+    try {
+        const items = await fetchDataWithCache(TICKERS, ENDPOINT, saveTickersToIndexedDB);
+
+        const itemsBySymbol = items.find(item => item.symbol === symbol);
+
+        return itemsBySymbol;
     } catch (err) {
         console.error(err);
     }
@@ -196,4 +233,4 @@ const fetchDataWithCache = async (dataType, apiEndpoint, saveToIndexedDBFunction
     }
 }
 
-export { getConvertedCsv, cancelOrder, getStrategy, getCmcData, getBalances, getTrades, getOrders };
+export { getConvertedCsv, cancelOrder, getStrategy, getCmcData, getBalances, getTrades, getOrders, getTickers, getTickersByExchange, getTickersBySymbolAndExchange };

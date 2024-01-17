@@ -1,3 +1,4 @@
+<!-- src/components/Shad.vue -->
 <template>
   <div class="page" >
     <h1>SHAD</h1>

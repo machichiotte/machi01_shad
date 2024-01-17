@@ -1,3 +1,4 @@
+<!-- src/components/Converter.vue -->
 <template>
     <div class="page">
         <h1>CONVERTER</h1>
@@ -37,7 +38,6 @@ export default {
             const fileInput = this.$refs.csvFileInput;
             const file = fileInput.files[0];
 
-            console.log('fileee', file);
             if (file) {
                 const formData = new FormData();
                 formData.append("csvFile", file);

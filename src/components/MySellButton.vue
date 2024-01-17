@@ -1,3 +1,4 @@
+<!-- src/components/MySellButton.vue -->
 <template>
     <button @click="iAmClicked">
         Add sell orders

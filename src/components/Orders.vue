@@ -1,3 +1,4 @@
+<!-- src/components/Orders.vue -->
 <template>
   <div class="page">
     <h1>Ordres en cours</h1>

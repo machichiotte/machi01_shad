@@ -7,6 +7,7 @@ const BALANCE = 'balance';
 const ORDERS = 'orders';
 const TRADES = 'trades';
 const STRATEGY = 'strategy';
+const TICKERS = 'tickers';
 
 const openDatabase = async () => {
     return new Promise((resolve, reject) => {
@@ -183,6 +184,11 @@ const saveStrategyToIndexedDB = async (data) => {
     await saveDataToIndexedDBInternal(STRATEGY, data, 'asset', null);
 };
 
+const saveTickersToIndexedDB = async (data) => {
+    console.log('saveTickersToIndexedDB');
+    await saveDataToIndexedDBInternal(TICKERS, data, 'asset', null);
+};
+
 const fetchDataFromIndexedDB = async (storeName) => {
     try {
         const db = await openDatabase();
@@ -209,4 +215,4 @@ const fetchDataFromIndexedDB = async (storeName) => {
     }
 };
 
-export { openDatabase, fetchDataFromIndexedDB, saveCmcDataToIndexedDB, saveStrategyToIndexedDB, saveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveTradesDataToIndexedDB };
+export { openDatabase, fetchDataFromIndexedDB, saveCmcDataToIndexedDB, saveStrategyToIndexedDB, saveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveTradesDataToIndexedDB, saveTickersToIndexedDB };

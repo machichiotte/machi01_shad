@@ -1,3 +1,4 @@
+<!-- src/components/Trades.vue -->
 <template>
   <div class="page">
     <h1>Liste des trades</h1>

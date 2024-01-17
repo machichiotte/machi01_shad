@@ -47,7 +47,7 @@ function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
     }
 }
 
-function getTotalAmountAndBuy(asset, exchangeId, trades) {
+function getTotalAmountAndBuy(asset, trades) {
     const filteredTrades = trades.filter(trade => trade.altA === asset && trade.type === 'buy');
     const totalBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.totalUSDT), 0);
     const totalAmount = filteredTrades.reduce((total, trade) => total + parseFloat(trade.amount), 0);
@@ -114,12 +114,13 @@ function getTotalSell(asset, trades) {
     return Math.round(sellTotal, 2);
 }
 
+/*
 function getAverageEntryPrice(totalShad, priceTp1, recupTpX, balance) {
     if (totalShad < 0)
         return parseFloat(priceTp1.toFixed(8)); // Convertir en nombre avec au maximum 8 chiffres après la virgule
     else
         return parseFloat((recupTpX / balance).toFixed(8)); // Convertir en nombre avec au maximum 8 chiffres après la virgule
-}
+}*/
 
 function getBalance(asset, sortedBalances) {
     const balance = sortedBalances.find(item => item.symbol === asset);
@@ -252,7 +253,7 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
     const {
         totalAmount,
         totalBuy
-    } = getTotalAmountAndBuy(symbol, exchangeId, trades);
+    } = getTotalAmountAndBuy(symbol, trades);
     
     const maxExposition = getMaxExposition(rank, Math.round(totalBuy));
     const recupShad = getRecupShad(totalBuy, totalSell, maxExposition);
@@ -264,7 +265,7 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
 
     const { amountTp1, amountTp2, amountTp3, amountTp4, amountTp5, priceTp1, priceTp2, priceTp3, priceTp4, priceTp5 } = calculateAmountsAndPrices(recupTp1, balance, totalBuy, totalShad, recupTpX);
 
-    const averageEntryPrice = getAverageEntryPrice(totalShad, priceTp1, recupTpX, balance);
+    const averageEntryPrice = (parseFloat(totalBuy) / parseFloat(totalAmount)).toFixed(8);
     const percentageDifference = getPercentageDifference(currentPrice, averageEntryPrice);
 
     return {

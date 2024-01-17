@@ -1,3 +1,4 @@
+<!-- src/components/Strategy.vue -->
 <template>
     <div>
         <div style="display:flex; justify-content:flex-end;">

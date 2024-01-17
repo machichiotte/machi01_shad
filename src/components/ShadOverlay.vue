@@ -1,3 +1,4 @@
+<!-- src/components/ShadOverlay.vue -->
 <template>
     <div class="overlay">
         <div class="overlay-content">

@@ -1,5 +1,4 @@
-<!-- NextSellsTable.vue -->
-
+<!-- src/components/NextSellsTable.vue -->
 <template>
       <table class="my-table">
         <thead>
