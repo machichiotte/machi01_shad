@@ -108,7 +108,7 @@ function getRatioShad(asset, exchangeId, strats) {
 }
 
 function getTotalSell(asset, trades) {
-    const filteredTrades = trades.filter(trade => trade.pair === `${asset}/USDT` && trade.type === 'sell');
+    const filteredTrades = trades.filter(trade => trade.altA === asset && trade.type === 'sell');
     const sellTotal = filteredTrades.reduce((total, trade) => total + parseFloat(trade.total), 0);
 
     return Math.round(sellTotal, 2);
