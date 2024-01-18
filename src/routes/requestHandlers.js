@@ -43,6 +43,10 @@ app.use('/api/prices', pricesRoutes);
 const tradesRoutes  = require('../routes/tradesRoutes.js');
 app.use('/api/trades', tradesRoutes);
 
+//tickers
+const tickersRoutes  = require('../routes/tickersRoutes.js');
+app.use('/api/tickers', tickersRoutes);
+
 //last update
 const lastUpdateRoutes  = require('../routes/lastUpdateRoutes.js');
 app.use('/api/lastUpdate', lastUpdateRoutes);

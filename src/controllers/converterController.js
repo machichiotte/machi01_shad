@@ -182,31 +182,95 @@ async function convertModelKucoin(data) {
 
 async function convertModelOkx(data) {
   console.log('convertModelOkx');
-  const convertedData = await Promise.all(data.map(async (item) => {
-    if (item['Order id'] && item['Instrument'] && item['Time'] && item.Instrument && item.Instrument.includes('-')) {
-      const date = item['Time'];
-      const total = parseFloat(item['Amount']);
-      const altB = item['Balance Unit'];
-      const totalUSDT = parseFloat(await getTotalUSDTFromAPI(date, altB, total));
 
-      return {
-        altA: item['Trading Unit'],
-        altB: altB,
-        date: date,
-        pair: item['Instrument'],
-        type: item['Action'].toLowerCase(),
-        price: parseFloat(item['Fill Price']),
-        amount: parseFloat(item['Balance']),
-        total: parseFloat(item['Amount']),
-        totalUSDT: totalUSDT,
-        fee: parseFloat(item['Fee']),
-        feecoin: item['Balance Unit'],
-        platform: 'okx',
-      };
+  const processedOrders = new Map();
+
+  const convertItem = async (item) => {
+    const {
+      'Order id': orderId,
+      'Trading Unit': altA,
+      'Time': date,
+      'Trade Type': tradeType,
+      'Instrument': instrument,
+      'Action': action,
+      'Fill Price': fillPrice,
+      'Balance': balance,
+      'Amount': amount,
+      'Fee': fee,
+      'Balance Unit': balanceUnit,
+    } = item;
+
+    if (!orderId || !instrument || !date || !instrument.includes('-') || tradeType !== 'Spot') {
+      return null;
     }
-    return null;
-  }));
-  return convertedData.filter(Boolean);
+
+    console.log(`orderId ${orderId}`);
+
+    if (processedOrders.has(orderId)) {
+      const previousObject = processedOrders.get(orderId);
+      console.log(`Order ID ${orderId} already processed. Modifying the previous object.`);
+
+      if (tradingUnit === balanceUnit) {
+        Object.assign(previousObject, {
+          altA,
+          date,
+          pair: instrument,
+          type: action.toLowerCase(),
+          price: fillPrice,
+          amount: balance
+        });
+
+        if (fee !== 0) {
+          previousObject.fee = fee;
+          previousObject.feecoin = balanceUnit;
+        }
+      } else {
+        Object.assign(previousObject, {
+          altB: balanceUnit,
+          total: amount,
+          totalUSDT: (balanceUnit === 'USDT') ? amount : 0,
+        });
+
+        if (fee !== 0) {
+          previousObject.fee = fee;
+          previousObject.feecoin = balanceUnit;
+        }
+      }
+
+      processedOrders.set(orderId, previousObject);
+    } else {
+      console.log('else');
+      const totalUSDT = parseFloat(await getTotalUSDTFromAPI(date, balanceUnit, amount));
+
+      processedOrders.set(orderId, {
+        altA,
+        altB: balanceUnit,
+        date,
+        pair: instrument,
+        type: action.toLowerCase(),
+        price: fillPrice,
+        amount: balance,
+        total: amount,
+        totalUSDT,
+        fee,
+        feecoin: balanceUnit,
+        platform: 'okx',
+      });
+    }
+  };
+
+  await Promise.all(data.map(convertItem));
+
+  const allProcessedOrders = Array.from(processedOrders.values()).map(order => {
+    order.fee = Math.abs(order.fee);
+    return order;
+  });
+
+  console.log('allProcessedOrders ', allProcessedOrders);
+
+  return allProcessedOrders.filter(Boolean);
 }
+
+
 
 module.exports = { getConvertedCsv };

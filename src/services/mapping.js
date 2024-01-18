@@ -81,12 +81,24 @@ function mapTrades(platform, data) {
                     fee: item.fee.cost,
                     feeCurrency: item.fee.currency,
                     feeRate: item.fee.rate,
+                    platform: platform
                 }));
     }
 }
 
+function mapTickers(data) {
+    return Object.keys(data).map((symbol) => {
+        const item = data[symbol];
+        return {
+            symbol: item.symbol,
+            timestamp: item.timestamp,
+            last: item.last
+        };
+    });
+}
+
 function mapOrders(platform, data) {
-   // console.log('map active orders :: ' + JSON.stringify(data));
+    // console.log('map active orders :: ' + JSON.stringify(data));
     return data
         .map((item) => ({
             oId: item.id,
@@ -101,7 +113,7 @@ function mapOrders(platform, data) {
 }
 
 function mapLoadMarkets(platform, data) {
-   // console.log('map load markets :: ' + JSON.stringify(data));
+    // console.log('map load markets :: ' + JSON.stringify(data));
 
     let objArray = [];
 
@@ -146,4 +158,4 @@ function mapTradesAddedManually(data) {
     }));
 }
 
-module.exports = { mapBalance, mapOrders, mapLoadMarkets, mapTrades, mapTradesAddedManually };
+module.exports = { mapBalance, mapOrders, mapLoadMarkets, mapTrades, mapTradesAddedManually, mapTickers };

@@ -1,7 +1,6 @@
 // src/controllers/balanceController.js
 const { createExchangeInstance, saveLastUpdateToMongoDB, getData, deleteAndSaveData, handleErrorResponse } = require('../services/utils.js');
 const { mapBalance } = require('../services/mapping.js');
-const { AuthenticationError } = require('ccxt');
 
 async function getBalance(req, res) {
     const collection = process.env.MONGODB_COLLECTION_BALANCE;

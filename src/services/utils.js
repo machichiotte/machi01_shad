@@ -8,12 +8,13 @@ const {
   deleteMultipleDataMDB,
   getAllDataMDB,
   updateDataMDB,
+  deleteAllDataMDB,
+  saveObjectDataMDB
 } = require('./mongodb.js');
 const { mapLoadMarkets } = require('./mapping.js');
 
 // Fonction utilitaire pour créer une instance d'échange
 function createExchangeInstance(exchangeId) {
-  console.log('createExcccc', `${exchangeId.toUpperCase()}_API_KEY`);
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
   const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
@@ -158,6 +159,19 @@ async function deleteAndSaveData(mapData, collection, exchangeId) {
   }
 }
 
+async function deleteAndSaveObject(mapData, collection) {
+  console.log('delete save');
+  console.log('delete mapData.length', Object.keys(mapData).length);
+
+  if (mapData && Object.keys(mapData).length > 0) {
+    console.log('delete save objectttttttttttttttt')
+    await deleteAllDataMDB(collection);
+    console.log('delete save savvvvvvvvvvvvvvvvvvvvvv')
+
+    await saveObjectDataMDB(mapData, collection);
+  }
+}
+
 // Fonction utilitaire pour la tâche cron de mise à jour des marchés
 async function cronLoadMarkets(exchangeId) {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
@@ -190,6 +204,7 @@ module.exports = {
   saveLastUpdateToMongoDB,
   getData,
   deleteAndSaveData,
+  deleteAndSaveObject,
   cronLoadMarkets,
   handleErrorResponse
 };
