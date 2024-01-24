@@ -32,7 +32,7 @@ import {
 import {
   saveOrdersDataToIndexedDB,
   saveBalancesDataToIndexedDB,
-  saveCmcDataToIndexedDB
+  saveCmcToIndexedDB
 } from '../js/indexedDB';
 
 const serverHost = process.env.VUE_APP_SERVER_HOST;
@@ -60,7 +60,7 @@ export default {
           totalCount
         } = (await this.fetchData(API_ENDPOINTS.CMC_DATA)).json();
         this.cryptoData = data;
-        await saveCmcDataToIndexedDB(data);
+        await saveCmcToIndexedDB(data);
         successSpinHtml('Save completed', `Résultat : ${totalCount}`, true, true);
       } catch (error) {
         this.handleError('Error fetching and updating CoinMarketCap data:', error);

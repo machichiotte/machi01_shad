@@ -198,20 +198,42 @@ export default {
             this.currentBTC = getDataBTC(this.cmc);
             this.currentETH = getDataETH(this.cmc);
 
+            console.log('this.currentBTC',this.currentBTC);
+            console.log('this.currentETH',this.currentETH);
+
             this.currentPrice = this.selectedAsset.currentPrice;
             this.balance = this.selectedAsset.currentPossession;
+
+            console.log('this.currentPrice',this.currentPrice);
+
+            console.log('this.balance',this.balance);
+
 
             this.currentPriceUSD = parseFloat(this.currentPrice);
             this.currentPriceBTC = parseFloat(this.currentPrice / this.currentBTC.quote.USD.price).toFixed(8);
             this.currentPriceETH = parseFloat(this.currentPrice / this.currentETH.quote.USD.price).toFixed(8);
 
+            console.log('this.currentPriceUSD',this.currentPriceUSD);
+
+            console.log('this.currentPriceBTC',this.currentPriceBTC);
+
+            console.log('this.currentPriceETH',this.currentPriceETH);
+
             this.balanceUSD = parseFloat(this.balance).toFixed(2);
             this.balanceBTC = parseFloat(this.balance / this.currentBTC.quote.USD.price).toFixed(8);
             this.balanceETH = parseFloat(this.balance / this.currentETH.quote.USD.price).toFixed(8);
 
+            console.log('this.balanceUSD',this.balanceUSD);
+            console.log('this.balanceBTC',this.balanceBTC);
+            console.log('this.balanceETH',this.balanceETH);
+
             const assetCmc = this.cmc.find(item => item.symbol === this.selectedAsset.asset)
             this.assetName = assetCmc.name;
             this.assetId = assetCmc.id;
+
+            console.log('this.assetName',this.baassetNamelanceETH);
+
+            console.log('this.assetId',this.assetId);
 
         },
         toggleHistoricLines() {

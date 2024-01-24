@@ -1,7 +1,7 @@
-import { fetchDataFromIndexedDB, saveTickersToIndexedDB, saveBalancesDataToIndexedDB, saveStrategyToIndexedDB, saveTradesDataToIndexedDB, saveOrdersDataToIndexedDB, saveCmcDataToIndexedDB } from "../js/indexedDB"
+import { fetchDataFromIndexedDB, saveTickersToIndexedDB, saveBalancesDataToIndexedDB, saveStrategyToIndexedDB, saveTradesDataToIndexedDB, saveOrdersDataToIndexedDB, saveCmcToIndexedDB } from "../js/indexedDB"
 
 const serverHost = process.env.VUE_APP_SERVER_HOST;
-const CMC = 'cmcData';
+const CMC = 'cmc';
 const CONVERTER = 'converter';
 const STRATEGY = 'strategy';
 const BALANCE = "balance";
@@ -47,6 +47,7 @@ const getStrategy = async () => {
 const getTickers = async () => {
     const ENDPOINT = `${serverHost}/${TICKERS}/get`;
 
+    console.log('getTickers');
     try {
         const items = await fetchDataWithCache(TICKERS, ENDPOINT, saveTickersToIndexedDB);
         return items;
@@ -80,11 +81,11 @@ const getTickersBySymbolAndExchange = async (exchangeId, symbol) => {
     }
 }
 
-const getCmcData = async () => {
+const getCmc = async () => {
     const ENDPOINT = `${serverHost}/${CMC}/get`;
 
     try {
-        const items = await fetchDataWithCache(CMC, ENDPOINT, saveCmcDataToIndexedDB);
+        const items = await fetchDataWithCache(CMC, ENDPOINT, saveCmcToIndexedDB);
         return items;
     } catch (err) {
         console.error(err);
@@ -140,6 +141,8 @@ const shouldFetchFromServer = async (types) => {
     const currentTimestamp = Date.now();
     const collection = await fetch(`${serverHost}/${LAST_UPDATE}/get`);
 
+    console.log('collect', collection);
+
     // Fonction générique pour mettre à jour les données pour un type donné
     const updateData = async (type, exchange, refreshValue) => {
         console.log('shouldFetchFromServer exchange', exchange);
@@ -159,20 +162,22 @@ const shouldFetchFromServer = async (types) => {
 
     // Définir les valeurs de rafraîchissement pour chaque type
     const refreshValues = {
-        cmcData: 6 * 60 * 60 * 1000,
+        cmc: 6 * 60 * 60 * 1000,
         trades: 6 * 60 * 60 * 1000,
         orders: 6 * 60 * 60 * 1000,
         balance: 6 * 60 * 60 * 1000,
         strategy: 6 * 60 * 60 * 1000,
+        tickers: 24 * 60 * 60 * 1000,
     };
 
     // Mettre à jour les données pour chaque type spécifié dans le tableau "types"
     for (const type of types) {
         const refreshValue = refreshValues[type];
 
-        if (type === CMC || type == STRATEGY) {
-            // Mettez en œuvre la logique spécifique pour "cmc"
+        if (type === CMC || type == STRATEGY || type == TICKERS) {
             const timestamp = collection[type];
+            console.log('currentTimestamp', currentTimestamp);
+            console.log('timestamp', timestamp);
             if (currentTimestamp - timestamp > refreshValue) {
                 try {
                     await fetch(`${serverHost}/${LAST_UPDATE}/update/${type}`);
@@ -184,7 +189,6 @@ const shouldFetchFromServer = async (types) => {
                 console.log(`Pas besoin de mise à jour pour ${type}. Timestamp actuel : ${timestamp}`);
             }
         } else {
-            // Pour les autres types, procédez comme auparavant
             for (const exchange in collection[type]) {
                 if (Object.prototype.hasOwnProperty.call(collection[type], exchange)) {
                     await updateData(type, exchange, refreshValue);
@@ -233,4 +237,4 @@ const fetchDataWithCache = async (dataType, apiEndpoint, saveToIndexedDBFunction
     }
 }
 
-export { getConvertedCsv, cancelOrder, getStrategy, getCmcData, getBalances, getTrades, getOrders, getTickers, getTickersByExchange, getTickersBySymbolAndExchange };
+export { getConvertedCsv, cancelOrder, getStrategy, getCmc, getBalances, getTrades, getOrders, getTickers, getTickersByExchange, getTickersBySymbolAndExchange };

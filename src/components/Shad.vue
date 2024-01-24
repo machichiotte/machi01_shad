@@ -25,12 +25,12 @@
       </vue-good-table>
     </div>
     <Overlay v-if="showOverlay" :selectedAsset="selectedAsset" :buyOrders="this.buyOrders" :sellOrders="this.sellOrders"
-      :trades="this.trades" :cmc="this.cmcData" @close="closeOverlay"/>
+      :trades="this.trades" :cmc="this.cmc" @close="closeOverlay"/>
   </div>
 </template>
 
 <script>
-import { getCmcData, getBalances, getTrades, getOrders, getStrategy } from '../js/getter.js';
+import { getCmc, getBalances, getTrades, getOrders, getStrategy } from '../js/getter.js';
 import { getAllCalculs } from '../js/calcul.js';
 import { shadColumns } from "../js/columns.js";
 import MySellButtonVue from './MySellButton.vue';
@@ -44,7 +44,7 @@ export default {
       trades: [],
       strats: [],
       orders: [],
-      cmcData: [],
+      cmc: [],
       buyOrders: [],
       sellOrders: [],
       itemsPerPage: 1000,
@@ -92,7 +92,7 @@ export default {
     rows() {
       if (this.strats && this.strats.length > 0) {
         return this.displayedBalances.map((item) => {
-          return getAllCalculs(item, this.cmcData, this.trades, this.strats, this.buyOrders, this.sellOrders);
+          return getAllCalculs(item, this.cmc, this.trades, this.strats, this.buyOrders, this.sellOrders);
         });
       } else {
         return [];
@@ -142,7 +142,7 @@ export default {
         this.balances = await getBalances();
         this.trades = await getTrades();
         this.strats = await getStrategy();
-        this.cmcData = await getCmcData();
+        this.cmc = await getCmc();
         this.orders = await getOrders();
 
         this.buyOrders = this.orders.filter(order => order.side === 'buy');

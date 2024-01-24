@@ -13,7 +13,7 @@
 
 <script>
 import PieChart from "@/components/PieChart.vue";
-import { getBalances, getCmcData, getTickers } from '../js/getter.js';
+import { getBalances, getCmc, getTickers } from '../js/getter.js';
 
 export default {
   name: "HomePage",
@@ -21,16 +21,15 @@ export default {
     return {
       loaded: false, // Ajoutez une propriété pour suivre si les données ont été chargées
       balances: [],
-      cmcData: [],
+      cmc: [],
       tickers : null
     };
   },
   methods: {
     async getData() {
       try {
-       // await fetch(`http://localhost:10000/api/tickers/update`)
         this.tickers = await getTickers();
-        this.cmcData = await getCmcData();
+        this.cmc = await getCmc();
         this.balances = await getBalances();
         this.loaded = true; // Mettez à jour la propriété loaded une fois que les données sont chargées
       } catch (error) {
@@ -59,24 +58,6 @@ export default {
             value: 0,
           };
         }
-
-/*
-        const cmcCoin = this.cmcData.find(coin => coin.symbol === balance.symbol);
-        if (cmcCoin && cmcCoin.quote && cmcCoin.quote.USD) {
-
-          const value = (parseFloat(balance.balance) * parseFloat(cmcCoin.quote.USD.price)).toFixed(2);
-
-          return {
-            ...balance,
-            value: value,
-          };
-        } else {
-          //return 0; // Si les données de CMC ne sont pas disponibles, renvoyer la balance telle quelle
-          return {
-            ...balance,
-            value: 0,
-          };
-        }*/
       });
     },
   },

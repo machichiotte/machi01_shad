@@ -114,14 +114,6 @@ function getTotalSell(asset, trades) {
     return Math.round(sellTotal, 2);
 }
 
-/*
-function getAverageEntryPrice(totalShad, priceTp1, recupTpX, balance) {
-    if (totalShad < 0)
-        return parseFloat(priceTp1.toFixed(8)); // Convertir en nombre avec au maximum 8 chiffres après la virgule
-    else
-        return parseFloat((recupTpX / balance).toFixed(8)); // Convertir en nombre avec au maximum 8 chiffres après la virgule
-}*/
-
 function getBalance(asset, sortedBalances) {
     const balance = sortedBalances.find(item => item.symbol === asset);
     return balance ? balance.balance : 'N/A';
@@ -132,8 +124,8 @@ function getIconUrl(id) {
     return `<img src='${baseIconUrl}${parseInt(id)}.png' alt="Icon"  width="32" height="32"></img>`
 }
 
-function getCmcValues(asset, cmcData) {
-    const crypto = cmcData.find(item => item.symbol === asset) || {};
+function getCmcValues(asset, cmc) {
+    const crypto = cmc.find(item => item.symbol === asset) || {};
 
     return {
         rank: parseInt(crypto.cmc_rank) || 0,
@@ -146,7 +138,6 @@ function getCmcValues(asset, cmcData) {
         cryptoPercentChange90d: (crypto.quote?.USD?.percent_change_90d / 100 || 'N/A'),
     };
 }
-
 
 function getPercentageDifference(currentPrice, averageEntryPrice) {
     const price = parseFloat(currentPrice);
@@ -209,18 +200,18 @@ function calculateAmountsAndPrices(recupTp1, balance, totalBuy, totalShad, recup
     };
 }
 
-function getAssetId(asset, cmcData) {
-    const crypto = cmcData.find(item => item.symbol === asset);
+function getAssetId(asset, cmc) {
+    const crypto = cmc.find(item => item.symbol === asset);
     if (crypto)
         return crypto.id;
 }
 
-function getDataBTC(cmcData) {
-    return cmcData.find(item => item.symbol === 'BTC');
+function getDataBTC(cmc) {
+    return cmc.find(item => item.symbol === 'BTC');
 }
 
-function getDataETH(cmcData) {
-    return cmcData.find(item => item.symbol === 'ETH');
+function getDataETH(cmc) {
+    return cmc.find(item => item.symbol === 'ETH');
 }
 
 function getTradesHistory(cryptoSymbol, trades) {
@@ -228,7 +219,7 @@ function getTradesHistory(cryptoSymbol, trades) {
 }
 
 
-function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
+function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
     const { symbol, platform, balance } = item;
     const exchangeId = platform;
 
@@ -241,7 +232,7 @@ function getAllCalculs(item, cmcData, trades, strats, buyOrders, sellOrders) {
         cryptoPercentChange30d,
         cryptoPercentChange60d,
         cryptoPercentChange90d
-    } = getCmcValues(symbol, cmcData);
+    } = getCmcValues(symbol, cmc);
 
     const totalSell = getTotalSell(symbol, trades);
 

@@ -12,7 +12,7 @@
 
 <script>
 import { cmcColumns } from "../js/columns.js";
-import { getCmcData } from "../js/getter.js"
+import { getCmc } from "../js/getter.js"
 
 export default {
   name: "CmcPage",
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     async getData() {
-      this.items = await getCmcData();
+      this.items = await getCmc();
     },
     prevPage() {
       this.currentPage--;

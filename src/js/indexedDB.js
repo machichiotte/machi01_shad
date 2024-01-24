@@ -2,7 +2,7 @@
 const INDEXED_DB_NAME = 'db_test_1';
 const INDEXED_DB_VERSION = 1;
 
-const CMC = 'cmcData';
+const CMC = 'cmc';
 const BALANCE = 'balance';
 const ORDERS = 'orders';
 const TRADES = 'trades';
@@ -161,7 +161,7 @@ const createItemToSave = (item, keyField) => {
     return itemToSave;
 };
 
-const saveCmcDataToIndexedDB = async (data) => {
+const saveCmcToIndexedDB = async (data) => {
     await saveDataToIndexedDBInternal(CMC, data, 'cmc_rank', null);
 };
 
@@ -215,4 +215,4 @@ const fetchDataFromIndexedDB = async (storeName) => {
     }
 };
 
-export { openDatabase, fetchDataFromIndexedDB, saveCmcDataToIndexedDB, saveStrategyToIndexedDB, saveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveTradesDataToIndexedDB, saveTickersToIndexedDB };
+export { openDatabase, fetchDataFromIndexedDB, saveCmcToIndexedDB, saveStrategyToIndexedDB, saveOrdersDataToIndexedDB, saveBalancesDataToIndexedDB, saveTradesDataToIndexedDB, saveTickersToIndexedDB };
