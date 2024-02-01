@@ -1,5 +1,5 @@
 // src/controllers/lastUpdateController.js
-const { getData } = require('../services/utils.js');
+const { getData, saveLastUpdateToMongoDB } = require('../services/utils.js');
 const { getDataMDB } = require('../services/mongodb.js');
 
 async function getUniqueLastUpdate(req, res) {
@@ -25,4 +25,15 @@ async function getLastUpdate(req, res) {
     await getData(req, res, collection, 'db_machi_shad.last_update.json');
 }
 
-module.exports = { getLastUpdate, getUniqueLastUpdate }
+async function updateLastUpdateByType(req, res) {
+    try {
+        const { exchangeId, type } = req.params;
+        saveLastUpdateToMongoDB(type, exchangeId);
+        res.json({ exchangeId, type, timestamp: null });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({ error: 'Internal server error' });
+    }
+}
+
+module.exports = { getLastUpdate, getUniqueLastUpdate, updateLastUpdateByType }

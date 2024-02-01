@@ -11,7 +11,7 @@ const {
   deleteAllDataMDB,
   saveObjectDataMDB
 } = require('./mongodb.js');
-const { mapLoadMarkets } = require('./mapping.js');
+const { mapMarkets } = require('./mapping.js');
 
 // Fonction utilitaire pour créer une instance d'échange
 function createExchangeInstance(exchangeId) {
@@ -173,17 +173,17 @@ async function deleteAndSaveObject(mapData, collection) {
 }
 
 // Fonction utilitaire pour la tâche cron de mise à jour des marchés
-async function cronLoadMarkets(exchangeId) {
+async function cronMarkets(exchangeId) {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   const exchange = createExchangeInstance(exchangeId);
 
   try {
     const data = await exchange.loadMarkets();
-    const mappedData = mapLoadMarkets(exchangeId, data);
+    const mappedData = mapMarkets(exchangeId, data);
     await deleteAndSaveData(mappedData, collection, exchangeId);
     saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, exchangeId);
   } catch (err) {
-    console.log('Error updateLoadMarkets:', err);
+    console.log('Error updateMarkets:', err);
   }
 }
 
@@ -205,6 +205,6 @@ module.exports = {
   getData,
   deleteAndSaveData,
   deleteAndSaveObject,
-  cronLoadMarkets,
+  cronMarkets,
   handleErrorResponse
 };

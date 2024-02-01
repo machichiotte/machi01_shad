@@ -2,11 +2,11 @@
 const { getData, saveLastUpdateToMongoDB } = require('../services/utils.js');
 const { deleteAllDataMDB, saveArrayDataMDB } = require('../services/mongodb.js');
 
-async function getCmcData(req, res) {
+async function getCmc(req, res) {
     const collection = process.env.MONGODB_COLLECTION_CMC;
     await getData(req, res, collection, 'db_machi_shad.collection_cmc.json');
 }
-async function updateCmcData(req, res) {
+async function updateCmc(req, res) {
     const collection = process.env.MONGODB_COLLECTION_CMC;
     const API_KEY = process.env.CMC_APIKEY;
     const limit = 5000;
@@ -51,9 +51,9 @@ async function updateCmcData(req, res) {
         });
     } catch (err) {
         console.error(err);
-        console.log('Error updateCmcData:', err);
+        console.log('Error updateCmc:', err);
         res.status(500).json({ error: err.name + ': ' + err.message });
     }
 }
 
-module.exports = { getCmcData, updateCmcData };
+module.exports = { getCmc, updateCmc };

@@ -112,7 +112,7 @@ function mapOrders(platform, data) {
         }));
 }
 
-function mapLoadMarkets(platform, data) {
+function mapMarkets(platform, data) {
     // console.log('map load markets :: ' + JSON.stringify(data));
 
     let objArray = [];
@@ -158,4 +158,4 @@ function mapTradesAddedManually(data) {
     }));
 }
 
-module.exports = { mapBalance, mapOrders, mapLoadMarkets, mapTrades, mapTradesAddedManually, mapTickers };
+module.exports = { mapBalance, mapOrders, mapMarkets, mapTrades, mapTradesAddedManually, mapTickers };

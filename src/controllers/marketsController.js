@@ -1,12 +1,12 @@
-// src/controllers/loadMarketsController.js
+// src/controllers/marketsController.js
 const { createExchangeInstance, getData, deleteAndSaveData, saveLastUpdateToMongoDB } = require('../services/utils.js');
-const { mapLoadMarkets } = require('../services/mapping.js');
+const { mapMarkets } = require('../services/mapping.js');
 
-async function getLoadMarkets(req, res) {
+async function getMarkets(req, res) {
     const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
     await getData(req, res, collection, 'db_machi_shad.collection_load_markets.json');
 }
-async function updateLoadMarkets(req, res) {
+async function updateMarkets(req, res) {
     const { exchangeId } = req.params;
 
     const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
@@ -14,14 +14,14 @@ async function updateLoadMarkets(req, res) {
 
     try {
         const data = await exchange.loadMarkets();
-        const mappedData = mapLoadMarkets(exchangeId, data);
+        const mappedData = mapMarkets(exchangeId, data);
         await deleteAndSaveData(mappedData, collection, exchangeId);
         saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, exchangeId);
         res.status(200).json(mappedData);
     } catch (err) {
-        console.log('Error updateLoadMarkets:', err);
+        console.log('Error updateMarkets:', err);
         res.status(500).json({ error: err.name + ': ' + err.message });
     }
 }
 
-module.exports = { getLoadMarkets, updateLoadMarkets }
+module.exports = { getMarkets, updateMarkets }

@@ -32,8 +32,8 @@ The backend exposes the following API endpoints:
 
 ### Get Market Data
 
-- `GET /get/cmcData`: Get market data from CoinMarketCap
-- `GET /get/loadMarkets`: Get market data from exchanges using CCXT
+- `GET /get/cmc`: Get market data from CoinMarketCap
+- `GET /get/markets`: Get market data from exchanges using CCXT
 
 ### Trading Data
 
@@ -44,12 +44,12 @@ The backend exposes the following API endpoints:
 
 ### Update Data
 
-- `GET /update/cmcData`: Update market data from CoinMarketCap
+- `GET /update/cmc`: Update market data from CoinMarketCap
 - `GET /update/balance/:exchangeId`: Update account balance for a specific exchange
 - `GET /update/orders/:exchangeId`: Update active trading orders for a specific exchange
 - `POST /update/strategy`: Update strategy data
 - `GET /update/trades/:exchangeId`: Update historical trades for a specific exchange
-- `GET /update/loadMarkets/:exchangeId`: Update market data from exchanges using CCXT
+- `GET /update/markets/:exchangeId`: Update market data from exchanges using CCXT
 
 ### Cancel Orders
 

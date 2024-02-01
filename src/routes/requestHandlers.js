@@ -21,7 +21,7 @@ app.use('/api/balance', balanceRoutes);
 
 //cmc
 const cmcRoutes  = require('../routes/cmcRoutes.js');
-app.use('/api/cmcData', cmcRoutes);
+app.use('/api/cmc', cmcRoutes);
 
 //strat
 const strategyRoutes  = require('../routes/strategyRoutes.js');
@@ -32,8 +32,8 @@ const ordersRoutes  = require('../routes/ordersRoutes.js');
 app.use('/api/orders', ordersRoutes);
 
 //load markets
-const loadMarkesRoutes  = require('../routes/loadMarketsRoutes.js');
-app.use('/api/loadMarkets', loadMarkesRoutes);
+const marketRoutes  = require('../routes/marketsRoutes.js');
+app.use('/api/markets', marketRoutes);
 
 //prices
 const pricesRoutes  = require('../routes/pricesRoutes.js');
