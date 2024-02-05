@@ -22,7 +22,7 @@ export default {
       loaded: false, // Ajoutez une propriété pour suivre si les données ont été chargées
       balances: [],
       cmc: [],
-      tickers : null
+      tickers : [],
     };
   },
   methods: {
@@ -38,7 +38,9 @@ export default {
     },
     calculateBalanceValue(balances) {
       console.log('balances',balances);
+      console.log('bal',this.balances);
       console.log('tickers',this.tickers);
+      console.log('cmc',this.cmc);
       return balances.map(balance => {
         if (this.tickers && this.tickers[balance.platform]) {
           console.log('enter in tickers');

@@ -50,6 +50,8 @@ const getTickers = async () => {
     console.log('getTickers');
     try {
         const items = await fetchDataWithCache(TICKERS, ENDPOINT, saveTickersToIndexedDB);
+        console.log('getTickers items', items);
+
         return items;
     } catch (err) {
         console.error(err);
@@ -178,7 +180,7 @@ const shouldFetchFromServer = async (types) => {
             const timestamp = collection[type];
             console.log('currentTimestamp', currentTimestamp);
             console.log('timestamp', timestamp);
-            if (currentTimestamp - timestamp > refreshValue) {
+            if (timestamp === undefined || currentTimestamp - timestamp > refreshValue) {
                 try {
                     await fetch(`${serverHost}/${LAST_UPDATE}/update/${type}`);
                     console.log(`Mise à jour réussie pour ${type}. Nouveau timestamp : ${currentTimestamp}`);
