@@ -19,8 +19,17 @@ function createExchangeInstance(exchangeId) {
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
   const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
 
-  if (!apiKey || !secret) {
-    throw new Error(`API key or secret missing for exchange: ${exchangeId}`);
+  if (!apiKey) {
+    throw new Error(`API key missing for exchange: ${exchangeId}`);
+  }
+
+  if (!secret) {
+    throw new Error(`API secret missing for exchange: ${exchangeId}`);
+  }
+
+  // Ajoutez ceci pour vérifier si l'échange est pris en charge
+  if (!['binance', 'kucoin', 'htx', 'okx', 'gateio'].includes(exchangeId)) {
+    throw new Error(`Unsupported exchange: ${exchangeId}`);
   }
 
   try {
