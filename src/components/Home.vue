@@ -22,10 +22,16 @@ export default {
       loaded: false, // Ajoutez une propriété pour suivre si les données ont été chargées
       balances: [],
       cmc: [],
-      tickers : null
+      tickers: null
     };
   },
   methods: {
+    handleDarkModeChange(isDarkMode) {
+      // Appliquez les ajustements de style en fonction de isDarkMode
+      // Par exemple, vous pouvez ajouter ou supprimer une classe CSS pour le mode sombre.
+      const container = document.querySelector('.pie-charts-container');
+      container.classList.toggle('dark-mode-container', isDarkMode);
+    },
     async getData() {
       try {
         this.tickers = await getTickers();
@@ -37,8 +43,8 @@ export default {
       }
     },
     calculateBalanceValue(balances) {
-      console.log('balances',balances);
-      console.log('tickers',this.tickers);
+      console.log('balances', balances);
+      console.log('tickers', this.tickers);
       return balances.map(balance => {
         if (this.tickers && this.tickers[balance.platform]) {
           console.log('enter in tickers');
@@ -64,12 +70,18 @@ export default {
   async mounted() {
     try {
       await this.getData();
+      // Ajoutez un écouteur d'événements pour le changement de mode sombre ou clair
+      this.$root.$on('dark-mode-change', this.handleDarkModeChange);
     } catch (error) {
       console.error("Une erreur s'est produite lors de la récupération des données :", error);
     }
   },
+  beforeUnmount() {
+    // Supprimez l'écouteur d'événements lors de la destruction du composant
+    this.$root.$off('dark-mode-change', this.handleDarkModeChange);
+  },
   computed: {
-    groupedBalances() { 
+    groupedBalances() {
       // Filtrer les balances par plateforme (Binance dans ce cas)
       const binanceBalances = this.balances.filter(balance => balance.platform === 'binance');
       const kucoinBalances = this.balances.filter(balance => balance.platform === 'kucoin');
@@ -102,6 +114,12 @@ export default {
 <style scoped>
 /* Ajoutez des styles au besoin */
 
+.pie-charts-container.dark-mode {
+  /* Ajoutez les styles pour le mode sombre ici */
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+}
+
 .pie-charts-container {
   display: flex;
   justify-content: space-around;
@@ -119,4 +137,5 @@ export default {
   /* Ajustez la hauteur selon vos préférences */
   margin: 10px;
   /* Ajustez la marge selon vos préférences */
-}</style>
+}
+</style>

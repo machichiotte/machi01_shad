@@ -1,11 +1,14 @@
+<!-- src/App.vue -->
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'dark-mode': isDarkMode }">
     <div class="site-title">
       <img src="@/assets/logo_machi.svg" alt="Titre de votre site" />
     </div>
-    <header>
+    <button class="dark-mode-button" @click="toggleDarkMode">☾</button>
+
+    <header :class="{'dark-mode': isDarkMode}">
       <button class="menu-button" @click="toggleMenu">☰</button>
-      <nav :class="{ 'show-menu': isMenuOpen }">
+      <nav :class="{ 'show-menu': isMenuOpen, 'dark-mode': isDarkMode}">
         <router-link to="/" active-class="selected-link">Accueil</router-link>
         <router-link to="/update" active-class="selected-link">Mise à jour</router-link>
         <router-link to="/orders" active-class="selected-link">Ordres ouverts</router-link>
@@ -30,40 +33,67 @@ export default {
   data() {
     return {
       isMenuOpen: false,
+      isDarkMode: false,
     };
   },
   methods: {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
     },
+    toggleDarkMode() {
+      this.isDarkMode = !this.isDarkMode;
+      document.body.classList.toggle('dark-mode', this.isDarkMode);
+          this.$emit('dark-mode-change', this.isDarkMode);
+    },
   },
 };
 </script>
 
 <style>
+:root {
+  --light-bg: #ffffff;
+  --light-text: #2c3e50;
+  --dark-bg: #2c3e50;
+  --dark-text: #ffffff;
+}
+
+body {
+  background-color: var(--light-bg);
+  color: var(--light-text);
+  transition: all 0.3s ease-in-out;
+}
+
+body.dark-mode {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
 }
 
 header {
-  background-color: #2c3e50;
-  color: white;
-  padding: 10px;
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+  margin: 10px;
   position: relative;
   display: flex; /* Permet d'utiliser justify-content et align-items */
   justify-content: space-between; /* Aligne les éléments à l'extrémité des côtés */
   align-items: center; /* Centre les éléments verticalement */
 }
 
+header.dark-mode {
+  background-color: var(--light-bg);
+  color: var(--light-text);
+}
+
 .menu-button {
   font-size: 24px;
   background: none;
   border: none;
-  color: white;
   cursor: default; /* Rend le curseur non cliquable */
   padding: 10px;
   position: absolute;
@@ -81,16 +111,29 @@ nav {
 }
 
 nav a {
-  color: white; /* Texte blanc par défaut */
+  color: var(--dark-text);
+  background-color: var(--dark-bg);
   padding: 10px;
   text-align: center;
   text-decoration: none;
 }
 
-nav a.selected-link {
-  color: black; /* Texte noir lorsqu'il est sélectionné */
-  background-color: white;
+nav.dark-mode a {
+  color: var(--light-text);
+  background-color: var(--light-bg);
 }
+
+nav a.selected-link {
+  color: var(--light-text);
+  background-color: var(--light-bg);
+}
+
+nav.dark-mode a.selected-link {
+  color: var(--dark-text);
+  background-color: var(--dark-bg);
+}
+
+
 
 /* Style pour les petits écrans */
 .show-menu {
@@ -109,7 +152,7 @@ nav a.selected-link {
     top: 64px;
     right: 0;
     width: 100%;
-    background-color: #2c3e50;
+    background-color: #aa00aa;
   }
 
   nav.show-menu {
@@ -117,7 +160,7 @@ nav a.selected-link {
   }
 
   nav a {
-    color: white;
+    color: var(--light-text);
     padding: 10px;
     width: 100%;
     text-align: center;
@@ -125,8 +168,17 @@ nav a.selected-link {
   }
 
   nav a.selected-link {
-    color: black;
-    background-color: white;
+    color: var(--light-text);
+    background-color: var(--light-bg);
+  }
+
+  nav a.dark-mode {
+    color: var(--dark-text);
+  }
+
+  nav a.dark-mode.selected-link {
+    color: var(--dark-text);
+    background-color: var(--dark-bg);
   }
 }
 </style>
