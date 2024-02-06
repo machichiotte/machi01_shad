@@ -28,7 +28,10 @@ export default {
   methods: {
     async getData() {
       try {
+        console.log('on entre ici');
         this.tickers = await getTickers();
+        console.log('on devrait avoir les tickers ici');
+
         this.cmc = await getCmc();
         this.balances = await getBalances();
         this.loaded = true; // Mettez à jour la propriété loaded une fois que les données sont chargées
@@ -36,10 +39,9 @@ export default {
         console.error("Une erreur s'est produite lors de la récupération des données :", error);
       }
     },
-    calculateBalanceValue(balances) {
-      console.log('balances', balances);
+    calculateBalanceValue(balance) {
+      console.log('balance', balance);
       console.log('tickers', this.tickers);
-      return balances.map(balance => {
         if (this.tickers && this.tickers[balance.platform]) {
           console.log('enter in tickers');
           const tic = this.tickers[balance.platform];
@@ -58,7 +60,6 @@ export default {
             value: 0,
           };
         }
-      });
     },
   },
   async mounted() {
