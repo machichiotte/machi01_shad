@@ -26,12 +26,6 @@ export default {
     };
   },
   methods: {
-    handleDarkModeChange(isDarkMode) {
-      // Appliquez les ajustements de style en fonction de isDarkMode
-      // Par exemple, vous pouvez ajouter ou supprimer une classe CSS pour le mode sombre.
-      const container = document.querySelector('.pie-charts-container');
-      container.classList.toggle('dark-mode-container', isDarkMode);
-    },
     async getData() {
       try {
         this.tickers = await getTickers();
@@ -70,15 +64,9 @@ export default {
   async mounted() {
     try {
       await this.getData();
-      // Ajoutez un écouteur d'événements pour le changement de mode sombre ou clair
-      this.$root.$on('dark-mode-change', this.handleDarkModeChange);
     } catch (error) {
       console.error("Une erreur s'est produite lors de la récupération des données :", error);
     }
-  },
-  beforeUnmount() {
-    // Supprimez l'écouteur d'événements lors de la destruction du composant
-    this.$root.$off('dark-mode-change', this.handleDarkModeChange);
   },
   computed: {
     groupedBalances() {
@@ -112,14 +100,6 @@ export default {
 </script>
 
 <style scoped>
-/* Ajoutez des styles au besoin */
-
-.pie-charts-container.dark-mode {
-  /* Ajoutez les styles pour le mode sombre ici */
-  background-color: var(--dark-bg);
-  color: var(--dark-text);
-}
-
 .pie-charts-container {
   display: flex;
   justify-content: space-around;

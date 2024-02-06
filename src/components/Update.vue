@@ -2,18 +2,14 @@
 <template>
   <div>
     <h1>Mise à jour des données</h1>
-
     <h2>Possibilité de mise à jour</h2>
-
     <button @click="fetchAndUpdateCoinMarketCapData">Update Data</button>
     <ul v-if="cryptoData">
       <li v-for="crypto in cryptoData" :key="crypto.name">
         {{ crypto['cmc_rank'] }} - {{ crypto.name }}
       </li>
     </ul>
-
     <button @click="updateAllExchangeTrades()">Update All Trades</button>
-
     <div>
       <button v-for="exchangeId in exchangeIds" :key="exchangeId" @click="updateExchangeData(exchangeId)">
         Update All {{ exchangeId.toUpperCase() }}
@@ -130,7 +126,7 @@ export default {
     <b>Solde :</b> ${balanceErrorMessage} <br>
     <b>Ordres :</b> ${ordersErrorMessage} <br>
   `;
-  errorSpinHtml('Échec de la sauvegarde', resultText, true, true);
+      errorSpinHtml('Échec de la sauvegarde', resultText, true, true);
     },
 
     showUpdateResultWithError(exchangeId, isBalanceOk, good_data, bad_data) {
