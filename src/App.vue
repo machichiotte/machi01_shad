@@ -2,7 +2,8 @@
 <template>
   <div id="app" :class="{ 'dark-mode': isDarkMode }">
     <div class="site-title">
-      <img src="@/assets/logo_machi.svg" alt="Titre de votre site" />
+      <logo-machi :color="isDarkMode ? light : dark "></logo-machi>
+
     </div>
     <button class="dark-mode-button" @click="toggleDarkMode">☾</button>
 
@@ -34,6 +35,9 @@ export default {
     return {
       isMenuOpen: false,
       isDarkMode: false,
+      dark: '#2c3e50', 
+      light: '#ffffff', 
+
     };
   },
   methods: {
