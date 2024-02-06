@@ -70,27 +70,10 @@ export default {
   },
   computed: {
     groupedBalances() {
-      // Filtrer les balances par plateforme (Binance dans ce cas)
-      const binanceBalances = this.balances.filter(balance => balance.platform === 'binance');
-      const kucoinBalances = this.balances.filter(balance => balance.platform === 'kucoin');
-      const htxBalances = this.balances.filter(balance => balance.platform === 'htx');
-      const okxBalances = this.balances.filter(balance => balance.platform === 'okx');
-
-      // Calculer la valeur en USD ou USDT pour chaque balance
-      const binanceBalancesWithValue = this.calculateBalanceValue(binanceBalances);
-      const kucoinBalancesWithValue = this.calculateBalanceValue(kucoinBalances);
-      const htxBalancesWithValue = this.calculateBalanceValue(htxBalances);
-      const okxBalancesWithValue = this.calculateBalanceValue(okxBalances);
-
-      // Regrouper les balances par plateforme avec la valeur calculée
-      const groupedBalances = {
-        binance: binanceBalancesWithValue,
-        kucoin: kucoinBalancesWithValue,
-        htx: htxBalancesWithValue,
-        okx: okxBalancesWithValue,
-      };
-
-      return groupedBalances;
+      return this.balances.reduce((groups, balance) => {
+        groups[balance.platform] = (groups[balance.platform] || []).concat(this.calculateBalanceValue(balance));
+        return groups;
+      }, {});
     },
   },
   components: {
