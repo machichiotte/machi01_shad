@@ -6,6 +6,7 @@ async function getCmc(req, res) {
     const collection = process.env.MONGODB_COLLECTION_CMC;
     await getData(req, res, collection, 'db_machi_shad.collection_cmc.json');
 }
+
 async function updateCmc(req, res) {
     const collection = process.env.MONGODB_COLLECTION_CMC;
     const API_KEY = process.env.CMC_APIKEY;
