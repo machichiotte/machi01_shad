@@ -27,6 +27,7 @@ async function connectMDB() {
             'collection_load_markets',
             'collection_strategy',
             'collection_trades',
+            'collection_tickers',
             'collection_last_update'
         ];
 

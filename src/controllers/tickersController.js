@@ -6,9 +6,12 @@ async function getAllTickers(req, res) {
     try {
         const collection = process.env.MONGODB_COLLECTION_TICKERS;
         const allTickers = await getData(req, res, collection, 'db_machi_shad.collection_tickers.json');
+        console.log('after allTickers in getAllTickers');
+        console.log('allTickers', allTickers);
         res.status(200).json(allTickers);
 
     } catch (error) {
+        res.status(500).json('getAllTickers');
         handleErrorResponse(res, error, 'getAllTickers');
     }
 }
@@ -28,6 +31,8 @@ async function getAllTickersByExchange(req, res, exchangeId) {
 
     } catch (error) {
         handleErrorResponse(res, error, 'getAllTickersByExchange');
+        res.status(500).json('getAllTickersByExchange');
+
     }
 }
 
@@ -55,6 +60,8 @@ async function getAllTickersBySymbolFromExchange(req, res, exchangeId, symbol) {
 
     } catch (error) {
         handleErrorResponse(res, error, 'getAllTickersBySymbolFromExchange');
+        res.status(500).json('getAllTickersBySymbolFromExchange');
+
     }
 }
 
@@ -93,6 +100,8 @@ async function updateAllTickers(req, res) {
 
     } catch (error) {
         handleErrorResponse(res, error, 'updateAllTickers');
+        res.status(500).json('updateAllTickers');
+
     }
 }
 

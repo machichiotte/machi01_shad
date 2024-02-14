@@ -131,15 +131,22 @@ async function saveLastUpdateToMongoDB(type, exchangeId) {
 
 // Fonction utilitaire pour obtenir des données
 async function getData(req, res, collection, mockDataFile) {
+  console.log('getData');
+
   try {
     let data;
 
+    console.log('getData try');
+
+
     if (process.env.OFFLINE_MODE === 'true') {
+    console.log('getData offline');
+
       const mockDataPath = `./mockData/mongodb/${mockDataFile}`;
       const jsonData = await fs.readFile(mockDataPath, 'utf8'); // Utilisation de fs.promises.readFile
       data = JSON.parse(jsonData);
     } else {
-      console.log(collection);
+      console.log('getData collection', collection);
       data = await getAllDataMDB(collection);
     }
 
