@@ -2,7 +2,7 @@
 
 <template>
   <div class="page">
-    <h1>Add new trades</h1>
+    <h1>Add new trades manually</h1>
     <div id="table">
       <form @submit.prevent="addTrades">
         <AddTradeForm :trades="trades" @removeRow="removeRow" />
