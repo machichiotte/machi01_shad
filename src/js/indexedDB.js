@@ -42,6 +42,10 @@ const openDatabase = async () => {
             if (!db.objectStoreNames.contains(STRATEGY)) {
                 db.createObjectStore(STRATEGY, { keyPath: 'asset' });
             }
+
+            if (!db.objectStoreNames.contains(TICKERS)) {
+                db.createObjectStore(TICKERS, { keyPath: '_id' });
+            }
         };
 
         request.onsuccess = (event) => {
@@ -55,22 +59,40 @@ const openDatabase = async () => {
 const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterExchange) => {
     try {
         const db = await openDatabase();
+        console.log('a');
         const transaction = db.transaction([storeName], 'readwrite');
+        console.log('b');
+
         const objectStore = transaction.objectStore(storeName);
+        console.log('c');
 
         const shouldFilterExchange = filterExchange !== null && filterExchange !== undefined;
         console.log('saveDataToIndexedDBInternal shouldFilterExchange', shouldFilterExchange);
 
         if (!shouldFilterExchange) {
+            console.log('clearObjectStore');
+
             await clearObjectStore(objectStore);
         } else {
+            console.log('clearObjectStoreByExchange');
+
             await clearObjectStoreByExchange(objectStore, filterExchange);
         }
 
+        console.log('d');
+
         if (data && data.length > 0) {
+
+            console.log('e');
+
             data.forEach((item) => {
+                console.log('item', item);
                 if (isValidItem(item, keyField)) {
+                console.log('isValidItem');
+
                     const itemToSave = createItemToSave(item, keyField);
+
+                    console.log('itemToSave',itemToSave);
 
                     if (shouldFilterExchange && itemToSave['platform'] !== filterExchange) {
                         console.log(`Skipping item with platform ${itemToSave['platform']}.`);
@@ -150,16 +172,12 @@ const isValidItem = (item, keyField) => {
 };
 
 const createItemToSave = (item, keyField) => {
-    const itemToSave = { [keyField]: item[keyField] };
-
-    for (const prop in item) {
-        if (prop !== keyField) {
-            itemToSave[prop] = item[prop];
-        }
-    }
-
-    return itemToSave;
+    return {
+        [keyField]: item[keyField],
+        ...item, // Copie des autres propriétés
+    };
 };
+
 
 const saveCmcToIndexedDB = async (data) => {
     await saveDataToIndexedDBInternal(CMC, data, 'cmc_rank', null);
@@ -186,7 +204,7 @@ const saveStrategyToIndexedDB = async (data) => {
 
 const saveTickersToIndexedDB = async (data) => {
     console.log('saveTickersToIndexedDB');
-    await saveDataToIndexedDBInternal(TICKERS, data, 'asset', null);
+    await saveDataToIndexedDBInternal(TICKERS, data, '_id', null);
 };
 
 const fetchDataFromIndexedDB = async (storeName) => {

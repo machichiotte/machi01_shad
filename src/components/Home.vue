@@ -26,11 +26,12 @@ export default {
     };
   },
   methods: {
-    async getData() {
+    async getHomeData() {
       try {
         console.log('on entre ici');
         this.tickers = await getTickers();
         console.log('on devrait avoir les tickers ici');
+        console.log('this.tickers', this.tickers);
 
         this.cmc = await getCmc();
         this.balances = await getBalances();
@@ -64,7 +65,7 @@ export default {
   },
   async mounted() {
     try {
-      await this.getData();
+      await this.getHomeData();
     } catch (error) {
       console.error("Une erreur s'est produite lors de la récupération des données :", error);
     }

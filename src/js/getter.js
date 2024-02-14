@@ -136,8 +136,8 @@ const cancelOrder = async (item) => {
     }
 }
 
-const shouldFetchFromServer = async (types) => {
-    console.log('shouldFetchFromServer types', types);
+const shouldFetchFromServer = async (type) => {
+    console.log('shouldFetchFromServer types', type);
     const currentTimestamp = Date.now();
     const collection = await fetch(`${serverHost}/${LAST_UPDATE}/get`);
 
@@ -145,18 +145,21 @@ const shouldFetchFromServer = async (types) => {
 
     // Fonction générique pour mettre à jour les données pour un type donné
     const updateData = async (type, exchange, refreshValue) => {
-        console.log('shouldFetchFromServer exchange', exchange);
+        console.log('shouldFetchFromServer const updateData exchange', exchange);
         const timestamp = collection[type][exchange];
 
-        if (timestamp === undefined || currentTimestamp - timestamp > refreshValue) {
+        if (timestamp != undefined || currentTimestamp - timestamp < refreshValue) {
+            console.log(`Pas besoin de mise à jour pour ${exchange}. Timestamp actuel : ${timestamp}`);
+            return false;
+        } else {
             try {
                 await fetch(`${serverHost}/${LAST_UPDATE}/update/${type}/${exchange}`);
                 console.log(`Mise à jour réussie pour ${exchange}. Nouveau timestamp : ${currentTimestamp}`);
+                return true;
             } catch (err) {
                 console.error(`Erreur lors de la mise à jour pour ${exchange}: ${err}`);
+                return false;
             }
-        } else {
-            console.log(`Pas besoin de mise à jour pour ${exchange}. Timestamp actuel : ${timestamp}`);
         }
     };
 
@@ -171,31 +174,33 @@ const shouldFetchFromServer = async (types) => {
     };
 
     // Mettre à jour les données pour chaque type spécifié dans le tableau "types"
-    for (const type of types) {
-        const refreshValue = refreshValues[type];
 
-        if (type === CMC || type == STRATEGY || type == TICKERS) {
-            const timestamp = collection[type];
-            console.log('currentTimestamp', currentTimestamp);
-            console.log('timestamp', timestamp);
-            if (currentTimestamp - timestamp > refreshValue) {
-                try {
-                    await fetch(`${serverHost}/${LAST_UPDATE}/update/${type}`);
-                    console.log(`Mise à jour réussie pour ${type}. Nouveau timestamp : ${currentTimestamp}`);
-                } catch (err) {
-                    console.error(`Erreur lors de la mise à jour pour ${type}: ${err}`);
-                }
-            } else {
-                console.log(`Pas besoin de mise à jour pour ${type}. Timestamp actuel : ${timestamp}`);
-            }
+    const refreshValue = refreshValues[type];
+
+    if (type === CMC || type == STRATEGY || type == TICKERS) {
+        const timestamp = collection[type];
+        console.log('currentTimestamp', currentTimestamp);
+        console.log('timestamp', timestamp);
+        if (timestamp != undefined && currentTimestamp - timestamp < refreshValue) {
+            console.log(`Pas besoin de mise à jour pour ${type}. Timestamp actuel : ${timestamp}`);
         } else {
-            for (const exchange in collection[type]) {
-                if (Object.prototype.hasOwnProperty.call(collection[type], exchange)) {
-                    await updateData(type, exchange, refreshValue);
-                }
+            try {
+                await fetch(`${serverHost}/${LAST_UPDATE}/update/${type}`);
+                console.log(`Mise à jour réussie pour ${type}. Nouveau timestamp : ${currentTimestamp}`);
+                return true;
+
+            } catch (err) {
+                console.error(`Erreur lors de la mise à jour pour ${type}: ${err}`);
+            }
+        }
+    } else {
+        for (const exchange in collection[type]) {
+            if (Object.prototype.hasOwnProperty.call(collection[type], exchange)) {
+                await updateData(type, exchange, refreshValue);
             }
         }
     }
+
 }
 
 // Create a generic method for fetching data
@@ -207,8 +212,13 @@ const fetchDataWithCache = async (dataType, apiEndpoint, saveToIndexedDBFunction
         console.log('fetchDataWithCache shouldFetch', shouldFetch);
 
         if (shouldFetch) {
+            console.log('fetchDataWithCache datatype + apiendpoint',dataType + ' -- ' + apiEndpoint);
+
             const response = await fetch(apiEndpoint);
+            console.log('fetchDataWithCache response',response);
+            // Check if the request was successful
             const data = await response.json();
+            console.log('fetchDataWithCache data',data);
 
             // Save the data to IndexedDB
             await saveToIndexedDBFunction(data);
