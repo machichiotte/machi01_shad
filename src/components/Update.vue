@@ -1,4 +1,5 @@
 <!-- src/components/Update.vue -->
+
 <template>
   <div>
     <h1>Mise à jour des données</h1>

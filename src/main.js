@@ -1,25 +1,32 @@
 // main.js
-import { createApp } from 'vue';
-import App from './App.vue';
-import router from '../router/index';
+import './assets/main.css'
 
-import VueSweetalert2 from 'vue-sweetalert2';
-import 'sweetalert2/dist/sweetalert2.min.css';
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
-import VueGoodTablePlugin from 'vue-good-table-next';
+import App from './App.vue'
+import router from './router/index'
+
+import VueSweetalert2 from 'vue-sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
+
+import VueGoodTablePlugin from 'vue-good-table-next'
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 
 import vClickOutside from 'v-click-outside'
 
-import PrimeVue from 'primevue/config';
+import PrimeVue from 'primevue/config'
 import 'primevue/resources/themes/aura-light-green/theme.css'
 
-import Button from "primevue/button"
-import DataTable from "primevue/datatable"
+import Button from 'primevue/button'
+import LogoMachi from './components/LogoMachi.vue'
 
-const app = createApp(App);
+const app = createApp(App)
+app.component('LogoMachi', LogoMachi)
+
+/*
 app.component('logoMachi', {
-    template: `<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="300" height="150" viewBox="250 250 500 500">
+  template: `<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="300" height="150" viewBox="250 250 500 500">
     <g transform="matrix(0.7,0,0,0.7,149.5757635564118,375.3727490229102)">
       <svg viewBox="0 0 396 141" data-background-color="#ffffff" preserveAspectRatio="xMidYMid meet" height="356" width="1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <g id="tight-bounds" transform="matrix(1,0,0,1,0.2399966921794885,0.015418891531538748)">
@@ -80,15 +87,16 @@ app.component('logoMachi', {
       </svg>
     </g>
   </svg>`,
-    props: ['color']
-  })
+  props: ['color']
+})*/
+
+app.use(createPinia())
 app.use(router)
 app.use(VueSweetalert2)
 app.use(VueGoodTablePlugin)
 app.use(vClickOutside)
-app.use(PrimeVue);
+app.use(PrimeVue)
 
-app.component('PrimeButton', Button);
-app.component('PrimeButton', DataTable);
+app.component('PrimeButton', Button)
 
 app.mount('#app')

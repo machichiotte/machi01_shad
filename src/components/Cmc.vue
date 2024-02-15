@@ -3,18 +3,55 @@
   <div class="page">
     <h1>CMC</h1>
     <div id="table">
-      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :search-options="{ enabled: true }"
-        :pagination-options="{ enabled: true }">
+      <vue-good-table
+        :columns="columns"
+        :rows="rows"
+        :skip-diacritics="true"
+        :search-options="{ enabled: true }"
+        :pagination-options="{ enabled: true }"
+      >
       </vue-good-table>
+
+      <DataTable
+        :value="items"
+        :rows="itemsPerPage"
+        :paginator="true"
+        :currentPage="currentPage"
+      >
+        <Column
+          v-for="(column, index) in columns"
+          :key="index"
+          :field="column.field"
+          :header="column.label"
+        ></Column>
+        <Paginator
+          :first="first"
+          :rows="rows"
+          :totalRecords="totalRecords"
+          :rowsPerPageOptions="[5, 10, 20]"
+          :onPageChange="onPageChange"
+        ></Paginator>
+      </DataTable>
     </div>
   </div>
 </template>
 
 <script>
 import { cmcColumns } from "../js/columns.js";
-import { getCmc } from "../js/getter.js"
+import { getCmc } from "../js/getter.js";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+
+import Paginator from "primevue/paginator";
+//import { Button } from 'primevue/button'; // For prime-button
 
 export default {
+  components: {
+    DataTable,
+    Column,
+    Paginator,
+    //Button, // Include Button component
+  },
   name: "CmcPage",
   data() {
     return {
@@ -43,9 +80,9 @@ export default {
     rows() {
       return this.paginatedItems.map((item) => {
         return {
-          'rank': item['cmc_rank'],
-          'name': item['name'],
-          'symbol': item['symbol']
+          rank: item["cmc_rank"],
+          name: item["name"],
+          symbol: item["symbol"],
         };
       });
     },
@@ -62,11 +99,11 @@ export default {
     },
     changePage(page) {
       this.currentPage = page;
-    }
+    },
   },
   mounted() {
     this.getData();
-  }
+  },
 };
 </script>
 
