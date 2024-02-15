@@ -31,7 +31,7 @@ import {
   saveCmcToIndexedDB
 } from '../js/indexedDB';
 
-const serverHost = process.env.VUE_APP_SERVER_HOST;
+const serverHost = import.meta.env.VITE_SERVER_HOST;
 const API_ENDPOINTS = {
   UPD_BALANCE: `${serverHost}/balance/update/`,
   ORDERS: `${serverHost}/orders/update/`,

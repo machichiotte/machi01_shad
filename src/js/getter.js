@@ -1,6 +1,6 @@
 import { fetchDataFromIndexedDB, saveTickersToIndexedDB, saveBalancesDataToIndexedDB, saveStrategyToIndexedDB, saveTradesDataToIndexedDB, saveOrdersDataToIndexedDB, saveCmcToIndexedDB } from "../js/indexedDB"
 
-const serverHost = process.env.VUE_APP_SERVER_HOST;
+const serverHost = import.meta.env.VITE_SERVER_HOST
 const CMC = 'cmc';
 const CONVERTER = 'converter';
 const STRATEGY = 'strategy';

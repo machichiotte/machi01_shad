@@ -46,7 +46,7 @@ import { getBalances, getStrategy } from '../js/getter.js';
 import { successSpin, errorSpin } from '../js/spinner.js';
 import { saveStrategyToIndexedDB } from '../js/indexedDB';
 
-const serverHost = process.env.VUE_APP_SERVER_HOST;
+const serverHost = import.meta.env.VITE_SERVER_HOST;
 
 export default {
     name: "StrategyPage",
