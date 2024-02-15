@@ -7,16 +7,16 @@
       <form @submit.prevent="addTrades">
         <AddTradeForm :trades="trades" @removeRow="removeRow" />
         <div style="text-align: center; margin-top: 10px">
-          <button
+          <prime-button
             type="button"
             @click="addRow"
-            style="font-size: 18px; padding: 10px 20px"
+            style="font-size: 18px; margin: 4px; padding: 10px 20px"
           >
             Add Row
-          </button>
-          <button type="submit" style="font-size: 18px; padding: 10px 20px">
+          </prime-button>
+          <prime-button type="submit" style="font-size: 18px; margin: 4px; padding: 10px 20px">
             Add Trades
-          </button>
+          </prime-button>
         </div>
       </form>
     </div>

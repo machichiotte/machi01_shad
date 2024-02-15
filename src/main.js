@@ -11,6 +11,11 @@ import 'vue-good-table-next/dist/vue-good-table-next.css'
 
 import vClickOutside from 'v-click-outside'
 
+import PrimeVue from 'primevue/config';
+import 'primevue/resources/themes/aura-light-green/theme.css'
+
+import Button from "primevue/button"
+
 const app = createApp(App);
 app.component('logoMachi', {
     template: `<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="300" height="150" viewBox="250 250 500 500">
@@ -80,4 +85,8 @@ app.use(router)
 app.use(VueSweetalert2)
 app.use(VueGoodTablePlugin)
 app.use(vClickOutside)
+app.use(PrimeVue);
+
+app.component('PrimeButton', Button);
+
 app.mount('#app')
