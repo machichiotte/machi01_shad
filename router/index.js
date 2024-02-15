@@ -1,14 +1,14 @@
 // router/index.js
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/components/Home.vue";
-import AddTrades from "@/components/AddTrades.vue";
-import Shad from "@/components/Shad.vue";
+import Home from "@comp/Home.vue";
+import AddTrades from "@comp/AddTrades.vue";
+import Shad from "@comp/Shad.vue";
 import Orders from "@comp/Orders.vue";
-import Cmc from "@/components/Cmc.vue";
-import Update from "@/components/Update.vue";
-import Strategy from "@/components/Strategy.vue";
-import Trades from "@/components/Trades.vue";
-import Converter from "@/components/Converter.vue";
+import Cmc from "@comp/Cmc.vue";
+import Update from "@comp/Update.vue";
+import Strategy from "@comp/Strategy.vue";
+import Trades from "@comp/Trades.vue";
+import Converter from "@comp/Converter.vue";
 
 const routes = [
   { path: "/", component: Home },
