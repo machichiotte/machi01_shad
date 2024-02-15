@@ -15,6 +15,7 @@ import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/aura-light-green/theme.css'
 
 import Button from "primevue/button"
+import DataTable from "primevue/datatable"
 
 const app = createApp(App);
 app.component('logoMachi', {
@@ -88,5 +89,6 @@ app.use(vClickOutside)
 app.use(PrimeVue);
 
 app.component('PrimeButton', Button);
+app.component('PrimeButton', DataTable);
 
 app.mount('#app')
