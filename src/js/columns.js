@@ -1,100 +1,100 @@
 // shadColumns.js
 const cmcColumns = [
-  { label: 'Rank', field: 'rank', numeric: true },
-  { label: 'Name', field: 'name' },
-  { label: 'Symbol', field: 'symbol' },
+  { header: 'Rank', field: 'rank', numeric: true },
+  { header: 'Name', field: 'name' },
+  { header: 'Symbol', field: 'symbol' },
 ]
 
 const ordersColumns = [
-  { label: 'oId', field: 'oId' },
-  { label: 'Platform', field: 'platform' },
-  { label: 'Symbol', field: 'symbol' },
-  { label: 'Type', field: 'type' },
-  { label: 'Side', field: 'side' },
-  { label: 'Amount', field: 'amount', numeric: true },
-  { label: 'Price', field: 'price', numeric: true },
+  { header: 'oId', field: 'oId' },
+  { header: 'Platform', field: 'platform' },
+  { header: 'Symbol', field: 'symbol' },
+  { header: 'Type', field: 'type' },
+  { header: 'Side', field: 'side' },
+  { header: 'Amount', field: 'amount', numeric: true },
+  { header: 'Price', field: 'price', numeric: true },
 ]
 
 const tradesColumns = [
-  { label: 'altA', field: 'altA' },
-  { label: 'altB', field: 'altB' },
-  { label: 'Date', field: 'date' },
-  { label: 'Pair', field: 'pair' },
-  { label: 'Type', field: 'type' },
-  { label: 'Price', field: 'price' },
-  { label: 'Amount', field: 'amount' },
-  { label: 'Total', field: 'total' },
-  { label: 'Total (USDT)', field: 'totalUSDT' },
-  { label: 'Fee', field: 'fee' },
-  { label: 'Feecoin', field: 'feecoin' },
-  { label: 'Platform', field: 'platform' },
-  { label: 'Explatform', field: 'explatform' }
+  { header: 'altA', field: 'altA' },
+  { header: 'altB', field: 'altB' },
+  { header: 'Date', field: 'date' },
+  { header: 'Pair', field: 'pair' },
+  { header: 'Type', field: 'type' },
+  { header: 'Price', field: 'price' },
+  { header: 'Amount', field: 'amount' },
+  { header: 'Total', field: 'total' },
+  { header: 'Total (USDT)', field: 'totalUSDT' },
+  { header: 'Fee', field: 'fee' },
+  { header: 'Feecoin', field: 'feecoin' },
+  { header: 'Platform', field: 'platform' },
+  { header: 'Explatform', field: 'explatform' }
 ]
 
 const shadColumns = [
-  { label: "Exchange", field: "exchangeId" },
+  { header: "Exchange", field: "exchangeId" },
 
-  { label: 'Icon', field: "iconUrl", html: true, },
-  { label: "Asset", field: "asset", },
-  { label: "Ratio", field: "ratioShad", type: 'number' },
-  { label: "Total shad", field: "totalShad", type: 'number' },
-  { label: "Rank", field: "rank", type: 'number' },
-  { label: "Average Entry Price", field: "averageEntryPrice", type: 'number' },
-  { label: "Total buy", field: "totalBuy", type: 'number' },
-  { label: "Max wanted", field: "maxExposition", numeric: true },
-  { label: "Percentage Difference", field: "percentageDifference", type: "percentage" },
-  { label: "Current Price", field: "currentPrice", type: 'number' }, { label: "Wallet", field: "currentPossession", type: 'number' }, { label: "Profit", field: "profit", type: 'number' },
-  { label: "Total sell", field: "totalSell", type: 'number' }, { label: "Recup shad", field: "recupShad", type: 'number' },  /*{
+  { header: 'Icon', field: "iconUrl", html: true, },
+  { header: "Asset", field: "asset", },
+  { header: "Ratio", field: "ratioShad", type: 'number' },
+  { header: "Total shad", field: "totalShad", type: 'number' },
+  { header: "Rank", field: "rank", type: 'number' },
+  { header: "Average Entry Price", field: "averageEntryPrice", type: 'number' },
+  { header: "Total buy", field: "totalBuy", type: 'number' },
+  { header: "Max wanted", field: "maxExposition", numeric: true },
+  { header: "Percentage Difference", field: "percentageDifference", type: "percentage" },
+  { header: "Current Price", field: "currentPrice", type: 'number' }, { header: "Wallet", field: "currentPossession", type: 'number' }, { header: "Profit", field: "profit", type: 'number' },
+  { header: "Total sell", field: "totalSell", type: 'number' }, { header: "Recup shad", field: "recupShad", type: 'number' },  /*{
     label:'Open Orders',
     children: [*/
-  { label: "Buy", field: "openBuyOrders", type: 'number' },
-  { label: "Sell", field: "openSellOrders", type: 'number' },  /*]
+  { header: "Buy", field: "openBuyOrders", type: 'number' },
+  { header: "Sell", field: "openSellOrders", type: 'number' },  /*]
 },*/
-  { label: "Quantite total achetee", field: "totalAmount", type: 'number' },
-  { label: "Balance", field: "balance", type: 'number' },  /*{
+  { header: "Quantite total achetee", field: "totalAmount", type: 'number' },
+  { header: "Balance", field: "balance", type: 'number' },  /*{
     label:'Recup',
     children: [*/
-  { label: "tp1", field: "recupTp1", type: 'number' },
-  { label: "tpX", field: "recupTpX", type: 'number' },  /* ]
+  { header: "tp1", field: "recupTp1", type: 'number' },
+  { header: "tpX", field: "recupTpX", type: 'number' },  /* ]
  },*/
   /*{
     label:'TP1',
     children: [*/
-  { label: "amount", field: "amountTp1", type: 'number' },
-  { label: "price", field: "priceTp1", type: 'number' },  /*]
+  { header: "amount", field: "amountTp1", type: 'number' },
+  { header: "price", field: "priceTp1", type: 'number' },  /*]
 },
 {
   label:'TP2',
   children: [*/
-  { label: "amount", field: "amountTp2", type: 'number' },
-  { label: "price", field: "priceTp2", type: 'number' },  /* ]
+  { header: "amount", field: "amountTp2", type: 'number' },
+  { header: "price", field: "priceTp2", type: 'number' },  /* ]
  },
  {
    label:'TP3',
    children: [*/
-  { label: "amount", field: "amountTp3", type: 'number' },
-  { label: "price", field: "priceTp3", type: 'number' },  /*]
+  { header: "amount", field: "amountTp3", type: 'number' },
+  { header: "price", field: "priceTp3", type: 'number' },  /*]
 },
 {
   label:'TP4',
   children: [*/
-  { label: "amount", field: "amountTp4", type: 'number' },
-  { label: "price", field: "priceTp4", type: 'number' },  /*]
+  { header: "amount", field: "amountTp4", type: 'number' },
+  { header: "price", field: "priceTp4", type: 'number' },  /*]
 },
 {
   label:'TP5',
   children: [*/
-  { label: "amount", field: "amountTp5", type: 'number' },
-  { label: "price", field: "priceTp5", type: 'number' },  /*]
+  { header: "amount", field: "amountTp5", type: 'number' },
+  { header: "price", field: "priceTp5", type: 'number' },  /*]
 },
 {
   label:'Percent Change',
   children: [*/
-  { label: "24h", field: "cryptoPercentChange24h", type: "percentage" },
-  { label: "7d", field: "cryptoPercentChange7d", type: "percentage" },
-  { label: "30d", field: "cryptoPercentChange30d", type: "percentage" },
-  { label: "60d", field: "cryptoPercentChange60d", type: "percentage" },
-  { label: "90d", field: "cryptoPercentChange90d", type: "percentage" },
+  { header: "24h", field: "cryptoPercentChange24h", type: "percentage" },
+  { header: "7d", field: "cryptoPercentChange7d", type: "percentage" },
+  { header: "30d", field: "cryptoPercentChange30d", type: "percentage" },
+  { header: "60d", field: "cryptoPercentChange60d", type: "percentage" },
+  { header: "90d", field: "cryptoPercentChange90d", type: "percentage" },
   /*]
 },*/
 ];

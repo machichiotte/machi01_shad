@@ -16,7 +16,7 @@
           v-for="(col, index) in cols"
           :key="index"
           :field="col.field"
-          :header="col.label"
+          :header="col.header"
         ></Column>
       </DataTable>
     </div>
@@ -44,21 +44,6 @@ export default {
     };
   },
   computed: {
-    paginatedItems() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.items.slice(startIndex, endIndex);
-    },
-    pageCount() {
-      return Math.ceil(this.items.length / this.itemsPerPage);
-    },
-    pages() {
-      const pages = [];
-      for (let i = 1; i <= this.pageCount; i++) {
-        pages.push(i);
-      }
-      return pages;
-    },
     rows() {
       return this.items.map((item) => {
         return {
@@ -72,15 +57,6 @@ export default {
   methods: {
     async getData() {
       this.items = await getCmc();
-    },
-    prevPage() {
-      this.currentPage--;
-    },
-    nextPage() {
-      this.currentPage++;
-    },
-    changePage(page) {
-      this.currentPage = page;
     },
   },
   mounted() {

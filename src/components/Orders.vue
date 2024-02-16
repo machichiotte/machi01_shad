@@ -3,113 +3,98 @@
   <div class="page">
     <h1>Ordres en cours</h1>
     <div id="table">
-      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
-        :search-options="{ enabled: true }" :pagination-options="{ enabled: true }"
-        v-on:selected-rows-change="selectionChanged" v-on:cell-click="showAssetDetails">
+      <DataTable
+        :value="rows"
+        :rows="itemsPerPage"
+        :paginator="true"
+        :currentPage="currentPage"
+        :paginatorPosition="bottom"
+      >
+        <Column
+          v-for="(col, index) in cols"
+          :key="index"
+          :field="col.field"
+          :header="col.header"
+        ></Column>
         <template #selected-row-actions>
           <MySellButtonVue :model="allRows" />
         </template>
-      </vue-good-table>
+      </DataTable>
     </div>
   </div>
 </template>
 
 <script>
-import { ordersColumns } from '../js/columns.js';
-import { getOrders } from '../js/getter.js';
+import { ordersColumns } from '../js/columns.js'
+import { getOrders } from '../js/getter.js'
 
-import MySellButtonVue from './MySellButton.vue';
+import MySellButtonVue from './MySellButton.vue'
 
-const ITEMS_PER_PAGE = 2000;
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import Button from 'primevue/button'
 
 //TODO myDeleteButton instead of MySellButton
 
 export default {
-  name: "OrdersPage",
+  components: {
+    MySellButtonVue,
+    DataTable,
+    Column,
+    Button
+  },
+  name: 'OrdersPage',
   data() {
     return {
       items: [],
-      pageSize: ITEMS_PER_PAGE,
+      itemsPerPage: 13,
       currentPage: 1,
-      columns: ordersColumns,
+      cols: ordersColumns,
       showOverlay: false,
+
       allRows: null,
-      selectedAsset: null,
-    };
-  },
-  components: {
-    MySellButtonVue
+      selectedAsset: null
+    }
   },
   computed: {
-    paginatedItems() {
-      if (Array.isArray(this.items)) {
-        return this.items.slice(
-          (this.currentPage - 1) * this.pageSize,
-          this.currentPage * this.pageSize
-        );
-      } else {
-        // Gérez le cas où this.items n'est pas un tableau
-        throw new Error("this.items is not an array:", this.items);
-      }
-    },
-    pageCount() {
-      return Math.ceil(this.items.length / this.pageSize);
-    },
-    pages() {
-      const pages = [];
-      for (let i = 1; i <= this.pageCount; i++) {
-        pages.push(i);
-      }
-      return pages;
-    },
     rows() {
-      return this.paginatedItems.map((item) => {
+      return this.items.map((item) => {
         return {
-          'oId': item['oId'],
-          'platform': item['platform'],
-          'symbol': item['symbol'],
-          'type': item['type'],
-          'side': item['side'],
-          'amount': item['amount'],
-          'price': item['price']
-        };
-      });
-    },
+          oId: item['oId'],
+          platform: item['platform'],
+          symbol: item['symbol'],
+          type: item['type'],
+          side: item['side'],
+          amount: item['amount'],
+          price: item['price']
+        }
+      })
+    }
   },
   methods: {
     async getData() {
-      this.items = await getOrders();
+      this.items = await getOrders()
     },
     selectionChanged(rows) {
-      this.allRows = rows;
+      this.allRows = rows
     },
     showAssetDetails(params) {
       // Vérifiez si la colonne cliquée est la colonne "asset"
       if (params.column.field === 'asset') {
         // Affichez l'overlay
-        this.showOverlay = true;
+        this.showOverlay = true
         // Définissez la ligne sélectionnée
-        this.selectedAsset = params.row;
+        this.selectedAsset = params.row
       }
     },
     closeOverlay() {
-      this.showOverlay = false;
-    },
-
-    prevPage() {
-      this.currentPage--;
-    },
-    nextPage() {
-      this.currentPage++;
-    },
-    changePage(page) {
-      this.currentPage = page;
-    },
+      this.showOverlay = false
+    }
   },
   mounted() {
-    this.getData();
+    this.getData()
   }
-};
+}
 </script>
 
 <style scoped>
