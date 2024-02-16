@@ -3,9 +3,19 @@
   <div class="page">
     <h1>Liste des trades</h1>
     <div id="table">
-      <vue-good-table :columns="tradesColumns" :rows="rows" :skip-diacritics="true" :select-options="{ enabled: true }"
-        :search-options="{ enabled: true }" :pagination-options="{ enabled: true }">
-      </vue-good-table>
+      
+      <DataTable
+        :value="rows"
+        :rows="itemsPerPage"
+        :paginator="true"
+      >
+        <Column
+          v-for="(col, index) in cols"
+          :key="index"
+          :field="col.field"
+          :header="col.header"
+        ></Column>
+      </DataTable>
     </div>
   </div>
 </template>
@@ -14,34 +24,26 @@
 import { tradesColumns } from "../js/columns.js";
 import { getTrades } from '../js/getter.js';
 
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+
 export default {
+  components: {
+    DataTable,
+    Column
+  },
   name: "TradesPage",
   data() {
     return {
       items: [],
-      itemsPerPage: 10000,
+      itemsPerPage: 13,
       currentPage: 1,
-      tradesColumns: tradesColumns,
+      cols: tradesColumns,
     };
   },
   computed: {
-    paginatedItems() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.items.slice(startIndex, endIndex);
-    },
-    pageCount() {
-      return Math.ceil(this.items.length / this.itemsPerPage);
-    },
-    pages() {
-      const pages = [];
-      for (let i = 1; i <= this.pageCount; i++) {
-        pages.push(i);
-      }
-      return pages;
-    },
     rows() {
-      return this.paginatedItems.map((item) => {
+      return this.items.map((item) => {
         return {
           'altA': item['altA'],
           'altB': item['altB'],
@@ -70,15 +72,6 @@ export default {
         const dateB = new Date(b.date);
         return dateB - dateA; // Trie par ordre décroissant
       });
-    },
-    prevPage() {
-      this.currentPage--;
-    },
-    nextPage() {
-      this.currentPage++;
-    },
-    changePage(page) {
-      this.currentPage = page;
     }
   },
   mounted() {

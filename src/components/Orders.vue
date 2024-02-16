@@ -8,7 +8,6 @@
         :rows="itemsPerPage"
         :paginator="true"
         :currentPage="currentPage"
-        :paginatorPosition="bottom"
       >
         <Column
           v-for="(col, index) in cols"
@@ -32,7 +31,6 @@ import MySellButtonVue from './MySellButton.vue'
 
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import Button from 'primevue/button'
 
 //TODO myDeleteButton instead of MySellButton
 
@@ -40,8 +38,7 @@ export default {
   components: {
     MySellButtonVue,
     DataTable,
-    Column,
-    Button
+    Column
   },
   name: 'OrdersPage',
   data() {
