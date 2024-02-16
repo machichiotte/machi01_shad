@@ -1,36 +1,23 @@
 <!-- src/components/Cmc.vue -->
+
 <template>
   <div class="page">
     <h1>CMC</h1>
     <div id="table">
-      <vue-good-table
-        :columns="columns"
-        :rows="rows"
-        :skip-diacritics="true"
-        :search-options="{ enabled: true }"
-        :pagination-options="{ enabled: true }"
-      >
-      </vue-good-table>
 
       <DataTable
-        :value="items"
+        :value="rows"
         :rows="itemsPerPage"
         :paginator="true"
         :currentPage="currentPage"
+        :paginatorPosition="bottom"
       >
         <Column
-          v-for="(column, index) in columns"
+          v-for="(col, index) in cols"
           :key="index"
-          :field="column.field"
-          :header="column.label"
+          :field="col.field"
+          :header="col.label"
         ></Column>
-        <Paginator
-          :first="first"
-          :rows="rows"
-          :totalRecords="totalRecords"
-          :rowsPerPageOptions="[5, 10, 20]"
-          :onPageChange="onPageChange"
-        ></Paginator>
       </DataTable>
     </div>
   </div>
@@ -42,23 +29,18 @@ import { getCmc } from "../js/getter.js";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 
-import Paginator from "primevue/paginator";
-//import { Button } from 'primevue/button'; // For prime-button
-
 export default {
   components: {
     DataTable,
-    Column,
-    Paginator,
-    //Button, // Include Button component
+    Column
   },
   name: "CmcPage",
   data() {
     return {
       items: [],
-      itemsPerPage: 20000,
+      itemsPerPage: 13,
       currentPage: 1,
-      columns: cmcColumns,
+      cols: cmcColumns,
     };
   },
   computed: {
@@ -78,7 +60,7 @@ export default {
       return pages;
     },
     rows() {
-      return this.paginatedItems.map((item) => {
+      return this.items.map((item) => {
         return {
           rank: item["cmc_rank"],
           name: item["name"],
