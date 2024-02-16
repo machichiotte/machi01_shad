@@ -7,16 +7,16 @@
       <form @submit.prevent="addTrades">
         <AddTradeForm :trades="trades" @removeRow="removeRow" />
         <div style="text-align: center; margin-top: 10px">
-          <prime-button
+          <Button
             type="button"
             @click="addRow"
             style="font-size: 18px; margin: 4px; padding: 10px 20px"
           >
             Add Row
-          </prime-button>
-          <prime-button type="submit" style="font-size: 18px; margin: 4px; padding: 10px 20px">
+          </Button>
+          <Button type="submit" style="font-size: 18px; margin: 4px; padding: 10px 20px">
             Add Trades
-          </prime-button>
+          </Button>
         </div>
       </form>
     </div>
@@ -26,6 +26,7 @@
 <script>
 import AddTradeForm from "@/components/AddTradeForm.vue";
 import { successSpin, errorSpin } from "../js/spinner.js";
+import Button from "primevue/button";
 
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 
@@ -33,7 +34,8 @@ export default {
   name: "AddTradesPage",
   components: {
     AddTradeForm,
-  },
+    Button
+},
   methods: {
     async addTrades() {
       successSpin(

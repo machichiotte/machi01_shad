@@ -9,8 +9,6 @@
         :value="rows"
         :rows="itemsPerPage"
         :paginator="true"
-        :currentPage="currentPage"
-        :paginatorPosition="bottom"
       >
         <Column
           v-for="(col, index) in cols"

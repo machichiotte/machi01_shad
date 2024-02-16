@@ -1,7 +1,6 @@
 <!-- src/components/OrdersTable.vue -->
 
 <template>
-  <data-table class="my-datatable"> </data-table>
   <DataTable :value="rows" :rows="itemsPerPage">
     <Column
       v-for="(col, index) in cols"

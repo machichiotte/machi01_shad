@@ -4,30 +4,30 @@
   <div>
     <h1>Mise à jour des données</h1>
     <h2>Possibilité de mise à jour</h2>
-    <prime-button
+    <Button
       @click="fetchAndUpdateCoinMarketCapData"
       style="font-size: 18px; margin: 4px"
-      >Update Data</prime-button
+      >Update Data</Button
     >
     <ul v-if="cryptoData">
       <li v-for="crypto in cryptoData" :key="crypto.name">
         {{ crypto["cmc_rank"] }} - {{ crypto.name }}
       </li>
     </ul>
-    <prime-button
+    <Button
       @click="updateAllExchangeTrades()"
       style="font-size: 18px; margin: 4px"
-      >Update All Trades</prime-button
+      >Update All Trades</Button
     >
     <div>
-      <prime-button
+      <Button
         v-for="exchangeId in exchangeIds"
         :key="exchangeId"
         @click="updateExchangeData(exchangeId)"
         style="font-size: 18px; margin: 4px"
       >
         Update All {{ exchangeId.toUpperCase() }}
-      </prime-button>
+      </Button>
     </div>
   </div>
 </template>
