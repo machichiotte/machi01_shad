@@ -121,7 +121,7 @@ function getBalance(asset, sortedBalances) {
 
 function getIconUrl(id) {
     const baseIconUrl = 'https://s2.coinmarketcap.com/static/img/coins/32x32/';
-    return `<img src='${baseIconUrl}${parseInt(id)}.png' alt="Icon"  width="32" height="32"></img>`
+    return `${baseIconUrl}${parseInt(id)}.png`
 }
 
 function getCmcValues(asset, cmc) {

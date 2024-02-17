@@ -37,6 +37,7 @@
         scrollable
         :rows="itemsPerPage"
         :filters="filters"
+        columnResizeMode="fit"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
@@ -62,21 +63,21 @@
               :rowspan="2"
             ></Column>
 
-            <Column header="Icon" :rowspan="2"/>
-            <Column header="Asset" :rowspan="2"/>
+            <Column header="Icon" :rowspan="2" />
+            <Column header="Asset" :rowspan="2" sortable />
             <Column header="Exchange" :rowspan="2" sortable style="min-width: 12rem" />
             <Column header="Ratio" :rowspan="2" sortable />
             <Column header="Total Shad" :rowspan="2" sortable />
-            <Column header="Rank"  :rowspan="2" sortable />
-            <Column header="Average Entry Price"  :rowspan="2" sortable />
-            <Column header="Total Buy"  :rowspan="2" sortable />
-            <Column header="Max wanted"  :rowspan="2" sortable />
-            <Column header="Percentage Difference" :rowspan="2"  sortable />
-            <Column header="Current Price" :rowspan="2"  sortable />
-            <Column header="Wallet"  :rowspan="2" sortable />
-            <Column header="Profit"  :rowspan="2" sortable />
-            <Column header="Total Sell"  :rowspan="2" sortable />
-            <Column header="Recup Shad" :rowspan="2"  sortable />
+            <Column header="Rank" :rowspan="2" sortable />
+            <Column header="Average Entry Price" :rowspan="2" sortable />
+            <Column header="Total Buy" :rowspan="2" sortable />
+            <Column header="Max wanted" :rowspan="2" sortable />
+            <Column header="Percentage Difference" :rowspan="2" sortable />
+            <Column header="Current Price" :rowspan="2" sortable />
+            <Column header="Wallet" :rowspan="2" sortable />
+            <Column header="Profit" :rowspan="2" sortable />
+            <Column header="Total Sell" :rowspan="2" sortable />
+            <Column header="Recup Shad" :rowspan="2" sortable />
 
             <Column header="Open Orders" :colspan="2" />
 
@@ -84,7 +85,6 @@
             <Column header="Balance" :rowspan="2" sortable />
 
             <Column header="Take Profit" :colspan="2" />
-
 
             <Column header="TP1" :colspan="2" />
             <Column header="TP2" :colspan="2" />
@@ -94,7 +94,6 @@
             <Column header="Performance" :colspan="5" />
           </Row>
           <Row>
-            
             <Column header="Buy" sortable />
             <Column header="Sell" sortable />
 
@@ -123,11 +122,12 @@
         <Column field="iconUrl">
           <template #body="slotProps">
             <img
-              :src="slotProps.data.image - url"
-              :alt="slotProps.data.asset"
-              class="border-round"
-            /> </template
-        ></Column>
+              :src="slotProps.data.iconUrl"
+              :alt="slotProps.data.iconUrl"
+              class="border-round icon-32"
+            />
+          </template>
+        </Column>
         <Column field="asset"></Column>
 
         <Column field="exchangeId" style="min-width: 12rem"></Column>
@@ -661,5 +661,10 @@ body {
 
 p {
   line-height: 1.75;
+}
+
+.icon-32 {
+  width: 32px;
+  height: 32px;
 }
 </style>
