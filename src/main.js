@@ -27,6 +27,8 @@ import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 import InputText from 'primevue/inputtext'
 import Column from 'primevue/column'
+import ColumnGroup from 'primevue/columngroup'
+import Row from 'primevue/row'
 import Dropdown from 'primevue/dropdown'
 import Dialog from 'primevue/dialog'
 import DialogService from 'primevue/dialogservice'
@@ -58,6 +60,8 @@ app.component('IconField', IconField)
 app.component('InputIcon', InputIcon)
 app.component('InputText', InputText)
 app.component('Column', Column)
+app.component('ColumnGroup', ColumnGroup)
+app.component('Row', Row)
 app.component('Dialog', Dialog)
 app.component('Dropdown', Dropdown)
 app.component('InputNumber', InputNumber)

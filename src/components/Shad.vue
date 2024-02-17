@@ -53,8 +53,74 @@
           </div>
         </template>
 
+        <ColumnGroup type="header">
+          <Row>
+            <Column
+              selectionMode="multiple"
+              style="width: 3rem"
+              :exportable="false"
+              :rowspan="2"
+            ></Column>
+
+            <Column header="Icon" :rowspan="2"/>
+            <Column header="Asset" :rowspan="2"/>
+            <Column header="Exchange" :rowspan="2" sortable style="min-width: 12rem" />
+            <Column header="Ratio" :rowspan="2" sortable />
+            <Column header="Total Shad" :rowspan="2" sortable />
+            <Column header="Rank"  :rowspan="2" sortable />
+            <Column header="Average Entry Price"  :rowspan="2" sortable />
+            <Column header="Total Buy"  :rowspan="2" sortable />
+            <Column header="Max wanted"  :rowspan="2" sortable />
+            <Column header="Percentage Difference" :rowspan="2"  sortable />
+            <Column header="Current Price" :rowspan="2"  sortable />
+            <Column header="Wallet"  :rowspan="2" sortable />
+            <Column header="Profit"  :rowspan="2" sortable />
+            <Column header="Total Sell"  :rowspan="2" sortable />
+            <Column header="Recup Shad" :rowspan="2"  sortable />
+
+            <Column header="Open Orders" :colspan="2" />
+
+            <Column header="Quantite total achetee" :rowspan="2" sortable />
+            <Column header="Balance" :rowspan="2" sortable />
+
+            <Column header="Take Profit" :colspan="2" />
+
+
+            <Column header="TP1" :colspan="2" />
+            <Column header="TP2" :colspan="2" />
+            <Column header="TP3" :colspan="2" />
+            <Column header="TP4" :colspan="2" />
+            <Column header="TP5" :colspan="2" />
+            <Column header="Performance" :colspan="5" />
+          </Row>
+          <Row>
+            
+            <Column header="Buy" sortable />
+            <Column header="Sell" sortable />
+
+            <Column header="tp1" sortable />
+            <Column header="tpX" sortable />
+            <Column header="amount" sortable />
+            <Column header="price" sortable />
+            <Column header="amount" sortable />
+            <Column header="price" sortable />
+            <Column header="amount" sortable />
+            <Column header="price" sortable />
+            <Column header="amount" sortable />
+            <Column header="price" sortable />
+            <Column header="amount" sortable />
+            <Column header="price" sortable />
+
+            <Column header="24h" sortable />
+            <Column header="7d" sortable />
+            <Column header="30d" sortable />
+            <Column header="60d" sortable />
+            <Column header="90d" sortable />
+          </Row>
+        </ColumnGroup>
+
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-        <Column field="iconUrl" header="Icon" frozen>
+        <Column field="iconUrl">
           <template #body="slotProps">
             <img
               :src="slotProps.data.image - url"
@@ -62,52 +128,37 @@
               class="border-round"
             /> </template
         ></Column>
-        <Column field="asset" header="Asset" frozen></Column>
+        <Column field="asset"></Column>
 
-        <Column field="exchangeId" header="Exchange" sortable style="min-width: 12rem"></Column>
-        <Column field="ratioShad" header="Ratio" sortable :type="'number'"></Column>
-        <Column field="totalShad" header="Total Shad" sortable :type="'number'"></Column>
-        <Column field="rank" header="Rank" sortable :type="'number'"></Column>
-        <Column
-          field="averageEntryPrice"
-          header="Average Entry Price"
-          sortable
-          :type="'number'"
-        ></Column>
-        <Column field="totalBuy" header="Total Buy" sortable :type="'number'"></Column>
-        <Column field="maxExposition" header="Max wanted" sortable :numeric="true"></Column>
-        <Column
-          field="percentageDifference"
-          header="Percentage Difference"
-          sortable
-          :type="'percentage'"
-        ></Column>
-        <Column field="currentPrice" header="Current Price" sortable :type="'number'"></Column>
-        <Column field="currentPossession" header="Wallet" sortable :type="'number'"></Column>
-        <Column field="profit" header="Profit" sortable :type="'number'"></Column>
-        <Column field="totalSell" header="Total Sell" sortable :type="'number'"></Column>
-        <Column field="recupShad" header="Recup shad" sortable :type="'number'"></Column>
-        <Column field="openBuyOrders" header="Buy" sortable :type="'number'"></Column>
-        <Column field="openSellOrders" header="Sell" sortable :type="'number'"></Column>
-        <Column
-          field="totalAmount"
-          header="Quantite total achetee"
-          sortable
-          :type="'number'"
-        ></Column>
-        <Column field="balance" header="Balance" sortable :type="'number'"></Column>
-        <Column field="recupTp1" header="tp1" sortable :type="'number'"></Column>
-        <Column field="recupTpX" header="tpX" sortable :type="'number'"></Column>
-        <Column field="amountTp1" header="TP1 amount" sortable :type="'number'"></Column>
-        <Column field="priceTp1" header="TP1 price" sortable :type="'number'"></Column>
-        <Column field="amountTp2" header="TP2 amount" sortable :type="'number'"></Column>
-        <Column field="priceTp2" header="TP2 price" sortable :type="'number'"></Column>
-        <Column field="amountTp3" header="TP3 amount" sortable :type="'number'"></Column>
-        <Column field="priceTp3" header="TP3 price" sortable :type="'number'"></Column>
-        <Column field="amountTp4" header="TP4 amount" sortable :type="'number'"></Column>
-        <Column field="priceTp4" header="TP4 price" sortable :type="'number'"></Column>
-        <Column field="amountTp5" header="TP5 amount" sortable :type="'number'"></Column>
-        <Column field="priceTp5" header="TP5 price" sortable :type="'number'"></Column>
+        <Column field="exchangeId" style="min-width: 12rem"></Column>
+        <Column field="ratioShad" :type="'number'"></Column>
+        <Column field="totalShad"></Column>
+        <Column field="rank"></Column>
+        <Column field="averageEntryPrice"></Column>
+        <Column field="totalBuy"></Column>
+        <Column field="maxExposition"></Column>
+        <Column field="percentageDifference"></Column>
+        <Column field="currentPrice"></Column>
+        <Column field="currentPossession"></Column>
+        <Column field="profit"></Column>
+        <Column field="totalSell"></Column>
+        <Column field="recupShad"></Column>
+        <Column field="openBuyOrders"></Column>
+        <Column field="openSellOrders"></Column>
+        <Column field="totalAmount"></Column>
+        <Column field="balance"></Column>
+        <Column field="recupTp1"></Column>
+        <Column field="recupTpX"></Column>
+        <Column field="amountTp1"></Column>
+        <Column field="priceTp1"></Column>
+        <Column field="amountTp2"></Column>
+        <Column field="priceTp2"></Column>
+        <Column field="amountTp3"></Column>
+        <Column field="priceTp3"></Column>
+        <Column field="amountTp4"></Column>
+        <Column field="priceTp4"></Column>
+        <Column field="amountTp5"></Column>
+        <Column field="priceTp5"></Column>
         <Column
           field="cryptoPercentChange24h"
           header="24h Percent Change"
