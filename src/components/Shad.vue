@@ -123,7 +123,7 @@
           <template #body="slotProps">
             <img
               :src="slotProps.data.iconUrl"
-              :alt="slotProps.data.iconUrl"
+              :alt="slotProps.data.asset"
               class="border-round icon-32"
             />
           </template>
@@ -137,10 +137,36 @@
         <Column field="averageEntryPrice"></Column>
         <Column field="totalBuy"></Column>
         <Column field="maxExposition"></Column>
-        <Column field="percentageDifference"></Column>
+        <Column field="percentageDifference">
+          <template #body="slotProps">
+            <span
+              :class="{
+                'text-green-500': slotProps.data.percentageDifference > 0,
+                'text-red-500': slotProps.data.percentageDifference < 0
+              }"
+            >
+              {{ (100 * slotProps.data.percentageDifference).toFixed(2) }}%
+            </span>
+          </template>
+        </Column>
         <Column field="currentPrice"></Column>
-        <Column field="currentPossession"></Column>
-        <Column field="profit"></Column>
+        <Column field="currentPossession">
+          <template #body="slotProps">
+            <span> {{ slotProps.data.currentPossession }}$ </span></template
+          ></Column
+        >
+        <Column field="profit">
+          <template #body="slotProps">
+            <span
+              :class="{
+                'text-green-500': slotProps.data.profit > 0,
+                'text-red-500': slotProps.data.profit < 0
+              }"
+            >
+              {{ slotProps.data.profit }}$
+            </span>
+          </template></Column
+        >
         <Column field="totalSell"></Column>
         <Column field="recupShad"></Column>
         <Column field="openBuyOrders"></Column>
@@ -159,36 +185,72 @@
         <Column field="priceTp4"></Column>
         <Column field="amountTp5"></Column>
         <Column field="priceTp5"></Column>
-        <Column
-          field="cryptoPercentChange24h"
-          header="24h Percent Change"
-          sortable
-          :type="'percentage'"
-        ></Column>
-        <Column
-          field="cryptoPercentChange7d"
-          header="7d Percent Change"
-          sortable
-          :type="'percentage'"
-        ></Column>
-        <Column
-          field="cryptoPercentChange30d"
-          header="30d Percent Change"
-          sortable
-          :type="'percentage'"
-        ></Column>
-        <Column
-          field="cryptoPercentChange60d"
-          header="60d Percent Change"
-          sortable
-          :type="'percentage'"
-        ></Column>
-        <Column
-          field="cryptoPercentChange90d"
-          header="90d Percent Change"
-          sortable
-          :type="'percentage'"
-        ></Column>
+
+        <Column field="cryptoPercentChange24h" sortable>
+          <template #body="slotProps">
+            <span
+              :class="{
+                'text-green-500': slotProps.data.cryptoPercentChange24h > 0,
+                'text-red-500': slotProps.data.cryptoPercentChange24h < 0
+              }"
+            >
+              {{ (100 * slotProps.data.cryptoPercentChange24h).toFixed(2) }}%
+            </span>
+          </template>
+        </Column>
+
+        <Column field="cryptoPercentChange7d" sortable>
+          <template #body="slotProps">
+            <span
+              :class="{
+                'text-green-500': slotProps.data.cryptoPercentChange7d > 0,
+                'text-red-500': slotProps.data.cryptoPercentChange7d < 0
+              }"
+            >
+              {{ (100 * slotProps.data.cryptoPercentChange7d).toFixed(2) }}%
+            </span>
+          </template>
+        </Column>
+
+        <Column field="cryptoPercentChange30d" sortable>
+          <template #body="slotProps">
+            <span
+              :class="{
+                'text-green-500': slotProps.data.cryptoPercentChange30d > 0,
+                'text-red-500': slotProps.data.cryptoPercentChange30d < 0
+              }"
+            >
+              {{ (100 * slotProps.data.cryptoPercentChange30d).toFixed(2) }}%
+            </span>
+          </template>
+        </Column>
+
+        <Column field="cryptoPercentChange60d" sortable>
+          <template #body="slotProps">
+            <span
+              :class="{
+                'text-green-500': slotProps.data.cryptoPercentChange60d > 0,
+                'text-red-500': slotProps.data.cryptoPercentChange60d < 0
+              }"
+            >
+              {{ (100 * slotProps.data.cryptoPercentChange60d).toFixed(2) }}%
+            </span>
+          </template>
+        </Column>
+
+        <Column field="cryptoPercentChange90d" sortable>
+          <template #body="slotProps">
+            <span
+              :class="{
+                'text-green-500': slotProps.data.cryptoPercentChange90d > 0,
+                'text-red-500': slotProps.data.cryptoPercentChange90d < 0
+              }"
+            >
+              {{ (100 * slotProps.data.cryptoPercentChange90d).toFixed(2) }}%
+            </span>
+          </template>
+        </Column>
+
         <!--
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
         <Column field="code" header="Code" sortable style="min-width: 12rem"></Column>
@@ -414,7 +476,6 @@ import { ProductService } from '@/service/ProductService'
 
 import { getCmc, getBalances, getTrades, getOrders, getStrategy } from '../js/getter.js'
 import { getAllCalculs } from '../js/calcul.js'
-import { shadColumns } from '../js/columns.js'
 //import MySellButtonVue from './MySellButton.vue';
 import Overlay from './ShadOverlay.vue'
 
@@ -426,7 +487,6 @@ const cmc = ref([])
 const buyOrders = ref([])
 const sellOrders = ref([])
 const itemsPerPage = ref(4)
-const currentPage = ref(1)
 const showOverlay = ref(false)
 const selectedAsset = ref({})
 const allRows = ref([])
@@ -666,5 +726,15 @@ p {
 .icon-32 {
   width: 32px;
   height: 32px;
+}
+
+/* Couleur verte */
+.text-green-500 {
+  color: #10b981; /* Vous pouvez ajuster cette couleur selon vos préférences */
+}
+
+/* Couleur rouge */
+.text-red-500 {
+  color: #ef4444; /* Vous pouvez ajuster cette couleur selon vos préférences */
 }
 </style>
