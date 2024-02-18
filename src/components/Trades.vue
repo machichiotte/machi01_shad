@@ -3,12 +3,26 @@
   <div class="page">
     <h1>Liste des trades</h1>
     <div id="table">
-      
       <DataTable
         :value="rows"
         :rows="itemsPerPage"
+        columnResizeMode="fit"
         :paginator="true"
+        scrollable
+        :filters="filters"
       >
+        <template #header>
+          <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+            <h4 class="m-0">Find Assets</h4>
+            <IconField iconPosition="left">
+              <InputIcon>
+                <i class="pi pi-search" />
+              </InputIcon>
+              <InputText v-model="filters['global'].value" placeholder="Search..." />
+            </IconField>
+          </div>
+        </template>
+
         <Column
           v-for="(col, index) in cols"
           :key="index"
@@ -20,64 +34,55 @@
   </div>
 </template>
 
-<script>
-import { tradesColumns } from "../js/columns.js";
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { tradesColumns } from '../js/columns.js';
 import { getTrades } from '../js/getter.js';
+import { FilterMatchMode } from 'primevue/api'
 
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
 
-export default {
-  components: {
-    DataTable,
-    Column
-  },
-  name: "TradesPage",
-  data() {
+const items = ref([]);
+const itemsPerPage = 13;
+const cols = tradesColumns;
+
+const rows = computed(() => {
+  return items.value.map((item) => {
     return {
-      items: [],
-      itemsPerPage: 13,
-      currentPage: 1,
-      cols: tradesColumns,
+      altA: item['altA'],
+      altB: item['altB'],
+      date: item['date'],
+      pair: item['pair'],
+      type: item['type'],
+      price: item['price'],
+      amount: item['amount'],
+      total: item['total'],
+      totalUSDT: item['totalUSDT'],
+      fee: item['fee'],
+      feecoin: item['feecoin'],
+      platform: item['platform'],
+      explatform: item['explatform']
     };
-  },
-  computed: {
-    rows() {
-      return this.items.map((item) => {
-        return {
-          'altA': item['altA'],
-          'altB': item['altB'],
-          'date': item['date'],
-          'pair': item['pair'],
-          'type': item['type'],
-          'price': item['price'],
-          'amount': item['amount'],
-          'total': item['total'],
-          'totalUSDT': item['totalUSDT'],
-          'fee': item['fee'],
-          'feecoin': item['feecoin'],
-          'platform': item['platform'],
-          'explatform': item['explatform']
-        };
-      })
-    }
-  },
-  methods: {
-    async getData() {
-      this.items = await getTrades();
-    },
-    sortItemsByDate() {
-      this.items.sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        return dateB - dateA; // Trie par ordre décroissant
-      });
-    }
-  },
-  mounted() {
-    this.getData();
-  }
+  });
+});
+
+const getData = async () => {
+  items.value = await getTrades();
 };
+
+onMounted(async () => {
+  //ProductService.getProducts().then((data) => (products.value = data))
+
+  try {
+    await getData()
+  } catch (error) {
+    console.error("Une erreur s'est produite lors de la récupération des données :", error)
+    // Affichez un message d'erreur à l'utilisateur si nécessaire
+  }
+})
+
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+})
 </script>
 
 <style scoped>

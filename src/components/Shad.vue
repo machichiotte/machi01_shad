@@ -39,12 +39,12 @@
         :filters="filters"
         columnResizeMode="fit"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        :rowsPerPageOptions="[5, 10, 25]"
+        :rowsPerPageOptions="[5, 10, 25,100,500]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
       >
         <template #header>
           <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 class="m-0">Manage Products</h4>
+            <h4 class="m-0">Find Assets</h4>
             <IconField iconPosition="left">
               <InputIcon>
                 <i class="pi pi-search" />
@@ -561,7 +561,6 @@ onMounted(async () => {
 
   try {
     await getData()
-    this.applyRowClasses()
   } catch (error) {
     console.error("Une erreur s'est produite lors de la récupération des données :", error)
     // Affichez un message d'erreur à l'utilisateur si nécessaire
