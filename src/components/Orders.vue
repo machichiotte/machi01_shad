@@ -1,4 +1,5 @@
 <!-- src/components/Orders.vue -->
+
 <template>
   <div class="page">
     <h1>Ordres en cours</h1>
@@ -57,6 +58,9 @@ const cols = ordersColumns
 const showOverlay = ref(false)
 const allRows = ref([])
 const selectedAsset = ref({})
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+})
 
 // Fonction calculée pour transformer les données
 const rows = computed(() => {
@@ -101,10 +105,6 @@ onMounted(async () => {
     console.error("Une erreur s'est produite lors de la récupération des données :", error)
     // Affichez un message d'erreur à l'utilisateur si nécessaire
   }
-})
-
-const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
 </script>
 

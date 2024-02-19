@@ -65,7 +65,10 @@
 
             <Column header="Icon" :rowspan="2" />
             <Column header="Asset" :rowspan="2" sortable />
+
+            header=""
             <Column header="Exchange" :rowspan="2" sortable style="min-width: 12rem" />
+            <Column header="Status" :rowspan="2" sortable />
             <Column header="Ratio" :rowspan="2" sortable />
             <Column header="Total Shad" :rowspan="2" sortable />
             <Column header="Rank" :rowspan="2" sortable />
@@ -131,6 +134,14 @@
         <Column field="asset"></Column>
 
         <Column field="exchangeId" style="min-width: 12rem"></Column>
+        <Column field="inventoryStatus" sortable style="min-width: 12rem">
+          <template #body="slotProps">
+            <Tag
+              :value="getStatusLabel(slotProps.data)"
+              :severity="getStatus(slotProps.data)"
+            />
+          </template>
+        </Column>
         <Column field="ratioShad" :type="'number'"></Column>
         <Column field="totalShad"></Column>
         <Column field="rank"></Column>
@@ -277,14 +288,7 @@
           </template>
         </Column>
       -->
-        <Column field="inventoryStatus" header="Status" sortable style="min-width: 12rem">
-          <template #body="slotProps">
-            <Tag
-              :value="slotProps.data.inventoryStatus"
-              :severity="getStatusLabel(slotProps.data.inventoryStatus)"
-            />
-          </template>
-        </Column>
+        
         <Column :exportable="false" style="min-width: 8rem">
           <template #body="slotProps">
             <Button
@@ -490,6 +494,9 @@ const itemsPerPage = ref(4)
 const showOverlay = ref(false)
 const selectedAsset = ref({})
 const allRows = ref([])
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+})
 
 const getData = async () => {
   console.log('getData')
@@ -575,9 +582,7 @@ const deleteProductDialog = ref(false)
 const deleteProductsDialog = ref(false)
 const product = ref({})
 const selectedProducts = ref()
-const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-})
+
 const submitted = ref(false)
 const statuses = ref([
   { label: 'INSTOCK', value: 'instock' },
@@ -679,19 +684,57 @@ const deleteSelectedProducts = () => {
   toast.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 })
 }
 
-const getStatusLabel = (status) => {
-  switch (status) {
-    case 'INSTOCK':
-      return 'success'
+const getStatus = (data) => {
+  console.log('get status label')
+  console.log('get status label2', data)
 
-    case 'LOWSTOCK':
-      return 'warning'
+  const openOrdersCount = data.openBuyOrders + data.openSellOrders // Combine buy and sell orders
 
-    case 'OUTOFSTOCK':
-      return 'danger'
+  switch (openOrdersCount) {
+    case 0:
+      return 'danger' // No open orders
+
+    case 1:
+      return 'warning' // Minimum open order
+
+    case 2:
+      return 'info' // Moderate open order activity
+
+    case 3:
+      return 'success' // Good amount of open orders
+
+    case 4:
+      return 'secondary' // High open order activity (might need attention)
 
     default:
-      return null
+      return 'contrast' // Default for unexpected order counts
+  }
+}
+
+const getStatusLabel = (data) => {
+  console.log('get status label')
+  console.log('get status label2', data)
+
+  const openOrdersCount = data.openBuyOrders + data.openSellOrders // Combine buy and sell orders
+
+  switch (openOrdersCount) {
+    case 0:
+      return 'aie aie aie' // No open orders
+
+    case 1:
+      return 'warning' // Minimum open order
+
+    case 2:
+      return 'info' // Moderate open order activity
+
+    case 3:
+      return 'success' // Good amount of open orders
+
+    case 4:
+      return 'secondary' // High open order activity (might need attention)
+
+    default:
+      return 'contrast' // Default for unexpected order counts
   }
 }
 </script>

@@ -42,7 +42,6 @@ import { FilterMatchMode } from 'primevue/api'
 
 const items = ref([])
 const itemsPerPage = 13
-const currentPage = ref(1)
 const cols = cmcColumns
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
@@ -59,15 +58,17 @@ const rows = computed(() => {
 })
 
 const getData = async () => {
+  items.value = await getCmc();
+};
+
+onMounted(async () => {
   try {
-    items.value = await getCmc()
+    await getData()
   } catch (error) {
     console.error("Une erreur s'est produite lors de la récupération des données :", error)
     // Affichez un message d'erreur à l'utilisateur si nécessaire
   }
-}
-
-onMounted(getData)
+})
 </script>
 
 <style scoped>

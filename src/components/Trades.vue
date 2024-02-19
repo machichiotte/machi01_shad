@@ -40,10 +40,12 @@ import { tradesColumns } from '../js/columns.js';
 import { getTrades } from '../js/getter.js';
 import { FilterMatchMode } from 'primevue/api'
 
-
 const items = ref([]);
 const itemsPerPage = 13;
 const cols = tradesColumns;
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+})
 
 const rows = computed(() => {
   return items.value.map((item) => {
@@ -70,18 +72,12 @@ const getData = async () => {
 };
 
 onMounted(async () => {
-  //ProductService.getProducts().then((data) => (products.value = data))
-
   try {
     await getData()
   } catch (error) {
     console.error("Une erreur s'est produite lors de la récupération des données :", error)
     // Affichez un message d'erreur à l'utilisateur si nécessaire
   }
-})
-
-const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
 </script>
 
