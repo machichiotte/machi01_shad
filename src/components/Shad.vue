@@ -39,7 +39,7 @@
         :filters="filters"
         columnResizeMode="fit"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        :rowsPerPageOptions="[5, 10, 25,100,500]"
+        :rowsPerPageOptions="[5, 10, 25, 100, 500]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
       >
         <template #header>
