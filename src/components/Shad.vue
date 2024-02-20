@@ -1,5 +1,4 @@
 <!-- src/components/Shad.vue -->
-
 <template>
   <div>
     <div class="card">
@@ -56,19 +55,12 @@
 
         <ColumnGroup type="header">
           <Row>
-            <Column
-              selectionMode="multiple"
-              style="width: 3rem"
-              :exportable="false"
-              :rowspan="2"
-            ></Column>
-
+            <Column selectionMode="multiple" style="width: 3rem" :exportable="false" :rowspan="2" />
             <Column header="Icon" :rowspan="2" />
             <Column header="Asset" :rowspan="2" sortable />
-
-            header=""
             <Column header="Exchange" :rowspan="2" sortable style="min-width: 12rem" />
             <Column header="Status" :rowspan="2" sortable />
+            <Column header="Strategy" :rowspan="2" sortable />
             <Column header="Ratio" :rowspan="2" sortable />
             <Column header="Total Shad" :rowspan="2" sortable />
             <Column header="Rank" :rowspan="2" sortable />
@@ -81,14 +73,10 @@
             <Column header="Profit" :rowspan="2" sortable />
             <Column header="Total Sell" :rowspan="2" sortable />
             <Column header="Recup Shad" :rowspan="2" sortable />
-
             <Column header="Open Orders" :colspan="2" />
-
             <Column header="Quantite total achetee" :rowspan="2" sortable />
             <Column header="Balance" :rowspan="2" sortable />
-
             <Column header="Take Profit" :colspan="2" />
-
             <Column header="TP1" :colspan="2" />
             <Column header="TP2" :colspan="2" />
             <Column header="TP3" :colspan="2" />
@@ -99,7 +87,6 @@
           <Row>
             <Column header="Buy" sortable />
             <Column header="Sell" sortable />
-
             <Column header="tp1" sortable />
             <Column header="tpX" sortable />
             <Column header="amount" sortable />
@@ -112,7 +99,6 @@
             <Column header="price" sortable />
             <Column header="amount" sortable />
             <Column header="price" sortable />
-
             <Column header="24h" sortable />
             <Column header="7d" sortable />
             <Column header="30d" sortable />
@@ -133,16 +119,29 @@
         </Column>
         <Column field="asset"></Column>
 
+<!--
+        <Column filterField="asset" :showFilterMenu="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
+          <template #body="{ data }">
+              <div class="flex align-items-center gap-2">
+                  <img :alt="data.asset" :src="`${data.iconUrl}`" style="width: 32px" />
+                  
+                  <span>{{ data.asset }}</span>
+              </div>
+          </template>
+      </Column>
+-->
+
         <Column field="exchangeId" style="min-width: 12rem"></Column>
         <Column field="inventoryStatus" sortable style="min-width: 12rem">
           <template #body="slotProps">
             <Tag
               :value="getStatusLabel(slotProps.data)"
-              :severity="getStatus(slotProps.data)"
+              :severity="getStatusSeverity(slotProps.data)"
             />
           </template>
         </Column>
-        <Column field="ratioShad" :type="'number'"></Column>
+        <Column field="strat"></Column>
+        <Column field="ratioShad"></Column>
         <Column field="totalShad"></Column>
         <Column field="rank"></Column>
         <Column field="averageEntryPrice"></Column>
@@ -163,9 +162,9 @@
         <Column field="currentPrice"></Column>
         <Column field="currentPossession">
           <template #body="slotProps">
-            <span> {{ slotProps.data.currentPossession }}$ </span></template
-          ></Column
-        >
+            <span> {{ slotProps.data.currentPossession }}$ </span>
+          </template>
+        </Column>
         <Column field="profit">
           <template #body="slotProps">
             <span
@@ -176,12 +175,12 @@
             >
               {{ slotProps.data.profit }}$
             </span>
-          </template></Column
-        >
+          </template>
+        </Column>
         <Column field="totalSell"></Column>
         <Column field="recupShad"></Column>
-        <Column field="openBuyOrders"></Column>
-        <Column field="openSellOrders"></Column>
+        <Column field="nbOpenBuyOrders"></Column>
+        <Column field="nbOpenSellOrders"></Column>
         <Column field="totalAmount"></Column>
         <Column field="balance"></Column>
         <Column field="recupTp1"></Column>
@@ -209,7 +208,6 @@
             </span>
           </template>
         </Column>
-
         <Column field="cryptoPercentChange7d" sortable>
           <template #body="slotProps">
             <span
@@ -222,7 +220,6 @@
             </span>
           </template>
         </Column>
-
         <Column field="cryptoPercentChange30d" sortable>
           <template #body="slotProps">
             <span
@@ -235,7 +232,6 @@
             </span>
           </template>
         </Column>
-
         <Column field="cryptoPercentChange60d" sortable>
           <template #body="slotProps">
             <span
@@ -248,7 +244,6 @@
             </span>
           </template>
         </Column>
-
         <Column field="cryptoPercentChange90d" sortable>
           <template #body="slotProps">
             <span
@@ -288,7 +283,7 @@
           </template>
         </Column>
       -->
-        
+
         <Column :exportable="false" style="min-width: 8rem">
           <template #body="slotProps">
             <Button
@@ -309,7 +304,7 @@
         </Column>
       </DataTable>
     </div>
-
+    <!--
     <Dialog
       v-model:visible="productDialog"
       :style="{ width: '450px' }"
@@ -469,19 +464,19 @@
         <Button label="Yes" icon="pi pi-check" text @click="deleteSelectedProducts" />
       </template>
     </Dialog>
-  </div>
+  --></div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { FilterMatchMode } from 'primevue/api'
-import { useToast } from 'primevue/usetoast'
-import { ProductService } from '@/service/ProductService'
+//import { useToast } from 'primevue/usetoast'
+//import { ProductService } from '@/service/ProductService'
 
 import { getCmc, getBalances, getTrades, getOrders, getStrategy } from '../js/getter.js'
 import { getAllCalculs } from '../js/calcul.js'
 //import MySellButtonVue from './MySellButton.vue';
-import Overlay from './ShadOverlay.vue'
+//import Overlay from './ShadOverlay.vue'
 
 const balances = ref([])
 const trades = ref([])
@@ -497,6 +492,8 @@ const allRows = ref([])
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
+const BINANCE_EXCHANGE_ID = 'binance';
+const BINANCE_THRESHOLD = 3; // 300%
 
 const getData = async () => {
   console.log('getData')
@@ -516,6 +513,7 @@ const getData = async () => {
   }
 }
 
+/*
 const closeOverlay = () => {
   if (showOverlay.value) showOverlay.value = false
 }
@@ -532,7 +530,7 @@ const onCellClick = (params) => {
     // Définissez la ligne sélectionnée
     selectedAsset.value = params.row
   }
-}
+}*/
 
 const sortedBalances = computed(() => {
   if (balances.value && balances.value.length > 0) {
@@ -574,7 +572,7 @@ onMounted(async () => {
   }
 })
 
-const toast = useToast()
+//const toast = useToast()
 const dt = ref()
 const products = ref()
 const productDialog = ref(false)
@@ -590,15 +588,19 @@ const statuses = ref([
   { label: 'OUTOFSTOCK', value: 'outofstock' }
 ])
 
+/*
 const formatCurrency = (value) => {
   if (value) return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
   return
 }
+*/
 const openNew = () => {
   product.value = {}
   submitted.value = false
   productDialog.value = true
 }
+
+/*
 const hideDialog = () => {
   productDialog.value = false
   submitted.value = false
@@ -638,6 +640,7 @@ const saveProduct = () => {
     product.value = {}
   }
 }
+*/
 const editProduct = (prod) => {
   product.value = { ...prod }
   productDialog.value = true
@@ -646,12 +649,15 @@ const confirmDeleteProduct = (prod) => {
   product.value = prod
   deleteProductDialog.value = true
 }
+
+/*
 const deleteProduct = () => {
   products.value = products.value.filter((val) => val.id !== product.value.id)
   deleteProductDialog.value = false
   product.value = {}
   toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 })
 }
+
 const findIndexById = (id) => {
   let index = -1
   for (let i = 0; i < products.value.length; i++) {
@@ -671,71 +677,141 @@ const createId = () => {
   }
   return id
 }
+*/
 const exportCSV = () => {
   dt.value.exportCSV()
 }
 const confirmDeleteSelected = () => {
   deleteProductsDialog.value = true
 }
+
+/*
 const deleteSelectedProducts = () => {
   products.value = products.value.filter((val) => !selectedProducts.value.includes(val))
   deleteProductsDialog.value = false
   selectedProducts.value = null
   toast.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 })
-}
+}*/
 
-const getStatus = (data) => {
-  console.log('get status label')
-  console.log('get status label2', data)
+const getStatusSeverity = (data) => {
+  if (data.nbOpenSellOrders == 0) {
+    return 'danger';
+  }
+  else if (data.currentPrice > data.priceTp1 || data.currentPrice > data.priceTp2 || data.currentPrice > data.priceTp3 || data.currentPrice > data.priceTp4 || data.currentPrice > data.priceTp5) {
+      return 'info'
 
-  const openOrdersCount = data.openBuyOrders + data.openSellOrders // Combine buy and sell orders
+    }
+  else {
+    const nb5 = data.status.reduce((acc, val) => acc + val, 0);
+    if (nb5 === 5) {
+      return 'success';
+    }
+    else {
+      if (data.exchangeId === BINANCE_EXCHANGE_ID) {
+        // Calculer le prix actuel multiplié par 300% (ou 3 fois le prix initial)
+        const priceThreshold = calculatePriceThreshold(data.currentPrice, BINANCE_THRESHOLD);
 
-  switch (openOrdersCount) {
-    case 0:
-      return 'danger' // No open orders
+        // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de chaque priceTp1 à priceTp5
+        for (let i = 0; i < 5; i++) {
+          // Vérifier si l'ordre correspondant n'a pas été placé (data.status[i] = 0)
+          if (data.status[i] === 0) {
+            // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de priceTp[i]
+            if (priceThreshold < data[`priceTp${i + 1}`]) {
+              // Si c'est le cas, les ordres peuvent être placés avec succès
+              return 'success';
 
-    case 1:
-      return 'warning' // Minimum open order
+            } else {
+              // Sinon, l'ordre ne peut pas être placé car le prix actuel a augmenté de 300%
+              return 'warning';
+            }
+          }
+        }
+      } else {
+        // Vérifier combien de paires consécutives sont bonnes à partir de tp1 jusqu'à tp5 dans le bon ordre.
+        const consecutivePairs = countConsecutivePairs(data.status);
 
-    case 2:
-      return 'info' // Moderate open order activity
-
-    case 3:
-      return 'success' // Good amount of open orders
-
-    case 4:
-      return 'secondary' // High open order activity (might need attention)
-
-    default:
-      return 'contrast' // Default for unexpected order counts
+        // En fonction du nombre de paires consécutives, renvoyer le niveau de sévérité approprié.
+        switch (consecutivePairs) {
+          case 0:
+            return 'warning'; 
+          case 1:
+            return 'info'; 
+          case 2:
+          case 3:
+          case 4:
+            return 'success'; 
+        }
+      }
+    }
   }
 }
 
 const getStatusLabel = (data) => {
-  console.log('get status label')
-  console.log('get status label2', data)
-
-  const openOrdersCount = data.openBuyOrders + data.openSellOrders // Combine buy and sell orders
-
-  switch (openOrdersCount) {
-    case 0:
-      return 'aie aie aie' // No open orders
-
-    case 1:
-      return 'warning' // Minimum open order
-
-    case 2:
-      return 'info' // Moderate open order activity
-
-    case 3:
-      return 'success' // Good amount of open orders
-
-    case 4:
-      return 'secondary' // High open order activity (might need attention)
-
-    default:
-      return 'contrast' // Default for unexpected order counts
+  if (data.nbOpenSellOrders == 0) {
+    return "Pas d'ordres ouverts"
   }
+  else if (data.currentPrice > data.priceTp1 || data.currentPrice > data.priceTp2 || data.currentPrice > data.priceTp3 || data.currentPrice > data.priceTp4 || data.currentPrice > data.priceTp5) {
+      return 'Tu peux vendre depuis un moment'
+
+    }
+  else {
+    console.log('data', data);
+    const nb5 = data.status.reduce((acc, val) => acc + val, 0);
+    if (nb5 === 5) {
+      return '5 ordres placés'
+    }
+    else if (data.currentPrice > data.priceTp1 || data.currentPrice > data.priceTp2 || data.currentPrice > data.priceTp3 || data.currentPrice > data.priceTp4 || data.currentPrice > data.priceTp5) {
+      return 'Tu peux vendre depuis un moment'
+
+    }
+    else {
+      if (data.exchangeId === BINANCE_EXCHANGE_ID) {
+        const binanceThreshold = 3; //300%
+        // Calculer le prix actuel multiplié par 300% (ou 3 fois le prix initial)
+        const priceThreshold = data.currentPrice + data.currentPrice * binanceThreshold;
+
+        // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de chaque priceTp1 à priceTp5
+        for (let i = 0; i < 5; i++) {
+          // Vérifier si l'ordre correspondant n'a pas été placé (data.status[i] = 0)
+          if (data.status[i] === 0) {
+            // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de priceTp[i]
+            if (priceThreshold < data[`priceTp${i + 1}`]) {
+              // Si c'est le cas, les ordres peuvent être placés avec succès
+             return "Max ordres placés";
+            
+
+            } else {
+              // Sinon, l'ordre ne peut pas être placé car le prix actuel a augmenté de 300%
+              return "Des ordres doivent être modifiés";
+            }
+          }
+        }
+      } else {
+        // Vérifier combien de paires consécutives sont bonnes à partir de tp1 jusqu'à tp5 dans le bon ordre.
+        const consecutivePairs = countConsecutivePairs(data.status);
+        // En fonction du nombre de paires consécutives, renvoyer le niveau de sévérité approprié.
+        const label = `${consecutivePairs} ${consecutivePairs > 1 ? 'correspondances' : 'correspondance'}`;
+
+        return label;
+      }
+    }
+  }
+}
+
+function calculatePriceThreshold(currentPrice, threshold) {
+  return currentPrice + currentPrice * threshold;
+}
+
+function countConsecutivePairs(status) {
+  let consecutivePairs = 0;
+  for (let i = 0; i < status.length; i++) {
+    if (status[i] === 1) {
+      consecutivePairs++;
+    } else {
+      break;
+    }
+  }
+  return consecutivePairs;
 }
 </script>
 
@@ -772,11 +848,13 @@ p {
 
 /* Couleur verte */
 .text-green-500 {
-  color: #10b981; /* Vous pouvez ajuster cette couleur selon vos préférences */
+  color: #10b981;
+  /* Vous pouvez ajuster cette couleur selon vos préférences */
 }
 
 /* Couleur rouge */
 .text-red-500 {
-  color: #ef4444; /* Vous pouvez ajuster cette couleur selon vos préférences */
+  color: #ef4444;
+  /* Vous pouvez ajuster cette couleur selon vos préférences */
 }
 </style>
