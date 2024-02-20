@@ -4,13 +4,22 @@
     <div class="card">
       <Toolbar class="mb-4">
         <template #start>
-          <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
+
+          <MySellButton
+            label="Add Sell Orders"
+            icon="pi pi-cart-plus"
+            severity="info"
+            class="mr-2"
+            :disabled="!selectedAssets || !selectedAssets.length"
+            :model="allRows"
+          />
+
           <Button
             label="Delete"
             icon="pi pi-trash"
             severity="danger"
             @click="confirmDeleteSelected"
-            :disabled="!selectedProducts || !selectedProducts.length"
+            :disabled="!selectedAssets || !selectedAssets.length"
           />
         </template>
 
@@ -30,12 +39,13 @@
       <DataTable
         ref="dt"
         :value="rows"
-        v-model:selection="selectedProducts"
+        v-model:selection="selectedAssets"
         dataKey="id"
         :paginator="true"
         scrollable
         :rows="itemsPerPage"
         :filters="filters"
+        :sort-mode="'multiple'"
         columnResizeMode="fit"
         :pt="{
           table: { style: 'min-width: 50rem' },
@@ -50,8 +60,7 @@
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
       >
         <template #header>
-          <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 class="m-0">Find Assets</h4>
+          <div class="flex justify-content-end">
             <IconField iconPosition="left">
               <InputIcon>
                 <i class="pi pi-search" />
@@ -133,6 +142,7 @@
         </Column>
         <Column field="asset" sortable frozen></Column>
 
+        <!-- Si on veux mettre dans une seule colonne asset et icon -->
         <!--
         <Column filterField="asset" :showFilterMenu="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
           <template #body="{ data }">
@@ -142,8 +152,8 @@
                   <span>{{ data.asset }}</span>
               </div>
           </template>
-      </Column>
--->
+        </Column>
+        -->
 
         <Column field="exchangeId" style="min-width: 12rem"></Column>
         <Column field="inventoryStatus" sortable style="min-width: 12rem">
@@ -478,7 +488,24 @@
         <Button label="Yes" icon="pi pi-check" text @click="deleteSelectedProducts" />
       </template>
     </Dialog>
-  --></div>
+  -->
+
+    <Dialog
+      v-model:visible="addSellOrdersDialog"
+      :style="{ width: '450px' }"
+      header="Confirm"
+      :modal="true"
+    >
+      <div class="confirmation-content">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+        <span v-if="product">Voulez vous placer vos ordres d'achat?</span>
+      </div>
+      <template #footer>
+        <Button label="No" icon="pi pi-times" text @click="addSellOrdersDialog = false" />
+        <Button label="Yes" icon="pi pi-check" text @click="deleteSelectedProducts" />
+      </template>
+    </Dialog>
+  </div>
 </template>
 
 <script setup>
@@ -489,6 +516,7 @@ import { FilterMatchMode } from 'primevue/api'
 
 import { getCmc, getBalances, getTrades, getOrders, getStrategy } from '../js/getter.js'
 import { getAllCalculs } from '../js/calcul.js'
+import MySellButton from './MySellButton.vue'
 //import MySellButtonVue from './MySellButton.vue';
 //import Overlay from './ShadOverlay.vue'
 
@@ -499,7 +527,7 @@ const orders = ref([])
 const cmc = ref([])
 const buyOrders = ref([])
 const sellOrders = ref([])
-const itemsPerPage = ref(4)
+const itemsPerPage = ref(10)
 const showOverlay = ref(false)
 const selectedAsset = ref({})
 const allRows = ref([])
@@ -590,10 +618,15 @@ onMounted(async () => {
 const dt = ref()
 const products = ref()
 const productDialog = ref(false)
+
 const deleteProductDialog = ref(false)
 const deleteProductsDialog = ref(false)
+
+const addSellOrderDialog = ref(false)
+const addSellOrdersDialog = ref(false)
+
 const product = ref({})
-const selectedProducts = ref()
+const selectedAssets = ref()
 
 const submitted = ref(false)
 const statuses = ref([
@@ -697,6 +730,10 @@ const exportCSV = () => {
 }
 const confirmDeleteSelected = () => {
   deleteProductsDialog.value = true
+}
+
+const confirmAddSellOrdersSelected = () => {
+  addSellOrdersDialog.value = true
 }
 
 /*
