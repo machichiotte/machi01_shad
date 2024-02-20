@@ -37,6 +37,14 @@
         :rows="itemsPerPage"
         :filters="filters"
         columnResizeMode="fit"
+        :pt="{
+          table: { style: 'min-width: 50rem' },
+          bodyrow: ({ props }) => ({
+            class: [{ 'font-bold': props.frozenRow }]
+          })
+        }"
+        :frozenValue="lockedCustomers"
+        scrollHeight="500px"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25, 100, 500]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
@@ -54,10 +62,16 @@
         </template>
 
         <ColumnGroup type="header">
-          <Row>
-            <Column selectionMode="multiple" style="width: 3rem" :exportable="false" :rowspan="2" />
-            <Column header="Icon" :rowspan="2" />
-            <Column header="Asset" :rowspan="2" sortable />
+          <Row frozen>
+            <Column
+              selectionMode="multiple"
+              style="width: 3rem"
+              frozen
+              :exportable="false"
+              :rowspan="2"
+            />
+            <Column header="Icon" :rowspan="2" frozen />
+            <Column header="Asset" :rowspan="2" sortable frozen />
             <Column header="Exchange" :rowspan="2" sortable style="min-width: 12rem" />
             <Column header="Status" :rowspan="2" sortable />
             <Column header="Strategy" :rowspan="2" sortable />
@@ -107,8 +121,8 @@
           </Row>
         </ColumnGroup>
 
-        <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-        <Column field="iconUrl">
+        <Column selectionMode="multiple" frozen style="width: 3rem" :exportable="false"></Column>
+        <Column field="iconUrl" frozen>
           <template #body="slotProps">
             <img
               :src="slotProps.data.iconUrl"
@@ -117,9 +131,9 @@
             />
           </template>
         </Column>
-        <Column field="asset"></Column>
+        <Column field="asset" sortable frozen></Column>
 
-<!--
+        <!--
         <Column filterField="asset" :showFilterMenu="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
           <template #body="{ data }">
               <div class="flex align-items-center gap-2">
@@ -492,8 +506,8 @@ const allRows = ref([])
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
-const BINANCE_EXCHANGE_ID = 'binance';
-const BINANCE_THRESHOLD = 3; // 300%
+const BINANCE_EXCHANGE_ID = 'binance'
+const BINANCE_THRESHOLD = 3 // 300%
 
 const getData = async () => {
   console.log('getData')
@@ -695,21 +709,23 @@ const deleteSelectedProducts = () => {
 
 const getStatusSeverity = (data) => {
   if (data.nbOpenSellOrders == 0) {
-    return 'danger';
-  }
-  else if (data.currentPrice > data.priceTp1 || data.currentPrice > data.priceTp2 || data.currentPrice > data.priceTp3 || data.currentPrice > data.priceTp4 || data.currentPrice > data.priceTp5) {
-      return 'info'
-
-    }
-  else {
-    const nb5 = data.status.reduce((acc, val) => acc + val, 0);
+    return 'danger'
+  } else if (
+    data.currentPrice > data.priceTp1 ||
+    data.currentPrice > data.priceTp2 ||
+    data.currentPrice > data.priceTp3 ||
+    data.currentPrice > data.priceTp4 ||
+    data.currentPrice > data.priceTp5
+  ) {
+    return 'info'
+  } else {
+    const nb5 = data.status.reduce((acc, val) => acc + val, 0)
     if (nb5 === 5) {
-      return 'success';
-    }
-    else {
+      return 'success'
+    } else {
       if (data.exchangeId === BINANCE_EXCHANGE_ID) {
         // Calculer le prix actuel multiplié par 300% (ou 3 fois le prix initial)
-        const priceThreshold = calculatePriceThreshold(data.currentPrice, BINANCE_THRESHOLD);
+        const priceThreshold = calculatePriceThreshold(data.currentPrice, BINANCE_THRESHOLD)
 
         // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de chaque priceTp1 à priceTp5
         for (let i = 0; i < 5; i++) {
@@ -718,28 +734,27 @@ const getStatusSeverity = (data) => {
             // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de priceTp[i]
             if (priceThreshold < data[`priceTp${i + 1}`]) {
               // Si c'est le cas, les ordres peuvent être placés avec succès
-              return 'success';
-
+              return 'success'
             } else {
               // Sinon, l'ordre ne peut pas être placé car le prix actuel a augmenté de 300%
-              return 'warning';
+              return 'warning'
             }
           }
         }
       } else {
         // Vérifier combien de paires consécutives sont bonnes à partir de tp1 jusqu'à tp5 dans le bon ordre.
-        const consecutivePairs = countConsecutivePairs(data.status);
+        const consecutivePairs = countConsecutivePairs(data.status)
 
         // En fonction du nombre de paires consécutives, renvoyer le niveau de sévérité approprié.
         switch (consecutivePairs) {
           case 0:
-            return 'warning'; 
+            return 'warning'
           case 1:
-            return 'info'; 
+            return 'info'
           case 2:
           case 3:
           case 4:
-            return 'success'; 
+            return 'success'
         }
       }
     }
@@ -749,26 +764,32 @@ const getStatusSeverity = (data) => {
 const getStatusLabel = (data) => {
   if (data.nbOpenSellOrders == 0) {
     return "Pas d'ordres ouverts"
-  }
-  else if (data.currentPrice > data.priceTp1 || data.currentPrice > data.priceTp2 || data.currentPrice > data.priceTp3 || data.currentPrice > data.priceTp4 || data.currentPrice > data.priceTp5) {
-      return 'Tu peux vendre depuis un moment'
-
-    }
-  else {
-    console.log('data', data);
-    const nb5 = data.status.reduce((acc, val) => acc + val, 0);
+  } else if (
+    data.currentPrice > data.priceTp1 ||
+    data.currentPrice > data.priceTp2 ||
+    data.currentPrice > data.priceTp3 ||
+    data.currentPrice > data.priceTp4 ||
+    data.currentPrice > data.priceTp5
+  ) {
+    return 'Tu peux vendre depuis un moment'
+  } else {
+    console.log('data', data)
+    const nb5 = data.status.reduce((acc, val) => acc + val, 0)
     if (nb5 === 5) {
       return '5 ordres placés'
-    }
-    else if (data.currentPrice > data.priceTp1 || data.currentPrice > data.priceTp2 || data.currentPrice > data.priceTp3 || data.currentPrice > data.priceTp4 || data.currentPrice > data.priceTp5) {
+    } else if (
+      data.currentPrice > data.priceTp1 ||
+      data.currentPrice > data.priceTp2 ||
+      data.currentPrice > data.priceTp3 ||
+      data.currentPrice > data.priceTp4 ||
+      data.currentPrice > data.priceTp5
+    ) {
       return 'Tu peux vendre depuis un moment'
-
-    }
-    else {
+    } else {
       if (data.exchangeId === BINANCE_EXCHANGE_ID) {
-        const binanceThreshold = 3; //300%
+        const binanceThreshold = 3 //300%
         // Calculer le prix actuel multiplié par 300% (ou 3 fois le prix initial)
-        const priceThreshold = data.currentPrice + data.currentPrice * binanceThreshold;
+        const priceThreshold = data.currentPrice + data.currentPrice * binanceThreshold
 
         // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de chaque priceTp1 à priceTp5
         for (let i = 0; i < 5; i++) {
@@ -777,41 +798,41 @@ const getStatusLabel = (data) => {
             // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de priceTp[i]
             if (priceThreshold < data[`priceTp${i + 1}`]) {
               // Si c'est le cas, les ordres peuvent être placés avec succès
-             return "Max ordres placés";
-            
-
+              return 'Max ordres placés'
             } else {
               // Sinon, l'ordre ne peut pas être placé car le prix actuel a augmenté de 300%
-              return "Des ordres doivent être modifiés";
+              return 'Des ordres doivent être modifiés'
             }
           }
         }
       } else {
         // Vérifier combien de paires consécutives sont bonnes à partir de tp1 jusqu'à tp5 dans le bon ordre.
-        const consecutivePairs = countConsecutivePairs(data.status);
+        const consecutivePairs = countConsecutivePairs(data.status)
         // En fonction du nombre de paires consécutives, renvoyer le niveau de sévérité approprié.
-        const label = `${consecutivePairs} ${consecutivePairs > 1 ? 'correspondances' : 'correspondance'}`;
+        const label = `${consecutivePairs} ${
+          consecutivePairs > 1 ? 'correspondances' : 'correspondance'
+        }`
 
-        return label;
+        return label
       }
     }
   }
 }
 
 function calculatePriceThreshold(currentPrice, threshold) {
-  return currentPrice + currentPrice * threshold;
+  return currentPrice + currentPrice * threshold
 }
 
 function countConsecutivePairs(status) {
-  let consecutivePairs = 0;
+  let consecutivePairs = 0
   for (let i = 0; i < status.length; i++) {
     if (status[i] === 1) {
-      consecutivePairs++;
+      consecutivePairs++
     } else {
-      break;
+      break
     }
   }
-  return consecutivePairs;
+  return consecutivePairs
 }
 </script>
 

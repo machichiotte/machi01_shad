@@ -28,7 +28,8 @@ function getRecupShad(totalBuy, totalSell, maxExposition) {
 
 function getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX) {
   if (maxExposition < totalBuy && maxExposition + totalSell < totalBuy) {
-    return totalBuy - maxExposition - totalSell
+    const difference = totalBuy - maxExposition - totalSell
+    return difference > 4.5 ? difference : recupTpX
   }
   return recupTpX
 }
