@@ -138,30 +138,18 @@
   </table>
 </template>
 
-<script>
+<script setup>
+// Importing necessary modules and functions
 import SelectPlatform from "./SelectPlatform.vue";
 import platformOptions from "../json/platforms.json";
+import { ref } from 'vue';
 
-export default {
-  props: {
-    trades: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  components: {
-    SelectPlatform,
-  },
-  data() {
-    // **Replace with a function**
-    return {
-      platformOptions,
-    };
-  },
-  methods: {
-    removeRow(index) {
-      this.$emit("removeRow", index);
-    },
-  },
-};
+// Define reactive data
+const trades = ref([]);
+const options = ref(platformOptions);
+
+// Define methods
+function removeRow(index) {
+  emit("removeRow", index);
+}
 </script>

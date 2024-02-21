@@ -41,143 +41,146 @@
     </div>
 </template>
   
-<script>
+<script setup>
+// Importing necessary modules and functions
+import { ref, onMounted } from 'vue';
+
 import { getBalances, getStrategy } from '../js/getter.js';
 import { successSpin, errorSpin } from '../js/spinner.js';
 import { saveStrategyToIndexedDB } from '../js/indexedDB';
 
+// Define server host
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 
-export default {
-    name: "StrategyPage",
-    data() {
-        return {
-            balance: [],
-            platforms: [],
-            assets: [],
-            strat: [],
-            stratMap: [],
-            selectedStrategy: "",
+// Define reactive data
+const balance = ref([]);
+const platforms = ref([]);
+const assets = ref([]);
+const strat = ref([]);
+const stratMap = ref([]);
+const selectedStrategy = ref("");
+
+// Define methods
+async function getData() {
+  try {
+    balance.value = await getBalances();
+    platforms.value = [...new Set(balance.value.map(item => item.platform))].sort();
+    assets.value = [...new Set(balance.value.map(item => item.symbol))].sort();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function getStrat() {
+  try {
+    const data = await getStrategy();
+    console.log('data', data);
+    if (data.length === 0) {
+      assets.value.forEach((asset) => {
+        let assetStrat = {
+          symbol: asset,
+          strategies: {},
         };
-    },
-    methods: {
-        async getData() {
-            try {
-                this.balance = await getBalances();
-                this.platforms = [...new Set(this.balance.map(item => item.platform))].sort();
-                this.assets = [...new Set(this.balance.map(item => item.symbol))].sort();
+        platforms.value.forEach((platform) => {
+          assetStrat.strategies[platform] = "";
+        });
+        strat.value.push(assetStrat);
+      });
+    } else {
+      strat.value = data;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
 
-            } catch (err) {
-                console.error(err);
-            }
-        },
-        async getStrat() {
-            try {
-                const data = await getStrategy();
-                console.log('data', data)
-                if (data.length === 0) {
-                    this.assets.forEach((asset) => {
-                        let assetStrat = {
-                            symbol: asset,
-                            strategies: {},
-                        };
-                        this.platforms.forEach((platform) => {
-                            assetStrat.strategies[platform] = "";
-                        });
-                        this.strat.push(assetStrat);
-                    });
-                } else {
-                    this.strat = data;
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        },
-        async updateStrat() {
-            this.stratMap = [];
-            try {
-                const rows = this.$refs.stratTable.querySelectorAll('tbody tr');
+async function updateStrat() {
+  stratMap.value = [];
+  try {
+    const rows = document.querySelectorAll('tbody tr');
 
-                rows.forEach((row) => {
-                    let asset = "";
-                    let strategies = {};
+    rows.forEach((row) => {
+      let asset = "";
+      let strategies = {};
 
-                    const cells = row.querySelectorAll('td');
+      const cells = row.querySelectorAll('td');
 
-                    cells.forEach((cell, index) => {
-                        if (index === 0) {
-                            asset = cell.textContent;
-                        } else {
-                            const colName = this.platforms[index - 1];
-                            const selectEl = cell.querySelector('select');
-                            strategies[colName] = selectEl.value;
-                        }
-                    });
-                    let rowData = {
-                        asset: asset,
-                        strategies: strategies,
-                    };
-                    this.stratMap.push(rowData);
-                });
+      cells.forEach((cell, index) => {
+        if (index === 0) {
+          asset = cell.textContent;
+        } else {
+          const colName = platforms.value[index - 1];
+          const selectEl = cell.querySelector('select');
+          strategies[colName] = selectEl.value;
+        }
+      });
+      let rowData = {
+        asset: asset,
+        strategies: strategies,
+      };
+      stratMap.value.push(rowData);
+    });
 
-                // Make the API call
-                const response = await fetch(`${serverHost}/strategy/update`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(this.stratMap),
-                });
+    // Make the API call
+    const response = await fetch(`${serverHost}/strategy/update`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(stratMap.value),
+    });
 
-                // Get the API call result
-                const data = await response.json();
+    // Get the API call result
+    const data = await response.json();
 
-                // Enregistrez les données dans IndexedDB
-                await saveStrategyToIndexedDB(data);
+    // Save data to IndexedDB
+    await saveStrategyToIndexedDB(data);
 
-                successSpin('Save completed', `Strat : ${this.stratMap.length}`, true, true);
+    successSpin('Save completed', `Strat : ${stratMap.value.length}`, true, true);
 
-            } catch (err) {
-                console.error(err);
-                // Show an error alert within the existing alert
-                errorSpin('Error', `${err}`, false, true);
-            }
+  } catch (err) {
+    console.error(err);
+    // Show an error alert within the existing alert
+    errorSpin('Error', `${err}`, false, true);
+  }
+}
 
-        },
-        async updateAllStrats() {
-            const selectedStrategy = this.selectedStrategy;
+async function updateAllStrats() {
+  const selectedStrategyValue = selectedStrategy.value;
 
-            this.strat.forEach((item) => {
-                const asset = item.asset;
-                const strategies = item.strategies || {};
+  strat.value.forEach((item) => {
+    const asset = item.asset;
+    const strategies = item.strategies || {};
 
-                this.platforms.forEach((platform) => {
-                    if (!this.isDisabled(asset, platform)) {
-                        strategies[platform] = selectedStrategy;
-                    }
-                });
+    platforms.value.forEach((platform) => {
+      if (!isDisabled(asset, platform)) {
+        strategies[platform] = selectedStrategyValue;
+      }
+    });
 
-                item.strategies = strategies;
-            });
-        },
-        getStratValue(asset, platform) {
-            const item = this.strat.find((item) => item.asset === asset);
-            return item ? item.strategies[platform] || '' : '';
-        },
-        setStratValue(asset, platform, value) {
-            const item = this.strat.find((item) => item.asset === asset);
-            if (item) {
-                item.strategies[platform] = value;
-            }
-        },
-        isDisabled(asset, platform) {
-            const assets = this.balance.filter(item => item.symbol === asset);
-            const platforms = assets.map(item => item.platform);
-            return !platforms.includes(platform);
-        },
-    },
-    async mounted() {
-        await this.getData();
-        await this.getStrat();
-    },
-};
+    item.strategies = strategies;
+  });
+}
+
+function getStratValue(asset, platform) {
+  const item = strat.value.find((item) => item.asset === asset);
+  return item ? item.strategies[platform] || '' : '';
+}
+
+function setStratValue(asset, platform, value) {
+  const item = strat.value.find((item) => item.asset === asset);
+  if (item) {
+    item.strategies[platform] = value;
+  }
+}
+
+function isDisabled(asset, platform) {
+  const assetsFiltered = balance.value.filter(item => item.symbol === asset);
+  const platformsFiltered = assetsFiltered.map(item => item.platform);
+  return !platformsFiltered.includes(platform);
+}
+
+// Fetch data on component mount
+onMounted(async () => {
+  await getData();
+  await getStrat();
+});
 </script>
-  

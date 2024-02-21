@@ -28,6 +28,7 @@
           :key="index"
           :field="col.field"
           :header="col.header"
+          sortable
         ></Column>
       </DataTable>
     </div>

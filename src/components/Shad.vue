@@ -4,7 +4,6 @@
     <div class="card">
       <Toolbar class="mb-4">
         <template #start>
-
           <MySellButton
             label="Add Sell Orders"
             icon="pi pi-cart-plus"
@@ -37,23 +36,21 @@
       </Toolbar>
 
       <DataTable
-        ref="dt"
-        :value="rows"
-        v-model:selection="selectedAssets"
-        dataKey="id"
-        :paginator="true"
-        scrollable
+        :value="items"
         :rows="itemsPerPage"
         :filters="filters"
-        :sort-mode="'multiple'"
-        columnResizeMode="fit"
         :pt="{
           table: { style: 'min-width: 50rem' },
           bodyrow: ({ props }) => ({
             class: [{ 'font-bold': props.frozenRow }]
           })
         }"
-        :frozenValue="lockedCustomers"
+        paginator
+        stripedRows
+        v-model:selection="selectedAssets"
+        selectionMode="multiple"
+        dataKey="id"
+        scrollable
         scrollHeight="500px"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25, 100, 500]"
@@ -71,34 +68,28 @@
         </template>
 
         <ColumnGroup type="header">
-          <Row frozen>
-            <Column
-              selectionMode="multiple"
-              style="width: 3rem"
-              frozen
-              :exportable="false"
-              :rowspan="2"
-            />
-            <Column header="Icon" :rowspan="2" frozen />
-            <Column header="Asset" :rowspan="2" sortable frozen />
-            <Column header="Exchange" :rowspan="2" sortable style="min-width: 12rem" />
-            <Column header="Status" :rowspan="2" sortable />
-            <Column header="Strategy" :rowspan="2" sortable />
-            <Column header="Ratio" :rowspan="2" sortable />
-            <Column header="Total Shad" :rowspan="2" sortable />
-            <Column header="Rank" :rowspan="2" sortable />
-            <Column header="Average Entry Price" :rowspan="2" sortable />
-            <Column header="Total Buy" :rowspan="2" sortable />
-            <Column header="Max wanted" :rowspan="2" sortable />
-            <Column header="Percentage Difference" :rowspan="2" sortable />
-            <Column header="Current Price" :rowspan="2" sortable />
-            <Column header="Wallet" :rowspan="2" sortable />
-            <Column header="Profit" :rowspan="2" sortable />
-            <Column header="Total Sell" :rowspan="2" sortable />
-            <Column header="Recup Shad" :rowspan="2" sortable />
+          <Row>
+            <!--<Column selectionMode="multiple" style="width: 3rem" exportable="false" rowspan="2" />-->
+            <Column header="Icon" field="iconUrl" :rowspan="2"  />
+            <Column header="Asset" field="asset" :rowspan="2" :sortable="true" />
+            <Column header="Exchange" field="exchangeId" :rowspan="2" sortable style="min-width: 12rem"  />
+            <Column header="Status" field="status" :rowspan="2" sortable />
+            <Column header="Strategy"  field="strat" :rowspan="2" sortable />
+            <Column header="Ratio"  field="ratioShad"  :rowspan="2" sortable />
+            <Column header="Total Shad" field="totalShad"  :rowspan="2" sortable />
+            <Column header="Rank"  field="rank" :rowspan="2" sortable />
+            <Column header="Average Entry Price"  field="averageEntryPrice" :rowspan="2" sortable />
+            <Column header="Total Buy"  field="totalBuy" :rowspan="2" sortable />
+            <Column header="Max wanted" field="maxExposition"  :rowspan="2" sortable />
+            <Column header="Percentage Difference" field="percentageDifference" :rowspan="2" sortable />
+            <Column header="Current Price" field="currentPrice" :rowspan="2" sortable />
+            <Column header="Wallet" field="currentPossession" :rowspan="2" sortable />
+            <Column header="Profit" field="profit" :rowspan="2" sortable />
+            <Column header="Total Sell" field="totalSell" :rowspan="2" sortable />
+            <Column header="Recup Shad" field="recupShad" :rowspan="2" sortable />
             <Column header="Open Orders" :colspan="2" />
-            <Column header="Quantite total achetee" :rowspan="2" sortable />
-            <Column header="Balance" :rowspan="2" sortable />
+            <Column header="Quantite total achetee" field="totalAmount" :rowspan="2" sortable />
+            <Column header="Balance"  field="balance" :rowspan="2" sortable />
             <Column header="Take Profit" :colspan="2" />
             <Column header="TP1" :colspan="2" />
             <Column header="TP2" :colspan="2" />
@@ -108,30 +99,30 @@
             <Column header="Performance" :colspan="5" />
           </Row>
           <Row>
-            <Column header="Buy" sortable />
-            <Column header="Sell" sortable />
-            <Column header="tp1" sortable />
-            <Column header="tpX" sortable />
-            <Column header="amount" sortable />
-            <Column header="price" sortable />
-            <Column header="amount" sortable />
-            <Column header="price" sortable />
-            <Column header="amount" sortable />
-            <Column header="price" sortable />
-            <Column header="amount" sortable />
-            <Column header="price" sortable />
-            <Column header="amount" sortable />
-            <Column header="price" sortable />
-            <Column header="24h" sortable />
-            <Column header="7d" sortable />
-            <Column header="30d" sortable />
-            <Column header="60d" sortable />
-            <Column header="90d" sortable />
+            <Column header="Buy" field="nbOpenBuyOrders" sortable />
+            <Column header="Sell" field="nbOpenSellOrders" sortable />
+            <Column header="tp1" field="recupTp1" sortable />
+            <Column header="tpX" field="recupTpX" sortable />
+            <Column header="amount" field="amountTp1" sortable />
+            <Column header="price" field="priceTp1" sortable />
+            <Column header="amount" field="amountTp2" sortable />
+            <Column header="price" field="priceTp2" sortable />
+            <Column header="amount" field="amountTp3" sortable />
+            <Column header="price" field="priceTp3" sortable />
+            <Column header="amount" field="amountTp4" sortable />
+            <Column header="price" field="priceTp4" sortable />
+            <Column header="amount" field="amountTp5" sortable />
+            <Column header="price" field="priceTp5" sortable />
+            <Column header="24h" field="cryptoPercentChange24h" sortable />
+            <Column header="7d" field="cryptoPercentChange7d" sortable />
+            <Column header="30d" field="cryptoPercentChange30d" sortable />
+            <Column header="60d" field="cryptoPercentChange60d" sortable />
+            <Column header="90d" field="cryptoPercentChange90d" sortable />
           </Row>
         </ColumnGroup>
 
-        <Column selectionMode="multiple" frozen style="width: 3rem" :exportable="false"></Column>
-        <Column field="iconUrl" frozen>
+        <!-- <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column> -->
+        <Column field="iconUrl">
           <template #body="slotProps">
             <img
               :src="slotProps.data.iconUrl"
@@ -140,23 +131,9 @@
             />
           </template>
         </Column>
-        <Column field="asset" sortable frozen></Column>
-
-        <!-- Si on veux mettre dans une seule colonne asset et icon -->
-        <!--
-        <Column filterField="asset" :showFilterMenu="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
-          <template #body="{ data }">
-              <div class="flex align-items-center gap-2">
-                  <img :alt="data.asset" :src="`${data.iconUrl}`" style="width: 32px" />
-                  
-                  <span>{{ data.asset }}</span>
-              </div>
-          </template>
-        </Column>
-        -->
-
+        <Column field="asset"></Column>
         <Column field="exchangeId" style="min-width: 12rem"></Column>
-        <Column field="inventoryStatus" sortable style="min-width: 12rem">
+        <Column field="status" style="min-width: 12rem">
           <template #body="slotProps">
             <Tag
               :value="getStatusLabel(slotProps.data)"
@@ -220,7 +197,7 @@
         <Column field="amountTp5"></Column>
         <Column field="priceTp5"></Column>
 
-        <Column field="cryptoPercentChange24h" sortable>
+        <Column field="cryptoPercentChange24h" >
           <template #body="slotProps">
             <span
               :class="{
@@ -232,7 +209,7 @@
             </span>
           </template>
         </Column>
-        <Column field="cryptoPercentChange7d" sortable>
+        <Column field="cryptoPercentChange7d" >
           <template #body="slotProps">
             <span
               :class="{
@@ -244,7 +221,7 @@
             </span>
           </template>
         </Column>
-        <Column field="cryptoPercentChange30d" sortable>
+        <Column field="cryptoPercentChange30d" >
           <template #body="slotProps">
             <span
               :class="{
@@ -256,7 +233,7 @@
             </span>
           </template>
         </Column>
-        <Column field="cryptoPercentChange60d" sortable>
+        <Column field="cryptoPercentChange60d" >
           <template #body="slotProps">
             <span
               :class="{
@@ -268,7 +245,7 @@
             </span>
           </template>
         </Column>
-        <Column field="cryptoPercentChange90d" sortable>
+        <Column field="cryptoPercentChange90d" >
           <template #body="slotProps">
             <span
               :class="{
@@ -280,33 +257,6 @@
             </span>
           </template>
         </Column>
-
-        <!--
-        <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-        <Column field="code" header="Code" sortable style="min-width: 12rem"></Column>
-        <Column field="name" header="Name" sortable style="min-width: 16rem"></Column>
-        <Column header="Image">
-          <template #body="slotProps">
-            <img
-              :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`"
-              :alt="slotProps.data.image"
-              class="border-round"
-              style="width: 64px"
-            />
-          </template>
-        </Column>
-        <Column field="price" header="Price" sortable style="min-width: 8rem">
-          <template #body="slotProps">
-            {{ formatCurrency(slotProps.data.price) }}
-          </template>
-        </Column>
-        <Column field="category" header="Category" sortable style="min-width: 10rem"></Column>
-        <Column field="rating" header="Reviews" sortable style="min-width: 12rem">
-          <template #body="slotProps">
-            <Rating :modelValue="slotProps.data.rating" :readonly="true" :cancel="false" />
-          </template>
-        </Column>
-      -->
 
         <Column :exportable="false" style="min-width: 8rem">
           <template #body="slotProps">
@@ -365,10 +315,10 @@
       </div>
 
       <div class="field">
-        <label for="inventoryStatus" class="mb-3">Inventory Status</label>
+        <label for="status" class="mb-3">Inventory Status</label>
         <Dropdown
-          id="inventoryStatus"
-          v-model="product.inventoryStatus"
+          id="status"
+          v-model="product.status"
           :options="statuses"
           optionLabel="label"
           placeholder="Select a Status"
@@ -488,8 +438,7 @@
         <Button label="Yes" icon="pi pi-check" text @click="deleteSelectedProducts" />
       </template>
     </Dialog>
-  -->
-
+  
     <Dialog
       v-model:visible="addSellOrdersDialog"
       :style="{ width: '450px' }"
@@ -505,6 +454,7 @@
         <Button label="Yes" icon="pi pi-check" text @click="deleteSelectedProducts" />
       </template>
     </Dialog>
+    -->
   </div>
 </template>
 
@@ -517,7 +467,6 @@ import { FilterMatchMode } from 'primevue/api'
 import { getCmc, getBalances, getTrades, getOrders, getStrategy } from '../js/getter.js'
 import { getAllCalculs } from '../js/calcul.js'
 import MySellButton from './MySellButton.vue'
-//import MySellButtonVue from './MySellButton.vue';
 //import Overlay from './ShadOverlay.vue'
 
 const balances = ref([])
@@ -529,8 +478,8 @@ const buyOrders = ref([])
 const sellOrders = ref([])
 const itemsPerPage = ref(10)
 const showOverlay = ref(false)
-const selectedAsset = ref({})
-const allRows = ref([])
+const selectedAsset = ref()
+const allRows = ref()
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
@@ -586,7 +535,7 @@ const sortedBalances = computed(() => {
   }
 })
 
-const rows = computed(() => {
+const items = computed(() => {
   if (strats.value && strats.value.length > 0) {
     return sortedBalances.value.map((item) => {
       return getAllCalculs(
@@ -615,17 +564,8 @@ onMounted(async () => {
 })
 
 //const toast = useToast()
-const dt = ref()
-const products = ref()
-const productDialog = ref(false)
-
-const deleteProductDialog = ref(false)
-const deleteProductsDialog = ref(false)
-
 const addSellOrderDialog = ref(false)
 const addSellOrdersDialog = ref(false)
-
-const product = ref({})
 const selectedAssets = ref()
 
 const submitted = ref(false)
@@ -635,96 +575,6 @@ const statuses = ref([
   { label: 'OUTOFSTOCK', value: 'outofstock' }
 ])
 
-/*
-const formatCurrency = (value) => {
-  if (value) return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-  return
-}
-*/
-const openNew = () => {
-  product.value = {}
-  submitted.value = false
-  productDialog.value = true
-}
-
-/*
-const hideDialog = () => {
-  productDialog.value = false
-  submitted.value = false
-}
-const saveProduct = () => {
-  submitted.value = true
-
-  if (product.value.name.trim()) {
-    if (product.value.id) {
-      product.value.inventoryStatus = product.value.inventoryStatus.value
-        ? product.value.inventoryStatus.value
-        : product.value.inventoryStatus
-      products.value[findIndexById(product.value.id)] = product.value
-      toast.add({
-        severity: 'success',
-        summary: 'Successful',
-        detail: 'Product Updated',
-        life: 3000
-      })
-    } else {
-      product.value.id = createId()
-      product.value.code = createId()
-      product.value.image = 'product-placeholder.svg'
-      product.value.inventoryStatus = product.value.inventoryStatus
-        ? product.value.inventoryStatus.value
-        : 'INSTOCK'
-      products.value.push(product.value)
-      toast.add({
-        severity: 'success',
-        summary: 'Successful',
-        detail: 'Product Created',
-        life: 3000
-      })
-    }
-
-    productDialog.value = false
-    product.value = {}
-  }
-}
-*/
-const editProduct = (prod) => {
-  product.value = { ...prod }
-  productDialog.value = true
-}
-const confirmDeleteProduct = (prod) => {
-  product.value = prod
-  deleteProductDialog.value = true
-}
-
-/*
-const deleteProduct = () => {
-  products.value = products.value.filter((val) => val.id !== product.value.id)
-  deleteProductDialog.value = false
-  product.value = {}
-  toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 })
-}
-
-const findIndexById = (id) => {
-  let index = -1
-  for (let i = 0; i < products.value.length; i++) {
-    if (products.value[i].id === id) {
-      index = i
-      break
-    }
-  }
-
-  return index
-}
-const createId = () => {
-  let id = ''
-  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  for (var i = 0; i < 5; i++) {
-    id += chars.charAt(Math.floor(Math.random() * chars.length))
-  }
-  return id
-}
-*/
 const exportCSV = () => {
   dt.value.exportCSV()
 }
@@ -735,14 +585,6 @@ const confirmDeleteSelected = () => {
 const confirmAddSellOrdersSelected = () => {
   addSellOrdersDialog.value = true
 }
-
-/*
-const deleteSelectedProducts = () => {
-  products.value = products.value.filter((val) => !selectedProducts.value.includes(val))
-  deleteProductsDialog.value = false
-  selectedProducts.value = null
-  toast.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 })
-}*/
 
 const getStatusSeverity = (data) => {
   if (data.nbOpenSellOrders == 0) {
@@ -814,14 +656,6 @@ const getStatusLabel = (data) => {
     const nb5 = data.status.reduce((acc, val) => acc + val, 0)
     if (nb5 === 5) {
       return '5 ordres placés'
-    } else if (
-      data.currentPrice > data.priceTp1 ||
-      data.currentPrice > data.priceTp2 ||
-      data.currentPrice > data.priceTp3 ||
-      data.currentPrice > data.priceTp4 ||
-      data.currentPrice > data.priceTp5
-    ) {
-      return 'Tu peux vendre depuis un moment'
     } else {
       if (data.exchangeId === BINANCE_EXCHANGE_ID) {
         const binanceThreshold = 3 //300%
