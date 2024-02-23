@@ -92,15 +92,16 @@ function getRatioShad(asset, exchangeId, strats) {
       const strategy = assetData.strategies[exchangeId]
 
       if (strategy !== undefined) {
+
         // Mettez à jour les valeurs de retour en fonction de la stratégie
         switch (strategy) {
-          case 'strategy1':
+          case 'Shad':
             return 2
-          case 'strategy2':
+          case 'Shad skip x2':
             return 4
-          case 'strategy3':
+          case 'Strategy 3':
             return 8
-          case 'strategy4':
+          case 'Strategy 4':
             return
           default:
             return '8' // 'NULL' ou une valeur par défaut de votre choix

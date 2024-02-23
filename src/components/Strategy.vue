@@ -82,6 +82,8 @@ const strat = ref([])
 const stratMap = ref([])
 const selectedStrategy = ref('')
 const selectedMaxExposure = ref('')
+
+//TODO CHANGE THIS (in calcul.js too)
 const strategies = ref(['Shad', 'Shad skip x2', 'Strategy 3'])
 const exposures = ref([5, 10, 15])
 
@@ -99,7 +101,6 @@ async function getData() {
 async function getStrat() {
   try {
     const data = await getStrategy()
-    console.log('data', data)
     if (data.length === 0) {
       assets.value.forEach((asset) => {
         let assetStrat = {
