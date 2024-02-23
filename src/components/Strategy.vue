@@ -1,186 +1,249 @@
 <!-- src/components/Strategy.vue -->
 <template>
-    <div>
-        <div style="display:flex; justify-content:flex-end;">
-            <button @click="updateStrat">Sauvegarder</button>
-        </div>
-
-        <div>
-            <select v-model="selectedStrategy" @change="updateAllStrats">
-                <option value="">Sélectionner une stratégie</option>
-                <option value="strategy1">Shad</option>
-                <option value="strategy2">Shad skip x2</option>
-                <option value="strategy3">Strategy 3</option>
-            </select>
-        </div>
-
-        <table ref="stratTable">
-            <thead>
-                <tr>
-                    <th>Asset</th>
-                    <th v-for="platform in platforms" :key="platform">{{ platform }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(asset, assetIndex) in assets" :key="assetIndex">
-                    <td>{{ asset }}</td>
-
-                    <td v-for="(platform, platformIndex) in platforms" :key="platformIndex">
-                        <select :value="getStratValue(asset, platform)"
-                            @input="setStratValue(asset, platform, $event.target.value)"
-                            :disabled="isDisabled(asset, platform)">
-                            <option value=""></option>
-                            <option value="strategy1">Shad</option>
-                            <option value="strategy2">Shad skip x2</option>
-                            <option value="strategy3">Strategy 3</option>
-                        </select>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+  <div>
+    <div style="display: flex; justify-content: flex-end">
+      <button @click="updateStrat">Sauvegarder</button>
     </div>
+
+    <div>
+      <select v-model="selectedStrategy" @change="updateAllStrats">
+        <option value="">Sélectionner une stratégie</option>
+        <option v-for="strategy in strategies" :key="strategy" :value="strategy">
+          {{ strategy }}
+        </option>
+      </select>
+
+      <select v-model="selectedMaxExposure" @change="updateAllMaxExposure">
+        <option value="">Sélectionner une exposition max</option>
+        <option v-for="exposure in exposures" :key="exposure" :value="exposure">
+          {{ exposure }}
+        </option>
+      </select>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Asset</th>
+          <th v-for="platform in platforms" :key="platform">{{ platform }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(asset, assetIndex) in assets" :key="assetIndex">
+          <td>{{ asset }}</td>
+
+          <td v-for="(platform, platformIndex) in platforms" :key="platformIndex">
+            <select
+              data-type="strategy"
+              :value="getSelectedStrategy(asset, platform)"
+              @input="setSelectedStrategy(asset, platform, $event.target.value)"
+              :disabled="isDisabled(asset, platform)"
+            >
+              <option value=""></option>
+              <option v-for="strategy in strategies" :key="strategy" :value="strategy">
+                {{ strategy }}
+              </option>
+            </select>
+
+            <select
+              data-type="maxExposure"
+              :value="getSelectedMaxExposure(asset, platform)"
+              @input="setSelectedMaxExposure(asset, platform, $event.target.value)"
+              :disabled="isDisabled(asset, platform)"
+            >
+              <option value=""></option>
+              <option v-for="exposure in exposures" :key="exposure" :value="exposure">
+                {{ exposure }}
+              </option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
   
 <script setup>
 // Importing necessary modules and functions
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue'
 
-import { getBalances, getStrategy } from '../js/getter.js';
-import { successSpin, errorSpin } from '../js/spinner.js';
-import { saveStrategyToIndexedDB } from '../js/indexedDB';
+import { getBalances, getStrategy } from '../js/getter.js'
+import { successSpin, errorSpin } from '../js/spinner.js'
+import { saveStrategyToIndexedDB } from '../js/indexedDB'
 
 // Define server host
-const serverHost = import.meta.env.VITE_SERVER_HOST;
+const serverHost = import.meta.env.VITE_SERVER_HOST
 
 // Define reactive data
-const balance = ref([]);
-const platforms = ref([]);
-const assets = ref([]);
-const strat = ref([]);
-const stratMap = ref([]);
-const selectedStrategy = ref("");
+const balance = ref([])
+const platforms = ref([])
+const assets = ref([])
+const strat = ref([])
+const stratMap = ref([])
+const selectedStrategy = ref('')
+const selectedMaxExposure = ref('')
+const strategies = ref(['Shad', 'Shad skip x2', 'Strategy 3'])
+const exposures = ref([5, 10, 15])
 
 // Define methods
 async function getData() {
   try {
-    balance.value = await getBalances();
-    platforms.value = [...new Set(balance.value.map(item => item.platform))].sort();
-    assets.value = [...new Set(balance.value.map(item => item.symbol))].sort();
+    balance.value = await getBalances()
+    platforms.value = [...new Set(balance.value.map((item) => item.platform))].sort()
+    assets.value = [...new Set(balance.value.map((item) => item.symbol))].sort()
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
 }
 
 async function getStrat() {
   try {
-    const data = await getStrategy();
-    console.log('data', data);
+    const data = await getStrategy()
+    console.log('data', data)
     if (data.length === 0) {
       assets.value.forEach((asset) => {
         let assetStrat = {
           symbol: asset,
           strategies: {},
-        };
+          maxExposure: {}
+        }
         platforms.value.forEach((platform) => {
-          assetStrat.strategies[platform] = "";
-        });
-        strat.value.push(assetStrat);
-      });
+          assetStrat.strategies[platform] = ''
+          assetStrat.maxExposure[platform] = ''
+        })
+        strat.value.push(assetStrat)
+      })
     } else {
-      strat.value = data;
+      strat.value = data
     }
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
 }
 
 async function updateStrat() {
-  stratMap.value = [];
+  stratMap.value = []
   try {
-    const rows = document.querySelectorAll('tbody tr');
+    const rows = document.querySelectorAll('tbody tr')
 
-    rows.forEach((row) => {
-      let asset = "";
-      let strategies = {};
+    rows.forEach(async (row) => {
+      const asset = row.querySelectorAll('td')[0].textContent
+      const strategies = {}
+      const maxExposure = {}
 
-      const cells = row.querySelectorAll('td');
+      row.querySelectorAll('select').forEach((sel, idx) => {
+        const colName = platforms.value[Math.floor(idx / 2)]
 
-      cells.forEach((cell, index) => {
-        if (index === 0) {
-          asset = cell.textContent;
-        } else {
-          const colName = platforms.value[index - 1];
-          const selectEl = cell.querySelector('select');
-          strategies[colName] = selectEl.value;
+        const dataType = sel.dataset.type
+        const selectedOption = sel.selectedOptions[0]
+
+        if (selectedOption && selectedOption.value) {
+          switch (dataType) {
+            case 'strategy':
+              strategies[colName] = selectedOption.value
+              break
+            case 'maxExposure':
+              maxExposure[colName] = selectedOption.value
+              break
+            default:
+              console.log('pas de type')
+              break
+          }
         }
-      });
-      let rowData = {
+      })
+
+      const rowData = {
         asset: asset,
         strategies: strategies,
-      };
-      stratMap.value.push(rowData);
-    });
+        maxExposure: maxExposure
+      }
 
-    // Make the API call
+      stratMap.value.push(rowData)
+    })
+
     const response = await fetch(`${serverHost}/strategy/update`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(stratMap.value),
-    });
+      body: JSON.stringify(stratMap.value)
+    })
 
-    // Get the API call result
-    const data = await response.json();
+    const data = await response.json()
+    await saveStrategyToIndexedDB(data)
 
-    // Save data to IndexedDB
-    await saveStrategyToIndexedDB(data);
-
-    successSpin('Save completed', `Strat : ${stratMap.value.length}`, true, true);
-
+    successSpin('Save completed', `Strat : ${stratMap.value.length}`, true, true)
   } catch (err) {
-    console.error(err);
-    // Show an error alert within the existing alert
-    errorSpin('Error', `${err}`, false, true);
+    console.error(err)
+    errorSpin('Error', `${err}`, false, true)
   }
 }
 
 async function updateAllStrats() {
-  const selectedStrategyValue = selectedStrategy.value;
+  const selectedStrategyValue = selectedStrategy.value
 
   strat.value.forEach((item) => {
-    const asset = item.asset;
-    const strategies = item.strategies || {};
+    const asset = item.asset
+    const strategies = item.strategies || {}
 
     platforms.value.forEach((platform) => {
       if (!isDisabled(asset, platform)) {
-        strategies[platform] = selectedStrategyValue;
+        strategies[platform] = selectedStrategyValue
       }
-    });
+    })
 
-    item.strategies = strategies;
-  });
+    item.strategies = strategies
+  })
 }
 
-function getStratValue(asset, platform) {
-  const item = strat.value.find((item) => item.asset === asset);
-  return item ? item.strategies[platform] || '' : '';
+async function updateAllMaxExposure() {
+  const selectedMaxExposureValue = selectedMaxExposure.value
+
+  strat.value.forEach((item) => {
+    const asset = item.asset
+    const maxExposure = item.maxExposure || {}
+
+    platforms.value.forEach((platform) => {
+      if (!isDisabled(asset, platform)) {
+        maxExposure[platform] = selectedMaxExposureValue
+      }
+    })
+
+    item.maxExposure = maxExposure
+  })
 }
 
-function setStratValue(asset, platform, value) {
-  const item = strat.value.find((item) => item.asset === asset);
+function getSelectedStrategy(asset, platform) {
+  const item = strat.value.find((item) => item.asset === asset)
+  return item ? item.strategies[platform] || '' : ''
+}
+
+function setSelectedStrategy(asset, platform, value) {
+  const item = strat.value.find((item) => item.asset === asset)
   if (item) {
-    item.strategies[platform] = value;
+    item.strategies[platform] = value
   }
 }
 
 function isDisabled(asset, platform) {
-  const assetsFiltered = balance.value.filter(item => item.symbol === asset);
-  const platformsFiltered = assetsFiltered.map(item => item.platform);
-  return !platformsFiltered.includes(platform);
+  const assetsFiltered = balance.value.filter((item) => item.symbol === asset)
+  const platformsFiltered = assetsFiltered.map((item) => item.platform)
+  return !platformsFiltered.includes(platform)
+}
+
+function getSelectedMaxExposure(asset, platform) {
+  const item = strat.value.find((item) => item.asset === asset)
+  return item ? item.maxExposure[platform] || '' : ''
+}
+
+function setSelectedMaxExposure(asset, platform, value) {
+  const item = strat.value.find((item) => item.asset === asset)
+  if (item) {
+    item.maxExposure[platform] = value
+  }
 }
 
 // Fetch data on component mount
 onMounted(async () => {
-  await getData();
-  await getStrat();
-});
+  await getData()
+  await getStrat()
+})
 </script>

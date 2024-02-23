@@ -59,15 +59,9 @@ const openDatabase = async () => {
 const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterExchange) => {
     try {
         const db = await openDatabase();
-        console.log('a');
         const transaction = db.transaction([storeName], 'readwrite');
-        console.log('b');
-
         const objectStore = transaction.objectStore(storeName);
-        console.log('c');
-
         const shouldFilterExchange = filterExchange !== null && filterExchange !== undefined;
-        console.log('saveDataToIndexedDBInternal shouldFilterExchange', shouldFilterExchange);
 
         if (!shouldFilterExchange) {
             console.log('clearObjectStore');
@@ -79,20 +73,14 @@ const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterExch
             await clearObjectStoreByExchange(objectStore, filterExchange);
         }
 
-        console.log('d');
-
         if (data && data.length > 0) {
-
-            console.log('e');
-
             data.forEach((item) => {
-                console.log('item', item);
+                //console.log('item', item);
                 if (isValidItem(item, keyField)) {
-                console.log('isValidItem');
 
                     const itemToSave = createItemToSave(item, keyField);
 
-                    console.log('itemToSave',itemToSave);
+                    //console.log('itemToSave',itemToSave);
 
                     if (shouldFilterExchange && itemToSave['platform'] !== filterExchange) {
                         console.log(`Skipping item with platform ${itemToSave['platform']}.`);

@@ -47,7 +47,7 @@ import { getOrders } from '../js/getter.js'
 import MySellButtonVue from './MySellButton.vue'
 import { FilterMatchMode } from 'primevue/api'
 
-const props = defineProps({
+ props = defineProps({
   itemsPerPage: {
     type: Number,
     default: 13

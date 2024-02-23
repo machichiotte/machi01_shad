@@ -55,7 +55,7 @@ const API_ENDPOINTS = {
 };
 
 // Define reactive data
-const cryptoData = ref(null);
+const cryptoData = ref();
 const exchangeIds = ref(["binance", "kucoin", "htx", "okx", "gateio"]);
 
 // Define methods

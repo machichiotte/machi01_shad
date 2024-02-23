@@ -100,6 +100,8 @@ function getRatioShad(asset, exchangeId, strats) {
             return 4
           case 'strategy3':
             return 8
+          case 'strategy4':
+            return
           default:
             return '8' // 'NULL' ou une valeur par défaut de votre choix
         }
@@ -250,11 +252,12 @@ function getStatus(
   priceTp4,
   priceTp5
 ) {
-  const threshold = 0.01 // 1% threshold
+  const THRESHOLD = 0.01 // 1% threshold
 
   // Fonction pour vérifier si deux valeurs sont proches l'une de l'autre avec une marge d'erreur
-  const isClose = (value1, value2) => Math.abs((value1 - value2) / value1) <= threshold
-
+  const isClose = (value1, value2) => {
+    return Math.abs((value1 - value2) / value1) <= THRESHOLD
+  }
   // Initialiser un tableau de résultats avec des valeurs par défaut à 0
   const results = [0, 0, 0, 0, 0]
 
