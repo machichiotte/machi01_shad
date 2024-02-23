@@ -48,10 +48,8 @@
         paginator
         stripedRows
         v-model:selection="selectedAssets"
-        selectionMode="multiple"
+        selectionMode="single"
         dataKey="id"
-        scrollable
-        scrollHeight="500px"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25, 100, 500]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
@@ -67,9 +65,9 @@
           </div>
         </template>
 
+
         <ColumnGroup type="header">
           <Row>
-            <!--<Column selectionMode="multiple" style="width: 3rem" exportable="false" rowspan="2" />-->
             <Column header="Icon" field="iconUrl" :rowspan="2"  />
             <Column header="Asset" field="asset" :rowspan="2" :sortable="true" />
             <Column header="Exchange" field="exchangeId" :rowspan="2" sortable style="min-width: 12rem"  />
@@ -121,7 +119,6 @@
           </Row>
         </ColumnGroup>
 
-        <!-- <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column> -->
         <Column field="iconUrl">
           <template #body="slotProps">
             <img
@@ -486,6 +483,8 @@ const filters = ref({
 const BINANCE_EXCHANGE_ID = 'binance'
 const BINANCE_THRESHOLD = 3 // 300%
 
+
+
 const getData = async () => {
   console.log('getData')
 
@@ -567,6 +566,7 @@ onMounted(async () => {
 const addSellOrderDialog = ref(false)
 const addSellOrdersDialog = ref(false)
 const selectedAssets = ref()
+const metaKey = ref(true);
 
 const submitted = ref(false)
 const statuses = ref([
