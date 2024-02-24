@@ -1,3 +1,5 @@
+const MAX_EXPO = 10000
+
 function getProfit(totalBuy, totalSell, currentPrice, balance) {
   const buyTotal = parseFloat(totalBuy)
   const sellTotal = parseFloat(totalSell)
@@ -18,7 +20,7 @@ function getProfit(totalBuy, totalSell, currentPrice, balance) {
 function getRecupShad(totalBuy, totalSell, maxExposition) {
   if (totalSell > 0) {
     if (maxExposition < totalBuy) {
-      return Math.round(totalSell - totalBuy + maxExposition, 2)
+      return Math.round(totalBuy - totalSell - maxExposition, 2)
     } else {
       return Math.round(totalSell, 2)
     }
@@ -26,23 +28,23 @@ function getRecupShad(totalBuy, totalSell, maxExposition) {
   return 0
 }
 
-function getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX) {
+function getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad) {
   if (maxExposition < totalBuy && maxExposition + totalSell < totalBuy) {
     const difference = totalBuy - maxExposition - totalSell
-    return difference > 4.5 ? difference : recupTpX
+    return difference > 4.5 ? totalBuy - difference : recupTpX
+  } else if ((totalShad + 1) * totalBuy - totalSell > 0) {
+    return (totalShad + 1) * totalBuy - totalSell
   }
+
   return recupTpX
 }
 
-function getRecupTpX(maxExposition, ratioShad) {
+function getRecupTpX(strat, maxExposition, ratioShad) {
   return maxExposition * ratioShad * 0.5
 }
 
 function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
-  if (
-    Math.abs(totalBuy - maxExposition) > 0.5 &&
-    totalSell < 0.95 * Math.abs(totalBuy - maxExposition)
-  ) {
+  if (maxExposition - totalBuy < 0 && totalSell < 0.95 * Math.abs(totalBuy - maxExposition)) {
     return -1
   } else if (recupShad >= 0.95 * recupTpX) {
     return -1 + Math.round(1.1 + recupShad / recupTpX, 2)
@@ -62,25 +64,6 @@ function getTotalAmountAndBuy(asset, trades) {
   }
 }
 
-function getMaxExposition(rank, totalBuy) {
-  switch (true) {
-    case rank > 1000:
-      return Math.min(totalBuy, 5)
-    case rank > 800:
-      return Math.min(totalBuy, 10)
-    case rank > 600:
-      return Math.min(totalBuy, 25)
-    case rank > 400:
-      return Math.min(totalBuy, 50)
-    case rank > 300:
-      return Math.min(totalBuy, 100)
-    case rank > 200:
-      return Math.min(totalBuy, 200)
-    case rank <= 200:
-      return totalBuy
-  }
-}
-
 function getRatioShad(asset, exchangeId, strats) {
   // Assurez-vous que strats est défini et a la structure attendue
   if (strats && typeof strats === 'object') {
@@ -92,9 +75,9 @@ function getRatioShad(asset, exchangeId, strats) {
       const strategy = assetData.strategies[exchangeId]
 
       if (strategy !== undefined) {
-
         // Mettez à jour les valeurs de retour en fonction de la stratégie
         switch (strategy) {
+          //TODO CHANGE THIS
           case 'Shad':
             return 2
           case 'Shad skip x2':
@@ -102,7 +85,7 @@ function getRatioShad(asset, exchangeId, strats) {
           case 'Strategy 3':
             return 8
           case 'Strategy 4':
-            return
+            return 16 
           default:
             return '8' // 'NULL' ou une valeur par défaut de votre choix
         }
@@ -285,22 +268,22 @@ function getStatus(
 }
 
 function getStrat(exchangeId, asset, strats) {
-  // Trouver la stratégie correspondant à l'actif donné
-  const filteredStrat = strats.find((strat) => strat.asset === asset)
+  // Rechercher la stratégie correspondante à l'actif donné
+  const filteredStrat = strats.find((strat) => strat.asset === asset) || {}
 
-  // Vérifier si la stratégie est définie pour l'échange donné
-  if (filteredStrat && filteredStrat.strategies && filteredStrat.strategies[exchangeId]) {
-    // Retourner la stratégie correspondante pour l'échange donné
-    return filteredStrat.strategies[exchangeId]
-  }
+  // Déterminer la stratégie et l'exposition maximale
+  const strat = filteredStrat.strategies?.[exchangeId] || 'No strategy'
+  const stratExpo = filteredStrat.maxExposure?.[exchangeId] || MAX_EXPO
 
-  // Si aucune stratégie n'est trouvée pour l'échange donné et l'actif donné
-  return 'No strategy' // Ou une valeur par défaut appropriée
+  return { strat, stratExpo }
 }
 
 function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
   const { symbol, platform, balance } = item
   const exchangeId = platform
+
+  const { strat, stratExpo } = getStrat(exchangeId, symbol, strats)
+  const ratioShad = getRatioShad(symbol, exchangeId, strats)
 
   const {
     rank,
@@ -320,17 +303,19 @@ function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
   const openSellOrders = sellOrders.filter((order) => order.symbol.includes(symbol))
   const nbOpenSellOrders = openSellOrders.length
 
-  const ratioShad = getRatioShad(symbol, exchangeId, strats)
-
   const { totalAmount, totalBuy } = getTotalAmountAndBuy(symbol, trades)
 
-  const maxExposition = getMaxExposition(rank, Math.round(totalBuy))
+  const maxExposition = Math.min(totalBuy, stratExpo)
+
   const recupShad = getRecupShad(totalBuy, totalSell, maxExposition)
   const currentPossession = getCurrentPossession(currentPrice, balance)
   const profit = getProfit(totalBuy, totalSell, currentPrice, balance)
-  const recupTpX = getRecupTpX(maxExposition, ratioShad)
+
+  const recupTpX = getRecupTpX(strat, maxExposition, ratioShad)
   const totalShad = getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX)
-  const recupTp1 = getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX)
+
+  console.log('asset', symbol)
+  const recupTp1 = getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad)
 
   const {
     amountTp1,
@@ -361,8 +346,6 @@ function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
     priceTp4,
     priceTp5
   )
-
-  const strat = getStrat(exchangeId, symbol, strats)
 
   return {
     iconUrl,
