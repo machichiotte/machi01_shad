@@ -58,43 +58,62 @@ function getTotalAmountAndBuy(asset, trades) {
   const totalBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.totalUSDT), 0)
   const totalAmount = filteredTrades.reduce((total, trade) => total + parseFloat(trade.amount), 0)
 
+  const averageEntryPrice = (parseFloat(totalBuy) / parseFloat(totalAmount)).toFixed(8)
+
   return {
     totalAmount,
-    totalBuy: totalBuy.toFixed(2)
+    totalBuy: totalBuy.toFixed(2),
+    averageEntryPrice
   }
 }
 
-function getRatioShad(asset, exchangeId, strats) {
+function getRatioShad(strat) {
   // Assurez-vous que strats est défini et a la structure attendue
-  if (strats && typeof strats === 'object') {
-    // Assurez-vous que la clé asset existe dans l'objet strats
-    const assetData = strats.find((item) => item.asset === asset)
-
-    if (assetData && assetData.strategies && typeof assetData.strategies === 'object') {
-      // Assurez-vous que la clé exchangeId existe dans les données de l'actif
-      const strategy = assetData.strategies[exchangeId]
-
-      if (strategy !== undefined) {
-        // Mettez à jour les valeurs de retour en fonction de la stratégie
-        switch (strategy) {
-          //TODO CHANGE THIS
-          case 'Shad':
-            return 2
-          case 'Shad skip x2':
-            return 4
-          case 'Strategy 3':
-            return 8
-          case 'Strategy 4':
-            return 16 
-          default:
-            return '8' // 'NULL' ou une valeur par défaut de votre choix
-        }
-      }
+  if (strat !== undefined) {
+    // Mettez à jour les valeurs de retour en fonction de la stratégie
+    switch (strat) {
+      //TODO CHANGE THIS
+      case 'Shad':
+        return 2
+      case 'Shad skip x2':
+        return 4
+      case 'Strategy 3':
+        return 8
+      case 'Strategy 4':
+        return 16
+      default:
+        return '8' // 'NULL' ou une valeur par défaut de votre choix
     }
   }
-
   // Gérez le cas où la structure n'est pas conforme à ce que vous attendez
   return '/' // 'NULL' ou une valeur par défaut de votre choix
+}
+
+function calculateRecups(item, strats, totalBuy, totalSell) {
+  const { symbol, platform, balance } = item
+
+  const { strat, stratExpo } = getStrat(platform, symbol, strats)
+  if (stratExpo === undefined) {
+    stratExpo = MAX_EXPO
+  }
+  const maxExposition = Math.min(totalBuy, stratExpo)
+
+  const ratioShad = getRatioShad(strat)
+  const recupShad = getRecupShad(totalBuy, totalSell, maxExposition)
+  const recupTpX = getRecupTpX(strat, maxExposition, ratioShad)
+  const totalShad = getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX)
+  const recupTp1 = getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad)
+
+  return {
+    strat,
+    stratExpo,
+    maxExposition,
+    ratioShad,
+    recupTpX,
+    recupShad,
+    recupTp1,
+    totalShad
+  }
 }
 
 function getTotalSell(asset, trades) {
@@ -246,7 +265,7 @@ function getStatus(
   const results = [0, 0, 0, 0, 0]
 
   // Vérifier chaque paire d'openSellOrders par rapport à chaque paire d'amount et price
-  openSellOrders.forEach((order, index) => {
+  openSellOrders.forEach((order) => {
     if (isClose(order.amount, amountTp1) && isClose(order.price, priceTp1)) {
       results[0] = 1
     }
@@ -282,9 +301,6 @@ function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
   const { symbol, platform, balance } = item
   const exchangeId = platform
 
-  const { strat, stratExpo } = getStrat(exchangeId, symbol, strats)
-  const ratioShad = getRatioShad(symbol, exchangeId, strats)
-
   const {
     rank,
     currentPrice,
@@ -299,23 +315,15 @@ function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
   const totalSell = getTotalSell(symbol, trades)
 
   const openBuyOrders = buyOrders.filter((order) => order.symbol.includes(symbol))
-  const nbOpenBuyOrders = openBuyOrders.length
   const openSellOrders = sellOrders.filter((order) => order.symbol.includes(symbol))
-  const nbOpenSellOrders = openSellOrders.length
 
-  const { totalAmount, totalBuy } = getTotalAmountAndBuy(symbol, trades)
+  const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(symbol, trades)
 
-  const maxExposition = Math.min(totalBuy, stratExpo)
-
-  const recupShad = getRecupShad(totalBuy, totalSell, maxExposition)
   const currentPossession = getCurrentPossession(currentPrice, balance)
   const profit = getProfit(totalBuy, totalSell, currentPrice, balance)
 
-  const recupTpX = getRecupTpX(strat, maxExposition, ratioShad)
-  const totalShad = getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX)
-
-  console.log('asset', symbol)
-  const recupTp1 = getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad)
+  const { strat, stratExpo, maxExposition, ratioShad, recupTpX, recupShad, recupTp1, totalShad } =
+    calculateRecups(item, strats, totalBuy, totalSell)
 
   const {
     amountTp1,
@@ -330,7 +338,6 @@ function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
     priceTp5
   } = calculateAmountsAndPrices(recupTp1, balance, totalBuy, totalShad, recupTpX)
 
-  const averageEntryPrice = (parseFloat(totalBuy) / parseFloat(totalAmount)).toFixed(8)
   const percentageDifference = getPercentageDifference(currentPrice, averageEntryPrice)
 
   const status = getStatus(
@@ -364,8 +371,8 @@ function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
     profit,
     totalSell,
     recupShad,
-    nbOpenBuyOrders,
-    nbOpenSellOrders,
+    nbOpenBuyOrders: openBuyOrders.length,
+    nbOpenSellOrders: openSellOrders.length,
     totalAmount,
     balance,
     recupTp1,
