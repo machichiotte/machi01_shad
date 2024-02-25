@@ -48,8 +48,8 @@
         paginator
         stripedRows
         v-model:selection="selectedAssets"
-        selectionMode="single"
-        dataKey="id"
+        selectionMode="multiple"
+        dataKey="rank"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25, 100, 500]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
@@ -65,21 +65,31 @@
           </div>
         </template>
 
-
         <ColumnGroup type="header">
           <Row>
-            <Column header="Icon" field="iconUrl" :rowspan="2"  />
+            <Column header="Icon" field="iconUrl" :rowspan="2" />
             <Column header="Asset" field="asset" :rowspan="2" :sortable="true" />
-            <Column header="Exchange" field="exchangeId" :rowspan="2" sortable style="min-width: 12rem"  />
+            <Column
+              header="Exchange"
+              field="exchangeId"
+              :rowspan="2"
+              sortable
+              style="min-width: 12rem"
+            />
             <Column header="Status" field="status" :rowspan="2" sortable />
-            <Column header="Strategy"  field="strat" :rowspan="2" sortable />
-            <Column header="Ratio"  field="ratioShad"  :rowspan="2" sortable />
-            <Column header="Total Shad" field="totalShad"  :rowspan="2" sortable />
-            <Column header="Rank"  field="rank" :rowspan="2" sortable />
-            <Column header="Average Entry Price"  field="averageEntryPrice" :rowspan="2" sortable />
-            <Column header="Total Buy"  field="totalBuy" :rowspan="2" sortable />
-            <Column header="Max wanted" field="maxExposition"  :rowspan="2" sortable />
-            <Column header="Percentage Difference" field="percentageDifference" :rowspan="2" sortable />
+            <Column header="Strategy" field="strat" :rowspan="2" sortable />
+            <Column header="Ratio" field="ratioShad" :rowspan="2" sortable />
+            <Column header="Total Shad" field="totalShad" :rowspan="2" sortable />
+            <Column header="Rank" field="rank" :rowspan="2" sortable />
+            <Column header="Average Entry Price" field="averageEntryPrice" :rowspan="2" sortable />
+            <Column header="Total Buy" field="totalBuy" :rowspan="2" sortable />
+            <Column header="Max wanted" field="maxExposition" :rowspan="2" sortable />
+            <Column
+              header="Percentage Difference"
+              field="percentageDifference"
+              :rowspan="2"
+              sortable
+            />
             <Column header="Current Price" field="currentPrice" :rowspan="2" sortable />
             <Column header="Wallet" field="currentPossession" :rowspan="2" sortable />
             <Column header="Profit" field="profit" :rowspan="2" sortable />
@@ -87,7 +97,7 @@
             <Column header="Recup Shad" field="recupShad" :rowspan="2" sortable />
             <Column header="Open Orders" :colspan="2" />
             <Column header="Quantite total achetee" field="totalAmount" :rowspan="2" sortable />
-            <Column header="Balance"  field="balance" :rowspan="2" sortable />
+            <Column header="Balance" field="balance" :rowspan="2" sortable />
             <Column header="Take Profit" :colspan="2" />
             <Column header="TP1" :colspan="2" />
             <Column header="TP2" :colspan="2" />
@@ -194,7 +204,7 @@
         <Column field="amountTp5"></Column>
         <Column field="priceTp5"></Column>
 
-        <Column field="cryptoPercentChange24h" >
+        <Column field="cryptoPercentChange24h">
           <template #body="slotProps">
             <span
               :class="{
@@ -206,7 +216,7 @@
             </span>
           </template>
         </Column>
-        <Column field="cryptoPercentChange7d" >
+        <Column field="cryptoPercentChange7d">
           <template #body="slotProps">
             <span
               :class="{
@@ -218,7 +228,7 @@
             </span>
           </template>
         </Column>
-        <Column field="cryptoPercentChange30d" >
+        <Column field="cryptoPercentChange30d">
           <template #body="slotProps">
             <span
               :class="{
@@ -230,7 +240,7 @@
             </span>
           </template>
         </Column>
-        <Column field="cryptoPercentChange60d" >
+        <Column field="cryptoPercentChange60d">
           <template #body="slotProps">
             <span
               :class="{
@@ -242,7 +252,7 @@
             </span>
           </template>
         </Column>
-        <Column field="cryptoPercentChange90d" >
+        <Column field="cryptoPercentChange90d">
           <template #body="slotProps">
             <span
               :class="{
@@ -275,183 +285,6 @@
         </Column>
       </DataTable>
     </div>
-    <!--
-    <Dialog
-      v-model:visible="productDialog"
-      :style="{ width: '450px' }"
-      header="Product Details"
-      :modal="true"
-      class="p-fluid"
-    >
-      <img
-        v-if="product.image"
-        :src="`https://primefaces.org/cdn/primevue/images/product/${product.image}`"
-        :alt="product.image"
-        class="block m-auto pb-3"
-      />
-      <div class="field">
-        <label for="name">Name</label>
-        <InputText
-          id="name"
-          v-model.trim="product.name"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.name }"
-        />
-        <small class="p-error" v-if="submitted && !product.name">Name is required.</small>
-      </div>
-      <div class="field">
-        <label for="description">Description</label>
-        <Textarea
-          id="description"
-          v-model="product.description"
-          required="true"
-          rows="3"
-          cols="20"
-        />
-      </div>
-
-      <div class="field">
-        <label for="status" class="mb-3">Inventory Status</label>
-        <Dropdown
-          id="status"
-          v-model="product.status"
-          :options="statuses"
-          optionLabel="label"
-          placeholder="Select a Status"
-        >
-          <template #value="slotProps">
-            <div v-if="slotProps.value && slotProps.value.value">
-              <Tag
-                :value="slotProps.value.value"
-                :severity="getStatusLabel(slotProps.value.label)"
-              />
-            </div>
-            <div v-else-if="slotProps.value && !slotProps.value.value">
-              <Tag :value="slotProps.value" :severity="getStatusLabel(slotProps.value)" />
-            </div>
-            <span v-else>
-              {{ slotProps.placeholder }}
-            </span>
-          </template>
-        </Dropdown>
-      </div>
-
-      <div class="field">
-        <label class="mb-3">Category</label>
-        <div class="formgrid grid">
-          <div class="field-radiobutton col-6">
-            <RadioButton
-              id="category1"
-              name="category"
-              value="Accessories"
-              v-model="product.category"
-            />
-            <label for="category1">Accessories</label>
-          </div>
-          <div class="field-radiobutton col-6">
-            <RadioButton
-              id="category2"
-              name="category"
-              value="Clothing"
-              v-model="product.category"
-            />
-            <label for="category2">Clothing</label>
-          </div>
-          <div class="field-radiobutton col-6">
-            <RadioButton
-              id="category3"
-              name="category"
-              value="Electronics"
-              v-model="product.category"
-            />
-            <label for="category3">Electronics</label>
-          </div>
-          <div class="field-radiobutton col-6">
-            <RadioButton
-              id="category4"
-              name="category"
-              value="Fitness"
-              v-model="product.category"
-            />
-            <label for="category4">Fitness</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="formgrid grid">
-        <div class="field col">
-          <label for="price">Price</label>
-          <InputNumber
-            id="price"
-            v-model="product.price"
-            mode="currency"
-            currency="USD"
-            locale="en-US"
-          />
-        </div>
-        <div class="field col">
-          <label for="quantity">Quantity</label>
-          <InputNumber id="quantity" v-model="product.quantity" integeronly />
-        </div>
-      </div>
-      <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" text @click="saveProduct" />
-      </template>
-    </Dialog>
-
-    <Dialog
-      v-model:visible="deleteProductDialog"
-      :style="{ width: '450px' }"
-      header="Confirm"
-      :modal="true"
-    >
-      <div class="confirmation-content">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-        <span v-if="product"
-          >Are you sure you want to delete <b>{{ product.name }}</b
-          >?</span
-        >
-      </div>
-      <template #footer>
-        <Button label="No" icon="pi pi-times" text @click="deleteProductDialog = false" />
-        <Button label="Yes" icon="pi pi-check" text @click="deleteProduct" />
-      </template>
-    </Dialog>
-
-    <Dialog
-      v-model:visible="deleteProductsDialog"
-      :style="{ width: '450px' }"
-      header="Confirm"
-      :modal="true"
-    >
-      <div class="confirmation-content">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-        <span v-if="product">Are you sure you want to delete the selected products?</span>
-      </div>
-      <template #footer>
-        <Button label="No" icon="pi pi-times" text @click="deleteProductsDialog = false" />
-        <Button label="Yes" icon="pi pi-check" text @click="deleteSelectedProducts" />
-      </template>
-    </Dialog>
-  
-    <Dialog
-      v-model:visible="addSellOrdersDialog"
-      :style="{ width: '450px' }"
-      header="Confirm"
-      :modal="true"
-    >
-      <div class="confirmation-content">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-        <span v-if="product">Voulez vous placer vos ordres d'achat?</span>
-      </div>
-      <template #footer>
-        <Button label="No" icon="pi pi-times" text @click="addSellOrdersDialog = false" />
-        <Button label="Yes" icon="pi pi-check" text @click="deleteSelectedProducts" />
-      </template>
-    </Dialog>
-    -->
   </div>
 </template>
 
@@ -482,8 +315,6 @@ const filters = ref({
 })
 const BINANCE_EXCHANGE_ID = 'binance'
 const BINANCE_THRESHOLD = 3 // 300%
-
-
 
 const getData = async () => {
   console.log('getData')
@@ -552,8 +383,6 @@ const items = computed(() => {
 })
 
 onMounted(async () => {
-  //ProductService.getProducts().then((data) => (products.value = data))
-
   try {
     await getData()
   } catch (error) {
@@ -565,8 +394,8 @@ onMounted(async () => {
 //const toast = useToast()
 const addSellOrderDialog = ref(false)
 const addSellOrdersDialog = ref(false)
-const selectedAssets = ref()
-const metaKey = ref(true);
+const selectedAssets = ref([])
+const metaKey = ref(true)
 
 const submitted = ref(false)
 const statuses = ref([
