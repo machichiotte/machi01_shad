@@ -58,9 +58,7 @@ import { FilterMatchMode } from 'primevue/api'
 const items = ref([]) // Utilisez ref pour les variables réactives
 const itemsPerPage = 13
 const cols = ordersColumns
-const showOverlay = ref(false)
 const allRows = ref([])
-const selectedAsset = ref({})
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
@@ -86,24 +84,7 @@ const getData = async () => {
   items.value = await getOrders()
 }
 
-const selectionChanged = (rows) => {
-  allRows.value = rows
-}
-
-const showAssetDetails = (params) => {
-  if (params.column.field === 'asset') {
-    showOverlay.value = true
-    selectedAsset.value = params.row
-  }
-}
-
-const closeOverlay = () => {
-  showOverlay.value = false
-}
-
 onMounted(async () => {
-  //ProductService.getProducts().then((data) => (products.value = data))
-
   try {
     await getData()
   } catch (error) {

@@ -33,6 +33,8 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 // Importing necessary modules and functions
 import {
   loadingSpin,

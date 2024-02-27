@@ -16,6 +16,7 @@ const ordersColumns = [
 ]
 
 const tradesColumns = [
+  { header: 'Platform', field: 'platform' },
   { header: 'altA', field: 'altA' },
   { header: 'altB', field: 'altB' },
   { header: 'Date', field: 'date' },
@@ -27,7 +28,6 @@ const tradesColumns = [
   { header: 'Total (USDT)', field: 'totalUSDT' },
   { header: 'Fee', field: 'fee' },
   { header: 'Feecoin', field: 'feecoin' },
-  { header: 'Platform', field: 'platform' },
   { header: 'Explatform', field: 'explatform' }
 ]
 
