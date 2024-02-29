@@ -32,11 +32,13 @@ import DialogService from 'primevue/dialogservice'
 import ToastService from 'primevue/toastservice'
 import InputNumber from 'primevue/inputnumber'
 import RadioButton from 'primevue/radiobutton'
+import SelectButton from 'primevue/selectbutton'
 import Textarea from 'primevue/textarea'
 import FileUpload from 'primevue/fileupload'
 import Toolbar from 'primevue/toolbar'
 import Rating from 'primevue/rating'
 import Tag from 'primevue/tag'
+import FloatLabel from 'primevue/floatlabel'
 
 const app = createApp(App)
 app.component('LogoMachi', LogoMachi)
@@ -62,11 +64,12 @@ app.component('Dialog', Dialog)
 app.component('Dropdown', Dropdown)
 app.component('InputNumber', InputNumber)
 app.component('RadioButton', RadioButton)
+app.component('SelectButton', SelectButton)
 app.component('Textarea', Textarea)
 app.component('FileUpload', FileUpload)
 app.component('Toolbar', Toolbar)
 app.component('Rating', Rating)
 app.component('Tag', Tag)
-
+app.component('FloatLabel', FloatLabel)
 
 app.mount('#app')
