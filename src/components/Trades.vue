@@ -103,7 +103,7 @@
 
         <!-- Boutons -->
         <div class="flex justify-end gap-2 mt-5">
-          <Button type="button" label="Cancel" severity="secondary" @click="handleDialogClose"></Button>
+          <Button type="button" label="Cancel" severity="secondary" @click="closeDialog"></Button>
           <Button type="button" label="Save" :disabled="isSaveDisabled" @click="saveTrade"></Button>
         </div>
       </Dialog>
@@ -117,6 +117,10 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { tradesColumns } from '../js/columns.js'
 import { getTrades } from '../js/getter.js'
 import { FilterMatchMode } from 'primevue/api'
+import { successSpin, errorSpin } from "../js/spinner.js";
+
+// Define server host
+const serverHost = import.meta.env.VITE_SERVER_HOST;
 
 const items = ref([])
 const itemsPerPage = 13
@@ -147,19 +151,6 @@ const rows = computed(() => {
   })
 })
 
-// Définir les valeurs initiales de altA et altB
-const altA = ref('')
-const altB = ref('')
-
-// Propriété calculée pour formater la paire altA/altB
-const formattedPair = computed(() => {
-  return `${altA.value} / ${altB.value}`
-})
-
-const computedUpperCase = computed(() => {
-  return (value) => value.toUpperCase()
-})
-
 const getData = async () => {
   items.value = await getTrades()
 }
@@ -177,14 +168,15 @@ onMounted(async () => {
 const showDialog = ref(false)
 
 // Méthode pour gérer la fermeture du dialogue
-const handleDialogClose = () => {
-  console.log('handleDialogClose')
+const closeDialog = () => {
+  console.log('closeDialog')
   showDialog.value = false
 }
 
 // Méthode pour vérifier l'état de remplissage des champs du formulaire
 const checkFormValidity = () => {
   const formDataValue = formData.value;
+  formDataValue.pair = formDataValue.altA + '/' + formDataValue.altB;
 
   const allFieldsFilled = Object.keys(formDataValue).every(key => {
     if (typeof formDataValue[key] === 'string' && !formDataValue[key].trim()) {
@@ -204,8 +196,13 @@ const saveTrade = () => {
   const formDataValue = formData.value;
 
   if (!isSaveDisabled.value) {
+
+
     // Tous les champs sont remplis, vous pouvez maintenant procéder à l'enregistrement
-    console.log(formDataValue);
+    console.log('formDataValue', formDataValue);
+
+    addTradesToDatabase(formDataValue);
+
     // Réinitialiser les champs du formulaire
     Object.keys(formDataInitial).forEach((key) => {
       formDataValue[key] = formDataInitial[key];
@@ -216,19 +213,49 @@ const saveTrade = () => {
   }
 }
 
+// Define methods
+async function addTradesToDatabase(formDataValue) {
+
+  try {
+    const response = await fetch(`${serverHost}/trades/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        trades_data: formDataValue,
+      }),
+    });
+
+    const responseData = await response.json();
+    if (response.ok) {
+      successSpin('Save completed', 'Trades added successfully.' + responseData, true, true);
+    } else {
+      errorSpin('Error', responseData.error, false, true);
+    }
+  } catch (error) {
+    errorSpin(
+      "Error",
+      "An error occurred while adding the trades: " + error,
+      false,
+      true
+    );
+  }
+}
+
 const formDataInitial = {
-  platform: 'dda',
-  altA: 'a',
+  platform: '',
+  altA: '',
   altB: 'USDT',
-  date: 'vv',
-  pair: 'jjj',
-  type: 'nd',
+  date: '',
+  pair: '',
+  type: '',
   price: 0,
   amount: 0,
   total: 0,
   totalUSDT: 0,
   fee: 0,
-  feecoin: 'asdaasd'
+  feecoin: ''
 }
 
 // Copier les valeurs initiales de formDataInitial pour initialiser formData
