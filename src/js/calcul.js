@@ -33,9 +33,18 @@ function getRecupShad(totalBuy, totalSell, maxExposition) {
 }
 
 function getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad) {
-  if (maxExposition < totalBuy && maxExposition + totalSell < totalBuy) {
-    const difference = totalBuy - maxExposition - totalSell
-    return difference > 4.5 ? totalBuy - difference : recupTpX
+  if (maxExposition < totalBuy) {
+    if (totalSell < totalBuy - maxExposition) {
+      const difference = totalBuy - maxExposition - totalSell
+      return difference > 4.5 ? totalBuy - difference : recupTpX + difference
+    } else {
+      const result = (totalSell - (totalBuy - maxExposition)) / maxExposition
+      const decimalPart = result - Math.floor(result)
+      const result2 = decimalPart * maxExposition
+
+      return result2 > 4.5 ? result2 : recupTpX + result2
+
+    }
   } else if ((totalShad + 1) * totalBuy - totalSell > 0) {
     return (totalShad + 1) * totalBuy - totalSell
   }
