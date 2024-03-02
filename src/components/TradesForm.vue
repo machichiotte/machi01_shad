@@ -36,33 +36,33 @@
         <div class="field-group">
             <label for="price" class="font-semibold">Price</label>
             <InputNumber id="price" class="flex-grow" :modelValue="formData['price']" autocomplete="off"
-                v-model="formData['price']" :min="0" />
+                v-model="formData['price']" :min="0"  :minFractionDigits="0" :maxFractionDigits="8" />
         </div>
 
         <div class="field-group">
             <label for="amount" class="font-semibold">Amount</label>
             <InputNumber id="amount" class="flex-grow" :modelValue="formData['amount']" autocomplete="off"
-                v-model="formData['amount']" />
+                v-model="formData['amount']"  :min="0" :minFractionDigits="0" :maxFractionDigits="8" />
         </div>
 
         <div class="flex">
             <div class="field-group w-1/2">
                 <label for="total" class="font-semibold">Total</label>
                 <InputNumber id="total" class="flex-grow" :modelValue="formData['total']" autocomplete="off"
-                    v-model="formData['total']" />
+                    v-model="formData['total']" :min="0" :minFractionDigits="0" :maxFractionDigits="8" />
             </div>
         </div>
 
         <div class="field-group">
             <label for="totalUSDT" class="font-semibold">Total (USDT)</label>
             <InputNumber id="totalUSDT" class="flex-grow" :modelValue="formData['totalUSDT']" autocomplete="off"
-                v-model="formData['totalUSDT']" />
+                v-model="formData['totalUSDT']" :min="0" :minFractionDigits="0" :maxFractionDigits="8" />
         </div>
 
         <div class="field-group">
             <label for="fee" class="font-semibold w-24">Fee</label>
             <InputNumber id="fee" class="flex-grow" :modelValue="formData['fee']" autocomplete="off"
-                v-model="formData['fee']" />
+                v-model="formData['fee']" :min="0" :minFractionDigits="0" :maxFractionDigits="8" />
         </div>
 
         <div class="field-group">
@@ -167,18 +167,18 @@ async function addTradesToDatabase(formDataValue) {
 }
 
 const formDataInitial = {
-    platform: 'ads',
-    altA: 'ads',
+    platform: '',
+    altA: '',
     altB: 'USDT',
-    date: '2024-08-25 14:05:16',
-    pair: 'ads',
-    type: 'ads',
+    date: '2024-01-01 14:05:16',
+    pair: '',
+    type: '',
     price: 0,
     amount: 0,
     total: 0,
     totalUSDT: 0,
     fee: 0,
-    feecoin: 'asd'
+    feecoin: ''
 }
 
 // Copier les valeurs initiales de formDataInitial pour initialiser formData
