@@ -20,7 +20,11 @@ function getProfit(totalBuy, totalSell, currentPrice, balance) {
 function getRecupShad(totalBuy, totalSell, maxExposition) {
   if (totalSell > 0) {
     if (maxExposition < totalBuy) {
-      return Math.round(totalBuy - totalSell - maxExposition, 2)
+      if (totalSell < totalBuy - maxExposition) {
+        return Math.round(totalBuy - totalSell - maxExposition, 2)
+      } else {
+        return totalSell - (totalBuy - maxExposition)
+      }
     } else {
       return Math.round(totalSell, 2)
     }
