@@ -4,28 +4,16 @@
   <div>
     <h1>Mise à jour des données</h1>
     <h2>Possibilité de mise à jour</h2>
-    <Button
-      @click="fetchAndUpdateCoinMarketCapData"
-      style="font-size: 18px; margin: 4px"
-      >Update Data</Button
-    >
+    <Button @click="fetchAndUpdateCoinMarketCapData" style="font-size: 18px; margin: 4px">Update Data</Button>
     <ul v-if="cryptoData">
       <li v-for="crypto in cryptoData" :key="crypto.name">
         {{ crypto["cmc_rank"] }} - {{ crypto.name }}
       </li>
     </ul>
-    <Button
-      @click="updateAllExchangeTrades()"
-      style="font-size: 18px; margin: 4px"
-      >Update All Trades</Button
-    >
+    <Button @click="updateAllExchangeTrades()" style="font-size: 18px; margin: 4px">Update All Trades</Button>
     <div>
-      <Button
-        v-for="exchangeId in exchangeIds"
-        :key="exchangeId"
-        @click="updateExchangeData(exchangeId)"
-        style="font-size: 18px; margin: 4px"
-      >
+      <Button v-for="exchangeId in exchangeIds" :key="exchangeId" @click="updateExchangeData(exchangeId)"
+        style="font-size: 18px; margin: 4px">
         Update All {{ exchangeId.toUpperCase() }}
       </Button>
     </div>
@@ -64,11 +52,11 @@ const exchangeIds = ref(["binance", "kucoin", "htx", "okx", "gateio"]);
 async function fetchAndUpdateCoinMarketCapData() {
   try {
     loadingSpin();
-    const { data, totalCount } = (
-      await fetchData(API_ENDPOINTS.CMC_DATA)
-    ).json();
+    const data = await fetch(API_ENDPOINTS.CMC_DATA)
+    console.log('data', data)
     cryptoData.value = data;
     await saveCmcToIndexedDB(data);
+    const totalCount = data.size()
     successSpinHtml(
       "Save completed",
       `Résultat : ${totalCount}`,
@@ -94,8 +82,8 @@ async function updateExchangeData(exchangeId) {
     loadingSpin();
     const [balance_data_response, orders_data_response] = await Promise.all(
       [
-        fetchData(`${API_ENDPOINTS.UPD_BALANCE}${exchangeId}`),
-        fetchData(`${API_ENDPOINTS.ORDERS}${exchangeId}`),
+        fetch(`${API_ENDPOINTS.UPD_BALANCE}${exchangeId}`),
+        fetch(`${API_ENDPOINTS.ORDERS}${exchangeId}`),
       ]
     );
 
@@ -132,11 +120,6 @@ async function updateExchangeData(exchangeId) {
   } catch (error) {
     handleError(`Error updating ${exchangeId}:`, error);
   }
-}
-
-async function fetchData(url) {
-  const response = await fetch(url);
-  return response;
 }
 
 function showUpdateResult(exchangeId, balance_data, orders_data) {

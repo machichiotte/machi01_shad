@@ -4,57 +4,14 @@
     <div class="card">
       <Toolbar class="mb-4">
         <template #start>
-          <MySellButton
-            label="Add Sell Orders"
-            icon="pi pi-cart-plus"
-            severity="info"
-            class="mr-2"
-            :disabled="!selectedAssets || !selectedAssets.length"
-            :model="allRows"
-          />
+          <MySellButton :selected-assets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
+            :model="allRows" />
 
-          <Button
-            label="Delete"
-            icon="pi pi-trash"
-            severity="danger"
-            @click="confirmDeleteSelected"
-            :disabled="!selectedAssets || !selectedAssets.length"
-          />
+          <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected"
+            :disabled="!selectedAssets || !selectedAssets.length" />
         </template>
 
         <template #end>
-          <FileUpload
-            mode="basic"
-            accept="image/*"
-            :maxFileSize="1000000"
-            label="Import"
-            chooseLabel="Import"
-            class="mr-2 inline-block"
-          />
-          <Button label="Export" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
-        </template>
-      </Toolbar>
-
-      <DataTable
-        :value="items"
-        :rows="itemsPerPage"
-        :filters="filters"
-        :pt="{
-          table: { style: 'min-width: 50rem' },
-          bodyrow: ({ props }) => ({
-            class: [{ 'font-bold': props.frozenRow }]
-          })
-        }"
-        paginator
-        stripedRows
-        v-model:selection="selectedAssets"
-        selectionMode="multiple"
-        dataKey="rank"
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        :rowsPerPageOptions="[5, 10, 25, 100, 500]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-      >
-        <template #header>
           <div class="flex justify-content-end">
             <IconField iconPosition="left">
               <InputIcon>
@@ -65,39 +22,51 @@
           </div>
         </template>
 
+        <!--
+        <template #end>
+          <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import"
+            class="mr-2 inline-block" />
+          <Button label="Export" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
+        </template> -->
+      </Toolbar>
+
+      <DataTable class="mt-4" :value="items" :rows="itemsPerPage" :filters="filters" :pt="{
+            table: { style: 'min-width: 50rem' },
+            bodyrow: ({ props }) => ({
+              class: [{ 'font-bold': props.frozenRow }]
+            })
+          }" paginator stripedRows scrollable scroll-height="530px" v-model:selection="selectedAssets"
+        selectionMode="multiple" dataKey="rank"
+        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+        :rowsPerPageOptions="[5, 10, 25, 100, 500]"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products">
+
+
         <ColumnGroup type="header">
           <Row>
-            <Column header="Icon" field="iconUrl" :rowspan="2" />
-            <Column header="Asset" field="asset" :rowspan="2" :sortable="true" />
-            <Column
-              header="Exchange"
-              field="exchangeId"
-              :rowspan="2"
-              sortable
-              style="min-width: 12rem"
-            />
-            <Column header="Status" field="status" :rowspan="2" sortable />
-            <Column header="Strategy" field="strat" :rowspan="2" sortable />
-            <Column header="Ratio" field="ratioShad" :rowspan="2" sortable />
+            <Column header="Icon" field="iconUrl" :rowspan="2" frozen alignFrozen="left" />
+            <Column header="Asset" field="asset" :rowspan="2" :sortable="true" frozen alignFrozen="left" />
+            <Column header="Exchange" field="exchangeId" :rowspan="2" sortable frozen alignFrozen="left" />
+            <Column header="Status" field="status" :rowspan="2" sortable frozen alignFrozen="left" />
             <Column header="Total Shad" field="totalShad" :rowspan="2" sortable />
             <Column header="Rank" field="rank" :rowspan="2" sortable />
             <Column header="Average Entry Price" field="averageEntryPrice" :rowspan="2" sortable />
             <Column header="Total Buy" field="totalBuy" :rowspan="2" sortable />
+            <Column header="Total Sell" field="totalSell" :rowspan="2" sortable />
+
             <Column header="Max wanted" field="maxExposition" :rowspan="2" sortable />
-            <Column
-              header="Percentage Difference"
-              field="percentageDifference"
-              :rowspan="2"
-              sortable
-            />
+            <Column header="Percentage Difference" field="percentageDifference" :rowspan="2" sortable />
             <Column header="Current Price" field="currentPrice" :rowspan="2" sortable />
             <Column header="Wallet" field="currentPossession" :rowspan="2" sortable />
             <Column header="Profit" field="profit" :rowspan="2" sortable />
-            <Column header="Total Sell" field="totalSell" :rowspan="2" sortable />
-            <Column header="Recup Shad" field="recupShad" :rowspan="2" sortable />
             <Column header="Open Orders" :colspan="2" />
             <Column header="Quantite total achetee" field="totalAmount" :rowspan="2" sortable />
             <Column header="Balance" field="balance" :rowspan="2" sortable />
+            <Column header="Strategy" field="strat" :rowspan="2" sortable />
+            <Column header="Ratio" field="ratioShad" :rowspan="2" sortable />
+            <Column header="Recup Shad" field="recupShad" :rowspan="2" sortable />
+            <Column header="% next TP" field="percentToNextTp" sortable :rowspan="2" />
+
             <Column header="Take Profit" :colspan="2" />
             <Column header="TP1" :colspan="2" />
             <Column header="TP2" :colspan="2" />
@@ -129,40 +98,32 @@
           </Row>
         </ColumnGroup>
 
-        <Column field="iconUrl">
+        <Column field="iconUrl" frozen alignFrozen="left">
           <template #body="slotProps">
-            <img
-              :src="slotProps.data.iconUrl"
-              :alt="slotProps.data.asset"
-              class="border-round icon-32"
-            />
+            <img :src="slotProps.data.iconUrl" :alt="slotProps.data.asset" class="border-round icon-32" />
           </template>
         </Column>
-        <Column field="asset"></Column>
-        <Column field="exchangeId" style="min-width: 12rem"></Column>
-        <Column field="status" style="min-width: 12rem">
+        <Column field="asset" frozen alignFrozen="left"></Column>
+        <Column field="exchangeId" style="min-width: 5rem" frozen alignFrozen="left"></Column>
+        <Column field="status" style="min-width: 12rem" frozen alignFrozen="left">
           <template #body="slotProps">
-            <Tag
-              :value="getStatusLabel(slotProps.data)"
-              :severity="getStatusSeverity(slotProps.data)"
-            />
+            <Tag :value="getStatus(slotProps.data).label" :severity="getStatus(slotProps.data).severity" />
           </template>
         </Column>
-        <Column field="strat"></Column>
-        <Column field="ratioShad"></Column>
+
         <Column field="totalShad"></Column>
         <Column field="rank"></Column>
         <Column field="averageEntryPrice"></Column>
         <Column field="totalBuy"></Column>
+        <Column field="totalSell"></Column>
+
         <Column field="maxExposition"></Column>
         <Column field="percentageDifference">
           <template #body="slotProps">
-            <span
-              :class="{
-                'text-green-500': slotProps.data.percentageDifference > 0,
-                'text-red-500': slotProps.data.percentageDifference < 0
-              }"
-            >
+            <span :class="{
+            'text-green-500': slotProps.data.percentageDifference > 0,
+            'text-red-500': slotProps.data.percentageDifference < 0
+          }">
               {{ (100 * slotProps.data.percentageDifference).toFixed(2) }}%
             </span>
           </template>
@@ -175,22 +136,33 @@
         </Column>
         <Column field="profit">
           <template #body="slotProps">
-            <span
-              :class="{
-                'text-green-500': slotProps.data.profit > 0,
-                'text-red-500': slotProps.data.profit < 0
-              }"
-            >
+            <span :class="{
+            'text-green-500': slotProps.data.profit > 0,
+            'text-red-500': slotProps.data.profit < 0
+          }">
               {{ slotProps.data.profit }}$
             </span>
           </template>
         </Column>
-        <Column field="totalSell"></Column>
-        <Column field="recupShad"></Column>
         <Column field="nbOpenBuyOrders"></Column>
         <Column field="nbOpenSellOrders"></Column>
         <Column field="totalAmount"></Column>
         <Column field="balance"></Column>
+        <Column field="strat"></Column>
+        <Column field="ratioShad"></Column>
+        <Column field="recupShad"></Column>
+        <Column field="percentToNextTp">
+          <template #body="slotProps">
+            <span :class="{
+            'text-green-500': slotProps.data.percentToNextTp > 0,
+            'text-red-500': slotProps.data.percentToNextTp < 0
+          }">
+              {{ (100 * slotProps.data.percentToNextTp).toFixed(2) }}%
+            </span>
+          </template>
+
+        </Column>
+
         <Column field="recupTp1"></Column>
         <Column field="recupTpX"></Column>
         <Column field="amountTp1"></Column>
@@ -206,60 +178,50 @@
 
         <Column field="cryptoPercentChange24h">
           <template #body="slotProps">
-            <span
-              :class="{
-                'text-green-500': slotProps.data.cryptoPercentChange24h > 0,
-                'text-red-500': slotProps.data.cryptoPercentChange24h < 0
-              }"
-            >
+            <span :class="{
+            'text-green-500': slotProps.data.cryptoPercentChange24h > 0,
+            'text-red-500': slotProps.data.cryptoPercentChange24h < 0
+          }">
               {{ (100 * slotProps.data.cryptoPercentChange24h).toFixed(2) }}%
             </span>
           </template>
         </Column>
         <Column field="cryptoPercentChange7d">
           <template #body="slotProps">
-            <span
-              :class="{
-                'text-green-500': slotProps.data.cryptoPercentChange7d > 0,
-                'text-red-500': slotProps.data.cryptoPercentChange7d < 0
-              }"
-            >
+            <span :class="{
+            'text-green-500': slotProps.data.cryptoPercentChange7d > 0,
+            'text-red-500': slotProps.data.cryptoPercentChange7d < 0
+          }">
               {{ (100 * slotProps.data.cryptoPercentChange7d).toFixed(2) }}%
             </span>
           </template>
         </Column>
         <Column field="cryptoPercentChange30d">
           <template #body="slotProps">
-            <span
-              :class="{
-                'text-green-500': slotProps.data.cryptoPercentChange30d > 0,
-                'text-red-500': slotProps.data.cryptoPercentChange30d < 0
-              }"
-            >
+            <span :class="{
+            'text-green-500': slotProps.data.cryptoPercentChange30d > 0,
+            'text-red-500': slotProps.data.cryptoPercentChange30d < 0
+          }">
               {{ (100 * slotProps.data.cryptoPercentChange30d).toFixed(2) }}%
             </span>
           </template>
         </Column>
         <Column field="cryptoPercentChange60d">
           <template #body="slotProps">
-            <span
-              :class="{
-                'text-green-500': slotProps.data.cryptoPercentChange60d > 0,
-                'text-red-500': slotProps.data.cryptoPercentChange60d < 0
-              }"
-            >
+            <span :class="{
+            'text-green-500': slotProps.data.cryptoPercentChange60d > 0,
+            'text-red-500': slotProps.data.cryptoPercentChange60d < 0
+          }">
               {{ (100 * slotProps.data.cryptoPercentChange60d).toFixed(2) }}%
             </span>
           </template>
         </Column>
         <Column field="cryptoPercentChange90d">
           <template #body="slotProps">
-            <span
-              :class="{
-                'text-green-500': slotProps.data.cryptoPercentChange90d > 0,
-                'text-red-500': slotProps.data.cryptoPercentChange90d < 0
-              }"
-            >
+            <span :class="{
+            'text-green-500': slotProps.data.cryptoPercentChange90d > 0,
+            'text-red-500': slotProps.data.cryptoPercentChange90d < 0
+          }">
               {{ (100 * slotProps.data.cryptoPercentChange90d).toFixed(2) }}%
             </span>
           </template>
@@ -267,20 +229,9 @@
 
         <Column :exportable="false" style="min-width: 8rem">
           <template #body="slotProps">
-            <Button
-              icon="pi pi-pencil"
-              outlined
-              rounded
-              class="mr-2"
-              @click="editProduct(slotProps.data)"
-            />
-            <Button
-              icon="pi pi-trash"
-              outlined
-              rounded
-              severity="danger"
-              @click="confirmDeleteProduct(slotProps.data)"
-            />
+            <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editProduct(slotProps.data)" />
+            <Button icon="pi pi-trash" outlined rounded severity="danger"
+              @click="confirmDeleteProduct(slotProps.data)" />
           </template>
         </Column>
       </DataTable>
@@ -316,6 +267,9 @@ const filters = ref({
 const BINANCE_EXCHANGE_ID = 'binance'
 const BINANCE_THRESHOLD = 3 // 300%
 
+const HTX_EXCHANGE_ID = 'htx'
+const HTX_THRESHOLD = 10 // 1000%
+
 const getData = async () => {
   console.log('getData')
 
@@ -333,25 +287,6 @@ const getData = async () => {
     // Affichez un message d'erreur à l'utilisateur si nécessaire
   }
 }
-
-/*
-const closeOverlay = () => {
-  if (showOverlay.value) showOverlay.value = false
-}
-
-const selectionChanged = (rows) => {
-  allRows.value = rows
-}
-
-const onCellClick = (params) => {
-  // Vérifiez si la colonne cliquée est la colonne "asset"
-  if (params.column.field === 'asset') {
-    // Affichez l'overlay
-    showOverlay.value = true
-    // Définissez la ligne sélectionnée
-    selectedAsset.value = params.row
-  }
-}*/
 
 const sortedBalances = computed(() => {
   if (balances.value && balances.value.length > 0) {
@@ -392,17 +327,9 @@ onMounted(async () => {
 })
 
 //const toast = useToast()
-const addSellOrderDialog = ref(false)
 const addSellOrdersDialog = ref(false)
 const selectedAssets = ref([])
-const metaKey = ref(true)
 
-const submitted = ref(false)
-const statuses = ref([
-  { label: 'INSTOCK', value: 'instock' },
-  { label: 'LOWSTOCK', value: 'lowstock' },
-  { label: 'OUTOFSTOCK', value: 'outofstock' }
-])
 
 const exportCSV = () => {
   dt.value.exportCSV()
@@ -415,112 +342,58 @@ const confirmAddSellOrdersSelected = () => {
   addSellOrdersDialog.value = true
 }
 
-const getStatusSeverity = (data) => {
-  if (data.nbOpenSellOrders == 0) {
-    return 'danger'
-  } else if (
-    data.currentPrice > data.priceTp1 ||
-    data.currentPrice > data.priceTp2 ||
-    data.currentPrice > data.priceTp3 ||
-    data.currentPrice > data.priceTp4 ||
-    data.currentPrice > data.priceTp5
-  ) {
-    return 'info'
-  } else {
-    const nb5 = data.status.reduce((acc, val) => acc + val, 0)
-    if (nb5 === 5) {
-      return 'success'
-    } else {
-      if (data.exchangeId === BINANCE_EXCHANGE_ID) {
-        // Calculer le prix actuel multiplié par 300% (ou 3 fois le prix initial)
-        const priceThreshold = calculatePriceThreshold(data.currentPrice, BINANCE_THRESHOLD)
+function getStatus(data) {
+  const currentPrice = data.currentPrice;
+  const exchangeId = data.exchangeId;
 
-        // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de chaque priceTp1 à priceTp5
+  const nb5 = data.status.reduce((acc, val) => acc + val, 0);
+
+  if (data.nbOpenSellOrders === 0) {
+    return { severity: 'danger', label: "Pas d'ordres ouverts" };
+  } else if (
+    currentPrice > data.priceTp1
+  ) {
+    if (data.priceTp1 < data.priceTp2)
+      return { severity: 'info', label: 'Tu peux vendre depuis un moment' };
+    else
+      return { severity: 'danger', label: 'tp2 < tp1' };
+  } else {
+    if (nb5 === 5) {
+      return { severity: 'success', label: '5 ordres placés' };
+    } else {
+      if (exchangeId === BINANCE_EXCHANGE_ID || exchangeId === HTX_EXCHANGE_ID) {
+        const exchangeThreshold = exchangeId === BINANCE_EXCHANGE_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD;
+        const priceThreshold = calculatePriceThreshold(currentPrice, exchangeThreshold);
+
         for (let i = 0; i < 5; i++) {
-          // Vérifier si l'ordre correspondant n'a pas été placé (data.status[i] = 0)
           if (data.status[i] === 0) {
-            // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de priceTp[i]
             if (priceThreshold < data[`priceTp${i + 1}`]) {
-              // Si c'est le cas, les ordres peuvent être placés avec succès
-              return 'success'
+              return { severity: 'success', label: 'Max ordres placés' };
             } else {
-              // Sinon, l'ordre ne peut pas être placé car le prix actuel a augmenté de 300%
-              return 'warning'
+              return { severity: 'warning', label: `L'ordre ${i + 1} peut être placé ` };
             }
           }
         }
       } else {
-        // Vérifier combien de paires consécutives sont bonnes à partir de tp1 jusqu'à tp5 dans le bon ordre.
-        const consecutivePairs = countConsecutivePairs(data.status)
+        const consecutivePairs = countConsecutivePairs(data.status);
 
-        // En fonction du nombre de paires consécutives, renvoyer le niveau de sévérité approprié.
         switch (consecutivePairs) {
           case 0:
-            return 'warning'
+            return { severity: 'warning', label: 'Aucune correspondance' };
           case 1:
-            return 'info'
+            return { severity: 'info', label: '1 correspondance' };
           case 2:
           case 3:
           case 4:
-            return 'success'
+            return { severity: 'success', label: `${consecutivePairs} correspondances` };
         }
-      }
-    }
-  }
-}
-
-const getStatusLabel = (data) => {
-  if (data.nbOpenSellOrders == 0) {
-    return "Pas d'ordres ouverts"
-  } else if (
-    data.currentPrice > data.priceTp1 ||
-    data.currentPrice > data.priceTp2 ||
-    data.currentPrice > data.priceTp3 ||
-    data.currentPrice > data.priceTp4 ||
-    data.currentPrice > data.priceTp5
-  ) {
-    return 'Tu peux vendre depuis un moment'
-  } else {
-    console.log('data', data)
-    const nb5 = data.status.reduce((acc, val) => acc + val, 0)
-    if (nb5 === 5) {
-      return '5 ordres placés'
-    } else {
-      if (data.exchangeId === BINANCE_EXCHANGE_ID) {
-        const binanceThreshold = 3 //300%
-        // Calculer le prix actuel multiplié par 300% (ou 3 fois le prix initial)
-        const priceThreshold = data.currentPrice + data.currentPrice * binanceThreshold
-
-        // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de chaque priceTp1 à priceTp5
-        for (let i = 0; i < 5; i++) {
-          // Vérifier si l'ordre correspondant n'a pas été placé (data.status[i] = 0)
-          if (data.status[i] === 0) {
-            // Vérifier si le prix actuel multiplié par 300% est inférieur au prix de priceTp[i]
-            if (priceThreshold < data[`priceTp${i + 1}`]) {
-              // Si c'est le cas, les ordres peuvent être placés avec succès
-              return 'Max ordres placés'
-            } else {
-              // Sinon, l'ordre ne peut pas être placé car le prix actuel a augmenté de 300%
-              return 'Des ordres doivent être modifiés'
-            }
-          }
-        }
-      } else {
-        // Vérifier combien de paires consécutives sont bonnes à partir de tp1 jusqu'à tp5 dans le bon ordre.
-        const consecutivePairs = countConsecutivePairs(data.status)
-        // En fonction du nombre de paires consécutives, renvoyer le niveau de sévérité approprié.
-        const label = `${consecutivePairs} ${
-          consecutivePairs > 1 ? 'correspondances' : 'correspondance'
-        }`
-
-        return label
       }
     }
   }
 }
 
 function calculatePriceThreshold(currentPrice, threshold) {
-  return currentPrice + currentPrice * threshold
+  return currentPrice * threshold
 }
 
 function countConsecutivePairs(status) {

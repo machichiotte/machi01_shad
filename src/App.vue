@@ -44,11 +44,10 @@ function toggleDarkMode() {
         <RouterLink to="/shad" active-class="selected-link">SHAD</RouterLink>
         <RouterLink to="/strategy" active-class="selected-link">Stratégie</RouterLink>
         <RouterLink to="/trades" active-class="selected-link">Trades</RouterLink>
-        <RouterLink to="/addtrades" active-class="selected-link">Add Trades</RouterLink>
         <RouterLink to="/converter" active-class="selected-link">Converter</RouterLink>
       </nav>
     </header>
-    <RouterView />
+    <RouterView /> 
   </div>
 </template>
 

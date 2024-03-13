@@ -47,13 +47,6 @@ import { getOrders } from '../js/getter.js'
 import MySellButtonVue from './MySellButton.vue'
 import { FilterMatchMode } from 'primevue/api'
 
- props = defineProps({
-  itemsPerPage: {
-    type: Number,
-    default: 13
-  }
-})
-
 // Variables réactives
 const items = ref([]) // Utilisez ref pour les variables réactives
 const itemsPerPage = 13

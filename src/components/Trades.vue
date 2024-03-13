@@ -10,7 +10,7 @@
 
       <!-- DataTable avec les données des trades -->
       <DataTable :value="rows" :rows="itemsPerPage" columnResizeMode="fit" :paginator="true" scrollable
-        :filters="filters">
+        :filters="filters" sortField="date" :sortOrder="-1">
         <!-- En-tête des colonnes -->
         <template #header>
           <div class="flex flex-wrap gap-2 align-items-center justify-content-between">

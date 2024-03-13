@@ -1,40 +1,37 @@
-const serverHost = import.meta.env.VITE_SERVER_HOST;
+const serverHost = import.meta.env.VITE_SERVER_HOST
 
 const cancelAllOrders = async (exchangeId, asset) => {
-    const requestBody = {
-        exchangeId: exchangeId,
-        asset: asset
-    };
+  const requestBody = {
+    exchangeId: exchangeId,
+    asset: asset
+  }
 
-    const response = await fetch(`${serverHost}/cancel/all`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-    });
+  const response = await fetch(`${serverHost}/orders/cancel/all`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestBody)
+  })
 
-    const data = await response.json();
-    console.log('cancel :: ' + JSON.stringify(data));
+  const data = await response.json()
 
-    return data;
+  return data
 }
 
 const bunchOrders = async (exchangeId, asset, amount, price) => {
-    const requestBody = {
-        exchangeId: exchangeId,
-        asset: asset,
-        amount: amount,
-        price: price
-    };
+  const requestBody = {
+    exchangeId: exchangeId,
+    asset: asset,
+    amount: amount,
+    price: price
+  }
 
-    const response = await fetch(`${serverHost}/bunch-orders`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-    });
-    const data = await response.json();
-    console.log('bunchOrders :: ' + JSON.stringify(data));
+  const response = await fetch(`${serverHost}/orders/bunch-orders`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestBody)
+  })
 
-    return data;
+  return response.status
 }
 
-export { cancelAllOrders, bunchOrders };
+export { cancelAllOrders, bunchOrders }

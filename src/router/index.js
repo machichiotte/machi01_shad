@@ -2,7 +2,6 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@comp/Home.vue'
-import AddTrades from '@comp/AddTrades.vue'
 import Shad from '@comp/Shad.vue'
 import Orders from '@comp/Orders.vue'
 import Cmc from '@comp/Cmc.vue'
@@ -13,7 +12,6 @@ import Converter from '@comp/Converter.vue'
 
 const routes = [
   { path: '/', name: 'home', component: Home },
-  { path: '/addtrades', name: 'addtrades', component: AddTrades },
   { path: '/update', name: 'update', component: Update },
   { path: '/orders', name: 'orders', component: Orders },
   { path: '/cmc', name: 'cmc', component: Cmc },

@@ -85,7 +85,7 @@ const selectedMaxExposure = ref('')
 
 //TODO CHANGE THIS (in calcul.js too)
 const strategies = ref(['Shad', 'Shad skip x2', 'Strategy 3'])
-const exposures = ref([5, 10, 15])
+const exposures = ref([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000])
 
 // Define methods
 async function getData() {
