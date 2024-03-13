@@ -108,8 +108,10 @@ function calculateRecups(item, strats, totalBuy, totalSell) {
   if (stratExpo === undefined) {
     stratExpo = MAX_EXPO
   }
-  const maxExposition = Math.min(totalBuy, stratExpo)
-
+  const maxExposition = Math.max(
+    5 + 0.05,
+    Math.min(totalBuy, stratExpo),
+  );
   const ratioShad = getRatioShad(strat)
   const recupShad = getRecupShad(totalBuy, totalSell, maxExposition)
   const recupTpX = getRecupTpX(strat, maxExposition, ratioShad)
@@ -356,9 +358,14 @@ function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
 
   const totalSell = getTotalSell(symbol, trades)
 
-  const openBuyOrders = buyOrders.filter((order) => order.symbol.includes(symbol))
-  const openSellOrders = sellOrders.filter((order) => order.symbol.includes(symbol))
-
+  const openBuyOrders = buyOrders.filter((order) => {
+    const [asset] = order.symbol.split('/')
+    return asset === symbol
+  })
+  const openSellOrders = sellOrders.filter((order) => {
+    const [asset] = order.symbol.split('/')
+    return asset === symbol
+  })
   const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(symbol, trades)
 
   const currentPossession = getCurrentPossession(currentPrice, balance)
