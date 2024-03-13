@@ -161,7 +161,7 @@ async function getData(req, res, collection, mockDataFile) {
 
     res.json(data);
   } catch (err) {
-    console.error(err);
+    console.error('getData', err);
     res.status(500).send({ error: 'Internal server error' });
   }
 }
@@ -209,7 +209,7 @@ function handleErrorResponse(res, error, functionName) {
     res.status(401).json({ success: false, error: `Authentication error in ${functionName}`, message: error.message });
   } else {
     console.error(`Error in ${functionName}:`, error);
-    res.status(500).json({ success: false, error: 'Server error' });
+    res.status(500).json({ success: false, error });
   }
 }
 
