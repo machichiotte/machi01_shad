@@ -9,6 +9,8 @@ import Update from '@comp/Update.vue'
 import Strategy from '@comp/Strategy.vue'
 import Trades from '@comp/Trades.vue'
 import Converter from '@comp/Converter.vue'
+import Login from '@comp/Login.vue'
+import Signup from '@comp/Signup.vue'
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -18,7 +20,9 @@ const routes = [
   { path: '/shad', name: 'shad', component: Shad },
   { path: '/strategy', name: 'strategy', component: Strategy },
   { path: '/trades', name: 'trades', component: Trades },
-  { path: '/converter', name: 'converter', component: Converter }
+  { path: '/converter', name: 'converter', component: Converter },
+  { path: '/login', name: 'login', component: Login },
+  { path: '/signup', name: 'signup', component: Signup },
 ]
 
 const router = createRouter({

@@ -66,15 +66,6 @@ const iAmClicked = async () => {
         selectedRow.priceTp5,
       ];
 
-      /*
-      const results = [];
-      for (let i = 0; i < 5; i++) {
-        results[i] = await bunchOrders(selectedRow.exchangeId, asset, amounts[i], prices[i]);
-      }
-      return `Asset ${asset}: ${results.join(', ')}`; // Combine results for logging
-    });
-
-    const orderPlacementResults = await Promise.all(orderPlacementPromises);*/
       // Nested Promise.all for parallel bunchOrders
       const orderResults = await Promise.all(
         amounts.map(async (amount, index) => {
@@ -82,7 +73,7 @@ const iAmClicked = async () => {
         })
       );
 
-      return `Asset ${asset}: ${orderResults.join(', ')}`; // Combine results for logging
+      return `${asset}: ${orderResults.join(', ')}`; // Combine results for logging
     });
 
     const orderPlacementResults = await Promise.all(orderPlacementPromises);
@@ -90,69 +81,7 @@ const iAmClicked = async () => {
     successSpinHtml('Save completed', orderPlacementResults.join('<br>'), true, true);
   } else {
     // Handle scenario where no cancellations were necessary
-    successSpinHtml('Save completed', 'No cancellations needed.', true, true);
+    successSpinHtml('NOTHING', 'No cancellations/sells needed.', true, true);
   }
-
-  console.log(selectedRows[0]);
-
-  /*
-    for (let rows in selectedRows) {
-      const asset = selectedRows[rows].asset
-      const exchangeId = selectedRows[rows].exchangeId
-  
-      let resultText = `${asset}<br>`
-  
-      let isNeedCancel = false
-      let cancel
-  
-      //TODO check pour ne suppr que les sell orders
-      console.log('selectedRows[rows]', selectedRows[rows])
-      console.log('selectedRows[asset]', selectedRows[rows].asset)
-      console.log('selectedRows[nbOpenSellOrders]', selectedRows[rows].nbOpenSellOrders)
-      console.log('selectedRows[rows].openSellOrders > 0', selectedRows[rows].nbOpenSellOrders > 0)
-      if (selectedRows[rows].nbOpenSellOrders > 0) {
-        isNeedCancel = true
-        cancel = await cancelAllOrders(exchangeId, asset)
-  
-        resultText += `Cancel : ${cancel.status}<br>`
-      }
-  
-  
-  
-  
-  
-  
-      
-  
-      if (!isNeedCancel || cancel.status == 200) {
-        const amounts = [
-          selectedRows[rows].amountTp1,
-          selectedRows[rows].amountTp2,
-          selectedRows[rows].amountTp3,
-          selectedRows[rows].amountTp4,
-          selectedRows[rows].amountTp5
-        ]
-        const prices = [
-          selectedRows[rows].priceTp1,
-          selectedRows[rows].priceTp2,
-          selectedRows[rows].priceTp3,
-          selectedRows[rows].priceTp4,
-          selectedRows[rows].priceTp5
-        ]
-  
-        let res = []
-        for (let i = 0; i < 5; i++) {
-          res[i] = await bunchOrders(exchangeId, asset, amounts[i], prices[i])
-          resultText += `TP${i} : ${res[i]}<br>`
-        }
-  
-        successSpinHtml('Save completed', resultText, true, true)
-      } else {
-        errorSpin('Error', `Cancel order : ${cancel.error}`, false, true)
-      }
-    }
-    
-  
-    console.log(selectedRows[0])*/
 }
 </script>
