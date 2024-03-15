@@ -300,9 +300,17 @@ const sortedBalances = computed(() => {
   }
 })
 
+let cachedItems = null;
+
 const items = computed(() => {
+  // Si le résultat est déjà mis en cache, retournez-le directement
+  if (cachedItems !== null) {
+    return cachedItems;
+  }
+
   if (strats.value && strats.value.length > 0) {
-    return sortedBalances.value.map((item) => {
+    // Calculez les items
+    const calculatedItems = sortedBalances.value.map((item) => {
       return getAllCalculs(
         item,
         cmc.value,
@@ -310,10 +318,15 @@ const items = computed(() => {
         strats.value,
         buyOrders.value,
         sellOrders.value
-      )
-    })
+      );
+    });
+
+    // Mettez en cache le résultat pour les appels ultérieurs
+    cachedItems = calculatedItems;
+
+    return calculatedItems;
   } else {
-    return []
+    return [];
   }
 })
 

@@ -343,7 +343,7 @@ function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
   const { symbol, platform, balance } = item
   const exchangeId = platform
 
-  console.log('symbol', symbol)
+  console.log('getAllCalculs symbol', symbol)
 
   const {
     rank,

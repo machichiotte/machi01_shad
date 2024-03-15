@@ -52,11 +52,15 @@ const exchangeIds = ref(["binance", "kucoin", "htx", "okx", "gateio"]);
 async function fetchAndUpdateCoinMarketCapData() {
   try {
     loadingSpin();
-    const data = await fetch(API_ENDPOINTS.CMC_DATA)
-    console.log('data', data)
-    cryptoData.value = data;
-    await saveCmcToIndexedDB(data);
-    const totalCount = data.size()
+    const response = await fetch(API_ENDPOINTS.CMC_DATA)
+    const data = await response.json();
+
+    const totalCount = data.totalCount;
+
+    cryptoData.value = data.data;
+
+    await saveCmcToIndexedDB(response);
+
     successSpinHtml(
       "Save completed",
       `Résultat : ${totalCount}`,

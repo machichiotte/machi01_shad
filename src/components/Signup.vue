@@ -90,9 +90,7 @@ export default {
             }
             this.error = '';
 
-            //make spinner true
             this.showLoading(true);
-            //signup registration
             try {
                 const isSigned = await this.signup({
                     email: this.email,
