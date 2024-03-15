@@ -53,7 +53,6 @@ async function createBunchOrders(req, res) {
   const exchangeId = req.body.exchangeId;
   const price = req.body.price;
   const amount = req.body.amount;
-  console.log("exchangeId", exchangeId);
 
   try {
     const { symbol, exchangeParams } = createExchangeInstanceWithReq(
@@ -63,12 +62,10 @@ async function createBunchOrders(req, res) {
     const exchange = new ccxt[exchangeId](exchangeParams);
 
     const result = await exchange.createLimitSellOrder(symbol, amount, price);
-    console.log("createBunchOrders result OKOKOK");
 
     res.status(200).json({ message: result, status: 200 });
   } catch (error) {
-    //console.log('createBunchOrders catch error', JSON.stringify(error))
-   
+    console.error(error);
     handleErrorResponse(res, error, "createBunchOrders");
   }
 }

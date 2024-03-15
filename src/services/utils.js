@@ -1,23 +1,24 @@
 // src/services/utils.js
-const ccxt = require('ccxt');
-const { AuthenticationError } = require('ccxt');
+const ccxt = require("ccxt");
+const { AuthenticationError } = require("ccxt");
 
-const fs = require('fs').promises; // Ajout de l'import pour fs.promises
+const fs = require("fs").promises; // Ajout de l'import pour fs.promises
 const {
   saveArrayDataMDB,
   deleteMultipleDataMDB,
   getAllDataMDB,
   updateDataMDB,
   deleteAllDataMDB,
-  saveObjectDataMDB
-} = require('./mongodb.js');
-const { mapMarkets } = require('./mapping.js');
+  saveObjectDataMDB,
+} = require("./mongodb.js");
+const { mapMarkets } = require("./mapping.js");
 
 // Fonction utilitaire pour créer une instance d'échange
 function createExchangeInstance(exchangeId) {
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
-  const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
+  const passphrase =
+    process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || "";
 
   if (!apiKey) {
     throw new Error(`API key missing for exchange: ${exchangeId}`);
@@ -28,7 +29,7 @@ function createExchangeInstance(exchangeId) {
   }
 
   // Ajoutez ceci pour vérifier si l'échange est pris en charge
-  if (!['binance', 'kucoin', 'htx', 'okx', 'gateio'].includes(exchangeId)) {
+  if (!["binance", "kucoin", "htx", "okx", "gateio"].includes(exchangeId)) {
     throw new Error(`Unsupported exchange: ${exchangeId}`);
   }
 
@@ -41,7 +42,7 @@ function createExchangeInstance(exchangeId) {
     const exchangeParams = {
       apiKey,
       secret,
-      ...(passphrase && { password: passphrase }) // Ajout de passphrase aux paramètres s'il existe
+      ...(passphrase && { password: passphrase }), // Ajout de passphrase aux paramètres s'il existe
     };
 
     const exchange = new ccxt[exchangeId](exchangeParams);
@@ -50,10 +51,14 @@ function createExchangeInstance(exchangeId) {
   } catch (error) {
     if (error instanceof AuthenticationError) {
       // Gérer spécifiquement les erreurs d'authentification
-      throw new AuthenticationError(`Authentication error for ${exchangeId}: ${error.message}`);
+      throw new AuthenticationError(
+        `Authentication error for ${exchangeId}: ${error.message}`
+      );
     } else {
       // Gérer les autres erreurs
-      throw new Error(`Error creating exchange instance for ${exchangeId}: ${error.message}`);
+      throw new Error(
+        `Error creating exchange instance for ${exchangeId}: ${error.message}`
+      );
     }
   }
 }
@@ -62,19 +67,19 @@ function getSymbolForExchange(exchangeId, asset) {
   let symbol;
 
   switch (exchangeId) {
-    case 'kucoin':
+    case "kucoin":
       symbol = `${asset}-USDT`;
       break;
-    case 'binance':
+    case "binance":
       symbol = `${asset}USDT`;
       break;
-    case 'htx':
+    case "htx":
       symbol = `${asset.toLowerCase()}usdt`;
       break;
-    case 'gateio':
+    case "gateio":
       symbol = `${asset.toUpperCase()}_USDT`;
       break;
-    case 'okx':
+    case "okx":
       symbol = `${asset}-USDT`;
       break;
     default:
@@ -88,19 +93,20 @@ function getSymbolForExchange(exchangeId, asset) {
 function createExchangeInstanceWithReq(exchangeId, req) {
   const apiKey = process.env[`${exchangeId.toUpperCase()}_API_KEY`];
   const secret = process.env[`${exchangeId.toUpperCase()}_SECRET_KEY`];
-  const passphrase = process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || '';
+  const passphrase =
+    process.env[`${exchangeId.toUpperCase()}_PASSPHRASE`] || "";
   const asset = req.body.asset;
   const symbol = getSymbolForExchange(exchangeId, asset);
 
   const exchangeParams = {
     apiKey,
     secret,
-    ...(passphrase && { password: passphrase }) // Ajout de passphrase aux paramètres s'il existe
+    ...(passphrase && { password: passphrase }), // Ajout de passphrase aux paramètres s'il existe
   };
 
   return {
     symbol,
-    exchangeParams
+    exchangeParams,
   };
 }
 
@@ -140,29 +146,28 @@ async function saveLastUpdateToMongoDB(type, exchangeId) {
 
 // Fonction utilitaire pour obtenir des données
 async function getData(req, res, collection, mockDataFile) {
-  console.log('getData');
+  console.log("getData");
 
   try {
     let data;
 
-    console.log('getData try');
+    console.log("getData try");
 
-
-    if (process.env.OFFLINE_MODE === 'true') {
-    console.log('getData offline');
+    if (process.env.OFFLINE_MODE === "true") {
+      console.log("getData offline");
 
       const mockDataPath = `./mockData/mongodb/${mockDataFile}`;
-      const jsonData = await fs.readFile(mockDataPath, 'utf8'); // Utilisation de fs.promises.readFile
+      const jsonData = await fs.readFile(mockDataPath, "utf8"); // Utilisation de fs.promises.readFile
       data = JSON.parse(jsonData);
     } else {
-      console.log('getData collection', collection);
+      console.log("getData collection", collection);
       data = await getAllDataMDB(collection);
     }
 
     res.json(data);
   } catch (err) {
-    console.error('getData', err);
-    res.status(500).send({ error: 'Internal server error' });
+    console.error("getData", err);
+    res.status(500).send({ error: "Internal server error" });
   }
 }
 
@@ -176,13 +181,13 @@ async function deleteAndSaveData(mapData, collection, exchangeId) {
 }
 
 async function deleteAndSaveObject(mapData, collection) {
-  console.log('delete save');
-  console.log('delete mapData.length', Object.keys(mapData).length);
+  console.log("delete save");
+  console.log("delete mapData.length", Object.keys(mapData).length);
 
   if (mapData && Object.keys(mapData).length > 0) {
-    console.log('delete save objectttttttttttttttt')
+    console.log("delete save objectttttttttttttttt");
     await deleteAllDataMDB(collection);
-    console.log('delete save savvvvvvvvvvvvvvvvvvvvvv')
+    console.log("delete save savvvvvvvvvvvvvvvvvvvvvv");
 
     await saveObjectDataMDB(mapData, collection);
   }
@@ -199,14 +204,20 @@ async function cronMarkets(exchangeId) {
     await deleteAndSaveData(mappedData, collection, exchangeId);
     saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, exchangeId);
   } catch (err) {
-    console.log('Error updateMarkets:', err);
+    console.log("Error updateMarkets:", err);
   }
 }
 
 function handleErrorResponse(res, error, functionName) {
   if (error instanceof AuthenticationError) {
     console.error(`Authentication error in ${functionName}:`, error.message);
-    res.status(401).json({ success: false, error: `Authentication error in ${functionName}`, message: error.message });
+    res
+      .status(401)
+      .json({
+        success: false,
+        error: `Authentication error in ${functionName}`,
+        message: error.message,
+      });
   } else {
     console.error(`Error in ${functionName}:`, error);
     res.status(500).json({ success: false, error });
@@ -222,5 +233,5 @@ module.exports = {
   deleteAndSaveData,
   deleteAndSaveObject,
   cronMarkets,
-  handleErrorResponse
+  handleErrorResponse,
 };

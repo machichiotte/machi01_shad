@@ -15,6 +15,10 @@ app.use(bodyParser.json());
 const converterRoutes  = require('../routes/converterRoutes.js');
 app.use('/api/converter', converterRoutes);
 
+//auth
+const authRoutes  = require('../routes/authRoutes.js');
+app.use('/api/auth', authRoutes);
+
 //balance
 const balanceRoutes  = require('../routes/balanceRoutes.js');
 app.use('/api/balance', balanceRoutes);
