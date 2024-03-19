@@ -241,22 +241,22 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { useStore } from 'vuex';
 import { FilterMatchMode } from 'primevue/api'
-//import { useToast } from 'primevue/usetoast'
-//import { ProductService } from '@/service/ProductService'
-
-import { getCmc, getBalances, getTrades, getOrders, getStrategy } from '../js/getter.js'
 import { getAllCalculs } from '../js/calcul.js'
 import MySellButton from './MySellButton.vue'
 //import Overlay from './ShadOverlay.vue'
 
+import {
+  FETCH_DATA, GET_BALANCES, GET_STRATS
+} from '../store/storeconstants';
+
+const store = useStore();
+
+const selectedAssets = ref([])
 const balances = ref([])
-const trades = ref([])
 const strats = ref([])
-const orders = ref([])
-const cmc = ref([])
-const buyOrders = ref([])
-const sellOrders = ref([])
+ 
 const itemsPerPage = ref(10)
 const showOverlay = ref(false)
 const selectedAsset = ref()
@@ -270,24 +270,6 @@ const BINANCE_THRESHOLD = 3 // 300%
 const HTX_EXCHANGE_ID = 'htx'
 const HTX_THRESHOLD = 10 // 1000%
 
-const getData = async () => {
-  console.log('getData')
-
-  try {
-    balances.value = await getBalances()
-    trades.value = await getTrades()
-    strats.value = await getStrategy()
-    cmc.value = await getCmc()
-    orders.value = await getOrders()
-
-    buyOrders.value = orders.value.filter((order) => order.side === 'buy')
-    sellOrders.value = orders.value.filter((order) => order.side === 'sell')
-  } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", error)
-    // Affichez un message d'erreur à l'utilisateur si nécessaire
-  }
-}
-
 const sortedBalances = computed(() => {
   if (balances.value && balances.value.length > 0) {
     return balances.value.slice().sort((a, b) => {
@@ -300,30 +282,16 @@ const sortedBalances = computed(() => {
   }
 })
 
-let cachedItems = null;
-
 const items = computed(() => {
-  // Si le résultat est déjà mis en cache, retournez-le directement
-  if (cachedItems !== null) {
-    return cachedItems;
-  }
-
+  console.log('strats.value', strats.value);
+  console.log('sortedBalances', sortedBalances);
   if (strats.value && strats.value.length > 0) {
-    // Calculez les items
+    console.log('item computed strat > 0')
     const calculatedItems = sortedBalances.value.map((item) => {
-      return getAllCalculs(
-        item,
-        cmc.value,
-        trades.value,
-        strats.value,
-        buyOrders.value,
-        sellOrders.value
-      );
+      console.log('calculatedItems item', item);
+      return getAllCalculs(item);
     });
-
-    // Mettez en cache le résultat pour les appels ultérieurs
-    cachedItems = calculatedItems;
-
+    console.log('calculatedItems', calculatedItems);
     return calculatedItems;
   } else {
     return [];
@@ -331,28 +299,31 @@ const items = computed(() => {
 })
 
 onMounted(async () => {
+  console.log('onMounted1');
+
   try {
-    await getData()
-  } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", error)
+    // Utilisez votre action FETCH_DATA pour récupérer les données nécessaires depuis le store Vuex
+    console.log('onMounted1 try')
+
+    await store.dispatch('calcul/' + FETCH_DATA);
+
+    balances.value = await store.getters['calcul/' + GET_BALANCES];
+    strats.value = await store.getters['calcul/' + GET_STRATS];
+
+    console.log('onMounted2')
+
+  } catch (e) {
+    console.error("Une erreur s'est produite lors de la récupération des données :", e)
     // Affichez un message d'erreur à l'utilisateur si nécessaire
   }
 })
 
-//const toast = useToast()
-const addSellOrdersDialog = ref(false)
-const selectedAssets = ref([])
-
-
-const exportCSV = () => {
+/* const exportCSV = () => {
   dt.value.exportCSV()
-}
+} */
+
 const confirmDeleteSelected = () => {
   deleteProductsDialog.value = true
-}
-
-const confirmAddSellOrdersSelected = () => {
-  addSellOrdersDialog.value = true
 }
 
 function getStatus(data) {

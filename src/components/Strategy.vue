@@ -33,24 +33,18 @@
           <td>{{ asset }}</td>
 
           <td v-for="(platform, platformIndex) in platforms" :key="platformIndex">
-            <select
-              data-type="strategy"
-              :value="getSelectedStrategy(asset, platform)"
+            <select data-type="strategy" :value="getSelectedStrategy(asset, platform)"
               @input="setSelectedStrategy(asset, platform, $event.target.value)"
-              :disabled="isDisabled(asset, platform)"
-            >
+              :disabled="isDisabled(asset, platform)">
               <option value=""></option>
               <option v-for="strategy in strategies" :key="strategy" :value="strategy">
                 {{ strategy }}
               </option>
             </select>
 
-            <select
-              data-type="maxExposure"
-              :value="getSelectedMaxExposure(asset, platform)"
+            <select data-type="maxExposure" :value="getSelectedMaxExposure(asset, platform)"
               @input="setSelectedMaxExposure(asset, platform, $event.target.value)"
-              :disabled="isDisabled(asset, platform)"
-            >
+              :disabled="isDisabled(asset, platform)">
               <option value=""></option>
               <option v-for="exposure in exposures" :key="exposure" :value="exposure">
                 {{ exposure }}
@@ -62,7 +56,7 @@
     </table>
   </div>
 </template>
-  
+
 <script setup>
 // Importing necessary modules and functions
 import { ref, onMounted } from 'vue'
@@ -70,6 +64,11 @@ import { ref, onMounted } from 'vue'
 import { getBalances, getStrategy } from '../js/getter.js'
 import { successSpin, errorSpin } from '../js/spinner.js'
 import { saveStrategyToIndexedDB } from '../js/indexedDB'
+import { FETCH_STRATS, FETCH_BALANCES, GET_BALANCES, GET_STRATS } from '@/store/storeconstants.js';
+
+
+import { useStore } from 'vuex'
+const store = useStore()
 
 // Define server host
 const serverHost = import.meta.env.VITE_SERVER_HOST
@@ -87,10 +86,24 @@ const selectedMaxExposure = ref('')
 const strategies = ref(['Shad', 'Shad skip x2', 'Strategy 3'])
 const exposures = ref([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000])
 
+
+const getStratsData = async () => {
+  try {
+    // Appel de l'action Vuex pour récupérer les trades
+    await store.dispatch('calcul/' + FETCH_TRADES)
+    items.value = store.getters['calcul/' + GET_TRADES];
+  } catch (error) {
+    console.error("Une erreur s'est produite lors de la récupération des données des trades :", error)
+    // Affichez un message d'erreur à l'utilisateur si nécessaire
+  }
+}
+
 // Define methods
 async function getData() {
   try {
-    balance.value = await getBalances()
+    await store.dispatch('calcul/' + FETCH_BALANCES)
+
+    balance.value = store.getters['calcul/' + GET_BALANCES]
     platforms.value = [...new Set(balance.value.map((item) => item.platform))].sort()
     assets.value = [...new Set(balance.value.map((item) => item.symbol))].sort()
   } catch (err) {
@@ -100,7 +113,9 @@ async function getData() {
 
 async function getStrat() {
   try {
-    const data = await getStrategy()
+    await store.dispatch('calcul/' + FETCH_STRATS)
+    const data = store.getters['calcul/' + GET_STRATS];
+    console.log('dadda', data);
     if (data.length === 0) {
       assets.value.forEach((asset) => {
         let assetStrat = {
@@ -112,9 +127,12 @@ async function getStrat() {
           assetStrat.strategies[platform] = ''
           assetStrat.maxExposure[platform] = ''
         })
+
+        console.log('str', strat)
         strat.value.push(assetStrat)
       })
     } else {
+      console.log('datt', data)
       strat.value = data
     }
   } catch (err) {

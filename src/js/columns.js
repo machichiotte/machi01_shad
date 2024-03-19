@@ -2,7 +2,8 @@
 const cmcColumns = [
   { header: 'Rank', field: 'rank', numeric: true },
   { header: 'Name', field: 'name' },
-  { header: 'Symbol', field: 'symbol' }
+  { header: 'Symbol', field: 'symbol' },
+  { header: 'Price', field: 'price' }
 ]
 
 const ordersColumns = [

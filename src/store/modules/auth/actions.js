@@ -42,7 +42,7 @@ export default {
     })
   },
 
-  async [SIGNUP_ACTION](context, payload) {
+  async [SIGNUP_ACTION](payload) {
 
     try {
       const url = `${serverHost}/${AUTH}/register`

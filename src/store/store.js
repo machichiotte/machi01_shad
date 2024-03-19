@@ -1,10 +1,14 @@
+// src/store/store.js
 import { createStore } from 'vuex';
-import auth from './modules/auth/index';
 import { LOADING_SPINNER_SHOW_MUTATION } from './storeconstants';
+
+import auth from './modules/auth/index';
+import calcul from './modules/calcul/index';
 
 const store = createStore({
     modules: {
         auth,
+        calcul
     },
     state() {
         return {

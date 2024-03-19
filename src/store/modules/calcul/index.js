@@ -1,4 +1,4 @@
-// src/store/modules/auth/index.js
+// src/store/modules/calcul/index.js
 
 import mutations from './mutations';
 import actions from './actions';
@@ -8,12 +8,13 @@ export default {
     namespaced: true,
     state() {
         return {
-            token: '',
-            email: '',
-            userId: '',
-            token: '',
-            expiresIn: 0,
-            autoLogout: false,
+            balances: [],
+            trades: [],
+            strats: [],
+            orders: [],
+            cmc: [],
+            buyOrders: [],
+            sellOrders: [],
         };
     },
     mutations,

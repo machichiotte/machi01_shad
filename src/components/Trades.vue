@@ -4,7 +4,8 @@
     <div class="card">
       <Toolbar class="mb-4">
         <template #start>
-          <Button label="Add New Trade" icon="pi pi-cart-plus" severity="info" class="mr-2" @click="showDialog = true" />
+          <Button label="Add New Trade" icon="pi pi-cart-plus" severity="info" class="mr-2"
+            @click="showDialog = true" />
         </template>
       </Toolbar>
 
@@ -35,11 +36,14 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, watchEffect, onMounted } from 'vue'
 import { tradesColumns } from '../js/columns.js'
-import { getTrades } from '../js/getter.js'
 import { FilterMatchMode } from 'primevue/api'
 import TradesForm from "@/components/TradesForm.vue";
+import { useStore } from 'vuex'
+import { FETCH_TRADES, GET_TRADES } from '../store/storeconstants'
+
+const store = useStore()
 
 const items = ref([])
 const itemsPerPage = 13
@@ -48,35 +52,44 @@ const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
 
-const rows = computed(() => {
-  return items.value.map((item) => {
-    return {
-      altA: item['altA'],
-      altB: item['altB'],
-      date: item['date'],
-      pair: item['pair'],
-      type: item['type'],
-      price: item['price'],
-      amount: item['amount'],
-      total: item['total'],
-      totalUSDT: item['totalUSDT'],
-      fee: item['fee'],
-      feecoin: item['feecoin'],
-      platform: item['platform']
-    }
-  })
-})
+const rows = ref([]) // Déclaration de rows
 
-const getData = async () => {
-  items.value = await getTrades()
+
+const getTradesData = async () => {
+  try {
+    // Appel de l'action Vuex pour récupérer les trades
+    await store.dispatch('calcul/' + FETCH_TRADES)
+    items.value = store.getters['calcul/' + GET_TRADES];
+  } catch (error) {
+    console.error("Une erreur s'est produite lors de la récupération des données des trades :", error)
+    // Affichez un message d'erreur à l'utilisateur si nécessaire
+  }
 }
 
 onMounted(async () => {
-  try {
-    await getData()
-  } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", error)
-    // Affichez un message d'erreur à l'utilisateur si nécessaire
+  await getTradesData()
+})
+
+// Observer les changements dans `items` et mettre à jour `rows`
+watchEffect(() => {
+  console.log('valueee', items.value)
+  if (Array.isArray(items.value)) {
+    rows.value = items.value.map((item) => {
+      return {
+        altA: item['altA'],
+        altB: item['altB'],
+        date: item['date'],
+        pair: item['pair'],
+        type: item['type'],
+        price: item['price'],
+        amount: item['amount'],
+        total: item['total'],
+        totalUSDT: item['totalUSDT'],
+        fee: item['fee'],
+        feecoin: item['feecoin'],
+        platform: item['platform']
+      }
+    })
   }
 })
 

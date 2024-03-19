@@ -1,4 +1,20 @@
+import {
+  GET_BUY_ORDERS,
+  GET_SELL_ORDERS,
+  GET_CMC,
+  GET_STRATS,
+  GET_TRADES
+} from '@/store/storeconstants'
+import store from '@/store/store.js'
+
 const MAX_EXPO = 10000
+const ERROR_ALLOWED = 0.05
+
+let cmc = store.getters['calcul/' + GET_CMC]
+let trades = store.getters['calcul/' + GET_TRADES]
+let strats = store.getters['calcul/' + GET_STRATS]
+let buyOrders = store.getters['calcul/' + GET_BUY_ORDERS]
+let sellOrders = store.getters['calcul/' + GET_SELL_ORDERS]
 
 function getProfit(totalBuy, totalSell, currentPrice, balance) {
   const buyTotal = parseFloat(totalBuy)
@@ -48,10 +64,10 @@ function getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad) {
 }
 
 function getRecupTpX(strat, maxExposition, ratioShad) {
+  //on aura besoin de la strat pour mieux definir a lavenir
   return maxExposition * ratioShad * 0.5
 }
 
-const ERROR_ALLOWED = 0.05
 function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
   if (
     maxExposition < (1 - ERROR_ALLOWED) * totalBuy &&
@@ -65,7 +81,7 @@ function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
   }
 }
 
-function getTotalAmountAndBuy(asset, trades) {
+function getTotalAmountAndBuy(asset) {
   const filteredTrades = trades.filter((trade) => trade.altA === asset && trade.type === 'buy')
   const totalBuy = filteredTrades.reduce((total, trade) => total + parseFloat(trade.totalUSDT), 0)
   const totalAmount = filteredTrades.reduce((total, trade) => total + parseFloat(trade.amount), 0)
@@ -101,17 +117,15 @@ function getRatioShad(strat) {
   return '/' // 'NULL' ou une valeur par défaut de votre choix
 }
 
-function calculateRecups(item, strats, totalBuy, totalSell) {
+function calculateRecups(item, totalBuy, totalSell) {
   const { symbol, platform, balance } = item
 
-  const { strat, stratExpo } = getStrat(platform, symbol, strats)
+  const { strat, stratExpo } = getStrat(platform, symbol)
   if (stratExpo === undefined) {
     stratExpo = MAX_EXPO
   }
-  const maxExposition = Math.max(
-    5 + 0.05,
-    Math.min(totalBuy, stratExpo),
-  );
+  const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo))
+
   const ratioShad = getRatioShad(strat)
   const recupShad = getRecupShad(totalBuy, totalSell, maxExposition)
   const recupTpX = getRecupTpX(strat, maxExposition, ratioShad)
@@ -130,7 +144,7 @@ function calculateRecups(item, strats, totalBuy, totalSell) {
   }
 }
 
-function getTotalSell(asset, trades) {
+function getTotalSell(asset) {
   const filteredTrades = trades.filter((trade) => trade.altA === asset && trade.type === 'sell')
   const sellTotal = filteredTrades.reduce((total, trade) => total + parseFloat(trade.totalUSDT), 0)
 
@@ -147,7 +161,8 @@ function getIconUrl(id) {
   return `${baseIconUrl}${parseInt(id)}.png`
 }
 
-function getCmcValues(asset, cmc) {
+function getCmcValues(asset) {
+  console.log('getCmcValues cmc', cmc.length)
   const crypto = cmc.find((item) => item.symbol === asset) || {}
 
   return {
@@ -267,20 +282,20 @@ function calculateAmountsAndPrices(
   }
 }
 
-function getAssetId(asset, cmc) {
+function getAssetId(asset) {
   const crypto = cmc.find((item) => item.symbol === asset)
   if (crypto) return crypto.id
 }
 
-function getDataBTC(cmc) {
+function getDataBTC() {
   return cmc.find((item) => item.symbol === 'BTC')
 }
 
-function getDataETH(cmc) {
+function getDataETH() {
   return cmc.find((item) => item.symbol === 'ETH')
 }
 
-function getTradesHistory(cryptoSymbol, trades) {
+function getTradesHistory(cryptoSymbol) {
   return trades.filter((trade) => trade.altA === cryptoSymbol)
 }
 
@@ -328,10 +343,11 @@ function getStatus(
   return results
 }
 
-function getStrat(exchangeId, asset, strats) {
+function getStrat(exchangeId, asset) {
   // Rechercher la stratégie correspondante à l'actif donné
   const filteredStrat = strats.find((strat) => strat.asset === asset) || {}
 
+  console.log('filtered', exchangeId + ' ' + asset + ' ' + filteredStrat)
   // Déterminer la stratégie et l'exposition maximale
   const strat = filteredStrat.strategies?.[exchangeId] || 'No strategy'
   const stratExpo = filteredStrat.maxExposure?.[exchangeId] || MAX_EXPO
@@ -339,11 +355,17 @@ function getStrat(exchangeId, asset, strats) {
   return { strat, stratExpo }
 }
 
-function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
+function getAllCalculs(item) {
+  console.log('getAllCalculs', item)
+
+  cmc = store.getters['calcul/' + GET_CMC]
+  trades = store.getters['calcul/' + GET_TRADES]
+  strats = store.getters['calcul/' + GET_STRATS]
+  buyOrders = store.getters['calcul/' + GET_BUY_ORDERS]
+  sellOrders = store.getters['calcul/' + GET_SELL_ORDERS]
+
   const { symbol, platform, balance } = item
   const exchangeId = platform
-
-  console.log('getAllCalculs symbol', symbol)
 
   const {
     rank,
@@ -354,9 +376,9 @@ function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
     cryptoPercentChange30d,
     cryptoPercentChange60d,
     cryptoPercentChange90d
-  } = getCmcValues(symbol, cmc)
+  } = getCmcValues(symbol)
 
-  const totalSell = getTotalSell(symbol, trades)
+  const totalSell = getTotalSell(symbol)
 
   const openBuyOrders = buyOrders.filter((order) => {
     const [asset] = order.symbol.split('/')
@@ -366,13 +388,13 @@ function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
     const [asset] = order.symbol.split('/')
     return asset === symbol
   })
-  const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(symbol, trades)
+  const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(symbol)
 
   const currentPossession = getCurrentPossession(currentPrice, balance)
   const profit = getProfit(totalBuy, totalSell, currentPrice, balance)
 
   const { strat, stratExpo, maxExposition, ratioShad, recupTpX, recupShad, recupTp1, totalShad } =
-    calculateRecups(item, strats, totalBuy, totalSell)
+    calculateRecups(item, totalBuy, totalSell)
 
   const {
     amountTp1,
@@ -448,4 +470,12 @@ function getAllCalculs(item, cmc, trades, strats, buyOrders, sellOrders) {
   }
 }
 
-export { getDataBTC, getDataETH, getAllCalculs, getBalance, getAssetId, getTradesHistory }
+export {
+  getDataBTC,
+  getDataETH,
+  getAllCalculs,
+  getBalance,
+  getAssetId,
+  getTradesHistory,
+  getCmcValues
+}
