@@ -1,5 +1,3 @@
-<!-- src/components/Update.vue -->
-
 <template>
   <div>
     <h1>Mise à jour des données</h1>
@@ -10,12 +8,17 @@
         {{ crypto["cmc_rank"] }} - {{ crypto.name }}
       </li>
     </ul>
-    <Button @click="updateAllExchangeTrades()" style="font-size: 18px; margin: 4px">Update All Trades</Button>
+    <Button @click="updateAll()" style="font-size: 18px; margin: 4px">Update</Button>
     <div>
-      <Button v-for="exchangeId in exchangeIds" :key="exchangeId" @click="updateExchangeData(exchangeId)"
-        style="font-size: 18px; margin: 4px">
-        Update All {{ exchangeId.toUpperCase() }}
-      </Button>
+      <input type="checkbox" id="balance" v-model="updateBalance" />
+      <label for="balance">Balance</label>
+      <input type="checkbox" id="orders" v-model="updateOrders" />
+      <label for="orders">Orders</label>
+    </div>
+    <div>
+      <input type="checkbox" v-for="exchangeId in exchangeIds" :key="exchangeId" :id="exchangeId"
+        v-model="selectedExchanges" :value="exchangeId" />
+      <label v-for="exchangeId in exchangeIds" :for="exchangeId">{{ exchangeId.toUpperCase() }}</label>
     </div>
   </div>
 </template>
@@ -47,6 +50,9 @@ const API_ENDPOINTS = {
 // Define reactive data
 const cryptoData = ref();
 const exchangeIds = ref(["binance", "kucoin", "htx", "okx", "gateio"]);
+const selectedExchanges = ref(exchangeIds.value);
+const updateBalance = ref(true);
+const updateOrders = ref(true);
 
 // Define methods
 async function fetchAndUpdateCoinMarketCapData() {
@@ -62,7 +68,7 @@ async function fetchAndUpdateCoinMarketCapData() {
     await saveCmcToIndexedDB(response);
 
     successSpinHtml(
-      "Save completed",
+      "Mise a jour terminee",
       `Résultat : ${totalCount}`,
       true,
       true
@@ -75,99 +81,69 @@ async function fetchAndUpdateCoinMarketCapData() {
   }
 }
 
-async function updateAllExchangeTrades() {
-  for (const exchangeId of exchangeIds.value) {
-    await updateExchangeData(exchangeId);
-  }
-}
-
 async function updateExchangeData(exchangeId) {
   try {
     loadingSpin();
-    const [balance_data_response, orders_data_response] = await Promise.all(
-      [
-        fetch(`${API_ENDPOINTS.UPD_BALANCE}${exchangeId}`),
-        fetch(`${API_ENDPOINTS.ORDERS}${exchangeId}`),
-      ]
-    );
+    let result = '';
 
-    const balance_data = await balance_data_response.json();
-    const orders_data = await orders_data_response.json();
+    let balanceCount = 0;
+    let ordersCount = 0;
 
-    if (balance_data_response.ok) {
-      saveBalancesDataToIndexedDB(balance_data, exchangeId);
+    if (updateBalance.value || updateOrders.value) {
+      result += `${exchangeId.toUpperCase()} : `;
     }
 
-    if (orders_data_response.ok) {
-      saveOrdersDataToIndexedDB(orders_data, exchangeId);
+    if (updateBalance.value) {
+      const balance_data_response = await fetch(`${API_ENDPOINTS.UPD_BALANCE}${exchangeId}`);
+      if (balance_data_response.ok) {
+        const balance_data = await balance_data_response.json();
+        saveBalancesDataToIndexedDB(balance_data, exchangeId);
+        balanceCount = balance_data.length;
+
+        result += `${balanceCount} assets. `;
+      }
     }
 
-    if (balance_data_response.ok && orders_data_response.ok) {
-      showUpdateResult(exchangeId, balance_data, orders_data);
-    } else if (balance_data_response.ok) {
-      showUpdateResultWithError(
-        exchangeId,
-        true,
-        balance_data,
-        orders_data
-      );
-    } else if (orders_data_response.ok) {
-      showUpdateResultWithError(
-        exchangeId,
-        false,
-        orders_data,
-        balance_data
-      );
+    if (updateOrders.value) {
+      const orders_data_response = await fetch(`${API_ENDPOINTS.ORDERS}${exchangeId}`);
+      if (orders_data_response.ok) {
+        const orders_data = await orders_data_response.json();
+        saveOrdersDataToIndexedDB(orders_data, exchangeId);
+        ordersCount = orders_data.length;
+
+        result += `${ordersCount} ordres ouverts. `;
+      }
+    }
+
+    if (result !== '') {
+      return result;
     } else {
-      showUpdateError(exchangeId, orders_data, balance_data);
+      throw new Error(`No data updated for ${exchangeId.toUpperCase()}`);
     }
   } catch (error) {
-    handleError(`Error updating ${exchangeId}:`, error);
+    throw new Error(`Error updating ${exchangeId}: ${error.message}`);
   }
 }
 
-function showUpdateResult(exchangeId, balance_data, orders_data) {
-  const resultText = `
-    <b>${exchangeId.toUpperCase()}</b><br>
-    <b>Solde :</b> ${balance_data.length} actifs<br>
-    <b>Ordres :</b> ${orders_data.length} ordres<br>
-  `;
-  successSpinHtml("Sauvegarde terminée", resultText, true, true);
+async function updateAll() {
+  try {
+    const promises = selectedExchanges.value.map(exchangeId => updateExchangeData(exchangeId));
+    const results = await Promise.all(promises);
+    const finalResult = results.join('<br>');
+    showUpdateResult(finalResult);
+  } catch (error) {
+    handleError('Error updating exchanges:', error);
+  }
 }
 
-function showUpdateError(exchangeId, balance_data, orders_data) {
-  const balanceErrorMessage = balance_data.error || "Unknown error";
-  const ordersErrorMessage = orders_data.error || "Unknown error";
 
-  const resultText = `
-    <b>${exchangeId.toUpperCase()}</b><br>
-    <b>Solde :</b> ${balanceErrorMessage} <br>
-    <b>Ordres :</b> ${ordersErrorMessage} <br>
-  `;
-  errorSpinHtml("Échec de la sauvegarde", resultText, true, true);
-}
-
-function showUpdateResultWithError(exchangeId, isBalanceOk, good_data, bad_data) {
-  const badDataErrorMessage = bad_data.error || "Unknown error";
-
-  const okValue = isBalanceOk
-    ? `<b>Solde :</b> ${good_data.length} actifs`
-    : `<b>Ordres :</b> ${good_data.length} ordres`;
-  const nokValue = isBalanceOk
-    ? `<b>Ordres :</b> ${badDataErrorMessage}`
-    : `<b>Solde :</b> ${badDataErrorMessage}`;
-
-  const resultText = `
-    <b>${exchangeId.toUpperCase()}</b><br>
-    ${okValue}<br>
-    ${nokValue}<br>
-  `;
-  errorSpin("Sauvegarde partiellement terminée", resultText, true, true);
-}
-
-function handleHttpResponseError(message, response) {
-  console.error(message, response.status, response.statusText);
-  // Other actions to perform on HTTP error
+function showUpdateResult(finalResult) {
+  successSpinHtml(
+    "Sauvegarde terminée",
+    finalResult,
+    true,
+    true
+  );
 }
 
 function handleError(message, error) {
