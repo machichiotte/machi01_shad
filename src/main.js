@@ -41,6 +41,7 @@ import Rating from 'primevue/rating'
 import Tag from 'primevue/tag'
 import FloatLabel from 'primevue/floatlabel'
 import Calendar from 'primevue/calendar'
+import ToggleButton from 'primevue/togglebutton'
 
 const app = createApp(App)
 app.component('LogoMachi', LogoMachi)
@@ -75,5 +76,6 @@ app.component('Rating', Rating)
 app.component('Tag', Tag)
 app.component('FloatLabel', FloatLabel)
 app.component('Calendar', Calendar)
+app.component('ToggleButton', ToggleButton)
 
 app.mount('#app')

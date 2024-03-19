@@ -2,23 +2,21 @@
   <div>
     <h1>Mise à jour des données</h1>
     <h2>Possibilité de mise à jour</h2>
-    <Button @click="fetchAndUpdateCoinMarketCapData" style="font-size: 18px; margin: 4px">Update Data</Button>
+    <Button @click="fetchAndUpdateCoinMarketCapData" style="font-size: 18px; margin: 4px">Maj cmc</Button>
     <ul v-if="cryptoData">
       <li v-for="crypto in cryptoData" :key="crypto.name">
         {{ crypto["cmc_rank"] }} - {{ crypto.name }}
       </li>
     </ul>
-    <Button @click="updateAll()" style="font-size: 18px; margin: 4px">Update</Button>
-    <div>
-      <input type="checkbox" id="balance" v-model="updateBalance" />
-      <label for="balance">Balance</label>
-      <input type="checkbox" id="orders" v-model="updateOrders" />
-      <label for="orders">Orders</label>
+    <Button @click="updateAll()" style="font-size: 18px; margin: 4px">Maj exchanges</Button>
+    <div v-for="exchangeId in exchangeIds" :key="exchangeId" style="margin-bottom: 10px;">
+      <ToggleButton :id="exchangeId" v-model="selectedExchanges[exchangeId]" :onLabel="exchangeId" :offLabel="exchangeId" />
     </div>
     <div>
-      <input type="checkbox" v-for="exchangeId in exchangeIds" :key="exchangeId" :id="exchangeId"
-        v-model="selectedExchanges" :value="exchangeId" />
-      <label v-for="exchangeId in exchangeIds" :for="exchangeId">{{ exchangeId.toUpperCase() }}</label>
+      <ToggleButton id="balance" v-model="updateBalance" onLabel="Balance" offLabel="Balance" />
+    </div>
+    <div>
+      <ToggleButton id="orders" v-model="updateOrders" onLabel="Orders" offLabel="Orders" />
     </div>
   </div>
 </template>
@@ -50,9 +48,14 @@ const API_ENDPOINTS = {
 // Define reactive data
 const cryptoData = ref();
 const exchangeIds = ref(["binance", "kucoin", "htx", "okx", "gateio"]);
-const selectedExchanges = ref(exchangeIds.value);
+const selectedExchanges = ref({});
 const updateBalance = ref(true);
 const updateOrders = ref(true);
+
+// Initialize selectedExchanges object with default values
+exchangeIds.value.forEach(exchangeId => {
+  selectedExchanges.value[exchangeId] = false;
+});
 
 // Define methods
 async function fetchAndUpdateCoinMarketCapData() {
@@ -127,7 +130,10 @@ async function updateExchangeData(exchangeId) {
 
 async function updateAll() {
   try {
-    const promises = selectedExchanges.value.map(exchangeId => updateExchangeData(exchangeId));
+    const promises = Object.keys(selectedExchanges.value)
+      .filter(exchangeId => selectedExchanges.value[exchangeId])
+      .map(exchangeId => updateExchangeData(exchangeId));
+
     const results = await Promise.all(promises);
     const finalResult = results.join('<br>');
     showUpdateResult(finalResult);
