@@ -1,7 +1,12 @@
 // src/controllers/balanceController.js
 
-const { createExchangeInstance, saveLastUpdateToMongoDB, handleErrorResponse } = require('../services/utils.js');
-const { mapBalance } = require('../services/mapping.js');
+const {
+  createExchangeInstance,
+  saveLastUpdateToMongoDB,
+  handleErrorResponse,
+  getData,
+} = require("../services/utils.js");
+const { mapBalance } = require("../services/mapping.js");
 
 /**
  * Retrieves the last recorded balance from the database.
@@ -9,8 +14,15 @@ const { mapBalance } = require('../services/mapping.js');
  * @param {Object} res - HTTP response object.
  */
 async function getLastBalance(req, res) {
-    const collection = process.env.MONGODB_COLLECTION_BALANCE;
-    await getData(req, res, collection, 'db_machi_shad.collection_balance.json');
+  const collection = process.env.MONGODB_COLLECTION_BALANCE;
+  const lastBalance = await getData(
+    req,
+    res,
+    collection,
+    "db_machi_shad.collection_balance.json"
+  );
+
+  if (!res) return lastBalance;
 }
 
 /**
@@ -19,13 +31,14 @@ async function getLastBalance(req, res) {
  * @returns {Promise<Object>} - A promise resolved with the fetched balance data.
  */
 async function fetchCurrentBalance(exchangeId) {
-    try {
-        const exchange = createExchangeInstance(exchangeId);
-        const data = await exchange.fetchBalance();
-        return data;
-    } catch (error) {
-        throw error;
-    }
+  try {
+    const exchange = createExchangeInstance(exchangeId);
+    const data = await exchange.fetchBalance();
+    const mappedData = mapBalance(exchangeId, data);
+    return mappedData;
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
@@ -35,15 +48,14 @@ async function fetchCurrentBalance(exchangeId) {
  * @param {Object} res - HTTP response object.
  */
 async function saveBalanceInDatabase(data, exchangeId, res) {
-    const collection = process.env.MONGODB_COLLECTION_BALANCE;
-    try {
-        const mappedData = mapBalance(exchangeId, data);
-        await deleteAndSaveData(mappedData, collection, exchangeId);
-        res.status(200).json(mappedData);
-        saveLastUpdateToMongoDB(process.env.TYPE_BALANCE, exchangeId);
-    } catch (error) {
-        handleErrorResponse(res, error, 'saveBalanceToMongoDB');
-    }
+  const collection = process.env.MONGODB_COLLECTION_BALANCE;
+  try {
+    await deleteAndSaveData(mappedData, collection, exchangeId);
+    res.status(200).json(mappedData);
+    saveLastUpdateToMongoDB(process.env.TYPE_BALANCE, exchangeId);
+  } catch (error) {
+    handleErrorResponse(res, error, "saveBalanceToMongoDB");
+  }
 }
 
 /**
@@ -52,13 +64,18 @@ async function saveBalanceInDatabase(data, exchangeId, res) {
  * @param {Object} res - HTTP response object.
  */
 async function updateCurrentBalance(req, res) {
-    const { exchangeId } = req.params;
-    try {
-        const balanceData = await fetchCurrentBalance(exchangeId);
-        await saveBalanceInDatabase(balanceData, exchangeId, res);
-    } catch (error) {
-        handleErrorResponse(res, error, 'updateCurrentBalance');
-    }
+  const { exchangeId } = req.params;
+  try {
+    const balanceData = await fetchCurrentBalance(exchangeId);
+    await saveBalanceInDatabase(balanceData, exchangeId, res);
+  } catch (error) {
+    handleErrorResponse(res, error, "updateCurrentBalance");
+  }
 }
 
-module.exports = { getLastBalance, fetchCurrentBalance, saveBalanceInDatabase, updateCurrentBalance };
+module.exports = {
+  getLastBalance,
+  fetchCurrentBalance,
+  saveBalanceInDatabase,
+  updateCurrentBalance,
+};

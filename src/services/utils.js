@@ -146,28 +146,22 @@ async function saveLastUpdateToMongoDB(type, exchangeId) {
 
 // Fonction utilitaire pour obtenir des données
 async function getData(req, res, collection, mockDataFile) {
-  console.log("getData");
-
   try {
     let data;
 
-    console.log("getData try");
-
     if (process.env.OFFLINE_MODE === "true") {
-      console.log("getData offline");
-
       const mockDataPath = `./mockData/mongodb/${mockDataFile}`;
       const jsonData = await fs.readFile(mockDataPath, "utf8"); // Utilisation de fs.promises.readFile
       data = JSON.parse(jsonData);
     } else {
-      console.log("getData collection", collection);
       data = await getAllDataMDB(collection);
     }
 
-    res.json(data);
+    if (res) res.json(data);
+    else return data;
   } catch (err) {
     console.error("getData", err);
-    res.status(500).send({ error: "Internal server error" });
+    if (res) res.status(500).send({ error: "Internal server error" });
   }
 }
 
@@ -211,13 +205,11 @@ async function cronMarkets(exchangeId) {
 function handleErrorResponse(res, error, functionName) {
   if (error instanceof AuthenticationError) {
     console.error(`Authentication error in ${functionName}:`, error.message);
-    res
-      .status(401)
-      .json({
-        success: false,
-        error: `Authentication error in ${functionName}`,
-        message: error.message,
-      });
+    res.status(401).json({
+      success: false,
+      error: `Authentication error in ${functionName}`,
+      message: error.message,
+    });
   } else {
     console.error(`Error in ${functionName}:`, error);
     res.status(500).json({ success: false, error });
