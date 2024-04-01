@@ -44,7 +44,7 @@ function mapBalance(platform, data) {
                 .filter((item) => parseFloat(item.available) > 0 || parseFloat(item.locked))
                 .map((item) => ({
                     symbol: item.currency,
-                    balance: item.available + item.locked,
+                    balance: parseFloat(item.available)  + parseFloat(item.locked),
                     available: item.available,
                     platform: platform
                 }));

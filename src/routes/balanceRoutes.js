@@ -1,10 +1,10 @@
 // src/routes/balanceRoutes.js
 const express = require('express');
-const { getBalance, updateBalance } = require('../controllers/balanceController.js');
+const { getLastBalance, updateCurrentBalance } = require('../controllers/balanceController.js');
 
 const router = express.Router();
 
-router.get('/get', getBalance);
-router.get('/update/:exchangeId', updateBalance);
+router.get('/get', getLastBalance);
+router.get('/update/:exchangeId', updateCurrentBalance);
 
 module.exports = router;

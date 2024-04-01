@@ -1,27 +1,64 @@
 // src/controllers/marketsController.js
-const { createExchangeInstance, getData, deleteAndSaveData, saveLastUpdateToMongoDB } = require('../services/utils.js');
+
+const { createExchangeInstance, getData, deleteAndSaveData, saveLastUpdateToMongoDB, handleErrorResponse } = require('../services/utils.js');
 const { mapMarkets } = require('../services/mapping.js');
 
+/**
+ * Retrieves the latest market data from the database.
+ * @param {Object} req - HTTP request object.
+ * @param {Object} res - HTTP response object.
+ */
 async function getMarkets(req, res) {
     const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
     await getData(req, res, collection, 'db_machi_shad.collection_load_markets.json');
 }
-async function updateMarkets(req, res) {
-    const { exchangeId } = req.params;
 
-    const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
-    const exchange = createExchangeInstance(exchangeId);
-
+/**
+ * Fetches the latest market data from an exchange.
+ * @param {string} exchangeId - Identifier of the exchange.
+ * @returns {Promise<Object>} - A promise resolved with the fetched market data.
+ */
+async function fetchMarketData(exchangeId) {
     try {
+        const exchange = createExchangeInstance(exchangeId);
         const data = await exchange.loadMarkets();
+        return data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+/**
+ * Updates the market data in the database.
+ * @param {Object} data - Market data to be updated.
+ * @param {string} exchangeId - Identifier of the exchange.
+ * @param {Object} res - HTTP response object.
+ */
+async function updateMarketDataInDatabase(data, exchangeId, res) {
+    const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
+    try {
         const mappedData = mapMarkets(exchangeId, data);
         await deleteAndSaveData(mappedData, collection, exchangeId);
         saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, exchangeId);
         res.status(200).json(mappedData);
-    } catch (err) {
-        console.log('Error updateMarkets:', err);
-        res.status(500).json({ error: err.name + ': ' + err.message });
+    } catch (error) {
+        handleErrorResponse(res, error, 'updateMarketDataInDatabase');
     }
 }
 
-module.exports = { getMarkets, updateMarkets }
+/**
+ * Updates the market data by fetching the latest information from an exchange and saving it to the database.
+ * @param {Object} req - HTTP request object containing the exchange identifier.
+ * @param {Object} res - HTTP response object.
+ */
+async function updateMarkets(req, res) {
+    const { exchangeId } = req.params;
+    try {
+        const marketData = await fetchMarketData(exchangeId);
+        await updateMarketDataInDatabase(marketData, exchangeId, res);
+    } catch (error) {
+        handleErrorResponse(res, error, 'updateMarkets');
+    }
+}
+
+module.exports = { getMarkets, updateMarkets };

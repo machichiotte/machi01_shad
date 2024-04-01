@@ -22,16 +22,33 @@ async function getOrders(req, res) {
   );
 }
 
-async function updateOrders(req, res) {
-  const { exchangeId } = req.params;
+async function fetchAndMapOrders(exchangeId) {
+  try {
+    const data = await fetchOpenOrdersByExchangeId(exchangeId);
+    return mapOrders(exchangeId, data);
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function saveMappedOrders(mappedData, exchangeId) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
 
   try {
-    const data = await fetchOpenOrdersByExchangeId(exchangeId);
-    const mappedData = mapOrders(exchangeId, data);
     await deleteAndSaveData(mappedData, collection, exchangeId);
-    res.status(200).json(mappedData);
     saveLastUpdateToMongoDB(process.env.TYPE_ACTIVE_ORDERS, exchangeId);
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updateOrders(req, res) {
+  const { exchangeId } = req.params;
+
+  try {
+    const mappedData = await fetchAndMapOrders(exchangeId);
+    await saveMappedOrders(mappedData, exchangeId);
+    res.status(200).json(mappedData);
   } catch (error) {
     handleErrorResponse(res, error, "updateOrders");
   }

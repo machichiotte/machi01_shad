@@ -8,19 +8,19 @@ import { mapBalance } from '../src/services/mapping.js';
 jest.mock('../src/services/utils.js');
 jest.mock('../src/services/mapping.js');
 
-test('getBalance should call getData with correct collection and default file', async () => {
+test('getLastBalance should call getData with correct collection and default file', async () => {
     // Mock getData to return a mock result
     getData.mockResolvedValueOnce({ data: 'mocked data' });
 
     const req = {};
     const res = {};
 
-    await balanceController.getBalance(req, res);
+    await balanceController.getLastBalance(req, res);
 
     expect(getData).toHaveBeenCalledWith(req, res, process.env.MONGODB_COLLECTION_BALANCE, 'db_machi_shad.collection_balance.json');
 });
 
-describe('updateBalance', () => {
+describe('updateCurrentBalance', () => {
     it('should call expected functions and return mapped data', async () => {
         // Mock dependencies
         const mockExchange = { fetchBalance: jest.fn().mockResolvedValue({ mockData: 'data' }) };
@@ -37,7 +37,7 @@ describe('updateBalance', () => {
             json: jest.fn() // Create a spy for the json function of res
         };
 
-        await balanceController.updateBalance(req, res);
+        await balanceController.updateCurrentBalance(req, res);
 
         expect(createExchangeInstance).toHaveBeenCalledWith('testExchange');
         expect(mockExchange.fetchBalance).toHaveBeenCalled();
@@ -63,10 +63,10 @@ describe('updateBalance', () => {
             json: jest.fn(),
         };
 
-        await balanceController.updateBalance(req, res);
+        await balanceController.updateCurrentBalance(req, res);
 
         // Ensure that handleErrorResponse is called with the correct error message
-        expect(handleErrorResponse).toHaveBeenCalledWith(res, new Error('Fetch failed'), 'updateBalance');
+        expect(handleErrorResponse).toHaveBeenCalledWith(res, new Error('Fetch failed'), 'updateCurrentBalance');
     });
 
     // Add this test to check that mapBalance handles errors correctly
@@ -84,10 +84,10 @@ describe('updateBalance', () => {
             json: jest.fn(),
         };
 
-        await balanceController.updateBalance(req, res);
+        await balanceController.updateCurrentBalance(req, res);
 
         // Ensure that handleErrorResponse is called with the correct error message
-        expect(handleErrorResponse).toHaveBeenCalledWith(res, new Error('Mapping failed'), 'updateBalance');
+        expect(handleErrorResponse).toHaveBeenCalledWith(res, new Error('Mapping failed'), 'updateCurrentBalance');
     });
 
     // Add this test to check that deleteAndSaveData is called correctly on success
@@ -104,7 +104,7 @@ describe('updateBalance', () => {
             json: jest.fn(),
         };
 
-        await balanceController.updateBalance(req, res);
+        await balanceController.updateCurrentBalance(req, res);
 
         // Ensure that deleteAndSaveData is called with the correct parameters
         expect(deleteAndSaveData).toHaveBeenCalledWith({ mockMappedData: 'mappedData' }, process.env.MONGODB_COLLECTION_BALANCE, 'testExchange');
@@ -125,7 +125,7 @@ describe('updateBalance', () => {
             json: jest.fn(),
         };
 
-        await balanceController.updateBalance(req, res);
+        await balanceController.updateCurrentBalance(req, res);
 
         // Ensure that saveLastUpdateToMongoDB is called with the correct parameters
         expect(saveLastUpdateToMongoDB).toHaveBeenCalledWith(process.env.TYPE_BALANCE, 'testExchange');
