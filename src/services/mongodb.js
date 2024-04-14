@@ -11,7 +11,7 @@ const client = new MongoClient(uri, {
 });
 let db;
 
-async function connectMDB() {
+async function connectToMongoDB() {
   try {
     await client.connect();
     await client.db("admin").command({ ping: 1 });
@@ -83,6 +83,28 @@ async function saveObjectDataMDB(data, collectionName) {
   }
 }
 
+async function saveData(data, collectionName) {
+  try {
+    const collection = db.collection(collectionName);
+    if (Array.isArray(data)) {
+      const result = await collection.insertMany(data);
+      console.log(
+        `Saved ${data.length} documents to collection ${collectionName}`
+      );
+      return result;
+    } else {
+      const result = await collection.insertOne(data);
+      console.log(
+        `Saved document with ID ${result.insertedId} to collection ${collectionName}`
+      );
+      return result;
+    }
+  } catch (err) {
+    console.error("Error saving data:", err);
+    // Handle data saving errors
+  }
+}
+
 async function getDataMDB(collectionName) {
   try {
     const collection = db.collection(collectionName);
@@ -114,7 +136,7 @@ async function insertDataMDB(collectionName, document) {
 }
 
 // Get all documents from a collection
-async function getOneDataMDB(collectionName, data) {
+async function getOne(collectionName, data) {
   try {
     const collection = db.collection(collectionName);
     const result = await collection.findOne(data);
@@ -122,20 +144,17 @@ async function getOneDataMDB(collectionName, data) {
     if (result != null) {
       console.log(
         `Found ${result.length} documents in collection ${collectionName}`
-      ); 
+      );
     } else {
-      console.log(
-        `Found 0 documents in collection ${collectionName}`
-      ); 
+      console.log(`Found 0 documents in collection ${collectionName}`);
     }
-    
+
     return result;
   } catch (err) {
     console.error(err);
     return err;
   }
 }
-
 
 // Get all documents from a collection
 async function getAllDataMDB(collectionName) {
@@ -217,11 +236,11 @@ async function deleteAllDataMDB(collectionName) {
 }
 
 module.exports = {
-  connectMDB,
+  connectToMongoDB,
   saveArrayDataMDB,
-  saveObjectDataMDB,
+  saveData,
   getDataMDB,
-  getOneDataMDB,
+  getOne,
   insertDataMDB,
   getAllDataMDB,
   updateDataMDB,

@@ -3,6 +3,7 @@
 const {
   createExchangeInstance,
   saveLastUpdateToMongoDB,
+  deleteAndSaveData,
   handleErrorResponse,
   getData,
 } = require("../services/utils.js");
@@ -47,14 +48,16 @@ async function fetchCurrentBalance(exchangeId) {
  * @param {string} exchangeId - Identifier of the exchange.
  * @param {Object} res - HTTP response object.
  */
-async function saveBalanceInDatabase(data, exchangeId, res) {
+async function saveBalanceInDatabase(mappedData, exchangeId, res) {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
   try {
     await deleteAndSaveData(mappedData, collection, exchangeId);
-    res.status(200).json(mappedData);
     saveLastUpdateToMongoDB(process.env.TYPE_BALANCE, exchangeId);
+
+    if (res) res.status(200).json(mappedData);
   } catch (error) {
-    handleErrorResponse(res, error, "saveBalanceToMongoDB");
+    if (res) handleErrorResponse(res, error, "saveBalanceToMongoDB");
+    console.error("saveBalanceToMongoDB", error);
   }
 }
 

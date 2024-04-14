@@ -4,12 +4,11 @@ const { AuthenticationError } = require("ccxt");
 
 const fs = require("fs").promises; // Ajout de l'import pour fs.promises
 const {
-  saveArrayDataMDB,
+  saveData,
   deleteMultipleDataMDB,
   getAllDataMDB,
   updateDataMDB,
   deleteAllDataMDB,
-  saveObjectDataMDB,
 } = require("./mongodb.js");
 const { mapMarkets } = require("./mapping.js");
 
@@ -170,20 +169,14 @@ async function deleteAndSaveData(mapData, collection, exchangeId) {
   if (mapData && mapData.length > 0) {
     const deleteParam = { platform: exchangeId };
     await deleteMultipleDataMDB(collection, deleteParam);
-    await saveArrayDataMDB(mapData, collection);
+    await saveData(mapData, collection);
   }
 }
 
 async function deleteAndSaveObject(mapData, collection) {
-  console.log("delete save");
-  console.log("delete mapData.length", Object.keys(mapData).length);
-
   if (mapData && Object.keys(mapData).length > 0) {
-    console.log("delete save objectttttttttttttttt");
     await deleteAllDataMDB(collection);
-    console.log("delete save savvvvvvvvvvvvvvvvvvvvvv");
-
-    await saveObjectDataMDB(mapData, collection);
+    await saveData(mapData, collection);
   }
 }
 
@@ -226,4 +219,5 @@ module.exports = {
   deleteAndSaveObject,
   cronMarkets,
   handleErrorResponse,
+  getSymbolForExchange
 };

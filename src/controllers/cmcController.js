@@ -1,7 +1,7 @@
 // src/controllers/cmcController.js
 
 const { getData, saveLastUpdateToMongoDB, handleErrorResponse } = require('../services/utils.js');
-const { deleteAllDataMDB, saveArrayDataMDB } = require('../services/mongodb.js');
+const { deleteAllDataMDB, saveData } = require('../services/mongodb.js');
 
 /**
  * Retrieves the latest CoinMarketCap data from the database.
@@ -59,7 +59,7 @@ async function updateCmcDataInDatabase(cmcData, res) {
     const collection = process.env.MONGODB_COLLECTION_CMC;
     try {
         const deleteResult = await deleteAllDataMDB(collection);
-        const saveResult = await saveArrayDataMDB(cmcData, collection);
+        const saveResult = await saveData(cmcData, collection);
         saveLastUpdateToMongoDB(process.env.TYPE_CMC, "");
 
         res.status(200).json({

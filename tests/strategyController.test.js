@@ -1,7 +1,7 @@
 // strategyController.test.js
 const { getStrat, updateStrat } = require('../src/controllers/strategyController');
 const { getData, saveLastUpdateToMongoDB } = require('../src/services/utils');
-const { deleteAllDataMDB, saveArrayDataMDB } = require('../src/services/mongodb');
+const { deleteAllDataMDB, saveData } = require('../src/services/mongodb');
 
 describe('Strategy Controller Tests', () => {
   describe('getStrat', () => {
@@ -13,7 +13,7 @@ describe('Strategy Controller Tests', () => {
   });
 
   describe('updateStrat', () => {
-    it('should call deleteAllDataMDB, saveArrayDataMDB, and saveLastUpdateToMongoDB with correct parameters', () => {
+    it('should call deleteAllDataMDB, saveData, and saveLastUpdateToMongoDB with correct parameters', () => {
       // Votre test ici...
     });
 

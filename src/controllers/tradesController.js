@@ -1,5 +1,8 @@
 // src/controllers/tradesController.js
-const { saveObjectDataMDB } = require("../services/mongodb.js");
+const {
+  saveData,
+  getAllDataMDB,
+} = require("../services/mongodb.js");
 const {
   createExchangeInstance,
   getData,
@@ -12,11 +15,18 @@ async function getTrades(req, res) {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
   await getData(req, res, collection, "db_machi_shad.collection_trades.json");
 }
+
+async function fetchTradesInDatabase() {
+  const collection = process.env.MONGODB_COLLECTION_TRADES;
+  const data = await getAllDataMDB(collection);
+  return data;
+}
+
 async function addTradesManually(req, res) {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
   const tradesData = req.body.trades_data;
   try {
-    const savedTrade = await saveObjectDataMDB(tradesData, collection);
+    const savedTrade = await saveData(tradesData, collection);
 
     if (savedTrade.acknowledged) {
       res
@@ -29,6 +39,47 @@ async function addTradesManually(req, res) {
     }
   } catch (err) {
     res.status(500).json({ error: err.name + ": " + err.message });
+  }
+}
+
+async function saveTradesToDatabase(newTrades) {
+  try {
+    const collection = process.env.MONGODB_COLLECTION_TRADES;
+
+    // Récupérer les trades déjà présents en base de données
+    //const existingTrades = await collection.find({}).toArray();
+
+    const existingTrades = await fetchTradesInDatabase();
+
+    // Filtrer les nouveaux trades pour éviter les duplications
+    const filteredTrades = newTrades.filter((newTrade) => {
+      return !existingTrades.some(
+        (existingTrade) => existingTrade.timestamp === newTrade.timestamp
+      );
+    });
+
+    console.log("filteredTrades", filteredTrades);
+
+    // Convertir chaque trade en objet s'il ne l'est pas déjà
+    const tradesToInsert = filteredTrades.map((trade) => {
+      return typeof trade === "object" ? trade : { trade }; // Assurez-vous que chaque trade est un objet
+    });
+
+    console.log("tradesToInsert", tradesToInsert);
+
+    // Ajouter les nouveaux trades à la base de données
+    if (tradesToInsert.length > 0) {
+      const result = await saveData(tradesToInsert, collection);
+      console.log(
+        `${result.insertedCount} new trades inserted into the database.`
+      );
+    } else {
+      console.log("No new trades to insert.");
+    }
+  } catch (error) {
+    console.error("Error saving trades to database:", error);
+  } finally {
+    //await client.close();
   }
 }
 
@@ -113,4 +164,16 @@ async function updateTrades(req, res) {
   }
 }
 
-module.exports = { getTrades, addTradesManually, updateTrades };
+async function fetchLastTrades(exchangeId, symbol) {
+  const exchange = createExchangeInstance(exchangeId);
+  return exchange.fetchMyTrades(symbol);
+}
+
+module.exports = {
+  getTrades,
+  addTradesManually,
+  updateTrades,
+  fetchLastTrades,
+  fetchTradesInDatabase,
+  saveTradesToDatabase,
+};

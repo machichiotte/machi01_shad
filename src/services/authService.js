@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt"); // For password hashing
 
-const { saveObjectDataMDB, getOneDataMDB } = require("./mongodb");
+const { saveData, getOne } = require("./mongodb");
 
 async function createUserDBService(userDetails) {
   try {
@@ -8,7 +8,7 @@ async function createUserDBService(userDetails) {
     const newUser = { ...userDetails, password: hashedPassword }; // Spread operator
 
     const collection = process.env.MONGODB_COLLECTION_USERS;
-    const result = await saveObjectDataMDB(newUser, collection);
+    const result = await saveData(newUser, collection);
 
     console.log("User created successfully:", result.insertedId);
 
@@ -22,7 +22,7 @@ async function createUserDBService(userDetails) {
 async function findUserByEmail(email) {
   try {
     const collection = process.env.MONGODB_COLLECTION_USERS;
-    const user = await getOneDataMDB(collection, { email }); // Filter by email
+    const user = await getOne(collection, { email }); // Filter by email
     console.log("User found :", user);
 
     return user; // Return the found user object or null if not found

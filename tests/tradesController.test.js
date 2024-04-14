@@ -7,7 +7,7 @@ const {
   const {
     createExchangeInstance,
     getData,
-    saveArrayDataMDB,
+    saveData,
     deleteAndSaveData,
     saveLastUpdateToMongoDB,
   } = require('../src/services/utils.js');
@@ -31,7 +31,7 @@ const {
     });
   
     describe('addTradesManually', () => {
-      it('should call saveArrayDataMDB with correct parameters and return data', async () => {
+      it('should call saveData with correct parameters and return data', async () => {
         // Votre test ici...
       });
   

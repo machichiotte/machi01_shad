@@ -11,12 +11,11 @@ const {
   handleErrorResponse,
 } = require('../src/services/utils.js');
 const {
-  saveArrayDataMDB,
+  saveData,
   deleteMultipleDataMDB,
   getAllDataMDB,
   updateDataMDB,
   deleteAllDataMDB,
-  saveObjectDataMDB,
 } = require('../src/services/mongodb.js');
 const { mapMarkets } = require('../src/services/mapping.js');
 const ccxt = require('ccxt');
@@ -59,7 +58,7 @@ describe('Utils Tests', () => {
   });
 
   describe('saveLastUpdateToMongoDB', () => {
-    it('should call getAllDataMDB, updateTimestampInMongoDB, and saveArrayDataMDB with correct parameters', async () => {
+    it('should call getAllDataMDB, updateTimestampInMongoDB, and saveData with correct parameters', async () => {
       // Votre test ici...
     });
 
@@ -83,7 +82,7 @@ describe('Utils Tests', () => {
   });
 
   describe('deleteAndSaveData', () => {
-    it('should call deleteMultipleDataMDB and saveArrayDataMDB with correct parameters when mapData is not empty', async () => {
+    it('should call deleteMultipleDataMDB and saveData with correct parameters when mapData is not empty', async () => {
       // Votre test ici...
     });
 
@@ -91,7 +90,7 @@ describe('Utils Tests', () => {
   });
 
   describe('deleteAndSaveObject', () => {
-    it('should call deleteAllDataMDB and saveObjectDataMDB with correct parameters when mapData is not empty', async () => {
+    it('should call deleteAllDataMDB and saveData with correct parameters when mapData is not empty', async () => {
       // Votre test ici...
     });
 

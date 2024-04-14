@@ -1,6 +1,6 @@
 // src/controllers/strategyController.js
 const { getData, saveLastUpdateToMongoDB } = require('../services/utils.js');
-const { deleteAllDataMDB, saveArrayDataMDB } = require('../services/mongodb.js');
+const { deleteAllDataMDB, saveData } = require('../services/mongodb.js');
 
 async function getStrat(req, res) {
     const collection = process.env.MONGODB_COLLECTION_STRAT;
@@ -12,7 +12,7 @@ async function updateStrat(req, res) {
 
     try {
         await deleteAllDataMDB(collection);
-        const data = await saveArrayDataMDB(strat, collection);
+        const data = await saveData(strat, collection);
         saveLastUpdateToMongoDB(process.env.TYPE_STRATEGY, "");
 
         res.json(data);

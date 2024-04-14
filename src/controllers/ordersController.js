@@ -3,6 +3,7 @@ const ccxt = require("ccxt");
 const {
   saveLastUpdateToMongoDB,
   handleErrorResponse,
+  getSymbolForExchange
 } = require("../services/utils.js");
 const {
   createExchangeInstance,
@@ -14,20 +15,29 @@ const { mapOrders } = require("../services/mapping.js");
 
 async function getOrders(req, res) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
-  await getData(
-    req,
-    res,
-    collection,
-    "db_machi_shad.collection_active_orders.json"
-  );
+
+  try {
+    console.log(`Retrieving active orders from MongoDB collection: ${collection}`);
+    const orders = await getData(collection); // Assuming getData now only takes collection as an argument
+
+    console.log(`Retrieved ${orders.length} active orders`);
+    res.json(orders);
+  } catch (error) {
+    console.error(`Error retrieving active orders from MongoDB:`, error);
+    handleErrorResponse(res, error, "getOrders");
+  }
 }
 
 async function fetchAndMapOrders(exchangeId) {
   try {
+    console.log(`Fetching open orders from exchange: ${exchangeId}`);
     const data = await fetchOpenOrdersByExchangeId(exchangeId);
-    return mapOrders(exchangeId, data);
+    console.log(`Mapping fetched orders (exchange: ${exchangeId})`);
+    const mappedData = mapOrders(exchangeId, data);
+    return mappedData;
   } catch (error) {
-    throw error;
+    console.error(`Error fetching and mapping orders for exchange ${exchangeId}:`, error);
+    throw error; // Re-throw the error for now
   }
 }
 
@@ -35,22 +45,51 @@ async function saveMappedOrders(mappedData, exchangeId) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
 
   try {
+    console.log(`Deleting existing orders and saving new mapped orders for exchange ${exchangeId}`);
     await deleteAndSaveData(mappedData, collection, exchangeId);
-    saveLastUpdateToMongoDB(process.env.TYPE_ACTIVE_ORDERS, exchangeId);
+
+    console.log(`Saving last update timestamp for active orders (exchange: ${exchangeId}) to MongoDB`);
+    await saveLastUpdateToMongoDB(process.env.TYPE_ACTIVE_ORDERS, exchangeId);
+
+    console.log(`Successfully updated active orders for exchange ${exchangeId}`);
   } catch (error) {
-    throw error;
+    console.error(`Error saving mapped orders for exchange ${exchangeId}:`, error);
+    // Consider adding more specific error handling here (e.g., retry logic, logging specific error types)
+    throw error; // Re-throw the error for now
   }
 }
 
 async function updateOrders(req, res) {
   const { exchangeId } = req.params;
 
+  console.log(`** Update Orders for Exchange: ${exchangeId} **`);
+
+  try {
+    console.log(`Fetching and mapping orders for exchange ${exchangeId}`);
+    const mappedData = await fetchAndMapOrders(exchangeId);
+
+    console.log(`Saving mapped order data to MongoDB for exchange ${exchangeId}`);
+    await saveMappedOrders(mappedData, exchangeId);
+
+    console.log(`Update successful for exchange ${exchangeId}`);
+    res.status(200).json(mappedData);
+  } catch (error) {
+    console.error(`** Error updating orders for exchange ${exchangeId}: **`, error);
+    handleErrorResponse(res, error, "updateOrders");
+  }
+}
+
+async function updateOrdersFromServer(exchangeId) {
+  console.log(`Starting update process for exchange: ${exchangeId}`);
+
   try {
     const mappedData = await fetchAndMapOrders(exchangeId);
     await saveMappedOrders(mappedData, exchangeId);
-    res.status(200).json(mappedData);
+    console.log(`Orders updated successfully for exchange ${exchangeId}`);
   } catch (error) {
-    handleErrorResponse(res, error, "updateOrders");
+    console.error(`Error updating orders for exchange ${exchangeId}:`, error);
+    // Vous pouvez choisir de gérer l'erreur ici ou de la propager pour une gestion ultérieure
+    throw error;
   }
 }
 
@@ -58,10 +97,13 @@ async function deleteOrder(req, res) {
   const { exchangeId, oId, symbol } = req.body;
 
   try {
+    console.log(`Deleting order (exchangeId: ${exchangeId}, orderId: ${oId}, symbol: ${symbol})`);
     const exchange = createExchangeInstance(exchangeId);
     const data = await exchange.cancelOrder(oId, symbol.replace("/", ""));
+    console.log(`Order deleted successfully (exchangeId: ${exchangeId}, orderId: ${oId}, symbol: ${symbol})`);
     res.json(data);
   } catch (error) {
+    console.error(`Error deleting order (exchangeId: ${exchangeId}, orderId: ${oId}, symbol: ${symbol})`, error);
     handleErrorResponse(res, error, "deleteOrder");
   }
 }
@@ -168,26 +210,10 @@ async function cancelAllOrdersForOkx(exchange, symbol) {
   }
 }
 
-function getSymbolForExchange(exchangeId, asset) {
-  switch (exchangeId) {
-    case "kucoin":
-      return `${asset}-USDT`;
-    case "binance":
-      return `${asset}USDT`;
-    case "htx":
-      return `${asset.toLowerCase()}usdt`;
-    case "gateio":
-      return `${asset.toUpperCase()}_USDT`;
-    case "okx":
-      return `${asset}-USDT`;
-    default:
-      throw new Error(`Unsupported exchange: ${exchangeId}`);
-  }
-}
-
 module.exports = {
   getOrders,
   updateOrders,
+  updateOrdersFromServer,
   deleteOrder,
   createBunchOrders,
   cancelAllOrders,

@@ -1,6 +1,6 @@
 // server.js
 const dotenv = require('dotenv');
-const { connectMDB } = require('./src/services/mongodb.js');
+const { connectToMongoDB } = require('./src/services/mongodb.js');
 const { app, startServer } = require('./src/routes/requestHandlers.js');
 const { setupCronTasks } = require('./src/routes/cronTasks.js');
 
@@ -11,7 +11,7 @@ app.offlineMode = isOfflineMode;
 
 async function initializeServer() {
   try {
-    await connectMDB();
+    await connectToMongoDB();
     setupCronTasks();
     startServer();
   } catch (error) {
