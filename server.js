@@ -2,7 +2,7 @@
 const dotenv = require('dotenv');
 const { connectToMongoDB } = require('./src/services/mongodb.js');
 const { app, startServer } = require('./src/services/requestHandlers.js');
-const { setupCronTasks } = require('./src/services/cronTasks.js');
+const { initializeCronTasks } = require('./src/services/cronTasks.js');
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ app.offlineMode = isOfflineMode;
 async function initializeServer() {
   try {
     await connectToMongoDB();
-    setupCronTasks();
+    initializeCronTasks();
     startServer();
   } catch (error) {
     console.error('Error during server initialization:', error);

@@ -1,6 +1,6 @@
     // src/routes/ordersRoutes.js
     const express = require('express');
-    const { getOrders, updateOrders, deleteOrder, createBunchOrders, cancelAllOrders} = require('../controllers/ordersController.js');
+    const { getOrders, updateOrders, deleteOrder, createBunchOrders, cancelAllOrders, cancelAllSellOrders} = require('../controllers/ordersController.js');
 
     const router = express.Router();
 
@@ -9,5 +9,6 @@
     router.post('/cancel', deleteOrder);
     router.post('/bunch-orders', createBunchOrders);
     router.post('/cancel/all', cancelAllOrders);
+    router.post('/cancel/all/sell', cancelAllSellOrders);
 
     module.exports = router;

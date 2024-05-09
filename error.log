@@ -8,3 +8,7 @@
 {"error":{},"level":"error","message":"Erreur lors de l'exécution de la tâche : a is not defined","timestamp":"2024-05-09T02:06:08.263Z"}
 {"error":{},"level":"error","message":"Erreur lors de l'exécution de la tâche : a is not defined","timestamp":"2024-05-09T02:06:08.416Z"}
 {"error":{},"level":"error","message":"Erreur lors de l'exécution de la tâche : a is not defined","timestamp":"2024-05-09T02:06:13.719Z"}
+{"error":{"name":"NetworkError"},"level":"error","message":"Erreur lors de l'exécution de la tâche : gateio GET https://api.gateio.ws/api/v4/spot/currencies fetch failed","timestamp":"2024-05-09T03:26:01.445Z"}
+{"error":{"name":"NetworkError"},"level":"error","message":"Erreur lors de l'exécution de la tâche : gateio GET https://api.gateio.ws/api/v4/spot/currencies fetch failed","timestamp":"2024-05-09T03:28:01.382Z"}
+{"error":{"name":"NetworkError"},"level":"error","message":"Erreur lors de l'exécution de la tâche : gateio GET https://api.gateio.ws/api/v4/spot/currencies fetch failed","timestamp":"2024-05-09T03:30:01.209Z"}
+{"error":{"name":"NetworkError"},"level":"error","message":"Erreur lors de l'exécution de la tâche : gateio GET https://api.gateio.ws/api/v4/spot/currencies fetch failed","timestamp":"2024-05-09T03:32:01.458Z"}

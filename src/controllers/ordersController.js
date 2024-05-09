@@ -36,7 +36,9 @@ async function getOrders(req, res) {
       console.error(
         "Error retrieving active orders from MongoDB: Orders is undefined"
       );
-      res.status(500).json({ error: "Error retrieving active orders from MongoDB" }); // Envoyer une réponse d'erreur si les commandes sont indéfinies
+      res
+        .status(500)
+        .json({ error: "Error retrieving active orders from MongoDB" }); // Envoyer une réponse d'erreur si les commandes sont indéfinies
     }
   } catch (error) {
     console.error(`Error retrieving active orders from MongoDB:`, error);
@@ -216,6 +218,49 @@ async function cancelAllOrders(req, res) {
   }
 }
 
+async function cancelAllSellOrders(req, res) {
+  const exchangeId = req.body.exchangeId;
+  let symbol;
+
+  try {
+    const exchange = createExchangeInstance(exchangeId);
+    symbol = getSymbolForExchange(exchangeId, req.body.asset);
+
+    const openOrders = await exchange.fetchOpenOrders(symbol);
+    // Filtrer les ordres pour ne garder que les ordres de vente
+    const sellOrders = openOrders.filter((order) => order.side === "sell");
+
+    const sellIds = sellOrders.map((order) => order.id);
+
+    if (sellIds.length === 0) {
+      return { message: "No open sell orders for this asset" };
+    } else {
+      for (const order of sellOrders) {
+        await exchange.cancelOrder(order.id, order.symbol);
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "All sell orders canceled successfully",
+        status: 200,
+      });
+    }
+  } catch (error) {
+    handleErrorResponse(res, error, "cancelAllSellOrders");
+  }
+}
+
+async function cancelAllOrdersForOkx(exchange, symbol) {
+  const orders = await exchange.fetchOpenOrders(symbol);
+  const orderIds = orders.map((order) => order.id);
+
+  if (orderIds.length === 0) {
+    return { message: "No open orders for this asset" };
+  } else {
+    return exchange.cancelOrders(orderIds, symbol);
+  }
+}
+
 async function fetchOpenOrdersByExchangeId(exchangeId) {
   const exchange = createExchangeInstance(exchangeId);
 
@@ -258,17 +303,6 @@ async function fetchOpenOrdersForKucoin(exchange) {
   return data;
 }
 
-async function cancelAllOrdersForOkx(exchange, symbol) {
-  const orders = await exchange.fetchOpenOrders(symbol);
-  const orderIds = orders.map((order) => order.id);
-
-  if (orderIds.length === 0) {
-    return { message: "No open orders for this asset" };
-  } else {
-    return exchange.cancelOrders(orderIds, symbol);
-  }
-}
-
 module.exports = {
   getOrders,
   getSavedOrders,
@@ -277,4 +311,5 @@ module.exports = {
   deleteOrder,
   createBunchOrders,
   cancelAllOrders,
+  cancelAllSellOrders
 };
