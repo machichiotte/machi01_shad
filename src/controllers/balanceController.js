@@ -6,6 +6,7 @@ const {
   deleteAndSaveData,
   handleErrorResponse,
   getData,
+  getDataFromCollection,
 } = require("../services/utils.js");
 const { mapBalance } = require("../services/mapping.js");
 
@@ -13,17 +14,23 @@ const { mapBalance } = require("../services/mapping.js");
  * Retrieves the last recorded balance from the database.
  * @param {Object} req - HTTP request object.
  * @param {Object} res - HTTP response object.
+ * @returns {Object} - The last recorded balance.
  */
-async function getLastBalance(req, res) {
+async function getBalance(req, res) {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
-  const lastBalance = await getData(
-    req,
-    res,
-    collection,
-    "db_machi_shad.collection_balance.json"
-  );
+  const lastBalance = await getData(req, res, collection);
 
-  if (!res) return lastBalance;
+  return lastBalance;
+}
+
+/**
+ * Retrieves the last recorded balance from the database.
+ * @returns {Object} - The last recorded balance.
+ */
+async function getSavedBalance() {
+  const collection = process.env.MONGODB_COLLECTION_BALANCE;
+  const balance = await getDataFromCollection(collection);
+  return balance;
 }
 
 /**
@@ -44,7 +51,7 @@ async function fetchCurrentBalance(exchangeId) {
 
 /**
  * Saves the provided balance data to MongoDB.
- * @param {Object} data - Balance data to be saved.
+ * @param {Object} mappedData - Balance data to be saved.
  * @param {string} exchangeId - Identifier of the exchange.
  * @param {Object} res - HTTP response object.
  */
@@ -77,7 +84,8 @@ async function updateCurrentBalance(req, res) {
 }
 
 module.exports = {
-  getLastBalance,
+  getBalance,
+  getSavedBalance,
   fetchCurrentBalance,
   saveBalanceInDatabase,
   updateCurrentBalance,

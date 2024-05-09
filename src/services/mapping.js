@@ -59,71 +59,92 @@ function mapBalance(platform, data) {
   }
 }
 
+// Fonction utilitaire pour obtenir la valeur de totalUSDT
+function getTotalUSDT(symbol, cost) {
+  const stableCoins = ["USDT", "USDC", "DAI", "FDUSD", "USDD", "TUSD", "FRAX", "PYUSD", "USDJ", "USDP", "GUSD", "LUSD"];
+
+  // Vérifier si altB est un stable coin adossé au dollar
+  const isStableCoin = stableCoins.includes(symbol.split("/")[1].toUpperCase());
+
+  // Si altB est un stable coin, renvoyer la valeur de cost, sinon renvoyer null
+  return isStableCoin ? parseFloat(cost) : null;
+
+  //TODO rajouter les cas ou le second symbol est BTC ou ETH ( faire appel a la base de donnee pour recuperer la valeur de btc au timestamp / date donnee)
+}
+
 function mapBinanceTrades(data) {
   return data.map((item) => {
     console.log('binance trade item', item);
-    const splitSymbol = item.symbol.split("/"); // Divise le symbole en deux parties
+    const splitSymbol = item.symbol.split("/"); 
+    const totalUSDT = getTotalUSDT(item.symbol, item.cost); 
 
     return {
-      altA: splitSymbol[0], // Première partie du symbole
-      altB: splitSymbol[1], // Deuxième partie du symbole
-      pair: item.symbol, // Deuxième partie du symbole
+      altA: splitSymbol[0], 
+      altB: splitSymbol[1], 
+      pair: item.symbol, 
       timestamp: item.timestamp,
       type: item.takerOrMaker,
       type: item.side,
-      price: parseFloat(item.price), // Convertit le prix en nombre décimal
-      amount: parseFloat(item.amount), // Convertit la quantité en nombre décimal
-      total: parseFloat(item.cost), // Convertit le coût en nombre décimal
-      fee: parseFloat(item.fee.cost), // Convertit la commission en nombre décimal
+      price: parseFloat(item.price), 
+      amount: parseFloat(item.amount), 
+      total: parseFloat(item.cost), 
+      fee: parseFloat(item.fee.cost), 
       feecoin: item.fee.currency,
       platform: "binance",
+      totalUSDT: totalUSDT, 
     };
   });
 }
 
+// Fonction de mapping pour Kucoin
 function mapKucoinTrades(data) {
   return data.map((item) => {
     console.log('kucoin trade item', item);
 
-    const splitSymbol = item.symbol.split("/"); // Divise le symbole en deux parties
+    const splitSymbol = item.symbol.split("/"); 
+    const totalUSDT = getTotalUSDT(item.symbol, item.cost); 
 
     return {
-      altA: splitSymbol[0], // Première partie du symbole
-      altB: splitSymbol[1], // Deuxième partie du symbole
+      altA: splitSymbol[0], 
+      altB: splitSymbol[1], 
       timestamp: item.timestamp,
-      pair: item.symbol, // Deuxième partie du symbole
+      pair: item.symbol, 
       type: item.side,
-      price: parseFloat(item.price), // Convertit le prix en nombre décimal
-      amount: parseFloat(item.amount), // Convertit la quantité en nombre décimal
-      total: parseFloat(item.cost), // Convertit le coût en nombre décimal
-      fee: parseFloat(item.fee.cost), // Convertit la commission en nombre décimal
+      price: parseFloat(item.price), 
+      amount: parseFloat(item.amount), 
+      total: parseFloat(item.cost), 
+      fee: parseFloat(item.fee.cost), 
       feecoin: item.fee.currency,
       feeRate: item.fee.rate,
       platform: "kucoin",
+      totalUSDT: totalUSDT, 
     };
   });
 }
 
+// Fonction de mapping pour HTX
 function mapHtxTrades(data) {
   return data.map((item) => {
     console.log('htx trade item', item);
 
-    const splitSymbol = item.symbol.split("/"); // Divise le symbole en deux parties
+    const splitSymbol = item.symbol.split("/"); 
+    const totalUSDT = getTotalUSDT(item.symbol, item.cost); 
 
     return {
-      altA: splitSymbol[0], // Première partie du symbole
-      altB: splitSymbol[1], // Deuxième partie du symbole
-      pair: item.symbol, // Deuxième partie du symbole
+      altA: splitSymbol[0], 
+      altB: splitSymbol[1], 
+      pair: item.symbol, 
 
       timestamp: item.timestamp,
       type: item.side,
-      price: parseFloat(item.price), // Convertit le prix en nombre décimal
-      amount: parseFloat(item.amount), // Convertit la quantité en nombre décimal
-      total: parseFloat(item.cost), // Convertit le coût en nombre décimal
-      fee: parseFloat(item.fee.cost), // Convertit la commission en nombre décimal
+      price: parseFloat(item.price), 
+      amount: parseFloat(item.amount), 
+      total: parseFloat(item.cost), 
+      fee: parseFloat(item.fee.cost), 
       feecoin: item.fee.currency,
       feeRate: item.fee.rate,
       platform: "htx",
+      totalUSDT: totalUSDT, 
     };
   });
 }
@@ -133,21 +154,23 @@ function mapOkxTrades(data) {
   return data.map((item) => {
     console.log('okx trade item', item);
 
-    const splitSymbol = item.symbol.split("/"); // Divise le symbole en deux parties
+    const splitSymbol = item.symbol.split("/"); 
+    const totalUSDT = getTotalUSDT(item.symbol, item.cost); 
 
     return {
-      altA: splitSymbol[0], // Première partie du symbole
-      altB: splitSymbol[1], // Deuxième partie du symbole
-      pair: item.symbol, // Deuxième partie du symbole
+      altA: splitSymbol[0], 
+      altB: splitSymbol[1], 
+      pair: item.symbol, 
       timestamp: item.timestamp,
       type: item.side,
-      price: parseFloat(item.price), // Convertit le prix en nombre décimal
-      amount: parseFloat(item.amount), // Convertit la quantité en nombre décimal
-      total: parseFloat(item.cost), // Convertit le coût en nombre décimal
-      fee: parseFloat(item.fee.cost), // Convertit la commission en nombre décimal
+      price: parseFloat(item.price), 
+      amount: parseFloat(item.amount), 
+      total: parseFloat(item.cost), 
+      fee: parseFloat(item.fee.cost), 
       feecoin: item.fee.currency,
       feeRate: item.fee.rate,
       platform: "htx",
+      totalUSDT: totalUSDT, 
     };
   });
 }
@@ -157,20 +180,22 @@ function mapGateioTrades(data) {
   return data.map((item) => {
     console.log('gateio trade item', item);
 
-    const splitSymbol = item.symbol.split("/"); // Divise le symbole en deux parties
+    const splitSymbol = item.symbol.split("/"); 
+    const totalUSDT = getTotalUSDT(item.symbol, item.cost); 
 
     return {
-      altA: splitSymbol[0], // Première partie du symbole
-      altB: splitSymbol[1], // Deuxième partie du symbole
+      altA: splitSymbol[0], 
+      altB: splitSymbol[1], 
       timestamp: item.timestamp,
       type: item.side,
-      price: parseFloat(item.price), // Convertit le prix en nombre décimal
-      amount: parseFloat(item.amount), // Convertit la quantité en nombre décimal
-      total: parseFloat(item.cost), // Convertit le coût en nombre décimal
-      fee: parseFloat(item.fee.cost), // Convertit la commission en nombre décimal
+      price: parseFloat(item.price), 
+      amount: parseFloat(item.amount), 
+      total: parseFloat(item.cost), 
+      fee: parseFloat(item.fee.cost), 
       feecoin: item.fee.currency,
       feeRate: item.fee.rate,
       platform: "htx",
+      totalUSDT: totalUSDT, 
     };
   });
 }

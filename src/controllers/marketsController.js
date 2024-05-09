@@ -1,16 +1,26 @@
 // src/controllers/marketsController.js
 
-const { createExchangeInstance, getData, deleteAndSaveData, saveLastUpdateToMongoDB, handleErrorResponse } = require('../services/utils.js');
+const { createExchangeInstance, getData, deleteAndSaveData, saveLastUpdateToMongoDB, handleErrorResponse, getDataFromCollection } = require('../services/utils.js');
 const { mapMarkets } = require('../services/mapping.js');
 
 /**
  * Retrieves the latest market data from the database.
  * @param {Object} req - HTTP request object.
  * @param {Object} res - HTTP response object.
+ * @returns {Object} - The last recorded markets.
  */
 async function getMarkets(req, res) {
     const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
-    await getData(req, res, collection, 'db_machi_shad.collection_load_markets.json');
+    await getData(req, res, collection);
+}
+
+/**
+ * Retrieves the latest market data from the database.
+ * @returns {Object} - The last recorded markets.
+ */
+async function getSavedMarkets() {
+    const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
+    await getDataFromCollection(collection);
 }
 
 /**
@@ -61,4 +71,4 @@ async function updateMarkets(req, res) {
     }
 }
 
-module.exports = { getMarkets, updateMarkets };
+module.exports = { getMarkets, getSavedMarkets, updateMarkets };

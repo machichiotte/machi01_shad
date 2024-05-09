@@ -1,7 +1,7 @@
 // src/services/utils.js
 const ccxt = require("ccxt");
 const { AuthenticationError } = require("ccxt");
-
+const path = require("path");
 const fs = require("fs").promises; // Ajout de l'import pour fs.promises
 const {
   saveData,
@@ -143,24 +143,43 @@ async function saveLastUpdateToMongoDB(type, exchangeId) {
   await updateTimestampInMongoDB(collectionName, filter, update);
 }
 
-// Fonction utilitaire pour obtenir des données
-async function getData(req, res, collection, mockDataFile) {
-  try {
-    let data;
+// Fonction utilitaire pour obtenir le chemin du fichier mock en fonction de la collection
+function getMockDataPath(collection) {
+  // Ajoutez la logique pour retourner le nom spécifique du mock en fonction de la collection
+  const collectionMockName = `${collection}.json`;
+  return path.join(__dirname, "mockData", "mongodb", collectionMockName);
+}
 
-    if (process.env.OFFLINE_MODE === "true") {
-      const mockDataPath = `./mockData/mongodb/${mockDataFile}`;
-      const jsonData = await fs.readFile(mockDataPath, "utf8"); // Utilisation de fs.promises.readFile
-      data = JSON.parse(jsonData);
-    } else {
-      data = await getAllDataMDB(collection);
-    }
+async function getData(req, res, collection) {
+  //console.log('getData req', req)
+  try {
+    const data = await getDataFromCollection(collection);
 
     if (res) res.json(data);
     else return data;
   } catch (err) {
     console.error("getData", err);
     if (res) res.status(500).send({ error: "Internal server error" });
+  }
+}
+
+// Fonction utilitaire pour obtenir des données depuis une collection
+async function getDataFromCollection(collection) {
+  try {
+    if (process.env.OFFLINE_MODE === "true") {
+      // Récupérer le chemin du fichier mock en fonction de la collection
+      const mockDataPath = getMockDataPath(collection);
+      
+      // Lire les données depuis le fichier mock
+      const jsonData = await fs.readFile(mockDataPath, "utf8");
+      return JSON.parse(jsonData);
+    } else {
+      // Récupérer les données depuis la base de données MongoDB
+      return await getAllDataMDB(collection);
+    }
+  } catch (err) {
+    console.error("getDataFromCollection", err);
+    throw err;
   }
 }
 
@@ -215,6 +234,7 @@ module.exports = {
   updateTimestampInMongoDB,
   saveLastUpdateToMongoDB,
   getData,
+  getDataFromCollection,
   deleteAndSaveData,
   deleteAndSaveObject,
   cronMarkets,

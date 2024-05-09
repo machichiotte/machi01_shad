@@ -1,24 +1,22 @@
 // src/controllers/tradesController.js
-const {
-  saveData,
-  getAllDataMDB,
-} = require("../services/mongodb.js");
+const { saveData, getAllDataMDB } = require("../services/mongodb.js");
 const {
   createExchangeInstance,
   getData,
   deleteAndSaveData,
   saveLastUpdateToMongoDB,
+  getDataFromCollection,
 } = require("../services/utils.js");
 const { mapTrades } = require("../services/mapping.js");
 
 async function getTrades(req, res) {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
-  await getData(req, res, collection, "db_machi_shad.collection_trades.json");
+  await getData(req, res, collection);
 }
 
 async function fetchTradesInDatabase() {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
-  const data = await getAllDataMDB(collection);
+  const data = await getDataFromCollection(collection);
   return data;
 }
 
@@ -43,20 +41,29 @@ async function addTradesManually(req, res) {
 }
 
 async function saveTradesToDatabase(newTrades) {
+  const collection = process.env.MONGODB_COLLECTION_TRADES;
+  saveTrades(newTrades, collection, true);
+}
+
+async function saveAllTradesToDatabase(newTrades) {
+  const collection = process.env.MONGODB_COLLECTION_TRADES2;
+  saveTrades(newTrades, collection, false);
+}
+
+async function saveTrades(newTrades, collection, isFiltered) {
   try {
-    const collection = process.env.MONGODB_COLLECTION_TRADES;
+    let filteredTrades = newTrades;
+    if (isFiltered) {
+      // Récupérer les trades déjà présents en base de données
+      const existingTrades = await fetchTradesInDatabase();
 
-    // Récupérer les trades déjà présents en base de données
-    //const existingTrades = await collection.find({}).toArray();
-
-    const existingTrades = await fetchTradesInDatabase();
-
-    // Filtrer les nouveaux trades pour éviter les duplications
-    const filteredTrades = newTrades.filter((newTrade) => {
-      return !existingTrades.some(
-        (existingTrade) => existingTrade.timestamp === newTrade.timestamp
-      );
-    });
+      // Filtrer les nouveaux trades pour éviter les duplications
+      filteredTrades = newTrades.filter((newTrade) => {
+        return !existingTrades.some(
+          (existingTrade) => existingTrade.timestamp === newTrade.timestamp
+        );
+      });
+    }
 
     console.log("filteredTrades", filteredTrades);
 
@@ -176,4 +183,5 @@ module.exports = {
   fetchLastTrades,
   fetchTradesInDatabase,
   saveTradesToDatabase,
+  saveAllTradesToDatabase,
 };

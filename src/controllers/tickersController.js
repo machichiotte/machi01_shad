@@ -1,108 +1,201 @@
 // src/controllers/tickersController.js
-const { createExchangeInstance, saveLastUpdateToMongoDB, getData, deleteAndSaveObject, handleErrorResponse } = require('../services/utils.js');
-const { mapTickers } = require('../services/mapping.js');
 
+const {
+  createExchangeInstance,
+  saveLastUpdateToMongoDB,
+  getData,
+  deleteAndSaveObject,
+  handleErrorResponse,
+  getDataFromCollection,
+} = require("../services/utils.js");
+const { mapTickers } = require("../services/mapping.js");
+
+/**
+ * Retrieves all tickers from the database.
+ * @param {Object} req - HTTP request object.
+ * @param {Object} res - HTTP response object.
+ */
 async function getAllTickers(req, res) {
-    try {
-        const collection = process.env.MONGODB_COLLECTION_TICKERS;
-        const allTickers = await getData(req, res, collection, 'db_machi_shad.collection_tickers.json');
-        console.log('after allTickers in getAllTickers');
-        console.log('allTickers', allTickers);
-        res.status(200).json(allTickers);
-
-    } catch (error) {
-        res.status(500).json('getAllTickers');
-        handleErrorResponse(res, error, 'getAllTickers');
-    }
+  try {
+    const collection = process.env.MONGODB_COLLECTION_TICKERS;
+    const tickersData = await getData(req, res, collection);
+    res.status(200).json(tickersData);
+  } catch (error) {
+    handleErrorResponse(res, error, "getAllTickers");
+  }
 }
 
+/**
+ * Retrieves all tickers from the database.
+ */
+async function getSavedAllTickers() {
+  try {
+    const collection = process.env.MONGODB_COLLECTION_TICKERS;
+    const tickersData = await getDataFromCollection(collection);
+    return tickersData;
+  } catch (error) {
+    throw new Error("Failed to get saved tickers: " + error.message);
+  }
+}
+
+/**
+ * Retrieves all tickers for a specific exchange.
+ * @param {Object} req - HTTP request object.
+ * @param {Object} res - HTTP response object.
+ * @param {string} exchangeId - Identifier of the exchange.
+ */
 async function getAllTickersByExchange(req, res, exchangeId) {
-    try {
-        const collection = process.env.MONGODB_COLLECTION_TICKERS;
-        const allTickers = await getData(req, res, collection, 'db_machi_shad.collection_tickers.json');
+  try {
+    const collection = process.env.MONGODB_COLLECTION_TICKERS;
+    const tickersData = await getData(req, res, collection);
 
-        // Vérifiez si l'échange spécifié existe dans les données
-        if (allTickers && allTickers[exchangeId]) {
-            const exchangeTickers = allTickers[exchangeId];
-            res.status(200).json(exchangeTickers);
-        } else {
-            res.status(404).json({ error: 'Exchange not found' });
-        }
-
-    } catch (error) {
-        handleErrorResponse(res, error, 'getAllTickersByExchange');
-        res.status(500).json('getAllTickersByExchange');
-
+    if (tickersData && tickersData[exchangeId]) {
+      const exchangeTickersData = tickersData[exchangeId];
+      res.status(200).json(exchangeTickersData);
+    } else {
+      res.status(404).json({ error: "Exchange not found" });
     }
+  } catch (error) {
+    handleErrorResponse(res, error, "getAllTickersByExchange");
+  }
 }
 
+/**
+ * Retrieves all tickers for a specific exchange.
+ * @param {string} exchangeId - Identifier of the exchange.
+ */
+async function getSavedAllTickersByExchange(exchangeId) {
+  try {
+    const collection = process.env.MONGODB_COLLECTION_TICKERS;
+    const tickersData = await getDataFromCollection(collection);
+
+    console.log("tick data", tickersData);
+    console.log("tick exchangeId", exchangeId);
+    console.log("tick data[exchangeId]", tickersData[0][exchangeId]);
+
+    const exchangeData = tickersData.find((data) =>
+      data.hasOwnProperty(exchangeId)
+    );
+    if (exchangeData) {
+      // Retourner les données pour l'échange spécifié
+      console.log("lololololo", exchangeData[exchangeId]);
+      return exchangeData[exchangeId];
+    } else {
+      throw new Error("Exchange not found");
+    }
+
+    /*
+    console.log('tick exchangeId', exchangeId)
+
+    if (tickersData && tickersData[exchangeId]) {
+      console.log('ticktickticktick')
+      return tickersData[exchangeId];
+    } else {
+      throw new Error("Exchange not found");
+    }*/
+  } catch (error) {
+    throw new Error(
+      "Failed to get saved tickers by exchange: " + error.message
+    );
+  }
+}
+
+/**
+ * Retrieves all tickers for a specific symbol from a specific exchange.
+ * @param {Object} req - HTTP request object.
+ * @param {Object} res - HTTP response object.
+ * @param {string} exchangeId - Identifier of the exchange.
+ * @param {string} symbol - Symbol of the ticker.
+ */
 async function getAllTickersBySymbolFromExchange(req, res, exchangeId, symbol) {
-    try {
-        const collection = process.env.MONGODB_COLLECTION_TICKERS;
-        const allTickers = await getData(req, res, collection, 'db_machi_shad.collection_tickers.json');
+  try {
+    const collection = process.env.MONGODB_COLLECTION_TICKERS;
+    const tickersData = await getData(req, res, collection);
 
-        // Vérifiez si l'échange spécifié existe dans les données
-        if (allTickers && allTickers[exchangeId]) {
-            const exchangeTickers = allTickers[exchangeId];
+    if (tickersData && tickersData[exchangeId]) {
+      const exchangeTickersData = tickersData[exchangeId];
+      const filteredTickersData = exchangeTickersData.filter(
+        (ticker) => ticker.symbol === symbol
+      );
 
-            // Filtrer les objets en fonction du champ "symbol"
-            const filteredTickers = exchangeTickers.filter(ticker => ticker.symbol === symbol);
-
-            // Vérifier si des données ont été trouvées pour le symbole spécifié
-            if (filteredTickers.length > 0) {
-                res.status(200).json(filteredTickers);
-            } else {
-                res.status(404).json({ error: 'Symbol not found for the given exchange' });
-            }
-        } else {
-            res.status(404).json({ error: 'Exchange not found' });
-        }
-
-    } catch (error) {
-        handleErrorResponse(res, error, 'getAllTickersBySymbolFromExchange');
-        res.status(500).json('getAllTickersBySymbolFromExchange');
-
+      if (filteredTickersData.length > 0) {
+        res.status(200).json(filteredTickersData);
+      } else {
+        res
+          .status(404)
+          .json({ error: "Symbol not found for the given exchange" });
+      }
+    } else {
+      res.status(404).json({ error: "Exchange not found" });
     }
+  } catch (error) {
+    handleErrorResponse(res, error, "getAllTickersBySymbolFromExchange");
+  }
 }
 
+/**
+ * Retrieves all tickers for a specific symbol from a specific exchange.
+ * @param {string} exchangeId - Identifier of the exchange.
+ * @param {string} symbol - Symbol of the ticker.
+ */
+async function getSavedAllTickersBySymbolFromExchange(exchangeId, symbol) {
+  try {
+    const collection = process.env.MONGODB_COLLECTION_TICKERS;
+    const tickersData = await getDataFromCollection(collection);
 
+    if (tickersData && tickersData[exchangeId]) {
+      const exchangeTickersData = tickersData[exchangeId];
+      const filteredTickersData = exchangeTickersData.filter(
+        (ticker) => ticker.symbol === symbol
+      );
+
+      if (filteredTickersData.length > 0) {
+        return filteredTickersData;
+      } else {
+        throw new Error("Symbol not found for the given exchange");
+      }
+    } else {
+      throw new Error("Exchange not found");
+    }
+  } catch (error) {
+    throw new Error(
+      "Failed to get saved tickers by symbol from exchange: " + error.message
+    );
+  }
+}
+
+/**
+ * Updates all tickers by fetching the latest data from exchanges and saving it to the database.
+ * @param {Object} req - HTTP request object.
+ * @param {Object} res - HTTP response object.
+ */
 async function updateAllTickers(req, res) {
-    console.log('updateAllTickers');
-    try {
-        const collection = process.env.MONGODB_COLLECTION_TICKERS;
-        console.log('collection');
-        console.log('collection', collection);
+  try {
+    const collection = process.env.MONGODB_COLLECTION_TICKERS;
+    const tickersData = {};
+    const supportedExchanges = ["binance", "kucoin", "htx", "okx", "gateio"];
 
-        const allTickers = {};
-
-        // Loop through each exchangeId
-        const exchangeIds = ['binance', 'kucoin', 'htx', 'okx', 'gateio'];
-        for (const exchangeId of exchangeIds) {
-            console.log('exchangeId', exchangeId);
-
-            const exchange = createExchangeInstance(exchangeId);
-            const data = await exchange.fetchTickers();
-            const mappedData = mapTickers(data);
-            //console.log('mappedData', mappedData);
-
-            // Append or update the data for the current exchangeId in the overall collection
-            allTickers[exchangeId] = mappedData;
-        }
-
-        //console.log('alltick', allTickers);
-        // Save the combined data to MongoDB
-
-        console.log('bef deleteAndSaveObject');
-
-        await deleteAndSaveObject(allTickers, collection);
-        res.status(200).json(allTickers);
-        saveLastUpdateToMongoDB(process.env.TYPE_TICKERS, 'combined');
-
-    } catch (error) {
-        handleErrorResponse(res, error, 'updateAllTickers');
-        res.status(500).json('updateAllTickers');
-
+    for (const exchangeId of supportedExchanges) {
+      const exchange = createExchangeInstance(exchangeId);
+      const data = await exchange.fetchTickers();
+      const mappedTickersData = mapTickers(data);
+      tickersData[exchangeId] = mappedTickersData;
     }
+
+    await deleteAndSaveObject(tickersData, collection);
+    res.status(200).json(tickersData);
+    saveLastUpdateToMongoDB(process.env.TYPE_TICKERS, "combined");
+  } catch (error) {
+    handleErrorResponse(res, error, "updateAllTickers");
+  }
 }
 
-module.exports = { getAllTickers, updateAllTickers, getAllTickersByExchange, getAllTickersBySymbolFromExchange };
+module.exports = {
+  getAllTickers,
+  getSavedAllTickers,
+  updateAllTickers,
+  getAllTickersByExchange,
+  getSavedAllTickersByExchange,
+  getAllTickersBySymbolFromExchange,
+  getSavedAllTickersBySymbolFromExchange,
+};

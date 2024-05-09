@@ -3,7 +3,8 @@ const ccxt = require("ccxt");
 const {
   saveLastUpdateToMongoDB,
   handleErrorResponse,
-  getSymbolForExchange
+  getSymbolForExchange,
+  getDataFromCollection,
 } = require("../services/utils.js");
 const {
   createExchangeInstance,
@@ -13,18 +14,52 @@ const {
 } = require("../services/utils.js");
 const { mapOrders } = require("../services/mapping.js");
 
+/**
+ * Retrieves the last recorded balance from the database.
+ * @param {Object} req - HTTP request object.
+ * @param {Object} res - HTTP response object.
+ * @returns {Object} - The last recorded orders.
+ */
 async function getOrders(req, res) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
 
   try {
-    console.log(`Retrieving active orders from MongoDB collection: ${collection}`);
-    const orders = await getData(collection); // Assuming getData now only takes collection as an argument
+    console.log(
+      `Retrieving active orders from MongoDB collection: ${collection}`
+    );
+    const orders = await getData(req, res, collection);
 
-    console.log(`Retrieved ${orders.length} active orders`);
-    res.json(orders);
+    if (orders) {
+      console.log(`Retrieved ${orders.length} active orders`);
+      res.json(orders); // Envoyer la réponse ici, après avoir vérifié si les commandes sont définies
+    } else {
+      console.error(
+        "Error retrieving active orders from MongoDB: Orders is undefined"
+      );
+      res.status(500).json({ error: "Error retrieving active orders from MongoDB" }); // Envoyer une réponse d'erreur si les commandes sont indéfinies
+    }
   } catch (error) {
     console.error(`Error retrieving active orders from MongoDB:`, error);
-    handleErrorResponse(res, error, "getOrders");
+    handleErrorResponse(res, error, "getOrders"); // Gérer l'erreur de manière appropriée
+  }
+}
+
+/**
+ * Retrieves the last recorded balance from the database.
+ * @returns {Object} - The last recorded orders.
+ */
+async function getSavedOrders() {
+  const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
+
+  try {
+    console.log(
+      `Retrieving active orders from MongoDB collection: ${collection}`
+    );
+    const orders = await getDataFromCollection(req, res, collection);
+
+    console.log(`Retrieved ${orders.length} active orders`);
+  } catch (error) {
+    console.error(`Error retrieving active orders from MongoDB:`, error);
   }
 }
 
@@ -36,7 +71,10 @@ async function fetchAndMapOrders(exchangeId) {
     const mappedData = mapOrders(exchangeId, data);
     return mappedData;
   } catch (error) {
-    console.error(`Error fetching and mapping orders for exchange ${exchangeId}:`, error);
+    console.error(
+      `Error fetching and mapping orders for exchange ${exchangeId}:`,
+      error
+    );
     throw error; // Re-throw the error for now
   }
 }
@@ -45,15 +83,24 @@ async function saveMappedOrders(mappedData, exchangeId) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
 
   try {
-    console.log(`Deleting existing orders and saving new mapped orders for exchange ${exchangeId}`);
+    console.log(
+      `Deleting existing orders and saving new mapped orders for exchange ${exchangeId}`
+    );
     await deleteAndSaveData(mappedData, collection, exchangeId);
 
-    console.log(`Saving last update timestamp for active orders (exchange: ${exchangeId}) to MongoDB`);
+    console.log(
+      `Saving last update timestamp for active orders (exchange: ${exchangeId}) to MongoDB`
+    );
     await saveLastUpdateToMongoDB(process.env.TYPE_ACTIVE_ORDERS, exchangeId);
 
-    console.log(`Successfully updated active orders for exchange ${exchangeId}`);
+    console.log(
+      `Successfully updated active orders for exchange ${exchangeId}`
+    );
   } catch (error) {
-    console.error(`Error saving mapped orders for exchange ${exchangeId}:`, error);
+    console.error(
+      `Error saving mapped orders for exchange ${exchangeId}:`,
+      error
+    );
     // Consider adding more specific error handling here (e.g., retry logic, logging specific error types)
     throw error; // Re-throw the error for now
   }
@@ -68,13 +115,18 @@ async function updateOrders(req, res) {
     console.log(`Fetching and mapping orders for exchange ${exchangeId}`);
     const mappedData = await fetchAndMapOrders(exchangeId);
 
-    console.log(`Saving mapped order data to MongoDB for exchange ${exchangeId}`);
+    console.log(
+      `Saving mapped order data to MongoDB for exchange ${exchangeId}`
+    );
     await saveMappedOrders(mappedData, exchangeId);
 
     console.log(`Update successful for exchange ${exchangeId}`);
     res.status(200).json(mappedData);
   } catch (error) {
-    console.error(`** Error updating orders for exchange ${exchangeId}: **`, error);
+    console.error(
+      `** Error updating orders for exchange ${exchangeId}: **`,
+      error
+    );
     handleErrorResponse(res, error, "updateOrders");
   }
 }
@@ -97,13 +149,20 @@ async function deleteOrder(req, res) {
   const { exchangeId, oId, symbol } = req.body;
 
   try {
-    console.log(`Deleting order (exchangeId: ${exchangeId}, orderId: ${oId}, symbol: ${symbol})`);
+    console.log(
+      `Deleting order (exchangeId: ${exchangeId}, orderId: ${oId}, symbol: ${symbol})`
+    );
     const exchange = createExchangeInstance(exchangeId);
     const data = await exchange.cancelOrder(oId, symbol.replace("/", ""));
-    console.log(`Order deleted successfully (exchangeId: ${exchangeId}, orderId: ${oId}, symbol: ${symbol})`);
+    console.log(
+      `Order deleted successfully (exchangeId: ${exchangeId}, orderId: ${oId}, symbol: ${symbol})`
+    );
     res.json(data);
   } catch (error) {
-    console.error(`Error deleting order (exchangeId: ${exchangeId}, orderId: ${oId}, symbol: ${symbol})`, error);
+    console.error(
+      `Error deleting order (exchangeId: ${exchangeId}, orderId: ${oId}, symbol: ${symbol})`,
+      error
+    );
     handleErrorResponse(res, error, "deleteOrder");
   }
 }
@@ -212,6 +271,7 @@ async function cancelAllOrdersForOkx(exchange, symbol) {
 
 module.exports = {
   getOrders,
+  getSavedOrders,
   updateOrders,
   updateOrdersFromServer,
   deleteOrder,

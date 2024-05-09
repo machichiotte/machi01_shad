@@ -1,5 +1,5 @@
 // src/controllers/lastUpdateController.js
-const { getData, saveLastUpdateToMongoDB } = require('../services/utils.js');
+const { getData, saveLastUpdateToMongoDB, getDataFromCollection } = require('../services/utils.js');
 const { getDataMDB } = require('../services/mongodb.js');
 
 async function getUniqueLastUpdate(req, res) {
@@ -22,7 +22,12 @@ async function getUniqueLastUpdate(req, res) {
 }
 async function getLastUpdate(req, res) {
     const collection = process.env.MONGODB_COLLECTION_LAST_UPDATE;
-    await getData(req, res, collection, 'db_machi_shad.last_update.json');
+    await getData(req, res, collection);
+}
+
+async function getSavedLastUpdate() {
+    const collection = process.env.MONGODB_COLLECTION_LAST_UPDATE;
+    await getDataFromCollection(collection);
 }
 
 async function updateLastUpdateByType(req, res) {
@@ -36,4 +41,4 @@ async function updateLastUpdateByType(req, res) {
     }
 }
 
-module.exports = { getLastUpdate, getUniqueLastUpdate, updateLastUpdateByType }
+module.exports = { getLastUpdate, getSavedLastUpdate, getUniqueLastUpdate, updateLastUpdateByType }
