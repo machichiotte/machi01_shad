@@ -5,7 +5,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { bunchOrders, cancelAllOrders } from '../js/orders.js'
+import { bunchOrders, cancelAllOrders, cancelAllSellOrders } from '../js/orders.js'
 import { loadingSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
 
 const model = ref(null)
@@ -32,7 +32,7 @@ const iAmClicked = async () => {
   const cancellationPromises = selectedRows.map(async (row) => {
     if (row.nbOpenSellOrders > 0) {
       console.log('cancelasset', row.asset)
-      const cancel = await cancelAllOrders(row.exchangeId, row.asset);
+      const cancel = await cancelAllSellOrders(row.exchangeId, row.asset);
       console.log('cancan', cancel);
       return cancel.status === 200 ? row.asset : null; // Return asset only if cancellation successful
     }

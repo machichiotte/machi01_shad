@@ -10,7 +10,8 @@
     </ul>
     <Button @click="updateAll()" style="font-size: 18px; margin: 4px">Maj exchanges</Button>
     <div v-for="exchangeId in exchangeIds" :key="exchangeId" style="margin-bottom: 10px;">
-      <ToggleButton :id="exchangeId" v-model="selectedExchanges[exchangeId]" :onLabel="exchangeId" :offLabel="exchangeId" />
+      <ToggleButton :id="exchangeId" v-model="selectedExchanges[exchangeId]" :onLabel="exchangeId"
+        :offLabel="exchangeId" />
     </div>
     <div>
       <ToggleButton id="balance" v-model="updateBalance" onLabel="Balance" offLabel="Balance" />
@@ -99,9 +100,14 @@ async function updateExchangeData(exchangeId) {
     if (updateBalance.value) {
       const balance_data_response = await fetch(`${API_ENDPOINTS.UPD_BALANCE}${exchangeId}`);
       if (balance_data_response.ok) {
+        console.log('okokok');
         const balance_data = await balance_data_response.json();
-        saveBalancesDataToIndexedDB(balance_data, exchangeId);
-        balanceCount = balance_data.length;
+
+        saveBalancesDataToIndexedDB(balance_data.data, exchangeId);
+
+        console.log('saveBalancesDataToIndexedDB');
+
+        balanceCount = balance_data.data.length;
 
         result += `${balanceCount} assets. `;
       }
@@ -111,6 +117,8 @@ async function updateExchangeData(exchangeId) {
       const orders_data_response = await fetch(`${API_ENDPOINTS.ORDERS}${exchangeId}`);
       if (orders_data_response.ok) {
         const orders_data = await orders_data_response.json();
+        console.log('orders_data', orders_data)
+
         saveOrdersDataToIndexedDB(orders_data, exchangeId);
         ordersCount = orders_data.length;
 

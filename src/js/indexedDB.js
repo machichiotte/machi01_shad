@@ -72,15 +72,17 @@ const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterExch
 
             await clearObjectStoreByExchange(objectStore, filterExchange);
         }
-
+        
         if (data && data.length > 0) {
+            console.log('data.length',data.length)
             data.forEach((item) => {
-                //console.log('item', item);
+                console.log('item', item);
                 if (isValidItem(item, keyField)) {
+                    console.log('isvaliditem')
 
                     const itemToSave = createItemToSave(item, keyField);
 
-                    //console.log('itemToSave',itemToSave);
+                    console.log('itemToSave',itemToSave);
 
                     if (shouldFilterExchange && itemToSave['platform'] !== filterExchange) {
                         console.log(`Skipping item with platform ${itemToSave['platform']}.`);
@@ -123,10 +125,13 @@ const clearObjectStoreByExchange = (objectStore, filterExchange) => {
         const clearRequest = objectStore.openCursor();
 
         clearRequest.onsuccess = (event) => {
+
             const cursor = event.target.result;
 
             if (cursor) {
                 const item = cursor.value;
+                console.log('clearObjectStoreByExchange item', item);
+                console.log('clearObjectStoreByExchange item.platform', item.platform);
 
                 if (item && item.platform === filterExchange) {
                     const deleteRequest = cursor.delete();
@@ -156,6 +161,8 @@ const clearObjectStoreByExchange = (objectStore, filterExchange) => {
 };
 
 const isValidItem = (item, keyField) => {
+    console.log('keey', keyField);
+    console.log('keey',  item[keyField]);
     return item && item[keyField] !== undefined && item[keyField] !== null;
 };
 
@@ -177,6 +184,8 @@ const saveOrdersDataToIndexedDB = async (data, exchange) => {
 
 const saveBalancesDataToIndexedDB = async (data, exchange) => {
     console.log('saveBalancesDataToIndexedDB');
+    console.log('saveBalancesDataToIndexedDB data',data);
+    console.log('saveBalancesDataToIndexedDB exchange',exchange);
     await saveDataToIndexedDBInternal(BALANCE, data, '_id', exchange);
 };
 

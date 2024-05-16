@@ -75,10 +75,30 @@ watchEffect(() => {
   console.log('valueee', items.value)
   if (Array.isArray(items.value)) {
     rows.value = items.value.map((item) => {
+      let date;
+      // Vérifier si la date est une chaîne de caractères
+      if (typeof item['date'] === 'string') {
+        date = item['date']; // Utiliser directement la date si elle est déjà au format attendu
+      } else {
+        // Si la date est un timestamp, convertir en objet Date
+        const timestamp = parseFloat(item['timestamp']);
+        const formattedDate = new Date(timestamp);
+
+        // Formater la date au format YYYY-MM-DD HH:mm:ss
+        const year = formattedDate.getFullYear();
+        const month = String(formattedDate.getMonth() + 1).padStart(2, '0');
+        const day = String(formattedDate.getDate()).padStart(2, '0');
+        const hours = String(formattedDate.getHours()).padStart(2, '0');
+        const minutes = String(formattedDate.getMinutes()).padStart(2, '0');
+        const seconds = String(formattedDate.getSeconds()).padStart(2, '0');
+
+        date = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      }
+
       return {
         altA: item['altA'],
         altB: item['altB'],
-        date: item['date'],
+        date: date,
         pair: item['pair'],
         type: item['type'],
         price: item['price'],

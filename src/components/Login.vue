@@ -36,61 +36,47 @@
         </div>
     </div>
 </template>
-<script>
-import { mapActions, mapMutations } from 'vuex';
+<script setup>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
 import SignupValidations from '../services/SignupValidations';
 import {
     IS_USER_AUTHENTICATE_GETTER,
     LOADING_SPINNER_SHOW_MUTATION,
     LOGIN_ACTION,
 } from '../store/storeconstants';
-export default {
-    data() {
-        return {
-            email: '',
-            password: '',
-            errors: [],
-            error: '',
-        };
-    },
-    methods: {
-        ...mapActions('auth', {
-            login: LOGIN_ACTION,
-        }),
-        ...mapMutations({
-            showLoading: LOADING_SPINNER_SHOW_MUTATION,
-        }),
-        async onLogin() {
-            let validations = new SignupValidations(
-                this.email,
-                this.password,
-            );
 
-            this.errors = validations.checkValidations();
-            if (this.errors.length) {
-                return false;
-            }
-            this.error = '';
+const store = useStore();
 
-            this.showLoading(true);
-            //Login check
-            try {
-                await this.login({
-                    email: this.email,
-                    password: this.password,
-                });
+const email = ref('');
+const password = ref('');
+const errors = ref([]);
+const error = ref('');
 
-                if (IS_USER_AUTHENTICATE_GETTER) {
-                    this.showLoading(false);
-                    this.$router.push('/shad');
-                }
+const onLogin = async () => {
+    let validations = new SignupValidations(email.value, password.value);
 
-            } catch (e) {
-                this.error = e;
-                this.showLoading(false);
-            }
+    errors.value = validations.checkValidations();
+    if (errors.value.length) {
+        return false;
+    }
+    error.value = '';
 
-        },
-    },
+    store.commit(LOADING_SPINNER_SHOW_MUTATION, true);
+
+    try {
+        await store.dispatch(LOGIN_ACTION, {
+            email: email.value,
+            password: password.value,
+        });
+
+        if (store.getters[IS_USER_AUTHENTICATE_GETTER]) {
+            store.commit(LOADING_SPINNER_SHOW_MUTATION, false);
+            router.push('/shad'); // Assurez-vous d'importer router et de l'utiliser ici
+        }
+    } catch (e) {
+        error.value = e;
+        store.commit(LOADING_SPINNER_SHOW_MUTATION, false);
+    }
 };
 </script>

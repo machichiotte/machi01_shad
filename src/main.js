@@ -42,6 +42,7 @@ import Tag from 'primevue/tag'
 import FloatLabel from 'primevue/floatlabel'
 import Calendar from 'primevue/calendar'
 import ToggleButton from 'primevue/togglebutton'
+import MultiSelect from 'primevue/multiselect'
 
 const app = createApp(App)
 app.component('LogoMachi', LogoMachi)
@@ -77,5 +78,6 @@ app.component('Tag', Tag)
 app.component('FloatLabel', FloatLabel)
 app.component('Calendar', Calendar)
 app.component('ToggleButton', ToggleButton)
+app.component('MultiSelect', MultiSelect)
 
 app.mount('#app')

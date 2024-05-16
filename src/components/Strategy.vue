@@ -8,7 +8,7 @@
     <div>
       <select v-model="selectedStrategy" @change="updateAllStrats">
         <option value="">Sélectionner une stratégie</option>
-        <option v-for="strategy in strategies" :key="strategy" :value="strategy">
+        <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
           {{ strategy }}
         </option>
       </select>
@@ -37,7 +37,7 @@
               @input="setSelectedStrategy(asset, platform, $event.target.value)"
               :disabled="isDisabled(asset, platform)">
               <option value=""></option>
-              <option v-for="strategy in strategies" :key="strategy" :value="strategy">
+              <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
                 {{ strategy }}
               </option>
             </select>
@@ -59,13 +59,12 @@
 
 <script setup>
 // Importing necessary modules and functions
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
-import { getBalances, getStrategy } from '../js/getter.js'
 import { successSpin, errorSpin } from '../js/spinner.js'
 import { saveStrategyToIndexedDB } from '../js/indexedDB'
 import { FETCH_STRATS, FETCH_BALANCES, GET_BALANCES, GET_STRATS } from '@/store/storeconstants.js';
-
+import { strategies } from '../js/strategies.js';
 
 import { useStore } from 'vuex'
 const store = useStore()
@@ -83,20 +82,11 @@ const selectedStrategy = ref('')
 const selectedMaxExposure = ref('')
 
 //TODO CHANGE THIS (in calcul.js too)
-const strategies = ref(['Shad', 'Shad skip x2', 'Strategy 3'])
+const strategiesList = ref(strategies);
+
 const exposures = ref([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000])
 
-
-const getStratsData = async () => {
-  try {
-    // Appel de l'action Vuex pour récupérer les trades
-    await store.dispatch('calcul/' + FETCH_TRADES)
-    items.value = store.getters['calcul/' + GET_TRADES];
-  } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données des trades :", error)
-    // Affichez un message d'erreur à l'utilisateur si nécessaire
-  }
-}
+const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
 
 // Define methods
 async function getData() {

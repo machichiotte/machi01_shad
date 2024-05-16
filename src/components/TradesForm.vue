@@ -36,13 +36,13 @@
         <div class="field-group">
             <label for="price" class="font-semibold">Price</label>
             <InputNumber id="price" class="flex-grow" :modelValue="formData['price']" autocomplete="off"
-                v-model="formData['price']" :min="0"  :minFractionDigits="0" :maxFractionDigits="8" />
+                v-model="formData['price']" :min="0" :minFractionDigits="0" :maxFractionDigits="8" />
         </div>
 
         <div class="field-group">
             <label for="amount" class="font-semibold">Amount</label>
             <InputNumber id="amount" class="flex-grow" :modelValue="formData['amount']" autocomplete="off"
-                v-model="formData['amount']"  :min="0" :minFractionDigits="0" :maxFractionDigits="8" />
+                v-model="formData['amount']" :min="0" :minFractionDigits="0" :maxFractionDigits="8" />
         </div>
 
         <div class="flex">
@@ -76,7 +76,7 @@
 
     </Dialog>
 </template>
-  
+
 <script setup>
 import { ref, watch } from 'vue';
 import { successSpin, errorSpin } from "../js/spinner.js";
@@ -101,6 +101,11 @@ const checkFormValidity = () => {
             if (!isValidDateFormat(date)) {
                 return false; // Stop iterating if the date format is invalid
             }
+        }*/
+       /* if (key === 'date') {
+            // Convertir la date en format YYYY-MM-DD HH:mm:ss
+            const formattedDate = new Date(formDataValue[key]).toISOString().slice(0, -1).replace('T', ' ');
+            formDataValue[key] = formattedDate;
         }*/
         return true; // Continue iterating if the field is valid
     });
@@ -170,7 +175,7 @@ const formDataInitial = {
     platform: '',
     altA: '',
     altB: 'USDT',
-    date: '2024-01-01 14:05:16',
+    date: '2024-03-28 21:44:58',
     pair: '',
     type: '',
     price: 0,

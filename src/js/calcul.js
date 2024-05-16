@@ -6,6 +6,7 @@ import {
   GET_TRADES
 } from '@/store/storeconstants'
 import store from '@/store/store.js'
+import { strategies } from './strategies.js'
 
 const MAX_EXPO = 10000
 const ERROR_ALLOWED = 0.05
@@ -45,27 +46,45 @@ function getRecupShad(totalBuy, totalSell, maxExposition) {
 }
 
 function getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad) {
+  let valueToRecup = 0
   if (maxExposition < totalBuy) {
     if (totalSell < totalBuy - maxExposition) {
-      const difference = totalBuy - maxExposition - totalSell
-      return difference > 4.5 ? difference : recupTpX + difference
+      valueToRecup = totalBuy - maxExposition - totalSell
+      //return difference.toFixed(2) // Round and return with 2 decimal places
     } else {
       const result = (totalSell - (totalBuy - maxExposition)) / maxExposition
       const decimalPart = result - Math.floor(result)
-      const result2 = decimalPart * maxExposition
-
-      return result2 > 4.5 ? result2 : recupTpX + result2
+      valueToRecup = decimalPart * maxExposition
+      //return result2.toFixed(2) // Round and return with 2 decimal places
     }
-  } else if ((totalShad + 1) * totalBuy - totalSell > 0) {
-    return (totalShad + 1) * totalBuy - totalSell
+  } else if (
+    (totalShad + 1) * totalBuy > totalSell &&
+    totalShad * totalBuy < (1 - ERROR_ALLOWED) * totalSell
+  ) {
+    valueToRecup = recupTpX - (totalShad + 1) * totalBuy - totalSell
+    // return adjustedValue.toFixed(2) // Round and return with 2 decimal places
   }
 
-  return recupTpX
+  if (valueToRecup > 5.05) {
+    return valueToRecup
+  }
+
+  return recupTpX // Round and return with 2 decimal places
 }
 
-function getRecupTpX(strat, maxExposition, ratioShad) {
-  //on aura besoin de la strat pour mieux definir a lavenir
-  return maxExposition * ratioShad * 0.5
+function getRecupTpX(assetStrat, maxExposition, ratioShad) {
+  console.log('maxExposition', maxExposition)
+  console.log('ratioShad', ratioShad)
+
+  // Calculate the result with two decimal places
+  const result = (maxExposition * ratioShad * 0.5).toFixed(2)
+
+  // Log a message indicating potential future refinement based on strategy
+  console.log(
+    `Calculated result: ${result} (Potential for refinement based on strategy ${assetStrat})`
+  )
+
+  return result // Return the rounded value
 }
 
 function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
@@ -96,11 +115,8 @@ function getTotalAmountAndBuy(asset) {
 }
 
 function getRatioShad(strat) {
-  // Assurez-vous que strats est défini et a la structure attendue
   if (strat !== undefined) {
-    // Mettez à jour les valeurs de retour en fonction de la stratégie
     switch (strat) {
-      //TODO CHANGE THIS
       case 'Shad':
         return 2
       case 'Shad skip x2':
@@ -118,17 +134,28 @@ function getRatioShad(strat) {
 }
 
 function calculateRecups(item, totalBuy, totalSell) {
-  const { symbol, platform, balance } = item
-
-  const { strat, stratExpo } = getStrat(platform, symbol)
+  const { symbol, platform, assetStrat, assetExpo } = item
+  console.log('assetExpo', assetExpo)
+  let { strat, stratExpo } = getStrat(platform, symbol)
   if (stratExpo === undefined) {
     stratExpo = MAX_EXPO
   }
+
+  if (assetStrat) {
+    strat = assetStrat
+  }
+
+  if (assetExpo) {
+    stratExpo = assetExpo
+  }
+
   const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo))
+  console.log('maxExposition', maxExposition)
 
   const ratioShad = getRatioShad(strat)
   const recupShad = getRecupShad(totalBuy, totalSell, maxExposition)
   const recupTpX = getRecupTpX(strat, maxExposition, ratioShad)
+  console.log(recupTpX)
   const totalShad = getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX)
   const recupTp1 = getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad)
 
@@ -162,7 +189,6 @@ function getIconUrl(id) {
 }
 
 function getCmcValues(asset) {
-  console.log('getCmcValues cmc', cmc.length)
   const crypto = cmc.find((item) => item.symbol === asset) || {}
 
   return {
@@ -205,7 +231,9 @@ function calculateAmountAndPrice(parsedRecup, parsedBalance, factor) {
 function calculateAmountsAndPrices(
   recupTp1,
   balance,
+  maxExposition,
   totalBuy,
+  totalSell,
   totalShad,
   recupTpX,
   averageEntryPrice
@@ -213,6 +241,8 @@ function calculateAmountsAndPrices(
   const parsedRecupTp1 = parseFloat(recupTp1)
   const parsedBalance = parseFloat(balance)
   const parsedTotalBuy = parseFloat(totalBuy)
+  const parsedTotalSell = parseFloat(totalSell)
+  const parsedMaxExposition = parseFloat(maxExposition)
   const parsedRecupTpX = parseFloat(recupTpX)
   const parsedAverageEntryPrice = parseFloat(averageEntryPrice)
 
@@ -220,14 +250,30 @@ function calculateAmountsAndPrices(
   let priceTp1
 
   if (totalShad > -1) {
-    amountTp1 = 0.5 * parsedBalance
+    amountTp1 = parsedBalance * 0.5
     priceTp1 = parsedRecupTp1 / parseFloat(amountTp1)
   } else {
-    if (parsedRecupTp1 / parsedAverageEntryPrice <= parsedBalance) {
+    /*if (parsedRecupTp1 / parsedAverageEntryPrice <= parsedBalance) {
       priceTp1 = parsedAverageEntryPrice
       amountTp1 = parsedRecupTp1 / parsedAverageEntryPrice
+
+
     } else {
-      amountTp1 = 0.5 * parsedBalance
+      amountTp1 =  parsedBalance * (1- parsedMaxExposition/(parsedTotalBuy-parsedTotalSell))
+    priceTp1 = parsedRecupTp1 / parseFloat(amountTp1)
+    }*/
+
+    priceTp1 = parsedAverageEntryPrice
+    amountTp1 = parsedRecupTp1 / parsedAverageEntryPrice
+
+    const { amount: amountTpTest, price: priceTpTest } = calculateAmountAndPrice(
+      parsedRecupTpX,
+      parsedBalance - amountTp1,
+      0.5
+    )
+
+    if (priceTpTest < priceTp1) {
+      amountTp1 = parsedBalance * (1 - parsedMaxExposition / (parsedTotalBuy - parsedTotalSell))
       priceTp1 = parsedRecupTp1 / parseFloat(amountTp1)
     }
   }
@@ -253,7 +299,7 @@ function calculateAmountsAndPrices(
     0.5
   )
 
-  if (priceTp1 > priceTp2 || priceTp1 > priceTp3 || priceTp1 > priceTp4 || priceTp1 > priceTp5) {
+  /* if (priceTp1 > priceTp2 || priceTp1 > priceTp3 || priceTp1 > priceTp4 || priceTp1 > priceTp5) {
     return {
       amountTp1: 0,
       amountTp2: 0,
@@ -266,20 +312,20 @@ function calculateAmountsAndPrices(
       priceTp4: 0,
       priceTp5: 0
     }
-  } else {
-    return {
-      amountTp1,
-      amountTp2,
-      amountTp3,
-      amountTp4,
-      amountTp5,
-      priceTp1,
-      priceTp2,
-      priceTp3,
-      priceTp4,
-      priceTp5
-    }
+  } else {*/
+  return {
+    amountTp1,
+    amountTp2,
+    amountTp3,
+    amountTp4,
+    amountTp5,
+    priceTp1,
+    priceTp2,
+    priceTp3,
+    priceTp4,
+    priceTp5
   }
+  // }
 }
 
 function getAssetId(asset) {
@@ -356,15 +402,13 @@ function getStrat(exchangeId, asset) {
 }
 
 function getAllCalculs(item) {
-  console.log('getAllCalculs', item)
-
   cmc = store.getters['calcul/' + GET_CMC]
   trades = store.getters['calcul/' + GET_TRADES]
   strats = store.getters['calcul/' + GET_STRATS]
   buyOrders = store.getters['calcul/' + GET_BUY_ORDERS]
   sellOrders = store.getters['calcul/' + GET_SELL_ORDERS]
 
-  const { symbol, platform, balance } = item
+  const { symbol, platform, balance, assetStrat, assetExpo } = item
   const exchangeId = platform
 
   const {
@@ -377,6 +421,8 @@ function getAllCalculs(item) {
     cryptoPercentChange60d,
     cryptoPercentChange90d
   } = getCmcValues(symbol)
+
+  console.log('rank', rank)
 
   const totalSell = getTotalSell(symbol)
 
@@ -407,7 +453,16 @@ function getAllCalculs(item) {
     priceTp3,
     priceTp4,
     priceTp5
-  } = calculateAmountsAndPrices(recupTp1, balance, totalBuy, totalShad, recupTpX, averageEntryPrice)
+  } = calculateAmountsAndPrices(
+    recupTp1,
+    balance,
+    maxExposition,
+    totalBuy,
+    totalSell,
+    totalShad,
+    recupTpX,
+    averageEntryPrice
+  )
 
   const percentageDifference = getPercentageDifference(currentPrice, averageEntryPrice)
 

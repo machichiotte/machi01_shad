@@ -15,8 +15,7 @@
         <template #header>
           <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
             <h4 class="m-0">Find Orders</h4>
-            <MultiSelect :modelValue="cols" :options="columns" optionLabel="header" @update:modelValue="onToggle"
-                display="chip" placeholder="Select Columns" />
+            
             <IconField iconPosition="left">
               <InputIcon>
                 <i class="pi pi-search" />
@@ -86,9 +85,6 @@ onMounted(async () => {
   }
 })
 
-const onToggle = (val) => {
-    cols.value = columns.value.filter(col => val.includes(col));
-};
 </script>
 
 <style scoped>

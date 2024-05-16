@@ -54,14 +54,16 @@
             <Column header="Total Buy" field="totalBuy" :rowspan="2" sortable />
             <Column header="Total Sell" field="totalSell" :rowspan="2" sortable />
 
+            <Column header="Quantite total achetee" field="totalAmount" :rowspan="2" sortable />
+            <Column header="Balance" field="balance" :rowspan="2" sortable />
+
             <Column header="Max wanted" field="maxExposition" :rowspan="2" sortable />
             <Column header="Percentage Difference" field="percentageDifference" :rowspan="2" sortable />
             <Column header="Current Price" field="currentPrice" :rowspan="2" sortable />
             <Column header="Wallet" field="currentPossession" :rowspan="2" sortable />
             <Column header="Profit" field="profit" :rowspan="2" sortable />
             <Column header="Open Orders" :colspan="2" />
-            <Column header="Quantite total achetee" field="totalAmount" :rowspan="2" sortable />
-            <Column header="Balance" field="balance" :rowspan="2" sortable />
+            
             <Column header="Strategy" field="strat" :rowspan="2" sortable />
             <Column header="Ratio" field="ratioShad" :rowspan="2" sortable />
             <Column header="Recup Shad" field="recupShad" :rowspan="2" sortable />
@@ -116,8 +118,16 @@
         <Column field="averageEntryPrice"></Column>
         <Column field="totalBuy"></Column>
         <Column field="totalSell"></Column>
+        <Column field="totalAmount"></Column>
+        <Column field="balance"></Column>
 
-        <Column field="maxExposition"></Column>
+        <Column field="maxExposition" :rowspan="2" sortable>
+          <template #body="slotProps">
+            <input type="text" v-model="slotProps.data.maxExposition"
+              @input="updateMaxWanted(slotProps.data, $event.target.value)"
+              @blur="updateMaxWanted(slotProps.data, $event.target.value)" />
+          </template>
+        </Column>
         <Column field="percentageDifference">
           <template #body="slotProps">
             <span :class="{
@@ -146,9 +156,16 @@
         </Column>
         <Column field="nbOpenBuyOrders"></Column>
         <Column field="nbOpenSellOrders"></Column>
-        <Column field="totalAmount"></Column>
-        <Column field="balance"></Column>
-        <Column field="strat"></Column>
+        
+        <Column field="strat">
+          <template #body="slotProps">
+            <select v-model="slotProps.data.strat"
+              @change="updateRowByStratChange(slotProps.data, $event.target.value)">
+              <option value=""></option>
+              <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">{{ strategy }}</option>
+            </select>
+          </template>
+        </Column>
         <Column field="ratioShad"></Column>
         <Column field="recupShad"></Column>
         <Column field="percentToNextTp">
@@ -243,8 +260,11 @@
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex';
 import { FilterMatchMode } from 'primevue/api'
-import { getAllCalculs } from '../js/calcul.js'
 import MySellButton from './MySellButton.vue'
+import { strategies } from '../js/strategies.js';
+import { getAllCalculs } from '../js/calcul.js'
+
+
 //import Overlay from './ShadOverlay.vue'
 
 import {
@@ -252,12 +272,13 @@ import {
 } from '../store/storeconstants';
 
 const store = useStore();
+const strategiesList = ref(strategies);
 
 const selectedAssets = ref([])
 const balances = ref([])
 const strats = ref([])
- 
-const itemsPerPage = ref(10)
+
+const itemsPerPage = ref(50)
 const showOverlay = ref(false)
 const selectedAsset = ref()
 const allRows = ref()
@@ -269,6 +290,8 @@ const BINANCE_THRESHOLD = 3 // 300%
 
 const HTX_EXCHANGE_ID = 'htx'
 const HTX_THRESHOLD = 10 // 1000%
+
+const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
 
 const sortedBalances = computed(() => {
   if (balances.value && balances.value.length > 0) {
@@ -283,15 +306,10 @@ const sortedBalances = computed(() => {
 })
 
 const items = computed(() => {
-  console.log('strats.value', strats.value);
-  console.log('sortedBalances', sortedBalances);
   if (strats.value && strats.value.length > 0) {
-    console.log('item computed strat > 0')
     const calculatedItems = sortedBalances.value.map((item) => {
-      console.log('calculatedItems item', item);
       return getAllCalculs(item);
     });
-    console.log('calculatedItems', calculatedItems);
     return calculatedItems;
   } else {
     return [];
@@ -299,22 +317,12 @@ const items = computed(() => {
 })
 
 onMounted(async () => {
-  console.log('onMounted1');
-
   try {
-    // Utilisez votre action FETCH_DATA pour récupérer les données nécessaires depuis le store Vuex
-    console.log('onMounted1 try')
-
     await store.dispatch('calcul/' + FETCH_DATA);
-
     balances.value = await store.getters['calcul/' + GET_BALANCES];
     strats.value = await store.getters['calcul/' + GET_STRATS];
-
-    console.log('onMounted2')
-
   } catch (e) {
     console.error("Une erreur s'est produite lors de la récupération des données :", e)
-    // Affichez un message d'erreur à l'utilisateur si nécessaire
   }
 })
 
@@ -391,6 +399,39 @@ function countConsecutivePairs(status) {
   }
   return consecutivePairs
 }
+
+function updateRowByStratChange(data, assetStrat) {
+  const rowIndex = items.value.findIndex((item) => item.asset === data.asset);
+  const row = items.value[rowIndex];
+
+  if (rowIndex !== -1) {
+    console.log('index', rowIndex)
+    const updatedItem = getAllCalculs({ symbol: row.asset, platform: row.exchangeId, balance: row.balance, assetStrat });
+    items.value.splice(rowIndex, 1, updatedItem);
+  }
+}
+
+function updateMaxWanted(data, newValue) {
+  // Validate the new value (optional)
+  if (isNaN(newValue) || newValue < 0) {
+    console.warn('Invalid maxExposition value:', newValue);
+    return;
+  }
+
+  const rowIndex = items.value.findIndex((item) => item.asset === data.asset);
+  const row = items.value[rowIndex];
+
+  if (rowIndex !== -1) {
+    const updatedItem = getAllCalculs({
+      symbol: row.asset,
+      platform: row.exchangeId,
+      balance: row.balance,
+      assetExpo: newValue, // Update the value here
+    });
+    items.value.splice(rowIndex, 1, updatedItem);
+  }
+}
+
 </script>
 
 <style scoped>
@@ -427,12 +468,10 @@ p {
 /* Couleur verte */
 .text-green-500 {
   color: #10b981;
-  /* Vous pouvez ajuster cette couleur selon vos préférences */
 }
 
 /* Couleur rouge */
 .text-red-500 {
   color: #ef4444;
-  /* Vous pouvez ajuster cette couleur selon vos préférences */
 }
 </style>
