@@ -1,18 +1,20 @@
 // src/controllers/ordersController.js
 const ccxt = require("ccxt");
 const {
-  saveLastUpdateToMongoDB,
-  handleErrorResponse,
-  getSymbolForExchange,
-  getDataFromCollection,
-} = require("../services/utils.js");
-const {
   createExchangeInstance,
   createExchangeInstanceWithReq,
-  getData,
+  getSymbolForExchange,
+} = require("../utils/exchangeUtil.js");
+const { handleErrorResponse } = require("../utils/errorUtil.js");
+const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
+const {
+  saveLastUpdateToMongoDB,
   deleteAndSaveData,
-} = require("../services/utils.js");
+} = require("../utils/mongodbUtil.js");
+
 const { mapOrders } = require("../services/mapping.js");
+
+const {errorLogger, infoLogger}  = require("../utils/loggerUtil.js");
 
 /**
  * Retrieves the last recorded balance from the database.
@@ -51,17 +53,22 @@ async function getOrders(req, res) {
  * @returns {Object} - The last recorded orders.
  */
 async function getSavedOrders() {
+  console.log("getSavedOrders");
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
 
   try {
     console.log(
       `Retrieving active orders from MongoDB collection: ${collection}`
     );
-    const orders = await getDataFromCollection(req, res, collection);
-
-    console.log(`Retrieved ${orders.length} active orders`);
+    const orders = await getDataFromCollection(collection);
+    console.log("Retrieved saved orders from the database.");
+    infoLogger.info("Retrieved saved orders from the database.");
+    return orders;
   } catch (error) {
-    console.error(`Error retrieving active orders from MongoDB:`, error);
+    console.log("Failed to get saved orders", { error: error.message });
+
+    errorLogger.error("Failed to get saved orders", { error: error.message });
+    throw error;
   }
 }
 
@@ -311,5 +318,5 @@ module.exports = {
   deleteOrder,
   createBunchOrders,
   cancelAllOrders,
-  cancelAllSellOrders
+  cancelAllSellOrders,
 };

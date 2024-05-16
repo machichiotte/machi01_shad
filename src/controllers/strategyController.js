@@ -1,10 +1,7 @@
 // src/controllers/strategyController.js
-const {
-  getData,
-  saveLastUpdateToMongoDB,
-  getDataFromCollection,
-} = require("../services/utils.js");
-const { deleteAllDataMDB, saveData } = require("../services/mongodb.js");
+const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
+const { deleteAllDataMDB, saveData } = require("../services/mongodbService.js");
+const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
 
 async function getStrat(req, res) {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
@@ -13,7 +10,14 @@ async function getStrat(req, res) {
 
 async function getSavedStrat() {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
-  await getDataFromCollection(collection);
+  try {
+    const strat = await getDataFromCollection(collection);
+    infoLogger.info("Retrieved saved strat from the database.");
+    return strat;
+  } catch (error) {
+    errorLogger.error("Failed to get saved strat", { error: error.message });
+    throw error;
+  }
 }
 
 async function updateStrat(req, res) {

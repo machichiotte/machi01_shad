@@ -16,11 +16,11 @@ const {
   getAllDataMDB,
   updateDataMDB,
   deleteAllDataMDB,
-} = require('../src/services/mongodb.js');
+} = require('../src/services/mongodbService.js');
 const { mapMarkets } = require('../src/services/mapping.js');
 const ccxt = require('ccxt');
 
-jest.mock('../src/services/mongodb.js');
+jest.mock('../src/services/mongodbService.js');
 jest.mock('../src/services/mapping.js');
 jest.mock('ccxt');
 

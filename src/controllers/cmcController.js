@@ -1,12 +1,11 @@
 // src/controllers/cmcController.js
 
-const {
-  getData,
-  saveLastUpdateToMongoDB,
-  handleErrorResponse,
-  getDataFromCollection,
-} = require("../services/utils.js");
-const { deleteAllDataMDB, saveData } = require("../services/mongodb.js");
+const { handleErrorResponse } = require("../utils/errorUtil.js");
+const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
+const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
+const { deleteAllDataMDB, saveData } = require("../services/mongodbService.js");
+const {errorLogger, infoLogger}  = require("../utils/loggerUtil.js");
+const { fetchCmcData } = require("../services/cmcService.js");
 
 /**
  * Retrieves the latest CoinMarketCap data from the database.
@@ -15,7 +14,13 @@ const { deleteAllDataMDB, saveData } = require("../services/mongodb.js");
  */
 async function getCmc(req, res) {
   const collection = process.env.MONGODB_COLLECTION_CMC;
-  await getData(req, res, collection);
+  try {
+    await getData(req, res, collection);
+    infoLogger.info("Successfully retrieved CoinMarketCap data from the database.");
+  } catch (error) {
+    errorLogger.error(`Error in getCmc: ${error.message}`);
+    handleErrorResponse(res, error, "getCmc");
+  }
 }
 
 /**
@@ -23,44 +28,14 @@ async function getCmc(req, res) {
  */
 async function getSavedCmc() {
   const collection = process.env.MONGODB_COLLECTION_CMC;
-  await getDataFromCollection(collection);
-}
-
-/**
- * Fetches the latest CoinMarketCap data from the CoinMarketCap API.
- * @returns {Promise<Array>} - A promise resolved with the fetched CoinMarketCap data.
- */
-async function fetchCmcData() {
-  const API_KEY = process.env.CMC_APIKEY;
-  const limit = 5000;
-  const baseStart = 1;
-  const convert = "USD";
-
-  let start = baseStart;
-  const allData = [];
-
-  while (true) {
-    const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=${start}&limit=${limit}&convert=${convert}`;
-
-    const response = await fetch(URL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CMC_PRO_API_KEY": API_KEY,
-      },
-    });
-
-    const data = await response.json();
-
-    if (data.data.length === 0) {
-      break; // No additional data, stop the loop
-    }
-
-    allData.push(...data.data);
-    start += limit;
+  try {
+    const data = await getDataFromCollection(collection);
+    infoLogger.info("Successfully retrieved saved CoinMarketCap data.");
+    return data;
+  } catch (error) {
+    errorLogger.error(`Error in getSavedCmc: ${error.message}`);
+    throw error;
   }
-
-  return allData;
 }
 
 /**
@@ -73,15 +48,22 @@ async function updateCmcDataInDatabase(cmcData, res) {
   try {
     const deleteResult = await deleteAllDataMDB(collection);
     const saveResult = await saveData(cmcData, collection);
-    saveLastUpdateToMongoDB(process.env.TYPE_CMC, "");
+    await saveLastUpdateToMongoDB(process.env.TYPE_CMC, "");
 
     res.status(200).json({
       data: cmcData,
-      deleteResult: deleteResult,
-      saveResult: saveResult,
+      deleteResult,
+      saveResult,
+      totalCount: cmcData.length,
+    });
+
+    infoLogger.info("Successfully updated CoinMarketCap data in the database.", {
+      deleteResult,
+      saveResult,
       totalCount: cmcData.length,
     });
   } catch (error) {
+    errorLogger.error(`Error in updateCmcDataInDatabase: ${error.message}`);
     handleErrorResponse(res, error, "updateCmcDataInDatabase");
   }
 }
@@ -95,7 +77,10 @@ async function updateCmc(req, res) {
   try {
     const cmcData = await fetchCmcData();
     await updateCmcDataInDatabase(cmcData, res);
+
+    infoLogger.info("Successfully updated CoinMarketCap data via API.");
   } catch (error) {
+    errorLogger.error(`Error in updateCmc: ${error.message}`);
     handleErrorResponse(res, error, "updateCmc");
   }
 }

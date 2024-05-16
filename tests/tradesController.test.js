@@ -14,7 +14,7 @@ const {
   const { mapTrades } = require('../src/services/mapping.js');
   
   jest.mock('../src/services/utils.js');
-  jest.mock('../src/services/mongodb.js');
+  jest.mock('../src/services/mongodbService.js');
   jest.mock('../src/services/mapping.js');
   
   describe('Trades Controller Tests', () => {

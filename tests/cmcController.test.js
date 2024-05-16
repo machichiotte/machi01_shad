@@ -2,11 +2,11 @@
 const cmcController = require('../src/controllers/cmcController');
 
 import { getData, saveLastUpdateToMongoDB } from '../src/services/utils.js';
-import { deleteAllDataMDB, saveData } from '../src/services/mongodb.js';
+import { deleteAllDataMDB, saveData } from '../src/services/mongodbService.js';
 
 // Import mocking tools
 jest.mock('../src/services/utils.js');
-jest.mock('../src/services/mongodb.js');
+jest.mock('../src/services/mongodbService.js');
 
 global.fetch = jest.fn();
 

@@ -1,6 +1,7 @@
+// src/services/authService.js
 const bcrypt = require("bcrypt"); // For password hashing
 
-const { saveData, getOne } = require("./mongodb");
+const { saveData, getOne } = require("./mongodbService");
 
 async function createUserDBService(userDetails) {
   try {

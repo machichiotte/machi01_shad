@@ -1,25 +1,79 @@
 // src/services/mapping.js
+
+const stableCoins = [
+  "USDT",
+  "USDC",
+  "DAI",
+  "FDUSD",
+  "USDD",
+  "TUSD",
+  "FRAX",
+  "PYUSD",
+  "USDJ",
+  "USDP",
+  "GUSD",
+  "LUSD",
+];
+const cryptoMajorPairs = ["BTC", "ETH"];
+
+function isStableCoin(symbol) {
+  return stableCoins.includes(symbol.toUpperCase());
+}
+
+function isMajorCryptoPair(symbol) {
+  return cryptoMajorPairs.includes(symbol.toUpperCase());
+}
+
+// Utility function to get the value in USDT
+function getTotalUSDT(symbol, cost, conversionRates = {}) {
+  const [baseAsset, quoteAsset] = symbol.split("/");
+
+  if (isStableCoin(quoteAsset)) {
+    return parseFloat(cost);
+  }
+
+  if (quoteAsset in conversionRates) {
+    return parseFloat(cost) * conversionRates[quoteAsset];
+  }
+
+  return null;
+}
+
+function mapBalanceCommon(symbol, balance, available, platform) {
+  return {
+    symbol,
+    balance: parseFloat(balance),
+    available: parseFloat(available),
+    platform,
+  };
+}
+
 function mapBalance(platform, data) {
-  //console.log('map balance :: ' + JSON.stringify(data));
   switch (platform) {
     case "binance":
       return data.info.balances
-        .filter((item) => parseFloat(item.free) > 0 || parseFloat(item.locked))
-        .map((item) => ({
-          symbol: item.asset,
-          balance: parseFloat(item.free) + parseFloat(item.locked),
-          available: item.free,
-          platform: platform,
-        }));
+        .filter(
+          (item) => parseFloat(item.free) > 0 || parseFloat(item.locked) > 0
+        )
+        .map((item) =>
+          mapBalanceCommon(
+            item.asset,
+            parseFloat(item.free) + parseFloat(item.locked),
+            item.free,
+            platform
+          )
+        );
     case "kucoin":
       return data.info.data
         .filter((item) => parseFloat(item.balance) > 0)
-        .map((item) => ({
-          symbol: item.currency,
-          balance: item.balance,
-          available: item.available,
-          platform: platform,
-        }));
+        .map((item) =>
+          mapBalanceCommon(
+            item.currency,
+            item.balance,
+            item.available,
+            platform
+          )
+        );
     case "htx":
       return Object.entries(data)
         .filter(
@@ -30,208 +84,98 @@ function mapBalance(platform, data) {
             key !== "total" &&
             value.total > 0
         )
-        .map(([key, value]) => ({
-          symbol: key.toUpperCase(),
-          balance: value.total,
-          available: value.free,
-          platform: platform,
-        }));
+        .map(([key, value]) =>
+          mapBalanceCommon(key.toUpperCase(), value.total, value.free, platform)
+        );
     case "okx":
       return data.info.data[0].details
         .filter((item) => parseFloat(item.cashBal) > 0)
-        .map((item) => ({
-          symbol: item.ccy,
-          balance: item.cashBal,
-          available: item.availBal,
-          platform: platform,
-        }));
+        .map((item) =>
+          mapBalanceCommon(item.ccy, item.cashBal, item.availBal, platform)
+        );
     case "gateio":
       return data.info
         .filter(
-          (item) => parseFloat(item.available) > 0 || parseFloat(item.locked)
+          (item) =>
+            parseFloat(item.available) > 0 || parseFloat(item.locked) > 0
         )
-        .map((item) => ({
-          symbol: item.currency,
-          balance: parseFloat(item.available) + parseFloat(item.locked),
-          available: item.available,
-          platform: platform,
-        }));
+        .map((item) =>
+          mapBalanceCommon(
+            item.currency,
+            parseFloat(item.available) + parseFloat(item.locked),
+            item.available,
+            platform
+          )
+        );
+    default:
+      return [];
   }
 }
 
-// Fonction utilitaire pour obtenir la valeur de totalUSDT
-function getTotalUSDT(symbol, cost) {
-  const stableCoins = ["USDT", "USDC", "DAI", "FDUSD", "USDD", "TUSD", "FRAX", "PYUSD", "USDJ", "USDP", "GUSD", "LUSD"];
+function mapTradeCommon(item, platform, conversionRates = {}) {
+  const [baseAsset, quoteAsset] = item.symbol.split("/");
+  const totalUSDT = getTotalUSDT(item.symbol, item.cost, conversionRates);
 
-  // Vérifier si altB est un stable coin adossé au dollar
-  const isStableCoin = stableCoins.includes(symbol.split("/")[1].toUpperCase());
-
-  // Si altB est un stable coin, renvoyer la valeur de cost, sinon renvoyer null
-  return isStableCoin ? parseFloat(cost) : null;
-
-  //TODO rajouter les cas ou le second symbol est BTC ou ETH ( faire appel a la base de donnee pour recuperer la valeur de btc au timestamp / date donnee)
+  return {
+    altA: baseAsset,
+    altB: quoteAsset,
+    pair: item.symbol,
+    timestamp: item.timestamp,
+    type: item.side,
+    price: parseFloat(item.price),
+    amount: parseFloat(item.amount),
+    total: parseFloat(item.cost),
+    fee: parseFloat(item.fee.cost),
+    feecoin: item.fee.currency,
+    platform,
+    totalUSDT,
+  };
 }
 
-function mapBinanceTrades(data) {
-  return data.map((item) => {
-    console.log('binance trade item', item);
-    const splitSymbol = item.symbol.split("/"); 
-    const totalUSDT = getTotalUSDT(item.symbol, item.cost); 
-
-    return {
-      altA: splitSymbol[0], 
-      altB: splitSymbol[1], 
-      pair: item.symbol, 
-      timestamp: item.timestamp,
-      type: item.takerOrMaker,
-      type: item.side,
-      price: parseFloat(item.price), 
-      amount: parseFloat(item.amount), 
-      total: parseFloat(item.cost), 
-      fee: parseFloat(item.fee.cost), 
-      feecoin: item.fee.currency,
-      platform: "binance",
-      totalUSDT: totalUSDT, 
-    };
-  });
+function mapBinanceTrades(data, conversionRates = {}) {
+  return data.map((item) => mapTradeCommon(item, "binance", conversionRates));
 }
 
-// Fonction de mapping pour Kucoin
-function mapKucoinTrades(data) {
-  return data.map((item) => {
-    console.log('kucoin trade item', item);
-
-    const splitSymbol = item.symbol.split("/"); 
-    const totalUSDT = getTotalUSDT(item.symbol, item.cost); 
-
-    return {
-      altA: splitSymbol[0], 
-      altB: splitSymbol[1], 
-      timestamp: item.timestamp,
-      pair: item.symbol, 
-      type: item.side,
-      price: parseFloat(item.price), 
-      amount: parseFloat(item.amount), 
-      total: parseFloat(item.cost), 
-      fee: parseFloat(item.fee.cost), 
-      feecoin: item.fee.currency,
-      feeRate: item.fee.rate,
-      platform: "kucoin",
-      totalUSDT: totalUSDT, 
-    };
-  });
+function mapKucoinTrades(data, conversionRates = {}) {
+  return data.map((item) => mapTradeCommon(item, "kucoin", conversionRates));
 }
 
-// Fonction de mapping pour HTX
-function mapHtxTrades(data) {
-  return data.map((item) => {
-    console.log('htx trade item', item);
-
-    const splitSymbol = item.symbol.split("/"); 
-    const totalUSDT = getTotalUSDT(item.symbol, item.cost); 
-
-    return {
-      altA: splitSymbol[0], 
-      altB: splitSymbol[1], 
-      pair: item.symbol, 
-
-      timestamp: item.timestamp,
-      type: item.side,
-      price: parseFloat(item.price), 
-      amount: parseFloat(item.amount), 
-      total: parseFloat(item.cost), 
-      fee: parseFloat(item.fee.cost), 
-      feecoin: item.fee.currency,
-      feeRate: item.fee.rate,
-      platform: "htx",
-      totalUSDT: totalUSDT, 
-    };
-  });
+function mapHtxTrades(data, conversionRates = {}) {
+  return data.map((item) => mapTradeCommon(item, "htx", conversionRates));
 }
 
-function mapOkxTrades(data) {
-  //surement faux, il faudra modifier
-  return data.map((item) => {
-    console.log('okx trade item', item);
-
-    const splitSymbol = item.symbol.split("/"); 
-    const totalUSDT = getTotalUSDT(item.symbol, item.cost); 
-
-    return {
-      altA: splitSymbol[0], 
-      altB: splitSymbol[1], 
-      pair: item.symbol, 
-      timestamp: item.timestamp,
-      type: item.side,
-      price: parseFloat(item.price), 
-      amount: parseFloat(item.amount), 
-      total: parseFloat(item.cost), 
-      fee: parseFloat(item.fee.cost), 
-      feecoin: item.fee.currency,
-      feeRate: item.fee.rate,
-      platform: "htx",
-      totalUSDT: totalUSDT, 
-    };
-  });
-}
-function mapGateioTrades(data) {
-  //surement faux, il faudra modifier
-
-  return data.map((item) => {
-    console.log('gateio trade item', item);
-
-    const splitSymbol = item.symbol.split("/"); 
-    const totalUSDT = getTotalUSDT(item.symbol, item.cost); 
-
-    return {
-      altA: splitSymbol[0], 
-      altB: splitSymbol[1], 
-      timestamp: item.timestamp,
-      type: item.side,
-      price: parseFloat(item.price), 
-      amount: parseFloat(item.amount), 
-      total: parseFloat(item.cost), 
-      fee: parseFloat(item.fee.cost), 
-      feecoin: item.fee.currency,
-      feeRate: item.fee.rate,
-      platform: "htx",
-      totalUSDT: totalUSDT, 
-    };
-  });
+function mapOkxTrades(data, conversionRates = {}) {
+  return data.info.data[0].details.map((item) =>
+    mapTradeCommon(item, "okx", conversionRates)
+  );
 }
 
-function mapTrades(platform, data) {
+function mapGateioTrades(data, conversionRates = {}) {
+  return data.map((item) => mapTradeCommon(item, "gateio", conversionRates));
+}
+
+function mapTrades(platform, data, conversionRates = {}) {
   switch (platform) {
     case "binance":
-      return mapBinanceTrades(data);
+      return mapBinanceTrades(data, conversionRates);
     case "kucoin":
-      return mapKucoinTrades(data);
+      return mapKucoinTrades(data, conversionRates);
     case "htx":
-      return mapHtxTrades(data);
+      return mapHtxTrades(data, conversionRates);
     case "okx":
-      return mapOkxTrades(data);
+      return mapOkxTrades(data, conversionRates);
     case "gateio":
-      return mapGateioTrades(data);
+      return mapGateioTrades(data, conversionRates);
+    default:
+      return [];
   }
-}
-
-function mapTickers(data) {
-  return Object.keys(data).map((symbol) => {
-    const item = data[symbol];
-    return {
-      symbol: item.symbol,
-      timestamp: item.timestamp,
-      last: item.last,
-    };
-  });
 }
 
 function mapOrders(platform, data) {
-  // console.log('map active orders :: ' + JSON.stringify(data));
   return data.map((item) => ({
     oId: item.id,
     cId: item.clientOrderId,
-    platform: platform,
+    platform,
     symbol: item.symbol,
     type: item.type,
     side: item.side,
@@ -240,35 +184,35 @@ function mapOrders(platform, data) {
   }));
 }
 
+function mapTickers(data, platform) {
+  return Object.values(data).map((item) => ({
+    symbol: item.symbol,
+    timestamp: item.timestamp,
+    last: item.last,
+    platform,
+  }));
+}
+
 function mapMarkets(platform, data) {
-  // console.log('map load markets :: ' + JSON.stringify(data));
-
-  let objArray = [];
-
-  for (const symbol in data) {
-    const pairInfo = data[symbol];
-    console.log(`Informations pour la paire ${symbol} : `, pairInfo);
-
-    objArray.push({
-      symbol: pairInfo.id,
-      base: pairInfo.base,
-      quote: pairInfo.quote,
-      active: pairInfo.active,
-      type: pairInfo.type,
-      amountMin: pairInfo.limits.amount.min,
-      priceMin: pairInfo.limits.price ? pairInfo.limits.price.min : "N/A",
-      costMin: pairInfo.limits.cost ? pairInfo.limits.cost.min : "N/A",
-      taker: pairInfo.taker,
-      maker: pairInfo.maker,
-      precisionAmount: pairInfo.precision.amount,
-      precisionPrice: pairInfo.precision.price,
-      platform: platform,
-    });
-  }
-  const filteredArray = objArray.filter(
-    (item) => item.quote.endsWith("USDT") || item.quote.endsWith("BUSD")
-  );
-  return filteredArray;
+  return Object.values(data)
+    .filter(
+      (item) => item.quote.endsWith("USDT") || item.quote.endsWith("BUSD")
+    )
+    .map((item) => ({
+      symbol: item.id,
+      base: item.base,
+      quote: item.quote,
+      active: item.active,
+      type: item.type,
+      amountMin: item.limits.amount.min,
+      priceMin: item.limits.price ? item.limits.price.min : "N/A",
+      costMin: item.limits.cost ? item.limits.cost.min : "N/A",
+      taker: item.taker,
+      maker: item.maker,
+      precisionAmount: item.precision.amount,
+      precisionPrice: item.precision.price,
+      platform,
+    }));
 }
 
 function mapTradesAddedManually(data) {

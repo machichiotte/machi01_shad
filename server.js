@@ -1,6 +1,6 @@
 // server.js
 const dotenv = require('dotenv');
-const { connectToMongoDB } = require('./src/services/mongodb.js');
+const { connectToMongoDB } = require('./src/services/mongodbService.js');
 const { app, startServer } = require('./src/services/requestHandlers.js');
 const { initializeCronTasks } = require('./src/services/cronTasks.js');
 

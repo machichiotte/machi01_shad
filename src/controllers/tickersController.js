@@ -1,13 +1,11 @@
 // src/controllers/tickersController.js
-
+const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
+const { createExchangeInstance } = require("../utils/exchangeUtil.js");
+const { handleErrorResponse } = require("../utils/errorUtil.js");
 const {
-  createExchangeInstance,
   saveLastUpdateToMongoDB,
-  getData,
   deleteAndSaveObject,
-  handleErrorResponse,
-  getDataFromCollection,
-} = require("../services/utils.js");
+} = require("../utils/mongodbUtil.js");
 const { mapTickers } = require("../services/mapping.js");
 
 /**
@@ -30,8 +28,11 @@ async function getAllTickers(req, res) {
  */
 async function getSavedAllTickers() {
   try {
+    console.log('getSavedAllTickersgetSavedAllTickers')
     const collection = process.env.MONGODB_COLLECTION_TICKERS;
     const tickersData = await getDataFromCollection(collection);
+    console.log('getSavedAllTickersgetSavedAllTickers 33333')
+
     return tickersData;
   } catch (error) {
     throw new Error("Failed to get saved tickers: " + error.message);
@@ -69,30 +70,16 @@ async function getSavedAllTickersByExchange(exchangeId) {
     const collection = process.env.MONGODB_COLLECTION_TICKERS;
     const tickersData = await getDataFromCollection(collection);
 
-    console.log("tick data", tickersData);
-    console.log("tick exchangeId", exchangeId);
-    console.log("tick data[exchangeId]", tickersData[0][exchangeId]);
-
-    const exchangeData = tickersData.find((data) =>
-      data.hasOwnProperty(exchangeId)
+    const exchangeData = tickersData.filter(
+      (obj) => obj.platform === exchangeId
     );
+
     if (exchangeData) {
-      // Retourner les données pour l'échange spécifié
-      console.log("lololololo", exchangeData[exchangeId]);
-      return exchangeData[exchangeId];
+      return exchangeData;
     } else {
-      throw new Error("Exchange not found");
+      console.log("Exchange not found");
+      return [];
     }
-
-    /*
-    console.log('tick exchangeId', exchangeId)
-
-    if (tickersData && tickersData[exchangeId]) {
-      console.log('ticktickticktick')
-      return tickersData[exchangeId];
-    } else {
-      throw new Error("Exchange not found");
-    }*/
   } catch (error) {
     throw new Error(
       "Failed to get saved tickers by exchange: " + error.message

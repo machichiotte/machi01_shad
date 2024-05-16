@@ -1,17 +1,36 @@
 // src/controllers/tradesController.js
-const { saveData, getAllDataMDB } = require("../services/mongodb.js");
+const { saveData } = require("../services/mongodbService.js");
 const {
-  createExchangeInstance,
-  getData,
   deleteAndSaveData,
   saveLastUpdateToMongoDB,
-  getDataFromCollection,
-} = require("../services/utils.js");
+} = require("../utils/mongodbUtil.js");
+const { createExchangeInstance } = require("../utils/exchangeUtil.js");
+const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
+
 const { mapTrades } = require("../services/mapping.js");
+const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
 
 async function getTrades(req, res) {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
   await getData(req, res, collection);
+}
+
+/**
+ * Retrieves the last recorded trades from the database.
+ * @returns {Object} - The last recorded orders.
+ */
+async function getSavedTrades() {
+  const collection = process.env.MONGODB_COLLECTION_TRADES;
+
+  try {
+    console.log(`Retrieving trades from MongoDB collection: ${collection}`);
+    const orders = await getDataFromCollection(collection);
+    infoLogger.info("Retrieved saved trades from the database.");
+    return orders;
+  } catch (error) {
+    errorLogger.error("Failed to get saved trades", { error: error.message });
+    throw error;
+  }
 }
 
 async function fetchTradesInDatabase() {
@@ -178,6 +197,7 @@ async function fetchLastTrades(exchangeId, symbol) {
 
 module.exports = {
   getTrades,
+  getSavedTrades,
   addTradesManually,
   updateTrades,
   fetchLastTrades,
