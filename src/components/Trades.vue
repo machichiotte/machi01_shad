@@ -41,7 +41,7 @@ import { tradesColumns } from '../js/columns.js'
 import { FilterMatchMode } from 'primevue/api'
 import TradesForm from "@/components/TradesForm.vue";
 import { useStore } from 'vuex'
-import { FETCH_TRADES, GET_TRADES } from '../store/storeconstants'
+import { FETCH_BALANCES, FETCH_TRADES, GET_BALANCES, GET_TRADES } from '../store/storeconstants'
 
 const store = useStore()
 
@@ -66,7 +66,19 @@ const getTradesData = async () => {
   }
 }
 
+const getBalancesData = async () => {
+  try {
+    // Appel de l'action Vuex pour récupérer les balances
+    await store.dispatch('calcul/' + FETCH_BALANCES)
+    items.value = store.getters['calcul/' + GET_BALANCES];
+  } catch (error) {
+    console.error("Une erreur s'est produite lors de la récupération des données des balances :", error)
+    // Affichez un message d'erreur à l'utilisateur si nécessaire
+  }
+}
+
 onMounted(async () => {
+  await getBalancesData()
   await getTradesData()
 })
 
@@ -74,7 +86,7 @@ onMounted(async () => {
 watchEffect(() => {
   console.log('valueee', items.value)
   if (Array.isArray(items.value)) {
-    rows.value = items.value.map((item) => {
+    rows.value = items.value.map((item) => {  
       let date;
       // Vérifier si la date est une chaîne de caractères
       if (typeof item['date'] === 'string') {

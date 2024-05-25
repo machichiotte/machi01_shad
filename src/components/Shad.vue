@@ -262,8 +262,7 @@ import { useStore } from 'vuex';
 import { FilterMatchMode } from 'primevue/api'
 import MySellButton from './MySellButton.vue'
 import { strategies } from '../js/strategies.js';
-import { getAllCalculs } from '../js/calcul.js'
-
+import { getAllCalculs } from '../js/metrics/global.js'
 
 //import Overlay from './ShadOverlay.vue'
 

@@ -98,7 +98,7 @@
 </template>
   
 <script>
-import { getTradesHistory, getDataBTC, getDataETH } from '../js/calcul.js';
+import { getTradesHistory, getDataBTC, getDataETH } from '../js/metrics/global.js';
 import ShadOverlayGraph from './ShadOverlayGraph.vue';
 import NextSellsTable from './NextSellsTable.vue';
 import OrdersTable from './OrdersTable.vue';
@@ -550,4 +550,3 @@ export default {
     color: red;
 }
 </style>
-  
