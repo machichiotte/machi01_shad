@@ -116,6 +116,9 @@ function mapTradeCommon(item, platform, conversionRates = {}) {
   const [baseAsset, quoteAsset] = item.symbol.split("/");
   const totalUSDT = getTotalUSDT(item.symbol, item.cost, conversionRates);
 
+  const feeCost = item.fee ? parseFloat(item.fee.cost) : 0;
+  const feeCurrency = item.fee ? item.fee.currency : "N/A";
+
   return {
     altA: baseAsset,
     altB: quoteAsset,
@@ -125,8 +128,8 @@ function mapTradeCommon(item, platform, conversionRates = {}) {
     price: parseFloat(item.price),
     amount: parseFloat(item.amount),
     total: parseFloat(item.cost),
-    fee: parseFloat(item.fee.cost),
-    feecoin: item.fee.currency,
+    fee: feeCost,
+    feecoin: feeCurrency,
     platform,
     totalUSDT,
   };

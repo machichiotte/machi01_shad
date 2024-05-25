@@ -4,7 +4,7 @@ const nodemailer = require("nodemailer");
 
 const config = require("./config");
 
-const { getAllCalculs } = require("../services/shadMetrics.js");
+const { getAllCalculs } = require("../services/metrics/global.js");
 
 const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
 
@@ -265,11 +265,50 @@ async function getOrdersByPlatform(exchangeId) {
 }
 
 async function getTickersByPlatform(exchangeId) {
-  console.log("getTickersByPlatformgetTickersByPlatform");
   const data = await getSavedAllTickers();
-  console.log("getTickersByPlatformgetTickersByPlatform" , data);
 
   return data.filter((obj) => obj.platform === exchangeId);
+}
+
+//TODOOOOO
+async function calculateAllMetrics() {
+  console.log("calculateMetrics");
+  // je pense quon a ici recuperer la derniere balance, les trades sont a jour
+  // il faut maintenant recalculer certains element ou tous si le fichier ne possede pas les donnees,
+  // on possede les differences donc il est simple de savoir pour quels assets sont necessaires les calculs
+
+  // on a besoin des dernieres balances de toute facon puisque cest un element que je veux voir apparaitre dans mon tableau
+  const lastCmc = await getSavedCmc();
+  const lastStrategies = await getSavedStrat();
+
+  const lastBalance = await getSavedBalance();
+  const lastTrades = await getSavedTrades();
+  const lastOpenOrders = await getSavedOrders();
+  const lastTickers = await getSavedAllTickers();
+
+  for (const balance of lastBalance) {
+    const assetSymbol = balance.symbol;
+    const assetPlatform = balance.platform;
+
+    const filteredCmc = lastCmc.find((cmc) => cmc.symbol === assetSymbol);
+    const filteredTrades = lastTrades.filter((trade) => trade.altA === assetSymbol);
+    const filteredOpenOrders = lastOpenOrders.filter((order) => order.symbol === assetSymbol + '/USDT' || order.symbol === assetSymbol + '/USDC' || order.symbol === assetSymbol + '/BTC');
+    const filteredStrategy = lastStrategies[assetSymbol][assetPlatform];
+    const filteredTickers = lastTickers.filter(
+      (ticker) => ticker.symbol.startsWith(assetSymbol + "/") && ticker.platform === assetPlatform
+    );
+    const values = getAllCalculs(
+      assetSymbol,
+      assetPlatform,
+      filteredCmc,
+      balance,
+      filteredTrades,
+      filteredOpenOrders,
+      filteredStrategy,
+      filteredTickers
+    );
+    // S
+  }
 }
 
 async function calculateMetrics(differences, exchangeId) {
