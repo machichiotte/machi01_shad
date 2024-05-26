@@ -4,11 +4,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { bunchOrders, cancelAllOrders, cancelAllSellOrders } from '../js/orders.js'
 import { loadingSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
-
-const model = ref(null)
 
 const props = defineProps({
   selectedAssets: Object // Define the prop type as object
@@ -28,11 +25,11 @@ const iAmClicked = async () => {
       }
       return null; // Return null for rows without cancellation
     });*/
-
+    
   const cancellationPromises = selectedRows.map(async (row) => {
     if (row.nbOpenSellOrders > 0) {
       console.log('cancelasset', row.asset)
-      const cancel = await cancelAllSellOrders(row.exchangeId, row.asset);
+      const cancel = await cancelAllSellOrders(row.exchangeId, row.asset );
       console.log('cancan', cancel);
       return cancel.status === 200 ? row.asset : null; // Return asset only if cancellation successful
     }

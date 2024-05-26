@@ -4,8 +4,10 @@
     <div class="card">
       <Toolbar class="mb-4">
         <template #start>
-          <MySellButton :selected-assets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
+          <MySellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
             :model="allRows" />
+          <MyBuyButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
+            :model="allRows" /> 
 
           <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected"
             :disabled="!selectedAssets || !selectedAssets.length" />
@@ -63,7 +65,7 @@
             <Column header="Wallet" field="currentPossession" :rowspan="2" sortable />
             <Column header="Profit" field="profit" :rowspan="2" sortable />
             <Column header="Open Orders" :colspan="2" />
-            
+
             <Column header="Strategy" field="strat" :rowspan="2" sortable />
             <Column header="Ratio" field="ratioShad" :rowspan="2" sortable />
             <Column header="Recup Shad" field="recupShad" :rowspan="2" sortable />
@@ -156,7 +158,7 @@
         </Column>
         <Column field="nbOpenBuyOrders"></Column>
         <Column field="nbOpenSellOrders"></Column>
-        
+
         <Column field="strat">
           <template #body="slotProps">
             <select v-model="slotProps.data.strat"
@@ -261,6 +263,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex';
 import { FilterMatchMode } from 'primevue/api'
 import MySellButton from './MySellButton.vue'
+import MyBuyButton from './MyBuyButton.vue'
 import { strategies } from '../js/strategies.js';
 import { getAllCalculs } from '../js/metrics/global.js'
 

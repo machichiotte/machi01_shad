@@ -181,8 +181,8 @@ export default {
     },
     methods: {
         updateNextSells() {
-            // Utilisez votre fonction calculateAmountsAndPrices pour mettre à jour this.nextSells
-            //this.nextSells = calculateAmountsAndPrices(/* ... */);
+            // Utilisez votre fonction calculateAmountsAndPricesForShad pour mettre à jour this.nextSells
+            //this.nextSells = calculateAmountsAndPricesForShad(/* ... */);
         },
         getOrdersBySide(orders, side) {
             const tradingPairPrefix = this.selectedAsset.asset + '/';
