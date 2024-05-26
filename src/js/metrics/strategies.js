@@ -1,41 +1,41 @@
 // src/js/metrics/strategies.js
-import { GET_STRATS } from "@/store/storeconstants";
+import { GET_STRATS } from '@/store/storeconstants'
 import store from '@/store/store.js'
 
 const ERROR_ALLOWED = 0.05
-const MAX_EXPO = 10000; 
+const MAX_EXPO = 10000
 
 function getStrat(exchangeId, asset) {
-  const strats = store.getters['calcul/' + GET_STRATS];
+  const strats = store.getters['calcul/' + GET_STRATS]
 
   // Rechercher la stratégie correspondante à l'actif donné
-  const filteredStrat = strats.find((strat) => strat.asset === asset) || {};
+  const filteredStrat = strats.find((strat) => strat.asset === asset) || {}
 
-  console.log("filtered", exchangeId + " " + asset + " " + filteredStrat);
+  console.log('filtered', exchangeId + ' ' + asset + ' ' + filteredStrat)
   // Déterminer la stratégie et l'exposition maximale
-  const strat = filteredStrat.strategies?.[exchangeId] || "No strategy";
-  const stratExpo = filteredStrat.maxExposure?.[exchangeId] || MAX_EXPO;
+  const strat = filteredStrat.strategies?.[exchangeId] || 'No strategy'
+  const stratExpo = filteredStrat.maxExposure?.[exchangeId] || MAX_EXPO
 
-  return { strat, stratExpo };
+  return { strat, stratExpo }
 }
 
 function getRatioShad(strat) {
   if (strat !== undefined) {
     switch (strat) {
-      case "Shad":
-        return 2;
-      case "Shad skip x2":
-        return 4;
-      case "Strategy 3":
-        return 8;
-      case "Strategy 4":
-        return 16;
+      case 'Shad':
+        return 2
+      case 'Shad skip x2':
+        return 4
+      case 'Strategy 3':
+        return 8
+      case 'Strategy 4':
+        return 16
       default:
-        return "8"; // 'NULL' ou une valeur par défaut de votre choix
+        return '8' // 'NULL' ou une valeur par défaut de votre choix
     }
   }
   // Gérez le cas où la structure n'est pas conforme à ce que vous attendez
-  return "/"; // 'NULL' ou une valeur par défaut de votre choix
+  return '/' // 'NULL' ou une valeur par défaut de votre choix
 }
 
 function getRecupShad(totalBuy, totalSell, maxExposition) {
@@ -75,7 +75,9 @@ function getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad) {
 
 function getRecupTpX(assetStrat, maxExposition, ratioShad) {
   const result = (maxExposition * ratioShad * 0.5).toFixed(2)
-  console.log(`Calculated result: ${result} (Potential for refinement based on strategy ${assetStrat})`)
+  console.log(
+    `Calculated result: ${result} (Potential for refinement based on strategy ${assetStrat})`
+  )
   return result
 }
 
@@ -130,54 +132,52 @@ function calculateRecups(item, totalBuy, totalSell) {
   }
 }
 
-function calculateAmountsAndPrices(
+function calculateAmountsAndPricesForShad(
   recupTp1,
   balance,
-  totalBuy,
   totalShad,
   recupTpX,
   averageEntryPrice,
   maxExposition
 ) {
-  const PERCENT_SELL_SHAD = 0.5;
+  const FACTOR_SELL_SHAD = 0.5
 
-  const parsedRecupTp1 = parseFloat(recupTp1);
-  const parsedBalance = parseFloat(balance);
-  const parsedTotalBuy = parseFloat(totalBuy);
-  const parsedRecupTpX = parseFloat(recupTpX);
-  const parsedAverageEntryPrice = parseFloat(averageEntryPrice);
+  const parsedRecupTp1 = parseFloat(recupTp1)
+  const parsedBalance = parseFloat(balance)
+  const parsedRecupTpX = parseFloat(recupTpX)
+  const parsedAverageEntryPrice = parseFloat(averageEntryPrice)
 
-  let amountTp1;
-  let priceTp1;
+  let amountTp1
+  let priceTp1
 
   if (totalShad > -1) {
-    amountTp1 = PERCENT_SELL_SHAD * (parsedRecupTp1/parsedRecupTpX) * parsedBalance;
-    priceTp1 = parsedRecupTp1 / parseFloat(amountTp1);
+    amountTp1 = FACTOR_SELL_SHAD * (parsedRecupTp1 / parsedRecupTpX) * parsedBalance
+    priceTp1 = parsedRecupTp1 / parseFloat(amountTp1)
   } else {
-    amountTp1 = parsedBalance - (maxExposition/parsedAverageEntryPrice);
-    priceTp1 = parsedAverageEntryPrice;
+    amountTp1 = parsedBalance - maxExposition / parsedAverageEntryPrice
+    priceTp1 = parsedAverageEntryPrice
   }
 
-  const { amount: amountTp2, price: priceTp2 } = calculateAmountAndPrice(
+  const { amount: amountTp2, price: priceTp2 } = calculateAmountAndPriceForShad(
     parsedRecupTpX,
     parsedBalance - amountTp1,
-    0.5
-  );
-  const { amount: amountTp3, price: priceTp3 } = calculateAmountAndPrice(
+    FACTOR_SELL_SHAD
+  )
+  const { amount: amountTp3, price: priceTp3 } = calculateAmountAndPriceForShad(
     parsedRecupTpX,
     parsedBalance - amountTp1 - amountTp2,
-    0.5
-  );
-  const { amount: amountTp4, price: priceTp4 } = calculateAmountAndPrice(
+    FACTOR_SELL_SHAD
+  )
+  const { amount: amountTp4, price: priceTp4 } = calculateAmountAndPriceForShad(
     parsedRecupTpX,
     parsedBalance - amountTp1 - amountTp2 - amountTp3,
-    0.5
-  );
-  const { amount: amountTp5, price: priceTp5 } = calculateAmountAndPrice(
+    FACTOR_SELL_SHAD
+  )
+  const { amount: amountTp5, price: priceTp5 } = calculateAmountAndPriceForShad(
     parsedRecupTpX,
     parsedBalance - amountTp1 - amountTp2 - amountTp3 - amountTp4,
-    0.5
-  );
+    FACTOR_SELL_SHAD
+  )
 
   return {
     amountTp1,
@@ -189,16 +189,22 @@ function calculateAmountsAndPrices(
     priceTp2,
     priceTp3,
     priceTp4,
-    priceTp5,
-  };
-  // }
+    priceTp5
+  }
 }
 
-function calculateAmountAndPrice(parsedRecup, parsedBalance, factor) {
-  const amount = factor * parsedBalance;
-  const price = parsedRecup / amount;
+function calculateAmountAndPriceForShad(parsedRecup, parsedBalance, factor) {
+  const amount = factor * parsedBalance
+  const price = parsedRecup / amount
 
-  return { amount, price };
+  return { amount, price }
 }
 
-export { getRecupTp1, getRecupTpX, getRecupShad, getDoneShad, calculateRecups, calculateAmountsAndPrices }
+export {
+  getRecupTp1,
+  getRecupTpX,
+  getRecupShad,
+  getDoneShad,
+  calculateRecups,
+  calculateAmountsAndPricesForShad
+}

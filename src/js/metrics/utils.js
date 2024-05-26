@@ -4,7 +4,7 @@ function getCurrentPossession(currentPrice, balance) {
   }
   
   function getPercentageDifference(newValue, oldValue) {
-    return ((newValue - oldValue) / oldValue) * 100
+    return ((newValue - oldValue) / oldValue)
   }
   
   function getStatus(

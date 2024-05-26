@@ -1,7 +1,7 @@
 // src/js/metrics/global.js
 import {
   calculateRecups,
-  calculateAmountsAndPrices
+  calculateAmountsAndPricesForShad
 } from './strategies.js'
 import { getCmcValues } from './cmc.js'
 import { getCurrentPossession, getPercentageDifference, getStatus } from './utils.js'
@@ -15,18 +15,19 @@ import {
   GET_TRADES
 } from '@/store/storeconstants'
 
-let cmc = store.getters['calcul/' + GET_CMC]
-let trades = store.getters['calcul/' + GET_TRADES]
-let strats = store.getters['calcul/' + GET_STRATS]
-let buyOrders = store.getters['calcul/' + GET_BUY_ORDERS]
-let sellOrders = store.getters['calcul/' + GET_SELL_ORDERS]
+function updateStoreGetters() {
+  return {
+    cmc: store.getters['calcul/' + GET_CMC],
+    trades: store.getters['calcul/' + GET_TRADES],
+    strats: store.getters['calcul/' + GET_STRATS],
+    buyOrders: store.getters['calcul/' + GET_BUY_ORDERS],
+    sellOrders: store.getters['calcul/' + GET_SELL_ORDERS]
+  }
+}
 
 function getAllCalculs(item) {
-  cmc = store.getters['calcul/' + GET_CMC]
-  trades = store.getters['calcul/' + GET_TRADES]
-  strats = store.getters['calcul/' + GET_STRATS]
-  buyOrders = store.getters['calcul/' + GET_BUY_ORDERS]
-  sellOrders = store.getters['calcul/' + GET_SELL_ORDERS]
+
+  const { cmc, trades, strats, buyOrders, sellOrders } = updateStoreGetters()
 
   const { symbol, platform, balance, assetStrat, assetExpo } = item
   const exchangeId = platform
@@ -41,8 +42,6 @@ function getAllCalculs(item) {
     cryptoPercentChange60d,
     cryptoPercentChange90d
   } = getCmcValues(symbol)
-
-  console.log('rank', rank)
 
   const totalSell = getTotalSell(symbol)
 
@@ -73,10 +72,9 @@ function getAllCalculs(item) {
     priceTp3,
     priceTp4,
     priceTp5
-  } = calculateAmountsAndPrices(
+  } = calculateAmountsAndPricesForShad(
     recupTp1,
     balance,
-    totalBuy,
     totalShad,
     recupTpX,
     averageEntryPrice,
@@ -145,7 +143,5 @@ function getAllCalculs(item) {
 }
 
 export {
-  getAllCalculs,
-  getTradesHistory,
-  getCmcValues
+  getAllCalculs
 }
