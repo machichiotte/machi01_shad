@@ -9,9 +9,10 @@ const config = {
     },
   },
   cronSchedules: {
+    shad: "*/1 * * * *",
     markets: "* */12 * * *",
-    tickers: "*/1 * * * *",
-    balances: "*/1 * * * *",
+    tickers: "*/10 * * * *",
+    balances: "*/10 * * * *",
     trades: "44 10 * * *",
   },
   logFiles: {

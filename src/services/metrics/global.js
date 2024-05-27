@@ -1,7 +1,7 @@
 // src/js/metrics/global.js
 const {
   calculateRecups,
-  calculateAmountsAndPrices,
+  calculateAmountsAndPricesForShad,
 } = require("./strategies.js");
 const { getCmcValues } = require("./cmc.js");
 const {
@@ -102,13 +102,13 @@ function getAllCalculs(
     priceTp3,
     priceTp4,
     priceTp5,
-  } = calculateAmountsAndPrices(
+  } = calculateAmountsAndPricesForShad(
     recupTp1,
     balance,
-    totalBuy,
     totalShad,
     recupTpX,
-    averageEntryPrice
+    averageEntryPrice,
+    maxExposition
   );
 
   const percentageDifference = getPercentageDifference(

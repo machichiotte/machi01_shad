@@ -12,9 +12,11 @@ async function getSavedStrat() {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
   try {
     const strat = await getDataFromCollection(collection);
+    console.log("Retrieved saved strat from the database.");
     infoLogger.info("Retrieved saved strat from the database.");
     return strat;
   } catch (error) {
+    console.log("Failed to get saved strat", { error: error.message });
     errorLogger.error("Failed to get saved strat", { error: error.message });
     throw error;
   }

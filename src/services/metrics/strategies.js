@@ -139,27 +139,25 @@ function calculateRecups(asset, platform, totalBuy, totalSell, strats) {
   };
 }
 
-function calculateAmountAndPrice(parsedRecup, parsedBalance, factor) {
+function calculateAmountAndPriceForShad(parsedRecup, parsedBalance, factor) {
   const amount = factor * parsedBalance;
   const price = parsedRecup / amount;
 
   return { amount, price };
 }
 
-function calculateAmountsAndPrices(
+function calculateAmountsAndPricesForShad(
   recupTp1,
   balance,
-  totalBuy,
   totalShad,
   recupTpX,
   averageEntryPrice,
   maxExposition
 ) {
+  const FACTOR_SELL_SHAD = 0.5;
 
-  const PERCENT_SELL_SHAD = 0.5;
   const parsedRecupTp1 = parseFloat(recupTp1);
   const parsedBalance = parseFloat(balance);
-  const parsedTotalBuy = parseFloat(totalBuy);
   const parsedRecupTpX = parseFloat(recupTpX);
   const parsedAverageEntryPrice = parseFloat(averageEntryPrice);
 
@@ -167,32 +165,33 @@ function calculateAmountsAndPrices(
   let priceTp1;
 
   if (totalShad > -1) {
-    amountTp1 = PERCENT_SELL_SHAD * (parsedRecupTp1/parsedRecupTpX) * parsedBalance;
+    amountTp1 =
+      FACTOR_SELL_SHAD * (parsedRecupTp1 / parsedRecupTpX) * parsedBalance;
     priceTp1 = parsedRecupTp1 / parseFloat(amountTp1);
   } else {
-    amountTp1 = parsedBalance - (maxExposition/parsedAverageEntryPrice);
+    amountTp1 = parsedBalance - maxExposition / parsedAverageEntryPrice;
     priceTp1 = parsedAverageEntryPrice;
   }
 
-  const { amount: amountTp2, price: priceTp2 } = calculateAmountAndPrice(
+  const { amount: amountTp2, price: priceTp2 } = calculateAmountAndPriceForShad(
     parsedRecupTpX,
     parsedBalance - amountTp1,
-    0.5
+    FACTOR_SELL_SHAD
   );
-  const { amount: amountTp3, price: priceTp3 } = calculateAmountAndPrice(
+  const { amount: amountTp3, price: priceTp3 } = calculateAmountAndPriceForShad(
     parsedRecupTpX,
     parsedBalance - amountTp1 - amountTp2,
-    0.5
+    FACTOR_SELL_SHAD
   );
-  const { amount: amountTp4, price: priceTp4 } = calculateAmountAndPrice(
+  const { amount: amountTp4, price: priceTp4 } = calculateAmountAndPriceForShad(
     parsedRecupTpX,
     parsedBalance - amountTp1 - amountTp2 - amountTp3,
-    0.5
+    FACTOR_SELL_SHAD
   );
-  const { amount: amountTp5, price: priceTp5 } = calculateAmountAndPrice(
+  const { amount: amountTp5, price: priceTp5 } = calculateAmountAndPriceForShad(
     parsedRecupTpX,
     parsedBalance - amountTp1 - amountTp2 - amountTp3 - amountTp4,
-    0.5
+    FACTOR_SELL_SHAD
   );
 
   return {
@@ -207,7 +206,6 @@ function calculateAmountsAndPrices(
     priceTp4,
     priceTp5,
   };
-  // }
 }
 
 module.exports = {
@@ -216,5 +214,5 @@ module.exports = {
   getRecupShad,
   getDoneShad,
   calculateRecups,
-  calculateAmountsAndPrices,
+  calculateAmountsAndPricesForShad,
 };

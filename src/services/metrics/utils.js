@@ -11,7 +11,7 @@ function getPercentageDifference(newValue, oldValue) {
     return "N/A";
   }
 
-  const percentageDifference = ((newVal - oldVal) / oldVal) * 100;
+  const percentageDifference = ((newVal - oldVal) / oldVal);
   return percentageDifference.toFixed(2);
 }
 

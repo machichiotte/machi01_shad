@@ -7,7 +7,7 @@ const {
   deleteAndSaveData,
 } = require("../utils/mongodbUtil");
 const { mapBalance } = require("../services/mapping");
-const {errorLogger, infoLogger}  = require("../utils/loggerUtil.js");
+const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
 
 /**
  * Retrieves the latest recorded balance from the database.
@@ -19,9 +19,11 @@ async function getBalance(req, res) {
   try {
     const lastBalance = await getData(req, res, collection);
     infoLogger.info("Fetched the last recorded balance from the database.");
+    console.log("Fetched the last recorded balance from the database.");
     res.json(lastBalance);
   } catch (error) {
     errorLogger.error("Failed to get balance", { error: error.message });
+    console.log("Failed to get balance", { error: error.message });
     handleErrorResponse(res, error, "getBalance");
   }
 }
@@ -35,9 +37,11 @@ async function getSavedBalance() {
   try {
     const balance = await getDataFromCollection(collection);
     infoLogger.info("Retrieved saved balance from the database.");
+    console.log("Retrieved saved balance from the database.");
     return balance;
   } catch (error) {
     errorLogger.error("Failed to get saved balance", { error: error.message });
+    console.log("Failed to get saved balance", { error: error.message });
     throw error;
   }
 }
@@ -52,12 +56,25 @@ async function fetchCurrentBalance(exchangeId) {
     const exchange = createExchangeInstance(exchangeId);
     const data = await exchange.fetchBalance();
     const mappedData = mapBalance(exchangeId, data);
-    infoLogger.info("Fetched and mapped balance from the exchange.", {
-      exchangeId,
-    });
+    infoLogger.info(
+      "Fetched and mapped balance from the " +
+        {
+          exchangeId,
+        }
+    );
+    console.log(
+      "Fetched and mapped balance from " +
+        {
+          exchangeId,
+        }
+    );
     return mappedData;
   } catch (error) {
     errorLogger.error("Failed to fetch current balance from exchange", {
+      exchangeId,
+      error: error.message,
+    });
+    console.log("Failed to fetch current balance from exchange", {
       exchangeId,
       error: error.message,
     });
@@ -76,6 +93,7 @@ async function saveBalanceInDatabase(mappedData, exchangeId) {
     await deleteAndSaveData(mappedData, collection, exchangeId);
     await saveLastUpdateToMongoDB(process.env.TYPE_BALANCE, exchangeId);
     infoLogger.info("Saved balance data to the database.", { exchangeId });
+    console.log("Saved balance data to the database.", { exchangeId });
   } catch (error) {
     errorLogger.error("Failed to save balance data to database", {
       exchangeId,

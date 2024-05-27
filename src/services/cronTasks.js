@@ -65,6 +65,14 @@ async function executeCronTask(task, isCritical = false) {
   }
 }
 
+async function cronShad() {
+  console.log("Running the cron job for updateShad...");
+  executeCronTask(async () => {
+    await calculateAllMetrics();
+    // il faudrait mettre a jour la base de donnee shad
+  }, true);
+}
+
 async function cronTickers() {
   console.log("Running the cron job for updateTickers...");
 
@@ -115,7 +123,9 @@ async function cronTrades() {
   }
 }
 
-function initializeCronTasks() {
+async function initializeCronTasks() {
+  console.log("Start initialize Cron");
+  cron.schedule(cronSchedules.shad, cronShad);
   //cron.schedule(cronSchedules.tickers, cronTickers);
   //cron.schedule(cronSchedules.markets, cronMarkets);
   cron.schedule(cronSchedules.balances, cronBalances);
@@ -129,7 +139,6 @@ async function fetchAndSaveTradesForAllAssets(balance, exchangeId) {
     // Récupérer les marchés disponibles pour l'échange
     const markets = await getSavedAllTickersByExchange(exchangeId);
 
-    console.log("marketss", markets);
     for (const asset of balance) {
       const symbol = asset.symbol;
       const quoteCurrencies = ["USDT"];
@@ -272,30 +281,56 @@ async function getTickersByPlatform(exchangeId) {
 
 //TODOOOOO
 async function calculateAllMetrics() {
-  console.log("calculateMetrics");
+  console.log("calculateAllMetrics");
   // je pense quon a ici recuperer la derniere balance, les trades sont a jour
   // il faut maintenant recalculer certains element ou tous si le fichier ne possede pas les donnees,
   // on possede les differences donc il est simple de savoir pour quels assets sont necessaires les calculs
 
   // on a besoin des dernieres balances de toute facon puisque cest un element que je veux voir apparaitre dans mon tableau
   const lastCmc = await getSavedCmc();
+  console.log("calculateAllMetrics after lastCmc");
+
   const lastStrategies = await getSavedStrat();
+  console.log("calculateAllMetrics after lastStrategies");
+
+  const lastTrades = await getSavedTrades();
+  console.log("calculateAllMetrics after lastTrades");
+
+  const lastOpenOrders = await getSavedOrders();
+  console.log("calculateAllMetrics after lastOpenOrders");
+
+  const lastTickers = await getSavedAllTickers();
+  console.log("calculateAllMetrics after lastTickers");
 
   const lastBalance = await getSavedBalance();
-  const lastTrades = await getSavedTrades();
-  const lastOpenOrders = await getSavedOrders();
-  const lastTickers = await getSavedAllTickers();
+
+  console.log("calculateAllMetrics after lastBalance");
+
+  let filteredCmc,
+    filteredTrades,
+    filteredOpenOrders,
+    filteredStrategy,
+    filteredTickers;
 
   for (const balance of lastBalance) {
     const assetSymbol = balance.symbol;
+    console.log("valvalval :", assetSymbol);
+
     const assetPlatform = balance.platform;
 
-    const filteredCmc = lastCmc.find((cmc) => cmc.symbol === assetSymbol);
-    const filteredTrades = lastTrades.filter((trade) => trade.altA === assetSymbol);
-    const filteredOpenOrders = lastOpenOrders.filter((order) => order.symbol === assetSymbol + '/USDT' || order.symbol === assetSymbol + '/USDC' || order.symbol === assetSymbol + '/BTC');
-    const filteredStrategy = lastStrategies[assetSymbol][assetPlatform];
-    const filteredTickers = lastTickers.filter(
-      (ticker) => ticker.symbol.startsWith(assetSymbol + "/") && ticker.platform === assetPlatform
+    filteredCmc = lastCmc.find((cmc) => cmc.symbol === assetSymbol);
+    filteredTrades = lastTrades.filter((trade) => trade.altA === assetSymbol);
+    filteredOpenOrders = lastOpenOrders.filter(
+      (order) =>
+        order.symbol === assetSymbol + "/USDT" ||
+        order.symbol === assetSymbol + "/USDC" ||
+        order.symbol === assetSymbol + "/BTC"
+    );
+    filteredStrategy = lastStrategies[assetSymbol][assetPlatform];
+    filteredTickers = lastTickers.filter(
+      (ticker) =>
+        ticker.symbol.startsWith(assetSymbol + "/") &&
+        ticker.platform === assetPlatform
     );
     const values = getAllCalculs(
       assetSymbol,
@@ -307,7 +342,8 @@ async function calculateAllMetrics() {
       filteredStrategy,
       filteredTickers
     );
-    // S
+
+    console.log("valvalval :" + assetSymbol, values);
   }
 }
 

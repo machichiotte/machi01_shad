@@ -175,26 +175,33 @@ async function deleteOrder(req, res) {
     handleErrorResponse(res, error, "deleteOrder");
   }
 }
-
-async function createBunchOrders(req, res) {
-  const exchangeId = req.body.exchangeId;
-  const price = req.body.price;
-  const amount = req.body.amount;
+async function createLimitOrder(req, res, orderType) {
+  const { exchangeId, price, amount } = req.body;
 
   try {
-    const { symbol, exchangeParams } = createExchangeInstanceWithReq(
-      exchangeId,
-      req
-    );
+    const { symbol, exchangeParams } = createExchangeInstanceWithReq(exchangeId, req);
     const exchange = new ccxt[exchangeId](exchangeParams);
 
-    const result = await exchange.createLimitSellOrder(symbol, amount, price);
+    let result;
+    if (orderType === 'buy') {
+      result = await exchange.createLimitBuyOrder(symbol, amount, price);
+    } else if (orderType === 'sell') {
+      result = await exchange.createLimitSellOrder(symbol, amount, price);
+    }
 
     res.status(200).json({ message: result, status: 200 });
   } catch (error) {
     console.error(error);
-    handleErrorResponse(res, error, "createBunchOrders");
+    handleErrorResponse(res, error, `createLimitOrder (${orderType})`);
   }
+}
+
+async function createBunchLimitSellOrders(req, res) {
+  await createLimitOrder(req, res, 'sell');
+}
+
+async function createBunchLimitBuyOrders(req, res) {
+  await createLimitOrder(req, res, 'buy');
 }
 
 async function cancelAllOrders(req, res) {
@@ -316,7 +323,8 @@ module.exports = {
   updateOrders,
   updateOrdersFromServer,
   deleteOrder,
-  createBunchOrders,
+  createBunchLimitSellOrders,
+  createBunchLimitBuyOrders,
   cancelAllOrders,
   cancelAllSellOrders,
 };
