@@ -4,7 +4,7 @@
 </template>
 
 <script setup>
-import { bunchOrders, cancelAllOrders, cancelAllSellOrders } from '../js/orders.js'
+import { bunchLimitSellOrders, cancelAllOrders, cancelAllSellOrders } from '../js/orders.js'
 import { loadingSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
 
 const props = defineProps({
@@ -63,10 +63,10 @@ const iAmClicked = async () => {
         selectedRow.priceTp5,
       ];
 
-      // Nested Promise.all for parallel bunchOrders
+      // Nested Promise.all for parallel bunchLimitSellOrders
       const orderResults = await Promise.all(
         amounts.map(async (amount, index) => {
-          return await bunchOrders(selectedRow.exchangeId, asset, amount, prices[index]);
+          return await bunchLimitSellOrders(selectedRow.exchangeId, asset, amount, prices[index]);
         })
       );
 

@@ -6,10 +6,11 @@
 
         <!-- Lignes de commande d'achat -->
         <div v-for="(order, index) in buyOrders" :key="index" class="order-row">
-            <InputNumber v-model="order.price" :mode="'decimal'"  placeholder="Price" @input="updateTotal(index)" />
-            <InputNumber v-model="order.quantity" :mode="'decimal'"  placeholder="Quantity"
-                @input="updateTotal(index)" />
-            <InputNumber v-model="order.total" :mode="'decimal'"  placeholder="Total" @input="updateQuantityOrPrice(index)" />
+            <InputNumber v-model="order.price" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Price" @input="updateValues('price', index)" />
+            <InputNumber v-model="order.quantity" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Quantity"
+            @input="updateValues('quantity', index)" />
+            <InputNumber v-model="order.total" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Total"
+            @input="updateValues('total', index)" />
             <Button icon="pi pi-times" class="p-button-danger" @click="removeOrder(index)" />
         </div>
         <!-- Bouton pour ajouter une ligne de commande -->
@@ -55,24 +56,42 @@ const updateTotal = (index) => {
     }
 }
 
-const updateQuantityOrPrice = (index) => {
+const updateValues = (changedField, index) => {
     const order = buyOrders.value[index]
-    if (order.total != null) {
+
+    if (changedField === 'price') {
         if (order.price != null) {
-            order.quantity = order.total / order.price
-        } else if (order.quantity != null) {
-            order.price = order.total / order.quantity
+            if (order.quantity != null) {
+                order.total = parseFloat((order.price * order.quantity).toFixed(8))
+            } else if (order.total != null) {
+                order.quantity = parseFloat((order.total / order.price).toFixed(8))
+            }
+        }
+    } else if (changedField === 'quantity') {
+        if (order.quantity != null) {
+            if (order.price != null) {
+                order.total = parseFloat((order.price * order.quantity).toFixed(8))
+            } else if (order.total != null) {
+                order.price = parseFloat((order.total / order.quantity).toFixed(8))
+            }
+        }
+    } else if (changedField === 'total') {
+        if (order.total != null) {
+            if (order.price != null) {
+                order.quantity = parseFloat((order.total / order.price).toFixed(8))
+            } else if (order.quantity != null) {
+                order.price = parseFloat((order.total / order.quantity).toFixed(8))
+            }
         }
     }
 }
 
 const submitOrders = async () => {
-    console.log('Submitting buy orders:', buyOrders.value);
     // Itérer sur chaque commande dans buyOrders
     const orderPlacementResults = await Promise.all(buyOrders.value.map(async (order) => {
         try {
             // Appeler bunchLimitSellOrders avec les paramètres appropriés
-            const result = await bunchLimitBuyOrders(selectedAsset.value.exchangeId, order.asset, order.quantity, order.price);
+            const result = await bunchLimitBuyOrders(selectedAsset.value.exchangeId, selectedAsset.value.asset, order.quantity, order.price);
             return result; // Retourner le résultat en cas de succès
         } catch (error) {
             console.error('Error placing order:', error);
@@ -84,7 +103,7 @@ const submitOrders = async () => {
     if (orderPlacementResults.length > 0) {
         successSpinHtml('Save completed', orderPlacementResults.join('<br>'), true, true);
     } else {
-        successSpinHtml('NOTHING', 'No cancellations/sells needed.', true, true);
+        successSpinHtml('NOTHING', 'No buy order', true, true);
     }
 
     // Fermer le formulaire
