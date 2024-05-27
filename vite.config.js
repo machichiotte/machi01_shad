@@ -10,7 +10,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@comp': fileURLToPath(new URL('./src/components', import.meta.url))
+      '@comp': fileURLToPath(new URL('./src/components', import.meta.url)),
+      '@btn': fileURLToPath(new URL('./src/components/buttons', import.meta.url)),
+      '@form': fileURLToPath(new URL('./src/components/forms', import.meta.url)),
     }
   }
 })

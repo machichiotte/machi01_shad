@@ -79,7 +79,7 @@
 
 <script setup>
 import { ref, watch } from 'vue';
-import { successSpin, errorSpin } from "../js/spinner.js";
+import { successSpin, errorSpin } from "../../js/spinner.js";
 
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 const types = ref(['buy', 'sell'])
@@ -202,4 +202,4 @@ watch(formData, () => {
 .field-group {
     margin-bottom: 16px;
 }
-</style>
+</style>../../js/spinner.js

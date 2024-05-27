@@ -43,7 +43,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { ordersColumns } from '../js/columns.js'
 import { getOrders } from '../js/getter.js'
-import MySellButtonVue from './MySellButton.vue'
+import MySellButtonVue from './buttons/MySellButton.vue'
 import { FilterMatchMode } from 'primevue/api'
 
 // Variables réactives
@@ -96,4 +96,4 @@ onMounted(async () => {
   height: 700px;
   width: auto;
 }
-</style>
+</style>./buttons/MySellButton.vue/index.js

@@ -1,4 +1,4 @@
-<!-- src/components/MyBuyButton.vue -->
+<!-- src/components/buttons/MyBuyButton.vue -->
 <template>
     <div>
         <Button label="Add Buy Orders" icon="pi pi-cart-plus" severity="success" class="mr-2"
@@ -13,8 +13,8 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue' // Importer computed depuis la bibliothèque vue
-import AddBuyOrdersForm from './AddBuyOrdersForm.vue'
+import { ref } from 'vue' // Importer computed depuis la bibliothèque vue
+import AddBuyOrdersForm from '@form/AddBuyOrdersForm.vue'
 
 //const selectedAssets = ref([]) // déclarer la référence selectedAssets
 

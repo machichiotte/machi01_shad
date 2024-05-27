@@ -22,7 +22,7 @@ const itemsPerPage = ref(5);
 const currentPage = ref(1);
 
 // Props declaration
- props = defineProps({
+const props = defineProps({
   orders: {
     type: Array,
     required: true

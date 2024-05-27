@@ -262,8 +262,8 @@
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex';
 import { FilterMatchMode } from 'primevue/api'
-import MySellButton from './MySellButton.vue'
-import MyBuyButton from './MyBuyButton.vue'
+import MySellButton from './buttons/MySellButton.vue'
+import MyBuyButton from './buttons/MyBuyButton.vue'
 import { strategies } from '../js/strategies.js';
 import { getAllCalculs } from '../js/metrics/global.js'
 
@@ -476,4 +476,4 @@ p {
 .text-red-500 {
   color: #ef4444;
 }
-</style>
+</style>./buttons/MyBuyButton.vue./buttons/MySellButton.vue

@@ -4,8 +4,8 @@
 </template>
 
 <script setup>
-import { bunchLimitSellOrders, cancelAllOrders, cancelAllSellOrders } from '../js/orders.js'
-import { loadingSpin, successSpinHtml, errorSpin } from '../js/spinner.js'
+import { bunchLimitSellOrders, cancelAllOrders, cancelAllSellOrders } from '../../js/orders.js'
+import { loadingSpin, successSpinHtml, errorSpin } from '../../js/spinner.js'
 
 const props = defineProps({
   selectedAssets: Object // Define the prop type as object
@@ -82,3 +82,4 @@ const iAmClicked = async () => {
   }
 }
 </script>
+../../js/orders.js../../js/spinner.js

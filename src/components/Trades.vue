@@ -39,7 +39,7 @@
 import { ref, watchEffect, onMounted } from 'vue'
 import { tradesColumns } from '../js/columns.js'
 import { FilterMatchMode } from 'primevue/api'
-import TradesForm from "@/components/TradesForm.vue";
+import TradesForm from "../components/forms/TradesForm.vue";
 import { useStore } from 'vuex'
 import { FETCH_BALANCES, FETCH_TRADES, GET_BALANCES, GET_TRADES } from '../store/storeconstants'
 

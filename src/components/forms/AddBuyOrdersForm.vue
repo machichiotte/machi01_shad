@@ -24,8 +24,8 @@
 import { ref, computed } from 'vue' // Importer computed depuis la bibliothèque vue
 import InputNumber from 'primevue/inputnumber'
 import Button from 'primevue/button'
-import { successSpinHtml } from '../js/spinner.js'
-import { bunchLimitBuyOrders } from '../js/orders.js'
+import { successSpinHtml } from '../../js/spinner.js'
+import { bunchLimitBuyOrders } from '../../js/orders.js'
 
 
 const props = defineProps({
@@ -137,3 +137,4 @@ const assetOptions = computed(() => {
     margin-bottom: 0.5rem;
 }
 </style>
+../../js/spinner.js../../js/orders.js

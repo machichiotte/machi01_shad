@@ -20,7 +20,7 @@ import { ref, computed } from 'vue';
 import { tradesTableColumns } from '../js/columns.js';
 
 // Props declaration
- props = defineProps({
+const props = defineProps({
   trades: {
     type: Array,
     required: true
