@@ -34,7 +34,7 @@ const cancelAllSellOrders = async (exchangeId, asset) => {
   return data
 }
 
-const bunchOrders = async (exchangeId, asset, amount, price) => {
+const bunchLimitSellOrders = async (exchangeId, asset, amount, price) => {
   const requestBody = {
     exchangeId: exchangeId,
     asset: asset,
@@ -42,7 +42,7 @@ const bunchOrders = async (exchangeId, asset, amount, price) => {
     price: price
   }
 
-  const response = await fetch(`${serverHost}/orders/bunch-orders`, {
+  const response = await fetch(`${serverHost}/orders/bunch-limit-sell-orders`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(requestBody)
@@ -51,4 +51,21 @@ const bunchOrders = async (exchangeId, asset, amount, price) => {
   return response.status
 }
 
-export { cancelAllOrders, cancelAllSellOrders, bunchOrders }
+const bunchLimitBuyOrders = async (exchangeId, asset, amount, price) => {
+  const requestBody = {
+    exchangeId: exchangeId,
+    asset: asset,
+    amount: amount,
+    price: price
+  }
+
+  const response = await fetch(`${serverHost}/orders/bunch-limit-buy-orders`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestBody)
+  })
+
+  return response.status
+}
+
+export { cancelAllOrders, cancelAllSellOrders, bunchLimitSellOrders, bunchLimitBuyOrders }

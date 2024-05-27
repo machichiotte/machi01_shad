@@ -14,7 +14,7 @@
 
 <script setup>
 // Importing necessary modules from Vue
-import { ref, defineProps, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 // Importing necessary columns from the columns.js file
 import { tradesTableColumns } from '../js/columns.js';
