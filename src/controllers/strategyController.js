@@ -2,6 +2,7 @@
 const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
 const { deleteAllDataMDB, saveData } = require("../services/mongodbService.js");
 const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
+const {errorLogger, infoLogger}  = require("../utils/loggerUtil.js");
 
 async function getStrat(req, res) {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
