@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref } from 'vue' // Importer computed depuis la bibliothèque vue
-import AddBuyOrdersForm from '@form/AddBuyOrdersForm.vue'
+import AddBuyOrdersForm from '../forms/AddBuyOrdersForm.vue'
 
 //const selectedAssets = ref([]) // déclarer la référence selectedAssets
 

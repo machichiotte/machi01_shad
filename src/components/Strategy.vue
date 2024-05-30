@@ -103,7 +103,10 @@ async function getData() {
 
 async function getStrat() {
   try {
+    console.log('aaaa getstrrr')
+
     await store.dispatch('calcul/' + FETCH_STRATS)
+    console.log('aaaa strat')
     const data = store.getters['calcul/' + GET_STRATS];
     console.log('dadda', data);
     if (data.length === 0) {

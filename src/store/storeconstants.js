@@ -24,6 +24,7 @@ export const SET_TRADES = '[mutations] set trades'
 export const SET_STRATS = '[mutations] set strats'
 export const SET_CMC = '[mutations] set cmc'
 export const SET_ORDERS = '[mutations] set orders'
+export const SET_LAST_FETCH_TIMESTAMP = '[mutations] set last fetch timestamp'
 
 export const GET_BALANCES = '[getters] get balances'
 export const GET_TRADES = '[getters] get trades'
@@ -32,3 +33,5 @@ export const GET_CMC = '[getters] get cmc'
 export const GET_ORDERS = '[getters] get orders'
 export const GET_BUY_ORDERS = '[getters] get buy orders'
 export const GET_SELL_ORDERS = '[getters] get sell orders'
+export const GET_LAST_FETCH_TIMESTAMP = '[getters] get last fetch timestamp'
+

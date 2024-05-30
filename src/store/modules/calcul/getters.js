@@ -6,7 +6,8 @@ import {
   GET_CMC,
   GET_ORDERS,
   GET_BUY_ORDERS,
-  GET_SELL_ORDERS
+  GET_SELL_ORDERS,
+  GET_LAST_FETCH_TIMESTAMP
 } from '../../storeconstants'
 
 export default {
@@ -36,5 +37,9 @@ export default {
 
   [GET_SELL_ORDERS]: (state) => {
     return state.sellOrders
-  }
+  },
+
+  [GET_LAST_FETCH_TIMESTAMP]: (state) => (type) => {
+    return state.lastFetchTimestamp ? state.lastFetchTimestamp[type] : null;
+  },
 }

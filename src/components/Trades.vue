@@ -54,27 +54,23 @@ const filters = ref({
 
 const rows = ref([]) // Déclaration de rows
 
+const fetchData = async (fetchAction, getter, type) => {
+  try {
+    console.log('fetchdata');
+    await store.dispatch('calcul/' + fetchAction);
+  } catch (error) {
+    console.error(`Une erreur s'est produite lors de la récupération des données de ${type} :`, error);
+  }
+
+  return store.getters['calcul/' + getter];
+}
 
 const getTradesData = async () => {
-  try {
-    // Appel de l'action Vuex pour récupérer les trades
-    await store.dispatch('calcul/' + FETCH_TRADES)
-    items.value = store.getters['calcul/' + GET_TRADES];
-  } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données des trades :", error)
-    // Affichez un message d'erreur à l'utilisateur si nécessaire
-  }
+  items.value = await fetchData(FETCH_TRADES, GET_TRADES, 'trades');
 }
 
 const getBalancesData = async () => {
-  try {
-    // Appel de l'action Vuex pour récupérer les balances
-    await store.dispatch('calcul/' + FETCH_BALANCES)
-    items.value = store.getters['calcul/' + GET_BALANCES];
-  } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données des balances :", error)
-    // Affichez un message d'erreur à l'utilisateur si nécessaire
-  }
+  items.value = await fetchData(FETCH_BALANCES, GET_BALANCES, 'balances');
 }
 
 onMounted(async () => {
@@ -84,7 +80,6 @@ onMounted(async () => {
 
 // Observer les changements dans `items` et mettre à jour `rows`
 watchEffect(() => {
-  console.log('valueee', items.value)
   if (Array.isArray(items.value)) {
     rows.value = items.value.map((item) => {  
       let date;
