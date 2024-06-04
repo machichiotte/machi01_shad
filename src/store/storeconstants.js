@@ -1,0 +1,37 @@
+// src/store/storeconstants.js
+export const SIGNUP_ACTION = '[actions] signup user'
+export const LOGIN_ACTION = '[actions] login user'
+export const LOGOUT_ACTION = '[actions] Logout User'
+export const AUTO_LOGOUT_ACTION = '[actions] auto logout'
+export const AUTH_ACTION = '[actions] DO User Auth'
+export const AUTO_LOGIN_ACTION = '[actions] Auth AUto Login'
+export const SET_USER_TOKEN_DATA_MUTATION = '[mutations] set user token data'
+export const LOADING_SPINNER_SHOW_MUTATION = '[mutations] show loading spinner'
+export const SET_AUTO_LOGOUT_MUTATION = '[mutations] set auto logout'
+
+export const GET_USER_TOKEN_GETTER = '[getters] auth user token'
+export const IS_USER_AUTHENTICATE_GETTER = '[getters] is user authenticated'
+
+export const FETCH_DATA = '[actions] fetch data'
+export const FETCH_BALANCES = '[actions] fetch balances'
+export const FETCH_TRADES = '[actions] fetch trades'
+export const FETCH_STRATS = '[actions] fetch strats'
+export const FETCH_CMC = '[actions] fetch cmc'
+export const FETCH_ORDERS = '[actions] fetch orders'
+
+export const SET_BALANCES = '[mutations] set balances'
+export const SET_TRADES = '[mutations] set trades'
+export const SET_STRATS = '[mutations] set strats'
+export const SET_CMC = '[mutations] set cmc'
+export const SET_ORDERS = '[mutations] set orders'
+export const SET_LAST_FETCH_TIMESTAMP = '[mutations] set last fetch timestamp'
+
+export const GET_BALANCES = '[getters] get balances'
+export const GET_TRADES = '[getters] get trades'
+export const GET_STRATS = '[getters] get strats'
+export const GET_CMC = '[getters] get cmc'
+export const GET_ORDERS = '[getters] get orders'
+export const GET_BUY_ORDERS = '[getters] get buy orders'
+export const GET_SELL_ORDERS = '[getters] get sell orders'
+export const GET_LAST_FETCH_TIMESTAMP = '[getters] get last fetch timestamp'
+

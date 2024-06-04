@@ -1,4 +1,4 @@
-// indexedDB.js
+// src/indexedDB.js
 const INDEXED_DB_NAME = 'db_test_1';
 const INDEXED_DB_VERSION = 1;
 
@@ -42,6 +42,10 @@ const openDatabase = async () => {
             if (!db.objectStoreNames.contains(STRATEGY)) {
                 db.createObjectStore(STRATEGY, { keyPath: 'asset' });
             }
+
+            if (!db.objectStoreNames.contains(TICKERS)) {
+                db.createObjectStore(TICKERS, { keyPath: '_id' });
+            }
         };
 
         request.onsuccess = (event) => {
@@ -57,20 +61,28 @@ const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterExch
         const db = await openDatabase();
         const transaction = db.transaction([storeName], 'readwrite');
         const objectStore = transaction.objectStore(storeName);
-
         const shouldFilterExchange = filterExchange !== null && filterExchange !== undefined;
-        console.log('saveDataToIndexedDBInternal shouldFilterExchange', shouldFilterExchange);
 
         if (!shouldFilterExchange) {
+            console.log('clearObjectStore');
+
             await clearObjectStore(objectStore);
         } else {
+            console.log('clearObjectStoreByExchange');
+
             await clearObjectStoreByExchange(objectStore, filterExchange);
         }
-
+        
         if (data && data.length > 0) {
+            console.log('data.length',data.length)
             data.forEach((item) => {
+                console.log('item', item);
                 if (isValidItem(item, keyField)) {
+                    console.log('isvaliditem')
+
                     const itemToSave = createItemToSave(item, keyField);
+
+                    console.log('itemToSave',itemToSave);
 
                     if (shouldFilterExchange && itemToSave['platform'] !== filterExchange) {
                         console.log(`Skipping item with platform ${itemToSave['platform']}.`);
@@ -113,10 +125,13 @@ const clearObjectStoreByExchange = (objectStore, filterExchange) => {
         const clearRequest = objectStore.openCursor();
 
         clearRequest.onsuccess = (event) => {
+
             const cursor = event.target.result;
 
             if (cursor) {
                 const item = cursor.value;
+                console.log('clearObjectStoreByExchange item', item);
+                console.log('clearObjectStoreByExchange item.platform', item.platform);
 
                 if (item && item.platform === filterExchange) {
                     const deleteRequest = cursor.delete();
@@ -146,20 +161,18 @@ const clearObjectStoreByExchange = (objectStore, filterExchange) => {
 };
 
 const isValidItem = (item, keyField) => {
+    console.log('keey', keyField);
+    console.log('keey',  item[keyField]);
     return item && item[keyField] !== undefined && item[keyField] !== null;
 };
 
 const createItemToSave = (item, keyField) => {
-    const itemToSave = { [keyField]: item[keyField] };
-
-    for (const prop in item) {
-        if (prop !== keyField) {
-            itemToSave[prop] = item[prop];
-        }
-    }
-
-    return itemToSave;
+    return {
+        [keyField]: item[keyField],
+        ...item, // Copie des autres propriétés
+    };
 };
+
 
 const saveCmcToIndexedDB = async (data) => {
     await saveDataToIndexedDBInternal(CMC, data, 'cmc_rank', null);
@@ -171,6 +184,8 @@ const saveOrdersDataToIndexedDB = async (data, exchange) => {
 
 const saveBalancesDataToIndexedDB = async (data, exchange) => {
     console.log('saveBalancesDataToIndexedDB');
+    console.log('saveBalancesDataToIndexedDB data',data);
+    console.log('saveBalancesDataToIndexedDB exchange',exchange);
     await saveDataToIndexedDBInternal(BALANCE, data, '_id', exchange);
 };
 
@@ -186,7 +201,7 @@ const saveStrategyToIndexedDB = async (data) => {
 
 const saveTickersToIndexedDB = async (data) => {
     console.log('saveTickersToIndexedDB');
-    await saveDataToIndexedDBInternal(TICKERS, data, 'asset', null);
+    await saveDataToIndexedDBInternal(TICKERS, data, '_id', null);
 };
 
 const fetchDataFromIndexedDB = async (storeName) => {

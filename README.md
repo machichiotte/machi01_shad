@@ -974,7 +974,7 @@ machi-shad
 │  │  ├─ TradesTable.vue
 │  │  └─ Update.vue
 │  ├─ js
-│  │  ├─ calcul.js
+│  │  ├─ global.js
 │  │  ├─ cells.js
 │  │  ├─ columns.js
 │  │  ├─ getter.js

@@ -1,4 +1,5 @@
-const Swal = require('sweetalert2');
+// src/spinner.js
+import Swal from 'sweetalert2';
 
 // Spinners
 const loadingSpin = () => {

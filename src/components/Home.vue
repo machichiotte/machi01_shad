@@ -22,13 +22,17 @@ export default {
       loaded: false, // Ajoutez une propriété pour suivre si les données ont été chargées
       balances: [],
       cmc: [],
-      tickers : [],
+      tickers: null
     };
   },
   methods: {
-    async getData() {
+    async getHomeData() {
       try {
+        console.log('on entre ici');
         this.tickers = await getTickers();
+        console.log('on devrait avoir les tickers ici');
+        console.log('this.tickers', this.tickers);
+
         this.cmc = await getCmc();
         this.balances = await getBalances();
         this.loaded = true; // Mettez à jour la propriété loaded une fois que les données sont chargées
@@ -36,12 +40,9 @@ export default {
         console.error("Une erreur s'est produite lors de la récupération des données :", error);
       }
     },
-    calculateBalanceValue(balances) {
-      console.log('balances',balances);
-      console.log('bal',this.balances);
-      console.log('tickers',this.tickers);
-      console.log('cmc',this.cmc);
-      return balances.map(balance => {
+    calculateBalanceValue(balance) {
+      console.log('balance', balance);
+      console.log('tickers', this.tickers);
         if (this.tickers && this.tickers[balance.platform]) {
           console.log('enter in tickers');
           const tic = this.tickers[balance.platform];
@@ -60,39 +61,21 @@ export default {
             value: 0,
           };
         }
-      });
     },
   },
   async mounted() {
     try {
-      await this.getData();
+      await this.getHomeData();
     } catch (error) {
       console.error("Une erreur s'est produite lors de la récupération des données :", error);
     }
   },
   computed: {
-    groupedBalances() { 
-      // Filtrer les balances par plateforme (Binance dans ce cas)
-      const binanceBalances = this.balances.filter(balance => balance.platform === 'binance');
-      const kucoinBalances = this.balances.filter(balance => balance.platform === 'kucoin');
-      const htxBalances = this.balances.filter(balance => balance.platform === 'htx');
-      const okxBalances = this.balances.filter(balance => balance.platform === 'okx');
-
-      // Calculer la valeur en USD ou USDT pour chaque balance
-      const binanceBalancesWithValue = this.calculateBalanceValue(binanceBalances);
-      const kucoinBalancesWithValue = this.calculateBalanceValue(kucoinBalances);
-      const htxBalancesWithValue = this.calculateBalanceValue(htxBalances);
-      const okxBalancesWithValue = this.calculateBalanceValue(okxBalances);
-
-      // Regrouper les balances par plateforme avec la valeur calculée
-      const groupedBalances = {
-        binance: binanceBalancesWithValue,
-        kucoin: kucoinBalancesWithValue,
-        htx: htxBalancesWithValue,
-        okx: okxBalancesWithValue,
-      };
-
-      return groupedBalances;
+    groupedBalances() {
+      return this.balances.reduce((groups, balance) => {
+        groups[balance.platform] = (groups[balance.platform] || []).concat(this.calculateBalanceValue(balance));
+        return groups;
+      }, {});
     },
   },
   components: {
@@ -102,8 +85,6 @@ export default {
 </script>
 
 <style scoped>
-/* Ajoutez des styles au besoin */
-
 .pie-charts-container {
   display: flex;
   justify-content: space-around;
@@ -121,4 +102,5 @@ export default {
   /* Ajustez la hauteur selon vos préférences */
   margin: 10px;
   /* Ajustez la marge selon vos préférences */
-}</style>
+}
+</style>

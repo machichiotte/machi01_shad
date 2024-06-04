@@ -1,73 +1,68 @@
 <!-- src/components/Cmc.vue -->
+
 <template>
   <div class="page">
     <h1>CMC</h1>
     <div id="table">
-      <vue-good-table :columns="columns" :rows="rows" :skip-diacritics="true" :search-options="{ enabled: true }"
-        :pagination-options="{ enabled: true }">
-      </vue-good-table>
+      <DataTable :value="rows" :rows="itemsPerPage" :paginator="true" scrollable columnResizeMode="fit"
+        :filters="filters">
+        <template #header>
+          <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+            <h4 class="m-0">Find Orders</h4>
+            <IconField iconPosition="left">
+              <InputIcon>
+                <i class="pi pi-search" />
+              </InputIcon>
+              <InputText v-model="filters['global'].value" placeholder="Search..." />
+            </IconField>
+          </div>
+        </template>
+        <Column v-for="(col, index) in cols" :key="index" :field="col.field" :header="col.header"></Column>
+      </DataTable>
     </div>
   </div>
 </template>
 
-<script>
-import { cmcColumns } from "../js/columns.js";
-import { getCmc } from "../js/getter.js"
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex';
+import { cmcColumns } from '../js/columns.js'
+import { FilterMatchMode } from 'primevue/api'
+import {
+  FETCH_CMC, GET_CMC
+} from '../store/storeconstants';
+const store = useStore();
 
-export default {
-  name: "CmcPage",
-  data() {
+const items = ref([])
+const itemsPerPage = 13
+const cols = cmcColumns
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+})
+
+const rows = computed(() => {
+  return items.value.map((item) => {
     return {
-      items: [],
-      itemsPerPage: 20000,
-      currentPage: 1,
-      columns: cmcColumns,
-    };
-  },
-  computed: {
-    paginatedItems() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.items.slice(startIndex, endIndex);
-    },
-    pageCount() {
-      return Math.ceil(this.items.length / this.itemsPerPage);
-    },
-    pages() {
-      const pages = [];
-      for (let i = 1; i <= this.pageCount; i++) {
-        pages.push(i);
-      }
-      return pages;
-    },
-    rows() {
-      return this.paginatedItems.map((item) => {
-        return {
-          'rank': item['cmc_rank'],
-          'name': item['name'],
-          'symbol': item['symbol']
-        };
-      });
-    },
-  },
-  methods: {
-    async getData() {
-      this.items = await getCmc();
-    },
-    prevPage() {
-      this.currentPage--;
-    },
-    nextPage() {
-      this.currentPage++;
-    },
-    changePage(page) {
-      this.currentPage = page;
+      rank: item['cmc_rank'],
+      name: item['name'],
+      symbol: item['symbol'],
+      price: item.quote.USD.price,
     }
-  },
-  mounted() {
-    this.getData();
+  })
+})
+
+const getData = async () => {
+  try {
+    await store.dispatch('calcul/' + FETCH_CMC)
+    items.value = store.getters['calcul/' + GET_CMC]
+  } catch (error) {
+    console.error("Une erreur s'est produite lors de la récupération des données :", error)
   }
 };
+
+onMounted(async () => {
+  await getData()
+})
 </script>
 
 <style scoped>
