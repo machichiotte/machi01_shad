@@ -103,12 +103,8 @@ async function getData() {
 
 async function getStrat() {
   try {
-    console.log('aaaa getstrrr')
-
     await store.dispatch('calcul/' + FETCH_STRATS)
-    console.log('aaaa strat')
     const data = store.getters['calcul/' + GET_STRATS];
-    console.log('dadda', data);
     if (data.length === 0) {
       assets.value.forEach((asset) => {
         let assetStrat = {
@@ -121,11 +117,9 @@ async function getStrat() {
           assetStrat.maxExposure[platform] = ''
         })
 
-        console.log('str', strat)
         strat.value.push(assetStrat)
       })
     } else {
-      console.log('datt', data)
       strat.value = data
     }
   } catch (err) {
@@ -158,7 +152,7 @@ async function updateStrat() {
               maxExposure[colName] = selectedOption.value
               break
             default:
-              console.log('pas de type')
+              console.log('updateStrat no dataType')
               break
           }
         }

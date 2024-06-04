@@ -15,6 +15,13 @@ export default {
             cmc: [],
             buyOrders: [],
             sellOrders: [],
+            lastFetchTimestamp: {
+                trades: null,
+                balances: null,
+                strats: null,
+                cmc: null,
+                orders: null,
+              },
         };
     },
     mutations,

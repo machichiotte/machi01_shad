@@ -18,8 +18,13 @@ import {
 import { getCmc, getBalances, getTrades, getOrders, getStrategy } from '../../../js/getter'
 
 const shouldFetchData = (lastFetch) => {
+  console.log('shouldfetchhh')
   const now = Date.now()
-  return !lastFetch || now - lastFetch > 300000 // 5 minutes
+  console.log('shouldfetchhh now', now)
+  console.log('shouldfetchhh lastFetch', lastFetch)
+  console.log('shouldfetchhh now - lastFetch', now - lastFetch)
+
+  return !lastFetch || now - lastFetch > 5000 // 15 secondes
 }
 
 export default {
@@ -44,35 +49,38 @@ export default {
 
     try {
       if (!lastFetchBalance || shouldFetchData(lastFetchBalance)) {
-        if (shouldFetchData(context.getters[GET_LAST_FETCH_TIMESTAMP]('balances'))) {
-          const balances = await getBalances()
+        const balances = await getBalances()
+        if (balances) {
           context.commit(SET_BALANCES, balances)
           context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'balances', timestamp: now })
         }
+      }
 
-        if (!lastFetchTrades || shouldFetchData(lastFetchTrades)) {
-          const trades = await getTrades()
-          context.commit(SET_TRADES, trades)
-          context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'trades', timestamp: now })
-        }
+      if (!lastFetchTrades || shouldFetchData(lastFetchTrades)) {
+        console.log('sisi trades updt')
+        const trades = await getTrades()
+        console.log('sisi trades updt trades', trades)
 
-        if (!lastFetchStrats || shouldFetchData(lastFetchStrats)) {
-          const strats = await getStrategy()
-          context.commit(SET_STRATS, strats)
-          context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'strats', timestamp: now })
-        }
+        context.commit(SET_TRADES, trades)
+        context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'trades', timestamp: now })
+      }
 
-        if (!lastFetchCmc || shouldFetchData(lastFetchCmc)) {
-          const cmc = await getCmc()
-          context.commit(SET_CMC, cmc)
-          context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'cmc', timestamp: now })
-        }
+      if (!lastFetchStrats || shouldFetchData(lastFetchStrats)) {
+        const strats = await getStrategy()
+        context.commit(SET_STRATS, strats)
+        context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'strats', timestamp: now })
+      }
 
-        if (!lastFetchOrders || shouldFetchData(lastFetchOrders)) {
-          const orders = await getOrders()
-          context.commit(SET_ORDERS, orders)
-          context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'orders', timestamp: now })
-        }
+      if (!lastFetchCmc || shouldFetchData(lastFetchCmc)) {
+        const cmc = await getCmc()
+        context.commit(SET_CMC, cmc)
+        context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'cmc', timestamp: now })
+      }
+
+      if (!lastFetchOrders || shouldFetchData(lastFetchOrders)) {
+        const orders = await getOrders()
+        context.commit(SET_ORDERS, orders)
+        context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'orders', timestamp: now })
       }
     } catch (error) {
       console.error("Une erreur s'est produite lors de la récupération des données :", error)

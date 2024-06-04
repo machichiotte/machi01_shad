@@ -1,3 +1,4 @@
+// src/spinner.js
 import Swal from 'sweetalert2';
 
 // Spinners

@@ -5,7 +5,7 @@ import {
 } from './strategies.js'
 import { getCmcValues } from './cmc.js'
 import { getCurrentPossession, getPercentageDifference, getStatus } from './utils.js'
-import { getTotalAmountAndBuy, getTotalSell, getTradesHistory, getBalance, getProfit } from './trades.js'
+import { getTotalAmountAndBuy, getTotalSell, getProfit } from './trades.js'
 import store from '@/store/store.js'
 import {
   GET_BUY_ORDERS,
