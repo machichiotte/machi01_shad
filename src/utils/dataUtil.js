@@ -6,7 +6,6 @@ const { getAllDataMDB } = require("../services/mongodbService.js");
 async function getData(req, res, collection) {
   try {
     const data = await getDataFromCollection(collection);
-
     if (res) res.json(data);
     else return data;
   } catch (err) {
@@ -26,7 +25,11 @@ async function getDataFromCollection(collection) {
       return JSON.parse(jsonData);
     } else {
       // Récupérer les données depuis la base de données MongoDB
-      return await getAllDataMDB(collection);
+      const data = await getAllDataMDB(collection);
+      if (!Array.isArray(data)) {
+        throw new Error('Data retrieved from MongoDB is not an array');
+      }
+      return data;
     }
   } catch (err) {
     console.error("getDataFromCollection", err);

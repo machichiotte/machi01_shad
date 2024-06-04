@@ -5,16 +5,13 @@ const {
 } = require("./strategies.js");
 const { getCmcValues } = require("./cmc.js");
 const {
+  getBalance,
+  getProfit,
   getCurrentPossession,
   getPercentageDifference,
   getStatus,
 } = require("./utils.js");
-const {
-  getTotalAmountAndBuy,
-  getTotalSell,
-  getBalance,
-  getProfit,
-} = require("./trades.js");
+const { getTotalAmountAndBuy, getTotalSell } = require("./trades.js");
 
 function getAllCalculs(
   asset,

@@ -14,7 +14,7 @@ async function getSavedStrat() {
   try {
     const strat = await getDataFromCollection(collection);
     console.log("Retrieved saved strat from the database.");
-    infoLogger.info("Retrieved saved strat from the database.");
+    //infoLogger.info("Retrieved saved strat from the database.");
     return strat;
   } catch (error) {
     console.log("Failed to get saved strat", { error: error.message });

@@ -60,4 +60,15 @@ function getStatus(
   return results;
 }
 
-module.exports = { getCurrentPossession, getPercentageDifference, getStatus };
+function getBalance(symbol, sortedBalances) {
+  // Implementation for getting the balance for a given symbol
+  const balance = sortedBalances.find((item) => item.symbol === symbol);
+  return balance ? balance.balance : "N/A";
+}
+
+function getProfit(totalBuy, totalSell, currentPrice, balance) {
+  const currentPossession = currentPrice * balance;
+  return currentPossession + totalSell - totalBuy;
+}
+
+module.exports = { getProfit, getBalance, getCurrentPossession, getPercentageDifference, getStatus };

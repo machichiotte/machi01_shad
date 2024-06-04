@@ -16,15 +16,23 @@ const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
  */
 async function getBalance(req, res) {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
+  let responseSent = false;
+
   try {
-    const lastBalance = await getData(req, res, collection);
-    infoLogger.info("Fetched the last recorded balance from the database.");
+    const lastBalance = await getData(req, null, collection);
     console.log("Fetched the last recorded balance from the database.");
-    res.json(lastBalance);
+    if (!responseSent) {
+      res.json(lastBalance);
+      responseSent = true;
+    }
   } catch (error) {
+    console.error("Failed to get balance", { error: error.message });
     errorLogger.error("Failed to get balance", { error: error.message });
-    console.log("Failed to get balance", { error: error.message });
-    handleErrorResponse(res, error, "getBalance");
+
+    if (!responseSent) {
+      handleErrorResponse(res, error, "getBalance");
+      responseSent = true;
+    }
   }
 }
 
@@ -36,7 +44,7 @@ async function getSavedBalance() {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
   try {
     const balance = await getDataFromCollection(collection);
-    infoLogger.info("Retrieved saved balance from the database.");
+    //infoLogger.info("Retrieved saved balance from the database.");
     console.log("Retrieved saved balance from the database.");
     return balance;
   } catch (error) {
@@ -56,12 +64,12 @@ async function fetchCurrentBalance(exchangeId) {
     const exchange = createExchangeInstance(exchangeId);
     const data = await exchange.fetchBalance();
     const mappedData = mapBalance(exchangeId, data);
-    infoLogger.info(
+    /*infoLogger.info(
       "Fetched and mapped balance from the " +
         {
           exchangeId,
         }
-    );
+    );*/
     console.log(
       "Fetched and mapped balance from " +
         {
@@ -92,7 +100,7 @@ async function saveBalanceInDatabase(mappedData, exchangeId) {
   try {
     await deleteAndSaveData(mappedData, collection, exchangeId);
     await saveLastUpdateToMongoDB(process.env.TYPE_BALANCE, exchangeId);
-    infoLogger.info("Saved balance data to the database.", { exchangeId });
+    //infoLogger.info("Saved balance data to the database.", { exchangeId });
     console.log("Saved balance data to the database.", { exchangeId });
   } catch (error) {
     errorLogger.error("Failed to save balance data to database", {
@@ -118,7 +126,8 @@ async function updateCurrentBalance(req, res) {
       message: "Current balance updated successfully.",
       data: balanceData,
     });
-    infoLogger.info("Updated current balance successfully.", { exchangeId });
+    //infoLogger.info("Updated current balance successfully.", { exchangeId });
+    console.log("Updated current balance successfully.", { exchangeId });
   } catch (error) {
     errorLogger.error("Failed to update current balance", {
       exchangeId,

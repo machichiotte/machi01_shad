@@ -58,7 +58,8 @@ The backend exposes the following API endpoints:
 
 ### Create Bunch Orders
 
-- `POST /bunch-orders`: Create multiple orders at once
+- `POST /bunch-limit-sell-orders`: Create multiple orders at once
+- `POST /bunch-limit-buy-orders`: Create multiple orders at once
 
 ## Dependencies
 

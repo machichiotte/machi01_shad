@@ -4,7 +4,7 @@ const { handleErrorResponse } = require("../utils/errorUtil.js");
 const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
 const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
 const { deleteAllDataMDB, saveData } = require("../services/mongodbService.js");
-const {errorLogger, infoLogger}  = require("../utils/loggerUtil.js");
+const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
 const { fetchCmcData } = require("../services/cmcService.js");
 
 /**
@@ -16,7 +16,8 @@ async function getCmc(req, res) {
   const collection = process.env.MONGODB_COLLECTION_CMC;
   try {
     await getData(req, res, collection);
-    infoLogger.info("Successfully retrieved CoinMarketCap data from the database.");
+    //infoLogger.info("Successfully retrieved CoinMarketCap data from the database.");
+    console.log("Successfully retrieved CoinMarketCap data from the database.");
   } catch (error) {
     errorLogger.error(`Error in getCmc: ${error.message}`);
     handleErrorResponse(res, error, "getCmc");
@@ -30,7 +31,8 @@ async function getSavedCmc() {
   const collection = process.env.MONGODB_COLLECTION_CMC;
   try {
     const data = await getDataFromCollection(collection);
-    infoLogger.info("Successfully retrieved saved CoinMarketCap data.");
+    console.log("Successfully retrieved saved CoinMarketCap data.");
+    //infoLogger.info("Successfully retrieved saved CoinMarketCap data.");
     return data;
   } catch (error) {
     errorLogger.error(`Error in getSavedCmc: ${error.message}`);
@@ -57,11 +59,15 @@ async function updateCmcDataInDatabase(cmcData, res) {
       totalCount: cmcData.length,
     });
 
-    infoLogger.info("Successfully updated CoinMarketCap data in the database.", {
-      deleteResult,
-      saveResult,
-      totalCount: cmcData.length,
-    });
+    console.log("Successfully updated CoinMarketCap data in the database.");
+    infoLogger.info(
+      "Successfully updated CoinMarketCap data in the database.",
+      {
+        deleteResult,
+        saveResult,
+        totalCount: cmcData.length,
+      }
+    );
   } catch (error) {
     errorLogger.error(`Error in updateCmcDataInDatabase: ${error.message}`);
     handleErrorResponse(res, error, "updateCmcDataInDatabase");
@@ -77,8 +83,8 @@ async function updateCmc(req, res) {
   try {
     const cmcData = await fetchCmcData();
     await updateCmcDataInDatabase(cmcData, res);
-
-    infoLogger.info("Successfully updated CoinMarketCap data via API.");
+    console.log("Successfully updated CoinMarketCap data via API.");
+    //infoLogger.info("Successfully updated CoinMarketCap data via API.");
   } catch (error) {
     errorLogger.error(`Error in updateCmc: ${error.message}`);
     handleErrorResponse(res, error, "updateCmc");

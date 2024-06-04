@@ -14,7 +14,7 @@ const {
 
 const { mapOrders } = require("../services/mapping.js");
 
-const {errorLogger, infoLogger}  = require("../utils/loggerUtil.js");
+const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
 
 /**
  * Retrieves the last recorded balance from the database.
@@ -24,29 +24,34 @@ const {errorLogger, infoLogger}  = require("../utils/loggerUtil.js");
  */
 async function getOrders(req, res) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
+  let responseSent = false;
 
   try {
-    console.log(
-      `Retrieving active orders from MongoDB collection: ${collection}`
-    );
-    const orders = await getData(req, res, collection);
+    const orders = await getData(req, null, collection);
+    console.log("ordersss", orders);
 
     if (orders) {
       console.log(`Retrieved ${orders.length} active orders`);
-      res.json(orders); // Envoyer la réponse ici, après avoir vérifié si les commandes sont définies
+      if (!responseSent) {
+        res.json(orders); // Envoyer la réponse ici, après avoir vérifié si les commandes sont définies
+        responseSent = true;
+      }
     } else {
-      console.error(
-        "Error retrieving active orders from MongoDB: Orders is undefined"
-      );
-      res
-        .status(500)
-        .json({ error: "Error retrieving active orders from MongoDB" }); // Envoyer une réponse d'erreur si les commandes sont indéfinies
+      console.error("Error retrieving active orders from MongoDB: Orders is undefined");
+      if (!responseSent) {
+        res.status(500).json({ error: "Error retrieving active orders from MongoDB" }); // Envoyer une réponse d'erreur si les commandes sont indéfinies
+        responseSent = true;
+      }
     }
   } catch (error) {
-    console.error(`Error retrieving active orders from MongoDB:`, error);
-    handleErrorResponse(res, error, "getOrders"); // Gérer l'erreur de manière appropriée
+    console.error("Error retrieving active orders from MongoDB:", error);
+    if (!responseSent) {
+      handleErrorResponse(res, error, "getOrders"); // Gérer l'erreur de manière appropriée
+      responseSent = true;
+    }
   }
 }
+
 
 /**
  * Retrieves the last recorded balance from the database.
@@ -179,13 +184,16 @@ async function createLimitOrder(req, res, orderType) {
   const { exchangeId, price, amount } = req.body;
 
   try {
-    const { symbol, exchangeParams } = createExchangeInstanceWithReq(exchangeId, req);
+    const { symbol, exchangeParams } = createExchangeInstanceWithReq(
+      exchangeId,
+      req
+    );
     const exchange = new ccxt[exchangeId](exchangeParams);
 
     let result;
-    if (orderType === 'buy') {
+    if (orderType === "buy") {
       result = await exchange.createLimitBuyOrder(symbol, amount, price);
-    } else if (orderType === 'sell') {
+    } else if (orderType === "sell") {
       result = await exchange.createLimitSellOrder(symbol, amount, price);
     }
 
@@ -197,11 +205,11 @@ async function createLimitOrder(req, res, orderType) {
 }
 
 async function createBunchLimitSellOrders(req, res) {
-  await createLimitOrder(req, res, 'sell');
+  await createLimitOrder(req, res, "sell");
 }
 
 async function createBunchLimitBuyOrders(req, res) {
-  await createLimitOrder(req, res, 'buy');
+  await createLimitOrder(req, res, "buy");
 }
 
 async function cancelAllOrders(req, res) {

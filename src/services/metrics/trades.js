@@ -41,21 +41,8 @@ function getTradesHistory(symbol, trades) {
   return trades.filter((trade) => trade.altA === symbol);
 }
 
-function getBalance(symbol, sortedBalances) {
-  // Implementation for getting the balance for a given symbol
-  const balance = sortedBalances.find((item) => item.symbol === symbol);
-  return balance ? balance.balance : "N/A";
-}
-
-function getProfit(totalBuy, totalSell, currentPrice, balance) {
-  const currentPossession = currentPrice * balance;
-  return currentPossession + totalSell - totalBuy;
-}
-
 module.exports = {
   getTotalAmountAndBuy,
   getTotalSell,
   getTradesHistory,
-  getBalance,
-  getProfit,
 };

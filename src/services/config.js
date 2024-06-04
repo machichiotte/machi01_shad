@@ -9,11 +9,11 @@ const config = {
     },
   },
   cronSchedules: {
-    shad: "*/1 * * * *",
+    shad: "*/30 * * * *",
     markets: "* */12 * * *",
     tickers: "*/10 * * * *",
-    balances: "*/10 * * * *",
-    trades: "44 10 * * *",
+    balances: "*/1 * * * *",
+    trades: "*/1 * * * *",
   },
   logFiles: {
     error: "error.log",

@@ -4,7 +4,7 @@ const {
   getOrders,
   updateOrders,
   deleteOrder,
-  createBunchOrders,
+  bunchLimitSellOrders,
   cancelAllOrders,
 } = require('../src/controllers/ordersController');
 const {
@@ -54,7 +54,7 @@ describe('Orders Controller Tests', () => {
     // Ajoutez d'autres tests pertinents pour deleteOrder
   });
 
-  describe('createBunchOrders', () => {
+  describe('createBunchLimitSellOrders', () => {
     it('should call createExchangeInstanceWithReq and createLimitSellOrder with correct parameters and return data', async () => {
       // Votre test ici...
     });
@@ -63,7 +63,7 @@ describe('Orders Controller Tests', () => {
       // Votre test ici...
     });
 
-    // Ajoutez d'autres tests pertinents pour createBunchOrders
+    // Ajoutez d'autres tests pertinents pour createBunchLimitSellOrders
   });
 
   describe('cancelAllOrders', () => {

@@ -51,9 +51,10 @@ async function createCollectionIfNotExists(collectionName) {
     if (collections.length === 0) {
       await db.createCollection(collectionName);
       console.log(`Collection ${collectionName} created in MongoDB!`);
-    } else {
+    } 
+    /*else {
       console.log(`Collection ${collectionName} already exists in MongoDB.`);
-    }
+    }*/
   } catch (err) {
     console.error(err);
     return err;
@@ -160,16 +161,20 @@ async function getOne(collectionName, data) {
 
 // Get all documents from a collection
 async function getAllDataMDB(collectionName) {
+  
+  if (!db) {
+    throw new Error("Database connection is not established");
+  }
+
   try {
     const collection = db.collection(collectionName);
     const result = await collection.find().toArray();
-    console.log(
-      `Found ${result.length} documents in collection ${collectionName}`
-    );
+
+    console.log(`Found ${result.length} documents in collection ${collectionName}`);
     return result;
   } catch (err) {
     console.error(err);
-    return err;
+    throw err;
   }
 }
 
