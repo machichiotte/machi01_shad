@@ -16,21 +16,10 @@ const iAmClicked = async () => {
   const selectedRows = props.selectedAssets
 
   loadingSpin()
-
-  // Promise.all for parallel cancellations
-  /*const cancellationPromises = selectedRows.map(async (row) => {
-      if (row.nbOpenSellOrders > 0) {
-        const cancel = await cancelAllOrders(row.exchangeId, row.asset);
-        return `Cancel ${row.asset}: ${cancel.status}`; // Combine results for logging
-      }
-      return null; // Return null for rows without cancellation
-    });*/
     
   const cancellationPromises = selectedRows.map(async (row) => {
     if (row.nbOpenSellOrders > 0) {
-      console.log('cancelasset', row.asset)
       const cancel = await cancelAllSellOrders(row.exchangeId, row.asset );
-      console.log('cancan', cancel);
       return cancel.status === 200 ? row.asset : null; // Return asset only if cancellation successful
     }
     return row.asset; // Return asset even if no cancellation was needed
