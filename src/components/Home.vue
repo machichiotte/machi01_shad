@@ -28,11 +28,7 @@ export default {
   methods: {
     async getHomeData() {
       try {
-        console.log('on entre ici');
         this.tickers = await getTickers();
-        console.log('on devrait avoir les tickers ici');
-        console.log('this.tickers', this.tickers);
-
         this.cmc = await getCmc();
         this.balances = await getBalances();
         this.loaded = true; // Mettez à jour la propriété loaded une fois que les données sont chargées
