@@ -20,13 +20,13 @@ async function getBalance(req, res) {
 
   try {
     const lastBalance = await getData(req, null, collection);
-    console.log("Fetched the last recorded balance from the database.");
+    console.log("🚀 ~ getBalance ~ lastBalance:", lastBalance);
     if (!responseSent) {
       res.json(lastBalance);
       responseSent = true;
     }
   } catch (error) {
-    console.error("Failed to get balance", { error: error.message });
+    console.log("🚀 ~ getBalance ~ error:", { error: error.message });
     errorLogger.error("Failed to get balance", { error: error.message });
 
     if (!responseSent) {
@@ -44,12 +44,11 @@ async function getSavedBalance() {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
   try {
     const balance = await getDataFromCollection(collection);
-    //infoLogger.info("Retrieved saved balance from the database.");
-    console.log("Retrieved saved balance from the database.");
+    console.log("🚀 ~ getSavedBalance ~ balance:", balance.length);
     return balance;
   } catch (error) {
+    console.log("🚀 ~ getSavedBalance ~ error:", { error: error.message });
     errorLogger.error("Failed to get saved balance", { error: error.message });
-    console.log("Failed to get saved balance", { error: error.message });
     throw error;
   }
 }
@@ -59,34 +58,29 @@ async function getSavedBalance() {
  * @param {string} exchangeId - Identifier for the exchange.
  * @returns {Promise<Object>} - The fetched balance data.
  */
-async function fetchCurrentBalance(exchangeId) {
+async function fetchCurrentBalance(exchangeId, retries = 3) {
+  console.log("🚀 ~ fetchCurrentBalance ~ exchangeId:", exchangeId);
   try {
     const exchange = createExchangeInstance(exchangeId);
     const data = await exchange.fetchBalance();
     const mappedData = mapBalance(exchangeId, data);
-    /*infoLogger.info(
-      "Fetched and mapped balance from the " +
-        {
-          exchangeId,
-        }
-    );*/
-    console.log(
-      "Fetched and mapped balance from " +
-        {
-          exchangeId,
-        }
-    );
+    console.log("🚀 ~ fetchCurrentBalance ~ mappedData:", mappedData.length);
     return mappedData;
   } catch (error) {
+    console.log("🚀 ~ fetchCurrentBalance ~ error:", error);
+
+    if (retries > 0) {
+      console.log(`Retrying... (${3 - retries + 1}/3)`);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      return fetchCurrentBalance(exchangeId, retries - 1);
+    }
+
     errorLogger.error("Failed to fetch current balance from exchange", {
       exchangeId,
       error: error.message,
     });
-    console.log("Failed to fetch current balance from exchange", {
-      exchangeId,
-      error: error.message,
-    });
-    throw error;
+
+    // throw error;
   }
 }
 
@@ -101,12 +95,14 @@ async function saveBalanceInDatabase(mappedData, exchangeId) {
     await deleteAndSaveData(mappedData, collection, exchangeId);
     await saveLastUpdateToMongoDB(process.env.TYPE_BALANCE, exchangeId);
     //infoLogger.info("Saved balance data to the database.", { exchangeId });
-    console.log("Saved balance data to the database.", { exchangeId });
+    console.log("🚀 ~ saveBalanceInDatabase ~ exchangeId:", exchangeId);
   } catch (error) {
+    console.log("🚀 ~ saveBalanceInDatabase ~ error:", error);
     errorLogger.error("Failed to save balance data to database", {
       exchangeId,
       error: error.message,
     });
+
     throw error;
   }
 }
@@ -127,7 +123,7 @@ async function updateCurrentBalance(req, res) {
       data: balanceData,
     });
     //infoLogger.info("Updated current balance successfully.", { exchangeId });
-    console.log("Updated current balance successfully.", { exchangeId });
+    console.log("🚀 ~ updateCurrentBalance ~ exchangeId:", exchangeId);
   } catch (error) {
     errorLogger.error("Failed to update current balance", {
       exchangeId,

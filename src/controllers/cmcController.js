@@ -15,9 +15,8 @@ const { fetchCmcData } = require("../services/cmcService.js");
 async function getCmc(req, res) {
   const collection = process.env.MONGODB_COLLECTION_CMC;
   try {
-    await getData(req, res, collection);
-    //infoLogger.info("Successfully retrieved CoinMarketCap data from the database.");
-    console.log("Successfully retrieved CoinMarketCap data from the database.");
+    const data = await getData(req, res, collection);
+    console.log("🚀 ~ getCmc ~ data:", data);
   } catch (error) {
     errorLogger.error(`Error in getCmc: ${error.message}`);
     handleErrorResponse(res, error, "getCmc");
@@ -31,8 +30,7 @@ async function getSavedCmc() {
   const collection = process.env.MONGODB_COLLECTION_CMC;
   try {
     const data = await getDataFromCollection(collection);
-    console.log("Successfully retrieved saved CoinMarketCap data.");
-    //infoLogger.info("Successfully retrieved saved CoinMarketCap data.");
+    console.log("🚀 ~ getSavedCmc ~ data:", data);
     return data;
   } catch (error) {
     errorLogger.error(`Error in getSavedCmc: ${error.message}`);
@@ -59,15 +57,7 @@ async function updateCmcDataInDatabase(cmcData, res) {
       totalCount: cmcData.length,
     });
 
-    console.log("Successfully updated CoinMarketCap data in the database.");
-    infoLogger.info(
-      "Successfully updated CoinMarketCap data in the database.",
-      {
-        deleteResult,
-        saveResult,
-        totalCount: cmcData.length,
-      }
-    );
+    console.log("🚀 ~ res.status ~ res:", res);
   } catch (error) {
     errorLogger.error(`Error in updateCmcDataInDatabase: ${error.message}`);
     handleErrorResponse(res, error, "updateCmcDataInDatabase");
@@ -82,9 +72,9 @@ async function updateCmcDataInDatabase(cmcData, res) {
 async function updateCmc(req, res) {
   try {
     const cmcData = await fetchCmcData();
-    await updateCmcDataInDatabase(cmcData, res);
-    console.log("Successfully updated CoinMarketCap data via API.");
-    //infoLogger.info("Successfully updated CoinMarketCap data via API.");
+    console.log("🚀 ~ updateCmc ~ cmcData:", cmcData)
+    const update = await updateCmcDataInDatabase(cmcData, res);
+    console.log("🚀 ~ updateCmc ~ update:", update)
   } catch (error) {
     errorLogger.error(`Error in updateCmc: ${error.message}`);
     handleErrorResponse(res, error, "updateCmc");

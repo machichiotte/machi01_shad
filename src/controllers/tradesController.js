@@ -17,17 +17,18 @@ async function getTrades(req, res) {
 
 /**
  * Retrieves the last recorded trades from the database.
- * @returns {Object} - The last recorded orders.
+ * @returns {Object} - The last recorded trades.
  */
 async function getSavedTrades() {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
+  console.log("🚀 ~ getSavedTrades ~ collection:", collection);
 
   try {
-    console.log(`Retrieving trades from MongoDB collection: ${collection}`);
-    const orders = await getDataFromCollection(collection);
-    infoLogger.info("Retrieved saved trades from the database.");
-    return orders;
+    const trades = await getDataFromCollection(collection);
+    console.log("🚀 ~ getSavedTrades ~ trades:", trades.length);
+    return trades;
   } catch (error) {
+    console.log("🚀 ~ getSavedTrades ~ error:", error);
     errorLogger.error("Failed to get saved trades", { error: error.message });
     throw error;
   }
@@ -84,26 +85,25 @@ async function saveTrades(newTrades, collection, isFiltered) {
       });
     }
 
-    console.log("filteredTrades", filteredTrades);
+    console.log("🚀 ~ saveTrades ~ filteredTrades:", filteredTrades);
 
     // Convertir chaque trade en objet s'il ne l'est pas déjà
     const tradesToInsert = filteredTrades.map((trade) => {
       return typeof trade === "object" ? trade : { trade }; // Assurez-vous que chaque trade est un objet
     });
-
-    console.log("tradesToInsert", tradesToInsert);
+    console.log("🚀 ~ tradesToInsert ~ tradesToInsert:", tradesToInsert.length);
 
     // Ajouter les nouveaux trades à la base de données
     if (tradesToInsert.length > 0) {
       const result = await saveData(tradesToInsert, collection);
+
       console.log(
-        `${result.insertedCount} new trades inserted into the database.`
+        "🚀 ~ saveTrades ~ result.insertedCount:",
+        result.insertedCount
       );
-    } else {
-      console.log("No new trades to insert.");
     }
   } catch (error) {
-    console.error("Error saving trades to database:", error);
+    console.log("🚀 ~ saveTrades ~ error:", error);
   } finally {
     //await client.close();
   }
@@ -111,7 +111,9 @@ async function saveTrades(newTrades, collection, isFiltered) {
 
 async function updateTrades(req, res) {
   const { exchangeId } = req.params;
+  console.log("🚀 ~ updateTrades ~ exchangeId:", exchangeId);
   const collection = process.env.MONGODB_COLLECTION_TRADES;
+  console.log("🚀 ~ updateTrades ~ collection:", collection);
   const exchange = createExchangeInstance(exchangeId);
 
   try {
@@ -131,14 +133,12 @@ async function updateTrades(req, res) {
               mappedData.push(...mapTrades(exchangeId, trades));
             }
           } catch (err) {
-            console.log("Erreur lors de la récupération des trades:", err);
+            console.log("🚀 ~ updateTrades ~ err:", err);
             res.status(500).json({ error: err.name + ": " + err.message });
           }
         }
         break;
       case "htx":
-        console.log("inside htx");
-
         //const types = 'buy-market,sell-market,buy-limit,sell-limit'; // Les types d'ordre à inclure dans la recherche, séparés par des virgules
         const currentTime = Date.now();
         const windowSize = 48 * 60 * 60 * 1000; // Taille de la fenêtre de recherche (48 heures)
@@ -146,7 +146,6 @@ async function updateTrades(req, res) {
         const iterations = Math.ceil(totalDuration / windowSize);
 
         for (let i = 0; i < iterations; i++) {
-          console.log(i);
           const startTime = currentTime - (i + 1) * windowSize;
           const endTime = currentTime - i * windowSize;
 
@@ -166,7 +165,7 @@ async function updateTrades(req, res) {
               mappedData.push(...mapTrades(exchangeId, trades));
             }
           } catch (err) {
-            console.log("Erreur lors de la récupération des commandes:", err);
+            console.log("🚀 ~ updateTrades ~ err:", err);
             res.status(500).json({ error: err.name + ": " + err.message });
           }
         }
@@ -176,7 +175,7 @@ async function updateTrades(req, res) {
     try {
       await deleteAndSaveData(mappedData, collection, exchangeId);
     } catch (err) {
-      console.log("Error suppression sauvegarde:", err);
+      console.log("🚀 ~ updateTrades ~ err:", err);
       res.status(500).json({ error: err.name + ": " + err.message });
     }
     if (tradesData.length > 0) {

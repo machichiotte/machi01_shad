@@ -24,12 +24,11 @@ function getAllCalculs(
   lastTickers
 ) {
   //TODO add cmc, trades, strats, buyOrders, sellOrders
+  console.log("🚀 ~ asset:", asset);
 
-  console.log("getAllCalculs");
-  console.log("asset", asset);
   const symbol = asset + "/USDT";
   const balance = getBalance(asset, lastBalance);
-  console.log("balance", balance);
+  console.log("🚀 ~ balance:", balance);
 
   const {
     rank,
@@ -41,13 +40,13 @@ function getAllCalculs(
     cryptoPercentChange90d,
   } = getCmcValues(asset, lastCmc);
 
-  console.log("rank", rank);
+  console.log("🚀 ~ rank:", rank);
 
   const currentPrice = lastTickers.filter(
     (ticker) =>
       ticker.symbol === asset + "/USDT" && ticker.platform === exchangeId
   );
-  console.log("currentPrice", currentPrice);
+  console.log("🚀 ~ currentPrice:", currentPrice);
 
   const totalSell = getTotalSell(asset, lastTrades);
 
@@ -67,7 +66,7 @@ function getAllCalculs(
     const [leftSymbol] = order.symbol.split("/");
     return leftSymbol === asset;
   });
-  console.log("openSellOrders", openSellOrders);
+  console.log("🚀 ~ openSellOrders:", openSellOrders);
 
   const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(
     symbol,

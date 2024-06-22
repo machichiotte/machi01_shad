@@ -1,10 +1,10 @@
 // src/services/requestHandlers.js
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const app = express();
-app.use(express.static('dist'));
+app.use(express.static("dist"));
 app.use(cors());
 
 // Use body-parser as a global middleware for all requests
@@ -12,54 +12,54 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //converter
-const converterRoutes  = require('../routes/converterRoutes.js');
-app.use('/api/converter', converterRoutes);
+const converterRoutes = require("../routes/converterRoutes.js");
+app.use("/api/converter", converterRoutes);
 
 //auth
-const authRoutes  = require('../routes/authRoutes.js');
-app.use('/api/auth', authRoutes);
+const authRoutes = require("../routes/authRoutes.js");
+app.use("/api/auth", authRoutes);
 
 //balance
-const balanceRoutes  = require('../routes/balanceRoutes.js');
-app.use('/api/balance', balanceRoutes);
+const balanceRoutes = require("../routes/balanceRoutes.js");
+app.use("/api/balance", balanceRoutes);
 
 //cmc
-const cmcRoutes  = require('../routes/cmcRoutes.js');
-app.use('/api/cmc', cmcRoutes);
+const cmcRoutes = require("../routes/cmcRoutes.js");
+app.use("/api/cmc", cmcRoutes);
 
 //strat
-const strategyRoutes  = require('../routes/strategyRoutes.js');
-app.use('/api/strategy', strategyRoutes);
+const strategyRoutes = require("../routes/strategyRoutes.js");
+app.use("/api/strategy", strategyRoutes);
 
 //orders
-const ordersRoutes  = require('../routes/ordersRoutes.js');
-app.use('/api/orders', ordersRoutes);
+const ordersRoutes = require("../routes/ordersRoutes.js");
+app.use("/api/orders", ordersRoutes);
 
 //load markets
-const marketRoutes  = require('../routes/marketsRoutes.js');
-app.use('/api/markets', marketRoutes);
+const marketRoutes = require("../routes/marketsRoutes.js");
+app.use("/api/markets", marketRoutes);
 
 //prices
-const pricesRoutes  = require('../routes/pricesRoutes.js');
-app.use('/api/prices', pricesRoutes);
+const pricesRoutes = require("../routes/pricesRoutes.js");
+app.use("/api/prices", pricesRoutes);
 
 //trades
-const tradesRoutes  = require('../routes/tradesRoutes.js');
-app.use('/api/trades', tradesRoutes);
+const tradesRoutes = require("../routes/tradesRoutes.js");
+app.use("/api/trades", tradesRoutes);
 
 //tickers
-const tickersRoutes  = require('../routes/tickersRoutes.js');
-app.use('/api/tickers', tickersRoutes);
+const tickersRoutes = require("../routes/tickersRoutes.js");
+app.use("/api/tickers", tickersRoutes);
 
 //last update
-const lastUpdateRoutes  = require('../routes/lastUpdateRoutes.js');
-app.use('/api/lastUpdate', lastUpdateRoutes);
+const lastUpdateRoutes = require("../routes/lastUpdateRoutes.js");
+app.use("/api/lastUpdate", lastUpdateRoutes);
 
 function startServer() {
-    const PORT = process.env.PORT || 10000;
-    app.listen(PORT, () => {
-      console.log(`Server listening on port ${PORT}`);
-    });
-  }
+  const PORT = process.env.PORT || 10000;
+  app.listen(PORT, () => {
+    console.log("🚀 ~ app.listen ~ PORT:", PORT);
+  });
+}
 
 module.exports = { app, startServer };

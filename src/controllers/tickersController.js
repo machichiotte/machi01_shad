@@ -28,14 +28,14 @@ async function getAllTickers(req, res) {
  */
 async function getSavedAllTickers() {
   try {
-    console.log('getSavedAllTickersgetSavedAllTickers')
     const collection = process.env.MONGODB_COLLECTION_TICKERS;
+    console.log("🚀 ~ getSavedAllTickers ~ collection:", collection)
     const tickersData = await getDataFromCollection(collection);
-    console.log('getSavedAllTickersgetSavedAllTickers 33333')
-
+    console.log("🚀 ~ getSavedAllTickers ~ tickersData:", tickersData.length)
     return tickersData;
   } catch (error) {
-    throw new Error("Failed to get saved tickers: " + error.message);
+    console.log("🚀 ~ getSavedAllTickers ~ error:", error)
+    //throw new Error("Failed to get saved tickers: " + error.message);
   }
 }
 
@@ -70,20 +70,22 @@ async function getSavedAllTickersByExchange(exchangeId) {
     const collection = process.env.MONGODB_COLLECTION_TICKERS;
     const tickersData = await getDataFromCollection(collection);
 
-    const exchangeData = tickersData.filter(
-      (obj) => obj.platform === exchangeId
-    );
+    // Vérification que tickersData est bien un tableau
+    if (!Array.isArray(tickersData)) {
+      throw new Error('tickersData is not an array');
+    }
+
+    const exchangeData = tickersData.filter((obj) => obj.platform === exchangeId);
+    console.log("🚀 ~ getSavedAllTickersByExchange ~ exchangeData:", exchangeData.length)
 
     if (exchangeData) {
       return exchangeData;
     } else {
-      console.log("Exchange not found");
       return [];
     }
   } catch (error) {
-    throw new Error(
-      "Failed to get saved tickers by exchange: " + error.message
-    );
+    console.log("🚀 ~ getSavedAllTickersByExchange ~ error:", error)
+    throw new Error("Failed to get saved tickers by exchange: " + error.message);
   }
 }
 

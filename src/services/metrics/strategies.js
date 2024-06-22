@@ -59,10 +59,12 @@ function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
 }
 
 function getStrat(exchangeId, asset, strats) {
+  console.log("🚀 ~ getStrat ~ strats:", strats);
+  console.log("🚀 ~ getStrat ~ asset:", asset);
+  console.log("🚀 ~ getStrat ~ exchangeId:", exchangeId);
   // Rechercher la stratégie correspondante à l'actif donné
   const filteredStrat = strats.find((strat) => strat.asset === asset) || {};
-
-  console.log("filtered", exchangeId + " " + asset + " " + filteredStrat);
+  console.log("🚀 ~ getStrat ~ filteredStrat:", filteredStrat);
   // Déterminer la stratégie et l'exposition maximale
   const strat = filteredStrat.strategies?.[exchangeId] || "No strategy";
   const stratExpo = filteredStrat.maxExposure?.[exchangeId] || MAX_EXPO;

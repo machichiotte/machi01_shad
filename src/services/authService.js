@@ -11,11 +11,10 @@ async function createUserDBService(userDetails) {
     const collection = process.env.MONGODB_COLLECTION_USERS;
     const result = await saveData(newUser, collection);
 
-    console.log("User created successfully:", result.insertedId);
-
+    console.log("🚀 ~ createUserDBService ~ result.insertedId:", result.insertedId)
     return true;
   } catch (err) {
-    console.error("Error creating user:", err);
+    console.log("🚀 ~ createUserDBService ~ err:", err)
     return false;
   }
 }
@@ -23,12 +22,12 @@ async function createUserDBService(userDetails) {
 async function findUserByEmail(email) {
   try {
     const collection = process.env.MONGODB_COLLECTION_USERS;
+    console.log("🚀 ~ findUserByEmail ~ collection:", collection)
     const user = await getOne(collection, { email }); // Filter by email
-    console.log("User found :", user);
-
+    console.log("🚀 ~ findUserByEmail ~ user:", user)
     return user; // Return the found user object or null if not found
   } catch (err) {
-    console.error("Error finding user by email:", err);
+    console.log("🚀 ~ findUserByEmail ~ err:", err)
     return null; // Indicate error or user not found
   }
 }

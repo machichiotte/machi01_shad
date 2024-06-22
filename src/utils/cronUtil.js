@@ -18,24 +18,24 @@ async function cronUtilsMarkets(exchangeId) {
     await deleteAndSaveData(mappedData, collection, exchangeId);
     saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, exchangeId);
   } catch (err) {
-    console.log("Error updateMarkets:", err);
+    console.log("🚀 ~ cronUtilsMarkets ~ err:", err);
   }
 }
 
 async function cronUtilsTickers(exchangeId) {
+  console.log("🚀 ~ cronUtilsTickers ~ exchangeId:", exchangeId);
   const collection = process.env.MONGODB_COLLECTION_TICKERS;
   const exchange = createExchangeInstance(exchangeId);
 
   try {
     const data = await exchange.fetchTickers();
-    // console.log("cronTickers exchangeId", exchangeId);
-    // console.log("cronTickers data", data);
+    console.log("🚀 ~ cronUtilsTickers ~ data:", data);
     const mappedData = mapTickers(data, exchangeId);
-    //console.log('cronTickers mappedData', mappedData)
+    console.log("🚀 ~ cronUtilsTickers ~ mappedData:", mappedData);
     await deleteAndSaveData(mappedData, collection, exchangeId);
     saveLastUpdateToMongoDB(process.env.TYPE_TICKERS, exchangeId);
   } catch (err) {
-    console.log("Error updateTickers:", err);
+    console.log("🚀 ~ cronUtilsTickers ~ err:", err);
   }
 }
 
