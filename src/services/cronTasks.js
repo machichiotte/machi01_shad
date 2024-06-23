@@ -68,14 +68,6 @@ async function executeCronTask(task, isCritical = false) {
   }
 }
 
-async function cronShad() {
-  console.log("Running the cron job for updateShad...");
-  executeCronTask(async () => {
-    await calculateAllMetrics();
-    // il faudrait mettre a jour la base de donnee shad
-  }, true);
-}
-
 async function cronTickers() {
   console.log("Running the cron job for updateTickers...");
 
@@ -112,96 +104,17 @@ async function cronBalances() {
         //je refais les calculs si il y a certains assets qui ont des differences de balance
         await calculateMetrics(differences, exchangeId);
       }
-    }, true);
-  }
-}
 
-async function cronTrades() {
-  console.log("Running the cron job for fetching trades...");
-
-  for (const exchangeId of exchangesToUpdate) {
-    // console.log("🚀 ~ cronTrades ~ exchangeId:", exchangeId);
-    executeCronTask(async () => {
-      const currentBalance = await fetchCurrentBalance(exchangeId, 3);
-      // console.log(
-      // "🚀 ~ executeCronTask ~ currentBalance:",
-      // currentBalance.length
-      // );
-      await fetchAndSaveTradesForAllAssets(currentBalance, exchangeId);
+      calculateAllMetrics()
     }, true);
   }
 }
 
 async function initializeCronTasks() {
   console.log("Start initialize Cron");
-  cron.schedule(cronSchedules.shad, cronShad);
-  //cron.schedule(cronSchedules.tickers, cronTickers);
-  //cron.schedule(cronSchedules.markets, cronMarkets);
+  cron.schedule(cronSchedules.tickers, cronTickers);
+  cron.schedule(cronSchedules.markets, cronMarkets);
   cron.schedule(cronSchedules.balances, cronBalances);
-  cron.schedule(cronSchedules.trades, cronTrades);
-}
-
-async function fetchAndSaveTradesForAllAssets(balance, exchangeId) {
-  try {
-    const newTrades = [];
-
-    // Récupérer les marchés disponibles pour l'échange
-    const markets = await getSavedAllTickersByExchange(exchangeId);
-    // console.log(
-    // "🚀 ~ fetchAndSaveTradesForAllAssets ~ markets:",
-    // markets.length
-    // );
-
-    for (const asset of balance) {
-      const symbol = asset.symbol;
-      // console.log("🚀 ~ fetchAndSaveTradesForAllAssets ~ symbol:", symbol);
-
-      for (const quote of quoteCurrencies) {
-        if (symbol != quote) {
-          // Vérifier si la paire de trading existe sur le marché
-          const marketExists = markets.some(
-            (market) => market.symbol === symbol + "/" + quote
-          );
-          // console.log(
-          // "🚀 ~ fetchAndSaveTradesForAllAssets ~ marketExists:",
-          // marketExists
-          // );
-
-          if (marketExists) {
-            const tradingPair = symbol + "/" + quote;
-            // console.log(
-            // "🚀 ~ fetchAndSaveTradesForAllAssets ~ tradingPair:",
-            // tradingPair
-            // );
-
-            // Récupérer les derniers trades pour la paire de trading
-            const tradeList = await fetchLastTrades(exchangeId, tradingPair);
-
-            // Mapper les trades pour la paire de trading
-            const mappedTrades = mapTrades(exchangeId, tradeList);
-            // console.log(
-            // "🚀 ~ fetchAndSaveTradesForAllAssets ~ mappedTrades:",
-            // mappedTrades.length
-            // );
-
-            newTrades.push(...mappedTrades);
-          }
-        }
-      }
-    }
-
-    // Enregistrer les nouveaux trades dans la base de données MongoDB
-    console.log(
-      `Total new trades to be saved for ${exchangeId}: ${newTrades.length}`
-    );
-    await saveAllTradesToDatabase(newTrades);
-  } catch (error) {
-    // console.log(
-    // "🚀 ~ fetchAndSaveTradesForAllAssets ~ `Error handling trades for all assets :",
-    // exchangeId
-    // );
-    throw error;
-  }
 }
 
 async function processBalanceChanges(differences, exchangeId) {
