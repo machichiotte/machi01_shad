@@ -34,7 +34,7 @@ async function getDB() {
 
 async function getCollection(collectionName) {
   console.log("🚀 ~ getCollection ~ collectionName:", collectionName);
-  const db = await getDB();
+  db = await getDB();
   return db.collection(collectionName);
 }
 
@@ -66,7 +66,7 @@ async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
 async function createCollectionIfNotExists(collectionName) {
   return await handleRetry(
     async (collectionName) => {
-      const db = await getDB();
+      db = await getDB();
       const collections = await db
         .listCollections({ name: collectionName })
         .toArray();
@@ -255,11 +255,8 @@ async function deleteAllDataMDB(collectionName) {
 
 async function connectToMongoDB() {
   try {
-    const client = await getMongoClient();
-    await client.db("admin").command({ ping: 1 });
-    console.log("🚀 ~ connectToMongoDB ~ Pinged your deployment.");
+    db = await getDB();
 
-    db = client.db(process.env.MONGODB_DATABASE);
     console.log("🚀 ~ connectToMongoDB ~ Connected to MongoDB!");
 
     const collectionsToCreate = [
