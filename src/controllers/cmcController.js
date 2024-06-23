@@ -30,7 +30,7 @@ async function getSavedCmc() {
   const collection = process.env.MONGODB_COLLECTION_CMC;
   try {
     const data = await getDataFromCollection(collection);
-    console.log("🚀 ~ getSavedCmc ~ data:", data);
+    console.log("🚀 ~ getSavedCmc ~ data:", data.length);
     return data;
   } catch (error) {
     errorLogger.error(`Error in getSavedCmc: ${error.message}`);

@@ -14,7 +14,7 @@ async function getSavedStrat() {
   console.log("🚀 ~ getSavedStrat ~ collection:", collection);
   try {
     const strat = await getDataFromCollection(collection);
-    console.log("🚀 ~ getSavedStrat ~ strat:", strat);
+    console.log("🚀 ~ getSavedStrat ~ strat:", strat.length);
     return strat;
   } catch (error) {
     console.log("🚀 ~ getSavedStrat ~ error:", error);
