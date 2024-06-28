@@ -1,0 +1,17 @@
+// src/utils/controllerUtil.js
+
+/**
+ * Validates required environment variables.
+ * Throws an error if any required variable is missing.
+ */
+async function validateEnvVariables(requiredVariables) {
+    requiredVariables.forEach(variable => {
+      if (!process.env[variable]) {
+        throw new Error(`Missing environment variable: ${variable}`);
+      }
+    });
+  }
+
+  module.exports = {
+    validateEnvVariables
+  };
