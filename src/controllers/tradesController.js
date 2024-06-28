@@ -21,17 +21,10 @@ async function getTrades(req, res) {
  */
 async function getSavedTrades() {
   const collection = process.env.MONGODB_COLLECTION_TRADES;
-  console.log("🚀 ~ getSavedTrades ~ collection:", collection);
 
-  try {
-    const trades = await getDataFromCollection(collection);
-    console.log("🚀 ~ getSavedTrades ~ trades:", trades.length);
-    return trades;
-  } catch (error) {
-    console.log("🚀 ~ getSavedTrades ~ error:", error);
-    errorLogger.error("Failed to get saved trades", { error: error.message });
-    throw error;
-  }
+    const data = await getDataFromCollection(collection);
+    console.log("🚀 ~ getSavedTrades ~ data:", data.length);
+    return data;
 }
 
 async function fetchTradesInDatabase() {

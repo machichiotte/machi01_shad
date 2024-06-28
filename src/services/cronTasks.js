@@ -11,28 +11,28 @@ const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
 const { cronUtilsMarkets, cronUtilsTickers } = require("../utils/cronUtil.js");
 const { mapTrades } = require("./mapping.js");
 const {
-  getSavedBalance,
+  fetchBalancesInDatabase,
   fetchCurrentBalance,
   saveBalanceInDatabase,
 } = require("../controllers/balanceController.js");
 const {
-  getSavedOrders,
+  fetchOrdersInDatabase,
   updateOrdersFromServer,
 } = require("../controllers/ordersController.js");
 const {
-  getSavedTrades,
+  fetchTradesInDatabase,
   fetchLastTrades,
   saveTradesToDatabase,
   saveAllTradesToDatabase,
 } = require("../controllers/tradesController.js");
 
 const {
-  getSavedAllTickers,
+  fetchTickersInDatabase,
   getSavedAllTickersByExchange,
 } = require("../controllers/tickersController.js");
 
-const { getSavedStrat } = require("../controllers/strategyController.js");
-const { getSavedCmc } = require("../controllers/cmcController.js");
+const { fetchStratsInDatabase } = require("../controllers/strategyController.js");
+const { fetchCmcInDatabase } = require("../controllers/cmcController.js");
 
 //const exchangesToUpdate = ["binance", "kucoin", "htx", "okx", "gateio"];
 const exchangesToUpdate = ["binance", "kucoin"];
@@ -52,69 +52,74 @@ async function sendMail(options) {
   });
 }
 
-async function executeCronTask(task, isCritical = false) {
-  try {
-    await task();
-  } catch (error) {
-    errorLogger.error(`Task execution failed: ${error.message}`, { error });
-    if (isCritical) {
-      sendMail({
-        from: smtp.auth.user,
-        to: process.env.EMAIL_ADDRESS_SEND,
-        subject: "Critical Error Alert",
-        text: `Critical error in scheduled task: ${error.message}`,
-      });
+async function executeCronTask(task, isCritical = false, retries = 3) {
+  let attempts = 0;
+  while (attempts < retries) {
+    try {
+      await task();
+      return; // Exit if successful
+    } catch (error) {
+      errorLogger.error(`Task execution failed: ${error.message}`, { error });
+      if (isCritical) {
+        if (attempts < retries - 1) {
+          await new Promise(res => setTimeout(res, 5000 * (attempts + 1))); // Exponential backoff
+        } else {
+          sendMail({
+            from: smtp.auth.user,
+            to: process.env.EMAIL_ADDRESS_SEND,
+            subject: "Critical Error Alert",
+            text: `Critical error in scheduled task: ${error.message}`,
+          });
+        }
+      }
+      attempts++;
     }
   }
 }
 
-async function cronTickers() {
-  console.log("Running the cron job for updateTickers...");
 
+async function executeForExchanges(taskName, taskFunction) {
+  console.log(`Running the cron job for ${taskName}...`);
   for (const exchangeId of exchangesToUpdate) {
-    executeCronTask(async () => {
-      await updateTickersForExchange(exchangeId);
-      // il faudrait mettre a jour la base de donnee shad
+    await executeCronTask(async () => {
+      await taskFunction(exchangeId);
     }, true);
   }
+}
+
+async function cronTickers() {
+  await executeForExchanges("updateTickers", updateTickersForExchange);
 }
 
 async function cronMarkets() {
-  console.log("Running the cron job for updateMarkets...");
-
-  for (const exchangeId of exchangesToUpdate) {
-    executeCronTask(async () => {
-      await updateMarketsForExchange(exchangeId);
-    }, true);
-  }
+  await executeForExchanges("updateMarkets", updateMarketsForExchange);
 }
 
 async function cronBalances() {
-  console.log("Running the cron job for updating balances...");
-
-  for (const exchangeId of exchangesToUpdate) {
-    executeCronTask(async () => {
-      const lastBalance = await getSavedBalance();
-      const currentBalance = await fetchCurrentBalance(exchangeId, 3);
-      const differences = compareBalances(lastBalance, currentBalance);
-      if (differences.length > 0) {
-        await saveBalanceInDatabase(currentBalance, exchangeId);
-
-        await processBalanceChanges(differences, exchangeId);
-        //je refais les calculs si il y a certains assets qui ont des differences de balance
-        await calculateMetrics(differences, exchangeId);
-      }
-
-      calculateAllMetrics()
-    }, true);
-  }
+  await executeForExchanges("updateBalances", async (exchangeId) => {
+    const lastBalance = await fetchBalancesInDatabase();
+    const currentBalance = await fetchCurrentBalance(exchangeId, 3);
+    const differences = compareBalances(lastBalance, currentBalance);
+    if (differences.length > 0) {
+      await saveBalanceInDatabase(currentBalance, exchangeId);
+      await processBalanceChanges(differences, exchangeId);
+      await calculateMetrics(differences, exchangeId);
+    }
+    await calculateAllMetrics();
+  });
 }
 
 async function initializeCronTasks() {
-  console.log("Start initialize Cron");
-  cron.schedule(cronSchedules.tickers, cronTickers);
-  cron.schedule(cronSchedules.markets, cronMarkets);
-  cron.schedule(cronSchedules.balances, cronBalances);
+  try {
+    console.log("Starting to initialize Cron tasks...");
+    cron.schedule(cronSchedules.tickers, cronTickers);
+    cron.schedule(cronSchedules.markets, cronMarkets);
+    cron.schedule(cronSchedules.balances, cronBalances);
+    console.log("Cron tasks initialized.");
+  } catch (error) {
+    errorLogger.error(`Error initializing cron tasks: ${error.message}`, { error });
+    throw error;
+  }
 }
 
 async function processBalanceChanges(differences, exchangeId) {
@@ -189,25 +194,25 @@ async function processBalanceChanges(differences, exchangeId) {
 }
 
 async function getBalanceByPlatform(exchangeId) {
-  const data = await getSavedBalance();
+  const data = await fetchBalancesInDatabase();
   return data.filter((obj) => obj.platform === exchangeId);
 }
 
 async function getTradesByPlatform(exchangeId) {
-  const data = await getSavedTrades();
+  const data = await fetchTradesInDatabase();
   return data.filter((obj) => obj.platform === exchangeId);
 }
 
 async function getOrdersByPlatform(exchangeId) {
   // console.log("🚀 ~ getOrdersByPlatform ~ exchangeId:", exchangeId);
-  const data = await getSavedOrders();
+  const data = await fetchOrdersInDatabase();
   // console.log("🚀 ~ getOrdersByPlatform ~ data:", data);
   return data.filter((obj) => obj.platform === exchangeId);
 }
 
 async function getTickersByPlatform(exchangeId) {
   // console.log("🚀 ~ getTickersByPlatform ~ exchangeId:", exchangeId);
-  const data = await getSavedAllTickers();
+  const data = await fetchTickersInDatabase();
   // console.log("🚀 ~ getTickersByPlatform ~ data:", data);
   return data.filter((obj) => obj.platform === exchangeId);
 }
@@ -219,30 +224,28 @@ async function calculateAllMetrics() {
   // il faut maintenant recalculer certains element ou tous si le fichier ne possede pas les donnees,
   // on possede les differences donc il est simple de savoir pour quels assets sont necessaires les calculs
 
-  // on a besoin des dernieres balances de toute facon puisque cest un element que je veux voir apparaitre dans mon tableau
-  const lastCmc = await getSavedCmc();
-  // console.log("🚀 ~ calculateAllMetrics ~ lastCmc:", lastCmc);
+  // Utilisez Promise.all pour paralléliser les appels de récupération de données
+  const [
+    lastCmc,
+    lastStrategies,
+    lastTrades,
+    lastOpenOrders,
+    lastTickers,
+    lastBalance
+  ] = await Promise.all([
+    fetchCmcInDatabase(),
+    fetchStratsInDatabase(),
+    fetchTradesInDatabase(),
+    fetchOrdersInDatabase(),
+    fetchTickersInDatabase(),
+    fetchBalancesInDatabase()
+  ]);
 
-  const lastStrategies = await getSavedStrat();
-  // console.log("🚀 ~ calculateAllMetrics ~ lastStrategies:", lastStrategies);
-
-  const lastTrades = await getSavedTrades();
-  // console.log("🚀 ~ calculateAllMetrics ~ lastTrades:", lastTrades);
-
-  const lastOpenOrders = await getSavedOrders();
-  // console.log("🚀 ~ calculateAllMetrics ~ lastOpenOrders:", lastOpenOrders);
-
-  const lastTickers = await getSavedAllTickers();
-  // console.log("🚀 ~ calculateAllMetrics ~ lastTickers:", lastTickers);
-
-  const lastBalance = await getSavedBalance();
-  // console.log("🚀 ~ calculateAllMetrics ~ lastBalance:", lastBalance);
-
-  let filteredCmc,
-    filteredTrades,
-    filteredOpenOrders,
-    filteredStrategy,
-    filteredTickers;
+  // Vérifiez que chaque collection récupérée est valide avant de continuer
+  if (!lastCmc || !lastStrategies || !lastTrades || !lastOpenOrders || !lastTickers || !lastBalance) {
+    console.error("Error: One or more data retrieval functions returned invalid data.");
+    return;
+  }
 
   for (const balance of lastBalance) {
     const assetSymbol = balance.symbol;
@@ -250,20 +253,25 @@ async function calculateAllMetrics() {
 
     const assetPlatform = balance.platform;
 
-    filteredCmc = lastCmc.find((cmc) => cmc.symbol === assetSymbol);
-    filteredTrades = lastTrades.filter((trade) => trade.altA === assetSymbol);
-    filteredOpenOrders = lastOpenOrders.filter(
+    const filteredCmc = lastCmc.find((cmc) => cmc.symbol === assetSymbol);
+    const filteredTrades = lastTrades.filter((trade) => trade.altA === assetSymbol);
+    const filteredOpenOrders = lastOpenOrders.filter(
       (order) =>
         order.symbol === assetSymbol + "/USDT" ||
         order.symbol === assetSymbol + "/USDC" ||
         order.symbol === assetSymbol + "/BTC"
     );
-    filteredStrategy = lastStrategies[assetSymbol][assetPlatform];
-    filteredTickers = lastTickers.filter(
-      (ticker) =>
-        ticker.symbol.startsWith(assetSymbol + "/") &&
+
+    // Vérifiez que les stratégies existent pour ce symbole et cette plateforme
+    const filteredStrategy = lastStrategies[assetSymbol]?.[assetPlatform];
+
+    // Filtrage des tickers
+    const filteredTickers = lastTickers.filter(
+      ticker =>
+        ticker.symbol.startsWith(`${assetSymbol}/`) &&
         ticker.platform === assetPlatform
     );
+
     const values = getAllCalculs(
       assetSymbol,
       assetPlatform,
@@ -275,30 +283,26 @@ async function calculateAllMetrics() {
       filteredTickers
     );
 
-    // console.log("🚀 ~ calculateAllMetrics ~ values:", values);
+     console.log("🚀 ~ calculateAllMetrics ~ values:", values.length);
   }
 }
 
 async function calculateMetrics(differences, exchangeId) {
-  // console.log("🚀 ~ calculateMetrics ~ exchangeId:", exchangeId);
-  // console.log("🚀 ~ calculateMetrics ~ differences:", differences);
-  // je pense quon a ici recuperer la derniere balance, les trades sont a jour
-  // il faut maintenant recalculer certains element ou tous si le fichier ne possede pas les donnees,
-  // on possede les differences donc il est simple de savoir pour quels assets sont necessaires les calculs
-
-  // on a besoin des dernieres balances de toute facon puisque cest un element que je veux voir apparaitre dans mon tableau
-  const lastCmc = await getSavedCmc();
-  // console.log("🚀 ~ calculateMetrics ~ lastCmc:", lastCmc);
-  const lastBalance = await getBalanceByPlatform(exchangeId);
-  // console.log("🚀 ~ calculateMetrics ~ lastBalance:", lastBalance);
-  const lastTrades = await getTradesByPlatform(exchangeId);
-  // console.log("🚀 ~ calculateMetrics ~ lastTrades:", lastTrades);
-  const lastStrategies = await getSavedStrat();
-  // console.log("🚀 ~ calculateMetrics ~ lastStrategies:", lastStrategies);
-  const lastOpenOrders = await getOrdersByPlatform(exchangeId);
-  // console.log("🚀 ~ calculateMetrics ~ lastOpenOrders:", lastOpenOrders);
-  const lastTickers = await getTickersByPlatform(exchangeId);
-  // console.log("🚀 ~ calculateMetrics ~ lastTickers:", lastTickers);
+  const [
+    lastCmc,
+    lastBalance,
+    lastTrades,
+    lastStrategies,
+    lastOpenOrders,
+    lastTickers
+  ] = await Promise.all([
+    fetchCmcInDatabase(),
+    getBalanceByPlatform(exchangeId),
+    getTradesByPlatform(exchangeId),
+    fetchStratsInDatabase(),
+    getOrdersByPlatform(exchangeId),
+    getTickersByPlatform(exchangeId)
+  ]);
 
   // Boucler à travers les éléments uniques présents dans differences
   for (const asset of differences) {
@@ -316,7 +320,7 @@ async function calculateMetrics(differences, exchangeId) {
     );
 
     // console.log("🚀 ~ calculateMetrics ~ values:", values);
-    //on remplace ici a chaque foois ou plus tard en une seule fois les differentes lignes du shad
+    //on remplace ici a chaque fois ou plus tard en une seule fois les differentes lignes du shad
   }
 }
 
@@ -328,34 +332,16 @@ async function calculateMetrics(differences, exchangeId) {
  */
 function compareBalances(lastBalance, currentBalance) {
   const differences = [];
+  const lastBalancesBySymbol = new Map(lastBalance.map(b => [b.symbol, b]));
 
-  // Créer un objet pour stocker les balances précédentes par symbole pour une recherche plus efficace
-  const lastBalancesBySymbol = {};
-  for (const balance of lastBalance) {
-    lastBalancesBySymbol[balance.symbol] = balance;
-  }
-
-  // Parcourir les balances actuelles pour comparer avec les balances précédentes
   for (const current of currentBalance) {
-    // Vérifier si le symbole existe dans les balances précédentes
-    if (lastBalancesBySymbol.hasOwnProperty(current.symbol)) {
-      // Récupérer la balance précédente correspondante
-      const last = lastBalancesBySymbol[current.symbol];
-
-      // Comparer les balances
-      if (
-        last.balance !== current.balance &&
-        last.platform == current.platform
-      ) {
-        // Si les balances sont différentes, ajouter à la liste des différences
-        differences.push({ symbol: current.symbol, balanceDifference: true });
-      }
-    } else {
-      // Si le symbole est nouveau, ajouter à la liste des différences
+    const last = lastBalancesBySymbol.get(current.symbol);
+    if (last && last.balance !== current.balance && last.platform === current.platform) {
+      differences.push({ symbol: current.symbol, balanceDifference: true });
+    } else if (!last) {
       differences.push({ symbol: current.symbol, newSymbol: true });
     }
   }
-
   return differences;
 }
 

@@ -29,9 +29,9 @@ async function cronUtilsTickers(exchangeId) {
 
   try {
     const data = await exchange.fetchTickers();
-    console.log("🚀 ~ cronUtilsTickers ~ data:", data);
+    console.log("🚀 ~ cronUtilsTickers ~ data:", data.length);
     const mappedData = mapTickers(data, exchangeId);
-    console.log("🚀 ~ cronUtilsTickers ~ mappedData:", mappedData);
+    console.log("🚀 ~ cronUtilsTickers ~ mappedData:", mappedData.length);
     await deleteAndSaveData(mappedData, collection, exchangeId);
     saveLastUpdateToMongoDB(process.env.TYPE_TICKERS, exchangeId);
   } catch (err) {

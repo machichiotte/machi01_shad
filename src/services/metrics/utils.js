@@ -60,11 +60,26 @@ function getStatus(
   return results;
 }
 
-function getBalance(symbol, sortedBalances) {
-  // Implementation for getting the balance for a given symbol
-  const balance = sortedBalances.find((item) => item.symbol === symbol);
-  return balance ? balance.balance : "N/A";
-}
+/**
+ * Get the balance for a given symbol from sortedBalances.
+ *
+ * @param {string} symbol - The symbol for which to get the balance.
+ * @param {Array} balances - The array of balances.
+ * @returns {number|string} - The balance for the given symbol or "N/A" if not found or if input is invalid.
+ */
+function getBalance(symbol, balances) {
+  // Vérifier que sortedBalances est un tableau et qu'il contient des éléments
+  if (!Array.isArray(balances) || balances.length === 0) {
+    console.warn(`balances is invalid or empty: ${balances}`);
+    return "N/A";
+  }
+
+  // Rechercher le balance correspondant au symbole
+  const balanceItem = balances.find((item) => item.symbol === symbol);
+
+  // Retourner le balance s'il existe, sinon "N/A"
+  return balanceItem ? balanceItem.balance : "N/A";
+} 
 
 function getProfit(totalBuy, totalSell, currentPrice, balance) {
   const currentPossession = currentPrice * balance;

@@ -27,6 +27,10 @@ function isMajorCryptoPair(symbol) {
 // Utility function to get the value in USDT
 function getTotalUSDT(symbol, cost, conversionRates = {}) {
   const [baseAsset, quoteAsset] = symbol.split("/");
+  if (!quoteAsset) {
+    console.error(`Invalid symbol format: ${symbol}`);
+    return null;
+  }
 
   if (isStableCoin(quoteAsset)) {
     return parseFloat(cost);
@@ -36,6 +40,7 @@ function getTotalUSDT(symbol, cost, conversionRates = {}) {
     return parseFloat(cost) * conversionRates[quoteAsset];
   }
 
+  console.warn(`Conversion rate for ${quoteAsset} not found.`);
   return null;
 }
 
@@ -49,80 +54,66 @@ function mapBalanceCommon(symbol, balance, available, platform) {
 }
 
 function mapBalance(platform, data) {
-  switch (platform) {
-    case "binance":
-      return data.info.balances
-        .filter(
-          (item) => parseFloat(item.free) > 0 || parseFloat(item.locked) > 0
-        )
-        .map((item) =>
-          mapBalanceCommon(
-            item.asset,
-            parseFloat(item.free) + parseFloat(item.locked),
-            item.free,
-            platform
-          )
-        );
-    case "kucoin":
-      return data.info.data
-        .filter((item) => parseFloat(item.balance) > 0)
-        .map((item) =>
-          mapBalanceCommon(
-            item.currency,
-            item.balance,
-            item.available,
-            platform
-          )
-        );
-    case "htx":
-      return Object.entries(data)
-        .filter(
-          ([key, value]) =>
-            key !== "info" &&
-            key !== "free" &&
-            key !== "used" &&
-            key !== "total" &&
-            value.total > 0
-        )
-        .map(([key, value]) =>
-          mapBalanceCommon(key.toUpperCase(), value.total, value.free, platform)
-        );
-    case "okx":
-      return data.info.data[0].details
-        .filter((item) => parseFloat(item.cashBal) > 0)
-        .map((item) =>
-          mapBalanceCommon(item.ccy, item.cashBal, item.availBal, platform)
-        );
-    case "gateio":
-      return data.info
-        .filter(
-          (item) =>
-            parseFloat(item.available) > 0 || parseFloat(item.locked) > 0
-        )
-        .map((item) =>
-          mapBalanceCommon(
-            item.currency,
-            parseFloat(item.available) + parseFloat(item.locked),
-            item.available,
-            platform
-          )
-        );
-    default:
-      return [];
+  const mappings = {
+    binance: (item) => mapBalanceCommon(
+      item.asset,
+      parseFloat(item.free) + parseFloat(item.locked),
+      item.free,
+      platform
+    ),
+    kucoin: (item) => mapBalanceCommon(
+      item.currency,
+      item.balance,
+      item.available,
+      platform
+    ),
+    htx: ([key, value]) => mapBalanceCommon(
+      key.toUpperCase(),
+      value.total,
+      value.free,
+      platform
+    ),
+    okx: (item) => mapBalanceCommon(
+      item.ccy,
+      item.cashBal,
+      item.availBal,
+      platform
+    ),
+    gateio: (item) => mapBalanceCommon(
+      item.currency,
+      parseFloat(item.available) + parseFloat(item.locked),
+      item.available,
+      platform
+    ),
+  };
+
+  const platformMapping = mappings[platform];
+  if (!platformMapping) {
+    console.warn(`Platform ${platform} not supported.`);
+    return [];
   }
+
+  return Array.isArray(data.info.balances || data.info.data || data) ? 
+    (data.info.balances || data.info.data || data)
+      .filter((item) => parseFloat(item.balance || item.free || item.cashBal || item.available || item.locked) > 0)
+      .map(platformMapping) :
+    Object.entries(data)
+      .filter(([key, value]) => key !== "info" && key !== "free" && key !== "used" && key !== "total" && value.total > 0)
+      .map(platformMapping);
 }
 
+
 function mapTradeCommon(item, platform, conversionRates = {}) {
-  const [baseAsset, quoteAsset] = item.symbol.split("/");
-  const totalUSDT = getTotalUSDT(item.symbol, item.cost, conversionRates);
+  const [baseAsset, quoteAsset] = item.symbol.toUpperCase().split("/");
+  const totalUSDT = getTotalUSDT(item.symbol.toUpperCase(), item.cost, conversionRates);
 
   const feeCost = item.fee ? parseFloat(item.fee.cost) : 0;
-  const feeCurrency = item.fee ? item.fee.currency : "N/A";
+  const feeCurrency = item.fee ? item.fee.currency.toUpperCase() : "N/A";
 
   return {
     altA: baseAsset,
     altB: quoteAsset,
-    pair: item.symbol,
+    pair: item.symbol.toUpperCase(),
     timestamp: item.timestamp,
     type: item.side,
     price: parseFloat(item.price),
@@ -135,43 +126,14 @@ function mapTradeCommon(item, platform, conversionRates = {}) {
   };
 }
 
-function mapBinanceTrades(data, conversionRates = {}) {
-  return data.map((item) => mapTradeCommon(item, "binance", conversionRates));
-}
-
-function mapKucoinTrades(data, conversionRates = {}) {
-  return data.map((item) => mapTradeCommon(item, "kucoin", conversionRates));
-}
-
-function mapHtxTrades(data, conversionRates = {}) {
-  return data.map((item) => mapTradeCommon(item, "htx", conversionRates));
-}
-
-function mapOkxTrades(data, conversionRates = {}) {
-  return data.info.data[0].details.map((item) =>
-    mapTradeCommon(item, "okx", conversionRates)
-  );
-}
-
-function mapGateioTrades(data, conversionRates = {}) {
-  return data.map((item) => mapTradeCommon(item, "gateio", conversionRates));
-}
-
 function mapTrades(platform, data, conversionRates = {}) {
-  switch (platform) {
-    case "binance":
-      return mapBinanceTrades(data, conversionRates);
-    case "kucoin":
-      return mapKucoinTrades(data, conversionRates);
-    case "htx":
-      return mapHtxTrades(data, conversionRates);
-    case "okx":
-      return mapOkxTrades(data, conversionRates);
-    case "gateio":
-      return mapGateioTrades(data, conversionRates);
-    default:
-      return [];
-  }
+  return data.map((item) => {
+    const commonData = mapTradeCommon(item, platform, conversionRates);
+    if (platform === 'okx' && data.info && data.info.data && data.info.data[0] && data.info.data[0].details) {
+      return data.info.data[0].details.map((item) => mapTradeCommon(item, "okx", conversionRates));
+    }
+    return commonData;
+  }).flat();
 }
 
 function mapOrders(platform, data) {
@@ -199,7 +161,7 @@ function mapTickers(data, platform) {
 function mapMarkets(platform, data) {
   return Object.values(data)
     .filter(
-      (item) => item.quote.endsWith("USDT") || item.quote.endsWith("BUSD")
+      (item) => item.quote.endsWith("USDT") || item.quote.endsWith("BUSD") //here all stableCoins instead of only 2
     )
     .map((item) => ({
       symbol: item.id,
@@ -207,16 +169,17 @@ function mapMarkets(platform, data) {
       quote: item.quote,
       active: item.active,
       type: item.type,
-      amountMin: item.limits.amount.min,
-      priceMin: item.limits.price ? item.limits.price.min : "N/A",
-      costMin: item.limits.cost ? item.limits.cost.min : "N/A",
+      amountMin: item.limits?.amount?.min || "N/A",
+      priceMin: item.limits?.price?.min || "N/A",
+      costMin: item.limits?.cost?.min || "N/A",
       taker: item.taker,
       maker: item.maker,
-      precisionAmount: item.precision.amount,
-      precisionPrice: item.precision.price,
+      precisionAmount: item.precision?.amount || "N/A",
+      precisionPrice: item.precision?.price || "N/A",
       platform,
     }));
 }
+
 
 function mapTradesAddedManually(data) {
   return data.map((item) => ({

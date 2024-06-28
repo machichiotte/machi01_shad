@@ -58,14 +58,30 @@ function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
   }
 }
 
+/**
+ * Récupère la stratégie et l'exposition maximale pour un actif sur une plateforme donnée.
+ *
+ * @param {string} exchangeId - L'identifiant de la plateforme.
+ * @param {string} asset - Le symbole de l'actif.
+ * @param {Object} strats - Les stratégies sauvegardées.
+ * @returns {Object} - La stratégie et l'exposition maximale.
+ */
 function getStrat(exchangeId, asset, strats) {
+  // Vérifie si 'strats' est un objet valide et contient des données
+  if (!strats || typeof strats !== 'object') {
+    console.warn("🚀 ~ getStrat ~ strats is invalid or not an object:", strats);
+    return { strat: "No strategy", stratExpo: MAX_EXPO };
+  }
+
   console.log("🚀 ~ getStrat ~ strats:", strats);
   console.log("🚀 ~ getStrat ~ asset:", asset);
   console.log("🚀 ~ getStrat ~ exchangeId:", exchangeId);
+
   // Rechercher la stratégie correspondante à l'actif donné
-  const filteredStrat = strats.find((strat) => strat.asset === asset) || {};
+  const filteredStrat = strats[asset] || {};
   console.log("🚀 ~ getStrat ~ filteredStrat:", filteredStrat);
-  // Déterminer la stratégie et l'exposition maximale
+
+  // Déterminer la stratégie et l'exposition maximale pour la plateforme donnée
   const strat = filteredStrat.strategies?.[exchangeId] || "No strategy";
   const stratExpo = filteredStrat.maxExposure?.[exchangeId] || MAX_EXPO;
 

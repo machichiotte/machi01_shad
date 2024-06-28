@@ -8,26 +8,40 @@ let db;
 
 async function getMongoClient() {
   if (!mongoInstance) {
-    mongoInstance = new MongoClient(uri, {
-      serverSelectionTimeoutMS: 50000,
-      socketTimeoutMS: 45000,
-      connectTimeoutMS: 50000,
-      maxPoolSize: 10,
-      serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-      },
-    });
-    await mongoInstance.connect();
+    try {
+      console.log("🚀 ~ Attempting to connect to MongoDB...");
+      mongoInstance = new MongoClient(uri, {
+        serverSelectionTimeoutMS: 50000,
+        socketTimeoutMS: 45000,
+        connectTimeoutMS: 50000,
+        maxPoolSize: 10,
+        serverApi: {
+          version: ServerApiVersion.v1,
+          strict: true,
+          deprecationErrors: true,
+        },
+      });
+      await mongoInstance.connect();
+      console.log("🚀 ~ Successfully connected to MongoDB");
+    } catch (error) {
+      console.error("🚀 ~ Error connecting to MongoDB:", error);
+      throw error;
+    }
   }
   return mongoInstance;
 }
 
 async function getDB() {
   if (!db) {
+    console.log(`🚀 ~ file: mongodbService.js:36 ~ getDB ~ nodb:`)
     const client = await getMongoClient();
-    db = client.db(process.env.MONGODB_DATABASE);
+    try {
+      db = client.db(process.env.MONGODB_DATABASE);
+      console.log("🚀 ~ Database selected:", process.env.MONGODB_DATABASE);
+    } catch (error) {
+      console.error("🚀 ~ Error selecting database:", error);
+      throw error;
+    }
   }
   return db;
 }
@@ -39,23 +53,15 @@ async function getCollection(collectionName) {
 }
 
 async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
-  console.log("🚀 ~ handleRetry ~ operation:", operation);
   let attempts = 0;
   while (attempts < maxRetries) {
-    console.log("🚀 ~ handleRetry ~ attempts:", attempts);
     try {
-      console.log("🚀 ~ handleRetry ~ try");
       return await operation(...args);
     } catch (error) {
-      console.log("🚀 ~ handleRetry ~ error:", error);
-      console.log("🚀 ~ handleRetry ~ error.name:", error.name);
-
-      if (["ECONNRESET"].includes(error.code)) {
-        console.log("🚀 ~ handleRetry ~ ECONNRESET:");
+      if (["ECONNRESET", "ETIMEDOUT", "ENETDOWN", "ENETUNREACH"].includes(error.code)) {
         attempts++;
-        await new Promise((res) => setTimeout(res, retryDelay * attempts));
+        await new Promise(res => setTimeout(res, retryDelay * attempts));
       } else {
-        console.error("🚀 ~ handleRetry ~ error:", error);
         throw error;
       }
     }
@@ -65,55 +71,25 @@ async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
 
 async function createCollectionIfNotExists(collectionName) {
   return await handleRetry(
-    async (collectionName) => {
-      db = await getDB();
-      const collections = await db
-        .listCollections({ name: collectionName })
-        .toArray();
+    async () => {
+      const db = await getDB();
+      const collections = await db.listCollections({ name: collectionName }).toArray();
       if (collections.length === 0) {
         await db.createCollection(collectionName);
-        console.log(
-          "🚀 ~ createCollectionIfNotExists ~ collectionName:",
-          collectionName
-        );
+        console.log(`Collection ${collectionName} created.`);
       }
     },
-    [collectionName]
-  );
-}
-
-async function saveArrayDataMDB(data, collectionName) {
-  console.log("🚀 ~ saveArrayDataMDB ~ collectionName:", collectionName);
-  if (!Array.isArray(data)) throw new TypeError("Data must be an array");
-  return await handleRetry(
-    async (data, collectionName) => {
-      const collection = await getCollection(collectionName);
-      console.log("🚀 ~ collection:", collection);
-      const result = await collection.insertMany(data);
-      console.log("🚀 ~ saveArrayDataMDB ~ result:", result);
-      return result;
-    },
-    [data, collectionName]
-  );
-}
-
-async function saveObjectDataMDB(data, collectionName) {
-  console.log("🚀 ~ saveObjectDataMDB ~ collectionName:", collectionName);
-  return await handleRetry(
-    async (data, collectionName) => {
-      const collection = await getCollection(collectionName);
-      const result = await collection.insertOne(data);
-      console.log("🚀 ~ saveObjectDataMDB ~ result:", result);
-      return result;
-    },
-    [data, collectionName]
+    []
   );
 }
 
 async function saveData(data, collectionName) {
-  console.log("🚀 ~ saveData ~ collectionName:", collectionName);
+  if (!Array.isArray(data) && typeof data !== "object") {
+    throw new TypeError("Data must be an array or an object");
+  }
+
   return await handleRetry(
-    async (data, collectionName) => {
+    async () => {
       const collection = await getCollection(collectionName);
       if (Array.isArray(data)) {
         const result = await collection.insertMany(data);
@@ -191,7 +167,7 @@ async function updateDataMDB(collectionName, filter, update) {
       });
       if (result.modifiedCount > 0) {
         console.log(
-          "🚀 ~ updateDataMDB ~ {result.modifiedCount:",
+          "🚀 ~ updateDataMDB ~ result.modifiedCount:",
           result.modifiedCount
         );
       } else if (result.upsertedCount > 0) {
@@ -281,8 +257,6 @@ async function connectToMongoDB() {
 
 module.exports = {
   connectToMongoDB,
-  saveArrayDataMDB,
-  saveObjectDataMDB,
   saveData,
   getDataMDB,
   getOne,

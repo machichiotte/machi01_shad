@@ -13,6 +13,25 @@ const {
 } = require("./utils.js");
 const { getTotalAmountAndBuy, getTotalSell } = require("./trades.js");
 
+/**
+ * Récupère le prix actuel d'un actif sur une plateforme donnée.
+ *
+ * @param {Array} lastTickers - Liste des tickers.
+ * @param {string} asset - Le symbole de l'actif.
+ * @param {string} exchangeId - L'identifiant de la plateforme.
+ * @returns {number|string} - Le prix actuel ou "N/A" si non trouvé.
+ */
+function getCurrentPrice(lastTickers, asset, exchangeId) {
+  // Cherche le ticker correspondant à l'actif et à la plateforme
+  const ticker = lastTickers.find(
+    (ticker) =>
+      ticker.symbol === `${asset}/USDT` && ticker.platform === exchangeId
+  );
+
+  // Retourne la valeur 'last' si trouvée, sinon retourne "N/A"
+  return ticker?.last ?? "N/A";
+}
+
 function getAllCalculs(
   asset,
   exchangeId,
@@ -42,10 +61,7 @@ function getAllCalculs(
 
   console.log("🚀 ~ rank:", rank);
 
-  const currentPrice = lastTickers.filter(
-    (ticker) =>
-      ticker.symbol === asset + "/USDT" && ticker.platform === exchangeId
-  );
+  const currentPrice = getCurrentPrice(lastTickers, asset, exchangeId);
   console.log("🚀 ~ currentPrice:", currentPrice);
 
   const totalSell = getTotalSell(asset, lastTrades);
@@ -66,7 +82,7 @@ function getAllCalculs(
     const [leftSymbol] = order.symbol.split("/");
     return leftSymbol === asset;
   });
-  console.log("🚀 ~ openSellOrders:", openSellOrders);
+  console.log("🚀 ~ openSellOrders:", openSellOrders.length);
 
   const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(
     symbol,
@@ -85,7 +101,7 @@ function getAllCalculs(
     recupShad,
     recupTp1,
     totalShad,
-  } = calculateRecups(asset, platform, totalBuy, totalSell, lastStrategies);
+  } = calculateRecups(asset, exchangeId, totalBuy, totalSell, lastStrategies);
 
   const {
     amountTp1,
