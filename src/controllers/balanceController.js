@@ -32,7 +32,7 @@ async function getBalance(req, res) {
 async function fetchBalancesInDatabase() {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
   const data = await getDataFromCollection(collection);
-  console.log("Fetched balances from database", { collection, count: data.length });
+  console.log(`🚀 ~ file: balanceController.js:36 ~ fetchBalancesInDatabase ~ { collection, count: data.length }:`, { collection, count: data.length })
   return data;
 }
 
@@ -47,7 +47,7 @@ async function fetchCurrentBalance(exchangeId, retries = 3) {
     const exchange = createExchangeInstance(exchangeId);
     const data = await exchange.fetchBalance();
     const mappedData = mapBalance(exchangeId, data);
-    console.log(`Fetched current balance from ${exchangeId}`, { count: mappedData.length });
+  console.log(`🚀 ~ file: balanceController.js:46 ~ fetchCurrentBalance ~ Fetched current balance from ${exchangeId}`, { count: mappedData.length })
     return mappedData;
   } catch (error) {
     if (retries > 0) {

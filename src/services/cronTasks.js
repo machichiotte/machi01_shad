@@ -231,7 +231,7 @@ async function calculateAllMetrics() {
     lastTrades,
     lastOpenOrders,
     lastTickers,
-    lastBalance
+    lastBalances
   ] = await Promise.all([
     fetchCmcInDatabase(),
     fetchStratsInDatabase(),
@@ -242,13 +242,21 @@ async function calculateAllMetrics() {
   ]);
 
   // Vérifiez que chaque collection récupérée est valide avant de continuer
-  if (!lastCmc || !lastStrategies || !lastTrades || !lastOpenOrders || !lastTickers || !lastBalance) {
+  if (!lastCmc || !lastStrategies || !lastTrades || !lastOpenOrders || !lastTickers || !lastBalances) {
     console.error("Error: One or more data retrieval functions returned invalid data.");
     return;
   }
 
+  console.log(`🚀 ~ file: cronTasks.js:246 ~ calculateAllMetrics ~ lastCmc:`, lastCmc.length)
+  console.log(`🚀 ~ file: cronTasks.js:292 ~ calculateAllMetrics ~ lastBalances:`, lastBalances.length)
+    console.log(`🚀 ~ file: cronTasks.js:292 ~ calculateAllMetrics ~ lastTickers:`, lastTickers.length)
+    console.log(`🚀 ~ file: cronTasks.js:292 ~ calculateAllMetrics ~ lastTrades:`, lastTrades.length)
+    console.log(`🚀 ~ file: cronTasks.js:292 ~ calculateAllMetrics ~ lastOpenOrders:`, lastOpenOrders.length)
+    console.log(`🚀 ~ file: cronTasks.js:292 ~ calculateAllMetrics ~ lastStrategies:`, lastStrategies.length)
+
   for (const balance of lastBalance) {
     const assetSymbol = balance.symbol;
+    console.log(`🚀 ~ file: cronTasks.js:252 ~ calculateAllMetrics ~ assetSymbol:`, assetSymbol)
     // console.log("🚀 ~ calculateAllMetrics ~ assetSymbol:", assetSymbol);
 
     const assetPlatform = balance.platform;
@@ -286,11 +294,12 @@ async function calculateAllMetrics() {
      console.log("🚀 ~ calculateAllMetrics ~ values:", values.length);
   }
 }
+    
 
 async function calculateMetrics(differences, exchangeId) {
   const [
     lastCmc,
-    lastBalance,
+    lastBalances,
     lastTrades,
     lastStrategies,
     lastOpenOrders,
@@ -304,15 +313,22 @@ async function calculateMetrics(differences, exchangeId) {
     getTickersByPlatform(exchangeId)
   ]);
 
+  console.log(`🚀 ~ file: cronTasks.js:292 ~ calculateMetrics ~ lastCmc:`, lastCmc.length)
+  console.log(`🚀 ~ file: cronTasks.js:292 ~ calculateMetrics ~ lastBalances:`, lastBalances.length)
+    console.log(`🚀 ~ file: cronTasks.js:292 ~ calculateMetrics ~ lastTickers:`, lastTickers.length)
+    console.log(`🚀 ~ file: cronTasks.js:292 ~ calculateMetrics ~ lastTrades:`, lastTrades.length)
+    console.log(`🚀 ~ file: cronTasks.js:292 ~ calculateMetrics ~ lastOpenOrders:`, lastOpenOrders.length)
+    console.log(`🚀 ~ file: cronTasks.js:292 ~ calculateMetrics ~ lastStrategies:`, lastStrategies.length)
+
   // Boucler à travers les éléments uniques présents dans differences
   for (const asset of differences) {
     // console.log("🚀 ~ calculateMetrics ~ asset:", asset);
-    // Récupérer les valeurs correspondantes à l'actif + échange dancs lastBalance, lastTrades, lastOpenOrders, lastStrategies et lastTickers
+    // Récupérer les valeurs correspondantes à l'actif + échange dancs lastBalances, lastTrades, lastOpenOrders, lastStrategies et lastTickers
     const values = getAllCalculs(
       asset,
       exchangeId,
       lastCmc,
-      lastBalance,
+      lastBalances,
       lastTrades,
       lastOpenOrders,
       lastStrategies,

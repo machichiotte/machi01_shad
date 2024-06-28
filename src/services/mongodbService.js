@@ -145,12 +145,12 @@ async function getOne(collectionName, data) {
 }
 
 async function getAllDataMDB(collectionName) {
-  console.log("🚀 ~ getAllDataMDB ~ collectionName:", collectionName);
   return await handleRetry(
     async (collectionName) => {
       const collection = await getCollection(collectionName);
+      console.log(`🚀 ~ file: mongodbService.js:151 ~ collectionName:`, collectionName)
       const result = await collection.find().toArray();
-      console.log("🚀 ~ getAllDataMDB ~ result.length:", result.length);
+      console.log(`🚀 ~ file: mongodbService.js:153 ~ result:`, result.length)
       return result;
     },
     [collectionName]

@@ -16,7 +16,6 @@ async function getData(req, res, collection) {
 }
 
 async function getDataFromCollection(collection) {
-  console.log("🚀 ~ getDataFromCollection ~ collection:", collection);
   try {
     if (process.env.OFFLINE_MODE === "true") {
       // Récupérer le chemin du fichier mock en fonction de la collection

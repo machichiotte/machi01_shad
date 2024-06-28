@@ -36,17 +36,26 @@ function getAllCalculs(
   asset,
   exchangeId,
   lastCmc,
-  lastBalance,
+  lastBalances,
   lastTrades,
   lastOpenOrders,
   lastStrategies,
   lastTickers
 ) {
+  
+  console.log(`🚀 ~ file: global.js:45 ~ exchangeId:`, exchangeId)
+  console.log(`🚀 ~ file: global.js:45 ~ asset:`, asset)
+  console.log(`🚀 ~ file: global.js:45 ~ lastCmc:`, lastCmc.length)
+  onsole.log(`🚀 ~ file: global.js:45 ~ lastTickers:`, lastTickers.length)
+  console.log(`🚀 ~ file: global.js:45 ~ lastStrategies:`, lastStrategies.length)
+  console.log(`🚀 ~ file: global.js:45 ~ lastOpenOrders:`, lastOpenOrders.length)
+  console.log(`🚀 ~ file: global.js:45 ~ lastTrades:`, lastTrades.length)
+  console.log(`🚀 ~ file: global.js:45 ~ lastBalances:`, lastBalances.length)
   //TODO add cmc, trades, strats, buyOrders, sellOrders
   console.log("🚀 ~ asset:", asset);
 
   const symbol = asset + "/USDT";
-  const balance = getBalance(asset, lastBalance);
+  const balance = getBalance(asset, lastBalances);
   console.log("🚀 ~ balance:", balance);
 
   const {
@@ -58,11 +67,10 @@ function getAllCalculs(
     cryptoPercentChange60d,
     cryptoPercentChange90d,
   } = getCmcValues(asset, lastCmc);
-
-  console.log("🚀 ~ rank:", rank);
+    console.log(`🚀 ~ file: global.js:70 ~ rank:`, rank)
 
   const currentPrice = getCurrentPrice(lastTickers, asset, exchangeId);
-  console.log("🚀 ~ currentPrice:", currentPrice);
+  console.log(`🚀 ~ file: global.js:74 ~ currentPrice:`, currentPrice)
 
   const totalSell = getTotalSell(asset, lastTrades);
 
