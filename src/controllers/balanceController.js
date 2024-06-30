@@ -50,6 +50,7 @@ async function fetchCurrentBalance(exchangeId, retries = 3) {
   console.log(`🚀 ~ file: balanceController.js:46 ~ fetchCurrentBalance ~ Fetched current balance from ${exchangeId}`, { count: mappedData.length })
     return mappedData;
   } catch (error) {
+    console.log(`🚀 ~ file: balanceController.js:53 ~ fetchCurrentBalance ~ error:`, error)
     if (retries > 0) {
       const delay = (3 - retries) * 2000;
       console.log(`Retrying fetchCurrentBalance... (${3 - retries + 1}/3)`, { delay });

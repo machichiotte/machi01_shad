@@ -13,7 +13,6 @@ const config = {
     markets: "* */12 * * *",
     tickers: "*/10 * * * *",
     balances: "*/1 * * * *",
-    trades: "*/1 * * * *",
   },
   logFiles: {
     error: "error.log",
