@@ -47,7 +47,6 @@ async function getDB() {
 }
 
 async function getCollection(collectionName) {
-  console.log("🚀 ~ getCollection ~ collectionName:", collectionName);
   db = await getDB();
   return db.collection(collectionName);
 }
@@ -84,6 +83,7 @@ async function createCollectionIfNotExists(collectionName) {
 }
 
 async function saveData(data, collectionName) {
+  console.log(`🚀 ~ file: mongodbService.js:86 ~ saveData ~ saveData:`)
   if (!Array.isArray(data) && typeof data !== "object") {
     throw new TypeError("Data must be an array or an object");
   }
@@ -145,10 +145,10 @@ async function getOne(collectionName, data) {
 }
 
 async function getAllDataMDB(collectionName) {
+  console.log(`🚀 ~ file: mongodbService.js:148 ~ getAllDataMDB ~ getAllDataMDB:`, collectionName)
   return await handleRetry(
     async (collectionName) => {
       const collection = await getCollection(collectionName);
-      console.log(`🚀 ~ file: mongodbService.js:151 ~ collectionName:`, collectionName)
       const result = await collection.find().toArray();
       console.log(`🚀 ~ file: mongodbService.js:153 ~ result:`, result.length)
       return result;

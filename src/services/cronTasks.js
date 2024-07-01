@@ -2,7 +2,7 @@
 const cron = require("node-cron");
 const nodemailer = require("nodemailer");
 
-const config = require("./config");
+const config = require("./config.js");
 
 const { getAllCalculs } = require("../services/metrics/global.js");
 
@@ -96,8 +96,12 @@ async function cronMarkets() {
 }
 
 async function cronBalances() {
+  console.log(`********************************************************************`)
+  console.log(`*************************** cronBalances ***************************`)
+  console.log(`********************************************************************`)
+
+  const lastBalance = await fetchBalancesInDatabase();
   await executeForExchanges("updateBalances", async (exchangeId) => {
-    const lastBalance = await fetchBalancesInDatabase();
     const currentBalance = await fetchCurrentBalance(exchangeId, 3);
     const differences = compareBalances(lastBalance, currentBalance);
     if (differences.length > 0) {
@@ -112,6 +116,9 @@ async function cronBalances() {
 async function initializeCronTasks() {
   try {
     console.log("Starting to initialize Cron tasks...");
+
+    await cronBalances();
+
     cron.schedule(cronSchedules.tickers, cronTickers);
     cron.schedule(cronSchedules.markets, cronMarkets);
     cron.schedule(cronSchedules.balances, cronBalances);

@@ -15,11 +15,11 @@ async function getData(req, res, collection) {
   }
 }
 
-async function getDataFromCollection(collection) {
+async function getDataFromCollection(collectionName) {
   try {
     if (process.env.OFFLINE_MODE === "true") {
       // Récupérer le chemin du fichier mock en fonction de la collection
-      const mockDataPath = getMockDataPath(collection);
+      const mockDataPath = getMockDataPath(collectionName);
       console.log("🚀 ~ getDataFromCollection ~ mockDataPath:", mockDataPath);
 
       // Lire les données depuis le fichier mock
@@ -29,7 +29,11 @@ async function getDataFromCollection(collection) {
       return JSON.parse(jsonData);
     } else {
       // Récupérer les données depuis la base de données MongoDB
-      const data = await getAllDataMDB(collection);
+      console.log(
+        `🚀 ~ file: dataUtil.js:19 ~ getDataFromCollection ~ getDataFromCollection: online`
+      );
+
+      const data = await getAllDataMDB(collectionName);
       return Array.isArray(data) ? data : [];
     }
   } catch (error) {

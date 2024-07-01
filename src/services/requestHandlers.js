@@ -2,58 +2,57 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const helmet = require("helmet"); // For added security
 
 const app = express();
-app.use(express.static("dist"));
-app.use(cors());
 
-// Use body-parser as a global middleware for all requests
+// Middleware
+app.use(express.static("dist"));
+app.use(cors({
+  origin: ['https://machi-shad.onrender.com'], // Specify allowed origins
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
+}));
+app.use(helmet()); // Adds security headers
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//converter
+// Import Routes
 const converterRoutes = require("../routes/converterRoutes.js");
-app.use("/api/converter", converterRoutes);
-
-//auth
 const authRoutes = require("../routes/authRoutes.js");
-app.use("/api/auth", authRoutes);
-
-//balance
 const balanceRoutes = require("../routes/balanceRoutes.js");
-app.use("/api/balance", balanceRoutes);
-
-//cmc
 const cmcRoutes = require("../routes/cmcRoutes.js");
-app.use("/api/cmc", cmcRoutes);
-
-//strat
 const strategyRoutes = require("../routes/strategyRoutes.js");
-app.use("/api/strategy", strategyRoutes);
-
-//orders
 const ordersRoutes = require("../routes/ordersRoutes.js");
-app.use("/api/orders", ordersRoutes);
-
-//load markets
 const marketRoutes = require("../routes/marketsRoutes.js");
-app.use("/api/markets", marketRoutes);
-
-//prices
 const pricesRoutes = require("../routes/pricesRoutes.js");
-app.use("/api/prices", pricesRoutes);
-
-//trades
 const tradesRoutes = require("../routes/tradesRoutes.js");
-app.use("/api/trades", tradesRoutes);
-
-//tickers
 const tickersRoutes = require("../routes/tickersRoutes.js");
-app.use("/api/tickers", tickersRoutes);
-
-//last update
 const lastUpdateRoutes = require("../routes/lastUpdateRoutes.js");
+
+// Use Routes
+app.use("/api/converter", converterRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/balance", balanceRoutes);
+app.use("/api/cmc", cmcRoutes);
+app.use("/api/strategy", strategyRoutes);
+app.use("/api/orders", ordersRoutes);
+app.use("/api/markets", marketRoutes);
+app.use("/api/prices", pricesRoutes);
+app.use("/api/trades", tradesRoutes);
+app.use("/api/tickers", tickersRoutes);
 app.use("/api/lastUpdate", lastUpdateRoutes);
+
+// Error Handling Middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
+
+// 404 Handling Middleware
+app.use((req, res, next) => {
+  res.status(404).json({ error: 'Not Found' });
+});
 
 function startServer() {
   const PORT = process.env.PORT || 10000;
