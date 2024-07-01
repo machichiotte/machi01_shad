@@ -9,9 +9,7 @@ const app = express();
 // Middleware
 app.use(express.static("dist"));
 app.use(cors({
-  origin: ['https://machi-shad.onrender.com'], // Specify allowed origins
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
+  origin: 'https://machi-shad.onrender.com'
 }));
 app.use(helmet()); // Adds security headers
 app.use(bodyParser.urlencoded({ extended: true }));
