@@ -150,10 +150,16 @@ const cancelOrder = async (item) => {
 // Create a generic method for fetching data
 const fetchDataWithCache = async (dataType, apiEndpoint, saveToIndexedDBFunction) => {
   console.log('fetchDataWithCache datatype', dataType)
+  console.log('fetchDataWithCache apiEndpoint', apiEndpoint)
+
   try {
     const response = await fetch(apiEndpoint)
+  console.log('fetchDataWithCache response', response)
+
     // Check if the request was successful
     const data = await response.json()
+  console.log('fetchDataWithCache data', data)
+
 
     // Save the data to IndexedDB
     // await saveToIndexedDBFunction(data)
