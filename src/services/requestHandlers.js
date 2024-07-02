@@ -2,7 +2,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const helmet = require("helmet"); // For added security
+//const helmet = require("helmet"); // For added security
 
 const app = express();
 
