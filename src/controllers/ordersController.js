@@ -12,10 +12,13 @@ const {
   deleteAndSaveData,
 } = require("../utils/mongodbUtil.js");
 const { mapOrders } = require("../services/mapping.js");
-const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
+const { errorLogger } = require("../utils/loggerUtil.js");
 const { validateEnvVariables } = require("../utils/controllerUtil");
 
-validateEnvVariables(['MONGODB_COLLECTION_ACTIVE_ORDERS', 'TYPE_ACTIVE_ORDERS']);
+validateEnvVariables([
+  "MONGODB_COLLECTION_ACTIVE_ORDERS",
+  "TYPE_ACTIVE_ORDERS",
+]);
 
 /**
  * Retrieves the last recorded orders from the database.
@@ -25,12 +28,22 @@ validateEnvVariables(['MONGODB_COLLECTION_ACTIVE_ORDERS', 'TYPE_ACTIVE_ORDERS'])
 async function getOrders(req, res) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
   try {
-    const orders = await getData(req, res, collection);
-    infoLogger.info("Retrieved orders from the database.", { collection, count: orders.length });
-    res.json(orders);
+    const orders = await getData(collection); // getData ne prend plus req ou res en argument
+
+    // Ensure orders is an array
+    if (!Array.isArray(orders)) {
+      console.log("Expected an array of orders");
+      orders = [];
+    }
+
+    console.log("Retrieved orders from the database.", {
+      collection,
+      count: orders.length,
+    });
+    return res.status(200).json(orders); // Envoyer la réponse ici
   } catch (error) {
     errorLogger.error("Failed to retrieve orders.", { error: error.message });
-    handleErrorResponse(res, error, "getOrders");
+    handleErrorResponse(res, error, "getOrders"); // Envoyer la réponse en cas d'erreur
   }
 }
 
@@ -39,13 +52,19 @@ async function getOrders(req, res) {
  * @returns {Promise<Object[]>} - The last recorded orders.
  */
 async function fetchOrdersInDatabase() {
-  const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
+  const collectionName = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
+  console.log(`🚀 ~ file: ordersController.js:56 ~ fetchOrdersInDatabase ~ collectionName:`, collectionName)
   try {
-    const data = await getDataFromCollection(collection);
-    infoLogger.info("Fetched orders from the database.", { collection, count: data.length });
+    const data = await getDataFromCollection(collectionName);
+    console.log("Fetched orders from the database.", {
+        collectionName,
+      count: data.length,
+    });
     return data;
   } catch (error) {
-    errorLogger.error("Failed to fetch orders from database.", { error: error.message });
+    errorLogger.error("Failed to fetch orders from database.", {
+      error: error.message,
+    });
     throw error;
   }
 }
@@ -59,10 +78,14 @@ async function fetchAndMapOrders(exchangeId) {
   try {
     const data = await fetchOpenOrdersByExchangeId(exchangeId);
     const mappedData = mapOrders(exchangeId, data);
-    infoLogger.info(`Fetched and mapped orders for ${exchangeId}.`, { count: mappedData.length });
+    console.log(`Fetched and mapped orders for ${exchangeId}.`, {
+      count: mappedData.length,
+    });
     return mappedData;
   } catch (error) {
-    errorLogger.error(`Failed to fetch and map orders for ${exchangeId}.`, { error: error.message });
+    errorLogger.error(`Failed to fetch and map orders for ${exchangeId}.`, {
+      error: error.message,
+    });
     throw error;
   }
 }
@@ -77,9 +100,13 @@ async function saveMappedOrders(mappedData, exchangeId) {
   try {
     await deleteAndSaveData(mappedData, collection, exchangeId);
     await saveLastUpdateToMongoDB(process.env.TYPE_ACTIVE_ORDERS, exchangeId);
-    infoLogger.info(`Saved mapped orders to the database for ${exchangeId}.`, { count: mappedData.length });
+    console.log(`Saved mapped orders to the database for ${exchangeId}.`, {
+      count: mappedData.length,
+    });
   } catch (error) {
-    errorLogger.error("Failed to save mapped orders to the database.", { error: error.message });
+    errorLogger.error("Failed to save mapped orders to the database.", {
+      error: error.message,
+    });
     throw error;
   }
 }
@@ -95,9 +122,13 @@ async function updateOrders(req, res) {
     const mappedData = await fetchAndMapOrders(exchangeId);
     await saveMappedOrders(mappedData, exchangeId);
     res.status(200).json(mappedData);
-    infoLogger.info(`Updated orders for ${exchangeId}.`, { count: mappedData.length });
+    console.log(`Updated orders for ${exchangeId}.`, {
+      count: mappedData.length,
+    });
   } catch (error) {
-    errorLogger.error(`Failed to update orders for ${exchangeId}.`, { error: error.message });
+    errorLogger.error(`Failed to update orders for ${exchangeId}.`, {
+      error: error.message,
+    });
     handleErrorResponse(res, error, "updateOrders");
   }
 }
@@ -110,9 +141,14 @@ async function updateOrdersFromServer(exchangeId) {
   try {
     const mappedData = await fetchAndMapOrders(exchangeId);
     await saveMappedOrders(mappedData, exchangeId);
-    infoLogger.info(`Updated orders from server for ${exchangeId}.`, { count: mappedData.length });
+    console.log(`Updated orders from server for ${exchangeId}.`, {
+      count: mappedData.length,
+    });
   } catch (error) {
-    errorLogger.error(`Failed to update orders from server for ${exchangeId}.`, { error: error.message });
+    errorLogger.error(
+      `Failed to update orders from server for ${exchangeId}.`,
+      { error: error.message }
+    );
     throw error;
   }
 }
@@ -127,10 +163,15 @@ async function deleteOrder(req, res) {
   try {
     const exchange = createExchangeInstance(exchangeId);
     const data = await exchange.cancelOrder(oId, symbol.replace("/", ""));
-    infoLogger.info(`Deleted order ${oId} for ${exchangeId}.`, { symbol });
+    console.log(`Deleted order ${oId} for ${exchangeId}.`, { symbol });
     res.json(data);
   } catch (error) {
-    errorLogger.error("Failed to delete order.", { error: error.message, exchangeId, oId, symbol });
+    errorLogger.error("Failed to delete order.", {
+      error: error.message,
+      exchangeId,
+      oId,
+      symbol,
+    });
     handleErrorResponse(res, error, "deleteOrder");
   }
 }
@@ -144,7 +185,10 @@ async function deleteOrder(req, res) {
 async function createLimitOrder(req, res, orderType) {
   const { exchangeId, price, amount } = req.body;
   try {
-    const { symbol, exchangeParams } = createExchangeInstanceWithReq(exchangeId, req);
+    const { symbol, exchangeParams } = createExchangeInstanceWithReq(
+      exchangeId,
+      req
+    );
     const exchange = new ccxt[exchangeId](exchangeParams);
 
     let result;
@@ -155,9 +199,19 @@ async function createLimitOrder(req, res, orderType) {
     }
 
     res.status(200).json({ message: result, status: 200 });
-    infoLogger.info(`Created ${orderType} limit order for ${exchangeId}.`, { symbol, price, amount });
+    console.log(`Created ${orderType} limit order for ${exchangeId}.`, {
+      symbol,
+      price,
+      amount,
+    });
   } catch (error) {
-    errorLogger.error(`Failed to create ${orderType} limit order.`, { error: error.message, exchangeId, symbol, price, amount });
+    errorLogger.error(`Failed to create ${orderType} limit order.`, {
+      error: error.message,
+      exchangeId,
+      symbol,
+      price,
+      amount,
+    });
     handleErrorResponse(res, error, `createLimitOrder (${orderType})`);
   }
 }
@@ -199,9 +253,13 @@ async function cancelAllOrders(req, res) {
     }
 
     res.status(200).json({ message: result, status: 200 });
-    infoLogger.info(`Cancelled all orders for ${exchangeId}.`, { symbol });
+    console.log(`Cancelled all orders for ${exchangeId}.`, { symbol });
   } catch (error) {
-    errorLogger.error("Failed to cancel all orders.", { error: error.message, exchangeId, asset });
+    errorLogger.error("Failed to cancel all orders.", {
+      error: error.message,
+      exchangeId,
+      asset,
+    });
     handleErrorResponse(res, error, "cancelAllOrders");
   }
 }
@@ -217,10 +275,12 @@ async function cancelAllSellOrders(req, res) {
     const exchange = createExchangeInstance(exchangeId);
     const symbol = getSymbolForExchange(exchangeId, asset);
     const openOrders = await exchange.fetchOpenOrders(symbol);
-    const sellOrders = openOrders.filter(order => order.side === "sell");
+    const sellOrders = openOrders.filter((order) => order.side === "sell");
 
     if (sellOrders.length === 0) {
-      res.status(200).json({ message: "No open sell orders for this asset", status: 200 });
+      res
+        .status(200)
+        .json({ message: "No open sell orders for this asset", status: 200 });
       return;
     }
 
@@ -233,9 +293,13 @@ async function cancelAllSellOrders(req, res) {
       message: "All sell orders canceled successfully",
       status: 200,
     });
-    infoLogger.info(`Cancelled all sell orders for ${exchangeId}.`, { symbol });
+    console.log(`Cancelled all sell orders for ${exchangeId}.`, { symbol });
   } catch (error) {
-    errorLogger.error("Failed to cancel all sell orders.", { error: error.message, exchangeId, asset });
+    errorLogger.error("Failed to cancel all sell orders.", {
+      error: error.message,
+      exchangeId,
+      asset,
+    });
     handleErrorResponse(res, error, "cancelAllSellOrders");
   }
 }
@@ -248,7 +312,7 @@ async function cancelAllSellOrders(req, res) {
  */
 async function cancelAllOrdersForOkx(exchange, symbol) {
   const orders = await exchange.fetchOpenOrders(symbol);
-  const orderIds = orders.map(order => order.id);
+  const orderIds = orders.map((order) => order.id);
 
   if (orderIds.length === 0) {
     return { message: "No open orders for this asset" };
@@ -275,7 +339,9 @@ async function fetchOpenOrdersByExchangeId(exchangeId) {
       return await exchange.fetchOpenOrders();
     }
   } catch (error) {
-    errorLogger.error(`Failed to fetch open orders for ${exchangeId}.`, { error: error.message });
+    errorLogger.error(`Failed to fetch open orders for ${exchangeId}.`, {
+      error: error.message,
+    });
     throw error;
   }
 }
@@ -293,7 +359,12 @@ async function fetchOpenOrdersForKucoin(exchange) {
   while (true) {
     const limit = pageSize;
     const params = { currentPage };
-    const orders = await exchange.fetchOpenOrders(undefined, undefined, limit, params);
+    const orders = await exchange.fetchOpenOrders(
+      undefined,
+      undefined,
+      limit,
+      params
+    );
     data = data.concat(orders);
 
     if (orders.length < pageSize) {

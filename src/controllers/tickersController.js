@@ -16,7 +16,7 @@ const { mapTickers } = require("../services/mapping.js");
 async function getAllTickers(req, res) {
   try {
     const collection = process.env.MONGODB_COLLECTION_TICKERS;
-    const tickersData = await getData(req, res, collection);
+    const tickersData = await getData(collection);
     res.status(200).json(tickersData);
   } catch (error) {
     handleErrorResponse(res, error, "getAllTickers");
@@ -27,8 +27,9 @@ async function getAllTickers(req, res) {
  * Retrieves all tickers from the database.
  */
 async function fetchTickersInDatabase() {
-    const collection = process.env.MONGODB_COLLECTION_TICKERS;
-    const data = await getDataFromCollection(collection);
+    const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
+    const data = await getDataFromCollection(collectionName);
+    console.log(`🚀 ~ file: tickersController.js:32 ~ fetchTickersInDatabase ~ collectionName:`, collectionName)
     console.log("🚀 ~ fetchTickersInDatabase ~ data:", data.length)
     return data;
 }
@@ -42,7 +43,7 @@ async function fetchTickersInDatabase() {
 async function getAllTickersByExchange(req, res, exchangeId) {
   try {
     const collection = process.env.MONGODB_COLLECTION_TICKERS;
-    const tickersData = await getData(req, res, collection);
+    const tickersData = await getData(collection);
 
     if (tickersData && tickersData[exchangeId]) {
       const exchangeTickersData = tickersData[exchangeId];
@@ -61,8 +62,9 @@ async function getAllTickersByExchange(req, res, exchangeId) {
  */
 async function getSavedAllTickersByExchange(exchangeId) {
   try {
-    const collection = process.env.MONGODB_COLLECTION_TICKERS;
-    const tickersData = await getDataFromCollection(collection);
+    const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
+    console.log(`🚀 ~ file: tickersController.js:66 ~ getSavedAllTickersByExchange ~ collectionName:`, collectionName)
+    const tickersData = await getDataFromCollection(collectionName);
 
     // Vérification que tickersData est bien un tableau
     if (!Array.isArray(tickersData)) {
@@ -94,7 +96,7 @@ async function getSavedAllTickersByExchange(exchangeId) {
 async function getAllTickersBySymbolFromExchange(req, res, exchangeId, symbol) {
   try {
     const collection = process.env.MONGODB_COLLECTION_TICKERS;
-    const tickersData = await getData(req, res, collection);
+    const tickersData = await getData(collection);
 
     if (tickersData && tickersData[exchangeId]) {
       const exchangeTickersData = tickersData[exchangeId];
@@ -124,8 +126,9 @@ async function getAllTickersBySymbolFromExchange(req, res, exchangeId, symbol) {
  */
 async function getSavedAllTickersBySymbolFromExchange(exchangeId, symbol) {
   try {
-    const collection = process.env.MONGODB_COLLECTION_TICKERS;
-    const tickersData = await getDataFromCollection(collection);
+    const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
+    console.log(`🚀 ~ file: tickersController.js:130 ~ getSavedAllTickersBySymbolFromExchange ~ collectionName:`, collectionName)
+    const tickersData = await getDataFromCollection(collectionName);
 
     if (tickersData && tickersData[exchangeId]) {
       const exchangeTickersData = tickersData[exchangeId];

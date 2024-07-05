@@ -6,7 +6,7 @@ const config = require("./config.js");
 
 const { getAllCalculs } = require("../services/metrics/global.js");
 
-const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
+const { errorLogger } = require("../utils/loggerUtil.js");
 
 const { cronUtilsMarkets, cronUtilsTickers } = require("../utils/cronUtil.js");
 const { mapTrades } = require("./mapping.js");
@@ -47,7 +47,7 @@ async function sendMail(options) {
     if (error) {
       errorLogger.error(`Error sending email: ${error.message}`, { error });
     } else {
-      infoLogger.info(`Email sent: ${info.response}`);
+      console.log(`Email sent: ${info.response}`);
     }
   });
 }

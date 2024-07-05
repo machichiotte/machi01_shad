@@ -4,13 +4,13 @@ const crypto = require("crypto"); // Use built-in crypto module
 const authService = require("../services/authService");
 
 // Import the specific loggers
-const {errorLogger, infoLogger}  = require("../utils/loggerUtil.js");
+const {errorLogger}  = require("../utils/loggerUtil.js");
 
 async function generateSessionToken() {
   try {
     const randomBytes = crypto.randomBytes(32); // Simplified without callback
     const token = randomBytes.toString("base64url");
-    infoLogger.info("Session token generated successfully.");
+    console.log("Session token generated successfully.");
     return token;
   } catch (error) {
     errorLogger.error("Failed to generate session token", { error: error.message });
@@ -22,7 +22,7 @@ async function registerUser(req, res) {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      infoLogger.info("Registration attempt with missing email or password.");
+      console.log("Registration attempt with missing email or password.");
       return res
         .status(400)
         .json({ status: false, message: "Missing email or password" });
@@ -31,7 +31,7 @@ async function registerUser(req, res) {
     const status = await authService.createUserDBService(req.body);
 
     if (status) {
-      infoLogger.info("User registered successfully", { email });
+      console.log("User registered successfully", { email });
       console.log("🚀 ~ registerUser ~ email:", email)
       return res
         .status(201)
@@ -54,7 +54,7 @@ async function loginUser(req, res) {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      infoLogger.info("Login attempt with missing email or password.");
+      console.log("Login attempt with missing email or password.");
       return res
         .status(400)
         .json({ status: false, message: "Missing email or password" });
@@ -62,7 +62,7 @@ async function loginUser(req, res) {
 
     const user = await authService.findUserByEmail(email);
     if (!user) {
-      infoLogger.info("Login attempt with invalid email", { email });
+      console.log("Login attempt with invalid email", { email });
       return res
         .status(401)
         .json({ status: false, message: "Invalid email or password" });
@@ -71,7 +71,7 @@ async function loginUser(req, res) {
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (passwordMatch) {
       const token = await generateSessionToken();
-      infoLogger.info("User logged in successfully", { userId: user["_id"], email });
+      console.log("User logged in successfully", { userId: user["_id"], email });
       return res.status(200).json({
         status: true,
         message: "Login successful",
@@ -81,7 +81,7 @@ async function loginUser(req, res) {
       });
     }
 
-    infoLogger.info("Login attempt with invalid password", { email });
+    console.log("Login attempt with invalid password", { email });
     return res
       .status(401)
       .json({ status: false, message: "Invalid email or password" });

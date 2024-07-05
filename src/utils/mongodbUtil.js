@@ -16,6 +16,7 @@ async function updateTimestampInMongoDB(collectionName, filter, update) {
 }
 
 async function saveLastUpdateToMongoDB(type, exchangeId) {
+  console.log(`🚀 ~ file: mongodbUtil.js:19 ~ saveLastUpdateToMongoDB ~ saveLastUpdateToMongoDB:`, saveLastUpdateToMongoDB)
   const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
 
   // Récupérer les données actuelles dans la collection

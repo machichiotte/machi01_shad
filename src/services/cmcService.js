@@ -1,7 +1,7 @@
 // src/services/cmcService.js
 
 const fetch = require("node-fetch");
-const {errorLogger, infoLogger}  = require("../utils/loggerUtil.js");
+const {errorLogger}  = require("../utils/loggerUtil.js");
 
 /**
  * Fetches the latest CoinMarketCap data from the CoinMarketCap API.

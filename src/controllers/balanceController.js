@@ -14,10 +14,11 @@ validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE']);
  * @param {Object} res - HTTP response object.
  */
 async function getBalance(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_BALANCE;
+  const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
+  console.log(`🚀 ~ file: balanceController.js:18 ~ getBalance ~ collectionName:`, collectionName)
   try {
-    const lastBalance = await getData(req, null, collection);
-    console.log("Retrieved last balance", { collection, count: lastBalance.length });
+    const lastBalance = await getData(collectionName);
+    console.log("Retrieved last balance", { collectionName, count: lastBalance.length });
     res.json(lastBalance);
   } catch (error) {
     errorLogger.error("Failed to get balance", { error: error.message });
@@ -30,9 +31,9 @@ async function getBalance(req, res) {
  * @returns {Promise<Object[]>} - The latest recorded balance.
  */
 async function fetchBalancesInDatabase() {
-  const collection = process.env.MONGODB_COLLECTION_BALANCE;
-  const data = await getDataFromCollection(collection);
-  console.log(`🚀 ~ file: balanceController.js:36 ~ fetchBalancesInDatabase ~ { collection, count: data.length }:`, { collection, count: data.length })
+  const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
+  console.log(`🚀 ~ file: balanceController.js:34 ~ fetchBalancesInDatabase ~ collectionName:`, collectionName)
+  const data = await getDataFromCollection(collectionName);
   return data;
 }
 

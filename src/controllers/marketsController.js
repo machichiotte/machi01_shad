@@ -19,7 +19,7 @@ validateEnvVariables(['MONGODB_COLLECTION_LOAD_MARKETS', 'TYPE_LOAD_MARKETS']);
 async function getMarkets(req, res) {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   try {
-    const data = await getData(req, res, collection);
+    const data = await getData(collection);
     console.log("Retrieved market data from the database.", { collection, count: data.length });
     res.json(data);
   } catch (error) {
@@ -33,9 +33,10 @@ async function getMarkets(req, res) {
  * @returns {Promise<Object[]>} - The last recorded markets.
  */
 async function getSavedMarkets() {
-  const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
+  const collectionName = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
+  console.log(`🚀 ~ file: marketsController.js:37 ~ getSavedMarkets ~ collectionName:`, collectionName)
   try {
-    const data = await getDataFromCollection(collection);
+    const data = await getDataFromCollection(collectionName);
     console.log("Fetched saved market data from the database.", { collection, count: data.length });
     return data;
   } catch (error) {

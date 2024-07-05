@@ -2,16 +2,16 @@
 const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
 const { deleteAllDataMDB, saveData } = require("../services/mongodbService.js");
 const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
-const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
 
 async function getStrat(req, res) {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
-  await getData(req, res, collection);
+  await getData(collection);
 }
 
 async function fetchStratsInDatabase() {
-  const collection = process.env.MONGODB_COLLECTION_STRAT;
-  const data = await getDataFromCollection(collection);
+  const collectionName = process.env.MONGODB_COLLECTION_STRAT;
+  console.log(`🚀 ~ file: strategyController.js:13 ~ fetchStratsInDatabase ~ collectionName:`, collectionName)
+  const data = await getDataFromCollection(collectionName);
   console.log("🚀 ~ fetchStratsInDatabase ~ data:", data.length);
   return data;
 }

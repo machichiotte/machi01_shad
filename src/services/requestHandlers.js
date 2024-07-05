@@ -2,16 +2,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-//const helmet = require("helmet"); // For added security
+const helmet = require("helmet"); // For added security
 
 const app = express();
 
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200
+}
+
 // Middleware
 app.use(express.static("dist"));
-app.use(cors({
-  origin: 'https://machi-shad.onrender.com'
-}));
-//app.use(helmet()); // Adds security headers
+app.use(cors(corsOptions));
+app.use(helmet()); // Adds security headers
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

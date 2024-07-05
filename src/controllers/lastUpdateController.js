@@ -50,7 +50,7 @@ async function getUniqueLastUpdate(req, res) {
 async function getLastUpdate(req, res) {
   const collection = process.env.MONGODB_COLLECTION_LAST_UPDATE;
   try {
-    const data = await getData(req, res, collection);
+    const data = await getData(collection);
     console.log("Fetched all last update records from the database.", { count: data.length });
   } catch (error) {
     errorLogger.error("Failed to get all last updates.", { error: error.message });
@@ -63,10 +63,11 @@ async function getLastUpdate(req, res) {
  * @returns {Promise<Object[]>} - A promise that resolves with the array of last updates.
  */
 async function getSavedLastUpdate() {
-  const collection = process.env.MONGODB_COLLECTION_LAST_UPDATE;
+  const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
+  console.log(`🚀 ~ file: lastUpdateController.js:67 ~ getSavedLastUpdate ~ collectionName:`, collectionName)
   try {
-    const data = await getDataFromCollection(collection);
-    console.log("Fetched saved last updates from the database.", { count: data.length });
+    const data = await getDataFromCollection(collectionName);
+    console.log("Fetched saved last updates from the database.", { collectionName, count: data.length });
     return data;
   } catch (error) {
     errorLogger.error("Failed to fetch saved last updates.", { error: error.message });

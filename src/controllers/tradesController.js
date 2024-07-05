@@ -8,36 +8,40 @@ const { createExchangeInstance } = require("../utils/exchangeUtil.js");
 const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
 
 const { mapTrades } = require("../services/mapping.js");
-const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
 
 async function getTrades(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_TRADES;
-  await getData(req, res, collection);
+  const collectionName = process.env.MONGODB_COLLECTION_TRADES;
+  console.log(`🚀 ~ file: tradesController.js:14 ~ getTrades ~ collectionName:`, collectionName)
+  try {
+    const lastTrades = await getData(collectionName);
+    console.log("Retrieved last Trades", { collectionName, count: lastTrades.length });
+    res.json(lastTrades);
+  } catch (error) {
+    errorLogger.error("Failed to get trades", { error: error.message });
+    handleErrorResponse(res, error, "getTrades");
+  }
 }
 
 /**
  * Retrieves the last recorded trades from the database.
  * @returns {Object} - The last recorded trades.
  */
-async function getSavedTrades() {
-  const collection = process.env.MONGODB_COLLECTION_TRADES;
-
-    const data = await getDataFromCollection(collection);
-    console.log("🚀 ~ getSavedTrades ~ data:", data.length);
-    return data;
-}
-
 async function fetchTradesInDatabase() {
-  const collection = process.env.MONGODB_COLLECTION_TRADES;
-  const data = await getDataFromCollection(collection);
+  const collectionName = process.env.MONGODB_COLLECTION_TRADES;
+  console.log(
+    `🚀 ~ file: tradesController.js:23 ~ fetchTradesInDatabase ~ collectionName:`,
+    collectionName
+  );
+
+  const data = await getDataFromCollection(collectionName);
   return data;
 }
 
 async function addTradesManually(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_TRADES;
+  const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   const tradesData = req.body.trades_data;
   try {
-    const savedTrade = await saveData(tradesData, collection);
+    const savedTrade = await saveData(tradesData, collectionName);
 
     if (savedTrade.acknowledged) {
       res
@@ -54,13 +58,13 @@ async function addTradesManually(req, res) {
 }
 
 async function saveTradesToDatabase(newTrades) {
-  const collection = process.env.MONGODB_COLLECTION_TRADES;
-  saveTrades(newTrades, collection, true);
+  const collectionName = process.env.MONGODB_COLLECTION_TRADES;
+  saveTrades(newTrades, collectionName, true);
 }
 
 async function saveAllTradesToDatabase(newTrades) {
-  const collection = process.env.MONGODB_COLLECTION_TRADES2;
-  saveTrades(newTrades, collection, false);
+  const collectionName = process.env.MONGODB_COLLECTION_TRADES2;
+  saveTrades(newTrades, collectionName, false);
 }
 
 async function saveTrades(newTrades, collection, isFiltered) {
@@ -105,8 +109,8 @@ async function saveTrades(newTrades, collection, isFiltered) {
 async function updateTrades(req, res) {
   const { exchangeId } = req.params;
   console.log("🚀 ~ updateTrades ~ exchangeId:", exchangeId);
-  const collection = process.env.MONGODB_COLLECTION_TRADES;
-  console.log("🚀 ~ updateTrades ~ collection:", collection);
+  const collectionName = process.env.MONGODB_COLLECTION_TRADES;
+  console.log("🚀 ~ updateTrades ~ collectionName:", collectionName);
   const exchange = createExchangeInstance(exchangeId);
 
   try {
@@ -166,7 +170,7 @@ async function updateTrades(req, res) {
     }
 
     try {
-      await deleteAndSaveData(mappedData, collection, exchangeId);
+      await deleteAndSaveData(mappedData, collectionName, exchangeId);
     } catch (err) {
       console.log("🚀 ~ updateTrades ~ err:", err);
       res.status(500).json({ error: err.name + ": " + err.message });
@@ -189,11 +193,10 @@ async function fetchLastTrades(exchangeId, symbol) {
 
 module.exports = {
   getTrades,
-  getSavedTrades,
+  fetchTradesInDatabase,
   addTradesManually,
   updateTrades,
   fetchLastTrades,
-  fetchTradesInDatabase,
   saveTradesToDatabase,
   saveAllTradesToDatabase,
 };

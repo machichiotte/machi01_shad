@@ -2,7 +2,7 @@ const { handleErrorResponse } = require("../utils/errorUtil.js");
 const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
 const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
 const { deleteAllDataMDB, saveData } = require("../services/mongodbService.js");
-const { errorLogger, infoLogger } = require("../utils/loggerUtil.js");
+const { errorLogger } = require("../utils/loggerUtil.js");
 const { fetchCmcData } = require("../services/cmcService.js");
 const { validateEnvVariables } = require("../utils/controllerUtil.js");
 
@@ -14,10 +14,10 @@ validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC']);
  * @param {Object} res - HTTP response object.
  */
 async function getCmc(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_CMC;
+  const collectionName = process.env.MONGODB_COLLECTION_CMC;
   try {
-    const data = await getData(req, res, collection);
-    infoLogger.info("Retrieved CMC data", { collection, count: data.length });
+    const data = await getData(collectionName);
+    console.log("Retrieved CMC data", { collectionName, count: data.length });
     res.json(data);
   } catch (error) {
     errorLogger.error(`Error in getCmc: ${error.message}`, { error });
@@ -30,10 +30,11 @@ async function getCmc(req, res) {
  * @returns {Promise<Object[]>} - The latest CMC data from the database.
  */
 async function fetchCmcInDatabase() {
-  const collection = process.env.MONGODB_COLLECTION_CMC;
+  const collectionName = process.env.MONGODB_COLLECTION_CMC;
+  console.log(`🚀 ~ file: cmcController.js:34 ~ fetchCmcInDatabase ~ collectionName:`, collectionName)
   try {
-    const data = await getDataFromCollection(collection);
-    infoLogger.info("Fetched CMC data from database", { collection, count: data.length });
+    const data = await getDataFromCollection(collectionName);
+    console.log("Fetched CMC data from database", { collection, count: data.length });
     return data;
   } catch (error) {
     errorLogger.error(`Error in fetchCmcInDatabase: ${error.message}`, { error });
@@ -62,7 +63,7 @@ async function updateCmcDataInDatabase(cmcData, res) {
       totalCount: cmcData.length,
     });
 
-    infoLogger.info("CMC data updated in database", { deleteResult, saveResult, totalCount: cmcData.length });
+    console.log("CMC data updated in database", { deleteResult, saveResult, totalCount: cmcData.length });
   } catch (error) {
     errorLogger.error(`Error in updateCmcDataInDatabase: ${error.message}`, { error });
     handleErrorResponse(res, error, "updateCmcDataInDatabase");
@@ -77,7 +78,7 @@ async function updateCmcDataInDatabase(cmcData, res) {
 async function updateCmc(req, res) {
   try {
     const cmcData = await fetchCmcData();
-    infoLogger.info("Fetched latest CMC data", { count: cmcData.length });
+    console.log("Fetched latest CMC data", { count: cmcData.length });
     await updateCmcDataInDatabase(cmcData, res);
   } catch (error) {
     errorLogger.error(`Error in updateCmc: ${error.message}`, { error });
