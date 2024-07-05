@@ -6,15 +6,10 @@ const helmet = require("helmet"); // For added security
 
 const app = express();
 
-var corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200
-}
-
 // Middleware
 app.use(express.static("dist"));
-app.use(cors(corsOptions));
-app.use(helmet()); // Adds security headers
+app.use(cors());
+//app.use(helmet()); // Adds security headers
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
