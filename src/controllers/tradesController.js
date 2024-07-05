@@ -8,6 +8,8 @@ const { createExchangeInstance } = require("../utils/exchangeUtil.js");
 const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
 
 const { mapTrades } = require("../services/mapping.js");
+const { handleErrorResponse } = require("../utils/errorUtil.js");
+const { errorLogger } = require("../utils/loggerUtil.js");
 
 async function getTrades(req, res) {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;

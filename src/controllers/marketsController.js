@@ -37,7 +37,7 @@ async function getSavedMarkets() {
   console.log(`🚀 ~ file: marketsController.js:37 ~ getSavedMarkets ~ collectionName:`, collectionName)
   try {
     const data = await getDataFromCollection(collectionName);
-    console.log("Fetched saved market data from the database.", { collection, count: data.length });
+    console.log("Fetched saved market data from the database.", { collectionName, count: data.length });
     return data;
   } catch (error) {
     errorLogger.error("Failed to fetch saved market data.", { error: error.message });
