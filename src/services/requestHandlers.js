@@ -1,18 +1,19 @@
 // src/services/requestHandlers.js
 const express = require("express");
 const bodyParser = require("body-parser");
-const path = require("path");
 const cors = require('cors')
+const path = require("path");
 
-const app = express();
 const PORT = process.env.PORT || 10000;
 
+
+const app = express();
 app.use(cors())
 
-// Middleware pour servir les fichiers statiques
-app.use(express.static(path.join(__dirname, "../../dist")));
+app.use(express.static('dist'));
+app.use(cors());
 
-// Middleware pour parser le body des requêtes
+// Use body-parser as a global middleware for all requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
