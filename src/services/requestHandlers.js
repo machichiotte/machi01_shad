@@ -13,7 +13,7 @@ app.use(express.static("dist"));
 // Define the CORS options
 const corsOptions = {
   credentials: true,
-  origin: ['http://localhost:5173', 'https://machi-shad.onrender.com/'] // Whitelist the domains you want to allow
+  origin: ['http://localhost:5173', 'https://machi-shad.onrender.com'] // Whitelist the domains you want to allow
 };
 
 app.use(cors(corsOptions));
