@@ -6,12 +6,17 @@ const path = require("path");
 
 const PORT = process.env.PORT || 10000;
 
-
+const allowedOrigins = ['http://localhost:5173', 'https://machi-shad.onrender.com'];
 const app = express();
 app.use(cors())
 
 app.use(express.static('dist'));
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigins, // Autoriser l'origine de votre frontend
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  credentials: true, // Si vous envoyez des cookies ou des en-têtes d'authentification
+  allowedHeaders: 'Content-Type, Authorization', // Autoriser les en-têtes nécessaires
+}));
 
 // Use body-parser as a global middleware for all requests
 app.use(bodyParser.urlencoded({ extended: true }));
