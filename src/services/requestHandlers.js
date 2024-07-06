@@ -12,11 +12,15 @@ app.use(express.static("dist"));
 
 // Define the CORS options
 const corsOptions = {
+  origin: ["http://localhost:5173", "https://machi-shad.onrender.com"], // Whitelist the domains you want to allow
   credentials: true,
-  origin: ['http://localhost:5173', 'https://machi-shad.onrender.com'] // Whitelist the domains you want to allow
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow HTTP methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
 };
 
+// Enable CORS with pre-flight options handling
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // Enable pre-flight for all routes
 
 //app.use(helmet()); // Adds security headers
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -51,12 +55,12 @@ app.use("/api/lastUpdate", lastUpdateRoutes);
 // Error Handling Middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Internal Server Error' });
+  res.status(500).json({ error: "Internal Server Error" });
 });
 
 // 404 Handling Middleware
 app.use((req, res, next) => {
-  res.status(404).json({ error: 'Not Found' });
+  res.status(404).json({ error: "Not Found" });
 });
 
 function startServer() {
