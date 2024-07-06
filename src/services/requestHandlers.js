@@ -2,36 +2,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
+const cors = require('cors')
 
 const app = express();
 const PORT = process.env.PORT || 10000;
 
+app.use(cors())
+
 // Middleware pour servir les fichiers statiques
 app.use(express.static(path.join(__dirname, "../../dist")));
-
-// Définir les en-têtes CORS
-app.use(function(req, res, next) {
-  // Détermine si l'origine est autorisée
-  const allowedOrigins = ['http://localhost:5173', 'https://machi-shad.onrender.com'];
-  const origin = req.headers.origin;
-
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  } else {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-  }
-
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-
-  if (req.method === 'OPTIONS') {
-    // Réponse rapide aux requêtes OPTIONS
-    return res.sendStatus(204); // 204 No Content
-  }
-
-  next();
-});
 
 // Middleware pour parser le body des requêtes
 app.use(bodyParser.urlencoded({ extended: true }));
