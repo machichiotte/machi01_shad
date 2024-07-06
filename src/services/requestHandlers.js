@@ -5,10 +5,19 @@ const cors = require("cors");
 const helmet = require("helmet"); // For added security
 
 const app = express();
+const PORT = process.env.PORT || 10000;
 
 // Middleware
 app.use(express.static("dist"));
-app.use(cors());
+
+// Define the CORS options
+const corsOptions = {
+  credentials: true,
+  origin: ['http://localhost:10000', '*'] // Whitelist the domains you want to allow
+};
+
+app.use(cors(corsOptions));
+
 //app.use(helmet()); // Adds security headers
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -51,7 +60,6 @@ app.use((req, res, next) => {
 });
 
 function startServer() {
-  const PORT = process.env.PORT || 10000;
   app.listen(PORT, () => {
     console.log("🚀 ~ app.listen ~ PORT:", PORT);
   });
