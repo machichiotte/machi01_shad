@@ -1,22 +1,42 @@
 // src/services/requestHandlers.js
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require('cors')
+const cors = require("cors");
 const path = require("path");
 
 const PORT = process.env.PORT || 10000;
 
-const allowedOrigins = ['http://localhost:5173', 'https://machi-shad.onrender.com'];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://machi-shad.onrender.com",
+];
 const app = express();
-app.use(cors())
 
-app.use(express.static('dist'));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // Permet l'envoi de cookies et des en-têtes d'authentification
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type, Authorization", // Autoriser les en-têtes nécessaires
+  })
+);
+
+app.use(express.static("dist"));
+
+/*
 app.use(cors({
   origin: allowedOrigins, // Autoriser l'origine de votre frontend
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
   credentials: true, // Si vous envoyez des cookies ou des en-têtes d'authentification
   allowedHeaders: 'Content-Type, Authorization', // Autoriser les en-têtes nécessaires
 }));
+*/
 
 // Use body-parser as a global middleware for all requests
 app.use(bodyParser.urlencoded({ extended: true }));
