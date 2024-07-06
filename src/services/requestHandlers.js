@@ -10,20 +10,28 @@ const PORT = process.env.PORT || 10000;
 // Middleware
 app.use(express.static("dist"));
 
+const allowedOrigins = ['http://localhost:5173', 'https://machi-shad.onrender.com'];
+
 function setCorsHeaders(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin); // Autorise les origines spécifiques
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true'); // Permet les cookies et autres credentials
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200); // Réponse rapide aux requêtes OPTIONS
+  }
   next();
 }
 
 // Enable CORS with pre-flight options handling
-app.use(cors());
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(setCorsHeaders);
 
-//app.options("*", cors(corsOptions)); // Enable pre-flight for all routes
-
-app.use(helmet()); // Adds security headers
+// Middleware de sécurité
+app.use(helmet()); // Ajoute des en-têtes de sécurité
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
