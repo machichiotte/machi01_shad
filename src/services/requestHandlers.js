@@ -10,19 +10,20 @@ const PORT = process.env.PORT || 10000;
 // Middleware
 app.use(express.static("dist"));
 
-// Define the CORS options
-const corsOptions = {
-  origin: ["http://localhost:5173", "https://machi-shad.onrender.com"], // Whitelist the domains you want to allow
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow HTTP methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
-};
+function setCorsHeaders(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+}
 
 // Enable CORS with pre-flight options handling
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Enable pre-flight for all routes
+app.use(cors());
+app.use(setCorsHeaders);
 
-//app.use(helmet()); // Adds security headers
+//app.options("*", cors(corsOptions)); // Enable pre-flight for all routes
+
+app.use(helmet()); // Adds security headers
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
