@@ -14,14 +14,14 @@ const lastUpdateRoutes = require("../routes/lastUpdateRoutes.js");
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require("cors");
+//const cors = require("cors");
 //const helmet = require("helmet"); // For added security
 
 const app = express();
 const PORT = process.env.PORT || 10000;
 
 // Enable CORS with pre-flight options handling
-app.use(cors());
+//app.use(cors());
 
 // Middleware
 app.use(express.static("dist"));
