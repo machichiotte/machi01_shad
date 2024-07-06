@@ -1,5 +1,43 @@
 // src/services/requestHandlers.js
-// Import Routes
+const express = require("express");
+const bodyParser = require("body-parser");
+const path = require("path");
+
+const app = express();
+const PORT = process.env.PORT || 10000;
+
+// Middleware pour servir les fichiers statiques
+app.use(express.static(path.join(__dirname, "../../dist")));
+
+// Définir les en-têtes CORS
+app.use(function(req, res, next) {
+  // Détermine si l'origine est autorisée
+  const allowedOrigins = ['http://localhost:5173', 'https://machi-shad.onrender.com'];
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+  if (req.method === 'OPTIONS') {
+    // Réponse rapide aux requêtes OPTIONS
+    return res.sendStatus(204); // 204 No Content
+  }
+
+  next();
+});
+
+// Middleware pour parser le body des requêtes
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Import des routes
 const converterRoutes = require("../routes/converterRoutes.js");
 const authRoutes = require("../routes/authRoutes.js");
 const balanceRoutes = require("../routes/balanceRoutes.js");
@@ -12,33 +50,7 @@ const tradesRoutes = require("../routes/tradesRoutes.js");
 const tickersRoutes = require("../routes/tickersRoutes.js");
 const lastUpdateRoutes = require("../routes/lastUpdateRoutes.js");
 
-const express = require("express");
-const bodyParser = require("body-parser");
-//const cors = require("cors");
-//const helmet = require("helmet"); // For added security
-
-const app = express();
-const PORT = process.env.PORT || 10000;
-
-// Enable CORS with pre-flight options handling
-//app.use(cors());
-app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
-});
-
-// Middleware
-app.use(express.static("dist"));
-
-// Middleware de sécurité
-//app.use(helmet()); // Ajoute des en-têtes de sécurité
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-// Use Routes
+// Utilisation des routes
 app.use("/api/converter", converterRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/balance", balanceRoutes);
@@ -51,17 +63,18 @@ app.use("/api/trades", tradesRoutes);
 app.use("/api/tickers", tickersRoutes);
 app.use("/api/lastUpdate", lastUpdateRoutes);
 
-// Error Handling Middleware
+// Middleware de gestion des erreurs
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: "Internal Server Error" });
 });
 
-// 404 Handling Middleware
+// Middleware de gestion des erreurs 404
 app.use((req, res, next) => {
   res.status(404).json({ error: "Not Found" });
 });
 
+// Fonction pour démarrer le serveur
 function startServer() {
   app.listen(PORT, () => {
     console.log("🚀 ~ app.listen ~ PORT:", PORT);
