@@ -12,7 +12,7 @@ app.offlineMode = isOfflineMode;
 async function initializeServer() {
   try {
     await connectToMongoDB();
-    //await initializeCronTasks();
+    await initializeCronTasks();
     startServer();
   } catch (error) {
     console.error('Error during server initialization:', error);
