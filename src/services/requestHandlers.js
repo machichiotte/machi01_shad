@@ -10,35 +10,32 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://machi-shad.onrender.com",
 ];
+
 const app = express();
 
+// Middleware CORS
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      // Vérification des origines autorisées
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true, // Permet l'envoi de cookies et des en-têtes d'authentification
+    credentials: true, // Permettre les cookies et les en-têtes d'authentification
     methods: "GET,POST,PUT,DELETE,OPTIONS",
-    allowedHeaders: "Content-Type, Authorization", // Autoriser les en-têtes nécessaires
+    allowedHeaders: "Content-Type, Authorization", // En-têtes autorisés
+    optionsSuccessStatus: 200, // Status de réussite pour les OPTIONS
   })
 );
 
+// Middleware pour les requêtes `OPTIONS` pour les pré-requêtes CORS
+app.options("*", cors());
+
+// Configuration des middlewares
 app.use(express.static("dist"));
-
-/*
-app.use(cors({
-  origin: allowedOrigins, // Autoriser l'origine de votre frontend
-  methods: 'GET,POST,PUT,DELETE,OPTIONS',
-  credentials: true, // Si vous envoyez des cookies ou des en-têtes d'authentification
-  allowedHeaders: 'Content-Type, Authorization', // Autoriser les en-têtes nécessaires
-}));
-*/
-
-// Use body-parser as a global middleware for all requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
