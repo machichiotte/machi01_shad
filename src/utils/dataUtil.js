@@ -21,7 +21,6 @@ async function getData(collectionName) {
 
 // Main function to get data from the collection
 async function getDataFromCollection(collectionName) {
-  console.log(`🚀 ~ file: dataUtil.js:42 ~ getDataFromCollection ~ collectionName:`, collectionName)
   try {
     if (process.env.OFFLINE_MODE === "true") {
       // Get the mock data file path for the given collection

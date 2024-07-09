@@ -2,39 +2,39 @@
 const cron = require("node-cron");
 const nodemailer = require("nodemailer");
 
-const config = require("./config.js");
+const config = require("../config.js");
 
-const { getAllCalculs } = require("../services/metrics/global.js");
+const { getAllCalculs } = require("../metrics/global.js");
 
-const { errorLogger } = require("../utils/loggerUtil.js");
+const { errorLogger } = require("../../utils/loggerUtil.js");
 
-const { cronUtilsMarkets, cronUtilsTickers } = require("../utils/cronUtil.js");
-const { mapTrades } = require("./mapping.js");
+const { cronUtilsMarkets, cronUtilsTickers } = require("../../utils/cronUtil.js");
+const { mapTrades } = require("../mapping.js");
 const {
   fetchBalancesInDatabase,
   fetchCurrentBalance,
   saveBalanceInDatabase,
-} = require("../controllers/balanceController.js");
+} = require("../../controllers/balanceController.js");
 const {
   fetchOrdersInDatabase,
   updateOrdersFromServer,
-} = require("../controllers/ordersController.js");
+} = require("../../controllers/ordersController.js");
 const {
   fetchTradesInDatabase,
   fetchLastTrades,
   saveTradesToDatabase,
   saveAllTradesToDatabase,
-} = require("../controllers/tradesController.js");
+} = require("../../controllers/tradesController.js");
 
 const {
   fetchTickersInDatabase,
   getSavedAllTickersByExchange,
-} = require("../controllers/tickersController.js");
+} = require("../../controllers/tickersController.js");
 
 const {
   fetchStratsInDatabase,
-} = require("../controllers/strategyController.js");
-const { fetchCmcInDatabase } = require("../controllers/cmcController.js");
+} = require("../../controllers/strategyController.js");
+const { fetchCmcInDatabase } = require("../../controllers/cmcController.js");
 
 const exchangesToUpdate = ["binance", "kucoin", "htx", "okx", "gateio"];
 const quoteCurrencies = ["USDT"];
@@ -423,6 +423,7 @@ async function updateMarketsForExchange(exchangeId) {
 }
 
 async function updateTickersForExchange(exchangeId) {
+  console.log(`🚀 ~ file: cronTasks.js:426 ~ updateTickersForExchange ~ exchangeId:`, exchangeId)
   try {
     await cronUtilsTickers(exchangeId);
     console.log("🚀 ~ updateTickersForExchange ~ exchangeId:", exchangeId);

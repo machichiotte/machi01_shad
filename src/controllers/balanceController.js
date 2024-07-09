@@ -5,6 +5,7 @@ const { saveLastUpdateToMongoDB, deleteAndSaveData } = require("../utils/mongodb
 const { mapBalance } = require("../services/mapping");
 const { errorLogger } = require("../utils/loggerUtil.js");
 const { validateEnvVariables } = require("../utils/controllerUtil.js");
+const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
 
 validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE']);
 
@@ -44,20 +45,26 @@ async function fetchBalancesInDatabase() {
  * @returns {Promise<Object[]>} - The fetched balance data.
  */
 async function fetchCurrentBalance(exchangeId, retries = 3) {
+  const errorPolicies = await loadErrorPolicies(); // Charger les politiques d'erreurs
+
   try {
     const exchange = createExchangeInstance(exchangeId);
     const data = await exchange.fetchBalance();
     const mappedData = mapBalance(exchangeId, data);
-  console.log(`🚀 ~ file: balanceController.js:46 ~ fetchCurrentBalance ~ Fetched current balance from ${exchangeId}`, { count: mappedData.length })
+    console.log(`🚀 ~ file: balanceController.js:46 ~ fetchCurrentBalance ~ Fetched current balance from ${exchangeId}`, { count: mappedData.length });
     return mappedData;
   } catch (error) {
-    console.log(`🚀 ~ file: balanceController.js:53 ~ fetchCurrentBalance ~ error:`, error)
-    if (retries > 0) {
-      const delay = (3 - retries) * 2000;
+    console.log(`🚀 ~ file: balanceController.js:53 ~ fetchCurrentBalance ~ error:`, error);
+
+    // Vérifiez si l'erreur justifie une nouvelle tentative
+    if (retries > 0 && shouldRetry(exchangeId, error, errorPolicies)) {
+      const delay = Math.pow(2, 3 - retries) * 1000; // Délai exponentiel
       console.log(`Retrying fetchCurrentBalance... (${3 - retries + 1}/3)`, { delay });
       await new Promise(resolve => setTimeout(resolve, delay));
       return fetchCurrentBalance(exchangeId, retries - 1);
     }
+
+    // Logger les erreurs non récupérables
     errorLogger.error("Failed to fetch current balance from exchange", { exchangeId, error: error.message });
     throw error;
   }

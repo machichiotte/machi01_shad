@@ -1,0 +1,18 @@
+{
+    "okx": {
+      "ExchangeError": {
+        "retry": false,
+        "message": "API key doesn't exist."
+      }
+    },
+    "gateio": {
+      "AccountSuspended": {
+        "retry": false,
+        "message": "Account is locked due to suspension."
+      },
+      "NetworkError": {
+        "retry": true,
+        "message": "A network error occurred. Retrying might help."
+      }
+    }
+  }

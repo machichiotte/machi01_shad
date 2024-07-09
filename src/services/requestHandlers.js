@@ -14,22 +14,7 @@ const allowedOrigins = [
 const app = express();
 
 // Middleware CORS
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Vérification des origines autorisées
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true, // Permettre les cookies et les en-têtes d'authentification
-    methods: "GET,POST,PUT,DELETE,OPTIONS",
-    allowedHeaders: "Content-Type, Authorization", // En-têtes autorisés
-    optionsSuccessStatus: 200, // Status de réussite pour les OPTIONS
-  })
-);
+app.use(cors());
 
 // Middleware pour les requêtes `OPTIONS` pour les pré-requêtes CORS
 app.options("*", cors());

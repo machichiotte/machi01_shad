@@ -15,6 +15,27 @@ function handleErrorResponse(res, error, functionName) {
   }
 }
 
+// Charger les politiques d'erreurs depuis le fichier JSON
+async function loadErrorPolicies() {
+  const filePath = path.resolve(__dirname, 'errorPolicies.json');
+  const data = await fs.readFile(filePath, 'utf8');
+  return JSON.parse(data);
+}
+
+// Détermine si une erreur justifie une nouvelle tentative
+function shouldRetry(exchangeId, error, errorPolicies) {
+  const exchangePolicies = errorPolicies[exchangeId];
+  if (exchangePolicies) {
+    const policy = exchangePolicies[error.name];
+    if (policy) {
+      return policy.retry;
+    }
+  }
+  return true; // Par défaut, retenter si la politique n'est pas définie
+}
+
 module.exports = {
   handleErrorResponse,
+  loadErrorPolicies,
+  shouldRetry
 };
