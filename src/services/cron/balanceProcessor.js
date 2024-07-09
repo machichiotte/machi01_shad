@@ -1,4 +1,5 @@
-const { getAllCalculs } = require("../services/metrics/global.js");
+// src/services/cron/balanceProcessor.js
+const { getAllCalculs } = require("../../services/metrics/global.js");
 const { fetchCmcInDatabase, fetchStratsInDatabase, fetchTradesInDatabase, fetchOrdersInDatabase, fetchTickersInDatabase, fetchBalancesInDatabase } = require("./dataFetcher.js");
 
 async function processBalanceChanges(differences, exchangeId) {

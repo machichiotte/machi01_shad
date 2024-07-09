@@ -1,4 +1,5 @@
-const { cronUtilsMarkets, cronUtilsTickers } = require("../utils/cronUtil.js");
+// src/services/cron/updateFunctions.js
+const { cronUtilsMarkets, cronUtilsTickers } = require("../../utils/cronUtil.js");
 
 async function updateMarketsForExchange(exchangeId) {
   try {

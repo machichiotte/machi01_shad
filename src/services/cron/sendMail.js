@@ -1,6 +1,7 @@
+// src/services/cron/sendMail.js
 const nodemailer = require("nodemailer");
-const { smtp } = require("./config.js");
-const { errorLogger } = require("../utils/loggerUtil.js");
+const { smtp } = require("../config.js");
+const { errorLogger } = require("../../utils/loggerUtil.js");
 
 async function sendMail(options) {
   const transporter = nodemailer.createTransport(smtp);

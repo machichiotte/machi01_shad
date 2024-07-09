@@ -1,7 +1,17 @@
-import { sendMail } from "../sendMail.js";
-import { errorLogger } from "../utils/loggerUtil.js";
-import { fetchBalancesInDatabase, fetchCurrentBalance, saveBalanceInDatabase } from "../controllers/balanceController.js";
-import { compareBalances, calculateAllMetrics } from "./balanceProcessor.js";
+// src/services/cron/tasExecutor.js
+const { sendMail } = require("./sendMail.js");
+const { smtp } = require("../config.js");
+
+const { errorLogger } = require("../../utils/loggerUtil.js");
+const {
+  fetchBalancesInDatabase,
+  fetchCurrentBalance,
+  saveBalanceInDatabase,
+} = require("../../controllers/balanceController.js");
+const {
+  compareBalances,
+  calculateAllMetrics,
+} = require("./balanceProcessor.js");
 
 const exchangesToUpdate = ["binance", "kucoin", "htx", "okx", "gateio"];
 
@@ -61,7 +71,7 @@ async function cronBalances() {
   });
 }
 
-export default {
+module.exports = {
   cronTickers,
   cronMarkets,
   cronBalances,
