@@ -1,5 +1,7 @@
 // src/utils/errorUtil.js
 const { AuthenticationError } = require("ccxt");
+const fs = require("fs").promises;  // Use fs.promises for async file operations
+const path = require("path");
 
 function handleErrorResponse(res, error, functionName) {
   if (error instanceof AuthenticationError) {
@@ -17,7 +19,7 @@ function handleErrorResponse(res, error, functionName) {
 
 // Charger les politiques d'erreurs depuis le fichier JSON
 async function loadErrorPolicies() {
-  const filePath = path.resolve(__dirname, 'errorPolicies.json');
+  const filePath = path.resolve(__dirname, '../config/errorPolicies.json');
   const data = await fs.readFile(filePath, 'utf8');
   return JSON.parse(data);
 }

@@ -42,7 +42,7 @@ function getRecupTpX(assetStrat, maxExposition, ratioShad) {
   console.log(
     `Calculated result: ${result} (Potential for refinement based on strategy ${assetStrat})`
   );
-  return result;
+  return parseFloat(result);
 }
 
 function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
@@ -66,20 +66,15 @@ function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
  * @param {Object} strats - Les stratégies sauvegardées.
  * @returns {Object} - La stratégie et l'exposition maximale.
  */
-function getStrat(exchangeId, asset, strats) {
+function getStrat(exchangeId, strats) {
   // Vérifie si 'strats' est un objet valide et contient des données
   if (!strats || typeof strats !== 'object') {
     console.warn("🚀 ~ getStrat ~ strats is invalid or not an object:", strats);
     return { strat: "No strategy", stratExpo: MAX_EXPO };
   }
 
-  console.log("🚀 ~ getStrat ~ strats:", strats);
-  console.log("🚀 ~ getStrat ~ asset:", asset);
-  console.log("🚀 ~ getStrat ~ exchangeId:", exchangeId);
-
   // Rechercher la stratégie correspondante à l'actif donné
-  const filteredStrat = strats[asset] || {};
-  console.log("🚀 ~ getStrat ~ filteredStrat:", filteredStrat);
+  const filteredStrat = strats || {};
 
   // Déterminer la stratégie et l'exposition maximale pour la plateforme donnée
   const strat = filteredStrat.strategies?.[exchangeId] || "No strategy";
@@ -108,11 +103,18 @@ function getRatioShad(strat) {
 }
 
 function calculateRecups(asset, platform, totalBuy, totalSell, strats) {
+  console.log(`🚀 ~ file: strategies.js:111 ~ calculateRecups`, {
+    totalSell,
+    totalBuy,
+    platform,
+    asset
+  });
+  
   //const { assetStrat, assetExpo } = item;
 
   const symbol = asset + "/USDT";
 
-  let { strat, stratExpo } = getStrat(platform, symbol, strats);
+  let { strat, stratExpo } = getStrat(platform, strats);
   if (stratExpo === undefined) {
     stratExpo = MAX_EXPO;
   }

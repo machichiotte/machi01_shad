@@ -48,10 +48,10 @@ async function deleteAndSaveData(mapData, collection, exchangeId) {
   }
 }
 
-async function deleteAndSaveObject(mapData, collection) {
+async function deleteAndSaveObject(mapData, collectionName) {
   if (mapData && Object.keys(mapData).length > 0) {
-    await deleteAllDataMDB(collection);
-    await saveData(mapData, collection);
+    await deleteAllDataMDB(collectionName);
+    await saveData(mapData, collectionName);
   }
 }
 

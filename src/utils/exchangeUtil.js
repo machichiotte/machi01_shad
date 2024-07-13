@@ -1,7 +1,8 @@
 // src/utils/exchangeUtil.js
 const ccxt = require("ccxt");
 const { AuthenticationError } = require("ccxt");
-const EXCHANGES = ["binance", "kucoin", "htx", "okx", "gateio"];
+//const EXCHANGES = ["binance", "kucoin", "htx", "okx", "gateio"];
+const EXCHANGES = ["kucoin"];
 
 // Fonction utilitaire pour créer une instance d'échange
 function createExchangeInstance(exchangeId) {
@@ -102,8 +103,13 @@ function getSymbolForExchange(exchangeId, asset) {
   return symbol;
 }
 
+function getExchanges() {
+  return EXCHANGES;
+};
+
 module.exports = {
   createExchangeInstance,
   createExchangeInstanceWithReq,
   getSymbolForExchange,
+  getExchanges
 };

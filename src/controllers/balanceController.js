@@ -1,3 +1,4 @@
+// src/controllers/balanceController.js
 const { handleErrorResponse } = require("../utils/errorUtil");
 const { getData, getDataFromCollection } = require("../utils/dataUtil");
 const { createExchangeInstance } = require("../utils/exchangeUtil");
@@ -14,16 +15,16 @@ validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE']);
  * @param {Object} req - HTTP request object.
  * @param {Object} res - HTTP response object.
  */
-async function getBalance(req, res) {
+async function getBalances(req, res) {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
-  console.log(`🚀 ~ file: balanceController.js:18 ~ getBalance ~ collectionName:`, collectionName)
+  console.log(`🚀 ~ file: balanceController.js:18 ~ getBalances ~ collectionName:`, collectionName)
   try {
-    const lastBalance = await getData(collectionName);
-    console.log("Retrieved last balance", { collectionName, count: lastBalance.length });
-    res.json(lastBalance);
+    const data = await getData(collectionName);
+    console.log("Retrieved last balances", { collectionName, count: data.length });
+    res.json(data);
   } catch (error) {
-    errorLogger.error("Failed to get balance", { error: error.message });
-    handleErrorResponse(res, error, "getBalance");
+    errorLogger.error("Failed to get balances", { error: error.message });
+    handleErrorResponse(res, error, "getBalances");
   }
 }
 
@@ -95,12 +96,12 @@ async function saveBalanceInDatabase(mappedData, exchangeId) {
 async function updateCurrentBalance(req, res) {
   const exchangeId = req.params.exchangeId;
   try {
-    const balanceData = await fetchCurrentBalance(exchangeId);
-    await saveBalanceInDatabase(balanceData, exchangeId);
+    const data = await fetchCurrentBalance(exchangeId);
+    await saveBalanceInDatabase(data, exchangeId);
     res.status(200).json({
       status: true,
       message: "Current balance updated successfully.",
-      data: balanceData,
+      data: data,
     });
     console.log("Updated current balance successfully", { exchangeId });
   } catch (error) {
@@ -110,7 +111,7 @@ async function updateCurrentBalance(req, res) {
 }
 
 module.exports = {
-  getBalance,
+  getBalances,
   fetchBalancesInDatabase,
   fetchCurrentBalance,
   saveBalanceInDatabase,

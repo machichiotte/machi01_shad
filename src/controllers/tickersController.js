@@ -7,6 +7,7 @@ const {
   deleteAndSaveObject,
 } = require("../utils/mongodbUtil.js");
 const { mapTickers } = require("../services/mapping.js");
+const { getExchanges } = require("../utils/exchangeUtil.js");
 
 /**
  * Retrieves all tickers from the database.
@@ -15,8 +16,8 @@ const { mapTickers } = require("../services/mapping.js");
  */
 async function getAllTickers(req, res) {
   try {
-    const collection = process.env.MONGODB_COLLECTION_TICKERS;
-    const tickersData = await getData(collection);
+    const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
+    const tickersData = await getData(collectionName);
     res.status(200).json(tickersData);
   } catch (error) {
     handleErrorResponse(res, error, "getAllTickers");
@@ -42,8 +43,8 @@ async function fetchTickersInDatabase() {
  */
 async function getAllTickersByExchange(req, res, exchangeId) {
   try {
-    const collection = process.env.MONGODB_COLLECTION_TICKERS;
-    const tickersData = await getData(collection);
+    const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
+    const tickersData = await getData(collectionName);
 
     if (tickersData && tickersData[exchangeId]) {
       const exchangeTickersData = tickersData[exchangeId];
@@ -95,8 +96,8 @@ async function getSavedAllTickersByExchange(exchangeId) {
  */
 async function getAllTickersBySymbolFromExchange(req, res, exchangeId, symbol) {
   try {
-    const collection = process.env.MONGODB_COLLECTION_TICKERS;
-    const tickersData = await getData(collection);
+    const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
+    const tickersData = await getData(collectionName);
 
     if (tickersData && tickersData[exchangeId]) {
       const exchangeTickersData = tickersData[exchangeId];
@@ -151,6 +152,7 @@ async function getSavedAllTickersBySymbolFromExchange(exchangeId, symbol) {
   }
 }
 
+ 
 /**
  * Updates all tickers by fetching the latest data from exchanges and saving it to the database.
  * @param {Object} req - HTTP request object.
@@ -158,18 +160,17 @@ async function getSavedAllTickersBySymbolFromExchange(exchangeId, symbol) {
  */
 async function updateAllTickers(req, res) {
   try {
-    const collection = process.env.MONGODB_COLLECTION_TICKERS;
+    const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
     const tickersData = {};
-    const supportedExchanges = ["binance", "kucoin", "htx", "okx", "gateio"];
-
-    for (const exchangeId of supportedExchanges) {
+    const exchanges = getExchanges();
+    for (const exchangeId of exchanges) {
       const exchange = createExchangeInstance(exchangeId);
       const data = await exchange.fetchTickers();
       const mappedTickersData = mapTickers(data);
       tickersData[exchangeId] = mappedTickersData;
     }
 
-    await deleteAndSaveObject(tickersData, collection);
+    await deleteAndSaveObject(tickersData, collectionName);
     res.status(200).json(tickersData);
     saveLastUpdateToMongoDB(process.env.TYPE_TICKERS, "combined");
   } catch (error) {

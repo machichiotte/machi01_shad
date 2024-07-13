@@ -1,11 +1,10 @@
-// src/js/metrics/global.js
 const {
   calculateRecups,
   calculateAmountsAndPricesForShad,
 } = require("./strategies.js");
 const { getCmcValues } = require("./cmc.js");
 const {
-  getBalance,
+  getBalanceBySymbol,
   getProfit,
   getCurrentPossession,
   getPercentageDifference,
@@ -22,17 +21,26 @@ const { getTotalAmountAndBuy, getTotalSell } = require("./trades.js");
  * @returns {number|string} - Le prix actuel ou "N/A" si non trouvé.
  */
 function getCurrentPrice(lastTickers, asset, exchangeId) {
-  // Cherche le ticker correspondant à l'actif et à la plateforme
   const ticker = lastTickers.find(
-    (ticker) =>
-      ticker.symbol === `${asset}/USDT` && ticker.platform === exchangeId
+    (ticker) => ticker.symbol === `${asset}/USDT` && ticker.platform === exchangeId
   );
-
-  // Retourne la valeur 'last' si trouvée, sinon retourne "N/A"
   return ticker?.last ?? "N/A";
 }
 
-function getAllCalculs(
+/**
+ * Récupère toutes les informations de calcul pour un actif.
+ *
+ * @param {string} asset - Le symbole de l'actif.
+ * @param {string} exchangeId - L'identifiant de la plateforme.
+ * @param {Array} lastCmc - Données CMC.
+ * @param {Array} lastBalances - Soldes.
+ * @param {Array} lastTrades - Transactions.
+ * @param {Array} lastOpenOrders - Ordres ouverts.
+ * @param {Array} lastStrategies - Stratégies.
+ * @param {Array} lastTickers - Tickers.
+ * @returns {Object} - Objet contenant toutes les informations de calcul.
+ */
+function calculateAssetMetrics(
   asset,
   exchangeId,
   lastCmc,
@@ -42,42 +50,133 @@ function getAllCalculs(
   lastStrategies,
   lastTickers
 ) {
-  
-  console.log(`🚀 ~ file: global.js:45 ~ exchangeId:`, exchangeId)
-  console.log(`🚀 ~ file: global.js:45 ~ asset:`, asset)
-  console.log(`🚀 ~ file: global.js:45 ~ lastCmc:`, lastCmc.length)
-  onsole.log(`🚀 ~ file: global.js:45 ~ lastTickers:`, lastTickers.length)
-  console.log(`🚀 ~ file: global.js:45 ~ lastStrategies:`, lastStrategies.length)
-  console.log(`🚀 ~ file: global.js:45 ~ lastOpenOrders:`, lastOpenOrders.length)
-  console.log(`🚀 ~ file: global.js:45 ~ lastTrades:`, lastTrades.length)
-  console.log(`🚀 ~ file: global.js:45 ~ lastBalances:`, lastBalances.length)
-  //TODO add cmc, trades, strats, buyOrders, sellOrders
-  console.log("🚀 ~ asset:", asset);
-
-  const symbol = asset + "/USDT";
-  const balance = getBalance(asset, lastBalances);
-  console.log("🚀 ~ balance:", balance);
-
-  const {
-    rank,
-    iconUrl,
-    cryptoPercentChange24h,
-    cryptoPercentChange7d,
-    cryptoPercentChange30d,
-    cryptoPercentChange60d,
-    cryptoPercentChange90d,
-  } = getCmcValues(asset, lastCmc);
-    console.log(`🚀 ~ file: global.js:70 ~ rank:`, rank)
-
+  console.log(`🚀 ~ file: global.js:53 ~ lastTickers:`, lastTickers.length)
+  console.log(`🚀 ~ file: global.js:53 ~ lastStrategies:`, lastStrategies.length)
+  console.log(`🚀 ~ file: global.js:53 ~ lastOpenOrders:`, lastOpenOrders.length)
+  console.log(`🚀 ~ file: global.js:53 ~ lastTrades:`, lastTrades.length)
+  console.log(`🚀 ~ file: global.js:53 ~ lastBalances:`, lastBalances.length)
+  console.log(`🚀 ~ file: global.js:53 ~ lastCmc:`, lastCmc.length)
+  console.log(`🚀 ~ file: global.js:53 ~ exchangeId:`, exchangeId)
+  console.log(`🚀 ~ file: global.js:53 ~ asset:`, asset)
+  const balance = getBalanceBySymbol(asset, lastBalances);
+  console.log(`🚀 ~ file: global.js:54 ~ balance:`, balance)
+  const cmcValues = getCmcValues(asset, lastCmc);
   const currentPrice = getCurrentPrice(lastTickers, asset, exchangeId);
-  console.log(`🚀 ~ file: global.js:74 ~ currentPrice:`, currentPrice)
-
   const totalSell = getTotalSell(asset, lastTrades);
+  const { buyOrders, sellOrders } = filterOpenOrdersBySide(lastOpenOrders, exchangeId, asset);
+  const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(asset, lastTrades);
+  const percentageDifference = getPercentageDifference(currentPrice, averageEntryPrice);
 
-  const buyOrders = lastOpenOrders.filter(
+  
+  const currentPossession = getCurrentPossession(currentPrice, balance);
+  console.log(`🚀 ~ file: global.js:64 ~ currentPossession:`, currentPossession)
+  const profit = getProfit(totalBuy, totalSell, currentPrice, balance);
+  
+  console.log(`🚀 ~ file: global.js:68 ~ typeof lastStrategies:`, typeof(lastStrategies))
+  // Vérifier si le solde est valide et s'il y a des stratégies
+  if (balance === 0 || !isValidStrategies(lastStrategies)) {
+    return {
+      iconUrl: cmcValues.iconUrl,
+      asset,
+      status: 'N/A',
+      strat: 'N/A',
+      ratioShad: 'N/A',
+      totalShad: 'N/A',
+      rank: cmcValues.rank,
+      averageEntryPrice,
+      totalBuy,
+      maxExposition: 'N/A',
+      percentageDifference,
+      currentPrice,
+      currentPossession,
+      profit,
+      totalSell,
+      recupShad: 'N/A',
+      nbOpenBuyOrders: buyOrders.length,
+      nbOpenSellOrders: sellOrders.length,
+      totalAmount,
+      balance,
+      recupTp1: 'N/A',
+      recupTpX: 'N/A',
+      tp1: 'N/A',
+      tp2: 'N/A',
+      tp3: 'N/A',
+      tp4: 'N/A',
+      tp5: 'N/A',
+      percentToNextTp: 'N/A',
+      ...cmcValues,
+      exchangeId,
+    };
+  }
+
+  const recups = calculateRecups(asset, exchangeId, totalBuy, totalSell, lastStrategies);
+  const amountsAndPrices = calculateAmountsAndPricesForShad(
+    recups.recupTp1,
+    balance,
+    recups.totalShad,
+    recups.recupTpX,
+    averageEntryPrice,
+    recups.maxExposition
+  );
+
+  const status = getStatus(
+    sellOrders,
+    amountsAndPrices.amountTp1,
+    amountsAndPrices.amountTp2,
+    amountsAndPrices.amountTp3,
+    amountsAndPrices.amountTp4,
+    amountsAndPrices.amountTp5,
+    amountsAndPrices.priceTp1,
+    amountsAndPrices.priceTp2,
+    amountsAndPrices.priceTp3,
+    amountsAndPrices.priceTp4,
+    amountsAndPrices.priceTp5
+  );
+  const percentToNextTp = (amountsAndPrices.priceTp1 - currentPrice) / currentPrice;
+
+  return {
+    iconUrl: cmcValues.iconUrl,
+    asset,
+    status,
+    strat: recups.strat,
+    ratioShad: recups.ratioShad,
+    totalShad: recups.totalShad,
+    rank: cmcValues.rank,
+    averageEntryPrice,
+    totalBuy,
+    maxExposition: recups.maxExposition,
+    percentageDifference,
+    currentPrice,
+    currentPossession,
+    profit,
+    totalSell,
+    recupShad: recups.recupShad,
+    nbOpenBuyOrders: buyOrders.length,
+    nbOpenSellOrders: sellOrders.length,
+    totalAmount,
+    balance,
+    recupTp1: recups.recupTp1,
+    recupTpX: recups.recupTpX,
+    ...amountsAndPrices,
+    ...cmcValues,
+    exchangeId,
+    percentToNextTp,
+  };
+}
+
+/**
+ * Filtre les ordres ouverts par type (achat/vente) et plateforme.
+ *
+ * @param {Array} orders - Liste des ordres ouverts.
+ * @param {string} exchangeId - L'identifiant de la plateforme.
+ * @param {string} asset - Le symbole de l'actif.
+ * @returns {Object} - Objets contenant les listes d'ordres d'achat et de vente.
+ */
+function filterOpenOrdersBySide(orders, exchangeId, asset) {
+  const buyOrders = orders.filter(
     (order) => order.side === "buy" && order.platform === exchangeId
   );
-  const sellOrders = lastOpenOrders.filter(
+  const sellOrders = orders.filter(
     (order) => order.side === "sell" && order.platform === exchangeId
   );
 
@@ -90,111 +189,26 @@ function getAllCalculs(
     const [leftSymbol] = order.symbol.split("/");
     return leftSymbol === asset;
   });
-  console.log("🚀 ~ openSellOrders:", openSellOrders.length);
 
-  const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(
-    symbol,
-    lastTrades
-  );
+  return { buyOrders: openBuyOrders, sellOrders: openSellOrders };
+}
 
-  const currentPossession = getCurrentPossession(currentPrice, balance);
-  const profit = getProfit(totalBuy, totalSell, currentPrice, balance);
+/**
+ * Vérifie si les stratégies sont valides.
+ *
+ * @param {Object} strategies - Les stratégies à vérifier.
+ * @returns {boolean} - Retourne vrai si c'est un objet non vide.
+ */
+function isValidStrategies(strategies) {
+  // Vérifie si l'entrée est un objet
+  const isObject = typeof strategies === 'object' && strategies !== null;
 
-  const {
-    strat,
-    stratExpo,
-    maxExposition,
-    ratioShad,
-    recupTpX,
-    recupShad,
-    recupTp1,
-    totalShad,
-  } = calculateRecups(asset, exchangeId, totalBuy, totalSell, lastStrategies);
+  // Vérifie si l'objet n'est pas vide
+  const isNotEmpty = isObject && Object.keys(strategies).length > 0;
 
-  const {
-    amountTp1,
-    amountTp2,
-    amountTp3,
-    amountTp4,
-    amountTp5,
-    priceTp1,
-    priceTp2,
-    priceTp3,
-    priceTp4,
-    priceTp5,
-  } = calculateAmountsAndPricesForShad(
-    recupTp1,
-    balance,
-    totalShad,
-    recupTpX,
-    averageEntryPrice,
-    maxExposition
-  );
-
-  const percentageDifference = getPercentageDifference(
-    currentPrice,
-    averageEntryPrice
-  );
-
-  const status = getStatus(
-    openSellOrders,
-    amountTp1,
-    amountTp2,
-    amountTp3,
-    amountTp4,
-    amountTp5,
-    priceTp1,
-    priceTp2,
-    priceTp3,
-    priceTp4,
-    priceTp5
-  );
-
-  const percentToNextTp = (priceTp1 - currentPrice) / currentPrice;
-
-  return {
-    iconUrl,
-    asset: symbol,
-    status,
-    strat,
-    ratioShad,
-    totalShad,
-    rank,
-    averageEntryPrice,
-    totalBuy,
-    maxExposition,
-    percentageDifference,
-    currentPrice,
-    currentPossession,
-    profit,
-    totalSell,
-    recupShad,
-    nbOpenBuyOrders: openBuyOrders.length,
-    nbOpenSellOrders: openSellOrders.length,
-    totalAmount,
-    balance,
-    recupTp1,
-    recupTpX,
-    amountTp1,
-    priceTp1,
-    amountTp2,
-    priceTp2,
-    amountTp3,
-    priceTp3,
-    amountTp4,
-    priceTp4,
-    amountTp5,
-    priceTp5,
-    cryptoPercentChange24h,
-    cryptoPercentChange7d,
-    cryptoPercentChange30d,
-    cryptoPercentChange60d,
-    cryptoPercentChange90d,
-    exchangeId,
-    percentToNextTp,
-  };
+  return isObject && isNotEmpty;
 }
 
 module.exports = {
-  getAllCalculs,
+  calculateAssetMetrics,
 };

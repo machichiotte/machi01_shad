@@ -3,6 +3,7 @@ const { sendMail } = require("./sendMail.js");
 const { smtp } = require("../config.js");
 
 const { errorLogger } = require("../../utils/loggerUtil.js");
+const { getExchanges } = require("../../utils/exchangeUtil.js");
 const {
   fetchBalancesInDatabase,
   fetchCurrentBalance,
@@ -12,8 +13,9 @@ const {
   compareBalances,
   calculateAllMetrics,
 } = require("./balanceProcessor.js");
-
-const exchangesToUpdate = ["binance", "kucoin", "htx", "okx", "gateio"];
+const {
+  deleteAndSaveObject,
+} = require("../../utils/mongodbUtil.js");
 
 async function executeCronTask(task, isCritical = false, retries = 3) {
   let attempts = 0;
@@ -22,6 +24,7 @@ async function executeCronTask(task, isCritical = false, retries = 3) {
       await task();
       return;
     } catch (error) {
+      console.error(`Task execution failed: ${error.message}`, { error });
       errorLogger.error(`Task execution failed: ${error.message}`, { error });
       if (isCritical) {
         if (attempts < retries - 1) {
@@ -42,7 +45,8 @@ async function executeCronTask(task, isCritical = false, retries = 3) {
 
 async function executeForExchanges(taskName, taskFunction) {
   console.log(`Running the cron job for ${taskName}...`);
-  for (const exchangeId of exchangesToUpdate) {
+  const exchanges = getExchanges();
+  for (const exchangeId of exchanges) {
     await executeCronTask(async () => {
       await taskFunction(exchangeId);
     }, true);
@@ -59,15 +63,24 @@ async function cronMarkets() {
 
 async function cronBalances() {
   const lastBalance = await fetchBalancesInDatabase();
+  console.log(`🚀 ~ file: taskExecutor.js:66 ~ cronBalances ~ lastBalance:`, lastBalance.length)
   await executeForExchanges("updateBalances", async (exchangeId) => {
     const currentBalance = await fetchCurrentBalance(exchangeId, 3);
+    console.log(`🚀 ~ file: taskExecutor.js:69 ~ awaitexecuteForExchanges ~ currentBalance:`, currentBalance.length)
     const differences = compareBalances(lastBalance, currentBalance);
     if (differences.length > 0) {
       await saveBalanceInDatabase(currentBalance, exchangeId);
       await processBalanceChanges(differences, exchangeId);
-      await calculateMetrics(differences, exchangeId);
+      //await calculateMetrics(differences, exchangeId);
     }
-    await calculateAllMetrics();
+
+    try {
+      const collectionName = process.env.MONGODB_COLLECTION_SHAD;
+      const mymetrics = await calculateAllMetrics();
+      deleteAndSaveObject(mymetrics, collectionName);
+    } catch (error) {
+      console.log(`🚀 ~ file: taskExecutor.js:80 ~ awaitexecuteForExchanges ~ error:`, error)
+    }
   });
 }
 

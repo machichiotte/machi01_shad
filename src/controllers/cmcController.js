@@ -34,7 +34,7 @@ async function fetchCmcInDatabase() {
   console.log(`🚀 ~ file: cmcController.js:34 ~ fetchCmcInDatabase ~ collectionName:`, collectionName)
   try {
     const data = await getDataFromCollection(collectionName);
-    console.log("Fetched CMC data from database", { collection, count: data.length });
+    console.log("Fetched CMC data from database", { collectionName, count: data.length });
     return data;
   } catch (error) {
     errorLogger.error(`Error in fetchCmcInDatabase: ${error.message}`, { error });
@@ -48,10 +48,10 @@ async function fetchCmcInDatabase() {
  * @param {Object} res - HTTP response object.
  */
 async function updateCmcDataInDatabase(cmcData, res) {
-  const collection = process.env.MONGODB_COLLECTION_CMC;
+  const collectionName = process.env.MONGODB_COLLECTION_CMC;
   try {
-    const deleteResult = await deleteAllDataMDB(collection);
-    const saveResult = await saveData(cmcData, collection);
+    const deleteResult = await deleteAllDataMDB(collectionName);
+    const saveResult = await saveData(cmcData, collectionName);
     await saveLastUpdateToMongoDB(process.env.TYPE_CMC, "");
 
     res.status(200).json({

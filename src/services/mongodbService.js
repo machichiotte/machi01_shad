@@ -179,6 +179,7 @@ async function connectToMongoDB() {
       "collection_trades",
       "collection_tickers",
       "collection_last_update",
+      "collection_shad",
     ];
 
     for (const collectionName of collectionsToCreate) {

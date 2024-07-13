@@ -12,7 +12,7 @@ function getPercentageDifference(newValue, oldValue) {
   }
 
   const percentageDifference = ((newVal - oldVal) / oldVal);
-  return percentageDifference.toFixed(2);
+  return parseFloat(percentageDifference.toFixed(2));
 }
 
 function getStatus(
@@ -61,29 +61,38 @@ function getStatus(
 }
 
 /**
- * Get the balance for a given symbol from sortedBalances.
+ * Get the balance for a given symbol from a balance object.
  *
  * @param {string} symbol - The symbol for which to get the balance.
- * @param {Array} balances - The array of balances.
- * @returns {number|string} - The balance for the given symbol or "N/A" if not found or if input is invalid.
+ * @param {Object} balanceObj - The object containing balance information.
+ * @returns {number} - The balance for the given symbol or 0 if not found or if input is invalid.
  */
-function getBalance(symbol, balances) {
-  // Vérifier que sortedBalances est un tableau et qu'il contient des éléments
-  if (!Array.isArray(balances) || balances.length === 0) {
-    console.warn(`balances is invalid or empty: ${balances}`);
-    return "N/A";
+function getBalanceBySymbol(symbol, balanceObj) {
+  // Vérification de la validité de l'objet balance
+  if (typeof balanceObj !== 'object' || balanceObj === null) {
+    console.warn(`balanceObj is invalid: ${balanceObj}`);
+    return 0;
   }
 
-  // Rechercher le balance correspondant au symbole
-  const balanceItem = balances.find((item) => item.symbol === symbol);
+  // Vérification si le symbole dans l'objet correspond au symbole donné
+  if (balanceObj.symbol !== symbol) {
+    console.warn(`Symbol not found: ${symbol}`);
+    return 0;
+  }
 
-  // Retourner le balance s'il existe, sinon "N/A"
-  return balanceItem ? balanceItem.balance : "N/A";
-} 
+  // Parsing et vérification de la valeur du solde
+  const balanceAsNumber = parseFloat(balanceObj.balance);
+  if (!isNaN(balanceAsNumber)) {
+    return balanceAsNumber;
+  } else {
+    console.warn(`Invalid balance value for symbol ${symbol}: ${balanceObj.balance}`);
+    return 0;
+  }
+}
 
 function getProfit(totalBuy, totalSell, currentPrice, balance) {
   const currentPossession = currentPrice * balance;
   return currentPossession + totalSell - totalBuy;
 }
 
-module.exports = { getProfit, getBalance, getCurrentPossession, getPercentageDifference, getStatus };
+module.exports = { getProfit, getBalanceBySymbol, getCurrentPossession, getPercentageDifference, getStatus };

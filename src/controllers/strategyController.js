@@ -10,9 +10,9 @@ async function getStrat(req, res) {
   const collectionName = process.env.MONGODB_COLLECTION_STRAT;
   console.log(`🚀 ~ file: strategyController.js:14 ~ getStrat ~ collectionName:`, collectionName)
   try {
-    const lastStrats = await getData(collectionName);
-    console.log("Retrieved last strats", { collectionName, count: lastStrats.length });
-    res.json(lastStrats);
+    const data = await getData(collectionName);
+    console.log("Retrieved last strats", { collectionName, count: data.length });
+    res.json(data);
   } catch (error) {
     errorLogger.error("Failed to get strats", { error: error.message });
     handleErrorResponse(res, error, "getStrat");
