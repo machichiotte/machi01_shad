@@ -39,9 +39,7 @@ function getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad) {
 
 function getRecupTpX(assetStrat, maxExposition, ratioShad) {
   const result = (maxExposition * ratioShad * 0.5).toFixed(2);
-  console.log(
-    `Calculated result: ${result} (Potential for refinement based on strategy ${assetStrat})`
-  );
+  console.log(`🚀 ~ file: strategies.js:43 ~ getRecupTpX asset ${assetStrat} ~ result:`, result)
   return parseFloat(result);
 }
 

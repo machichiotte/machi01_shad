@@ -87,18 +87,21 @@ async function calculateAllMetrics() {
     console.log(`🚀 ~ file: balanceProcessor.js:67 ~ calculateAllMetrics ~ asset`, {
       assetSymbol,
       assetPlatform,
-      filteredCmc: Object.keys(filteredCmc).length,
+      filteredCmc: filteredCmc.length,
       filteredTrades: filteredTrades.length,
       filteredOpenOrders: filteredOpenOrders.length,
-      filteredStrategy: Object.keys(filteredStrategy).length,
+      filteredStrategy: filteredStrategy.length,
       filteredTickers: filteredTickers.length
     });
+      console.log(`🚀 ~ file: balanceProcessor.js:96 ~ calculateAllMetrics ~ filteredStrategy:`, filteredStrategy)
+      console.log(`🚀 ~ file: balanceProcessor.js:96 ~ calculateAllMetrics ~ filteredCmc:`, filteredCmc)
+      console.log(`🚀 ~ file: balanceProcessor.js:96 ~ calculateAllMetrics ~ filteredTickers:`, filteredTickers)
 
     if (
-      !Object.keys(filteredCmc).length &&
+      !filteredCmc.length &&
       !filteredTrades.length &&
       !filteredOpenOrders.length &&
-      !Object.keys(filteredStrategy).length &&
+      !filteredStrategy.length &&
       !filteredTickers.length
     ) {
       console.warn(`Skipping ${assetSymbol} due to insufficient data.`);

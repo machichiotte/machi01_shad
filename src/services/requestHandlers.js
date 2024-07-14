@@ -36,6 +36,7 @@ const pricesRoutes = require("../routes/pricesRoutes.js");
 const tradesRoutes = require("../routes/tradesRoutes.js");
 const tickersRoutes = require("../routes/tickersRoutes.js");
 const lastUpdateRoutes = require("../routes/lastUpdateRoutes.js");
+const shadRoutes = require("../routes/shadRoutes.js");
 
 // Utilisation des routes
 app.use("/api/converter", converterRoutes);
@@ -49,6 +50,7 @@ app.use("/api/prices", pricesRoutes);
 app.use("/api/trades", tradesRoutes);
 app.use("/api/tickers", tickersRoutes);
 app.use("/api/lastUpdate", lastUpdateRoutes);
+app.use("/api/shad", shadRoutes);
 
 // Middleware de gestion des erreurs
 app.use((err, req, res, next) => {

@@ -77,6 +77,7 @@ async function cronBalances() {
     try {
       const collectionName = process.env.MONGODB_COLLECTION_SHAD;
       const mymetrics = await calculateAllMetrics();
+      console.log(`🚀 ~ file: taskExecutor.js:80 ~ awaitexecuteForExchanges ~ mymetrics:`, mymetrics.length)
       deleteAndSaveObject(mymetrics, collectionName);
     } catch (error) {
       console.log(`🚀 ~ file: taskExecutor.js:80 ~ awaitexecuteForExchanges ~ error:`, error)

@@ -1,3 +1,4 @@
+// src/services/metrics/global.js
 const {
   calculateRecups,
   calculateAmountsAndPricesForShad,
@@ -22,7 +23,8 @@ const { getTotalAmountAndBuy, getTotalSell } = require("./trades.js");
  */
 function getCurrentPrice(lastTickers, asset, exchangeId) {
   const ticker = lastTickers.find(
-    (ticker) => ticker.symbol === `${asset}/USDT` && ticker.platform === exchangeId
+    (ticker) =>
+      ticker.symbol === `${asset}/USDT` && ticker.platform === exchangeId
   );
   return ticker?.last ?? "N/A";
 }
@@ -50,66 +52,86 @@ function calculateAssetMetrics(
   lastStrategies,
   lastTickers
 ) {
-  console.log(`🚀 ~ file: global.js:53 ~ lastTickers:`, lastTickers.length)
-  console.log(`🚀 ~ file: global.js:53 ~ lastStrategies:`, lastStrategies.length)
-  console.log(`🚀 ~ file: global.js:53 ~ lastOpenOrders:`, lastOpenOrders.length)
-  console.log(`🚀 ~ file: global.js:53 ~ lastTrades:`, lastTrades.length)
-  console.log(`🚀 ~ file: global.js:53 ~ lastBalances:`, lastBalances.length)
-  console.log(`🚀 ~ file: global.js:53 ~ lastCmc:`, lastCmc.length)
-  console.log(`🚀 ~ file: global.js:53 ~ exchangeId:`, exchangeId)
-  console.log(`🚀 ~ file: global.js:53 ~ asset:`, asset)
-  const balance = getBalanceBySymbol(asset, lastBalances);
-  console.log(`🚀 ~ file: global.js:54 ~ balance:`, balance)
-  const cmcValues = getCmcValues(asset, lastCmc);
-  const currentPrice = getCurrentPrice(lastTickers, asset, exchangeId);
-  const totalSell = getTotalSell(asset, lastTrades);
-  const { buyOrders, sellOrders } = filterOpenOrdersBySide(lastOpenOrders, exchangeId, asset);
-  const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(asset, lastTrades);
-  const percentageDifference = getPercentageDifference(currentPrice, averageEntryPrice);
+  console.log(
+    `🚀 ~ asset: ${asset} ~ exchangeId: ${exchangeId} ~ lastTickers: ${lastTickers.length} ~ lastStrategies: ${lastStrategies.length} ~ lastOpenOrders: ${lastOpenOrders.length} ~ lastTrades: ${lastTrades.length} ~ lastBalances: ${lastBalances.length} ~ lastCmc: ${lastCmc.length}`
+  );
 
+  const balance = getBalanceBySymbol(asset, lastBalances);
+  console.log(`🚀 ~ file: global.js:54 ~ balance:`, balance);
   
+  const currentPrice = getCurrentPrice(lastTickers, asset, exchangeId);
+
+  //TODO ici jai lastCmc qui est sous forme tableau dobjets
+
+  const cmcValues = getCmcValues(asset, lastCmc);
+  console.log(`🚀 ~ file: global.js:62 ~ cmcValues:`, cmcValues)
+
+
+  const totalSell = getTotalSell(asset, lastTrades);
+  const { buyOrders, sellOrders } = filterOpenOrdersBySide(
+    lastOpenOrders,
+    exchangeId,
+    asset
+  );
+  const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(
+    asset,
+    lastTrades
+  );
+  const percentageDifference = getPercentageDifference(
+    currentPrice,
+    averageEntryPrice
+  );
+
   const currentPossession = getCurrentPossession(currentPrice, balance);
-  console.log(`🚀 ~ file: global.js:64 ~ currentPossession:`, currentPossession)
+  console.log(
+    `🚀 ~ file: global.js:64 ~ currentPossession:`,
+    currentPossession
+  );
   const profit = getProfit(totalBuy, totalSell, currentPrice, balance);
-  
-  console.log(`🚀 ~ file: global.js:68 ~ typeof lastStrategies:`, typeof(lastStrategies))
+
   // Vérifier si le solde est valide et s'il y a des stratégies
   if (balance === 0 || !isValidStrategies(lastStrategies)) {
     return {
       iconUrl: cmcValues.iconUrl,
       asset,
-      status: 'N/A',
-      strat: 'N/A',
-      ratioShad: 'N/A',
-      totalShad: 'N/A',
+      status: "N/A",
+      strat: "N/A",
+      ratioShad: "N/A",
+      totalShad: "N/A",
       rank: cmcValues.rank,
       averageEntryPrice,
       totalBuy,
-      maxExposition: 'N/A',
+      maxExposition: "N/A",
       percentageDifference,
       currentPrice,
       currentPossession,
       profit,
       totalSell,
-      recupShad: 'N/A',
+      recupShad: "N/A",
       nbOpenBuyOrders: buyOrders.length,
       nbOpenSellOrders: sellOrders.length,
       totalAmount,
       balance,
-      recupTp1: 'N/A',
-      recupTpX: 'N/A',
-      tp1: 'N/A',
-      tp2: 'N/A',
-      tp3: 'N/A',
-      tp4: 'N/A',
-      tp5: 'N/A',
-      percentToNextTp: 'N/A',
+      recupTp1: "N/A",
+      recupTpX: "N/A",
+      tp1: "N/A",
+      tp2: "N/A",
+      tp3: "N/A",
+      tp4: "N/A",
+      tp5: "N/A",
+      percentToNextTp: "N/A",
       ...cmcValues,
       exchangeId,
     };
   }
 
-  const recups = calculateRecups(asset, exchangeId, totalBuy, totalSell, lastStrategies);
+  const recups = calculateRecups(
+    asset,
+    exchangeId,
+    totalBuy,
+    totalSell,
+    lastStrategies
+  );
   const amountsAndPrices = calculateAmountsAndPricesForShad(
     recups.recupTp1,
     balance,
@@ -132,7 +154,8 @@ function calculateAssetMetrics(
     amountsAndPrices.priceTp4,
     amountsAndPrices.priceTp5
   );
-  const percentToNextTp = (amountsAndPrices.priceTp1 - currentPrice) / currentPrice;
+  const percentToNextTp =
+    (amountsAndPrices.priceTp1 - currentPrice) / currentPrice;
 
   return {
     iconUrl: cmcValues.iconUrl,
@@ -201,7 +224,7 @@ function filterOpenOrdersBySide(orders, exchangeId, asset) {
  */
 function isValidStrategies(strategies) {
   // Vérifie si l'entrée est un objet
-  const isObject = typeof strategies === 'object' && strategies !== null;
+  const isObject = typeof strategies === "object" && strategies !== null;
 
   // Vérifie si l'objet n'est pas vide
   const isNotEmpty = isObject && Object.keys(strategies).length > 0;

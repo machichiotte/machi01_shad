@@ -3,12 +3,12 @@
  * Récupère les valeurs de CoinMarketCap pour un symbole donné.
  *
  * @param {string} symbol - Le symbole de la cryptomonnaie.
- * @param {Array} cmc - La liste des données de CoinMarketCap.
+ * @param {Object} cmc - L'objet des données de CoinMarketCap.
  * @returns {Object} - Un objet contenant les informations sur le symbole.
  */
 function getCmcValues(symbol, cmc) {
-  // Vérifiez que cmc est un tableau et non vide
-  if (!Array.isArray(cmc) || cmc.length === 0) {
+  // Vérifiez que cmc est un objet et non vide
+  if (typeof cmc !== 'object' || cmc === null || Object.keys(cmc).length === 0) {
     return {
       rank: 0,
       currentPrice: "N/A",
@@ -21,8 +21,8 @@ function getCmcValues(symbol, cmc) {
     };
   }
 
-  // Trouvez l'élément dans le tableau cmc
-  const crypto = cmc.find((item) => item.symbol === symbol) || {};
+  // Trouvez l'élément dans l'objet cmc
+  const crypto = cmc || {};
 
   // Utilisation de l'opérateur de chaîne optionnelle pour éviter les erreurs si les propriétés n'existent pas
   return {
@@ -36,7 +36,6 @@ function getCmcValues(symbol, cmc) {
     cryptoPercentChange90d: (crypto.quote?.USD?.percent_change_90d / 100) || "N/A"
   };
 }
-
 
 function getIconUrl(id) {
   return `https://s2.coinmarketcap.com/static/img/coins/64x64/${parseInt(
