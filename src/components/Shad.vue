@@ -291,7 +291,7 @@ const BINANCE_EXCHANGE_ID = 'binance'
 const BINANCE_THRESHOLD = 3 // 300%
 
 const HTX_EXCHANGE_ID = 'htx'
-const HTX_THRESHOLD = 10 // 1000%
+const HTX_THRESHOLD = 3 // 300%
 
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
 

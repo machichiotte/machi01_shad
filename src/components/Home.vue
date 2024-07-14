@@ -37,10 +37,10 @@ export default {
       }
     },
     calculateBalanceValue(balance) {
-      console.log('balance', balance);
-      console.log('tickers', this.tickers);
+      console.log(`🚀 ~ file: Home.vue:40 ~ calculateBalanceValue ~ balance:`, balance)
+      console.log(`🚀 ~ file: Home.vue:41 ~ calculateBalanceValue ~ this.tickers :`, this.tickers )
+
         if (this.tickers && this.tickers[balance.platform]) {
-          console.log('enter in tickers');
           const tic = this.tickers[balance.platform];
           const tick = tic.find(tick => tick.symbol === balance.symbol);
 
