@@ -8,6 +8,7 @@ const ORDERS = 'orders'
 const TRADES = 'trades'
 const STRATEGY = 'strategy'
 const TICKERS = 'tickers'
+const SHAD = 'shad'
 
 const openDatabase = async () => {
   return new Promise((resolve, reject) => {
@@ -45,6 +46,10 @@ const openDatabase = async () => {
 
       if (!db.objectStoreNames.contains(TICKERS)) {
         db.createObjectStore(TICKERS, { keyPath: '_id' })
+      }
+
+      if (!db.objectStoreNames.contains(SHAD)) {
+        db.createObjectStore(SHAD, { keyPath: '_id' })
       }
     }
 
@@ -179,6 +184,10 @@ const saveTickersToIndexedDB = async (data) => {
   await saveDataToIndexedDBInternal(TICKERS, data, '_id', null)
 }
 
+const saveShadToIndexedDB = async (data) => {
+  await saveDataToIndexedDBInternal(SHAD, data, '_id', null)
+}
+
 const fetchDataFromIndexedDB = async (storeName) => {
   try {
     const db = await openDatabase()
@@ -213,5 +222,6 @@ export {
   saveOrdersDataToIndexedDB,
   saveBalancesDataToIndexedDB,
   saveTradesDataToIndexedDB,
-  saveTickersToIndexedDB
+  saveTickersToIndexedDB,
+  saveShadToIndexedDB
 }

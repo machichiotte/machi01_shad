@@ -1,12 +1,14 @@
 // src/store/modules/calcul/actions.js
 import {
   FETCH_DATA,
+  FETCH_SHAD,
   FETCH_TRADES,
   FETCH_STRATS,
   FETCH_BALANCES,
   FETCH_CMC,
   FETCH_ORDERS,
   GET_LAST_FETCH_TIMESTAMP,
+  SET_SHAD,
   SET_BALANCES,
   SET_TRADES,
   SET_STRATS,
@@ -15,7 +17,7 @@ import {
   SET_LAST_FETCH_TIMESTAMP
 } from '../../storeconstants'
 
-import { getCmc, getBalances, getTrades, getOrders, getStrategy } from '../../../js/getter'
+import { getCmc, getBalances, getTrades, getOrders, getStrategy, getShad } from '../../../js/getter'
 
 const shouldFetchData = (lastFetch) => {
   const now = Date.now()
@@ -33,6 +35,7 @@ export default {
     let lastFetchStrats = null
     let lastFetchCmc = null
     let lastFetchOrders = null
+    let lastShad = null
 
     // Vérifiez si le getter existe et est une fonction
     if (typeof getLastFetchTimestamp === 'function') {
@@ -41,6 +44,7 @@ export default {
       lastFetchStrats = getLastFetchTimestamp('strats')
       lastFetchCmc = getLastFetchTimestamp('cmc')
       lastFetchOrders = getLastFetchTimestamp('orders')
+      lastFetchShad = getLastFetchTimestamp('shad')
     }
 
     try {
@@ -81,6 +85,14 @@ export default {
         if (orders) {
           context.commit(SET_ORDERS, orders)
           context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'orders', timestamp: now })
+        }
+      }
+
+      if (!lastFetchShad || shouldFetchData(lastFetchShad)) {
+        const shad = await getShad()
+        if (shad) {
+          context.commit(SET_SHAD, shad)
+          context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'shad', timestamp: now })
         }
       }
     } catch (error) {
@@ -187,5 +199,26 @@ export default {
         console.error("Une erreur s'est produite lors de la récupération des données :", error)
       }
     }
+  },
+
+  async [FETCH_SHAD](context) {
+    const now = Date.now()
+    const getLastFetchTimestamp = context.getters[GET_LAST_FETCH_TIMESTAMP]
+    let lastFetch = null
+
+    if (typeof getLastFetchTimestamp === 'function') {
+      lastFetch = getLastFetchTimestamp('shad')
+    }
+
+    if (!lastFetch || shouldFetchData(lastFetch)) {
+      try {
+        const data = await getShad()
+        context.commit(SET_SHAD, data)
+        context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'shad', timestamp: now })
+      } catch (error) {
+        console.error("Une erreur s'est produite lors de la récupération des données :", error)
+      }
+    }
   }
+
 }

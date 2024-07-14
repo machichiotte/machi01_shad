@@ -6,7 +6,8 @@ import {
   saveStrategyToIndexedDB,
   saveTradesDataToIndexedDB,
   saveOrdersDataToIndexedDB,
-  saveCmcToIndexedDB
+  saveCmcToIndexedDB,
+  saveShadToIndexedDB
 } from '../js/indexedDB'
 
 const serverHost = import.meta.env.VITE_SERVER_HOST
@@ -18,6 +19,7 @@ const TRADES = 'trades'
 const ORDERS = 'orders'
 const LAST_UPDATE = 'lastUpdate'
 const TICKERS = 'tickers'
+const SHAD = 'shad'
 
 const getConvertedCsv = async (formData) => {
   const ENDPOINT = `${serverHost}/${CONVERTER}/post`
@@ -42,6 +44,17 @@ const getConvertedCsv = async (formData) => {
   }
 }
 
+const getShad = async () => {
+  const ENDPOINT = `${serverHost}/${SHAD}/get`
+
+  try {
+    const items = await fetchDataWithCache(SHAD, ENDPOINT, saveShadToIndexedDB)
+    return items
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 const getStrategy = async () => {
   const ENDPOINT = `${serverHost}/${STRATEGY}/get`
 
@@ -58,6 +71,7 @@ const getTickers = async () => {
 
   try {
     const items = await fetchDataWithCache(TICKERS, ENDPOINT, saveTickersToIndexedDB)
+    console.log(`🚀 ~ file: getter.js:74 ~ getTickers ~ items:`, items)
     return items
   } catch (err) {
     console.error(err)
@@ -175,6 +189,7 @@ export {
   getConvertedCsv,
   cancelOrder,
   getStrategy,
+  getShad,
   getCmc,
   getBalances,
   getTrades,

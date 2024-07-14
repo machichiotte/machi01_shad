@@ -7,10 +7,15 @@ import {
   GET_ORDERS,
   GET_BUY_ORDERS,
   GET_SELL_ORDERS,
-  GET_LAST_FETCH_TIMESTAMP
+  GET_LAST_FETCH_TIMESTAMP,
+  GET_SHAD
 } from '../../storeconstants'
 
 export default {
+  [GET_SHAD]: (state) => {
+    return state.shad
+  },
+
   [GET_BALANCES]: (state) => {
     return state.balances
   },

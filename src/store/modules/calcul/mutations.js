@@ -5,10 +5,16 @@ import {
   SET_STRATS,
   SET_CMC,
   SET_ORDERS,
-  SET_LAST_FETCH_TIMESTAMP
+  SET_LAST_FETCH_TIMESTAMP,
+  SET_SHAD,
+  
 } from '../../storeconstants'
 
 export default {
+  [SET_SHAD](state, payload) {
+    state.shad = payload
+  },
+
   [SET_BALANCES](state, payload) {
     state.balances = payload
   },

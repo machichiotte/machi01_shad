@@ -7,7 +7,7 @@
           <MySellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
             :model="allRows" />
           <MyBuyButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
-            :model="allRows" /> 
+            :model="allRows" />
 
           <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected"
             :disabled="!selectedAssets || !selectedAssets.length" />
@@ -260,25 +260,23 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useStore } from 'vuex';
+import { useStore } from 'vuex'
 import { FilterMatchMode } from 'primevue/api'
 import MySellButton from './buttons/MySellButton.vue'
 import MyBuyButton from './buttons/MyBuyButton.vue'
-import { strategies } from '../js/strategies.js';
-import { getAllCalculs } from '../js/metrics/global.js'
+import { strategies } from '../js/strategies.js'
 
 //import Overlay from './ShadOverlay.vue'
 
 import {
-  FETCH_DATA, GET_BALANCES, GET_STRATS
+  FETCH_SHAD, GET_SHAD
 } from '../store/storeconstants';
 
 const store = useStore();
 const strategiesList = ref(strategies);
 
 const selectedAssets = ref([])
-const balances = ref([])
-const strats = ref([])
+const shad = ref([])
 
 const itemsPerPage = ref(50)
 const showOverlay = ref(false)
@@ -295,94 +293,81 @@ const HTX_THRESHOLD = 3 // 300%
 
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
 
-const sortedBalances = computed(() => {
-  if (balances.value && balances.value.length > 0) {
-    return balances.value.slice().sort((a, b) => {
-      const assetA = a.symbol.toUpperCase()
-      const assetB = b.symbol.toUpperCase()
-      return assetA.localeCompare(assetB)
-    })
-  } else {
-    return []
-  }
-})
-
 const items = computed(() => {
-  if (strats.value && strats.value.length > 0) {
-    const calculatedItems = sortedBalances.value.map((item) => {
-      return getAllCalculs(item);
-    });
-    return calculatedItems;
-  } else {
-    return [];
-  }
+  return shad.value && shad.value.length > 0 ? shad.value : []
 })
 
 onMounted(async () => {
   try {
-    await store.dispatch('calcul/' + FETCH_DATA);
-    balances.value = await store.getters['calcul/' + GET_BALANCES];
-    strats.value = await store.getters['calcul/' + GET_STRATS];
+    await store.dispatch('calcul/' + FETCH_SHAD);
+    console.log(`🚀 ~ file: Shad.vue:307 ~ onMounted ~ FETCH_SHAD:`)
+
+    shad.value = await store.getters['calcul/' + GET_SHAD];
+    console.log(`🚀 ~ file: Shad.vue:306 ~ onMounted ~ shad.value:`, shad.value)
   } catch (e) {
     console.error("Une erreur s'est produite lors de la récupération des données :", e)
   }
 })
-
-/* const exportCSV = () => {
-  dt.value.exportCSV()
-} */
 
 const confirmDeleteSelected = () => {
   deleteProductsDialog.value = true
 }
 
 function getStatus(data) {
+  console.log(`🚀 ~ file: Shad.vue:317 ~ getStatus ~ data:`, data)
   const currentPrice = data.currentPrice;
   const exchangeId = data.exchangeId;
 
-  const nb5 = data.status.reduce((acc, val) => acc + val, 0);
+  if (Array.isArray(data.status)) {
+    const nb5 = data.status.reduce((acc, val) =>
+      acc + val, 0);
 
-  if (data.nbOpenSellOrders === 0) {
-    return { severity: 'danger', label: "Pas d'ordres ouverts" };
-  } else if (
-    currentPrice > data.priceTp1
-  ) {
-    if (data.priceTp1 < data.priceTp2)
-      return { severity: 'info', label: 'Tu peux vendre depuis un moment' };
-    else
-      return { severity: 'danger', label: 'tp2 < tp1' };
-  } else {
-    if (nb5 === 5) {
-      return { severity: 'success', label: '5 ordres placés' };
+    if (data.nbOpenSellOrders === 0) {
+      return { severity: 'danger', label: "Pas d'ordres ouverts" };
+    } else if (
+      currentPrice > data.priceTp1
+    ) {
+      if (data.priceTp1 < data.priceTp2)
+        return { severity: 'info', label: 'Tu peux vendre depuis un moment' };
+      else
+        return { severity: 'danger', label: 'tp2 < tp1' };
     } else {
-      if (exchangeId === BINANCE_EXCHANGE_ID || exchangeId === HTX_EXCHANGE_ID) {
-        const exchangeThreshold = exchangeId === BINANCE_EXCHANGE_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD;
-        const priceThreshold = calculatePriceThreshold(currentPrice, exchangeThreshold);
+      if (nb5 === 5) {
+        return { severity: 'success', label: '5 ordres placés' };
+      } else {
+        if (exchangeId === BINANCE_EXCHANGE_ID || exchangeId === HTX_EXCHANGE_ID) {
+          const exchangeThreshold = exchangeId === BINANCE_EXCHANGE_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD;
+          const priceThreshold = calculatePriceThreshold(currentPrice, exchangeThreshold);
 
-        for (let i = 0; i < 5; i++) {
-          if (data.status[i] === 0) {
-            if (priceThreshold < data[`priceTp${i + 1}`]) {
-              return { severity: 'success', label: 'Max ordres placés' };
-            } else {
-              return { severity: 'warning', label: `L'ordre ${i + 1} peut être placé ` };
+          for (let i = 0; i < 5; i++) {
+            if (data.status[i] === 0) {
+              if (priceThreshold < data[`priceTp${i + 1}`]) {
+                return { severity: 'success', label: 'Max ordres placés' };
+              } else {
+                return { severity: 'warning', label: `L'ordre ${i + 1} peut être placé ` };
+              }
             }
           }
-        }
-      } else {
-        const consecutivePairs = countConsecutivePairs(data.status);
+        } else {
+          const consecutivePairs = countConsecutivePairs(data.status);
 
-        switch (consecutivePairs) {
-          case 0:
-            return { severity: 'warning', label: 'Aucune correspondance' };
-          case 1:
-            return { severity: 'info', label: '1 correspondance' };
-          case 2:
-          case 3:
-          case 4:
-            return { severity: 'success', label: `${consecutivePairs} correspondances` };
+          switch (consecutivePairs) {
+            case 0:
+              return { severity: 'warning', label: 'Aucune correspondance' };
+            case 1:
+              return { severity: 'info', label: '1 correspondance' };
+            case 2:
+            case 3:
+            case 4:
+              return { severity: 'success', label: `${consecutivePairs} correspondances` };
+          }
         }
       }
     }
+  } else {
+    console.warn('data.status is not an array:', data.status);
+    return { severity: 'warning', label: `STATUS ERROR` };
+  
   }
 }
 
@@ -408,7 +393,7 @@ function updateRowByStratChange(data, assetStrat) {
 
   if (rowIndex !== -1) {
     console.log('index', rowIndex)
-    const updatedItem = getAllCalculs({ symbol: row.asset, platform: row.exchangeId, balance: row.balance, assetStrat });
+    const updatedItem = { ...row, assetStrat };
     items.value.splice(rowIndex, 1, updatedItem);
   }
 }
@@ -424,17 +409,13 @@ function updateMaxWanted(data, newValue) {
   const row = items.value[rowIndex];
 
   if (rowIndex !== -1) {
-    const updatedItem = getAllCalculs({
-      symbol: row.asset,
-      platform: row.exchangeId,
-      balance: row.balance,
-      assetExpo: newValue, // Update the value here
-    });
+    const updatedItem = { ...row, maxExposition: newValue };
     items.value.splice(rowIndex, 1, updatedItem);
   }
 }
 
 </script>
+
 
 <style scoped>
 html {
