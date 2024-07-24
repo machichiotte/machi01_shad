@@ -45,26 +45,27 @@ function getCurrentPrice(lastTickers, asset, exchangeId) {
 function calculateAssetMetrics(
   asset,
   exchangeId,
-  lastCmc,
   lastBalances,
+  lastCmc,
   lastTrades,
   lastOpenOrders,
   lastStrategies,
   lastTickers
 ) {
+  /*
   console.log(
     `🚀 ~ asset: ${asset} ~ exchangeId: ${exchangeId} ~ lastTickers: ${lastTickers.length} ~ lastStrategies: ${lastStrategies.length} ~ lastOpenOrders: ${lastOpenOrders.length} ~ lastTrades: ${lastTrades.length} ~ lastBalances: ${lastBalances.length} ~ lastCmc: ${lastCmc.length}`
   );
-
+*/
   const balance = getBalanceBySymbol(asset, lastBalances);
-  console.log(`🚀 ~ file: global.js:54 ~ balance:`, balance);
-  
-  const currentPrice = getCurrentPrice(lastTickers, asset, exchangeId);
+  //console.log(`🚀 ~ file: global.js:54 ~ balance:`, balance);
 
-  //TODO ici jai lastCmc qui est sous forme tableau dobjets
+  const currentPrice = getCurrentPrice(lastTickers, asset, exchangeId);
+  //console.log(`🚀 ~ file: global.js:63 ~ currentPrice:`, currentPrice)
 
   const cmcValues = getCmcValues(asset, lastCmc);
-  console.log(`🚀 ~ file: global.js:62 ~ cmcValues:`, cmcValues)
+  //TODO il va falloir check si lelement quon recupere a une valeur une proche de currentPrice 
+  //console.log(`🚀 ~ file: global.js:62 ~ cmcValues:`, cmcValues)
 
 
   const totalSell = getTotalSell(asset, lastTrades);
@@ -83,10 +84,10 @@ function calculateAssetMetrics(
   );
 
   const currentPossession = getCurrentPossession(currentPrice, balance);
-  console.log(
+ /* console.log(
     `🚀 ~ file: global.js:64 ~ currentPossession:`,
     currentPossession
-  );
+  );*/
   const profit = getProfit(totalBuy, totalSell, currentPrice, balance);
 
   // Vérifier si le solde est valide et s'il y a des stratégies

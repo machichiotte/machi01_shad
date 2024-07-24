@@ -27,7 +27,7 @@ function getCmcValues(symbol, cmc) {
   // Utilisation de l'opérateur de chaîne optionnelle pour éviter les erreurs si les propriétés n'existent pas
   return {
     rank: parseInt(crypto.cmc_rank) || 0,
-    currentPrice: crypto.quote?.USD?.price?.toFixed(7) || "N/A",
+    currentPrice: parseFloat(crypto.quote?.USD?.price?.toFixed(7)) || "N/A",
     iconUrl: crypto.id ? getIconUrl(crypto.id) : "",
     cryptoPercentChange24h: (crypto.quote?.USD?.percent_change_24h / 100) || "N/A",
     cryptoPercentChange7d: (crypto.quote?.USD?.percent_change_7d / 100) || "N/A",

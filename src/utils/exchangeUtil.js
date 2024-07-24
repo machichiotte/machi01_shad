@@ -2,7 +2,7 @@
 const ccxt = require("ccxt");
 const { AuthenticationError } = require("ccxt");
 //const EXCHANGES = ["binance", "kucoin", "htx", "okx", "gateio"];
-const EXCHANGES = ["kucoin"];
+const EXCHANGES = ['binance', "kucoin"];
 
 // Fonction utilitaire pour créer une instance d'échange
 function createExchangeInstance(exchangeId) {

@@ -29,6 +29,7 @@ function getTotalSell(symbol, trades) {
   const filteredTrades = trades.filter(
     (trade) => trade.altA === symbol && trade.type === "sell"
   );
+  //console.log(`🚀 ~ file: trades.js:32 ~ getTotalSell ~ filteredTrades:`, filteredTrades.length)
   const sellTotal = filteredTrades.reduce(
     (total, trade) => total + parseFloat(trade.totalUSDT),
     0

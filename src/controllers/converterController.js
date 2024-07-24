@@ -83,7 +83,7 @@ function detectModelType(data) {
   ) {
     modelType = "model_binance";
   } else {
-    modelType = "unknown";
+    modelType = "model_unknown";
   }
   console.log("🚀 ~ detectModelType ~ modelType:", modelType);
   return modelType;

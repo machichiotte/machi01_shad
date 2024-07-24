@@ -8,10 +8,11 @@ const {
   fetchBalancesInDatabase,
   fetchCurrentBalance,
   saveBalanceInDatabase,
-} = require("../../controllers/balanceController.js");
+} = require("./dataFetcher.js");
 const {
   compareBalances,
   calculateAllMetrics,
+  processBalanceChanges,
 } = require("./balanceProcessor.js");
 const {
   deleteAndSaveObject,

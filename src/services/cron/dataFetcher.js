@@ -22,18 +22,21 @@ const {
   const { fetchCmcInDatabase } = require("../../controllers/cmcController.js");
   
   module.exports = {
+    getSavedAllTickersByExchange,
+
     fetchBalancesInDatabase,
     fetchCurrentBalance,
-    saveBalanceInDatabase,
     fetchOrdersInDatabase,
-    updateOrdersFromServer,
     fetchTradesInDatabase,
     fetchLastTrades,
-    saveTradesToDatabase,
-    saveAllTradesToDatabase,
     fetchTickersInDatabase,
-    getSavedAllTickersByExchange,
     fetchStratsInDatabase,
     fetchCmcInDatabase,
+
+    updateOrdersFromServer,
+
+    saveBalanceInDatabase,
+    saveTradesToDatabase,
+    saveAllTradesToDatabase,
   };
   

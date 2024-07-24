@@ -39,7 +39,7 @@ function getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad) {
 
 function getRecupTpX(assetStrat, maxExposition, ratioShad) {
   const result = (maxExposition * ratioShad * 0.5).toFixed(2);
-  console.log(`🚀 ~ file: strategies.js:43 ~ getRecupTpX asset ${assetStrat} ~ result:`, result)
+ // console.log(`🚀 ~ file: strategies.js:43 ~ getRecupTpX asset ${assetStrat} ~ result:`, result)
   return parseFloat(result);
 }
 
@@ -101,13 +101,13 @@ function getRatioShad(strat) {
 }
 
 function calculateRecups(asset, platform, totalBuy, totalSell, strats) {
-  console.log(`🚀 ~ file: strategies.js:111 ~ calculateRecups`, {
+ /* console.log(`🚀 ~ file: strategies.js:111 ~ calculateRecups`, {
     totalSell,
     totalBuy,
     platform,
     asset
   });
-  
+  */
   //const { assetStrat, assetExpo } = item;
 
   const symbol = asset + "/USDT";

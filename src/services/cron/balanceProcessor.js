@@ -1,6 +1,19 @@
 // src/services/cron/balanceProcessor.js
 const { calculateAssetMetrics } = require("../../services/metrics/global.js");
-const { fetchCmcInDatabase, fetchStratsInDatabase, fetchTradesInDatabase, fetchOrdersInDatabase, fetchTickersInDatabase, fetchBalancesInDatabase } = require("./dataFetcher.js");
+const {
+  fetchCmcInDatabase,
+  fetchStratsInDatabase,
+  fetchTradesInDatabase,
+  fetchOrdersInDatabase,
+  fetchTickersInDatabase,
+  fetchBalancesInDatabase,
+  getSavedAllTickersByExchange,
+  updateOrdersFromServer,
+  saveTradesToDatabase,
+  fetchLastTrades,
+} = require("./dataFetcher.js");
+
+const { mapTrades } = require("../mapping.js");
 
 async function processBalanceChanges(differences, exchangeId) {
   try {
@@ -9,7 +22,9 @@ async function processBalanceChanges(differences, exchangeId) {
     const markets = await getSavedAllTickersByExchange(exchangeId);
 
     for (const difference of differences) {
-      console.log(`Processing balance difference for symbol: ${difference.symbol}`);
+      console.log(
+        `Processing balance difference for symbol: ${difference.symbol}`
+      );
       const symbol = difference.symbol + "/USDT";
       const marketExists = markets.some((market) => market.symbol === symbol);
 
@@ -34,13 +49,23 @@ async function processBalanceChanges(differences, exchangeId) {
     await saveTradesToDatabase(newTrades);
     console.log("New trades saved to database.");
   } catch (error) {
-    console.error(`Error handling balance differences for ${exchangeId}:`, error);
+    console.error(
+      `Error handling balance differences for ${exchangeId}:`,
+      error
+    );
     throw error;
   }
 }
 
 async function calculateAllMetrics() {
-  const [lastCmc, lastStrategies, lastTrades, lastOpenOrders, lastTickers, lastBalances] = await Promise.all([
+  const [
+    lastCmc,
+    lastStrategies,
+    lastTrades,
+    lastOpenOrders,
+    lastTickers,
+    lastBalances,
+  ] = await Promise.all([
     fetchCmcInDatabase(),
     fetchStratsInDatabase(),
     fetchTradesInDatabase(),
@@ -49,19 +74,31 @@ async function calculateAllMetrics() {
     fetchBalancesInDatabase(),
   ]);
 
-  if (!lastCmc || !lastStrategies || !lastTrades || !lastOpenOrders || !lastTickers || !lastBalances) {
-    console.error("Error: One or more data retrieval functions returned invalid data.");
+  if (
+    !lastCmc ||
+    !lastStrategies ||
+    !lastTrades ||
+    !lastOpenOrders ||
+    !lastTickers ||
+    !lastBalances
+  ) {
+    console.error(
+      "Error: One or more data retrieval functions returned invalid data."
+    );
     return [];
   }
 
-  console.log(`🚀 ~ file: balanceProcessor.js:53 ~ calculateAllMetrics ~ Data lengths:`, {
-    lastCmc: lastCmc.length,
-    lastStrategies: lastStrategies.length,
-    lastTrades: lastTrades.length,
-    lastOpenOrders: lastOpenOrders.length,
-    lastTickers: lastTickers.length,
-    lastBalances: lastBalances.length
-  });
+  console.log(
+    `🚀 ~ file: balanceProcessor.js:53 ~ calculateAllMetrics ~ Data lengths:`,
+    {
+      lastCmc: lastCmc.length,
+      lastStrategies: lastStrategies.length,
+      lastTrades: lastTrades.length,
+      lastOpenOrders: lastOpenOrders.length,
+      lastTickers: lastTickers.length,
+      lastBalances: lastBalances.length,
+    }
+  );
 
   const allValues = [];
 
@@ -70,20 +107,27 @@ async function calculateAllMetrics() {
     const assetPlatform = balance.platform;
 
     const filteredCmc = lastCmc.find((cmc) => cmc.symbol === assetSymbol) || {};
-    const filteredTrades = lastTrades.filter((trade) => trade.altA === assetSymbol) || [];
-    const filteredOpenOrders = lastOpenOrders.filter(
-      (order) =>
-        order.symbol === assetSymbol + "/USDT" ||
-        order.symbol === assetSymbol + "/USDC" ||
-        order.symbol === assetSymbol + "/BTC"
-    ) || [];
-    const filteredStrategy = lastStrategies.find(strategy => 
-      strategy.asset === assetSymbol && strategy.strategies[assetPlatform]
-    ) || {};
-    const filteredTickers = lastTickers.filter(
-      (ticker) => ticker.symbol.startsWith(`${assetSymbol}/`) && ticker.platform === assetPlatform
-    ) || [];
-
+    const filteredTrades =
+      lastTrades.filter((trade) => trade.altA === assetSymbol) || [];
+    const filteredOpenOrders =
+      lastOpenOrders.filter(
+        (order) =>
+          order.symbol === assetSymbol + "/USDT" ||
+          order.symbol === assetSymbol + "/USDC" ||
+          order.symbol === assetSymbol + "/BTC"
+      ) || [];
+    const filteredStrategy =
+      lastStrategies.find(
+        (strategy) =>
+          strategy.asset === assetSymbol && strategy.strategies[assetPlatform]
+      ) || {};
+    const filteredTickers =
+      lastTickers.filter(
+        (ticker) =>
+          ticker.symbol.startsWith(`${assetSymbol}/`) &&
+          ticker.platform === assetPlatform
+      ) || [];
+    /*
     console.log(`🚀 ~ file: balanceProcessor.js:67 ~ calculateAllMetrics ~ asset`, {
       assetSymbol,
       assetPlatform,
@@ -93,10 +137,8 @@ async function calculateAllMetrics() {
       filteredStrategy: filteredStrategy.length,
       filteredTickers: filteredTickers.length
     });
-      console.log(`🚀 ~ file: balanceProcessor.js:96 ~ calculateAllMetrics ~ filteredStrategy:`, filteredStrategy)
-      console.log(`🚀 ~ file: balanceProcessor.js:96 ~ calculateAllMetrics ~ filteredCmc:`, filteredCmc)
-      console.log(`🚀 ~ file: balanceProcessor.js:96 ~ calculateAllMetrics ~ filteredTickers:`, filteredTickers)
-
+      console.log(`🚀 ~ file: balanceProcessor.js:96 ~ calculateAllMetrics ~ filteredTrades:`, filteredTrades)
+*/
     if (
       !filteredCmc.length &&
       !filteredTrades.length &&
@@ -111,25 +153,20 @@ async function calculateAllMetrics() {
     const values = calculateAssetMetrics(
       assetSymbol,
       assetPlatform,
-      filteredCmc,
       balance,
+      filteredCmc,
       filteredTrades,
       filteredOpenOrders,
       filteredStrategy,
       filteredTickers
     );
 
-    console.log(`calculateAllMetrics values for ${assetSymbol}:`, values);
+    //console.log(`calculateAllMetrics values for ${assetSymbol}:`, values);
     allValues.push(values);
   }
 
   return allValues;
 }
-
-module.exports = {
-  calculateAllMetrics,
-};
-
 
 function compareBalances(lastBalance, currentBalance) {
   const differences = [];
@@ -137,7 +174,11 @@ function compareBalances(lastBalance, currentBalance) {
 
   for (const current of currentBalance) {
     const last = lastBalancesBySymbol.get(current.symbol);
-    if (last && last.balance !== current.balance && last.platform === current.platform) {
+    if (
+      last &&
+      last.balance !== current.balance &&
+      last.platform === current.platform
+    ) {
       differences.push({ symbol: current.symbol, balanceDifference: true });
     } else if (!last) {
       differences.push({ symbol: current.symbol, newSymbol: true });
