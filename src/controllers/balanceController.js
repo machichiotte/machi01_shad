@@ -17,10 +17,9 @@ validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE']);
  */
 async function getBalances(req, res) {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
-  console.log(`🚀 ~ file: balanceController.js:18 ~ getBalances ~ collectionName:`, collectionName)
   try {
     const data = await getData(collectionName);
-    console.log("Retrieved last balances", { collectionName, count: data.length });
+    console.log(`🚀 ~ file: balanceController.js:23 ~ getBalances ~ res:`, { collectionName, count: data.length })
     res.json(data);
   } catch (error) {
     errorLogger.error("Failed to get balances", { error: error.message });
@@ -34,8 +33,8 @@ async function getBalances(req, res) {
  */
 async function fetchBalancesInDatabase() {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
-  console.log(`🚀 ~ file: balanceController.js:34 ~ fetchBalancesInDatabase ~ collectionName:`, collectionName)
   const data = await getDataFromCollection(collectionName);
+  console.log(`🚀 ~ file: balanceController.js:38 ~ fetchBalancesInDatabase ~ data:`, data.length)
   return data;
 }
 

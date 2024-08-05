@@ -65,7 +65,6 @@ async function getLastUpdate(req, res) {
  */
 async function getSavedLastUpdate() {
   const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
-  console.log(`🚀 ~ file: lastUpdateController.js:67 ~ getSavedLastUpdate ~ collectionName:`, collectionName)
   try {
     const data = await getDataFromCollection(collectionName);
     console.log("Fetched saved last updates from the database.", { collectionName, count: data.length });

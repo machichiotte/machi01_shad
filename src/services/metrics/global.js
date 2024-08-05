@@ -13,6 +13,9 @@ const {
 } = require("./utils.js");
 const { getTotalAmountAndBuy, getTotalSell } = require("./trades.js");
 
+// Define stable coins
+const stableCoins = ["USDT", "USDC", "DAI", "BUSD", "TUSD"];
+
 /**
  * Récupère le prix actuel d'un actif sur une plateforme donnée.
  *
@@ -52,22 +55,9 @@ function calculateAssetMetrics(
   lastStrategies,
   lastTickers
 ) {
-  /*
-  console.log(
-    `🚀 ~ asset: ${asset} ~ exchangeId: ${exchangeId} ~ lastTickers: ${lastTickers.length} ~ lastStrategies: ${lastStrategies.length} ~ lastOpenOrders: ${lastOpenOrders.length} ~ lastTrades: ${lastTrades.length} ~ lastBalances: ${lastBalances.length} ~ lastCmc: ${lastCmc.length}`
-  );
-*/
   const balance = getBalanceBySymbol(asset, lastBalances);
-  //console.log(`🚀 ~ file: global.js:54 ~ balance:`, balance);
-
   const currentPrice = getCurrentPrice(lastTickers, asset, exchangeId);
-  //console.log(`🚀 ~ file: global.js:63 ~ currentPrice:`, currentPrice)
-
   const cmcValues = getCmcValues(asset, lastCmc);
-  //TODO il va falloir check si lelement quon recupere a une valeur une proche de currentPrice 
-  //console.log(`🚀 ~ file: global.js:62 ~ cmcValues:`, cmcValues)
-
-
   const totalSell = getTotalSell(asset, lastTrades);
   const { buyOrders, sellOrders } = filterOpenOrdersBySide(
     lastOpenOrders,
@@ -82,15 +72,47 @@ function calculateAssetMetrics(
     currentPrice,
     averageEntryPrice
   );
-
   const currentPossession = getCurrentPossession(currentPrice, balance);
- /* console.log(
-    `🚀 ~ file: global.js:64 ~ currentPossession:`,
-    currentPossession
-  );*/
   const profit = getProfit(totalBuy, totalSell, currentPrice, balance);
 
-  // Vérifier si le solde est valide et s'il y a des stratégies
+  // Handle stablecoin case
+  if (stableCoins.includes(asset)) {
+    console.log(asset)
+    return {
+      iconUrl: cmcValues.iconUrl,
+      asset,
+      status: "stable coin",
+      strat: "N/A",
+      ratioShad: "N/A",
+      totalShad: "N/A",
+      rank: cmcValues.rank,
+      averageEntryPrice: "N/A",
+      totalBuy: "N/A",
+      maxExposition: "N/A",
+      percentageDifference: "N/A",
+      currentPrice,
+      currentPossession,
+      profit: "N/A",
+      totalSell: "N/A",
+      recupShad: "N/A",
+      nbOpenBuyOrders: "N/A",
+      nbOpenSellOrders: "N/A",
+      totalAmount,
+      balance,
+      recupTp1: "N/A",
+      recupTpX: "N/A",
+      tp1: "N/A",
+      tp2: "N/A",
+      tp3: "N/A",
+      tp4: "N/A",
+      tp5: "N/A",
+      percentToNextTp: "N/A",
+      ...cmcValues,
+      exchangeId,
+    };
+  }
+
+  // Handle non-stablecoin case
   if (balance === 0 || !isValidStrategies(lastStrategies)) {
     return {
       iconUrl: cmcValues.iconUrl,
@@ -155,6 +177,7 @@ function calculateAssetMetrics(
     amountsAndPrices.priceTp4,
     amountsAndPrices.priceTp5
   );
+  
   const percentToNextTp =
     (amountsAndPrices.priceTp1 - currentPrice) / currentPrice;
 
@@ -224,12 +247,8 @@ function filterOpenOrdersBySide(orders, exchangeId, asset) {
  * @returns {boolean} - Retourne vrai si c'est un objet non vide.
  */
 function isValidStrategies(strategies) {
-  // Vérifie si l'entrée est un objet
   const isObject = typeof strategies === "object" && strategies !== null;
-
-  // Vérifie si l'objet n'est pas vide
   const isNotEmpty = isObject && Object.keys(strategies).length > 0;
-
   return isObject && isNotEmpty;
 }
 

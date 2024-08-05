@@ -35,7 +35,6 @@ async function getMarkets(req, res) {
  */
 async function getSavedMarkets() {
   const collectionName = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
-  console.log(`🚀 ~ file: marketsController.js:37 ~ getSavedMarkets ~ collectionName:`, collectionName)
   try {
     const data = await getDataFromCollection(collectionName);
     console.log("Fetched saved market data from the database.", { collectionName, count: data.length });

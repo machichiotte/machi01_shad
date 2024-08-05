@@ -67,7 +67,6 @@ async function cronBalances() {
   console.log(`🚀 ~ file: taskExecutor.js:66 ~ cronBalances ~ lastBalance:`, lastBalance.length)
   await executeForExchanges("updateBalances", async (exchangeId) => {
     const currentBalance = await fetchCurrentBalance(exchangeId, 3);
-    console.log(`🚀 ~ file: taskExecutor.js:69 ~ awaitexecuteForExchanges ~ currentBalance:`, currentBalance.length)
     const differences = compareBalances(lastBalance, currentBalance);
     if (differences.length > 0) {
       await saveBalanceInDatabase(currentBalance, exchangeId);

@@ -13,7 +13,6 @@ const { errorLogger } = require("../utils/loggerUtil.js");
 
 async function getTrades(req, res) {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
-  console.log(`🚀 ~ file: tradesController.js:14 ~ getTrades ~ collectionName:`, collectionName)
   try {
     const lastTrades = await getData(collectionName);
     console.log("Retrieved last Trades", { collectionName, count: lastTrades.length });
@@ -30,12 +29,8 @@ async function getTrades(req, res) {
  */
 async function fetchTradesInDatabase() {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
-  console.log(
-    `🚀 ~ file: tradesController.js:23 ~ fetchTradesInDatabase ~ collectionName:`,
-    collectionName
-  );
-
   const data = await getDataFromCollection(collectionName);
+  console.log(`🚀 ~ file: tradesController.js:34 ~ fetchTradesInDatabase ~ data:`, data.length)
   return data;
 }
 
@@ -112,7 +107,6 @@ async function updateTrades(req, res) {
   const { exchangeId } = req.params;
   console.log("🚀 ~ updateTrades ~ exchangeId:", exchangeId);
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
-  console.log("🚀 ~ updateTrades ~ collectionName:", collectionName);
   const exchange = createExchangeInstance(exchangeId);
 
   try {

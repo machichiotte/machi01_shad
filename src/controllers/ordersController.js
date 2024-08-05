@@ -53,18 +53,24 @@ async function getOrders(req, res) {
  */
 async function fetchOrdersInDatabase() {
   const collectionName = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
-  console.log(`🚀 ~ file: ordersController.js:56 ~ fetchOrdersInDatabase ~ collectionName:`, collectionName)
   try {
     const data = await getDataFromCollection(collectionName);
-    console.log("Fetched orders from the database.", {
+    console.log(
+      `🚀 ~ file: ordersController.js:58 ~ fetchOrdersInDatabase ~ data:`,
+      {
         collectionName,
-      count: data.length,
-    });
+        count: data.length,
+      }
+    );
     return data;
   } catch (error) {
-    errorLogger.error("Failed to fetch orders from database.", {
+    console.log(
+      `🚀 ~ file: ordersController.js:67 ~ fetchOrdersInDatabase ~ error:`,
+      error
+    );
+    /*errorLogger.error("Failed to fetch orders from database.", {
       error: error.message,
-    });
+    });*/
     throw error;
   }
 }
@@ -78,14 +84,21 @@ async function fetchAndMapOrders(exchangeId) {
   try {
     const data = await fetchOpenOrdersByExchangeId(exchangeId);
     const mappedData = mapOrders(exchangeId, data);
-    console.log(`Fetched and mapped orders for ${exchangeId}.`, {
-      count: mappedData.length,
-    });
+    console.log(
+      `🚀 ~ file: ordersController.js:84 ~ fetchAndMapOrders ~ for ${exchangeId} :`,
+      {
+        count: mappedData.length,
+      }
+    );
     return mappedData;
   } catch (error) {
-    errorLogger.error(`Failed to fetch and map orders for ${exchangeId}.`, {
+    console.log(
+      `🚀 ~ file: ordersController.js:89 ~ fetchAndMapOrders ~ error:`,
+      error
+    );
+    /* errorLogger.error(`Failed to fetch and map orders for ${exchangeId}.`, {
       error: error.message,
-    });
+    });*/
     throw error;
   }
 }
@@ -205,13 +218,15 @@ async function createLimitOrder(req, res, orderType) {
       amount,
     });
   } catch (error) {
-    errorLogger.error(`Failed to create ${orderType} limit order.`, {
+    console.log(`🚀 ~ file: ordersController.js:221 ~ createLimitOrder ~ error:`, error)
+    /*errorLogger.error(`Failed to create ${orderType} limit order.`, {
       error: error.message,
       exchangeId,
       symbol,
       price,
       amount,
-    });
+    });*/
+    
     handleErrorResponse(res, error, `createLimitOrder (${orderType})`);
   }
 }

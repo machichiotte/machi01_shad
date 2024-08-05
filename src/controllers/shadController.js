@@ -32,7 +32,6 @@ async function getShad(req, res) {
  */
 async function fetchShadInDatabase() {
   const collectionName = process.env.MONGODB_COLLECTION_CMC;
-  console.log(`🚀 ~ file: cmcController.js:34 ~ fetchShadInDatabase ~ collectionName:`, collectionName)
   try {
     const data = await getDataFromCollection(collectionName);
     console.log("Fetched Shad data from database", { collectionName, count: data.length });

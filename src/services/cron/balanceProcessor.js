@@ -103,66 +103,72 @@ async function calculateAllMetrics() {
   const allValues = [];
 
   for (const balance of lastBalances) {
-    const assetSymbol = balance.symbol;
-    const assetPlatform = balance.platform;
+    if (balance.balance != "" && balance.balance > 0) {
+      const assetSymbol = balance.symbol;
+      const assetPlatform = balance.platform;
 
-    const filteredCmc = lastCmc.find((cmc) => cmc.symbol === assetSymbol) || {};
-    const filteredTrades =
-      lastTrades.filter((trade) => trade.altA === assetSymbol) || [];
-    const filteredOpenOrders =
-      lastOpenOrders.filter(
-        (order) =>
-          order.symbol === assetSymbol + "/USDT" ||
-          order.symbol === assetSymbol + "/USDC" ||
-          order.symbol === assetSymbol + "/BTC"
-      ) || [];
-    const filteredStrategy =
-      lastStrategies.find(
-        (strategy) =>
-          strategy.asset === assetSymbol && strategy.strategies[assetPlatform]
-      ) || {};
-    const filteredTickers =
-      lastTickers.filter(
-        (ticker) =>
-          ticker.symbol.startsWith(`${assetSymbol}/`) &&
-          ticker.platform === assetPlatform
-      ) || [];
-    /*
-    console.log(`🚀 ~ file: balanceProcessor.js:67 ~ calculateAllMetrics ~ asset`, {
-      assetSymbol,
-      assetPlatform,
-      filteredCmc: filteredCmc.length,
-      filteredTrades: filteredTrades.length,
-      filteredOpenOrders: filteredOpenOrders.length,
-      filteredStrategy: filteredStrategy.length,
-      filteredTickers: filteredTickers.length
-    });
-      console.log(`🚀 ~ file: balanceProcessor.js:96 ~ calculateAllMetrics ~ filteredTrades:`, filteredTrades)
-*/
-    if (
-      !filteredCmc.length &&
-      !filteredTrades.length &&
-      !filteredOpenOrders.length &&
-      !filteredStrategy.length &&
-      !filteredTickers.length
-    ) {
-      console.warn(`Skipping ${assetSymbol} due to insufficient data.`);
-      continue;
+      const filteredCmc =
+        lastCmc.find((cmc) => cmc.symbol === assetSymbol) || {};
+      const filteredTrades =
+        lastTrades.filter((trade) => trade.altA === assetSymbol) || [];
+      const filteredOpenOrders =
+        lastOpenOrders.filter(
+          (order) =>
+            order.symbol === assetSymbol + "/USDT" ||
+            order.symbol === assetSymbol + "/USDC" ||
+            order.symbol === assetSymbol + "/BTC"
+        ) || [];
+      const filteredStrategy =
+        lastStrategies.find(
+          (strategy) =>
+            strategy.asset === assetSymbol && strategy.strategies[assetPlatform]
+        ) || {};
+      const filteredTickers =
+        lastTickers.filter(
+          (ticker) =>
+            ticker.symbol.startsWith(`${assetSymbol}/`) &&
+            ticker.platform === assetPlatform
+        ) || [];
+
+      let values;
+      if (
+        !filteredCmc.length &&
+        !filteredTrades.length &&
+        !filteredOpenOrders.length &&
+        !filteredStrategy.length &&
+        !filteredTickers.length
+      ) {
+        if (assetSymbol === "USDT" || assetSymbol === "USDC") {
+          values = calculateAssetMetrics(
+            assetSymbol,
+            assetPlatform,
+            balance,
+            [],
+            [],
+            [],
+            [],
+            filteredTickers
+          );
+        } else {
+          console.warn(`Skipping ${assetSymbol} due to insufficient data.`);
+          continue;
+        }
+      }
+
+      values = calculateAssetMetrics(
+        assetSymbol,
+        assetPlatform,
+        balance,
+        filteredCmc,
+        filteredTrades,
+        filteredOpenOrders,
+        filteredStrategy,
+        filteredTickers
+      );
+
+      //console.log(`calculateAllMetrics values for ${assetSymbol}:`, values);
+      allValues.push(values);
     }
-
-    const values = calculateAssetMetrics(
-      assetSymbol,
-      assetPlatform,
-      balance,
-      filteredCmc,
-      filteredTrades,
-      filteredOpenOrders,
-      filteredStrategy,
-      filteredTickers
-    );
-
-    //console.log(`calculateAllMetrics values for ${assetSymbol}:`, values);
-    allValues.push(values);
   }
 
   return allValues;

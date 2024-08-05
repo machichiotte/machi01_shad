@@ -8,29 +8,35 @@ const { errorLogger } = require("../utils/loggerUtil.js");
 
 async function getStrat(req, res) {
   const collectionName = process.env.MONGODB_COLLECTION_STRAT;
-  console.log(`🚀 ~ file: strategyController.js:14 ~ getStrat ~ collectionName:`, collectionName)
   try {
     const data = await getData(collectionName);
-    console.log("Retrieved last strats", { collectionName, count: data.length });
+    console.log(
+      `🚀 ~ file: strategyController.js:17 ~ getStrat ~ data:`,
+      {
+        collectionName,
+        count: data.length,
+      }
+    );
     res.json(data);
   } catch (error) {
-    errorLogger.error("Failed to get strats", { error: error.message });
+    console.log(
+      `🚀 ~ file: strategyController.js:23 ~ getStrat ~ error:`,
+      error
+    );
+    //errorLogger.error("Failed to get strats", { error: error.message });
     handleErrorResponse(res, error, "getStrat");
   }
 }
 
 async function fetchStratsInDatabase() {
   const collectionName = process.env.MONGODB_COLLECTION_STRAT;
-  
-  console.log(`🚀 ~ file: strategyController.js:13 ~ fetchStratsInDatabase ~ collectionName:`, collectionName)
   const data = await getDataFromCollection(collectionName);
-  console.log("🚀 ~ fetchStratsInDatabase ~ data:", data.length);
+  console.log(`🚀 ~ file: strategyController.js:34 ~ fetchStratsInDatabase ~ data.length:`, data.length)
   return data;
 }
 
 async function updateStrat(req, res) {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
-  console.log("🚀 ~ updateStrat ~ collection:", collection);
   const strat = req.body;
   console.log("🚀 ~ updateStrat ~ strat:", strat);
 

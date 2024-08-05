@@ -1,7 +1,7 @@
 // src/js/metrics/trades.js
 function getTotalAmountAndBuy(symbol, trades) {
   //TODO ICI SYMBOL A UN SLASHHHHHH
- const filteredTrades = trades.filter(
+  const filteredTrades = trades.filter(
     (trade) => trade.altA === symbol && trade.type === "buy"
   );
   const totalBuy = filteredTrades.reduce(
@@ -19,7 +19,7 @@ function getTotalAmountAndBuy(symbol, trades) {
 
   return {
     totalAmount: parseFloat(totalAmount),
-    totalBuy: Math.round(parseFloat(totalBuy,2)),
+    totalBuy: Math.round(parseFloat(totalBuy, 2)),
     averageEntryPrice: parseFloat(averageEntryPrice),
   };
 }

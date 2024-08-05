@@ -52,9 +52,13 @@ async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
     try {
       return await operation(...args);
     } catch (error) {
-      if (["ECONNRESET", "ETIMEDOUT", "ENETDOWN", "ENETUNREACH"].includes(error.code)) {
+      if (
+        ["ECONNRESET", "ETIMEDOUT", "ENETDOWN", "ENETUNREACH"].includes(
+          error.code
+        )
+      ) {
         attempts++;
-        await new Promise(res => setTimeout(res, retryDelay * attempts));
+        await new Promise((res) => setTimeout(res, retryDelay * attempts));
       } else {
         throw error;
       }
@@ -66,7 +70,9 @@ async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
 async function createCollectionIfNotExists(collectionName) {
   await handleRetry(async () => {
     const db = await getDB();
-    const collections = await db.listCollections({ name: collectionName }).toArray();
+    const collections = await db
+      .listCollections({ name: collectionName })
+      .toArray();
     if (collections.length === 0) {
       await db.createCollection(collectionName);
       console.log(`Collection ${collectionName} created.`);
@@ -83,11 +89,11 @@ async function saveData(data, collectionName) {
     const collection = await getCollection(collectionName);
     if (Array.isArray(data)) {
       const result = await collection.insertMany(data);
-      console.log(`🚀 ~ saveData ~ inserted ${result.insertedCount} items`);
+      console.log(`🚀 ~ file: mongodbService.js:92 ~ saveData ~ inserted ${result.insertedCount} items`)
       return result;
     } else {
       const result = await collection.insertOne(data);
-      console.log(`🚀 ~ saveData ~ inserted document ID: ${result.insertedId}`);
+      console.log(`~ file: mongodbService.js:96 ~ saveData ~ inserted document ID: ${result.insertedId}`);
       return result;
     }
   }, [data, collectionName]);
@@ -106,7 +112,9 @@ async function insertDataMDB(collectionName, document) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
     const result = await collection.insertOne(document);
-    console.log(`🚀 ~ insertDataMDB ~ inserted document ID: ${result.insertedId}`);
+    console.log(
+      `🚀 ~ insertDataMDB ~ inserted document ID: ${result.insertedId}`
+    );
     return result.insertedId;
   }, [collectionName, document]);
 }
@@ -124,7 +132,7 @@ async function getAllDataMDB(collectionName) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
     const result = await collection.find().toArray();
-    console.log(`🚀 ~ getAllDataMDB ~ fetched ${result.length} documents`);
+    //console.log(`🚀 ~ getAllDataMDB ~ fetched ${result.length} documents`);
     return result;
   }, [collectionName]);
 }
@@ -142,7 +150,9 @@ async function deleteDataMDB(collectionName, filter) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
     const result = await collection.deleteOne(filter);
-    console.log(`🚀 ~ deleteDataMDB ~ deleted ${result.deletedCount} document(s)`);
+    console.log(
+      `🚀 ~ deleteDataMDB ~ deleted ${result.deletedCount} document(s)`
+    );
     return result.deletedCount;
   }, [collectionName, filter]);
 }
@@ -151,7 +161,9 @@ async function deleteMultipleDataMDB(collectionName, deleteParam) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
     const result = await collection.deleteMany(deleteParam);
-    console.log(`🚀 ~ deleteMultipleDataMDB ~ deleted ${result.deletedCount} document(s)`);
+    console.log(
+      `🚀 ~ deleteMultipleDataMDB ~ deleted ${result.deletedCount} document(s)`
+    );
     return result.deletedCount;
   }, [collectionName, deleteParam]);
 }
@@ -160,7 +172,9 @@ async function deleteAllDataMDB(collectionName) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
     const result = await collection.deleteMany({});
-    console.log(`🚀 ~ deleteAllDataMDB ~ deleted ${result.deletedCount} document(s)`);
+    console.log(
+      `🚀 ~ deleteAllDataMDB ~ deleted ${result.deletedCount} document(s)`
+    );
     return result.deletedCount;
   }, [collectionName]);
 }

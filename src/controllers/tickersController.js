@@ -30,8 +30,7 @@ async function getAllTickers(req, res) {
 async function fetchTickersInDatabase() {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
     const data = await getDataFromCollection(collectionName);
-    console.log(`🚀 ~ file: tickersController.js:32 ~ fetchTickersInDatabase ~ collectionName:`, collectionName)
-    console.log("🚀 ~ fetchTickersInDatabase ~ data:", data.length)
+    console.log(`🚀 ~ file: tickersController.js:33 ~ fetchTickersInDatabase ~ data.length:`, data.length)
     return data;
 }
 
@@ -64,7 +63,6 @@ async function getAllTickersByExchange(req, res, exchangeId) {
 async function getSavedAllTickersByExchange(exchangeId) {
   try {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
-    console.log(`🚀 ~ file: tickersController.js:66 ~ getSavedAllTickersByExchange ~ collectionName:`, collectionName)
     const tickersData = await getDataFromCollection(collectionName);
 
     // Vérification que tickersData est bien un tableau
@@ -128,7 +126,6 @@ async function getAllTickersBySymbolFromExchange(req, res, exchangeId, symbol) {
 async function getSavedAllTickersBySymbolFromExchange(exchangeId, symbol) {
   try {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
-    console.log(`🚀 ~ file: tickersController.js:130 ~ getSavedAllTickersBySymbolFromExchange ~ collectionName:`, collectionName)
     const tickersData = await getDataFromCollection(collectionName);
 
     if (tickersData && tickersData[exchangeId]) {

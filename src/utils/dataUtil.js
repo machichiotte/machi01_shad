@@ -9,7 +9,6 @@ const { getAllDataMDB } = require("../services/mongodbService.js");
  * @returns {Promise<Object[]>} - The retrieved data.
  */
 async function getData(collectionName) {
- console.log(`🚀 ~ file: dataUtil.js:12 ~ getData ~ collectionName:`, collectionName)
   try {
     const data = await getDataFromCollection(collectionName);
     return data;

@@ -7,7 +7,7 @@ const { errorLogger } = require("../utils/loggerUtil.js");
 const { fetchCmcData } = require("../services/cmcService.js");
 const { validateEnvVariables } = require("../utils/controllerUtil.js");
 
-validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC']);
+validateEnvVariables(["MONGODB_COLLECTION_CMC", "TYPE_CMC"]);
 
 /**
  * Retrieves the latest CoinMarketCap data from the database.
@@ -32,13 +32,18 @@ async function getCmc(req, res) {
  */
 async function fetchCmcInDatabase() {
   const collectionName = process.env.MONGODB_COLLECTION_CMC;
-  console.log(`🚀 ~ file: cmcController.js:34 ~ fetchCmcInDatabase ~ collectionName:`, collectionName)
   try {
     const data = await getDataFromCollection(collectionName);
-    console.log("Fetched CMC data from database", { collectionName, count: data.length });
+    console.log(
+      `🚀 ~ file: cmcController.js:34 ~ fetchCmcInDatabase ~ fetchCmcInDatabase:`,
+      { collectionName, count: data.length }
+    );
+
     return data;
   } catch (error) {
-    errorLogger.error(`Error in fetchCmcInDatabase: ${error.message}`, { error });
+    errorLogger.error(`Error in fetchCmcInDatabase: ${error.message}`, {
+      error,
+    });
     throw error;
   }
 }
@@ -64,9 +69,15 @@ async function updateCmcDataInDatabase(cmcData, res) {
       totalCount: cmcData.length,
     });
 
-    console.log("CMC data updated in database", { deleteResult, saveResult, totalCount: cmcData.length });
+    console.log("CMC data updated in database", {
+      deleteResult,
+      saveResult,
+      totalCount: cmcData.length,
+    });
   } catch (error) {
-    errorLogger.error(`Error in updateCmcDataInDatabase: ${error.message}`, { error });
+    errorLogger.error(`Error in updateCmcDataInDatabase: ${error.message}`, {
+      error,
+    });
     handleErrorResponse(res, error, "updateCmcDataInDatabase");
   }
 }
