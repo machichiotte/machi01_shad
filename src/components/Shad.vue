@@ -318,6 +318,10 @@ function getStatus(data) {
   const currentPrice = data.currentPrice;
   const exchangeId = data.exchangeId;
 
+  if (data.status === 'stable coin') {
+    return { severity: 'secondary', label: 'stable coin' };
+  }
+
   if (Array.isArray(data.status)) {
     const nb5 = data.status.reduce((acc, val) =>
       acc + val, 0);
@@ -367,7 +371,7 @@ function getStatus(data) {
   } else {
     console.warn('data.status is not an array:', data.status);
     return { severity: 'warning', label: `STATUS ERROR` };
-  
+
   }
 }
 

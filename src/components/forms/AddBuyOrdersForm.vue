@@ -6,11 +6,13 @@
 
         <!-- Lignes de commande d'achat -->
         <div v-for="(order, index) in buyOrders" :key="index" class="order-row">
-            <InputNumber v-model="order.price" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Price" @input="updateValues('price', index)" />
+            <InputNumber v-model="order.price" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Price" @input="updateCalculatedValues(index)" />
             <InputNumber v-model="order.quantity" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Quantity"
-            @input="updateValues('quantity', index)" />
+            @input="updateCalculatedValues(index)" />
+            <span class="calculated-value">Calculated Total: {{ calculateTotal(index) }}</span>
             <InputNumber v-model="order.total" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Total"
-            @input="updateValues('total', index)" />
+            @input="updateCalculatedValues(index)" />
+            <span class="calculated-value">Calculated Quantity: {{ calculateQuantity(index) }}</span>
             <Button icon="pi pi-times" class="p-button-danger" @click="removeOrder(index)" />
         </div>
         <!-- Bouton pour ajouter une ligne de commande -->
@@ -21,12 +23,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue' // Importer computed depuis la bibliothèque vue
+import { ref, computed } from 'vue'
 import InputNumber from 'primevue/inputnumber'
 import Button from 'primevue/button'
 import { successSpinHtml } from '../../js/spinner.js'
 import { bunchLimitBuyOrders } from '../../js/orders.js'
-
 
 const props = defineProps({
     assets: Object,
@@ -35,7 +36,7 @@ const props = defineProps({
     onClose: Function
 })
 
-const selectedAsset = ref(null) // Déclarer la propriété selectedAsset
+const selectedAsset = ref(null)
 
 const buyOrders = ref([{ price: null, quantity: null, total: null }])
 
@@ -49,84 +50,61 @@ const removeOrder = (index) => {
     buyOrders.value.splice(index, 1)
 }
 
-const updateTotal = (index) => {
-    const order = buyOrders.value[index]
-    if (order.price != null && order.quantity != null) {
-        order.total = order.price * order.quantity
-    }
+const updateCalculatedValues = (index) => {
+    // This function will be used to trigger recalculations
+    calculateTotal(index)
+    calculateQuantity(index)
 }
 
-const updateValues = (changedField, index) => {
+const calculateTotal = (index) => {
     const order = buyOrders.value[index]
-
-    if (changedField === 'price') {
-        if (order.price != null) {
-            if (order.quantity != null) {
-                order.total = parseFloat((order.price * order.quantity).toFixed(8))
-            } else if (order.total != null) {
-                order.quantity = parseFloat((order.total / order.price).toFixed(8))
-            }
-        }
-    } else if (changedField === 'quantity') {
-        if (order.quantity != null) {
-            if (order.price != null) {
-                order.total = parseFloat((order.price * order.quantity).toFixed(8))
-            } else if (order.total != null) {
-                order.price = parseFloat((order.total / order.quantity).toFixed(8))
-            }
-        }
-    } else if (changedField === 'total') {
-        if (order.total != null) {
-            if (order.price != null) {
-                order.quantity = parseFloat((order.total / order.price).toFixed(8))
-            } else if (order.quantity != null) {
-                order.price = parseFloat((order.total / order.quantity).toFixed(8))
-            }
-        }
+    if (order.price != null && order.quantity != null) {
+        return parseFloat((order.price * order.quantity).toFixed(8))
     }
+    return null
+}
+
+const calculateQuantity = (index) => {
+    const order = buyOrders.value[index]
+    if (order.total != null && order.price != null) {
+        return parseFloat((order.total / order.price).toFixed(8))
+    }
+    return null
 }
 
 const submitOrders = async () => {
-    // Itérer sur chaque commande dans buyOrders
     const orderPlacementResults = await Promise.all(buyOrders.value.map(async (order) => {
         try {
-            // Appeler bunchLimitSellOrders avec les paramètres appropriés
             const result = await bunchLimitBuyOrders(selectedAsset.value.exchangeId, selectedAsset.value.asset, order.quantity, order.price);
-            return result; // Retourner le résultat en cas de succès
+            return result;
         } catch (error) {
             console.error('Error placing order:', error);
-            return `Error placing order: ${error.message}`; // Retourner le message d'erreur
+            return `Error placing order: ${error.message}`;
         }
     }));
 
-    // Afficher les résultats ou les messages d'erreur
     if (orderPlacementResults.length > 0) {
         successSpinHtml('Save completed', orderPlacementResults.join('<br>'), true, true);
     } else {
         successSpinHtml('NOTHING', 'No buy order', true, true);
     }
 
-    // Fermer le formulaire
     props.onClose();
 };
 
-
-// Extraire les actifs uniques de selectedAssets
 const assetOptions = computed(() => {
     const assets = props.selectedAssets.map(row => ({
         asset: row.asset,
         exchangeId: row.exchangeId
     }));
 
-    const uniqueAssets = Array.from(new Set(assets.map(a => a.value)))
-        .map(value => {
-            return assets.find(a => a.value === value);
+    const uniqueAssets = Array.from(new Set(assets.map(a => a.asset)))
+        .map(asset => {
+            return assets.find(a => a.asset === asset);
         });
 
-    console.log('assets', uniqueAssets);
     return uniqueAssets;
 });
-
 
 </script>
 
@@ -135,6 +113,11 @@ const assetOptions = computed(() => {
     display: flex;
     gap: 1rem;
     margin-bottom: 0.5rem;
+    flex-direction: column; /* Add this to align elements vertically */
+}
+
+.calculated-value {
+    font-size: 0.8rem; /* Smaller font size for calculated values */
+    color: #888; /* Grey color for indication */
 }
 </style>
-../../js/spinner.js../../js/orders.js
