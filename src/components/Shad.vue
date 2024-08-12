@@ -1,4 +1,3 @@
-<!-- src/components/Shad.vue -->
 <template>
   <div>
     <div class="card">
@@ -8,11 +7,16 @@
             :model="allRows" />
           <MyBuyButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
             :model="allRows" />
-
           <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected"
             :disabled="!selectedAssets || !selectedAssets.length" />
+          <MultiSelect v-model="selectedExchanges" :options="exchangeOptions" optionLabel="name" optionValue="id"
+            placeholder="Select Exchanges" class="ml-2" display="chip" :panelClass="'exchanges-multiselect-panel'">
+            <template #item="slotProps">
+              <Checkbox v-model="slotProps.checked" :label="slotProps.option.name" />
+              <span>{{ slotProps.option.name }}</span>
+            </template>
+          </MultiSelect>
         </template>
-
         <template #end>
           <div class="flex justify-content-end">
             <IconField iconPosition="left">
@@ -23,16 +27,8 @@
             </IconField>
           </div>
         </template>
-
-        <!--
-        <template #end>
-          <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import"
-            class="mr-2 inline-block" />
-          <Button label="Export" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
-        </template> -->
       </Toolbar>
-
-      <DataTable class="mt-4" :value="items" :rows="itemsPerPage" :filters="filters" :pt="{
+      <DataTable class="mt-4" :value="filteredItems" :rows="itemsPerPage" :filters="filters" :pt="{
             table: { style: 'min-width: 50rem' },
             bodyrow: ({ props }) => ({
               class: [{ 'font-bold': props.frozenRow }]
@@ -42,8 +38,6 @@
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25, 100, 500]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products">
-
-
         <ColumnGroup type="header">
           <Row>
             <Column header="Icon" field="iconUrl" :rowspan="2" frozen alignFrozen="left" />
@@ -55,22 +49,18 @@
             <Column header="Average Entry Price" field="averageEntryPrice" :rowspan="2" sortable />
             <Column header="Total Buy" field="totalBuy" :rowspan="2" sortable />
             <Column header="Total Sell" field="totalSell" :rowspan="2" sortable />
-
             <Column header="Quantite total achetee" field="totalAmount" :rowspan="2" sortable />
             <Column header="Balance" field="balance" :rowspan="2" sortable />
-
             <Column header="Max wanted" field="maxExposition" :rowspan="2" sortable />
             <Column header="Percentage Difference" field="percentageDifference" :rowspan="2" sortable />
             <Column header="Current Price" field="currentPrice" :rowspan="2" sortable />
             <Column header="Wallet" field="currentPossession" :rowspan="2" sortable />
             <Column header="Profit" field="profit" :rowspan="2" sortable />
             <Column header="Open Orders" :colspan="2" />
-
             <Column header="Strategy" field="strat" :rowspan="2" sortable />
             <Column header="Ratio" field="ratioShad" :rowspan="2" sortable />
             <Column header="Recup Shad" field="recupShad" :rowspan="2" sortable />
             <Column header="% next TP" field="percentToNextTp" sortable :rowspan="2" />
-
             <Column header="Take Profit" :colspan="2" />
             <Column header="TP1" :colspan="2" />
             <Column header="TP2" :colspan="2" />
@@ -101,7 +91,6 @@
             <Column header="90d" field="cryptoPercentChange90d" sortable />
           </Row>
         </ColumnGroup>
-
         <Column field="iconUrl" frozen alignFrozen="left">
           <template #body="slotProps">
             <img :src="slotProps.data.iconUrl" :alt="slotProps.data.asset" class="border-round icon-32" />
@@ -114,16 +103,28 @@
             <Tag :value="getStatus(slotProps.data).label" :severity="getStatus(slotProps.data).severity" />
           </template>
         </Column>
-
         <Column field="totalShad"></Column>
         <Column field="rank"></Column>
-        <Column field="averageEntryPrice"></Column>
+        <Column field="averageEntryPrice">
+          <template #body="slotProps">
+            <div>
+              {{ slotProps.data.averageEntryPrice }}
+              <br />
+              <span :class="{
+                'text-green-500': slotProps.data.percentageDifference > 0,
+                'text-red-500': slotProps.data.percentageDifference < 0
+              }">
+                ({{ (100 * slotProps.data.percentageDifference).toFixed(2) }}%)
+              </span>
+            </div>
+          </template>
+        </Column>
+        
         <Column field="totalBuy"></Column>
         <Column field="totalSell"></Column>
         <Column field="totalAmount"></Column>
         <Column field="balance"></Column>
-
-        <Column field="maxExposition" :rowspan="2" sortable>
+        <Column field="maxExposition">
           <template #body="slotProps">
             <input type="text" v-model="slotProps.data.maxExposition"
               @input="updateMaxWanted(slotProps.data, $event.target.value)"
@@ -158,7 +159,6 @@
         </Column>
         <Column field="nbOpenBuyOrders"></Column>
         <Column field="nbOpenSellOrders"></Column>
-
         <Column field="strat">
           <template #body="slotProps">
             <select v-model="slotProps.data.strat"
@@ -179,9 +179,7 @@
               {{ (100 * slotProps.data.percentToNextTp).toFixed(2) }}%
             </span>
           </template>
-
         </Column>
-
         <Column field="recupTp1"></Column>
         <Column field="recupTpX"></Column>
         <Column field="amountTp1"></Column>
@@ -194,7 +192,6 @@
         <Column field="priceTp4"></Column>
         <Column field="amountTp5"></Column>
         <Column field="priceTp5"></Column>
-
         <Column field="cryptoPercentChange24h">
           <template #body="slotProps">
             <span :class="{
@@ -245,7 +242,6 @@
             </span>
           </template>
         </Column>
-
         <Column :exportable="false" style="min-width: 8rem">
           <template #body="slotProps">
             <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editProduct(slotProps.data)" />
@@ -266,8 +262,6 @@ import MySellButton from './buttons/MySellButton.vue'
 import MyBuyButton from './buttons/MyBuyButton.vue'
 import { strategies } from '../js/strategies.js'
 
-//import Overlay from './ShadOverlay.vue'
-
 import {
   FETCH_SHAD, GET_SHAD
 } from '../store/storeconstants';
@@ -275,46 +269,71 @@ import {
 const store = useStore();
 const strategiesList = ref(strategies);
 
-const selectedAssets = ref([])
-const shad = ref([])
+const selectedAssets = ref([]);
+const shad = ref([]);
 
-const itemsPerPage = ref(50)
-const showOverlay = ref(false)
-const selectedAsset = ref()
-const allRows = ref()
+const itemsPerPage = ref(50);
+const showOverlay = ref(false);
+const selectedAsset = ref();
+const allRows = ref();
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-})
-const BINANCE_EXCHANGE_ID = 'binance'
-const BINANCE_THRESHOLD = 3 // 300%
+});
 
-const HTX_EXCHANGE_ID = 'htx'
-const HTX_THRESHOLD = 3 // 300%
+const BINANCE_EXCHANGE_ID = 'binance';
+const BINANCE_THRESHOLD = 3; // 300%
+
+const HTX_EXCHANGE_ID = 'htx';
+const HTX_THRESHOLD = 3; // 300%
+
+const exchangeOptions = computed(() => {
+  return [
+    { id: 'binance', name: 'Binance' },
+    { id: 'kucoin', name: 'KuCoin' },
+    { id: 'htx', name: 'HTX' },
+    { id: 'okx', name: 'OKX' },
+    { id: 'gateio', name: 'Gate.io' }
+  ];
+});
+
+const selectedExchanges = ref(exchangeOptions.value.map(exchange => exchange.id));
 
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
 
 const items = computed(() => {
-  return shad.value && shad.value.length > 0 ? shad.value : []
-})
+  return shad.value && shad.value.length > 0 ? shad.value : [];
+});
+
+// Computed property to get filtered items
+const filteredItems = computed(() => {
+  if (!filters.value.global.value && selectedExchanges.value.length === 0) {
+    return items.value;
+  }
+
+  const searchTerm = filters.value.global.value?.toLowerCase() || '';
+
+  return items.value.filter(item => {
+    const matchesExchange = selectedExchanges.value.length === 0 || selectedExchanges.value.includes(item.exchangeId);
+    const matchesSearch = Object.values(item).some(val => String(val).toLowerCase().includes(searchTerm));
+
+    return matchesExchange && matchesSearch;
+  });
+});
 
 onMounted(async () => {
   try {
     await store.dispatch('calcul/' + FETCH_SHAD);
-    console.log(`🚀 ~ file: Shad.vue:307 ~ onMounted ~ FETCH_SHAD:`)
-
     shad.value = await store.getters['calcul/' + GET_SHAD];
-    console.log(`🚀 ~ file: Shad.vue:306 ~ onMounted ~ shad.value:`, shad.value)
   } catch (e) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", e)
+    console.error("Une erreur s'est produite lors de la récupération des données :", e);
   }
-})
+});
 
 const confirmDeleteSelected = () => {
-  deleteProductsDialog.value = true
-}
+  deleteProductsDialog.value = true;
+};
 
 function getStatus(data) {
-  console.log(`🚀 ~ file: Shad.vue:317 ~ getStatus ~ data:`, data)
   const currentPrice = data.currentPrice;
   const exchangeId = data.exchangeId;
 
@@ -323,14 +342,11 @@ function getStatus(data) {
   }
 
   if (Array.isArray(data.status)) {
-    const nb5 = data.status.reduce((acc, val) =>
-      acc + val, 0);
+    const nb5 = data.status.reduce((acc, val) => acc + val, 0);
 
     if (data.nbOpenSellOrders === 0) {
       return { severity: 'danger', label: "Pas d'ordres ouverts" };
-    } else if (
-      currentPrice > data.priceTp1
-    ) {
+    } else if (currentPrice > data.priceTp1) {
       if (data.priceTp1 < data.priceTp2)
         return { severity: 'info', label: 'Tu peux vendre depuis un moment' };
       else
@@ -371,24 +387,23 @@ function getStatus(data) {
   } else {
     console.warn('data.status is not an array:', data.status);
     return { severity: 'warning', label: `STATUS ERROR` };
-
   }
 }
 
 function calculatePriceThreshold(currentPrice, threshold) {
-  return currentPrice * threshold
+  return currentPrice * threshold;
 }
 
 function countConsecutivePairs(status) {
-  let consecutivePairs = 0
+  let consecutivePairs = 0;
   for (let i = 0; i < status.length; i++) {
     if (status[i] === 1) {
-      consecutivePairs++
+      consecutivePairs++;
     } else {
-      break
+      break;
     }
   }
-  return consecutivePairs
+  return consecutivePairs;
 }
 
 function updateRowByStratChange(data, assetStrat) {
@@ -396,14 +411,12 @@ function updateRowByStratChange(data, assetStrat) {
   const row = items.value[rowIndex];
 
   if (rowIndex !== -1) {
-    console.log('index', rowIndex)
     const updatedItem = { ...row, assetStrat };
     items.value.splice(rowIndex, 1, updatedItem);
   }
 }
 
 function updateMaxWanted(data, newValue) {
-  // Validate the new value (optional)
   if (isNaN(newValue) || newValue < 0) {
     console.warn('Invalid maxExposition value:', newValue);
     return;
@@ -417,9 +430,7 @@ function updateMaxWanted(data, newValue) {
     items.value.splice(rowIndex, 1, updatedItem);
   }
 }
-
 </script>
-
 
 <style scoped>
 html {
@@ -452,13 +463,15 @@ p {
   height: 32px;
 }
 
-/* Couleur verte */
 .text-green-500 {
   color: #10b981;
 }
 
-/* Couleur rouge */
 .text-red-500 {
   color: #ef4444;
 }
-</style>./buttons/MyBuyButton.vue./buttons/MySellButton.vue
+
+.exchanges-multiselect-panel {
+  min-width: 200px;
+}
+</style>
