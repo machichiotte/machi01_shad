@@ -28,7 +28,7 @@
           </div>
         </template>
       </Toolbar>
-      <DataTable class="mt-4" :value="filteredItems" :rows="itemsPerPage" :filters="filters" :pt="{
+      <DataTable class="mt-4" :value="filteredItems" :rows="itemsPerPage" :dataKey="rowKey" :filters="filters" :pt="{
             table: { style: 'min-width: 50rem' },
             bodyrow: ({ props }) => ({
               class: [{ 'font-bold': props.frozenRow }]
@@ -169,7 +169,7 @@
         </Column>
 
         <Column field="profit" sortable>
-          <template #body="slotProps">
+          <template #body="slotProps"> 
             <span>
               <!-- Vérification si profit est défini et est un nombre valide -->
               {{
@@ -363,6 +363,11 @@ const filteredItems = computed(() => {
     return matchesExchange && matchesSearch;
   });
 });
+
+// Génération d'une clé unique par ligne
+const rowKey = (rowData) => {
+  return `${rowData.asset}-${rowData.exchangeId}`;
+};
 
 onMounted(async () => {
   try {
