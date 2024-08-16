@@ -43,6 +43,7 @@
             <Column header="Icon" field="iconUrl" :rowspan="2" frozen alignFrozen="left" />
             <Column header="Asset" field="asset" :rowspan="2" :sortable="true" frozen alignFrozen="left" />
             <Column header="Exchange" field="exchangeId" :rowspan="2" sortable frozen alignFrozen="left" />
+            <Column header="Current Price" field="currentPrice" frozen alignFrozen="left" :rowspan="2" sortable />
             <Column header="Status" field="status" :rowspan="2" sortable frozen alignFrozen="left" />
             <Column header="Total Shad" field="totalShad" :rowspan="2" sortable />
             <Column header="Rank" field="rank" :rowspan="2" sortable />
@@ -53,7 +54,6 @@
             <Column header="Balance" field="balance" :rowspan="2" sortable />
             <Column header="Max wanted" field="maxExposition" :rowspan="2" sortable />
             <Column header="Percentage Difference" field="percentageDifference" :rowspan="2" sortable />
-            <Column header="Current Price" field="currentPrice" :rowspan="2" sortable />
             <Column header="Wallet" field="currentPossession" :rowspan="2" sortable />
             <Column header="Profit" field="profit" :rowspan="2" sortable />
             <Column header="Open Orders" :colspan="2" />
@@ -98,6 +98,24 @@
         </Column>
         <Column field="asset" frozen alignFrozen="left"></Column>
         <Column field="exchangeId" style="min-width: 5rem" frozen alignFrozen="left"></Column>
+        <Column field="currentPrice" frozen alignFrozen="left">
+          <template #body="slotProps">
+            <div style="position: relative; height: 50px; padding: 5px;">
+              <!-- Texte principal centré -->
+              <div style="text-align: center; font-size: 1rem; line-height: 20px;">
+                {{ slotProps.data.currentPrice }}
+              </div>
+              <!-- Texte secondaire en bas à droite -->
+              <div :class="{
+            'text-green-500': slotProps.data.cryptoPercentChange24h > 0,
+            'text-red-500': slotProps.data.cryptoPercentChange24h < 0
+          }
+            " style="position: absolute; bottom: 2px; right: 5px; font-size: 0.8rem;">
+                {{ (100 * slotProps.data.cryptoPercentChange24h).toFixed(2) }}%
+              </div>
+            </div>
+          </template>
+        </Column>
         <Column field="status" style="min-width: 12rem" frozen alignFrozen="left">
           <template #body="slotProps">
             <Tag :value="getStatus(slotProps.data).label" :severity="getStatus(slotProps.data).severity" />
@@ -105,21 +123,26 @@
         </Column>
         <Column field="totalShad"></Column>
         <Column field="rank"></Column>
+
         <Column field="averageEntryPrice">
           <template #body="slotProps">
-            <div>
-              {{ slotProps.data.averageEntryPrice }}
-              <br />
-              <span :class="{
-                'text-green-500': slotProps.data.percentageDifference > 0,
-                'text-red-500': slotProps.data.percentageDifference < 0
-              }">
-                ({{ (100 * slotProps.data.percentageDifference).toFixed(2) }}%)
-              </span>
+            <div style="position: relative; height: 50px; padding: 5px;">
+              <!-- Texte principal centré -->
+              <div style="text-align: center; font-size: 1rem; line-height: 20px;">
+                {{ slotProps.data.averageEntryPrice }}
+              </div>
+              <!-- Texte secondaire en bas à droite -->
+              <div :class="{
+            'text-green-500': slotProps.data.percentageDifference > 0,
+            'text-red-500': slotProps.data.percentageDifference < 0
+          }
+            " style="position: absolute; bottom: 2px; right: 5px; font-size: 0.8rem;">
+                24h ({{ (100 * slotProps.data.percentageDifference).toFixed(2) }}%)
+              </div>
             </div>
           </template>
         </Column>
-        
+
         <Column field="totalBuy"></Column>
         <Column field="totalSell"></Column>
         <Column field="totalAmount"></Column>
@@ -131,29 +154,29 @@
               @blur="updateMaxWanted(slotProps.data, $event.target.value)" />
           </template>
         </Column>
-        <Column field="percentageDifference">
+
+        <Column field="currentPossession" sortable>
           <template #body="slotProps">
-            <span :class="{
-            'text-green-500': slotProps.data.percentageDifference > 0,
-            'text-red-500': slotProps.data.percentageDifference < 0
-          }">
-              {{ (100 * slotProps.data.percentageDifference).toFixed(2) }}%
+            <span>
+              <!-- Vérification si currentPossession est défini et est un nombre valide -->
+              {{
+            typeof slotProps.data.currentPossession === 'number'
+              ? slotProps.data.currentPossession.toFixed(2) + '$'
+              : 'N/A'
+          }}
             </span>
           </template>
         </Column>
-        <Column field="currentPrice"></Column>
-        <Column field="currentPossession">
+
+        <Column field="profit" sortable>
           <template #body="slotProps">
-            <span> {{ slotProps.data.currentPossession }}$ </span>
-          </template>
-        </Column>
-        <Column field="profit">
-          <template #body="slotProps">
-            <span :class="{
-            'text-green-500': slotProps.data.profit > 0,
-            'text-red-500': slotProps.data.profit < 0
-          }">
-              {{ slotProps.data.profit }}$
+            <span>
+              <!-- Vérification si profit est défini et est un nombre valide -->
+              {{
+            typeof slotProps.data.profit === 'number'
+              ? slotProps.data.profit.toFixed(2) + '$'
+              : 'N/A'
+          }}
             </span>
           </template>
         </Column>
@@ -164,7 +187,8 @@
             <select v-model="slotProps.data.strat"
               @change="updateRowByStratChange(slotProps.data, $event.target.value)">
               <option value=""></option>
-              <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">{{ strategy }}</option>
+              <option v-for=" strategy  in  strategyLabels " :key="strategy" :value="strategy">{{ strategy }}
+              </option>
             </select>
           </template>
         </Column>
@@ -175,7 +199,8 @@
             <span :class="{
             'text-green-500': slotProps.data.percentToNextTp > 0,
             'text-red-500': slotProps.data.percentToNextTp < 0
-          }">
+          }
+            ">
               {{ (100 * slotProps.data.percentToNextTp).toFixed(2) }}%
             </span>
           </template>
@@ -197,7 +222,8 @@
             <span :class="{
             'text-green-500': slotProps.data.cryptoPercentChange24h > 0,
             'text-red-500': slotProps.data.cryptoPercentChange24h < 0
-          }">
+          }
+            ">
               {{ (100 * slotProps.data.cryptoPercentChange24h).toFixed(2) }}%
             </span>
           </template>
@@ -207,7 +233,8 @@
             <span :class="{
             'text-green-500': slotProps.data.cryptoPercentChange7d > 0,
             'text-red-500': slotProps.data.cryptoPercentChange7d < 0
-          }">
+          }
+            ">
               {{ (100 * slotProps.data.cryptoPercentChange7d).toFixed(2) }}%
             </span>
           </template>
@@ -217,7 +244,8 @@
             <span :class="{
             'text-green-500': slotProps.data.cryptoPercentChange30d > 0,
             'text-red-500': slotProps.data.cryptoPercentChange30d < 0
-          }">
+          }
+            ">
               {{ (100 * slotProps.data.cryptoPercentChange30d).toFixed(2) }}%
             </span>
           </template>
@@ -227,7 +255,8 @@
             <span :class="{
             'text-green-500': slotProps.data.cryptoPercentChange60d > 0,
             'text-red-500': slotProps.data.cryptoPercentChange60d < 0
-          }">
+          }
+            ">
               {{ (100 * slotProps.data.cryptoPercentChange60d).toFixed(2) }}%
             </span>
           </template>
@@ -237,7 +266,8 @@
             <span :class="{
             'text-green-500': slotProps.data.cryptoPercentChange90d > 0,
             'text-red-500': slotProps.data.cryptoPercentChange90d < 0
-          }">
+          }
+            ">
               {{ (100 * slotProps.data.cryptoPercentChange90d).toFixed(2) }}%
             </span>
           </template>
@@ -296,6 +326,16 @@ const exchangeOptions = computed(() => {
   ];
 });
 
+const performanceOptions = ref([24, 7, 30, 60, 90]);
+
+function selectPerformance(data) {
+  // Handle performance selection logic
+  const newPerformance = prompt("Select Performance: 24, 7, 30, 60, 90 (days)");
+  if (performanceOptions.value.includes(parseInt(newPerformance))) {
+    data.selectedPerformance = parseInt(newPerformance);
+  }
+}
+
 const selectedExchanges = ref(exchangeOptions.value.map(exchange => exchange.id));
 
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
@@ -313,8 +353,12 @@ const filteredItems = computed(() => {
   const searchTerm = filters.value.global.value?.toLowerCase() || '';
 
   return items.value.filter(item => {
+    console.log(`🚀 ~ file: Shad.vue:357 ~ filteredItems ~ item:`, item)
+
     const matchesExchange = selectedExchanges.value.length === 0 || selectedExchanges.value.includes(item.exchangeId);
+    console.log(`🚀 ~ file: Shad.vue:360 ~ filteredItems ~ matchesExchange:`, matchesExchange)
     const matchesSearch = Object.values(item).some(val => String(val).toLowerCase().includes(searchTerm));
+    console.log(`🚀 ~ file: Shad.vue:362 ~ filteredItems ~ matchesSearch:`, matchesSearch)
 
     return matchesExchange && matchesSearch;
   });
@@ -324,6 +368,7 @@ onMounted(async () => {
   try {
     await store.dispatch('calcul/' + FETCH_SHAD);
     shad.value = await store.getters['calcul/' + GET_SHAD];
+    console.log("Données Shad récupérées:", shad.value);  // Ajoutez ceci pour vérifier les données récupérées
   } catch (e) {
     console.error("Une erreur s'est produite lors de la récupération des données :", e);
   }
