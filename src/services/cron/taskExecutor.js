@@ -4,19 +4,12 @@ const { smtp } = require("../config.js");
 
 const { errorLogger } = require("../../utils/loggerUtil.js");
 const { getExchanges } = require("../../utils/exchangeUtil.js");
+
 const {
-  fetchBalancesInDatabase,
-  fetchCurrentBalance,
-  saveBalanceInDatabase,
-} = require("./dataFetcher.js");
-const {
-  compareBalances,
-  calculateAllMetrics,
-  processBalanceChanges,
-} = require("./balanceProcessor.js");
-const {
-  deleteAndSaveObject,
-} = require("../../utils/mongodbUtil.js");
+  updateMarketsForExchange,
+  updateTickersForExchange,
+  updateBalancesForExchange
+} = require("./updateFunctions.js");
 
 async function executeCronTask(task, isCritical = false, retries = 3) {
   let attempts = 0;
@@ -63,26 +56,7 @@ async function cronMarkets() {
 }
 
 async function cronBalances() {
-  const lastBalance = await fetchBalancesInDatabase();
-  console.log(`🚀 ~ file: taskExecutor.js:66 ~ cronBalances ~ lastBalance:`, lastBalance.length)
-  await executeForExchanges("updateBalances", async (exchangeId) => {
-    const currentBalance = await fetchCurrentBalance(exchangeId, 3);
-    const differences = compareBalances(lastBalance, currentBalance);
-    if (differences.length > 0) {
-      await saveBalanceInDatabase(currentBalance, exchangeId);
-      await processBalanceChanges(differences, exchangeId);
-      //await calculateMetrics(differences, exchangeId);
-    }
-
-    try {
-      const collectionName = process.env.MONGODB_COLLECTION_SHAD;
-      const mymetrics = await calculateAllMetrics();
-      console.log(`🚀 ~ file: taskExecutor.js:80 ~ awaitexecuteForExchanges ~ mymetrics:`, mymetrics.length)
-      deleteAndSaveObject(mymetrics, collectionName);
-    } catch (error) {
-      console.log(`🚀 ~ file: taskExecutor.js:80 ~ awaitexecuteForExchanges ~ error:`, error)
-    }
-  });
+  await executeForExchanges("updateBalances", updateBalancesForExchange);
 }
 
 module.exports = {

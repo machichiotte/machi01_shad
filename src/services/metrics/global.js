@@ -77,7 +77,6 @@ function calculateAssetMetrics(
 
   // Handle stablecoin case
   if (stableCoins.includes(asset)) {
-    console.log(asset)
     return {
       iconUrl: cmcValues.iconUrl,
       asset,

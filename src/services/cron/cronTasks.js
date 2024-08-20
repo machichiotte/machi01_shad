@@ -12,9 +12,6 @@ const {
 async function initializeCronTasks() {
   try {
     console.log("Starting to initialize Cron tasks...");
-
-    await cronBalances();
-
     cron.schedule(cronSchedules.tickers, cronTickers);
     cron.schedule(cronSchedules.markets, cronMarkets);
     cron.schedule(cronSchedules.balances, cronBalances);

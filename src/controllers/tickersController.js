@@ -5,9 +5,12 @@ const { handleErrorResponse } = require("../utils/errorUtil.js");
 const {
   saveLastUpdateToMongoDB,
   deleteAndSaveObject,
+  deleteAndSaveData
 } = require("../utils/mongodbUtil.js");
 const { mapTickers } = require("../services/mapping.js");
 const { getExchanges } = require("../utils/exchangeUtil.js");
+const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
+const { errorLogger } = require("../utils/loggerUtil.js");
 
 /**
  * Retrieves all tickers from the database.
@@ -33,6 +36,60 @@ async function fetchTickersInDatabase() {
     console.log(`🚀 ~ file: tickersController.js:33 ~ fetchTickersInDatabase ~ data.length:`, data.length)
     return data;
 }
+
+/**
+ * Fetches the current tickers from the specified exchange.
+ * @param {string} exchangeId - Identifier for the exchange.
+ * @param {number} [retries=3] - Number of retry attempts.
+ * @returns {Promise<Object[]>} - The fetched ticker data.
+ */
+async function fetchCurrentTickers(exchangeId, retries = 3) {
+  const errorPolicies = await loadErrorPolicies(); // Load error policies
+
+  try {
+    const exchange = createExchangeInstance(exchangeId);
+    //console.log(`🚀 ~ file: tickersController.js:51 ~ fetchCurrentTickers ~ exchange:`, exchange)
+    const data = await exchange.fetchTickers();
+    //console.log(`🚀 ~ file: tickersController.js:53 ~ fetchCurrentTickers ~ data:`, data)
+    const mappedData = mapTickers(data, exchangeId);
+    console.log(`🚀 ~ file: tickersController.js:55 ~ fetchCurrentTickers ~ mappedData:`, mappedData)
+    //console.log(`🚀 ~ file: tickerController.js:55 ~ fetchCurrentTickers ~ Fetched current tickers from ${exchangeId}`, { count: Object.keys(mappedData).length });
+    return mappedData;
+  } catch (error) {
+    console.log(`🚀 ~ file: tickerController.js:58 ~ fetchCurrentTickers ~ error:`, error);
+
+    // Check if the error justifies a retry
+    if (retries > 0 && shouldRetry(exchangeId, error, errorPolicies)) {
+      const delay = Math.pow(2, 3 - retries) * 1000; // Exponential delay
+      console.log(`Retrying fetchCurrentTickers... (${3 - retries + 1}/3)`, { delay });
+      await new Promise(resolve => setTimeout(resolve, delay));
+      return fetchCurrentTickers(exchangeId, retries - 1);
+    }
+
+    // Log non-recoverable errors
+    errorLogger.error("Failed to fetch current tickers from exchange", { exchangeId, error: error.message });
+    throw error;
+  }
+}
+
+
+/**
+ * Saves the provided ticker data to the database.
+ * @param {Object[]} mappedData - The ticker data to be saved.
+ * @param {string} exchangeId - Identifier of the exchange.
+ */
+async function saveTickersInDatabase(mappedData, exchangeId) {
+  const collection = process.env.MONGODB_COLLECTION_TICKERS;
+  try {
+    await deleteAndSaveData(mappedData, collection, exchangeId);
+    await saveLastUpdateToMongoDB(process.env.TYPE_TICKERS, exchangeId);
+    console.log("Saved ticker data to the database", { exchangeId });
+  } catch (error) {
+    errorLogger.error("Failed to save ticker data to database", { exchangeId, error: error.message });
+    throw error;
+  }
+}
+
 
 /**
  * Retrieves all tickers for a specific exchange.
@@ -178,6 +235,8 @@ async function updateAllTickers(req, res) {
 module.exports = {
   getAllTickers,
   fetchTickersInDatabase,
+  fetchCurrentTickers,
+  saveTickersInDatabase,
   updateAllTickers,
   getAllTickersByExchange,
   getSavedAllTickersByExchange,

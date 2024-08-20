@@ -1,21 +1,31 @@
 // src/services/cron/balanceProcessor.js
-const { calculateAssetMetrics } = require("../../services/metrics/global.js");
+const { calculateAssetMetrics } = require("./metrics/global.js");
+
+const { mapTrades } = require("./mapping.js");
+const { fetchCmcInDatabase } = require("../controllers/cmcController.js");
 const {
-  fetchCmcInDatabase,
   fetchStratsInDatabase,
+} = require("../controllers/strategyController.js");
+const {
   fetchTradesInDatabase,
-  fetchOrdersInDatabase,
-  fetchTickersInDatabase,
-  fetchBalancesInDatabase,
-  getSavedAllTickersByExchange,
-  updateOrdersFromServer,
   saveTradesToDatabase,
   fetchLastTrades,
-} = require("./dataFetcher.js");
-
-const { mapTrades } = require("../mapping.js");
+} = require("../controllers/tradesController.js");
+const {
+  fetchOrdersInDatabase,
+  updateOrdersFromServer,
+} = require("../controllers/ordersController.js");
+const {
+  fetchTickersInDatabase,
+  getSavedAllTickersByExchange,
+} = require("../controllers/tickersController.js");
+const {
+  fetchBalancesInDatabase,
+} = require("../controllers/balanceController.js");
 
 async function processBalanceChanges(differences, exchangeId) {
+  const quoteCurrencies = ["USDT", "BTC", "ETH", "USDC"];
+
   try {
     const update = await updateOrdersFromServer(exchangeId);
     const newTrades = [];
@@ -25,20 +35,25 @@ async function processBalanceChanges(differences, exchangeId) {
       console.log(
         `Processing balance difference for symbol: ${difference.symbol}`
       );
-      const symbol = difference.symbol + "/USDT";
-      const marketExists = markets.some((market) => market.symbol === symbol);
 
-      if (marketExists) {
-        try {
-          const tradeList = await fetchLastTrades(exchangeId, symbol);
-          const mappedTrades = mapTrades(exchangeId, tradeList);
-          newTrades.push(...mappedTrades);
-        } catch (err) {
-          console.error(`Error fetching trades for ${symbol}: ${err.message}`);
-          continue;
+      for (const quote of quoteCurrencies) {
+        const symbol = `${difference.symbol}/${quote}`;
+        const marketExists = markets.some((market) => market.symbol === symbol);
+
+        if (marketExists) {
+          try {
+            const tradeList = await fetchLastTrades(exchangeId, symbol);
+            const mappedTrades = mapTrades(exchangeId, tradeList);
+            newTrades.push(...mappedTrades);
+          } catch (err) {
+            console.error(
+              `Error fetching trades for ${symbol}: ${err.message}`
+            );
+            continue;
+          }
+        } else {
+          console.log(`Symbol not available: ${symbol}`);
         }
-      } else {
-        console.log(`Symbol not available: ${symbol}`);
       }
 
       if (difference.newSymbol) {
@@ -87,19 +102,6 @@ async function calculateAllMetrics() {
     );
     return [];
   }
-
-  console.log(
-    `🚀 ~ file: balanceProcessor.js:53 ~ calculateAllMetrics ~ Data lengths:`,
-    {
-      lastCmc: lastCmc.length,
-      lastStrategies: lastStrategies.length,
-      lastTrades: lastTrades.length,
-      lastOpenOrders: lastOpenOrders.length,
-      lastTickers: lastTickers.length,
-      lastBalances: lastBalances.length,
-    }
-  );
-
   const allValues = [];
 
   for (const balance of lastBalances) {

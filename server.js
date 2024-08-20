@@ -1,8 +1,14 @@
 // server.js
 const dotenv = require('dotenv');
-const { connectToMongoDB } = require('./src/services/mongodbService.js');
+const { connectToMongoDB, cleanCollectionTrades } = require('./src/services/mongodbService.js');
 const { app, startServer } = require('./src/services/requestHandlers.js');
 const { initializeCronTasks } = require('./src/services/cron/cronTasks.js');
+
+const {
+  cronTickers,
+  cronMarkets,
+  cronBalances
+} = require("./taskExecutor.js");
 
 dotenv.config();
 
@@ -12,6 +18,12 @@ app.offlineMode = isOfflineMode;
 async function initializeServer() {
   try {
     await connectToMongoDB();
+
+    //await cleanCollectionTrades();
+    //await cronTickers();
+    //await cronMarkets();
+    //await cronBalances();
+
     await initializeCronTasks();
     startServer();
   } catch (error) {

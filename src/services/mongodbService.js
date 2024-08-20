@@ -46,6 +46,61 @@ async function getCollection(collectionName) {
   return db.collection(collectionName);
 }
 
+async function cleanCollectionTrades() {
+  const collectionTrades = await getCollection("collection_trades");
+
+  const duplicates = await collectionTrades
+    .aggregate([
+      {
+        $match: {
+          $or: [{ date: { $exists: true } }, { timestamp: { $exists: true } }],
+        },
+      },
+      {
+        $group: {
+          _id: {
+            altA: "$altA",
+            altB: "$altB",
+            price: "$price",
+            amount: "$amount",
+            type: "$type",
+          },
+          count: { $sum: 1 },
+          documents: { $push: "$$ROOT" },
+        },
+      },
+      {
+        $match: {
+          count: { $gt: 1 },
+        },
+      },
+    ])
+    .toArray();
+
+  // Traiter chaque groupe de documents en double
+  await duplicates.forEach((group) => {
+    // Identifier le document à conserver (celui avec timestamp)
+    const documentToKeep = group.documents.find((doc) => doc.timestamp);
+    const documentsToDelete = group.documents.filter((doc) => doc.date);
+
+    if (documentToKeep) {
+      // Mettre à jour les documents à conserver
+      documentsToDelete.forEach((doc) => {
+        // Mettre à jour le document à conserver avec `totalUSDT` si nécessaire
+        if (doc.totalUSDT && !documentToKeep.totalUSDT) {
+          collectionTrades.updateOne(
+            { _id: documentToKeep._id },
+            { $set: { totalUSDT: doc.totalUSDT } }
+          );
+        }
+
+        // Supprimer le document en double
+        collectionTrades.deleteOne({ _id: doc._id });
+      });
+    }
+  });
+}
+
 async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
   let attempts = 0;
   while (attempts < maxRetries) {
@@ -89,11 +144,15 @@ async function saveData(data, collectionName) {
     const collection = await getCollection(collectionName);
     if (Array.isArray(data)) {
       const result = await collection.insertMany(data);
-      console.log(`🚀 ~ file: mongodbService.js:92 ~ saveData ~ inserted ${result.insertedCount} items`)
+      console.log(
+        `🚀 ~ file: mongodbService.js:92 ~ saveData ~ inserted ${result.insertedCount} items`
+      );
       return result;
     } else {
       const result = await collection.insertOne(data);
-      console.log(`~ file: mongodbService.js:96 ~ saveData ~ inserted document ID: ${result.insertedId}`);
+      console.log(
+        `~ file: mongodbService.js:96 ~ saveData ~ inserted document ID: ${result.insertedId}`
+      );
       return result;
     }
   }, [data, collectionName]);
@@ -207,6 +266,7 @@ async function connectToMongoDB() {
 
 module.exports = {
   connectToMongoDB,
+  cleanCollectionTrades,
   saveData,
   getDataMDB,
   getOne,

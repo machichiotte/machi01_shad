@@ -11,7 +11,7 @@ function getCmcValues(symbol, cmc) {
   if (typeof cmc !== 'object' || cmc === null || Object.keys(cmc).length === 0) {
     return {
       rank: 0,
-      currentPrice: "N/A",
+      currentCmcPrice: "N/A",
       iconUrl: "",
       cryptoPercentChange24h: "N/A",
       cryptoPercentChange7d: "N/A",
@@ -27,7 +27,7 @@ function getCmcValues(symbol, cmc) {
   // Utilisation de l'opérateur de chaîne optionnelle pour éviter les erreurs si les propriétés n'existent pas
   return {
     rank: parseInt(crypto.cmc_rank) || 0,
-    currentPrice: parseFloat(crypto.quote?.USD?.price?.toFixed(7)) || "N/A",
+    currentCmcPrice: parseFloat(crypto.quote?.USD?.price?.toFixed(7)) || "N/A",
     iconUrl: crypto.id ? getIconUrl(crypto.id) : "",
     cryptoPercentChange24h: (crypto.quote?.USD?.percent_change_24h / 100) || "N/A",
     cryptoPercentChange7d: (crypto.quote?.USD?.percent_change_7d / 100) || "N/A",

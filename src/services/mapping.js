@@ -27,7 +27,7 @@ function isMajorCryptoPair(symbol) {
 // Utility function to get the value in USDT
 function getTotalUSDT(symbol, cost, conversionRates = {}) {
   const [baseAsset, quoteAsset] = symbol.split("/");
-  if (!quoteAsset) {
+  if (!quoteAsset || !baseAsset) {
     console.error(`Invalid symbol format: ${symbol}`);
     return null;
   }
@@ -158,7 +158,7 @@ function mapTickers(data, platform) {
   }));
 }
 
-function mapMarkets(platform, data) {
+function mapMarkets(data, platform) {
   return Object.values(data)
     .filter(
       (item) => item.quote.endsWith("USDT") || item.quote.endsWith("BUSD") //here all stableCoins instead of only 2
