@@ -59,8 +59,8 @@ async function cleanCollectionTrades() {
       {
         $group: {
           _id: {
-            altA: "$altA",
-            altB: "$altB",
+            base: "$base",
+            quote: "$quote",
             price: "$price",
             amount: "$amount",
             type: "$type",

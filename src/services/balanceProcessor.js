@@ -112,7 +112,7 @@ async function calculateAllMetrics() {
       const filteredCmc =
         lastCmc.find((cmc) => cmc.symbol === assetSymbol) || {};
       const filteredTrades =
-        lastTrades.filter((trade) => trade.altA === assetSymbol) || [];
+        lastTrades.filter((trade) => trade.base === assetSymbol) || [];
       const filteredOpenOrders =
         lastOpenOrders.filter(
           (order) =>

@@ -2,7 +2,7 @@
 function getTotalAmountAndBuy(symbol, trades) {
   //TODO ICI SYMBOL A UN SLASHHHHHH
   const filteredTrades = trades.filter(
-    (trade) => trade.altA === symbol && trade.type === "buy"
+    (trade) => trade.base === symbol && trade.type === "buy"
   );
   const totalBuy = filteredTrades.reduce(
     (total, trade) => total + parseFloat(trade.totalUSDT),
@@ -27,7 +27,7 @@ function getTotalAmountAndBuy(symbol, trades) {
 function getTotalSell(symbol, trades) {
   // Implementation for getting the total sell amount for a given symbol
   const filteredTrades = trades.filter(
-    (trade) => trade.altA === symbol && trade.type === "sell"
+    (trade) => trade.base === symbol && trade.type === "sell"
   );
   //console.log(`🚀 ~ file: trades.js:32 ~ getTotalSell ~ filteredTrades:`, filteredTrades.length)
   const sellTotal = filteredTrades.reduce(
@@ -40,7 +40,7 @@ function getTotalSell(symbol, trades) {
 
 function getTradesHistory(symbol, trades) {
   // Implementation for getting the trades history for a given symbol
-  return trades.filter((trade) => trade.altA === symbol);
+  return trades.filter((trade) => trade.base === symbol);
 }
 
 module.exports = {

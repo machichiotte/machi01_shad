@@ -111,8 +111,8 @@ function mapTradeCommon(item, platform, conversionRates = {}) {
   const feeCurrency = item.fee ? item.fee.currency.toUpperCase() : "N/A";
 
   return {
-    altA: baseAsset,
-    altB: quoteAsset,
+    base: baseAsset,
+    quote: quoteAsset,
     pair: item.symbol.toUpperCase(),
     timestamp: item.timestamp,
     type: item.side,
@@ -184,8 +184,8 @@ function mapMarkets(data, platform) {
 function mapTradesAddedManually(data) {
   return data.map((item) => ({
     date: item.date,
-    altA: item.altA,
-    altB: item.altB,
+    base: item.base,
+    quote: item.quote,
     type: item.type,
     price: item.price,
     amount: item.amount,

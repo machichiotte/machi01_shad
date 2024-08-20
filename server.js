@@ -8,7 +8,7 @@ const {
   cronTickers,
   cronMarkets,
   cronBalances
-} = require("./taskExecutor.js");
+} = require("./src/services/cron/taskExecutor.js");
 
 dotenv.config();
 
