@@ -18,8 +18,8 @@ const ordersColumns = [
 
 const tradesColumns = [
   { header: 'Platform', field: 'platform' },
-  { header: 'altA', field: 'altA' },
-  { header: 'altB', field: 'altB' },
+  { header: 'base', field: 'base' },
+  { header: 'quote', field: 'quote' },
   { header: 'Date', field: 'date' },
   { header: 'Pair', field: 'pair' },
   { header: 'Type', field: 'type' },

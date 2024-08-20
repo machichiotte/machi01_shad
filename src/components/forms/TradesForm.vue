@@ -9,15 +9,15 @@
 
         <div class="flex">
             <div class="field-group w-1/2">
-                <label for="altA" class="font-semibold">altA</label>
-                <InputText id="altA" autocomplete="off" v-model="formData['altA']" :modelValue="formData['altA']"
-                    @input="formData['altA'] = $event.target.value.toUpperCase()" />
+                <label for="base" class="font-semibold">base</label>
+                <InputText id="base" autocomplete="off" v-model="formData['base']" :modelValue="formData['base']"
+                    @input="formData['base'] = $event.target.value.toUpperCase()" />
             </div>
 
             <div class="field-group w-1/2">
-                <label for="altB" class="font-semibold">altB</label>
-                <InputText id="altB" autocomplete="off" v-model="formData['altB']" :modelValue="formData['altB']"
-                    @input="formData['altB'] = $event.target.value.toUpperCase()" />
+                <label for="quote" class="font-semibold">quote</label>
+                <InputText id="quote" autocomplete="off" v-model="formData['quote']" :modelValue="formData['quote']"
+                    @input="formData['quote'] = $event.target.value.toUpperCase()" />
             </div>
         </div>
 
@@ -88,7 +88,7 @@ const platforms = ref(['binance', 'gateio', 'htx', 'kucoin', 'okx'])
 // Méthode pour vérifier l'état de remplissage des champs du formulaire
 const checkFormValidity = () => {
     const formDataValue = formData.value;
-    formDataValue.pair = formDataValue.altA + '/' + formDataValue.altB;
+    formDataValue.pair = formDataValue.base + '/' + formDataValue.quote;
 
     const allFieldsFilled = Object.keys(formDataValue).every(key => {
         if (typeof formDataValue[key] === 'string' && !formDataValue[key].trim()) {
@@ -125,8 +125,8 @@ const isValidDateFormat = (dateString) => {
 // Méthode pour sauvegarder le trade
 const saveTrade = () => {
     const formDataValue = formData.value;
-    formDataValue.altA = formDataValue.altA.toUpperCase()
-    formDataValue.altB = formDataValue.altB.toUpperCase()
+    formDataValue.base = formDataValue.base.toUpperCase()
+    formDataValue.quote = formDataValue.quote.toUpperCase()
 
 
     if (!isSaveDisabled.value) {
@@ -173,8 +173,8 @@ async function addTradesToDatabase(formDataValue) {
 
 const formDataInitial = {
     platform: '',
-    altA: '',
-    altB: 'USDT',
+    base: '',
+    quote: 'USDT',
     date: '2024-03-28 21:44:58',
     pair: '',
     type: '',

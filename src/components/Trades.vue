@@ -104,8 +104,8 @@ watchEffect(() => {
       }
 
       return {
-        altA: item['altA'],
-        altB: item['altB'],
+        base: item['base'],
+        quote: item['quote'],
         date: date,
         pair: item['pair'],
         type: item['type'],
