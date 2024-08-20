@@ -28,6 +28,7 @@ export default {
   methods: {
     async getHomeData() {
       try {
+        console.log('homedata');
         this.tickers = await getTickers();
         this.cmc = await getCmc();
         this.balances = await getBalances();
@@ -61,6 +62,7 @@ export default {
   },
   async mounted() {
     try {
+      console.log('mounted or not ')
       await this.getHomeData();
     } catch (error) {
       console.error("Une erreur s'est produite lors de la récupération des données :", error);

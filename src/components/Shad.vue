@@ -53,7 +53,6 @@
             <Column header="Quantite total achetee" field="totalAmount" :rowspan="2" sortable />
             <Column header="Balance" field="balance" :rowspan="2" sortable />
             <Column header="Max wanted" field="maxExposition" :rowspan="2" sortable />
-            <Column header="Percentage Difference" field="percentageDifference" :rowspan="2" sortable />
             <Column header="Wallet" field="currentPossession" :rowspan="2" sortable />
             <Column header="Profit" field="profit" :rowspan="2" sortable />
             <Column header="Open Orders" :colspan="2" />
@@ -353,12 +352,8 @@ const filteredItems = computed(() => {
   const searchTerm = filters.value.global.value?.toLowerCase() || '';
 
   return items.value.filter(item => {
-    console.log(`🚀 ~ file: Shad.vue:357 ~ filteredItems ~ item:`, item)
-
     const matchesExchange = selectedExchanges.value.length === 0 || selectedExchanges.value.includes(item.exchangeId);
-    console.log(`🚀 ~ file: Shad.vue:360 ~ filteredItems ~ matchesExchange:`, matchesExchange)
     const matchesSearch = Object.values(item).some(val => String(val).toLowerCase().includes(searchTerm));
-    console.log(`🚀 ~ file: Shad.vue:362 ~ filteredItems ~ matchesSearch:`, matchesSearch)
 
     return matchesExchange && matchesSearch;
   });

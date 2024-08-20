@@ -67,6 +67,8 @@ const getStrategy = async () => {
 }
 
 const getTickers = async () => {
+console.log(`🚀 ~ file: getter.js:70 ~ getTickers ~ getTickers`)
+
   const ENDPOINT = `${serverHost}/${TICKERS}/get`
 
   try {
