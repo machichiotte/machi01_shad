@@ -125,6 +125,16 @@ async function calculateAllMetrics() {
           (strategy) =>
             strategy.asset === assetSymbol && strategy.strategies[assetPlatform]
         ) || {};
+
+      console.log(
+        `🚀 ~ file: balanceProcessor.js:135 ~ calculateAllMetrics ~ assetSymbol:`,
+        assetSymbol
+      );
+      console.log(
+        `🚀 ~ file: balanceProcessor.js:135 ~ calculateAllMetrics ~ assetPlatform:`,
+        assetPlatform
+      );
+
       const filteredTickers =
         lastTickers.filter(
           (ticker) =>
@@ -177,18 +187,35 @@ async function calculateAllMetrics() {
 }
 
 function compareBalances(lastBalance, currentBalance) {
+  console.log(
+    `🚀 ~ file: balanceProcessor.js:184 ~ compareBalances ~ lastBalance:`,
+    lastBalance
+  );
   const differences = [];
-  const lastBalancesBySymbol = new Map(lastBalance.map((b) => [b.symbol, b]));
+  // const lastBalancesBySymbol = new Map(lastBalance.map((b) => [b.symbol, b]));
+  // console.log(`🚀 ~ file: balanceProcessor.js:186 ~ compareBalances ~ lastBalancesBySymbol:`, lastBalancesBySymbol)
 
   for (const current of currentBalance) {
-    const last = lastBalancesBySymbol.get(current.symbol);
-    if (
-      last &&
-      last.balance !== current.balance &&
-      last.platform === current.platform
-    ) {
+    const last = lastBalance.find(
+      (item) =>
+        item.symbol === current.symbol && item.platform === current.platform
+    );
+
+    console.log(
+      `🚀 ~ file: balanceProcessor.js:190 ~ compareBalances ~ current.symbol:`,
+      current.platform
+    );
+    console.log(
+      `🚀 ~ file: balanceProcessor.js:190 ~ compareBalances ~ current.symbol:`,
+      current.symbol
+    );
+    console.log(
+      `🚀 ~ file: balanceProcessor.js:190 ~ compareBalances ~ last:`,
+      last
+    );
+    if (last) {
       differences.push({ symbol: current.symbol, balanceDifference: true });
-    } else if (!last) {
+    } else {
       differences.push({ symbol: current.symbol, newSymbol: true });
     }
   }

@@ -1,6 +1,6 @@
 // src/controllers/marketsController.js
 const { handleErrorResponse } = require("../utils/errorUtil.js");
-const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
+const { getData } = require("../utils/dataUtil.js");
 const { mapMarkets } = require("../services/mapping.js");
 const {
   saveLastUpdateToMongoDB,
@@ -102,7 +102,7 @@ async function saveMarketsInDatabase(mappedData, exchangeId) {
 async function getSavedMarkets() {
   const collectionName = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   try {
-    const data = await getDataFromCollection(collectionName);
+    const data = await getData(collectionName);
     console.log("Fetched saved market data from the database.", {
       collectionName,
       count: data.length,

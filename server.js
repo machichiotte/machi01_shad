@@ -22,9 +22,9 @@ async function initializeServer() {
     //await cleanCollectionTrades();
     //await cronTickers();
     //await cronMarkets();
-    //await cronBalances();
+    await cronBalances();
 
-    await initializeCronTasks();
+    //await initializeCronTasks();
     startServer();
   } catch (error) {
     console.error('Error during server initialization:', error);

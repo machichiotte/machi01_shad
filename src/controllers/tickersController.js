@@ -1,5 +1,5 @@
 // src/controllers/tickersController.js
-const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
+const { getData} = require("../utils/dataUtil.js");
 const { createExchangeInstance } = require("../utils/exchangeUtil.js");
 const { handleErrorResponse } = require("../utils/errorUtil.js");
 const {
@@ -32,7 +32,7 @@ async function getAllTickers(req, res) {
  */
 async function fetchTickersInDatabase() {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
-    const data = await getDataFromCollection(collectionName);
+    const data = await getData(collectionName);
     console.log(`🚀 ~ file: tickersController.js:33 ~ fetchTickersInDatabase ~ data.length:`, data.length)
     return data;
 }
@@ -48,12 +48,8 @@ async function fetchCurrentTickers(exchangeId, retries = 3) {
 
   try {
     const exchange = createExchangeInstance(exchangeId);
-    //console.log(`🚀 ~ file: tickersController.js:51 ~ fetchCurrentTickers ~ exchange:`, exchange)
     const data = await exchange.fetchTickers();
-    //console.log(`🚀 ~ file: tickersController.js:53 ~ fetchCurrentTickers ~ data:`, data)
     const mappedData = mapTickers(data, exchangeId);
-    console.log(`🚀 ~ file: tickersController.js:55 ~ fetchCurrentTickers ~ mappedData:`, mappedData)
-    //console.log(`🚀 ~ file: tickerController.js:55 ~ fetchCurrentTickers ~ Fetched current tickers from ${exchangeId}`, { count: Object.keys(mappedData).length });
     return mappedData;
   } catch (error) {
     console.log(`🚀 ~ file: tickerController.js:58 ~ fetchCurrentTickers ~ error:`, error);
@@ -118,26 +114,31 @@ async function getAllTickersByExchange(req, res, exchangeId) {
  * @param {string} exchangeId - Identifier of the exchange.
  */
 async function getSavedAllTickersByExchange(exchangeId) {
+  console.log(`🚀 ~ file: tickersController.js:117 ~ getSavedAllTickersByExchange ~ getSavedAllTickersByExchange:`)
   try {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
-    const tickersData = await getDataFromCollection(collectionName);
+    const tickersData = await getData(collectionName);
+    console.log(`🚀 ~ file: tickersController.js:121 ~ getSavedAllTickersByExchange ~ tickersData:`, tickersData)
 
     // Vérification que tickersData est bien un tableau
     if (!Array.isArray(tickersData)) {
-      console.log(`🚀 ~ file: tickersController.js:69 ~ getSavedAllTickersByExchange ~ tickersData:`, tickersData)
+      console.log(`🚀 ~ file: tickersController.js:125 ~ getSavedAllTickersByExchange ~ tickersData:`, tickersData)
       return [];
     }
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 
     const exchangeData = tickersData.filter((obj) => obj.platform === exchangeId);
-    console.log("🚀 ~ getSavedAllTickersByExchange ~ exchangeData:", exchangeData.length)
 
     if (exchangeData) {
+      console.log(`🚀 ~ file: tickersController.js:134 ~ getSavedAllTickersByExchange ~ exchangeData:`, exchangeData)
+      console.log(`🚀 ~ file: tickersController.js:134 ~ getSavedAllTickersByExchange ~ exchangeData.length:`, exchangeData.length)
       return exchangeData;
     } else {
+      console.log(`🚀 ~ file: tickersController.js:139 ~ getSavedAllTickersByExchange ~ []:`)
       return [];
     }
   } catch (error) {
-    console.log("🚀 ~ getSavedAllTickersByExchange ~ error:", error)
+    console.log(`🚀 ~ file: tickersController.js:138 ~ getSavedAllTickersByExchange ~ error:`, error)
     return [];
   }
 }
@@ -183,7 +184,7 @@ async function getAllTickersBySymbolFromExchange(req, res, exchangeId, symbol) {
 async function getSavedAllTickersBySymbolFromExchange(exchangeId, symbol) {
   try {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
-    const tickersData = await getDataFromCollection(collectionName);
+    const tickersData = await getData(collectionName);
 
     if (tickersData && tickersData[exchangeId]) {
       const exchangeTickersData = tickersData[exchangeId];

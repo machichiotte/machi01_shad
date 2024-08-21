@@ -35,6 +35,7 @@ async function updateBalancesForExchange(exchangeId)  {
   const currentBalance = await fetchCurrentBalance(exchangeId, 3);
   const lastBalance = await getSavedAllTickersByExchange(exchangeId);
   const differences = compareBalances(lastBalance, currentBalance);
+  console.log(`🚀 ~ file: updateFunctions.js:38 ~ updateBalancesForExchange ~ differences:`, differences)
   if (differences.length > 0) {
     await saveBalanceInDatabase(currentBalance, exchangeId);
     await processBalanceChanges(differences, exchangeId);

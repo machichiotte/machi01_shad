@@ -1,6 +1,6 @@
 // src/controllers/balanceController.js
 const { handleErrorResponse } = require("../utils/errorUtil");
-const { getData, getDataFromCollection } = require("../utils/dataUtil");
+const { getData } = require("../utils/dataUtil");
 const { createExchangeInstance } = require("../utils/exchangeUtil");
 const { saveLastUpdateToMongoDB, deleteAndSaveData } = require("../utils/mongodbUtil");
 const { mapBalance } = require("../services/mapping");
@@ -33,7 +33,7 @@ async function getBalances(req, res) {
  */
 async function fetchBalancesInDatabase() {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
-  const data = await getDataFromCollection(collectionName);
+  const data = await getData(collectionName);
   console.log(`🚀 ~ file: balanceController.js:38 ~ fetchBalancesInDatabase ~ data:`, data.length)
   return data;
 }
@@ -51,10 +51,10 @@ async function fetchCurrentBalance(exchangeId, retries = 3) {
     const exchange = createExchangeInstance(exchangeId);
     const data = await exchange.fetchBalance();
     const mappedData = mapBalance(exchangeId, data);
-    console.log(`🚀 ~ file: balanceController.js:46 ~ fetchCurrentBalance ~ Fetched current balance from ${exchangeId}`, { count: mappedData.length });
+    console.log(`🚀 ~ file: balanceController.js:54 ~ fetchCurrentBalance ~ Fetched current balance from ${exchangeId}`, { count: mappedData.length });
     return mappedData;
   } catch (error) {
-    console.log(`🚀 ~ file: balanceController.js:53 ~ fetchCurrentBalance ~ error:`, error);
+    console.log(`🚀 ~ file: balanceController.js:57 ~ fetchCurrentBalance ~ error:`, error);
 
     // Vérifiez si l'erreur justifie une nouvelle tentative
     if (retries > 0 && shouldRetry(exchangeId, error, errorPolicies)) {

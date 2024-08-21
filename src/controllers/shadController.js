@@ -1,6 +1,6 @@
 // src/controllers/shadController.js
 const { handleErrorResponse } = require("../utils/errorUtil.js");
-const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
+const { getData } = require("../utils/dataUtil.js");
 const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
 const { deleteAllDataMDB, saveData } = require("../services/mongodbService.js");
 const { errorLogger } = require("../utils/loggerUtil.js");
@@ -33,7 +33,7 @@ async function getShad(req, res) {
 async function fetchShadInDatabase() {
   const collectionName = process.env.MONGODB_COLLECTION_CMC;
   try {
-    const data = await getDataFromCollection(collectionName);
+    const data = await getData(collectionName);
     console.log("Fetched Shad data from database", { collectionName, count: data.length });
     return data;
   } catch (error) {

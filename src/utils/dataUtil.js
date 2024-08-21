@@ -44,6 +44,5 @@ async function getDataFromCollection(collectionName) {
 }
 
 module.exports = {
-  getData,
-  getDataFromCollection,
+  getData
 };

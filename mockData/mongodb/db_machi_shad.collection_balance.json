@@ -2,7 +2,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e71c"
   },
-  "symbol": "BTC",
+  "base": "BTC",
   "balance": 0.02360322,
   "available": "0.02360322",
   "platform": "binance"
@@ -11,7 +11,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e71d"
   },
-  "symbol": "LTC",
+  "base": "LTC",
   "balance": 1.12383104,
   "available": "0.94053104",
   "platform": "binance"
@@ -20,7 +20,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e71e"
   },
-  "symbol": "ETH",
+  "base": "ETH",
   "balance": 2.18204775,
   "available": "2.18204775",
   "platform": "binance"
@@ -29,7 +29,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e71f"
   },
-  "symbol": "NEO",
+  "base": "NEO",
   "balance": 5.79246,
   "available": "1.46246000",
   "platform": "binance"
@@ -38,7 +38,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e720"
   },
-  "symbol": "BNB",
+  "base": "BNB",
   "balance": 0.00000163,
   "available": "0.00000163",
   "platform": "binance"
@@ -47,7 +47,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e721"
   },
-  "symbol": "QTUM",
+  "base": "QTUM",
   "balance": 18.388312,
   "available": "4.58831200",
   "platform": "binance"
@@ -56,7 +56,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e722"
   },
-  "symbol": "EOS",
+  "base": "EOS",
   "balance": 127.49563587,
   "available": "70.99563587",
   "platform": "binance"
@@ -65,7 +65,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e723"
   },
-  "symbol": "GAS",
+  "base": "GAS",
   "balance": 3.07571562,
   "available": "1.75571562",
   "platform": "binance"
@@ -74,7 +74,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e724"
   },
-  "symbol": "USDT",
+  "base": "USDT",
   "balance": 1313.13229433,
   "available": "1313.13229433",
   "platform": "binance"
@@ -83,7 +83,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e725"
   },
-  "symbol": "ZRX",
+  "base": "ZRX",
   "balance": 24.326,
   "available": "24.32600000",
   "platform": "binance"
@@ -92,7 +92,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e726"
   },
-  "symbol": "OMG",
+  "base": "OMG",
   "balance": 4.79119,
   "available": "4.79119000",
   "platform": "binance"
@@ -101,7 +101,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e727"
   },
-  "symbol": "WTC",
+  "base": "WTC",
   "balance": 135.25302,
   "available": "68.25302000",
   "platform": "binance"
@@ -110,7 +110,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e728"
   },
-  "symbol": "YOYO",
+  "base": "YOYO",
   "balance": 9510.48,
   "available": "9510.48000000",
   "platform": "binance"
@@ -119,7 +119,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e729"
   },
-  "symbol": "TRX",
+  "base": "TRX",
   "balance": 2074.24850628,
   "available": "544.54850628",
   "platform": "binance"
@@ -128,7 +128,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e72a"
   },
-  "symbol": "FUN",
+  "base": "FUN",
   "balance": 9603.387,
   "available": "9603.38700000",
   "platform": "binance"
@@ -137,7 +137,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e72b"
   },
-  "symbol": "IOTA",
+  "base": "IOTA",
   "balance": 154.79745,
   "available": "125.73745000",
   "platform": "binance"
@@ -146,7 +146,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e72c"
   },
-  "symbol": "LINK",
+  "base": "LINK",
   "balance": 18.714267,
   "available": "4.69426700",
   "platform": "binance"
@@ -155,7 +155,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e72d"
   },
-  "symbol": "CVC",
+  "base": "CVC",
   "balance": 257.2544,
   "available": "257.25440000",
   "platform": "binance"
@@ -164,7 +164,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e72e"
   },
-  "symbol": "MTL",
+  "base": "MTL",
   "balance": 1.281,
   "available": "1.28100000",
   "platform": "binance"
@@ -173,7 +173,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e72f"
   },
-  "symbol": "ADX",
+  "base": "ADX",
   "balance": 382.23400000000004,
   "available": "191.23400000",
   "platform": "binance"
@@ -182,7 +182,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e730"
   },
-  "symbol": "ETC",
+  "base": "ETC",
   "balance": 5.81418,
   "available": "2.02218000",
   "platform": "binance"
@@ -191,7 +191,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e731"
   },
-  "symbol": "ZEC",
+  "base": "ZEC",
   "balance": 0.9762649999999999,
   "available": "0.48926500",
   "platform": "binance"
@@ -200,7 +200,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e732"
   },
-  "symbol": "DASH",
+  "base": "DASH",
   "balance": 0.11106742,
   "available": "0.02846742",
   "platform": "binance"
@@ -209,7 +209,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e733"
   },
-  "symbol": "REQ",
+  "base": "REQ",
   "balance": 375.078,
   "available": "375.07800000",
   "platform": "binance"
@@ -218,7 +218,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e734"
   },
-  "symbol": "ENJ",
+  "base": "ENJ",
   "balance": 24.6944,
   "available": "12.49440000",
   "platform": "binance"
@@ -227,7 +227,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e735"
   },
-  "symbol": "XRP",
+  "base": "XRP",
   "balance": 4617.48268,
   "available": "4617.48268000",
   "platform": "binance"
@@ -236,7 +236,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e736"
   },
-  "symbol": "STORJ",
+  "base": "STORJ",
   "balance": 22.305300000000003,
   "available": "11.30530000",
   "platform": "binance"
@@ -245,7 +245,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e737"
   },
-  "symbol": "KMD",
+  "base": "KMD",
   "balance": 29.41153,
   "available": "6.41153000",
   "platform": "binance"
@@ -254,7 +254,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e738"
   },
-  "symbol": "DATA",
+  "base": "DATA",
   "balance": 412.2873,
   "available": "412.28730000",
   "platform": "binance"
@@ -263,7 +263,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e739"
   },
-  "symbol": "DLT",
+  "base": "DLT",
   "balance": 253.492,
   "available": "253.49200000",
   "platform": "binance"
@@ -272,7 +272,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e73a"
   },
-  "symbol": "GVT",
+  "base": "GVT",
   "balance": 31.7682,
   "available": "31.76820000",
   "platform": "binance"
@@ -281,7 +281,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e73b"
   },
-  "symbol": "LSK",
+  "base": "LSK",
   "balance": 133.41579,
   "available": "100.01579000",
   "platform": "binance"
@@ -290,7 +290,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e73c"
   },
-  "symbol": "ADA",
+  "base": "ADA",
   "balance": 107.828,
   "available": "26.42800000",
   "platform": "binance"
@@ -299,7 +299,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e73d"
   },
-  "symbol": "XLM",
+  "base": "XLM",
   "balance": 410.4891,
   "available": "147.78910000",
   "platform": "binance"
@@ -308,7 +308,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e73e"
   },
-  "symbol": "WAVES",
+  "base": "WAVES",
   "balance": 31.29435,
   "available": "31.29435000",
   "platform": "binance"
@@ -317,7 +317,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e73f"
   },
-  "symbol": "WABI",
+  "base": "WABI",
   "balance": 0.813,
   "available": "0.81300000",
   "platform": "binance"
@@ -326,7 +326,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e740"
   },
-  "symbol": "ICX",
+  "base": "ICX",
   "balance": 75.3246,
   "available": "52.82460000",
   "platform": "binance"
@@ -335,7 +335,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e741"
   },
-  "symbol": "ELF",
+  "base": "ELF",
   "balance": 177.646,
   "available": "177.64600000",
   "platform": "binance"
@@ -344,7 +344,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e742"
   },
-  "symbol": "AION",
+  "base": "AION",
   "balance": 1330.39322,
   "available": "1330.39322000",
   "platform": "binance"
@@ -353,7 +353,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e743"
   },
-  "symbol": "NEBL",
+  "base": "NEBL",
   "balance": 0.008,
   "available": "0.00800000",
   "platform": "binance"
@@ -362,7 +362,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e744"
   },
-  "symbol": "NAV",
+  "base": "NAV",
   "balance": 309.69,
   "available": "309.69000000",
   "platform": "binance"
@@ -371,7 +371,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e745"
   },
-  "symbol": "APPC",
+  "base": "APPC",
   "balance": 518.481,
   "available": "518.48100000",
   "platform": "binance"
@@ -380,7 +380,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e746"
   },
-  "symbol": "PIVX",
+  "base": "PIVX",
   "balance": 59.91,
   "available": "29.91000000",
   "platform": "binance"
@@ -389,7 +389,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e747"
   },
-  "symbol": "IOST",
+  "base": "IOST",
   "balance": 1680.7069999999999,
   "available": "420.70700000",
   "platform": "binance"
@@ -398,7 +398,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e748"
   },
-  "symbol": "BLZ",
+  "base": "BLZ",
   "balance": 69.3344,
   "available": "34.33440000",
   "platform": "binance"
@@ -407,7 +407,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e749"
   },
-  "symbol": "SYS",
+  "base": "SYS",
   "balance": 349.504,
   "available": "349.50400000",
   "platform": "binance"
@@ -416,7 +416,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e74a"
   },
-  "symbol": "ONT",
+  "base": "ONT",
   "balance": 152.15509,
   "available": "38.15509000",
   "platform": "binance"
@@ -425,7 +425,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e74b"
   },
-  "symbol": "ZIL",
+  "base": "ZIL",
   "balance": 2865.2599917,
   "available": "2865.25999170",
   "platform": "binance"
@@ -434,7 +434,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e74c"
   },
-  "symbol": "XEM",
+  "base": "XEM",
   "balance": 1251.57717,
   "available": "0.16717000",
   "platform": "binance"
@@ -443,7 +443,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e74d"
   },
-  "symbol": "WAN",
+  "base": "WAN",
   "balance": 148.73778,
   "available": "37.73778000",
   "platform": "binance"
@@ -452,7 +452,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e74e"
   },
-  "symbol": "WPR",
+  "base": "WPR",
   "balance": 0.423,
   "available": "0.42300000",
   "platform": "binance"
@@ -461,7 +461,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e74f"
   },
-  "symbol": "THETA",
+  "base": "THETA",
   "balance": 28.2717,
   "available": "7.07170000",
   "platform": "binance"
@@ -470,7 +470,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e750"
   },
-  "symbol": "IOTX",
+  "base": "IOTX",
   "balance": 274.91700000000003,
   "available": "141.91700000",
   "platform": "binance"
@@ -479,7 +479,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e751"
   },
-  "symbol": "SC",
+  "base": "SC",
   "balance": 13961.627,
   "available": "8718.62700000",
   "platform": "binance"
@@ -488,7 +488,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e752"
   },
-  "symbol": "KEY",
+  "base": "KEY",
   "balance": 1304.78,
   "available": "1304.78000000",
   "platform": "binance"
@@ -497,7 +497,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e753"
   },
-  "symbol": "DENT",
+  "base": "DENT",
   "balance": 25370.604,
   "available": "6343.60400000",
   "platform": "binance"
@@ -506,7 +506,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e754"
   },
-  "symbol": "ARDR",
+  "base": "ARDR",
   "balance": 262.9977,
   "available": "65.99770000",
   "platform": "binance"
@@ -515,7 +515,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e755"
   },
-  "symbol": "VET",
+  "base": "VET",
   "balance": 345.1545,
   "available": "86.25450000",
   "platform": "binance"
@@ -524,7 +524,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e756"
   },
-  "symbol": "VTHO",
+  "base": "VTHO",
   "balance": 25986.992,
   "available": "18043.99200000",
   "platform": "binance"
@@ -533,7 +533,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e757"
   },
-  "symbol": "ONG",
+  "base": "ONG",
   "balance": 0.61558623,
   "available": "0.61558623",
   "platform": "binance"
@@ -542,7 +542,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e758"
   },
-  "symbol": "MITH",
+  "base": "MITH",
   "balance": 1669.6,
   "available": "1669.60000000",
   "platform": "binance"
@@ -551,7 +551,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e759"
   },
-  "symbol": "FET",
+  "base": "FET",
   "balance": 260.9798,
   "available": "162.97980000",
   "platform": "binance"
@@ -560,7 +560,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e75a"
   },
-  "symbol": "TFUEL",
+  "base": "TFUEL",
   "balance": 768.837,
   "available": "192.83700000",
   "platform": "binance"
@@ -569,7 +569,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e75b"
   },
-  "symbol": "MATIC",
+  "base": "MATIC",
   "balance": 119.2452301,
   "available": "64.24523010",
   "platform": "binance"
@@ -578,7 +578,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e75c"
   },
-  "symbol": "ATOM",
+  "base": "ATOM",
   "balance": 7.398519,
   "available": "1.84851900",
   "platform": "binance"
@@ -587,7 +587,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e75d"
   },
-  "symbol": "FTM",
+  "base": "FTM",
   "balance": 13.9717,
   "available": "6.97170000",
   "platform": "binance"
@@ -596,7 +596,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e75e"
   },
-  "symbol": "CHZ",
+  "base": "CHZ",
   "balance": 195.8098,
   "available": "50.80980000",
   "platform": "binance"
@@ -605,7 +605,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e75f"
   },
-  "symbol": "ALGO",
+  "base": "ALGO",
   "balance": 96.83101825,
   "available": "51.83101825",
   "platform": "binance"
@@ -614,7 +614,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e760"
   },
-  "symbol": "DUSK",
+  "base": "DUSK",
   "balance": 148.412,
   "available": "37.41200000",
   "platform": "binance"
@@ -623,7 +623,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e761"
   },
-  "symbol": "ANKR",
+  "base": "ANKR",
   "balance": 1768.876,
   "available": "442.27600000",
   "platform": "binance"
@@ -632,7 +632,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e762"
   },
-  "symbol": "WIN",
+  "base": "WIN",
   "balance": 146867.985,
   "available": "36644.98500000",
   "platform": "binance"
@@ -641,7 +641,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e763"
   },
-  "symbol": "COCOS",
+  "base": "COCOS",
   "balance": 9.917,
   "available": "1.91700000",
   "platform": "binance"
@@ -650,7 +650,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e764"
   },
-  "symbol": "PERL",
+  "base": "PERL",
   "balance": 1074.6252,
   "available": "536.82520000",
   "platform": "binance"
@@ -659,7 +659,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e765"
   },
-  "symbol": "BUSD",
+  "base": "BUSD",
   "balance": 95.68062763,
   "available": "95.68062763",
   "platform": "binance"
@@ -668,7 +668,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e766"
   },
-  "symbol": "BAND",
+  "base": "BAND",
   "balance": 4.749334,
   "available": "1.14933400",
   "platform": "binance"
@@ -677,7 +677,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e767"
   },
-  "symbol": "HBAR",
+  "base": "HBAR",
   "balance": 178.8006,
   "available": "61.80060000",
   "platform": "binance"
@@ -686,7 +686,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e768"
   },
-  "symbol": "XTZ",
+  "base": "XTZ",
   "balance": 84.47895365,
   "available": "21.17895365",
   "platform": "binance"
@@ -695,7 +695,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e769"
   },
-  "symbol": "NKN",
+  "base": "NKN",
   "balance": 85.914,
   "available": "43.91400000",
   "platform": "binance"
@@ -704,7 +704,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e76a"
   },
-  "symbol": "CTXC",
+  "base": "CTXC",
   "balance": 225.55,
   "available": "132.55000000",
   "platform": "binance"
@@ -713,7 +713,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e76b"
   },
-  "symbol": "BCH",
+  "base": "BCH",
   "balance": 0.17926056,
   "available": "0.04554056",
   "platform": "binance"
@@ -722,7 +722,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e76c"
   },
-  "symbol": "TROY",
+  "base": "TROY",
   "balance": 4715.8052,
   "available": "2353.80520000",
   "platform": "binance"
@@ -731,7 +731,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e76d"
   },
-  "symbol": "OGN",
+  "base": "OGN",
   "balance": 60.17976,
   "available": "15.05976000",
   "platform": "binance"
@@ -740,7 +740,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e76e"
   },
-  "symbol": "DREP",
+  "base": "DREP",
   "balance": 95.802,
   "available": "95.80200000",
   "platform": "binance"
@@ -749,7 +749,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e76f"
   },
-  "symbol": "TCT",
+  "base": "TCT",
   "balance": 2443.554,
   "available": "2443.55400000",
   "platform": "binance"
@@ -758,7 +758,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e770"
   },
-  "symbol": "LTO",
+  "base": "LTO",
   "balance": 155.9875,
   "available": "116.98750000",
   "platform": "binance"
@@ -767,7 +767,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e771"
   },
-  "symbol": "MBL",
+  "base": "MBL",
   "balance": 4242.539,
   "available": "4242.53900000",
   "platform": "binance"
@@ -776,7 +776,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e772"
   },
-  "symbol": "SOL",
+  "base": "SOL",
   "balance": 5.777296000000001,
   "available": "5.66729600",
   "platform": "binance"
@@ -785,7 +785,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e773"
   },
-  "symbol": "CTSI",
+  "base": "CTSI",
   "balance": 28.384999999999998,
   "available": "13.38500000",
   "platform": "binance"
@@ -794,7 +794,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e774"
   },
-  "symbol": "FIO",
+  "base": "FIO",
   "balance": 75.7,
   "available": "38.70000000",
   "platform": "binance"
@@ -803,7 +803,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e775"
   },
-  "symbol": "STMX",
+  "base": "STMX",
   "balance": 1003.988,
   "available": "501.98800000",
   "platform": "binance"
@@ -812,7 +812,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e776"
   },
-  "symbol": "PNT",
+  "base": "PNT",
   "balance": 41.958,
   "available": "41.95800000",
   "platform": "binance"
@@ -821,7 +821,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e777"
   },
-  "symbol": "COMP",
+  "base": "COMP",
   "balance": 2.39213547,
   "available": "2.39213547",
   "platform": "binance"
@@ -830,7 +830,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e778"
   },
-  "symbol": "IRIS",
+  "base": "IRIS",
   "balance": 436.9626,
   "available": "218.56260000",
   "platform": "binance"
@@ -839,7 +839,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e779"
   },
-  "symbol": "MKR",
+  "base": "MKR",
   "balance": 0.07744248000000001,
   "available": "0.01938248",
   "platform": "binance"
@@ -848,7 +848,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e77a"
   },
-  "symbol": "SXP",
+  "base": "SXP",
   "balance": 88.23746455,
   "available": "62.73746455",
   "platform": "binance"
@@ -857,7 +857,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e77b"
   },
-  "symbol": "SNX",
+  "base": "SNX",
   "balance": 32.967,
   "available": "32.96700000",
   "platform": "binance"
@@ -866,7 +866,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e77c"
   },
-  "symbol": "DOT",
+  "base": "DOT",
   "balance": 98.3495404,
   "available": "98.34954040",
   "platform": "binance"
@@ -875,7 +875,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e77d"
   },
-  "symbol": "AVA",
+  "base": "AVA",
   "balance": 98.1018,
   "available": "24.50180000",
   "platform": "binance"
@@ -884,7 +884,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e77e"
   },
-  "symbol": "BAL",
+  "base": "BAL",
   "balance": 14.85513,
   "available": "6.13513000",
   "platform": "binance"
@@ -893,7 +893,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e77f"
   },
-  "symbol": "YFI",
+  "base": "YFI",
   "balance": 0.00346653,
   "available": "0.00346653",
   "platform": "binance"
@@ -902,7 +902,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e780"
   },
-  "symbol": "SRM",
+  "base": "SRM",
   "balance": 2.78235,
   "available": "2.78235000",
   "platform": "binance"
@@ -911,7 +911,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e781"
   },
-  "symbol": "ANT",
+  "base": "ANT",
   "balance": 15.479199999999999,
   "available": "12.77920000",
   "platform": "binance"
@@ -920,7 +920,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e782"
   },
-  "symbol": "CRV",
+  "base": "CRV",
   "balance": 136.987185,
   "available": "34.18718500",
   "platform": "binance"
@@ -929,7 +929,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e783"
   },
-  "symbol": "LUNA",
+  "base": "LUNA",
   "balance": 0.42903329,
   "available": "0.42903329",
   "platform": "binance"
@@ -938,7 +938,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e784"
   },
-  "symbol": "RSR",
+  "base": "RSR",
   "balance": 1292.3064,
   "available": "323.20640000",
   "platform": "binance"
@@ -947,7 +947,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e785"
   },
-  "symbol": "EGLD",
+  "base": "EGLD",
   "balance": 2.1508053,
   "available": "2.15080530",
   "platform": "binance"
@@ -956,7 +956,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e786"
   },
-  "symbol": "KSM",
+  "base": "KSM",
   "balance": 1.2713187000000001,
   "available": "0.39831870",
   "platform": "binance"
@@ -965,7 +965,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e787"
   },
-  "symbol": "SUSHI",
+  "base": "SUSHI",
   "balance": 12.987,
   "available": "12.98700000",
   "platform": "binance"
@@ -974,7 +974,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e788"
   },
-  "symbol": "BEL",
+  "base": "BEL",
   "balance": 59.26299,
   "available": "59.26299000",
   "platform": "binance"
@@ -983,7 +983,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e789"
   },
-  "symbol": "UMA",
+  "base": "UMA",
   "balance": 2.561933,
   "available": "1.36193300",
   "platform": "binance"
@@ -992,7 +992,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e78a"
   },
-  "symbol": "WING",
+  "base": "WING",
   "balance": 5.730117,
   "available": "0.73011700",
   "platform": "binance"
@@ -1001,7 +1001,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e78b"
   },
-  "symbol": "UNI",
+  "base": "UNI",
   "balance": 3.572424,
   "available": "1.49442400",
   "platform": "binance"
@@ -1010,7 +1010,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e78c"
   },
-  "symbol": "OXT",
+  "base": "OXT",
   "balance": 70.17,
   "available": "35.17000000",
   "platform": "binance"
@@ -1019,7 +1019,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e78d"
   },
-  "symbol": "AVAX",
+  "base": "AVAX",
   "balance": 1.5505499999999999,
   "available": "0.38055000",
   "platform": "binance"
@@ -1028,7 +1028,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e78e"
   },
-  "symbol": "BURGER",
+  "base": "BURGER",
   "balance": 4.7813,
   "available": "2.38130000",
   "platform": "binance"
@@ -1037,7 +1037,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e78f"
   },
-  "symbol": "XVS",
+  "base": "XVS",
   "balance": 15.82416,
   "available": "15.82416000",
   "platform": "binance"
@@ -1046,7 +1046,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e790"
   },
-  "symbol": "CAKE",
+  "base": "CAKE",
   "balance": 17.6823,
   "available": "17.68230000",
   "platform": "binance"
@@ -1055,7 +1055,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e791"
   },
-  "symbol": "ALPHA",
+  "base": "ALPHA",
   "balance": 57.0868,
   "available": "14.08680000",
   "platform": "binance"
@@ -1064,7 +1064,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e792"
   },
-  "symbol": "ORN",
+  "base": "ORN",
   "balance": 12.287700000000001,
   "available": "6.08770000",
   "platform": "binance"
@@ -1073,7 +1073,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e793"
   },
-  "symbol": "UTK",
+  "base": "UTK",
   "balance": 268.731,
   "available": "268.73100000",
   "platform": "binance"
@@ -1082,7 +1082,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e794"
   },
-  "symbol": "AAVE",
+  "base": "AAVE",
   "balance": 2.822914,
   "available": "1.41191400",
   "platform": "binance"
@@ -1091,7 +1091,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e795"
   },
-  "symbol": "FIL",
+  "base": "FIL",
   "balance": 4.0959,
   "available": "1.03590000",
   "platform": "binance"
@@ -1100,7 +1100,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e796"
   },
-  "symbol": "INJ",
+  "base": "INJ",
   "balance": 3.11875,
   "available": "1.61875000",
   "platform": "binance"
@@ -1109,7 +1109,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e797"
   },
-  "symbol": "CTK",
+  "base": "CTK",
   "balance": 29.8701,
   "available": "14.97010000",
   "platform": "binance"
@@ -1118,7 +1118,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e798"
   },
-  "symbol": "HARD",
+  "base": "HARD",
   "balance": 99.9,
   "available": "49.90000000",
   "platform": "binance"
@@ -1127,7 +1127,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e799"
   },
-  "symbol": "SLP",
+  "base": "SLP",
   "balance": 1598.4,
   "available": "798.40000000",
   "platform": "binance"
@@ -1136,7 +1136,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e79a"
   },
-  "symbol": "UNFI",
+  "base": "UNFI",
   "balance": 0.5788,
   "available": "0.57880000",
   "platform": "binance"
@@ -1145,7 +1145,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e79b"
   },
-  "symbol": "SKL",
+  "base": "SKL",
   "balance": 272.727,
   "available": "34.72700000",
   "platform": "binance"
@@ -1154,7 +1154,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e79c"
   },
-  "symbol": "PSG",
+  "base": "PSG",
   "balance": 3.18681,
   "available": "3.18681000",
   "platform": "binance"
@@ -1163,7 +1163,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e79d"
   },
-  "symbol": "GRT",
+  "base": "GRT",
   "balance": 227.81196,
   "available": "71.45196000",
   "platform": "binance"
@@ -1172,7 +1172,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e79e"
   },
-  "symbol": "REEF",
+  "base": "REEF",
   "balance": 9619.973,
   "available": "2789.97300000",
   "platform": "binance"
@@ -1181,7 +1181,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e79f"
   },
-  "symbol": "OG",
+  "base": "OG",
   "balance": 0.0885,
   "available": "0.08850000",
   "platform": "binance"
@@ -1190,7 +1190,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7a0"
   },
-  "symbol": "ATM",
+  "base": "ATM",
   "balance": 1.65651,
   "available": "1.65651000",
   "platform": "binance"
@@ -1199,7 +1199,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7a1"
   },
-  "symbol": "ASR",
+  "base": "ASR",
   "balance": 5.8658,
   "available": "3.06580000",
   "platform": "binance"
@@ -1208,7 +1208,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7a2"
   },
-  "symbol": "1INCH",
+  "base": "1INCH",
   "balance": 73.7262,
   "available": "73.72620000",
   "platform": "binance"
@@ -1217,7 +1217,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7a3"
   },
-  "symbol": "RIF",
+  "base": "RIF",
   "balance": 176.823,
   "available": "176.82300000",
   "platform": "binance"
@@ -1226,7 +1226,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7a4"
   },
-  "symbol": "DEXE",
+  "base": "DEXE",
   "balance": 3.9920099999999996,
   "available": "2.00201000",
   "platform": "binance"
@@ -1235,7 +1235,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7a5"
   },
-  "symbol": "FIRO",
+  "base": "FIRO",
   "balance": 0.00937,
   "available": "0.00937000",
   "platform": "binance"
@@ -1244,7 +1244,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7a6"
   },
-  "symbol": "LIT",
+  "base": "LIT",
   "balance": 60.55723,
   "available": "60.55723000",
   "platform": "binance"
@@ -1253,7 +1253,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7a7"
   },
-  "symbol": "DODO",
+  "base": "DODO",
   "balance": 378.039537,
   "available": "378.03953700",
   "platform": "binance"
@@ -1262,7 +1262,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7a8"
   },
-  "symbol": "PHA",
+  "base": "PHA",
   "balance": 270.594,
   "available": "135.59400000",
   "platform": "binance"
@@ -1271,7 +1271,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7a9"
   },
-  "symbol": "DON",
+  "base": "DON",
   "balance": 0.25627975,
   "available": "0.25627975",
   "platform": "binance"
@@ -1280,7 +1280,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7aa"
   },
-  "symbol": "OM",
+  "base": "OM",
   "balance": 326.673,
   "available": "326.67300000",
   "platform": "binance"
@@ -1289,7 +1289,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7ab"
   },
-  "symbol": "POND",
+  "base": "POND",
   "balance": 1283.29557,
   "available": "897.48557000",
   "platform": "binance"
@@ -1298,7 +1298,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7ac"
   },
-  "symbol": "LINA",
+  "base": "LINA",
   "balance": 346.88112,
   "available": "173.45112000",
   "platform": "binance"
@@ -1307,7 +1307,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7ad"
   },
-  "symbol": "SUPER",
+  "base": "SUPER",
   "balance": 46.814,
   "available": "23.81400000",
   "platform": "binance"
@@ -1316,7 +1316,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7ae"
   },
-  "symbol": "CFX",
+  "base": "CFX",
   "balance": 1121.728,
   "available": "1121.72800000",
   "platform": "binance"
@@ -1325,7 +1325,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7af"
   },
-  "symbol": "TKO",
+  "base": "TKO",
   "balance": 71.1931,
   "available": "35.59310000",
   "platform": "binance"
@@ -1334,7 +1334,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7b0"
   },
-  "symbol": "AUTO",
+  "base": "AUTO",
   "balance": 0.000851,
   "available": "0.00085100",
   "platform": "binance"
@@ -1343,7 +1343,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7b1"
   },
-  "symbol": "PUNDIX",
+  "base": "PUNDIX",
   "balance": 72.0279,
   "available": "72.02790000",
   "platform": "binance"
@@ -1352,7 +1352,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7b2"
   },
-  "symbol": "TLM",
+  "base": "TLM",
   "balance": 179.82,
   "available": "90.82000000",
   "platform": "binance"
@@ -1361,7 +1361,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7b3"
   },
-  "symbol": "FORTH",
+  "base": "FORTH",
   "balance": 0.00769,
   "available": "0.00769000",
   "platform": "binance"
@@ -1370,7 +1370,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7b4"
   },
-  "symbol": "ICP",
+  "base": "ICP",
   "balance": 7.21366,
   "available": "7.21366000",
   "platform": "binance"
@@ -1379,7 +1379,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7b5"
   },
-  "symbol": "NFT",
+  "base": "NFT",
   "balance": 354129.466322,
   "available": "354129.466322",
   "platform": "binance"
@@ -1388,7 +1388,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7b6"
   },
-  "symbol": "GTC",
+  "base": "GTC",
   "balance": 4.0959,
   "available": "4.09590000",
   "platform": "binance"
@@ -1397,7 +1397,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7b7"
   },
-  "symbol": "KLAY",
+  "base": "KLAY",
   "balance": 0.02601008,
   "available": "0.02601008",
   "platform": "binance"
@@ -1406,7 +1406,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7b8"
   },
-  "symbol": "MLN",
+  "base": "MLN",
   "balance": 0.554445,
   "available": "0.55444500",
   "platform": "binance"
@@ -1415,7 +1415,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7b9"
   },
-  "symbol": "QUICK",
+  "base": "QUICK",
   "balance": 0.184815,
   "available": "0.09281500",
   "platform": "binance"
@@ -1424,7 +1424,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7ba"
   },
-  "symbol": "CLV",
+  "base": "CLV",
   "balance": 3336.7599,
   "available": "417.15990000",
   "platform": "binance"
@@ -1433,7 +1433,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7bb"
   },
-  "symbol": "QISWAP",
+  "base": "QISWAP",
   "balance": 13.5001765,
   "available": "13.50017650",
   "platform": "binance"
@@ -1442,7 +1442,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7bc"
   },
-  "symbol": "BOBA",
+  "base": "BOBA",
   "balance": 4.79119,
   "available": "4.79119000",
   "platform": "binance"
@@ -1451,7 +1451,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7bd"
   },
-  "symbol": "VOXEL",
+  "base": "VOXEL",
   "balance": 17.7822,
   "available": "17.78220000",
   "platform": "binance"
@@ -1460,7 +1460,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7be"
   },
-  "symbol": "OOKI",
+  "base": "OOKI",
   "balance": 4955.04,
   "available": "4955.04000000",
   "platform": "binance"
@@ -1469,7 +1469,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7bf"
   },
-  "symbol": "SOLO",
+  "base": "SOLO",
   "balance": 21.17808431,
   "available": "21.17808431",
   "platform": "binance"
@@ -1478,7 +1478,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7c0"
   },
-  "symbol": "XNO",
+  "base": "XNO",
   "balance": 48.19135,
   "available": "48.19135000",
   "platform": "binance"
@@ -1487,7 +1487,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7c1"
   },
-  "symbol": "T",
+  "base": "T",
   "balance": 1384.1145,
   "available": "1384.11450000",
   "platform": "binance"
@@ -1496,7 +1496,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7c2"
   },
-  "symbol": "EPX",
+  "base": "EPX",
   "balance": 8087.904,
   "available": "8087.90400000",
   "platform": "binance"
@@ -1505,7 +1505,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7c3"
   },
-  "symbol": "LUNC",
+  "base": "LUNC",
   "balance": 0.93,
   "available": "0.93000000",
   "platform": "binance"
@@ -1514,7 +1514,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7c4"
   },
-  "symbol": "LEVER",
+  "base": "LEVER",
   "balance": 6188.805,
   "available": "6188.80500000",
   "platform": "binance"
@@ -1523,7 +1523,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7c5"
   },
-  "symbol": "OGV",
+  "base": "OGV",
   "balance": 60.17976,
   "available": "60.17976000",
   "platform": "binance"
@@ -1532,7 +1532,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7c6"
   },
-  "symbol": "ETHW",
+  "base": "ETHW",
   "balance": 2.18204775,
   "available": "2.18204775",
   "platform": "binance"
@@ -1541,7 +1541,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7c7"
   },
-  "symbol": "FLR",
+  "base": "FLR",
   "balance": 697.70163294,
   "available": "697.70163294",
   "platform": "binance"
@@ -1550,7 +1550,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7c8"
   },
-  "symbol": "HIFI",
+  "base": "HIFI",
   "balance": 69.68025,
   "available": "69.68025000",
   "platform": "binance"
@@ -1559,7 +1559,7 @@
   "_id": {
     "$oid": "64569953dd4ab3df7993e7c9"
   },
-  "symbol": "GFT",
+  "base": "GFT",
   "balance": 2127.74,
   "available": "2127.74000000",
   "platform": "binance"
@@ -1568,7 +1568,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7ca"
   },
-  "symbol": "AE",
+  "base": "AE",
   "balance": "197.5040",
   "available": "197.504",
   "platform": "gateio"
@@ -1577,7 +1577,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7cb"
   },
-  "symbol": "GO",
+  "base": "GO",
   "balance": "1252.63260",
   "available": "1252.6326",
   "platform": "gateio"
@@ -1586,7 +1586,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7cc"
   },
-  "symbol": "USDT",
+  "base": "USDT",
   "balance": "261.10",
   "available": "261.1",
   "platform": "gateio"
@@ -1595,7 +1595,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7cd"
   },
-  "symbol": "DNT",
+  "base": "DNT",
   "balance": "426.4390",
   "available": "426.439",
   "platform": "gateio"
@@ -1604,7 +1604,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7ce"
   },
-  "symbol": "SGB",
+  "base": "SGB",
   "balance": "697.691632940",
   "available": "697.69163294",
   "platform": "gateio"
@@ -1613,7 +1613,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7cf"
   },
-  "symbol": "BEAM",
+  "base": "BEAM",
   "balance": "156.7430",
   "available": "156.743",
   "platform": "gateio"
@@ -1622,7 +1622,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7d0"
   },
-  "symbol": "BTG",
+  "base": "BTG",
   "balance": "1.79720",
   "available": "1.7972",
   "platform": "gateio"
@@ -1631,7 +1631,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7d1"
   },
-  "symbol": "BMON",
+  "base": "BMON",
   "balance": "149.879083390",
   "available": "149.87908339",
   "platform": "gateio"
@@ -1640,7 +1640,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7d2"
   },
-  "symbol": "HORD",
+  "base": "HORD",
   "balance": "78.06208331483.17",
   "available": "78.0620833",
   "platform": "gateio"
@@ -1649,7 +1649,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7d3"
   },
-  "symbol": "DORA",
+  "base": "DORA",
   "balance": "1.614120220",
   "available": "1.61412022",
   "platform": "gateio"
@@ -1658,7 +1658,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7d4"
   },
-  "symbol": "FILDA",
+  "base": "FILDA",
   "balance": "942.212533360",
   "available": "942.21253336",
   "platform": "gateio"
@@ -1667,7 +1667,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7d5"
   },
-  "symbol": "OCN",
+  "base": "OCN",
   "balance": "210773.054525850",
   "available": "210773.05452585",
   "platform": "gateio"
@@ -1676,7 +1676,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7d6"
   },
-  "symbol": "REP",
+  "base": "REP",
   "balance": "2.380",
   "available": "2.38",
   "platform": "gateio"
@@ -1685,7 +1685,7 @@
   "_id": {
     "$oid": "64569957dd4ab3df7993e7d7"
   },
-  "symbol": "APN",
+  "base": "APN",
   "balance": "35903.247630690",
   "available": "35903.24763069",
   "platform": "gateio"
@@ -1694,7 +1694,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc01215"
   },
-  "symbol": "USDT",
+  "base": "USDT",
   "balance": "205.8379813869615",
   "available": "205.8379813869615",
   "platform": "okx"
@@ -1703,7 +1703,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc01216"
   },
-  "symbol": "RFUEL",
+  "base": "RFUEL",
   "balance": "10279.062756284",
   "available": "32.122154284001226",
   "platform": "okx"
@@ -1712,7 +1712,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc01217"
   },
-  "symbol": "DGB",
+  "base": "DGB",
   "balance": "2026.6478302706",
   "available": "63.33278927059996",
   "platform": "okx"
@@ -1721,7 +1721,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc01218"
   },
-  "symbol": "LET",
+  "base": "LET",
   "balance": "11214.428970188732",
   "available": "339.3516701887329",
   "platform": "okx"
@@ -1730,7 +1730,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc01219"
   },
-  "symbol": "DIA",
+  "base": "DIA",
   "balance": "32.9938438088",
   "available": "1.0310608087999995",
   "platform": "okx"
@@ -1739,7 +1739,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc0121a"
   },
-  "symbol": "BAT",
+  "base": "BAT",
   "balance": "36.9871131394",
   "available": "1.1558021394000022",
   "platform": "okx"
@@ -1748,7 +1748,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc0121b"
   },
-  "symbol": "BADGER",
+  "base": "BADGER",
   "balance": "2.9221137286",
   "available": "0.0913177286000004",
   "platform": "okx"
@@ -1757,7 +1757,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc0121c"
   },
-  "symbol": "CVP",
+  "base": "CVP",
   "balance": "17.6242259314",
   "available": "1.101515931399998",
   "platform": "okx"
@@ -1766,7 +1766,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc0121d"
   },
-  "symbol": "LEO",
+  "base": "LEO",
   "balance": "0.9992",
   "available": "0.9992",
   "platform": "okx"
@@ -1775,7 +1775,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc0121e"
   },
-  "symbol": "MINA",
+  "base": "MINA",
   "balance": "6.842465685",
   "available": "1.7106176849999999",
   "platform": "okx"
@@ -1784,7 +1784,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc0121f"
   },
-  "symbol": "APIX",
+  "base": "APIX",
   "balance": "244.095571656",
   "available": "15.255975656000004",
   "platform": "okx"
@@ -1793,7 +1793,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc01220"
   },
-  "symbol": "OMG",
+  "base": "OMG",
   "balance": "2.708943708",
   "available": "2.708943708",
   "platform": "okx"
@@ -1802,7 +1802,7 @@
   "_id": {
     "$oid": "6489bdc5a20ae3a9dfc01221"
   },
-  "symbol": "OMI",
+  "base": "OMI",
   "balance": "0.001546",
   "available": "0.001546",
   "platform": "okx"
@@ -1811,7 +1811,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01222"
   },
-  "symbol": "IOI",
+  "base": "IOI",
   "balance": "7.123483226266952168",
   "available": "7.123483226266952168",
   "platform": "htx"
@@ -1820,7 +1820,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01223"
   },
-  "symbol": "KCASH",
+  "base": "KCASH",
   "balance": "43482.24129644126119308",
   "available": "43482.24129644126119308",
   "platform": "htx"
@@ -1829,7 +1829,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01224"
   },
-  "symbol": "EGT",
+  "base": "EGT",
   "balance": "0.00206876344085882",
   "available": "0.00206876344085882",
   "platform": "htx"
@@ -1838,7 +1838,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01225"
   },
-  "symbol": "SOFI",
+  "base": "SOFI",
   "balance": "119.78859512367491166",
   "available": "119.78859512367491166",
   "platform": "htx"
@@ -1847,7 +1847,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01226"
   },
-  "symbol": "AAC",
+  "base": "AAC",
   "balance": "371.0916",
   "available": "371.0916",
   "platform": "htx"
@@ -1856,7 +1856,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01227"
   },
-  "symbol": "AAC",
+  "base": "AAC",
   "balance": "5295.09",
   "available": null,
   "platform": "htx"
@@ -1865,7 +1865,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01228"
   },
-  "symbol": "GOF",
+  "base": "GOF",
   "balance": "131.472198665506669917",
   "available": "131.472198665506669917",
   "platform": "htx"
@@ -1874,7 +1874,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01229"
   },
-  "symbol": "EKT",
+  "base": "EKT",
   "balance": "24409.9800804755944484",
   "available": "24409.9800804755944484",
   "platform": "htx"
@@ -1883,7 +1883,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0122a"
   },
-  "symbol": "PAI",
+  "base": "PAI",
   "balance": "22939.4601623981373372",
   "available": "22939.4601623981373372",
   "platform": "htx"
@@ -1892,7 +1892,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0122b"
   },
-  "symbol": "REN",
+  "base": "REN",
   "balance": "1.879925150374248104",
   "available": "1.879925150374248104",
   "platform": "htx"
@@ -1901,7 +1901,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0122c"
   },
-  "symbol": "REN",
+  "base": "REN",
   "balance": "13.09",
   "available": null,
   "platform": "htx"
@@ -1910,7 +1910,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0122d"
   },
-  "symbol": "ELA",
+  "base": "ELA",
   "balance": "0.059644544749277097",
   "available": "0.059644544749277097",
   "platform": "htx"
@@ -1919,7 +1919,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0122e"
   },
-  "symbol": "ELA",
+  "base": "ELA",
   "balance": "1.7",
   "available": null,
   "platform": "htx"
@@ -1928,7 +1928,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0122f"
   },
-  "symbol": "CHR",
+  "base": "CHR",
   "balance": "1.619502131866934061",
   "available": "1.619502131866934061",
   "platform": "htx"
@@ -1937,7 +1937,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01230"
   },
-  "symbol": "CHR",
+  "base": "CHR",
   "balance": "11.33",
   "available": null,
   "platform": "htx"
@@ -1946,7 +1946,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01231"
   },
-  "symbol": "SAND",
+  "base": "SAND",
   "balance": "0.123346884820511636",
   "available": "0.123346884820511636",
   "platform": "htx"
@@ -1955,7 +1955,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01232"
   },
-  "symbol": "SAND",
+  "base": "SAND",
   "balance": "1.8499",
   "available": null,
   "platform": "htx"
@@ -1964,7 +1964,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01233"
   },
-  "symbol": "XRT",
+  "base": "XRT",
   "balance": "0.275616",
   "available": "0.275616",
   "platform": "htx"
@@ -1973,7 +1973,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01234"
   },
-  "symbol": "XRT",
+  "base": "XRT",
   "balance": "1.1136",
   "available": null,
   "platform": "htx"
@@ -1982,7 +1982,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01235"
   },
-  "symbol": "ENS",
+  "base": "ENS",
   "balance": "0.010891773454339985",
   "available": "0.010891773454339985",
   "platform": "htx"
@@ -1991,7 +1991,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01236"
   },
-  "symbol": "ENS",
+  "base": "ENS",
   "balance": "0.3372",
   "available": null,
   "platform": "htx"
@@ -2000,7 +2000,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01237"
   },
-  "symbol": "XTM",
+  "base": "XTM",
   "balance": "14.745421742367833113",
   "available": "14.745421742367833113",
   "platform": "htx"
@@ -2009,7 +2009,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01238"
   },
-  "symbol": "XTM",
+  "base": "XTM",
   "balance": "1400.6482",
   "available": null,
   "platform": "htx"
@@ -2018,7 +2018,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01239"
   },
-  "symbol": "CKB",
+  "base": "CKB",
   "balance": "15.745110034322632582",
   "available": "15.745110034322632582",
   "platform": "htx"
@@ -2027,7 +2027,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0123a"
   },
-  "symbol": "CKB",
+  "base": "CKB",
   "balance": "487.99",
   "available": null,
   "platform": "htx"
@@ -2036,7 +2036,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0123b"
   },
-  "symbol": "FLOW",
+  "base": "FLOW",
   "balance": "0.11954858796030195",
   "available": "0.11954858796030195",
   "platform": "htx"
@@ -2045,7 +2045,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0123c"
   },
-  "symbol": "FLOW",
+  "base": "FLOW",
   "balance": "0.8365",
   "available": null,
   "platform": "htx"
@@ -2054,7 +2054,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0123d"
   },
-  "symbol": "NAS",
+  "base": "NAS",
   "balance": "0.000000009562575704",
   "available": "0.000000009562575704",
   "platform": "htx"
@@ -2063,7 +2063,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0123e"
   },
-  "symbol": "VRA",
+  "base": "VRA",
   "balance": "8.088452222625654586",
   "available": "8.088452222625654586",
   "platform": "htx"
@@ -2072,7 +2072,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0123f"
   },
-  "symbol": "VRA",
+  "base": "VRA",
   "balance": "250.7424",
   "available": null,
   "platform": "htx"
@@ -2081,7 +2081,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01240"
   },
-  "symbol": "TNB",
+  "base": "TNB",
   "balance": "5885.97894555974094704",
   "available": "5885.97894555974094704",
   "platform": "htx"
@@ -2090,7 +2090,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01241"
   },
-  "symbol": "TNB",
+  "base": "TNB",
   "balance": "21742.35",
   "available": null,
   "platform": "htx"
@@ -2099,7 +2099,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01242"
   },
-  "symbol": "CMT",
+  "base": "CMT",
   "balance": "0.000000003566708318",
   "available": "0.000000003566708318",
   "platform": "htx"
@@ -2108,7 +2108,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01243"
   },
-  "symbol": "RLC",
+  "base": "RLC",
   "balance": "2.797085201793721968",
   "available": "2.797085201793721968",
   "platform": "htx"
@@ -2117,7 +2117,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01244"
   },
-  "symbol": "XYO",
+  "base": "XYO",
   "balance": "29.346128789075724748",
   "available": "29.346128789075724748",
   "platform": "htx"
@@ -2126,7 +2126,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01245"
   },
-  "symbol": "XYO",
+  "base": "XYO",
   "balance": "820.3034",
   "available": null,
   "platform": "htx"
@@ -2135,7 +2135,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01246"
   },
-  "symbol": "TRB",
+  "base": "TRB",
   "balance": "0.008887433982881078",
   "available": "0.008887433982881078",
   "platform": "htx"
@@ -2144,7 +2144,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01247"
   },
-  "symbol": "TRB",
+  "base": "TRB",
   "balance": "0.2751",
   "available": null,
   "platform": "htx"
@@ -2153,7 +2153,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01248"
   },
-  "symbol": "TRIBE",
+  "base": "TRIBE",
   "balance": "0.314383870967741855",
   "available": "0.314383870967741855",
   "platform": "htx"
@@ -2162,7 +2162,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01249"
   },
-  "symbol": "TRIBE",
+  "base": "TRIBE",
   "balance": "9.7461",
   "available": null,
   "platform": "htx"
@@ -2171,7 +2171,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0124a"
   },
-  "symbol": "NGL",
+  "base": "NGL",
   "balance": "2.351052385386568152",
   "available": "2.351052385386568152",
   "platform": "htx"
@@ -2180,7 +2180,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0124b"
   },
-  "symbol": "NGL",
+  "base": "NGL",
   "balance": "91.7299",
   "available": null,
   "platform": "htx"
@@ -2189,7 +2189,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0124c"
   },
-  "symbol": "CRE",
+  "base": "CRE",
   "balance": "171.1758052434456841",
   "available": "171.1758052434456841",
   "platform": "htx"
@@ -2198,7 +2198,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0124d"
   },
-  "symbol": "CRE",
+  "base": "CRE",
   "balance": "5669.18",
   "available": null,
   "platform": "htx"
@@ -2207,7 +2207,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0124e"
   },
-  "symbol": "ANC",
+  "base": "ANC",
   "balance": "0.000000388366339294",
   "available": "0.000000388366339294",
   "platform": "htx"
@@ -2216,7 +2216,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0124f"
   },
-  "symbol": "CRU",
+  "base": "CRU",
   "balance": "2.94847172560880626",
   "available": "2.94847172560880626",
   "platform": "htx"
@@ -2225,7 +2225,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01250"
   },
-  "symbol": "CRU",
+  "base": "CRU",
   "balance": "56.0197",
   "available": null,
   "platform": "htx"
@@ -2234,7 +2234,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01251"
   },
-  "symbol": "LAMB",
+  "base": "LAMB",
   "balance": "7.778887522336570636",
   "available": "7.778887522336570636",
   "platform": "htx"
@@ -2243,7 +2243,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01252"
   },
-  "symbol": "LAMB",
+  "base": "LAMB",
   "balance": "3316.0375",
   "available": null,
   "platform": "htx"
@@ -2252,7 +2252,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01253"
   },
-  "symbol": "APN",
+  "base": "APN",
   "balance": "0.000000008832907668",
   "available": "0.000000008832907668",
   "platform": "htx"
@@ -2261,7 +2261,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01254"
   },
-  "symbol": "YAM",
+  "base": "YAM",
   "balance": "78.494581039537485995",
   "available": "78.494581039537485995",
   "platform": "htx"
@@ -2270,7 +2270,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01255"
   },
-  "symbol": "NEST",
+  "base": "NEST",
   "balance": "61.6192436974789895",
   "available": "61.6192436974789895",
   "platform": "htx"
@@ -2279,7 +2279,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01256"
   },
-  "symbol": "NEST",
+  "base": "NEST",
   "balance": "3111.38",
   "available": null,
   "platform": "htx"
@@ -2288,7 +2288,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01257"
   },
-  "symbol": "AST",
+  "base": "AST",
   "balance": "143.712",
   "available": "143.712",
   "platform": "htx"
@@ -2297,7 +2297,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01258"
   },
-  "symbol": "ATP",
+  "base": "ATP",
   "balance": "15018.87206",
   "available": "15018.87206",
   "platform": "htx"
@@ -2306,7 +2306,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01259"
   },
-  "symbol": "VIDY",
+  "base": "VIDY",
   "balance": "109455.74633204633195",
   "available": "109455.74633204633195",
   "platform": "htx"
@@ -2315,7 +2315,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0125a"
   },
-  "symbol": "PERP",
+  "base": "PERP",
   "balance": "0.123164172568976334",
   "available": "0.123164172568976334",
   "platform": "htx"
@@ -2324,7 +2324,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0125b"
   },
-  "symbol": "PERP",
+  "base": "PERP",
   "balance": "3.8183",
   "available": null,
   "platform": "htx"
@@ -2333,7 +2333,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0125c"
   },
-  "symbol": "YEE",
+  "base": "YEE",
   "balance": "183882.2628292097043076",
   "available": "183882.2628292097043076",
   "platform": "htx"
@@ -2342,7 +2342,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0125d"
   },
-  "symbol": "ERN",
+  "base": "ERN",
   "balance": "0.037662054345731354",
   "available": "0.037662054345731354",
   "platform": "htx"
@@ -2351,7 +2351,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0125e"
   },
-  "symbol": "ERN",
+  "base": "ERN",
   "balance": "1.1644",
   "available": null,
   "platform": "htx"
@@ -2360,7 +2360,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0125f"
   },
-  "symbol": "HOTCROSS",
+  "base": "HOTCROSS",
   "balance": "3528.438784313725490145",
   "available": "3528.438784313725490145",
   "platform": "htx"
@@ -2369,7 +2369,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01260"
   },
-  "symbol": "VALUE",
+  "base": "VALUE",
   "balance": "9.31647491432685332",
   "available": "9.31647491432685332",
   "platform": "htx"
@@ -2378,7 +2378,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01261"
   },
-  "symbol": "ALICE",
+  "base": "ALICE",
   "balance": "0.052190400219212424",
   "available": "0.052190400219212424",
   "platform": "htx"
@@ -2387,7 +2387,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01262"
   },
-  "symbol": "ALICE",
+  "base": "ALICE",
   "balance": "1.6136",
   "available": null,
   "platform": "htx"
@@ -2396,7 +2396,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01263"
   },
-  "symbol": "YGG",
+  "base": "YGG",
   "balance": "0.272492485656912422",
   "available": "0.272492485656912422",
   "platform": "htx"
@@ -2405,7 +2405,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01264"
   },
-  "symbol": "YGG",
+  "base": "YGG",
   "balance": "8.4435",
   "available": null,
   "platform": "htx"
@@ -2414,7 +2414,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01265"
   },
-  "symbol": "EPIK",
+  "base": "EPIK",
   "balance": "378.80993785507542445",
   "available": "378.80993785507542445",
   "platform": "htx"
@@ -2423,7 +2423,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01266"
   },
-  "symbol": "EPIK",
+  "base": "EPIK",
   "balance": "1136.4295",
   "available": null,
   "platform": "htx"
@@ -2432,7 +2432,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01267"
   },
-  "symbol": "LOL",
+  "base": "LOL",
   "balance": "1633980.392156862737388",
   "available": "1633980.392156862737388",
   "platform": "htx"
@@ -2441,7 +2441,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01268"
   },
-  "symbol": "LPT",
+  "base": "LPT",
   "balance": "0.006647776398038431",
   "available": "0.006647776398038431",
   "platform": "htx"
@@ -2450,7 +2450,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01269"
   },
-  "symbol": "LPT",
+  "base": "LPT",
   "balance": "0.2034",
   "available": null,
   "platform": "htx"
@@ -2459,7 +2459,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0126a"
   },
-  "symbol": "DAC",
+  "base": "DAC",
   "balance": "0.00411289345630142",
   "available": "0.00411289345630142",
   "platform": "htx"
@@ -2468,7 +2468,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0126b"
   },
-  "symbol": "PYR",
+  "base": "PYR",
   "balance": "0.334039947754079265",
   "available": "0.334039947754079265",
   "platform": "htx"
@@ -2477,7 +2477,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0126c"
   },
-  "symbol": "PYR",
+  "base": "PYR",
   "balance": "1.0022",
   "available": null,
   "platform": "htx"
@@ -2486,7 +2486,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0126d"
   },
-  "symbol": "HIT",
+  "base": "HIT",
   "balance": "2310963.66704708820838",
   "available": "2310963.66704708820838",
   "platform": "htx"
@@ -2495,7 +2495,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0126e"
   },
-  "symbol": "USDT",
+  "base": "USDT",
   "balance": "633.614889695164759135",
   "available": "633.614889695164759135",
   "platform": "htx"
@@ -2504,7 +2504,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0126f"
   },
-  "symbol": "USDT",
+  "base": "USDT",
   "balance": "0.000000000000000097",
   "available": null,
   "platform": "htx"
@@ -2513,7 +2513,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01270"
   },
-  "symbol": "NSURE",
+  "base": "NSURE",
   "balance": "205.714549816519174862",
   "available": "205.714549816519174862",
   "platform": "htx"
@@ -2522,7 +2522,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01271"
   },
-  "symbol": "NSURE",
+  "base": "NSURE",
   "balance": "1233.7662",
   "available": null,
   "platform": "htx"
@@ -2531,7 +2531,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01272"
   },
-  "symbol": "MOVR",
+  "base": "MOVR",
   "balance": "0.014689909080335692",
   "available": "0.014689909080335692",
   "platform": "htx"
@@ -2540,7 +2540,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01273"
   },
-  "symbol": "MOVR",
+  "base": "MOVR",
   "balance": "1.3745",
   "available": null,
   "platform": "htx"
@@ -2549,7 +2549,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01274"
   },
-  "symbol": "WNXM",
+  "base": "WNXM",
   "balance": "0.074914248810602386",
   "available": "0.074914248810602386",
   "platform": "htx"
@@ -2558,7 +2558,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01275"
   },
-  "symbol": "WNXM",
+  "base": "WNXM",
   "balance": "2.3571",
   "available": null,
   "platform": "htx"
@@ -2567,7 +2567,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01276"
   },
-  "symbol": "HPT",
+  "base": "HPT",
   "balance": "0.0000386057253386",
   "available": "0.0000386057253386",
   "platform": "htx"
@@ -2576,7 +2576,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01277"
   },
-  "symbol": "DHT",
+  "base": "DHT",
   "balance": "42.842694595079594224",
   "available": "42.842694595079594224",
   "platform": "htx"
@@ -2585,7 +2585,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01278"
   },
-  "symbol": "WOO",
+  "base": "WOO",
   "balance": "4.824554647968470395",
   "available": "4.824554647968470395",
   "platform": "htx"
@@ -2594,7 +2594,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01279"
   },
-  "symbol": "WOO",
+  "base": "WOO",
   "balance": "14.49",
   "available": null,
   "platform": "htx"
@@ -2603,7 +2603,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0127a"
   },
-  "symbol": "EM",
+  "base": "EM",
   "balance": "77.3377935943059898",
   "available": "77.3377935943059898",
   "platform": "htx"
@@ -2612,7 +2612,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0127b"
   },
-  "symbol": "EM",
+  "base": "EM",
   "balance": "2397.25",
   "available": null,
   "platform": "htx"
@@ -2621,7 +2621,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0127c"
   },
-  "symbol": "DKA",
+  "base": "DKA",
   "balance": "13.973905584145573182",
   "available": "13.973905584145573182",
   "platform": "htx"
@@ -2630,7 +2630,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0127d"
   },
-  "symbol": "DKA",
+  "base": "DKA",
   "balance": "462.6",
   "available": null,
   "platform": "htx"
@@ -2639,7 +2639,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0127e"
   },
-  "symbol": "FOR",
+  "base": "FOR",
   "balance": "26.17",
   "available": "26.17",
   "platform": "htx"
@@ -2648,7 +2648,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0127f"
   },
-  "symbol": "FOR",
+  "base": "FOR",
   "balance": "811.31",
   "available": null,
   "platform": "htx"
@@ -2657,7 +2657,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01280"
   },
-  "symbol": "HBC",
+  "base": "HBC",
   "balance": "27.073937880126985921",
   "available": "27.073937880126985921",
   "platform": "htx"
@@ -2666,7 +2666,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01281"
   },
-  "symbol": "HT",
+  "base": "HT",
   "balance": "0.3282474",
   "available": "0.3282474",
   "platform": "htx"
@@ -2675,7 +2675,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01282"
   },
-  "symbol": "HT",
+  "base": "HT",
   "balance": "10.177",
   "available": null,
   "platform": "htx"
@@ -2684,7 +2684,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01283"
   },
-  "symbol": "BIX",
+  "base": "BIX",
   "balance": "4.569726692996639652",
   "available": "4.569726692996639652",
   "platform": "htx"
@@ -2693,7 +2693,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01284"
   },
-  "symbol": "BIX",
+  "base": "BIX",
   "balance": "868.0635",
   "available": null,
   "platform": "htx"
@@ -2702,7 +2702,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01285"
   },
-  "symbol": "OCN",
+  "base": "OCN",
   "balance": "0.0000000049299648",
   "available": "0.0000000049299648",
   "platform": "htx"
@@ -2711,7 +2711,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01286"
   },
-  "symbol": "FSN",
+  "base": "FSN",
   "balance": "0.972018480199785924",
   "available": "0.972018480199785924",
   "platform": "htx"
@@ -2720,7 +2720,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01287"
   },
-  "symbol": "FSN",
+  "base": "FSN",
   "balance": "34.5613",
   "available": null,
   "platform": "htx"
@@ -2729,7 +2729,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01288"
   },
-  "symbol": "SMT",
+  "base": "SMT",
   "balance": "69.993",
   "available": "69.993",
   "platform": "htx"
@@ -2738,7 +2738,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01289"
   },
-  "symbol": "SMT",
+  "base": "SMT",
   "balance": "1249.875",
   "available": null,
   "platform": "htx"
@@ -2747,7 +2747,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0128a"
   },
-  "symbol": "SNT",
+  "base": "SNT",
   "balance": "46.90495446261055338",
   "available": "46.90495446261055338",
   "platform": "htx"
@@ -2756,7 +2756,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0128b"
   },
-  "symbol": "SNT",
+  "base": "SNT",
   "balance": "1470.4199",
   "available": null,
   "platform": "htx"
@@ -2765,7 +2765,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0128c"
   },
-  "symbol": "MDS",
+  "base": "MDS",
   "balance": "0.0026410835213886",
   "available": "0.0026410835213886",
   "platform": "htx"
@@ -2774,7 +2774,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0128d"
   },
-  "symbol": "NULS",
+  "base": "NULS",
   "balance": "1.465505432860373454",
   "available": "1.465505432860373454",
   "platform": "htx"
@@ -2783,7 +2783,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0128e"
   },
-  "symbol": "NULS",
+  "base": "NULS",
   "balance": "48.06",
   "available": null,
   "platform": "htx"
@@ -2792,7 +2792,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0128f"
   },
-  "symbol": "MDX",
+  "base": "MDX",
   "balance": "18.787436283338985891",
   "available": "18.787436283338985891",
   "platform": "htx"
@@ -2801,7 +2801,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01290"
   },
-  "symbol": "MDX",
+  "base": "MDX",
   "balance": "510.06",
   "available": null,
   "platform": "htx"
@@ -2810,7 +2810,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01291"
   },
-  "symbol": "DTA",
+  "base": "DTA",
   "balance": "2717.338211429535932",
   "available": "2717.338211429535932",
   "platform": "htx"
@@ -2819,7 +2819,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01292"
   },
-  "symbol": "DTA",
+  "base": "DTA",
   "balance": "86778.2432",
   "available": null,
   "platform": "htx"
@@ -2828,7 +2828,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01293"
   },
-  "symbol": "UUU",
+  "base": "UUU",
   "balance": "3300.205474945533656",
   "available": "3300.205474945533656",
   "platform": "htx"
@@ -2837,7 +2837,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01294"
   },
-  "symbol": "UUU",
+  "base": "UUU",
   "balance": "1052247.2",
   "available": null,
   "platform": "htx"
@@ -2846,7 +2846,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01295"
   },
-  "symbol": "STN",
+  "base": "STN",
   "balance": "64.572757582263185283",
   "available": "64.572757582263185283",
   "platform": "htx"
@@ -2855,7 +2855,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01296"
   },
-  "symbol": "NODE",
+  "base": "NODE",
   "balance": "45729.518571428571286",
   "available": "45729.518571428571286",
   "platform": "htx"
@@ -2864,7 +2864,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01297"
   },
-  "symbol": "BSV",
+  "base": "BSV",
   "balance": "0.0150636",
   "available": "0.0150636",
   "platform": "htx"
@@ -2873,7 +2873,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01298"
   },
-  "symbol": "BSV",
+  "base": "BSV",
   "balance": "0.5021",
   "available": null,
   "platform": "htx"
@@ -2882,7 +2882,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc01299"
   },
-  "symbol": "MIR",
+  "base": "MIR",
   "balance": "34.3655991319282445",
   "available": "34.3655991319282445",
   "platform": "htx"
@@ -2891,7 +2891,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0129a"
   },
-  "symbol": "PEOPLE",
+  "base": "PEOPLE",
   "balance": "7.271211181572320938",
   "available": "7.271211181572320938",
   "platform": "htx"
@@ -2900,7 +2900,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0129b"
   },
-  "symbol": "PEOPLE",
+  "base": "PEOPLE",
   "balance": "109.0675",
   "available": null,
   "platform": "htx"
@@ -2909,7 +2909,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0129c"
   },
-  "symbol": "RUFF",
+  "base": "RUFF",
   "balance": "11613.3245287688139421",
   "available": "11613.3245287688139421",
   "platform": "htx"
@@ -2918,7 +2918,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0129d"
   },
-  "symbol": "RUFF",
+  "base": "RUFF",
   "balance": "546161.2642",
   "available": null,
   "platform": "htx"
@@ -2927,7 +2927,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0129e"
   },
-  "symbol": "WICC",
+  "base": "WICC",
   "balance": "3.4512",
   "available": "3.4512",
   "platform": "htx"
@@ -2936,7 +2936,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc0129f"
   },
-  "symbol": "WICC",
+  "base": "WICC",
   "balance": "146.2488",
   "available": null,
   "platform": "htx"
@@ -2945,7 +2945,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012a0"
   },
-  "symbol": "ZEN",
+  "base": "ZEN",
   "balance": "0.060371061911440521",
   "available": "0.060371061911440521",
   "platform": "htx"
@@ -2954,7 +2954,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012a1"
   },
-  "symbol": "ZEN",
+  "base": "ZEN",
   "balance": "1.8668",
   "available": null,
   "platform": "htx"
@@ -2963,7 +2963,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012a2"
   },
-  "symbol": "JASMY",
+  "base": "JASMY",
   "balance": "7.522753572290027694",
   "available": "7.522753572290027694",
   "platform": "htx"
@@ -2972,7 +2972,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012a3"
   },
-  "symbol": "JASMY",
+  "base": "JASMY",
   "balance": "233.2028",
   "available": null,
   "platform": "htx"
@@ -2981,7 +2981,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012a4"
   },
-  "symbol": "MASK",
+  "base": "MASK",
   "balance": "0.040515795357059294",
   "available": "0.040515795357059294",
   "platform": "htx"
@@ -2990,7 +2990,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012a5"
   },
-  "symbol": "MASK",
+  "base": "MASK",
   "balance": "1.2567",
   "available": null,
   "platform": "htx"
@@ -2999,7 +2999,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012a6"
   },
-  "symbol": "INSUR",
+  "base": "INSUR",
   "balance": "0.984118673110257573",
   "available": "0.984118673110257573",
   "platform": "htx"
@@ -3008,7 +3008,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012a7"
   },
-  "symbol": "INSUR",
+  "base": "INSUR",
   "balance": "72.1611",
   "available": null,
   "platform": "htx"
@@ -3017,7 +3017,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012a8"
   },
-  "symbol": "PUSH",
+  "base": "PUSH",
   "balance": "0.819346606203518951",
   "available": "0.819346606203518951",
   "platform": "htx"
@@ -3026,7 +3026,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012a9"
   },
-  "symbol": "PUSH",
+  "base": "PUSH",
   "balance": "12.2883",
   "available": null,
   "platform": "htx"
@@ -3035,7 +3035,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012aa"
   },
-  "symbol": "ZKS",
+  "base": "ZKS",
   "balance": "10.23302518765637983",
   "available": "10.23302518765637983",
   "platform": "htx"
@@ -3044,7 +3044,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012ab"
   },
-  "symbol": "ZKS",
+  "base": "ZKS",
   "balance": "644.9752",
   "available": null,
   "platform": "htx"
@@ -3053,7 +3053,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012ac"
   },
-  "symbol": "POLC",
+  "base": "POLC",
   "balance": "0.898806916426512936",
   "available": "0.898806916426512936",
   "platform": "htx"
@@ -3062,7 +3062,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012ad"
   },
-  "symbol": "POLC",
+  "base": "POLC",
   "balance": "27.862",
   "available": null,
   "platform": "htx"
@@ -3071,7 +3071,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012ae"
   },
-  "symbol": "SEELE",
+  "base": "SEELE",
   "balance": "1060.66068394645941266",
   "available": "1060.66068394645941266",
   "platform": "htx"
@@ -3080,7 +3080,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012af"
   },
-  "symbol": "COTI",
+  "base": "COTI",
   "balance": "0.756608863198458529",
   "available": "0.756608863198458529",
   "platform": "htx"
@@ -3089,7 +3089,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012b0"
   },
-  "symbol": "COTI",
+  "base": "COTI",
   "balance": "23.28",
   "available": null,
   "platform": "htx"
@@ -3098,7 +3098,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012b1"
   },
-  "symbol": "POLS",
+  "base": "POLS",
   "balance": "62.705129773363236428",
   "available": "62.705129773363236428",
   "platform": "htx"
@@ -3107,7 +3107,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012b2"
   },
-  "symbol": "POLS",
+  "base": "POLS",
   "balance": "4.1697",
   "available": null,
   "platform": "htx"
@@ -3116,7 +3116,7 @@
   "_id": {
     "$oid": "6489be01a20ae3a9dfc012b3"
   },
-  "symbol": "WILD",
+  "base": "WILD",
   "balance": "14.543804768951412787",
   "available": "14.543804768951412787",
   "platform": "htx"
@@ -3125,7 +3125,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c967d"
   },
-  "symbol": "USDT",
+  "base": "USDT",
   "balance": "271.15891699",
   "available": "271.15891699",
   "platform": "kucoin"
@@ -3134,7 +3134,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c967e"
   },
-  "symbol": "BOSON",
+  "base": "BOSON",
   "balance": "332.35951149",
   "available": "3.46141149",
   "platform": "kucoin"
@@ -3143,7 +3143,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c967f"
   },
-  "symbol": "XYM",
+  "base": "XYM",
   "balance": "1769.56104152",
   "available": "1596.42204152",
   "platform": "kucoin"
@@ -3152,7 +3152,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9680"
   },
-  "symbol": "ENQ",
+  "base": "ENQ",
   "balance": "5665.36661653",
   "available": "17.68311653",
   "platform": "kucoin"
@@ -3161,7 +3161,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9681"
   },
-  "symbol": "WEST",
+  "base": "WEST",
   "balance": "4023.9159684",
   "available": "3909.1942684",
   "platform": "kucoin"
@@ -3170,7 +3170,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9682"
   },
-  "symbol": "ORAI",
+  "base": "ORAI",
   "balance": "14.34641079",
   "available": "0.04491079",
   "platform": "kucoin"
@@ -3179,7 +3179,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9683"
   },
-  "symbol": "DOGE",
+  "base": "DOGE",
   "balance": "577.372",
   "available": "8.8161",
   "platform": "kucoin"
@@ -3188,7 +3188,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9684"
   },
-  "symbol": "PCX",
+  "base": "PCX",
   "balance": "134.875",
   "available": "0.8426",
   "platform": "kucoin"
@@ -3197,7 +3197,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9685"
   },
-  "symbol": "DYP",
+  "base": "DYP",
   "balance": "200.96730675",
   "available": "0.83760675",
   "platform": "kucoin"
@@ -3206,7 +3206,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9686"
   },
-  "symbol": "BAX",
+  "base": "BAX",
   "balance": "108159.15072788",
   "available": "3379.97352788",
   "platform": "kucoin"
@@ -3215,7 +3215,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9687"
   },
-  "symbol": "AIOZ",
+  "base": "AIOZ",
   "balance": "2104.03",
   "available": "217.4964",
   "platform": "kucoin"
@@ -3224,7 +3224,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9688"
   },
-  "symbol": "DREAMS",
+  "base": "DREAMS",
   "balance": "26070.36581513",
   "available": "463.97431513",
   "platform": "kucoin"
@@ -3233,7 +3233,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9689"
   },
-  "symbol": "RNDR",
+  "base": "RNDR",
   "balance": "13.5",
   "available": "0.8437",
   "platform": "kucoin"
@@ -3242,7 +3242,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c968a"
   },
-  "symbol": "CARD",
+  "base": "CARD",
   "balance": "17512.81733128",
   "available": "54.70873128",
   "platform": "kucoin"
@@ -3251,7 +3251,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c968b"
   },
-  "symbol": "BTT",
+  "base": "BTT",
   "balance": "45197678.8437",
   "available": "1412427.603",
   "platform": "kucoin"
@@ -3260,7 +3260,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c968c"
   },
-  "symbol": "UOS",
+  "base": "UOS",
   "balance": "137.46685188",
   "available": "4.29605188",
   "platform": "kucoin"
@@ -3269,7 +3269,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c968d"
   },
-  "symbol": "ETN",
+  "base": "ETN",
   "balance": "12222.16206156",
   "available": "381.94256156",
   "platform": "kucoin"
@@ -3278,7 +3278,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c968e"
   },
-  "symbol": "SRK",
+  "base": "SRK",
   "balance": "117192.59230259",
   "available": "122.10740259",
   "platform": "kucoin"
@@ -3287,7 +3287,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c968f"
   },
-  "symbol": "VEGA",
+  "base": "VEGA",
   "balance": "18.5195506",
   "available": "1.1574506",
   "platform": "kucoin"
@@ -3296,7 +3296,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9690"
   },
-  "symbol": "LYM",
+  "base": "LYM",
   "balance": "13962.91712216",
   "available": "43.65412216",
   "platform": "kucoin"
@@ -3305,7 +3305,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9691"
   },
-  "symbol": "DYDX",
+  "base": "DYDX",
   "balance": "11.52604887",
   "available": "0.36014887",
   "platform": "kucoin"
@@ -3314,7 +3314,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9692"
   },
-  "symbol": "PHNX",
+  "base": "PHNX",
   "balance": "2827.2258",
   "available": "17.6685",
   "platform": "kucoin"
@@ -3323,7 +3323,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9693"
   },
-  "symbol": "MAP",
+  "base": "MAP",
   "balance": "1638.23581022",
   "available": "819.11791022",
   "platform": "kucoin"
@@ -3332,7 +3332,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9694"
   },
-  "symbol": "NTVRK",
+  "base": "NTVRK",
   "balance": "137.20911648",
   "available": "62.48651648",
   "platform": "kucoin"
@@ -3341,7 +3341,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9695"
   },
-  "symbol": "GLQ",
+  "base": "GLQ",
   "balance": "2901.79095716",
   "available": "9.06585716",
   "platform": "kucoin"
@@ -3350,7 +3350,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9696"
   },
-  "symbol": "ANC",
+  "base": "ANC",
   "balance": "1743.85244655",
   "available": "21.79184655",
   "platform": "kucoin"
@@ -3359,7 +3359,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9697"
   },
-  "symbol": "RUNE",
+  "base": "RUNE",
   "balance": "17.08803",
   "available": "0.53403",
   "platform": "kucoin"
@@ -3368,7 +3368,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9698"
   },
-  "symbol": "SHR",
+  "base": "SHR",
   "balance": "8304.30055421",
   "available": "281.44395421",
   "platform": "kucoin"
@@ -3377,7 +3377,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9699"
   },
-  "symbol": "NMR",
+  "base": "NMR",
   "balance": "1.17543588",
   "available": "0.03673588",
   "platform": "kucoin"
@@ -3386,7 +3386,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c969a"
   },
-  "symbol": "PLU",
+  "base": "PLU",
   "balance": "1.32067892",
   "available": "0.04127892",
   "platform": "kucoin"
@@ -3395,7 +3395,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c969b"
   },
-  "symbol": "SOLR",
+  "base": "SOLR",
   "balance": "869.5135699",
   "available": "19.4240699",
   "platform": "kucoin"
@@ -3404,7 +3404,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c969c"
   },
-  "symbol": "CAS",
+  "base": "CAS",
   "balance": "2352.08523963",
   "available": "58.81623963",
   "platform": "kucoin"
@@ -3413,7 +3413,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c969d"
   },
-  "symbol": "JST",
+  "base": "JST",
   "balance": "531.27601192",
   "available": "16.60231192",
   "platform": "kucoin"
@@ -3422,7 +3422,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c969e"
   },
-  "symbol": "SENSO",
+  "base": "SENSO",
   "balance": "128.41875931",
   "available": "4.01305931",
   "platform": "kucoin"
@@ -3431,7 +3431,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c969f"
   },
-  "symbol": "KLV",
+  "base": "KLV",
   "balance": "3338.55290102",
   "available": "139.10690102",
   "platform": "kucoin"
@@ -3440,7 +3440,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96a0"
   },
-  "symbol": "ZCX",
+  "base": "ZCX",
   "balance": "150.43040867",
   "available": "2.35030867",
   "platform": "kucoin"
@@ -3449,7 +3449,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96a1"
   },
-  "symbol": "DAO",
+  "base": "DAO",
   "balance": "10.71387766",
   "available": "0.33487766",
   "platform": "kucoin"
@@ -3458,7 +3458,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96a2"
   },
-  "symbol": "AKT",
+  "base": "AKT",
   "balance": "18.3018",
   "available": "1.1439",
   "platform": "kucoin"
@@ -3467,7 +3467,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96a3"
   },
-  "symbol": "API3",
+  "base": "API3",
   "balance": "9",
   "available": "0.2812",
   "platform": "kucoin"
@@ -3476,7 +3476,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96a4"
   },
-  "symbol": "ALEPH",
+  "base": "ALEPH",
   "balance": "109.8033",
   "available": "0.525",
   "platform": "kucoin"
@@ -3485,7 +3485,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96a5"
   },
-  "symbol": "LOKI",
+  "base": "LOKI",
   "balance": "78.375507",
   "available": "78.375507",
   "platform": "kucoin"
@@ -3494,7 +3494,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96a6"
   },
-  "symbol": "CUDOS",
+  "base": "CUDOS",
   "balance": "3539.96747269",
   "available": "22.12587269",
   "platform": "kucoin"
@@ -3503,7 +3503,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96a7"
   },
-  "symbol": "DSLA",
+  "base": "DSLA",
   "balance": "5376",
   "available": "168.0001",
   "platform": "kucoin"
@@ -3512,7 +3512,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96a8"
   },
-  "symbol": "UBX",
+  "base": "UBX",
   "balance": "223495.57940322",
   "available": "698.53810322",
   "platform": "kucoin"
@@ -3521,7 +3521,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96a9"
   },
-  "symbol": "FORM",
+  "base": "FORM",
   "balance": "5626.10389541",
   "available": "10.33879541",
   "platform": "kucoin"
@@ -3530,7 +3530,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96aa"
   },
-  "symbol": "GODS",
+  "base": "GODS",
   "balance": "56.4321237",
   "available": "1.7635237",
   "platform": "kucoin"
@@ -3539,7 +3539,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ab"
   },
-  "symbol": "VR",
+  "base": "VR",
   "balance": "630.37897234",
   "available": "19.69937234",
   "platform": "kucoin"
@@ -3548,7 +3548,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ac"
   },
-  "symbol": "MLK",
+  "base": "MLK",
   "balance": "21.26163138",
   "available": "0.66443138",
   "platform": "kucoin"
@@ -3557,7 +3557,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ad"
   },
-  "symbol": "LAYER",
+  "base": "LAYER",
   "balance": "108.31921874",
   "available": "1.35651874",
   "platform": "kucoin"
@@ -3566,7 +3566,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ae"
   },
-  "symbol": "DEGO",
+  "base": "DEGO",
   "balance": "4.5",
   "available": "0.189",
   "platform": "kucoin"
@@ -3575,7 +3575,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96af"
   },
-  "symbol": "EOSC",
+  "base": "EOSC",
   "balance": "4156.99509338",
   "available": "23.14779338",
   "platform": "kucoin"
@@ -3584,7 +3584,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96b0"
   },
-  "symbol": "CTI",
+  "base": "CTI",
   "balance": "258.97811992",
   "available": "16.18611992",
   "platform": "kucoin"
@@ -3593,7 +3593,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96b1"
   },
-  "symbol": "TRIAS",
+  "base": "TRIAS",
   "balance": "1.6058",
   "available": "0.1004",
   "platform": "kucoin"
@@ -3602,7 +3602,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96b2"
   },
-  "symbol": "SHIB",
+  "base": "SHIB",
   "balance": "838072.00274864",
   "available": "26189.75014864",
   "platform": "kucoin"
@@ -3611,7 +3611,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96b3"
   },
-  "symbol": "CLUB",
+  "base": "CLUB",
   "balance": "562.46459564",
   "available": "562.46459564",
   "platform": "kucoin"
@@ -3620,7 +3620,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96b4"
   },
-  "symbol": "VAI",
+  "base": "VAI",
   "balance": "54.80055217",
   "available": "3.42505217",
   "platform": "kucoin"
@@ -3629,7 +3629,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96b5"
   },
-  "symbol": "VIDT",
+  "base": "VIDT",
   "balance": "229.7186976",
   "available": "28.7148976",
   "platform": "kucoin"
@@ -3638,7 +3638,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96b6"
   },
-  "symbol": "TEL",
+  "base": "TEL",
   "balance": "3930.25595076",
   "available": "1965.12805076",
   "platform": "kucoin"
@@ -3647,7 +3647,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96b7"
   },
-  "symbol": "SUN",
+  "base": "SUN",
   "balance": "948.42615872",
   "available": "29.63835872",
   "platform": "kucoin"
@@ -3656,7 +3656,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96b8"
   },
-  "symbol": "NFT",
+  "base": "NFT",
   "balance": "15241266.23377229",
   "available": "1409884.16637229",
   "platform": "kucoin"
@@ -3665,7 +3665,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96b9"
   },
-  "symbol": "BOND",
+  "base": "BOND",
   "balance": "1.73",
   "available": "0.054",
   "platform": "kucoin"
@@ -3674,7 +3674,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ba"
   },
-  "symbol": "STC",
+  "base": "STC",
   "balance": "1682.99563241",
   "available": "105.18723241",
   "platform": "kucoin"
@@ -3683,7 +3683,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96bb"
   },
-  "symbol": "SOS",
+  "base": "SOS",
   "balance": "91491308.3257",
   "available": "2859103.3852",
   "platform": "kucoin"
@@ -3692,7 +3692,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96bc"
   },
-  "symbol": "SCLP",
+  "base": "SCLP",
   "balance": "28.87320503",
   "available": "0.90230503",
   "platform": "kucoin"
@@ -3701,7 +3701,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96bd"
   },
-  "symbol": "GAFI",
+  "base": "GAFI",
   "balance": "1.02690751",
   "available": "0.03210751",
   "platform": "kucoin"
@@ -3710,7 +3710,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96be"
   },
-  "symbol": "CIX100",
+  "base": "CIX100",
   "balance": "590.48192306",
   "available": "18.45262306",
   "platform": "kucoin"
@@ -3719,7 +3719,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96bf"
   },
-  "symbol": "CREDI",
+  "base": "CREDI",
   "balance": "1215.93762831",
   "available": "37.99822831",
   "platform": "kucoin"
@@ -3728,7 +3728,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96c0"
   },
-  "symbol": "ROSE",
+  "base": "ROSE",
   "balance": "98.008",
   "available": "3.0628",
   "platform": "kucoin"
@@ -3737,7 +3737,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96c1"
   },
-  "symbol": "NAKA",
+  "base": "NAKA",
   "balance": "15.46072974",
   "available": "0.48312974",
   "platform": "kucoin"
@@ -3746,7 +3746,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96c2"
   },
-  "symbol": "MARSH",
+  "base": "MARSH",
   "balance": "45.0024398",
   "available": "1.4064398",
   "platform": "kucoin"
@@ -3755,7 +3755,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96c3"
   },
-  "symbol": "PROM",
+  "base": "PROM",
   "balance": "1.0949286",
   "available": "0.0344286",
   "platform": "kucoin"
@@ -3764,7 +3764,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96c4"
   },
-  "symbol": "XPR",
+  "base": "XPR",
   "balance": "4162.07318989",
   "available": "130.06478989",
   "platform": "kucoin"
@@ -3773,7 +3773,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96c5"
   },
-  "symbol": "CPOOL",
+  "base": "CPOOL",
   "balance": "159.96402598",
   "available": "4.99892598",
   "platform": "kucoin"
@@ -3782,7 +3782,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96c6"
   },
-  "symbol": "LITH",
+  "base": "LITH",
   "balance": "13014.21976612",
   "available": "27.11616612",
   "platform": "kucoin"
@@ -3791,7 +3791,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96c7"
   },
-  "symbol": "ROUTE",
+  "base": "ROUTE",
   "balance": "1.69710135",
   "available": "0.10600135",
   "platform": "kucoin"
@@ -3800,7 +3800,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96c8"
   },
-  "symbol": "LIKE",
+  "base": "LIKE",
   "balance": "1066.67738113",
   "available": "33.33408113",
   "platform": "kucoin"
@@ -3809,7 +3809,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96c9"
   },
-  "symbol": "MJT",
+  "base": "MJT",
   "balance": "51.85544313",
   "available": "1.62054313",
   "platform": "kucoin"
@@ -3818,7 +3818,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ca"
   },
-  "symbol": "ORBS",
+  "base": "ORBS",
   "balance": "178.5714",
   "available": "5.5803",
   "platform": "kucoin"
@@ -3827,7 +3827,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96cb"
   },
-  "symbol": "HEGIC",
+  "base": "HEGIC",
   "balance": "331.11495009",
   "available": "10.34735009",
   "platform": "kucoin"
@@ -3836,7 +3836,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96cc"
   },
-  "symbol": "LSS",
+  "base": "LSS",
   "balance": "31.7024",
   "available": "1.9814",
   "platform": "kucoin"
@@ -3845,7 +3845,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96cd"
   },
-  "symbol": "ABBC",
+  "base": "ABBC",
   "balance": "23.51838861",
   "available": "1.46998861",
   "platform": "kucoin"
@@ -3854,7 +3854,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ce"
   },
-  "symbol": "PRE",
+  "base": "PRE",
   "balance": "103.5368566",
   "available": "12.9421566",
   "platform": "kucoin"
@@ -3863,7 +3863,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96cf"
   },
-  "symbol": "EQX",
+  "base": "EQX",
   "balance": "719.82417869",
   "available": "22.49407869",
   "platform": "kucoin"
@@ -3872,7 +3872,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96d0"
   },
-  "symbol": "MNET",
+  "base": "MNET",
   "balance": "6801.52528833",
   "available": "212.55378833",
   "platform": "kucoin"
@@ -3881,7 +3881,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96d1"
   },
-  "symbol": "VLX",
+  "base": "VLX",
   "balance": "253.1586017",
   "available": "7.9113017",
   "platform": "kucoin"
@@ -3890,7 +3890,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96d2"
   },
-  "symbol": "VSYS",
+  "base": "VSYS",
   "balance": "3287.78050898",
   "available": "1644.12500898",
   "platform": "kucoin"
@@ -3899,7 +3899,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96d3"
   },
-  "symbol": "AGLD",
+  "base": "AGLD",
   "balance": "7.38053781",
   "available": "0.23093781",
   "platform": "kucoin"
@@ -3908,7 +3908,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96d4"
   },
-  "symbol": "TARA",
+  "base": "TARA",
   "balance": "5392.08480743",
   "available": "168.50260743",
   "platform": "kucoin"
@@ -3917,7 +3917,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96d5"
   },
-  "symbol": "FRM",
+  "base": "FRM",
   "balance": "102.62531037",
   "available": "25.65631037",
   "platform": "kucoin"
@@ -3926,7 +3926,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96d6"
   },
-  "symbol": "GHX",
+  "base": "GHX",
   "balance": "734.45588016",
   "available": "22.95268016",
   "platform": "kucoin"
@@ -3935,7 +3935,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96d7"
   },
-  "symbol": "XCAD",
+  "base": "XCAD",
   "balance": "4.97611719",
   "available": "1.24401719",
   "platform": "kucoin"
@@ -3944,7 +3944,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96d8"
   },
-  "symbol": "STX",
+  "base": "STX",
   "balance": "6.67916876",
   "available": "0.20816876",
   "platform": "kucoin"
@@ -3953,7 +3953,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96d9"
   },
-  "symbol": "GAS",
+  "base": "GAS",
   "balance": "1.5173",
   "available": "1.5173",
   "platform": "kucoin"
@@ -3962,7 +3962,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96da"
   },
-  "symbol": "HTR",
+  "base": "HTR",
   "balance": "76.28583618",
   "available": "2.38403618",
   "platform": "kucoin"
@@ -3971,7 +3971,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96db"
   },
-  "symbol": "NIM",
+  "base": "NIM",
   "balance": "2639.79434641",
   "available": "164.98714641",
   "platform": "kucoin"
@@ -3980,7 +3980,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96dc"
   },
-  "symbol": "DAPPX",
+  "base": "DAPPX",
   "balance": "2675.14661146",
   "available": "334.38321146",
   "platform": "kucoin"
@@ -3989,7 +3989,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96dd"
   },
-  "symbol": "TOKO",
+  "base": "TOKO",
   "balance": "3050",
   "available": "19.0579",
   "platform": "kucoin"
@@ -3998,7 +3998,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96de"
   },
-  "symbol": "DFI",
+  "base": "DFI",
   "balance": "10.22917733",
   "available": "0.31967733",
   "platform": "kucoin"
@@ -4007,7 +4007,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96df"
   },
-  "symbol": "MONI",
+  "base": "MONI",
   "balance": "257.2248195",
   "available": "8.0390195",
   "platform": "kucoin"
@@ -4016,7 +4016,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96e0"
   },
-  "symbol": "KCS",
+  "base": "KCS",
   "balance": "0.53072922",
   "available": "0.01072922",
   "platform": "kucoin"
@@ -4025,7 +4025,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96e1"
   },
-  "symbol": "HEART",
+  "base": "HEART",
   "balance": "205.76131687",
   "available": "6.43001687",
   "platform": "kucoin"
@@ -4034,7 +4034,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96e2"
   },
-  "symbol": "2CRZ",
+  "base": "2CRZ",
   "balance": "3531.4620924",
   "available": "155.7803924",
   "platform": "kucoin"
@@ -4043,7 +4043,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96e3"
   },
-  "symbol": "MAKI",
+  "base": "MAKI",
   "balance": "1238.85285777",
   "available": "15.48885777",
   "platform": "kucoin"
@@ -4052,7 +4052,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96e4"
   },
-  "symbol": "MANA",
+  "base": "MANA",
   "balance": "9.03709105",
   "available": "1.12969105",
   "platform": "kucoin"
@@ -4061,7 +4061,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96e5"
   },
-  "symbol": "KLAY",
+  "base": "KLAY",
   "balance": "20.46663937",
   "available": "0.63963937",
   "platform": "kucoin"
@@ -4070,7 +4070,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96e6"
   },
-  "symbol": "PRQ",
+  "base": "PRQ",
   "balance": "34.1098",
   "available": "1.066",
   "platform": "kucoin"
@@ -4079,7 +4079,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96e7"
   },
-  "symbol": "SWINGBY",
+  "base": "SWINGBY",
   "balance": "1288.32628829",
   "available": "40.26028829",
   "platform": "kucoin"
@@ -4088,7 +4088,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96e8"
   },
-  "symbol": "FKX",
+  "base": "FKX",
   "balance": "255.39420255",
   "available": "15.96210255",
   "platform": "kucoin"
@@ -4097,7 +4097,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96e9"
   },
-  "symbol": "XNL",
+  "base": "XNL",
   "balance": "319.65608989",
   "available": "9.98818989",
   "platform": "kucoin"
@@ -4106,7 +4106,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ea"
   },
-  "symbol": "VELO",
+  "base": "VELO",
   "balance": "1139.84281676",
   "available": "35.62011676",
   "platform": "kucoin"
@@ -4115,7 +4115,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96eb"
   },
-  "symbol": "SYLO",
+  "base": "SYLO",
   "balance": "1890.3591412",
   "available": "59.0737412",
   "platform": "kucoin"
@@ -4124,7 +4124,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ec"
   },
-  "symbol": "AOA",
+  "base": "AOA",
   "balance": "20164.15327724",
   "available": "630.13007724",
   "platform": "kucoin"
@@ -4133,7 +4133,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ed"
   },
-  "symbol": "POLX",
+  "base": "POLX",
   "balance": "67767.05787825",
   "available": "2117.72067825",
   "platform": "kucoin"
@@ -4142,7 +4142,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ee"
   },
-  "symbol": "FORESTPLUS",
+  "base": "FORESTPLUS",
   "balance": "1358.17895365",
   "available": "8.48865365",
   "platform": "kucoin"
@@ -4151,7 +4151,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ef"
   },
-  "symbol": "IDEA",
+  "base": "IDEA",
   "balance": "763.98648597",
   "available": "23.87458597",
   "platform": "kucoin"
@@ -4160,7 +4160,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96f0"
   },
-  "symbol": "BUY",
+  "base": "BUY",
   "balance": "832",
   "available": "10.3999",
   "platform": "kucoin"
@@ -4169,7 +4169,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96f1"
   },
-  "symbol": "BOA",
+  "base": "BOA",
   "balance": "212.14246929",
   "available": "6.62946929",
   "platform": "kucoin"
@@ -4178,7 +4178,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96f2"
   },
-  "symbol": "BEPRO",
+  "base": "BEPRO",
   "balance": "3757.5",
   "available": "469.6875",
   "platform": "kucoin"
@@ -4187,7 +4187,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96f3"
   },
-  "symbol": "LRC",
+  "base": "LRC",
   "balance": "13.0863345",
   "available": "0.4089345",
   "platform": "kucoin"
@@ -4196,7 +4196,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96f4"
   },
-  "symbol": "SHA",
+  "base": "SHA",
   "balance": "5947.07725673",
   "available": "2973.53865673",
   "platform": "kucoin"
@@ -4205,7 +4205,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96f5"
   },
-  "symbol": "LABS",
+  "base": "LABS",
   "balance": "5000",
   "available": "31.25",
   "platform": "kucoin"
@@ -4214,7 +4214,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96f6"
   },
-  "symbol": "CWAR",
+  "base": "CWAR",
   "balance": "349.64723648",
   "available": "10.92633648",
   "platform": "kucoin"
@@ -4223,7 +4223,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96f7"
   },
-  "symbol": "CRO",
+  "base": "CRO",
   "balance": "51.65294049",
   "available": "1.61424049",
   "platform": "kucoin"
@@ -4232,7 +4232,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96f8"
   },
-  "symbol": "HAPI",
+  "base": "HAPI",
   "balance": "0.31943839",
   "available": "0.00993839",
   "platform": "kucoin"
@@ -4241,7 +4241,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96f9"
   },
-  "symbol": "ODDZ",
+  "base": "ODDZ",
   "balance": "210.32814139",
   "available": "1.31474139",
   "platform": "kucoin"
@@ -4250,7 +4250,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96fa"
   },
-  "symbol": "XEC",
+  "base": "XEC",
   "balance": "131164.7429",
   "available": "4098.8982",
   "platform": "kucoin"
@@ -4259,7 +4259,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96fb"
   },
-  "symbol": "EQZ",
+  "base": "EQZ",
   "balance": "122.0508945",
   "available": "12.2949945",
   "platform": "kucoin"
@@ -4268,7 +4268,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96fc"
   },
-  "symbol": "NORD",
+  "base": "NORD",
   "balance": "21.54285135",
   "available": "0.13465135",
   "platform": "kucoin"
@@ -4277,7 +4277,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96fd"
   },
-  "symbol": "GMEE",
+  "base": "GMEE",
   "balance": "326.70241273",
   "available": "4.08381273",
   "platform": "kucoin"
@@ -4286,7 +4286,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96fe"
   },
-  "symbol": "QNT",
+  "base": "QNT",
   "balance": "0.02368207",
   "available": "0.00448207",
   "platform": "kucoin"
@@ -4295,7 +4295,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c96ff"
   },
-  "symbol": "STND",
+  "base": "STND",
   "balance": "227.59181125",
   "available": "0.71111125",
   "platform": "kucoin"
@@ -4304,7 +4304,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9700"
   },
-  "symbol": "KAVA",
+  "base": "KAVA",
   "balance": "2.85632676",
   "available": "1.42812676",
   "platform": "kucoin"
@@ -4313,7 +4313,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9701"
   },
-  "symbol": "BNS",
+  "base": "BNS",
   "balance": "9314.324158",
   "available": "1164.294158",
   "platform": "kucoin"
@@ -4322,7 +4322,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9702"
   },
-  "symbol": "BOLT",
+  "base": "BOLT",
   "balance": "929.08841054",
   "available": "29.03401054",
   "platform": "kucoin"
@@ -4331,7 +4331,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9703"
   },
-  "symbol": "SUTER",
+  "base": "SUTER",
   "balance": "5807.66747149",
   "available": "181.48977149",
   "platform": "kucoin"
@@ -4340,7 +4340,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9704"
   },
-  "symbol": "DFYN",
+  "base": "DFYN",
   "balance": "73.96449704",
   "available": "2.31139704",
   "platform": "kucoin"
@@ -4349,7 +4349,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9705"
   },
-  "symbol": "APE",
+  "base": "APE",
   "balance": "0.99449052",
   "available": "0.12449052",
   "platform": "kucoin"
@@ -4358,7 +4358,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9706"
   },
-  "symbol": "XDB",
+  "base": "XDB",
   "balance": "3834.67016536",
   "available": "79.88906536",
   "platform": "kucoin"
@@ -4367,7 +4367,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9707"
   },
-  "symbol": "RMRK",
+  "base": "RMRK",
   "balance": "1.28951444",
   "available": "0.16131444",
   "platform": "kucoin"
@@ -4376,7 +4376,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9708"
   },
-  "symbol": "ACE",
+  "base": "ACE",
   "balance": "462.00626792",
   "available": "22.71246792",
   "platform": "kucoin"
@@ -4385,7 +4385,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9709"
   },
-  "symbol": "JAR",
+  "base": "JAR",
   "balance": "1102.42531702",
   "available": "68.93151702",
   "platform": "kucoin"
@@ -4394,7 +4394,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c970a"
   },
-  "symbol": "TOWER",
+  "base": "TOWER",
   "balance": "957.30040716",
   "available": "59.83120716",
   "platform": "kucoin"
@@ -4403,7 +4403,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c970b"
   },
-  "symbol": "GOVI",
+  "base": "GOVI",
   "balance": "8.3166",
   "available": "0.208",
   "platform": "kucoin"
@@ -4412,7 +4412,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c970c"
   },
-  "symbol": "KAI",
+  "base": "KAI",
   "balance": "499.94469096",
   "available": "15.62329096",
   "platform": "kucoin"
@@ -4421,7 +4421,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c970d"
   },
-  "symbol": "REAP",
+  "base": "REAP",
   "balance": "504.3593",
   "available": "15.7612",
   "platform": "kucoin"
@@ -4430,7 +4430,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c970e"
   },
-  "symbol": "CELO",
+  "base": "CELO",
   "balance": "4.61051829",
   "available": "0.14401829",
   "platform": "kucoin"
@@ -4439,7 +4439,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c970f"
   },
-  "symbol": "SKU",
+  "base": "SKU",
   "balance": "663.08039031",
   "available": "20.71979031",
   "platform": "kucoin"
@@ -4448,7 +4448,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9710"
   },
-  "symbol": "SWASH",
+  "base": "SWASH",
   "balance": "159.20726214",
   "available": "4.97526214",
   "platform": "kucoin"
@@ -4457,7 +4457,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9711"
   },
-  "symbol": "AXS",
+  "base": "AXS",
   "balance": "0.36021304",
   "available": "0.01021304",
   "platform": "kucoin"
@@ -4466,7 +4466,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9712"
   },
-  "symbol": "IMX",
+  "base": "IMX",
   "balance": "2.78210549",
   "available": "0.17310549",
   "platform": "kucoin"
@@ -4475,7 +4475,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9713"
   },
-  "symbol": "PBR",
+  "base": "PBR",
   "balance": "38.25053817",
   "available": "1.19533817",
   "platform": "kucoin"
@@ -4484,7 +4484,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9714"
   },
-  "symbol": "1EARTH",
+  "base": "1EARTH",
   "balance": "893.38209722",
   "available": "27.91849722",
   "platform": "kucoin"
@@ -4493,7 +4493,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9715"
   },
-  "symbol": "CWS",
+  "base": "CWS",
   "balance": "6.41436818",
   "available": "0.04006818",
   "platform": "kucoin"
@@ -4502,7 +4502,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9716"
   },
-  "symbol": "HYDRA",
+  "base": "HYDRA",
   "balance": "1.47230662",
   "available": "0.04600662",
   "platform": "kucoin"
@@ -4511,7 +4511,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9717"
   },
-  "symbol": "SKEY",
+  "base": "SKEY",
   "balance": "111.51995341",
   "available": "3.48495341",
   "platform": "kucoin"
@@ -4520,7 +4520,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9718"
   },
-  "symbol": "LPOOL",
+  "base": "LPOOL",
   "balance": "8.15394651",
   "available": "0.25484651",
   "platform": "kucoin"
@@ -4529,7 +4529,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9719"
   },
-  "symbol": "ASD",
+  "base": "ASD",
   "balance": "24.81418312",
   "available": "3.10208312",
   "platform": "kucoin"
@@ -4538,7 +4538,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c971a"
   },
-  "symbol": "SOLVE",
+  "base": "SOLVE",
   "balance": "66.3881",
   "available": "16.597",
   "platform": "kucoin"
@@ -4547,7 +4547,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c971b"
   },
-  "symbol": "MNST",
+  "base": "MNST",
   "balance": "261.91723415",
   "available": "16.36983415",
   "platform": "kucoin"
@@ -4556,7 +4556,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c971c"
   },
-  "symbol": "NXRA",
+  "base": "NXRA",
   "balance": "26.16157388",
   "available": "13.08077388",
   "platform": "kucoin"
@@ -4565,7 +4565,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c971d"
   },
-  "symbol": "GMT",
+  "base": "GMT",
   "balance": "6.52741514",
   "available": "1.63141514",
   "platform": "kucoin"
@@ -4574,7 +4574,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c971e"
   },
-  "symbol": "KAT",
+  "base": "KAT",
   "balance": "585.7790685",
   "available": "18.3055685",
   "platform": "kucoin"
@@ -4583,7 +4583,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c971f"
   },
-  "symbol": "MTV",
+  "base": "MTV",
   "balance": "1444.25187752",
   "available": "45.13287752",
   "platform": "kucoin"
@@ -4592,7 +4592,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9720"
   },
-  "symbol": "GMB",
+  "base": "GMB",
   "balance": "5688.28213879",
   "available": "177.75883879",
   "platform": "kucoin"
@@ -4601,7 +4601,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9721"
   },
-  "symbol": "ORC",
+  "base": "ORC",
   "balance": "18.08972503",
   "available": "1.13062503",
   "platform": "kucoin"
@@ -4610,7 +4610,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9722"
   },
-  "symbol": "CGG",
+  "base": "CGG",
   "balance": "16.7000668",
   "available": "0.5218668",
   "platform": "kucoin"
@@ -4619,7 +4619,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9723"
   },
-  "symbol": "XAVA",
+  "base": "XAVA",
   "balance": "5.3456752",
   "available": "0.1670752",
   "platform": "kucoin"
@@ -4628,7 +4628,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9724"
   },
-  "symbol": "SUKU",
+  "base": "SUKU",
   "balance": "21.60947359",
   "available": "0.67527359",
   "platform": "kucoin"
@@ -4637,7 +4637,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9725"
   },
-  "symbol": "FLAME",
+  "base": "FLAME",
   "balance": "26.38522427",
   "available": "13.19262427",
   "platform": "kucoin"
@@ -4646,7 +4646,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9726"
   },
-  "symbol": "TRVL",
+  "base": "TRVL",
   "balance": "29.60331557",
   "available": "1.85021557",
   "platform": "kucoin"
@@ -4655,7 +4655,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9727"
   },
-  "symbol": "ISP",
+  "base": "ISP",
   "balance": "1891.4166374",
   "available": "118.2135374",
   "platform": "kucoin"
@@ -4664,7 +4664,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9728"
   },
-  "symbol": "GLCH",
+  "base": "GLCH",
   "balance": "18.00725833",
   "available": "5.62735833",
   "platform": "kucoin"
@@ -4673,7 +4673,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9729"
   },
-  "symbol": "XCUR",
+  "base": "XCUR",
   "balance": "64.79399724",
   "available": "6.07439724",
   "platform": "kucoin"
@@ -4682,7 +4682,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c972a"
   },
-  "symbol": "CIRUS",
+  "base": "CIRUS",
   "balance": "29.86857825",
   "available": "1.86677825",
   "platform": "kucoin"
@@ -4691,7 +4691,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c972b"
   },
-  "symbol": "VXV",
+  "base": "VXV",
   "balance": "2.73224043",
   "available": "0.08534043",
   "platform": "kucoin"
@@ -4700,7 +4700,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c972c"
   },
-  "symbol": "TXA",
+  "base": "TXA",
   "balance": "2.99311428",
   "available": "0.18731428",
   "platform": "kucoin"
@@ -4709,7 +4709,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c972d"
   },
-  "symbol": "ZEE",
+  "base": "ZEE",
   "balance": "50.5050505",
   "available": "1.5782505",
   "platform": "kucoin"
@@ -4718,7 +4718,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c972e"
   },
-  "symbol": "MSWAP",
+  "base": "MSWAP",
   "balance": "5103.27261189",
   "available": "318.95451189",
   "platform": "kucoin"
@@ -4727,7 +4727,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c972f"
   },
-  "symbol": "POLK",
+  "base": "POLK",
   "balance": "25.025",
   "available": "0.7819",
   "platform": "kucoin"
@@ -4736,7 +4736,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9730"
   },
-  "symbol": "HNT",
+  "base": "HNT",
   "balance": "0.66225165",
   "available": "0.02225165",
   "platform": "kucoin"
@@ -4745,7 +4745,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9731"
   },
-  "symbol": "XHV",
+  "base": "XHV",
   "balance": "2.90269654",
   "available": "0.09079654",
   "platform": "kucoin"
@@ -4754,7 +4754,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9732"
   },
-  "symbol": "REVU",
+  "base": "REVU",
   "balance": "48.35589941",
   "available": "1.51119941",
   "platform": "kucoin"
@@ -4763,7 +4763,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9733"
   },
-  "symbol": "DAG",
+  "base": "DAG",
   "balance": "28.20651683",
   "available": "1.76301683",
   "platform": "kucoin"
@@ -4772,7 +4772,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9734"
   },
-  "symbol": "PMON",
+  "base": "PMON",
   "balance": "2.28479491",
   "available": "0.14279491",
   "platform": "kucoin"
@@ -4781,7 +4781,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9735"
   },
-  "symbol": "AI",
+  "base": "AI",
   "balance": "1293.29321792",
   "available": "40.41551792",
   "platform": "kucoin"
@@ -4790,7 +4790,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9736"
   },
-  "symbol": "FEAR",
+  "base": "FEAR",
   "balance": "12.59763164",
   "available": "1.57473164",
   "platform": "kucoin"
@@ -4799,7 +4799,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9737"
   },
-  "symbol": "OOE",
+  "base": "OOE",
   "balance": "57.14285714",
   "available": "1.78585714",
   "platform": "kucoin"
@@ -4808,7 +4808,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9738"
   },
-  "symbol": "WOM",
+  "base": "WOM",
   "balance": "48.59605983",
   "available": "24.29805983",
   "platform": "kucoin"
@@ -4817,7 +4817,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9739"
   },
-  "symbol": "QI",
+  "base": "QI",
   "balance": "128.7001287",
   "available": "16.0876287",
   "platform": "kucoin"
@@ -4826,7 +4826,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c973a"
   },
-  "symbol": "ZKT",
+  "base": "ZKT",
   "balance": "0.75419349",
   "available": "0.75419349",
   "platform": "kucoin"
@@ -4835,7 +4835,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c973b"
   },
-  "symbol": "UFO",
+  "base": "UFO",
   "balance": "726744.18604651",
   "available": "22710.75594651",
   "platform": "kucoin"
@@ -4844,7 +4844,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c973c"
   },
-  "symbol": "VID",
+  "base": "VID",
   "balance": "42.10526315",
   "available": "1.31586315",
   "platform": "kucoin"
@@ -4853,7 +4853,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c973d"
   },
-  "symbol": "BLOK",
+  "base": "BLOK",
   "balance": "360.51625928",
   "available": "11.26615928",
   "platform": "kucoin"
@@ -4862,7 +4862,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c973e"
   },
-  "symbol": "LAVAX",
+  "base": "LAVAX",
   "balance": "37.56334321",
   "available": "4.69544321",
   "platform": "kucoin"
@@ -4871,7 +4871,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c973f"
   },
-  "symbol": "HAI",
+  "base": "HAI",
   "balance": "33.17434692",
   "available": "1.03664692",
   "platform": "kucoin"
@@ -4880,7 +4880,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9740"
   },
-  "symbol": "KAR",
+  "base": "KAR",
   "balance": "3.72023809",
   "available": "0.11623809",
   "platform": "kucoin"
@@ -4889,7 +4889,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9741"
   },
-  "symbol": "DAPPT",
+  "base": "DAPPT",
   "balance": "9199.9507369",
   "available": "9199.9507369",
   "platform": "kucoin"
@@ -4898,7 +4898,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9742"
   },
-  "symbol": "MEM",
+  "base": "MEM",
   "balance": "119.10588565",
   "available": "119.10588565",
   "platform": "kucoin"
@@ -4907,7 +4907,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9743"
   },
-  "symbol": "ELON",
+  "base": "ELON",
   "balance": "0.09373333",
   "available": "0.09373333",
   "platform": "kucoin"
@@ -4916,7 +4916,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9744"
   },
-  "symbol": "GOM2",
+  "base": "GOM2",
   "balance": "0.00008441",
   "available": "0.00008441",
   "platform": "kucoin"
@@ -4925,7 +4925,7 @@
   "_id": {
     "$oid": "6489c24801da0380f02c9745"
   },
-  "symbol": "EDG",
+  "base": "EDG",
   "balance": "0.00003985",
   "available": "0.00003985",
   "platform": "kucoin"

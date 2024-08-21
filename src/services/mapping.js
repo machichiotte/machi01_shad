@@ -44,9 +44,9 @@ function getTotalUSDT(symbol, cost, conversionRates = {}) {
   return null;
 }
 
-function mapBalanceCommon(symbol, balance, available, platform) {
+function mapBalanceCommon(base, balance, available, platform) {
   return {
-    symbol,
+    base,
     balance: parseFloat(balance),
     available: parseFloat(available),
     platform,

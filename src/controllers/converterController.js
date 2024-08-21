@@ -121,7 +121,7 @@ async function convertModelHTX(data) {
         item["deal_type"] &&
         item["deal_time"]
       ) {
-        // Séparer la paire en alta et altb en utilisant les éléments de 'symbol'
+        // Séparer la paire en base et quote en utilisant les éléments de 'symbol'
         const [base, quote] = item["symbol"].split("/");
         const date = item["deal_time"];
         const total = parseFloat(item["amount"]);
@@ -170,8 +170,8 @@ async function convertModelBinance(data) {
 
         // Récupérer base à partir de la paire et quote
         const base = (() => {
-          const altAStartIndex = item["Pair"].indexOf(quote);
-          return item["Pair"].substring(0, altAStartIndex).toUpperCase();
+          const baseStartIndex = item["Pair"].indexOf(quote);
+          return item["Pair"].substring(0, baseStartIndex).toUpperCase();
         })();
 
         const date = item["Date(UTC)"];

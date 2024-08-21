@@ -5,7 +5,7 @@ const {
   saveLastUpdateToMongoDB,
 } = require("../utils/mongodbUtil.js");
 const { createExchangeInstance } = require("../utils/exchangeUtil.js");
-const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
+const { getData } = require("../utils/dataUtil.js");
 
 const { mapTrades } = require("../services/mapping.js");
 const { handleErrorResponse } = require("../utils/errorUtil.js");
@@ -29,7 +29,7 @@ async function getTrades(req, res) {
  */
 async function fetchTradesInDatabase() {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
-  const data = await getDataFromCollection(collectionName);
+  const data = await getData(collectionName);
   console.log(`🚀 ~ file: tradesController.js:34 ~ fetchTradesInDatabase ~ data:`, data.length)
   return data;
 }
