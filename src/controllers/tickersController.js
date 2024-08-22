@@ -1,14 +1,14 @@
 // src/controllers/tickersController.js
-const { getData} = require("../utils/dataUtil.js");
-const { createExchangeInstance } = require("../utils/exchangeUtil.js");
+const { getData } = require("../utils/dataUtil.js");
+const { createPlatformInstance } = require("../utils/platformUtil.js");
 const { handleErrorResponse } = require("../utils/errorUtil.js");
 const {
   saveLastUpdateToMongoDB,
   deleteAndSaveObject,
-  deleteAndSaveData
+  deleteAndSaveData,
 } = require("../utils/mongodbUtil.js");
 const { mapTickers } = require("../services/mapping.js");
-const { getExchanges } = require("../utils/exchangeUtil.js");
+const { getPlatforms } = require("../utils/platformUtil.js");
 const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
 const { errorLogger } = require("../utils/loggerUtil.js");
 
@@ -31,133 +31,165 @@ async function getAllTickers(req, res) {
  * Retrieves all tickers from the database.
  */
 async function fetchTickersInDatabase() {
-    const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
-    const data = await getData(collectionName);
-    console.log(`🚀 ~ file: tickersController.js:33 ~ fetchTickersInDatabase ~ data.length:`, data.length)
-    return data;
+  const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
+  const data = await getData(collectionName);
+  console.log(
+    `🚀 ~ file: tickersController.js:33 ~ fetchTickersInDatabase ~ data.length:`,
+    data.length
+  );
+  return data;
 }
 
 /**
- * Fetches the current tickers from the specified exchange.
- * @param {string} exchangeId - Identifier for the exchange.
+ * Fetches the current tickers from the specified platform.
+ * @param {string} platform - Identifier for the platform.
  * @param {number} [retries=3] - Number of retry attempts.
  * @returns {Promise<Object[]>} - The fetched ticker data.
  */
-async function fetchCurrentTickers(exchangeId, retries = 3) {
+async function fetchCurrentTickers(platform, retries = 3) {
   const errorPolicies = await loadErrorPolicies(); // Load error policies
 
   try {
-    const exchange = createExchangeInstance(exchangeId);
-    const data = await exchange.fetchTickers();
-    const mappedData = mapTickers(data, exchangeId);
+    const platformInstance = createPlatformInstance(platform);
+    const data = await platformInstance.fetchTickers();
+    const mappedData = mapTickers(data, platform);
     return mappedData;
   } catch (error) {
-    console.log(`🚀 ~ file: tickerController.js:58 ~ fetchCurrentTickers ~ error:`, error);
+    console.log(
+      `🚀 ~ file: tickerController.js:58 ~ fetchCurrentTickers ~ error:`,
+      error
+    );
 
     // Check if the error justifies a retry
-    if (retries > 0 && shouldRetry(exchangeId, error, errorPolicies)) {
+    if (retries > 0 && shouldRetry(platform, error, errorPolicies)) {
       const delay = Math.pow(2, 3 - retries) * 1000; // Exponential delay
-      console.log(`Retrying fetchCurrentTickers... (${3 - retries + 1}/3)`, { delay });
-      await new Promise(resolve => setTimeout(resolve, delay));
-      return fetchCurrentTickers(exchangeId, retries - 1);
+      console.log(`Retrying fetchCurrentTickers... (${3 - retries + 1}/3)`, {
+        delay,
+      });
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      return fetchCurrentTickers(platform, retries - 1);
     }
 
-    // Log non-recoverable errors
-    errorLogger.error("Failed to fetch current tickers from exchange", { exchangeId, error: error.message });
     throw error;
   }
 }
-
 
 /**
  * Saves the provided ticker data to the database.
  * @param {Object[]} mappedData - The ticker data to be saved.
- * @param {string} exchangeId - Identifier of the exchange.
+ * @param {string} platform - Identifier of the platform.
  */
-async function saveTickersInDatabase(mappedData, exchangeId) {
+async function saveTickersInDatabase(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_TICKERS;
   try {
-    await deleteAndSaveData(mappedData, collection, exchangeId);
-    await saveLastUpdateToMongoDB(process.env.TYPE_TICKERS, exchangeId);
-    console.log("Saved ticker data to the database", { exchangeId });
+    await deleteAndSaveData(mappedData, collection, platform);
+    await saveLastUpdateToMongoDB(process.env.TYPE_TICKERS, platform);
+    console.log("Saved ticker data to the database", { platform });
   } catch (error) {
-    errorLogger.error("Failed to save ticker data to database", { exchangeId, error: error.message });
+    errorLogger.error("Failed to save ticker data to database", {
+      platform,
+      error: error.message,
+    });
     throw error;
   }
 }
 
-
 /**
- * Retrieves all tickers for a specific exchange.
+ * Retrieves all tickers for a specific platform.
  * @param {Object} req - HTTP request object.
  * @param {Object} res - HTTP response object.
- * @param {string} exchangeId - Identifier of the exchange.
+ * @param {string} platform - Identifier of the platform.
  */
-async function getAllTickersByExchange(req, res, exchangeId) {
+async function getAllTickersByPlatform(req, res, platform) {
   try {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
     const tickersData = await getData(collectionName);
 
-    if (tickersData && tickersData[exchangeId]) {
-      const exchangeTickersData = tickersData[exchangeId];
-      res.status(200).json(exchangeTickersData);
+    if (tickersData && tickersData[platform]) {
+      const platformTickersData = tickersData[platform];
+      res.status(200).json(platformTickersData);
     } else {
-      res.status(404).json({ error: "Exchange not found" });
+      res.status(404).json({ error: "Platform not found" });
     }
   } catch (error) {
-    handleErrorResponse(res, error, "getAllTickersByExchange");
+    handleErrorResponse(res, error, "getAllTickersByPlatform");
   }
 }
 
 /**
- * Retrieves all tickers for a specific exchange.
- * @param {string} exchangeId - Identifier of the exchange.
+ * Retrieves all tickers for a specific platform.
+ * @param {string} platform - Identifier of the platform.
  */
-async function getSavedAllTickersByExchange(exchangeId) {
-  console.log(`🚀 ~ file: tickersController.js:117 ~ getSavedAllTickersByExchange ~ getSavedAllTickersByExchange:`)
+async function getSavedAllTickersByPlatform(platform) {
+  console.log(
+    `🚀 ~ file: tickersController.js:117 ~ getSavedAllTickersByPlatform ~ getSavedAllTickersByPlatform:`
+  );
   try {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
     const tickersData = await getData(collectionName);
-    console.log(`🚀 ~ file: tickersController.js:121 ~ getSavedAllTickersByExchange ~ tickersData:`, tickersData)
+    console.log(
+      `🚀 ~ file: tickersController.js:121 ~ getSavedAllTickersByPlatform ~ tickersData:`,
+      tickersData.length
+    );
+    console.log(
+      `🚀 ~ file: tickersController.js:122 ~ getSavedAllTickersByPlatform ~ tickersData:`,
+      tickersData[0]
+    );
 
     // Vérification que tickersData est bien un tableau
     if (!Array.isArray(tickersData)) {
-      console.log(`🚀 ~ file: tickersController.js:125 ~ getSavedAllTickersByExchange ~ tickersData:`, tickersData)
+      console.log(
+        `🚀 ~ file: tickersController.js:125 ~ getSavedAllTickersByPlatform ~ tickersData:`,
+        tickersData[0]
+      );
       return [];
     }
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
-    const exchangeData = tickersData.filter((obj) => obj.platform === exchangeId);
+    const platformData = tickersData.filter(
+      (obj) => obj.platform === platform
+    );
 
-    if (exchangeData) {
-      console.log(`🚀 ~ file: tickersController.js:134 ~ getSavedAllTickersByExchange ~ exchangeData:`, exchangeData)
-      console.log(`🚀 ~ file: tickersController.js:134 ~ getSavedAllTickersByExchange ~ exchangeData.length:`, exchangeData.length)
-      return exchangeData;
+    if (platformData) {
+      console.log(
+        `🚀 ~ file: tickersController.js:134 ~ getSavedAllTickersByPlatform ~ platformData:`,
+        platformData[0]
+      );
+      console.log(
+        `🚀 ~ file: tickersController.js:135 ~ getSavedAllTickersByPlatform ~ platformData.length:`,
+        platformData.length
+      );
+      return platformData;
     } else {
-      console.log(`🚀 ~ file: tickersController.js:139 ~ getSavedAllTickersByExchange ~ []:`)
+      console.log(
+        `🚀 ~ file: tickersController.js:139 ~ getSavedAllTickersByPlatform ~ []:`
+      );
       return [];
     }
   } catch (error) {
-    console.log(`🚀 ~ file: tickersController.js:138 ~ getSavedAllTickersByExchange ~ error:`, error)
+    console.log(
+      `🚀 ~ file: tickersController.js:138 ~ getSavedAllTickersByPlatform ~ error:`,
+      error
+    );
     return [];
   }
 }
 
 /**
- * Retrieves all tickers for a specific symbol from a specific exchange.
+ * Retrieves all tickers for a specific symbol from a specific platform.
  * @param {Object} req - HTTP request object.
  * @param {Object} res - HTTP response object.
- * @param {string} exchangeId - Identifier of the exchange.
+ * @param {string} platform - Identifier of the platform.
  * @param {string} symbol - Symbol of the ticker.
  */
-async function getAllTickersBySymbolFromExchange(req, res, exchangeId, symbol) {
+async function getAllTickersBySymbolFromPlatform(req, res, platform, symbol) {
   try {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
     const tickersData = await getData(collectionName);
 
-    if (tickersData && tickersData[exchangeId]) {
-      const exchangeTickersData = tickersData[exchangeId];
-      const filteredTickersData = exchangeTickersData.filter(
+    if (tickersData && tickersData[platform]) {
+      const platformTickersData = tickersData[platform];
+      const filteredTickersData = platformTickersData.filter(
         (ticker) => ticker.symbol === symbol
       );
 
@@ -166,50 +198,49 @@ async function getAllTickersBySymbolFromExchange(req, res, exchangeId, symbol) {
       } else {
         res
           .status(404)
-          .json({ error: "Symbol not found for the given exchange" });
+          .json({ error: "Symbol not found for the given platform" });
       }
     } else {
-      res.status(404).json({ error: "Exchange not found" });
+      res.status(404).json({ error: "Platform not found" });
     }
   } catch (error) {
-    handleErrorResponse(res, error, "getAllTickersBySymbolFromExchange");
+    handleErrorResponse(res, error, "getAllTickersBySymbolFromPlatform");
   }
 }
 
 /**
- * Retrieves all tickers for a specific symbol from a specific exchange.
- * @param {string} exchangeId - Identifier of the exchange.
+ * Retrieves all tickers for a specific symbol from a specific platform.
+ * @param {string} platform - Identifier of the platform.
  * @param {string} symbol - Symbol of the ticker.
  */
-async function getSavedAllTickersBySymbolFromExchange(exchangeId, symbol) {
+async function getSavedAllTickersBySymbolFromPlatform(platform, symbol) {
   try {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
     const tickersData = await getData(collectionName);
 
-    if (tickersData && tickersData[exchangeId]) {
-      const exchangeTickersData = tickersData[exchangeId];
-      const filteredTickersData = exchangeTickersData.filter(
+    if (tickersData && tickersData[platform]) {
+      const platformTickersData = tickersData[platform];
+      const filteredTickersData = platformTickersData.filter(
         (ticker) => ticker.symbol === symbol
       );
 
       if (filteredTickersData.length > 0) {
         return filteredTickersData;
       } else {
-        throw new Error("Symbol not found for the given exchange");
+        throw new Error("Symbol not found for the given platform");
       }
     } else {
-      throw new Error("Exchange not found");
+      throw new Error("Platform not found");
     }
   } catch (error) {
     throw new Error(
-      "Failed to get saved tickers by symbol from exchange: " + error.message
+      "Failed to get saved tickers by symbol from platform: " + error.message
     );
   }
 }
 
- 
 /**
- * Updates all tickers by fetching the latest data from exchanges and saving it to the database.
+ * Updates all tickers by fetching the latest data from platforms and saving it to the database.
  * @param {Object} req - HTTP request object.
  * @param {Object} res - HTTP response object.
  */
@@ -217,12 +248,12 @@ async function updateAllTickers(req, res) {
   try {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
     const tickersData = {};
-    const exchanges = getExchanges();
-    for (const exchangeId of exchanges) {
-      const exchange = createExchangeInstance(exchangeId);
-      const data = await exchange.fetchTickers();
+    const platforms = getPlatforms();
+    for (const platform of platforms) {
+      const platformInstance = createPlatformInstance(platform);
+      const data = await platformInstance.fetchTickers();
       const mappedTickersData = mapTickers(data);
-      tickersData[exchangeId] = mappedTickersData;
+      tickersData[platform] = mappedTickersData;
     }
 
     await deleteAndSaveObject(tickersData, collectionName);
@@ -239,8 +270,8 @@ module.exports = {
   fetchCurrentTickers,
   saveTickersInDatabase,
   updateAllTickers,
-  getAllTickersByExchange,
-  getSavedAllTickersByExchange,
-  getAllTickersBySymbolFromExchange,
-  getSavedAllTickersBySymbolFromExchange,
+   getAllTickersByPlatform,
+   getSavedAllTickersByPlatform,
+   getAllTickersBySymbolFromPlatform,
+  getSavedAllTickersBySymbolFromPlatform,
 };

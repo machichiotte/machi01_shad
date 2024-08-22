@@ -4,7 +4,7 @@ const {
   deleteAndSaveData,
   saveLastUpdateToMongoDB,
 } = require("../utils/mongodbUtil.js");
-const { createExchangeInstance } = require("../utils/exchangeUtil.js");
+const { createPlatformInstance } = require("../utils/platformUtil.js");
 const { getData } = require("../utils/dataUtil.js");
 
 const { mapTrades } = require("../services/mapping.js");
@@ -15,7 +15,10 @@ async function getTrades(req, res) {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   try {
     const lastTrades = await getData(collectionName);
-    console.log("Retrieved last Trades", { collectionName, count: lastTrades.length });
+    console.log("Retrieved last Trades", {
+      collectionName,
+      count: lastTrades.length,
+    });
     res.json(lastTrades);
   } catch (error) {
     errorLogger.error("Failed to get trades", { error: error.message });
@@ -30,7 +33,10 @@ async function getTrades(req, res) {
 async function fetchTradesInDatabase() {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   const data = await getData(collectionName);
-  console.log(`🚀 ~ file: tradesController.js:34 ~ fetchTradesInDatabase ~ data:`, data.length)
+  console.log(
+    `🚀 ~ file: tradesController.js:34 ~ fetchTradesInDatabase ~ data:`,
+    data.length
+  );
   return data;
 }
 
@@ -104,26 +110,26 @@ async function saveTrades(newTrades, collection, isFiltered) {
 }
 
 async function updateTrades(req, res) {
-  const { exchangeId } = req.params;
-  console.log("🚀 ~ updateTrades ~ exchangeId:", exchangeId);
+  const { platform } = req.params;
+  console.log("🚀 ~ updateTrades ~ platform:", platform);
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
-  const exchange = createExchangeInstance(exchangeId);
+  const platformInstance = createPlatformInstance(platform);
 
   try {
     const mappedData = [];
-    switch (exchangeId) {
+    switch (platform) {
       case "kucoin":
         const weeksBack = 4 * 52;
         for (let i = weeksBack; i > 1; i--) {
           try {
-            const trades = await exchange.fetchMyTrades(
+            const trades = await platformInstance.fetchMyTrades(
               undefined,
               Date.now() - i * 7 * 86400 * 1000,
               500
             );
 
             if (trades.length > 0) {
-              mappedData.push(...mapTrades(exchangeId, trades));
+              mappedData.push(...mapTrades(platform, trades));
             }
           } catch (err) {
             console.log("🚀 ~ updateTrades ~ err:", err);
@@ -148,14 +154,14 @@ async function updateTrades(req, res) {
           };
 
           try {
-            const trades = await exchange.fetchMyTrades(
+            const trades = await platformInstance.fetchMyTrades(
               undefined,
               undefined,
               1000,
               param
             );
             if (trades.length > 0) {
-              mappedData.push(...mapTrades(exchangeId, trades));
+              mappedData.push(...mapTrades(platform, trades));
             }
           } catch (err) {
             console.log("🚀 ~ updateTrades ~ err:", err);
@@ -166,7 +172,7 @@ async function updateTrades(req, res) {
     }
 
     try {
-      await deleteAndSaveData(mappedData, collectionName, exchangeId);
+      await deleteAndSaveData(mappedData, collectionName, platform);
     } catch (err) {
       console.log("🚀 ~ updateTrades ~ err:", err);
       res.status(500).json({ error: err.name + ": " + err.message });
@@ -176,15 +182,15 @@ async function updateTrades(req, res) {
     } else {
       res.status(201).json({ empty: "empty" });
     }
-    saveLastUpdateToMongoDB(process.env.TYPE_TRADES, exchangeId);
+    saveLastUpdateToMongoDB(process.env.TYPE_TRADES, platform);
   } catch (err) {
     res.status(500).json({ error: err.name + ": " + err.message });
   }
 }
 
-async function fetchLastTrades(exchangeId, symbol) {
-  const exchange = createExchangeInstance(exchangeId);
-  return exchange.fetchMyTrades(symbol);
+async function fetchLastTrades(platform, symbol) {
+  const platformInstance = createPlatformInstance(platform);
+  return platformInstance.fetchMyTrades(symbol);
 }
 
 module.exports = {

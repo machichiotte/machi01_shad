@@ -25,8 +25,8 @@ async function loadErrorPolicies() {
 }
 
 // Détermine si une erreur justifie une nouvelle tentative
-function shouldRetry(exchangeId, error, errorPolicies) {
-  const exchangePolicies = errorPolicies[exchangeId];
+function shouldRetry(platform, error, errorPolicies) {
+  const exchangePolicies = errorPolicies[platform];
   if (exchangePolicies) {
     const policy = exchangePolicies[error.name];
     if (policy) {

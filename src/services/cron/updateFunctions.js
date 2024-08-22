@@ -1,5 +1,5 @@
 // src/services/cron/updateFunctions.js
-const { fetchCurrentTickers, saveTickersInDatabase, getSavedAllTickersByExchange } = require("../../controllers/tickersController.js");
+const { fetchCurrentTickers, saveTickersInDatabase, getSavedAllTickersByPlatform } = require("../../controllers/tickersController.js");
 const { fetchCurrentBalance, saveBalanceInDatabase } = require("../../controllers/balanceController.js");
 const { fetchCurrentMarkets, saveMarketsInDatabase } = require("../../controllers/marketsController.js");
 
@@ -13,47 +13,47 @@ const {
   processBalanceChanges,
 } = require("../balanceProcessor.js");
 
-async function updateMarketsForExchange(exchangeId) {
-  const currentmarkets = await fetchCurrentMarkets(exchangeId, 3);
+async function updateMarketsForPlatform(platform) {
+  const currentmarkets = await fetchCurrentMarkets(platform, 3);
   try {
-    await saveMarketsInDatabase(currentmarkets, exchangeId);
+    await saveMarketsInDatabase(currentmarkets, platform);
   } catch (error) {
-    console.log(`🚀 ~ file: taskExecutor.js:23 ~ awaitexecuteForExchanges ~ error:`, error)
+    console.log(`🚀 ~ file: updateFunctions.js:21 ~ updateMarketsForPlatform ~ error:`, error)
   }
 }
 
-async function updateTickersForExchange(exchangeId) {
-  const currentTickers = await fetchCurrentTickers(exchangeId, 3);
+async function updateTickersForPlatform(platform) {
+  const currentTickers = await fetchCurrentTickers(platform, 3);
   try {
-    await saveTickersInDatabase(currentTickers, exchangeId);
+    await saveTickersInDatabase(currentTickers, platform);
   } catch (error) {
-    console.log(`🚀 ~ file: taskExecutor.js:32 ~ awaitexecuteForExchanges ~ error:`, error)
+    console.log(`🚀 ~ file: updateFunctions.js:30 ~ updateTickersForPlatform ~ error:`, error)
   }
 }
 
-async function updateBalancesForExchange(exchangeId)  {
-  const currentBalance = await fetchCurrentBalance(exchangeId, 3);
-  const lastBalance = await getSavedAllTickersByExchange(exchangeId);
+async function updateBalancesForPlatform(platform)  {
+  const currentBalance = await fetchCurrentBalance(platform, 3);
+  const lastBalance = await getSavedAllTickersByPlatform(platform);
   const differences = compareBalances(lastBalance, currentBalance);
-  console.log(`🚀 ~ file: updateFunctions.js:38 ~ updateBalancesForExchange ~ differences:`, differences)
+  console.log(`🚀 ~ file: updateFunctions.js:38 ~ updateBalancesForPlatform ~ differences:`, differences)
   if (differences.length > 0) {
-    await saveBalanceInDatabase(currentBalance, exchangeId);
-    await processBalanceChanges(differences, exchangeId);
+    await saveBalanceInDatabase(currentBalance, platform);
+    await processBalanceChanges(differences, platform);
     //await calculateMetrics(differences, exchsangeId);
   }
 
   try {
     const collectionName = process.env.MONGODB_COLLECTION_SHAD;
     const metrics = await calculateAllMetrics();
-    console.log(`🚀 ~ file: taskExecutor.js:49 ~ awaitexecuteForExchanges ~ metrics:`, metrics.length)
+    console.log(`🚀 ~ file: updateFunctions.js:48 ~ updateBalancesForPlatform ~ metrics:`, metrics.length.length)
     deleteAndSaveObject(metrics, collectionName);
   } catch (error) {
-    console.log(`🚀 ~ file: taskExecutor.js:52 ~ awaitexecuteForExchanges ~ error:`, error)
+    console.log(`🚀 ~ file: updateFunctions.js:51 ~ updateBalancesForPlatform ~ error:`, error)
   }
 }
 
 module.exports = {
-  updateMarketsForExchange,
-  updateTickersForExchange,
-  updateBalancesForExchange
+  updateMarketsForPlatform,
+  updateTickersForPlatform,
+  updateBalancesForPlatform
 };

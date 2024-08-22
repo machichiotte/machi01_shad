@@ -17,42 +17,42 @@ const {
 } = require("../controllers/ordersController.js");
 const {
   fetchTickersInDatabase,
-  getSavedAllTickersByExchange,
+  getSavedAllTickersByPlatform,
 } = require("../controllers/tickersController.js");
 const {
   fetchBalancesInDatabase,
 } = require("../controllers/balanceController.js");
 
-async function processBalanceChanges(differences, exchangeId) {
+async function processBalanceChanges(differences, platform) {
   const quoteCurrencies = ["USDT", "BTC", "ETH", "USDC"];
 
   try {
-    const update = await updateOrdersFromServer(exchangeId);
+    const update = await updateOrdersFromServer(platform);
     const newTrades = [];
-    const markets = await getSavedAllTickersByExchange(exchangeId);
+    const markets = await getSavedAllTickersByPlatform(platform);
 
     for (const difference of differences) {
-      console.log(
-        `Processing balance difference for symbol: ${difference.symbol}`
-      );
+      /*console.log(
+        `Processing balance difference for base: ${difference.base}`
+      );*/
 
       for (const quote of quoteCurrencies) {
-        const symbol = `${difference.symbol}/${quote}`;
-        const marketExists = markets.some((market) => market.symbol === symbol);
+        const base = `${difference.base}/${quote}`;
+        const marketExists = markets.some((market) => market.base === base);
 
         if (marketExists) {
           try {
-            const tradeList = await fetchLastTrades(exchangeId, symbol);
-            const mappedTrades = mapTrades(exchangeId, tradeList);
+            const tradeList = await fetchLastTrades(platform, base);
+            const mappedTrades = mapTrades(platform, tradeList);
             newTrades.push(...mappedTrades);
           } catch (err) {
             console.error(
-              `Error fetching trades for ${symbol}: ${err.message}`
+              `Error fetching trades for ${base}: ${err.message}`
             );
             continue;
           }
         } else {
-          console.log(`Symbol not available: ${symbol}`);
+          console.log(`Symbol not available: ${base}`);
         }
       }
 
@@ -65,7 +65,7 @@ async function processBalanceChanges(differences, exchangeId) {
     console.log("New trades saved to database.");
   } catch (error) {
     console.error(
-      `Error handling balance differences for ${exchangeId}:`,
+      `Error handling balance differences for ${platform}:`,
       error
     );
     throw error;
@@ -106,29 +106,29 @@ async function calculateAllMetrics() {
 
   for (const balance of lastBalances) {
     if (balance.balance != "" && balance.balance > 0) {
-      const assetSymbol = balance.symbol;
+      const assetBase = balance.base;
       const assetPlatform = balance.platform;
 
       const filteredCmc =
-        lastCmc.find((cmc) => cmc.symbol === assetSymbol) || {};
+        lastCmc.find((cmc) => cmc.symbol === assetBase) || {};
       const filteredTrades =
-        lastTrades.filter((trade) => trade.base === assetSymbol) || [];
+        lastTrades.filter((trade) => trade.base === assetBase) || [];
       const filteredOpenOrders =
         lastOpenOrders.filter(
           (order) =>
-            order.symbol === assetSymbol + "/USDT" ||
-            order.symbol === assetSymbol + "/USDC" ||
-            order.symbol === assetSymbol + "/BTC"
+            order.symbol === assetBase + "/USDT" ||
+            order.symbol === assetBase + "/USDC" ||
+            order.symbol === assetBase + "/BTC"
         ) || [];
       const filteredStrategy =
         lastStrategies.find(
           (strategy) =>
-            strategy.asset === assetSymbol && strategy.strategies[assetPlatform]
+            strategy.asset === assetBase && strategy.strategies[assetPlatform]
         ) || {};
 
       console.log(
         `🚀 ~ file: balanceProcessor.js:135 ~ calculateAllMetrics ~ assetSymbol:`,
-        assetSymbol
+        assetBase
       );
       console.log(
         `🚀 ~ file: balanceProcessor.js:135 ~ calculateAllMetrics ~ assetPlatform:`,
@@ -138,7 +138,7 @@ async function calculateAllMetrics() {
       const filteredTickers =
         lastTickers.filter(
           (ticker) =>
-            ticker.symbol.startsWith(`${assetSymbol}/`) &&
+            ticker.symbol.startsWith(`${assetBase}/`) &&
             ticker.platform === assetPlatform
         ) || [];
 
@@ -150,9 +150,9 @@ async function calculateAllMetrics() {
         !filteredStrategy.length &&
         !filteredTickers.length
       ) {
-        if (assetSymbol === "USDT" || assetSymbol === "USDC") {
+        if (assetBase === "USDT" || assetBase === "USDC") {
           values = calculateAssetMetrics(
-            assetSymbol,
+            assetBase,
             assetPlatform,
             balance,
             [],
@@ -162,13 +162,13 @@ async function calculateAllMetrics() {
             filteredTickers
           );
         } else {
-          console.warn(`Skipping ${assetSymbol} due to insufficient data.`);
+          console.warn(`Skipping ${assetBase} due to insufficient data.`);
           continue;
         }
       }
 
       values = calculateAssetMetrics(
-        assetSymbol,
+        assetBase,
         assetPlatform,
         balance,
         filteredCmc,
@@ -187,36 +187,30 @@ async function calculateAllMetrics() {
 }
 
 function compareBalances(lastBalance, currentBalance) {
+  console.log(`🚀 ~ file: balanceProcessor.js:190 ~ compareBalances ~ lastBalance:`, lastBalance.length)
   console.log(
     `🚀 ~ file: balanceProcessor.js:184 ~ compareBalances ~ lastBalance:`,
-    lastBalance
+    lastBalance[0]
   );
   const differences = [];
-  // const lastBalancesBySymbol = new Map(lastBalance.map((b) => [b.symbol, b]));
-  // console.log(`🚀 ~ file: balanceProcessor.js:186 ~ compareBalances ~ lastBalancesBySymbol:`, lastBalancesBySymbol)
-
   for (const current of currentBalance) {
     const last = lastBalance.find(
       (item) =>
-        item.symbol === current.symbol && item.platform === current.platform
+        item.base === current.base && item.platform === current.platform
     );
 
     console.log(
-      `🚀 ~ file: balanceProcessor.js:190 ~ compareBalances ~ current.symbol:`,
-      current.platform
-    );
-    console.log(
-      `🚀 ~ file: balanceProcessor.js:190 ~ compareBalances ~ current.symbol:`,
-      current.symbol
-    );
-    console.log(
-      `🚀 ~ file: balanceProcessor.js:190 ~ compareBalances ~ last:`,
-      last
+      `🚀 ~ file: balanceProcessor.js:190 ~ compareBalances ~ current.base:`,
+      {
+        'platform':current.platform,
+        'base':current.base,
+        'last':last,
+      }
     );
     if (last) {
-      differences.push({ symbol: current.symbol, balanceDifference: true });
+      differences.push({ base: current.base, balanceDifference: true });
     } else {
-      differences.push({ symbol: current.symbol, newSymbol: true });
+      differences.push({ base: current.base, newSymbol: true });
     }
   }
   return differences;

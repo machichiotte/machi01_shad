@@ -45,11 +45,11 @@ The backend exposes the following API endpoints:
 ### Update Data
 
 - `GET /update/cmc`: Update market data from CoinMarketCap
-- `GET /update/balance/:exchangeId`: Update account balance for a specific exchange
-- `GET /update/orders/:exchangeId`: Update active trading orders for a specific exchange
+- `GET /update/balance/:platform`: Update account balance for a specific exchange
+- `GET /update/orders/:platform`: Update active trading orders for a specific exchange
 - `POST /update/strategy`: Update strategy data
-- `GET /update/trades/:exchangeId`: Update historical trades for a specific exchange
-- `GET /update/markets/:exchangeId`: Update market data from exchanges using CCXT
+- `GET /update/trades/:platform`: Update historical trades for a specific exchange
+- `GET /update/markets/:platform`: Update market data from platforms using CCXT
 
 ### Cancel Orders
 

@@ -3,12 +3,12 @@ const { sendMail } = require("./sendMail.js");
 const { smtp } = require("../config.js");
 
 const { errorLogger } = require("../../utils/loggerUtil.js");
-const { getExchanges } = require("../../utils/exchangeUtil.js");
+const { getPlatforms } = require("../../utils/platformUtil.js");
 
 const {
-  updateMarketsForExchange,
-  updateTickersForExchange,
-  updateBalancesForExchange
+  updateMarketsForPlatform,
+  updateTickersForPlatform,
+  updateBalancesForPlatform
 } = require("./updateFunctions.js");
 
 async function executeCronTask(task, isCritical = false, retries = 3) {
@@ -37,31 +37,30 @@ async function executeCronTask(task, isCritical = false, retries = 3) {
   }
 }
 
-async function executeForExchanges(taskName, taskFunction) {
+async function executeForPlatforms(taskName, taskFunction) {
   console.log(`Running the cron job for ${taskName}...`);
-  const exchanges = getExchanges();
-  for (const exchangeId of exchanges) {
+  const platforms = getPlatforms();
+  for (const platform of platforms) {
     await executeCronTask(async () => {
-      await taskFunction(exchangeId);
+      await taskFunction(platform);
     }, true);
   }
 }
 
 async function cronTickers() {
-  await executeForExchanges("updateTickers", updateTickersForExchange);
+  await executeForPlatforms("updateTickers", updateTickersForPlatform);
 }
 
 async function cronMarkets() {
-  await executeForExchanges("updateMarkets", updateMarketsForExchange);
+  await executeForPlatforms("updateMarkets", updateMarketsForPlatform);
 }
 
 async function cronBalances() {
-  await executeForExchanges("updateBalances", updateBalancesForExchange);
+  await executeForPlatforms("updateBalances", updateBalancesForPlatform);
 }
 
 module.exports = {
   cronTickers,
   cronMarkets,
-  cronBalances,
-  executeForExchanges,
+  cronBalances
 };

@@ -21,13 +21,13 @@ const stableCoins = ["USDT", "USDC", "DAI", "BUSD", "TUSD"];
  *
  * @param {Array} lastTickers - Liste des tickers.
  * @param {string} asset - Le symbole de l'actif.
- * @param {string} exchangeId - L'identifiant de la plateforme.
+ * @param {string} platform - L'identifiant de la plateforme.
  * @returns {number|string} - Le prix actuel ou "N/A" si non trouvé.
  */
-function getCurrentPrice(lastTickers, asset, exchangeId) {
+function getCurrentPrice(lastTickers, asset, platform) {
   const ticker = lastTickers.find(
     (ticker) =>
-      ticker.symbol === `${asset}/USDT` && ticker.platform === exchangeId
+      ticker.symbol === `${asset}/USDT` && ticker.platform === platform
   );
   return ticker?.last ?? "N/A";
 }
@@ -36,7 +36,7 @@ function getCurrentPrice(lastTickers, asset, exchangeId) {
  * Récupère toutes les informations de calcul pour un actif.
  *
  * @param {string} asset - Le symbole de l'actif.
- * @param {string} exchangeId - L'identifiant de la plateforme.
+ * @param {string} platform - L'identifiant de la plateforme.
  * @param {Array} lastCmc - Données CMC.
  * @param {Array} lastBalances - Soldes.
  * @param {Array} lastTrades - Transactions.
@@ -47,7 +47,7 @@ function getCurrentPrice(lastTickers, asset, exchangeId) {
  */
 function calculateAssetMetrics(
   asset,
-  exchangeId,
+  platform,
   lastBalances,
   lastCmc,
   lastTrades,
@@ -56,12 +56,12 @@ function calculateAssetMetrics(
   lastTickers
 ) {
   const balance = getBalanceBySymbol(asset, lastBalances);
-  const currentPrice = getCurrentPrice(lastTickers, asset, exchangeId);
+  const currentPrice = getCurrentPrice(lastTickers, asset, platform);
   const cmcValues = getCmcValues(asset, lastCmc);
   const totalSell = getTotalSell(asset, lastTrades);
   const { buyOrders, sellOrders } = filterOpenOrdersBySide(
     lastOpenOrders,
-    exchangeId,
+    platform,
     asset
   );
   const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(
@@ -107,7 +107,7 @@ function calculateAssetMetrics(
       tp5: "N/A",
       percentToNextTp: "N/A",
       ...cmcValues,
-      exchangeId,
+       platform,
     };
   }
 
@@ -143,13 +143,13 @@ function calculateAssetMetrics(
       tp5: "N/A",
       percentToNextTp: "N/A",
       ...cmcValues,
-      exchangeId,
+       platform,
     };
   }
 
   const recups = calculateRecups(
     asset,
-    exchangeId,
+    platform,
     totalBuy,
     totalSell,
     lastStrategies
@@ -205,7 +205,7 @@ function calculateAssetMetrics(
     recupTpX: recups.recupTpX,
     ...amountsAndPrices,
     ...cmcValues,
-    exchangeId,
+    platform,
     percentToNextTp,
   };
 }
@@ -214,16 +214,16 @@ function calculateAssetMetrics(
  * Filtre les ordres ouverts par type (achat/vente) et plateforme.
  *
  * @param {Array} orders - Liste des ordres ouverts.
- * @param {string} exchangeId - L'identifiant de la plateforme.
+ * @param {string} platform - L'identifiant de la plateforme.
  * @param {string} asset - Le symbole de l'actif.
  * @returns {Object} - Objets contenant les listes d'ordres d'achat et de vente.
  */
-function filterOpenOrdersBySide(orders, exchangeId, asset) {
+function filterOpenOrdersBySide(orders, platform, asset) {
   const buyOrders = orders.filter(
-    (order) => order.side === "buy" && order.platform === exchangeId
+    (order) => order.side === "buy" && order.platform === platform
   );
   const sellOrders = orders.filter(
-    (order) => order.side === "sell" && order.platform === exchangeId
+    (order) => order.side === "sell" && order.platform === platform
   );
 
   const openBuyOrders = buyOrders.filter((order) => {

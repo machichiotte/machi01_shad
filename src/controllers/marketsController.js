@@ -6,7 +6,7 @@ const {
   saveLastUpdateToMongoDB,
   deleteAndSaveData,
 } = require("../utils/mongodbUtil.js");
-const { createExchangeInstance } = require("../utils/exchangeUtil.js");
+const { createPlatformInstance } = require("../utils/platformUtil.js");
 const { errorLogger } = require("../utils/loggerUtil.js");
 const { validateEnvVariables } = require("../utils/controllerUtil");
 
@@ -37,18 +37,18 @@ async function getMarkets(req, res) {
 }
 
 /**
- * Fetches the current markets from the specified exchange.
- * @param {string} exchangeId - Identifier for the exchange.
+ * Fetches the current markets from the specified platform.
+ * @param {string} platform - Identifier for the platform.
  * @param {number} [retries=3] - Number of retry attempts.
  * @returns {Promise<Object[]>} - The fetched market data.
  */
-async function fetchCurrentMarkets(exchangeId, retries = 3) {
+async function fetchCurrentMarkets(platform, retries = 3) {
   const errorPolicies = await loadErrorPolicies(); // Load error policies
 
   try {
-    const exchange = createExchangeInstance(exchangeId);
-    const data = await exchange.fetchMarkets();
-    const mappedData = mapMarkets(data, exchangeId); // Assuming you have a mapMarkets function
+    const platformInstance = createPlatformInstance(platform);
+    const data = await platformInstance.fetchMarkets();
+    const mappedData = mapMarkets(data, platform); // Assuming you have a mapMarkets function
     return mappedData;
   } catch (error) {
     console.log(
@@ -57,18 +57,18 @@ async function fetchCurrentMarkets(exchangeId, retries = 3) {
     );
 
     // Check if the error justifies a retry
-    if (retries > 0 && shouldRetry(exchangeId, error, errorPolicies)) {
+    if (retries > 0 && shouldRetry(platform, error, errorPolicies)) {
       const delay = Math.pow(2, 3 - retries) * 1000; // Exponential delay
       console.log(`Retrying fetchCurrentMarkets... (${3 - retries + 1}/3)`, {
         delay,
       });
       await new Promise((resolve) => setTimeout(resolve, delay));
-      return fetchCurrentMarkets(exchangeId, retries - 1);
+      return fetchCurrentMarkets(platform, retries - 1);
     }
 
     // Log non-recoverable errors
-    errorLogger.error("Failed to fetch current markets from exchange", {
-      exchangeId,
+    errorLogger.error("Failed to fetch current markets from platform", {
+       platform,
       error: error.message,
     });
     throw error;
@@ -78,17 +78,17 @@ async function fetchCurrentMarkets(exchangeId, retries = 3) {
 /**
  * Saves the provided market data to the database.
  * @param {Object[]} mappedData - The market data to be saved.
- * @param {string} exchangeId - Identifier of the exchange.
+ * @param {string} platform - Identifier of the platform.
  */
-async function saveMarketsInDatabase(mappedData, exchangeId) {
+async function saveMarketsInDatabase(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   try {
-    await deleteAndSaveData(mappedData, collection, exchangeId);
-    await saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, exchangeId);
-    console.log("Saved market data to the database", { exchangeId });
+    await deleteAndSaveData(mappedData, collection, platform);
+    await saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, platform);
+    console.log("Saved market data to the database", {  platform });
   } catch (error) {
     errorLogger.error("Failed to save market data to database", {
-      exchangeId,
+      platform,
       error: error.message,
     });
     throw error;
@@ -117,20 +117,20 @@ async function getSavedMarkets() {
 }
 
 /**
- * Fetches the latest market data from an exchange.
- * @param {string} exchangeId - Identifier of the exchange.
+ * Fetches the latest market data from an platform.
+ * @param {string} platform - Identifier of the platform.
  * @returns {Promise<Object>} - The fetched market data.
  */
-async function fetchMarketData(exchangeId) {
+async function fetchMarketData(platform) {
   try {
-    const exchange = createExchangeInstance(exchangeId);
-    const data = await exchange.loadMarkets();
-    console.log(`Fetched market data from ${exchangeId}.`, {
+    const platformInstance = createPlatformInstance(platform);
+    const data = await platformInstance.loadMarkets();
+    console.log(`Fetched market data from ${platform}.`, {
       count: Object.keys(data).length,
     });
     return data;
   } catch (error) {
-    errorLogger.error(`Failed to fetch market data from ${exchangeId}.`, {
+    errorLogger.error(`Failed to fetch market data from ${platform}.`, {
       error: error.message,
     });
     throw error;
@@ -140,41 +140,37 @@ async function fetchMarketData(exchangeId) {
 /**
  * Updates the market data in the database.
  * @param {Object} data - Market data to be updated.
- * @param {string} exchangeId - Identifier of the exchange.
+ * @param {string} platform - Identifier of the platform.
  * @param {Object} res - HTTP response object.
  */
-async function updateMarketDataInDatabase(data, exchangeId, res) {
+async function updateMarketDataInDatabase(data, platform, res) {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   try {
-    const mappedData = mapMarkets(exchangeId, data);
-    await deleteAndSaveData(mappedData, collection, exchangeId);
-    await saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, exchangeId);
-    console.log(`Updated market data in database for ${exchangeId}.`, {
+    const mappedData = mapMarkets(platform, data);
+    await deleteAndSaveData(mappedData, collection, platform);
+    await saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, platform);
+    console.log(`Updated market data in database for ${platform}.`, {
       count: mappedData.length,
     });
     res.status(200).json(mappedData);
   } catch (error) {
-    errorLogger.error("Failed to update market data in database.", {
-      error: error.message,
-    });
+    console.log(`🚀 ~ file: marketsController.js:157 ~ updateMarketDataInDatabase ~ error:`, error)
     handleErrorResponse(res, error, "updateMarketDataInDatabase");
   }
 }
 
 /**
- * Updates the market data by fetching the latest information from an exchange and saving it to the database.
- * @param {Object} req - HTTP request object containing the exchange identifier.
+ * Updates the market data by fetching the latest information from a platform and saving it to the database.
+ * @param {Object} req - HTTP request object containing the platform identifier.
  * @param {Object} res - HTTP response object.
  */
 async function updateMarkets(req, res) {
-  const { exchangeId } = req.params;
+  const { platform } = req.params;
   try {
-    const marketData = await fetchMarketData(exchangeId);
-    await updateMarketDataInDatabase(marketData, exchangeId, res);
+    const marketData = await fetchMarketData(platform);
+    await updateMarketDataInDatabase(marketData, platform, res);
   } catch (error) {
-    errorLogger.error(`Failed to update markets for ${exchangeId}.`, {
-      error: error.message,
-    });
+    console.log(`🚀 ~ file: marketsController.js:175 ~ updateMarkets ~ error:`, error)
     handleErrorResponse(res, error, "updateMarkets");
   }
 }

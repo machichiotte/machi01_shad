@@ -1,6 +1,6 @@
 {
     "okx": {
-      "ExchangeError": {
+      "PlatformError": {
         "retry": false,
         "message": "API key doesn't exist."
       }

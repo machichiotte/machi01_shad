@@ -15,7 +15,7 @@ async function updateTimestampInMongoDB(collectionName, filter, update) {
   }
 }
 
-async function saveLastUpdateToMongoDB(type, exchangeId) {
+async function saveLastUpdateToMongoDB(type, platform) {
   console.log(`🚀 ~ file: mongodbUtil.js:19 ~ saveLastUpdateToMongoDB ~ saveLastUpdateToMongoDB:`, saveLastUpdateToMongoDB)
   const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
 
@@ -23,14 +23,14 @@ async function saveLastUpdateToMongoDB(type, exchangeId) {
   const existingData = (await getAllDataMDB(collectionName))[0] || {};
 
   // Mettre à jour les données avec le nouveau timestamp
-  if (!exchangeId) {
+  if (!platform) {
     existingData[type] = Date.now();
   } else {
     if (!existingData[type]) {
       existingData[type] = {};
     }
 
-    existingData[type][exchangeId] = Date.now();
+    existingData[type][platform] = Date.now();
   }
 
   // Enregistrer les données mises à jour dans MongoDB
@@ -40,9 +40,9 @@ async function saveLastUpdateToMongoDB(type, exchangeId) {
   await updateTimestampInMongoDB(collectionName, filter, update);
 }
 
-async function deleteAndSaveData(mapData, collection, exchangeId) {
+async function deleteAndSaveData(mapData, collection, platform) {
   if (mapData && mapData.length > 0) {
-    const deleteParam = { platform: exchangeId };
+    const deleteParam = { platform };
     await deleteMultipleDataMDB(collection, deleteParam);
     await saveData(mapData, collection);
   }
