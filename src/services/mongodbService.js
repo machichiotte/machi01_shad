@@ -200,7 +200,9 @@ async function updateDataMDB(collectionName, filter, update) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
     const result = await collection.updateOne(filter, update, { upsert: true });
-    console.log("🚀 ~ updateDataMDB ~ result:", result);
+    console.log(
+      `🚀 ~ deleteDataMDB ~ modified ${result.modifiedCount} document(s)`
+    );
     return result;
   }, [collectionName, filter, update]);
 }

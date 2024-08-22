@@ -63,11 +63,11 @@ function getStatus(
 /**
  * Get the balance for a given symbol from a balance object.
  *
- * @param {string} symbol - The symbol for which to get the balance.
+ * @param {string} base - The symbol for which to get the balance.
  * @param {Object} balanceObj - The object containing balance information.
  * @returns {number} - The balance for the given symbol or 0 if not found or if input is invalid.
  */
-function getBalanceBySymbol(symbol, balanceObj) {
+function getBalanceBySymbol(base, balanceObj) {
   // Vérification de la validité de l'objet balance
   if (typeof balanceObj !== 'object' || balanceObj === null) {
     console.warn(`balanceObj is invalid: ${balanceObj}`);
@@ -75,8 +75,8 @@ function getBalanceBySymbol(symbol, balanceObj) {
   }
 
   // Vérification si le symbole dans l'objet correspond au symbole donné
-  if (balanceObj.symbol !== symbol) {
-    console.warn(`Symbol not found: ${symbol}`);
+  if (balanceObj.base !== base) {
+    console.warn(`base not found: ${base}`);
     return 0;
   }
 
@@ -85,7 +85,7 @@ function getBalanceBySymbol(symbol, balanceObj) {
   if (!isNaN(balanceAsNumber)) {
     return balanceAsNumber;
   } else {
-    console.warn(`Invalid balance value for symbol ${symbol}: ${balanceObj.balance}`);
+    console.warn(`Invalid balance value for symbol ${base}: ${balanceObj.balance}`);
     return 0;
   }
 }

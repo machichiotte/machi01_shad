@@ -2,12 +2,12 @@
 const { calculateAssetMetrics } = require("./metrics/global.js");
 
 const { mapTrades } = require("./mapping.js");
-const { fetchCmcInDatabase } = require("../controllers/cmcController.js");
+const { fetchDatabaseCmc } = require("../controllers/cmcController.js");
 const {
-  fetchStratsInDatabase,
+  fetchDatabaseStrategies,
 } = require("../controllers/strategyController.js");
 const {
-  fetchTradesInDatabase,
+  fetchDatabaseTrades,
   saveTradesToDatabase,
   fetchLastTrades,
 } = require("../controllers/tradesController.js");
@@ -16,12 +16,13 @@ const {
   updateOrdersFromServer,
 } = require("../controllers/ordersController.js");
 const {
-  fetchTickersInDatabase,
+  fetchDatabaseTickers,
   getSavedAllTickersByPlatform,
 } = require("../controllers/tickersController.js");
 const {
-  fetchBalancesInDatabase,
+  fetchDatabaseBalances,
 } = require("../controllers/balanceController.js");
+const { getSymbolForPlatform } = require("../utils/platformUtil.js");
 
 async function processBalanceChanges(differences, platform) {
   const quoteCurrencies = ["USDT", "BTC", "ETH", "USDC"];
@@ -29,30 +30,31 @@ async function processBalanceChanges(differences, platform) {
   try {
     const update = await updateOrdersFromServer(platform);
     const newTrades = [];
-    const markets = await getSavedAllTickersByPlatform(platform);
+    //todo ici cest markets pas tickers
+    const tickers = await getSavedAllTickersByPlatform(platform);
 
     for (const difference of differences) {
-      /*console.log(
-        `Processing balance difference for base: ${difference.base}`
-      );*/
-
       for (const quote of quoteCurrencies) {
-        const base = `${difference.base}/${quote}`;
-        const marketExists = markets.some((market) => market.base === base);
+        const symbol = getSymbolForPlatform(platform, difference.base, quote);
+        const marketExists = tickers.find(
+          (ticker) =>
+            ticker.symbol === difference.base + "/" + quote &&
+            ticker.platform === platform
+        );
 
         if (marketExists) {
           try {
-            const tradeList = await fetchLastTrades(platform, base);
+            const tradeList = await fetchLastTrades(platform, symbol);
             const mappedTrades = mapTrades(platform, tradeList);
             newTrades.push(...mappedTrades);
           } catch (err) {
             console.error(
-              `Error fetching trades for ${base}: ${err.message}`
+              `Error fetching trades for ${symbol}: ${err.message}`
             );
             continue;
           }
         } else {
-          console.log(`Symbol not available: ${base}`);
+          console.log(`Symbol not available: ${symbol}`);
         }
       }
 
@@ -60,14 +62,9 @@ async function processBalanceChanges(differences, platform) {
         console.log(`New symbol detected: ${difference.newSymbol}`);
       }
     }
-
-    await saveTradesToDatabase(newTrades);
-    console.log("New trades saved to database.");
+    if (newTrades.length > 0) await saveTradesToDatabase(newTrades);
   } catch (error) {
-    console.error(
-      `Error handling balance differences for ${platform}:`,
-      error
-    );
+    console.error(`Error handling balance differences for ${platform}:`, error);
     throw error;
   }
 }
@@ -81,12 +78,12 @@ async function calculateAllMetrics() {
     lastTickers,
     lastBalances,
   ] = await Promise.all([
-    fetchCmcInDatabase(),
-    fetchStratsInDatabase(),
-    fetchTradesInDatabase(),
+    fetchDatabaseCmc(),
+    fetchDatabaseStrategies(),
+    fetchDatabaseTrades(),
     fetchOrdersInDatabase(),
-    fetchTickersInDatabase(),
-    fetchBalancesInDatabase(),
+    fetchDatabaseTickers(),
+    fetchDatabaseBalances(),
   ]);
 
   if (
@@ -109,8 +106,7 @@ async function calculateAllMetrics() {
       const assetBase = balance.base;
       const assetPlatform = balance.platform;
 
-      const filteredCmc =
-        lastCmc.find((cmc) => cmc.symbol === assetBase) || {};
+      const filteredCmc = lastCmc.find((cmc) => cmc.symbol === assetBase) || {};
       const filteredTrades =
         lastTrades.filter((trade) => trade.base === assetBase) || [];
       const filteredOpenOrders =
@@ -125,15 +121,6 @@ async function calculateAllMetrics() {
           (strategy) =>
             strategy.asset === assetBase && strategy.strategies[assetPlatform]
         ) || {};
-
-      console.log(
-        `🚀 ~ file: balanceProcessor.js:135 ~ calculateAllMetrics ~ assetSymbol:`,
-        assetBase
-      );
-      console.log(
-        `🚀 ~ file: balanceProcessor.js:135 ~ calculateAllMetrics ~ assetPlatform:`,
-        assetPlatform
-      );
 
       const filteredTickers =
         lastTickers.filter(
@@ -186,33 +173,44 @@ async function calculateAllMetrics() {
   return allValues;
 }
 
-function compareBalances(lastBalance, currentBalance) {
-  console.log(`🚀 ~ file: balanceProcessor.js:190 ~ compareBalances ~ lastBalance:`, lastBalance.length)
-  console.log(
-    `🚀 ~ file: balanceProcessor.js:184 ~ compareBalances ~ lastBalance:`,
-    lastBalance[0]
-  );
+/**
+ * Compare les balances actuelles avec celles de la base de données précédente.
+ * @param {Object[]} lastBalances - Tableau d'objets représentant les balances précédentes.
+ * @param {Object[]} currentBalances - Tableau d'objets représentant les balances actuelles.
+ * @returns {Object[]} - Retourne un tableau d'objets représentant les différences trouvées.
+ */
+function compareBalances(lastBalances, currentBalances) {
   const differences = [];
-  for (const current of currentBalance) {
-    const last = lastBalance.find(
-      (item) =>
-        item.base === current.base && item.platform === current.platform
+
+  currentBalances.forEach((currentBalance) => {
+    const { platform, base, balance: currentBalanceValue } = currentBalance;
+
+    const matchedBalance = lastBalances.find(
+      (item) => item.platform === platform && item.base === base
     );
 
-    console.log(
-      `🚀 ~ file: balanceProcessor.js:190 ~ compareBalances ~ current.base:`,
-      {
-        'platform':current.platform,
-        'base':current.base,
-        'last':last,
-      }
-    );
-    if (last) {
-      differences.push({ base: current.base, balanceDifference: true });
-    } else {
-      differences.push({ base: current.base, newSymbol: true });
+    if (!matchedBalance) {
+      // Nouveau symbole trouvé
+      console.log(`🚀 ~ compareBalances ~ newSymbol: ${base}`);
+
+      differences.push({
+        base,
+        platform,
+        newSymbol: true,
+      });
+    } else if (matchedBalance.balance !== currentBalanceValue) {
+      // Différence de balance trouvée
+      console.log(`🚀 ~ compareBalances ~ unmatchedBalance: ${base}`);
+
+      differences.push({
+        base,
+        platform,
+        balanceDifference: true,
+      });
     }
-  }
+    // Pas besoin de traiter les cas où les balances sont identiques (laissons simplement la boucle continuer).
+  });
+
   return differences;
 }
 

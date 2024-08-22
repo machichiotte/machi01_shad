@@ -30,11 +30,11 @@ async function getAllTickers(req, res) {
 /**
  * Retrieves all tickers from the database.
  */
-async function fetchTickersInDatabase() {
+async function fetchDatabaseTickers() {
   const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
   const data = await getData(collectionName);
   console.log(
-    `🚀 ~ file: tickersController.js:33 ~ fetchTickersInDatabase ~ data.length:`,
+    `🚀 ~ file: tickersController.js:33 ~ fetchDatabaseTickers ~ data.length:`,
     data.length
   );
   return data;
@@ -79,7 +79,7 @@ async function fetchCurrentTickers(platform, retries = 3) {
  * @param {Object[]} mappedData - The ticker data to be saved.
  * @param {string} platform - Identifier of the platform.
  */
-async function saveTickersInDatabase(mappedData, platform) {
+async function saveDatabaseTickers(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_TICKERS;
   try {
     await deleteAndSaveData(mappedData, collection, platform);
@@ -121,9 +121,6 @@ async function getAllTickersByPlatform(req, res, platform) {
  * @param {string} platform - Identifier of the platform.
  */
 async function getSavedAllTickersByPlatform(platform) {
-  console.log(
-    `🚀 ~ file: tickersController.js:117 ~ getSavedAllTickersByPlatform ~ getSavedAllTickersByPlatform:`
-  );
   try {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
     const tickersData = await getData(collectionName);
@@ -144,26 +141,12 @@ async function getSavedAllTickersByPlatform(platform) {
       );
       return [];
     }
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
-    const platformData = tickersData.filter(
-      (obj) => obj.platform === platform
-    );
+    const platformData = tickersData.filter((obj) => obj.platform === platform);
 
     if (platformData) {
-      console.log(
-        `🚀 ~ file: tickersController.js:134 ~ getSavedAllTickersByPlatform ~ platformData:`,
-        platformData[0]
-      );
-      console.log(
-        `🚀 ~ file: tickersController.js:135 ~ getSavedAllTickersByPlatform ~ platformData.length:`,
-        platformData.length
-      );
       return platformData;
     } else {
-      console.log(
-        `🚀 ~ file: tickersController.js:139 ~ getSavedAllTickersByPlatform ~ []:`
-      );
       return [];
     }
   } catch (error) {
@@ -266,12 +249,12 @@ async function updateAllTickers(req, res) {
 
 module.exports = {
   getAllTickers,
-  fetchTickersInDatabase,
+  fetchDatabaseTickers,
   fetchCurrentTickers,
-  saveTickersInDatabase,
+  saveDatabaseTickers,
   updateAllTickers,
-   getAllTickersByPlatform,
-   getSavedAllTickersByPlatform,
-   getAllTickersBySymbolFromPlatform,
+  getAllTickersByPlatform,
+  getSavedAllTickersByPlatform,
+  getAllTickersBySymbolFromPlatform,
   getSavedAllTickersBySymbolFromPlatform,
 };

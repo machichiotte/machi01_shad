@@ -30,18 +30,18 @@ async function getCmc(req, res) {
  * Retrieves the latest CoinMarketCap data from the database.
  * @returns {Promise<Object[]>} - The latest CMC data from the database.
  */
-async function fetchCmcInDatabase() {
+async function fetchDatabaseCmc() {
   const collectionName = process.env.MONGODB_COLLECTION_CMC;
   try {
     const data = await getData(collectionName);
     console.log(
-      `🚀 ~ file: cmcController.js:34 ~ fetchCmcInDatabase ~ fetchCmcInDatabase:`,
+      `🚀 ~ file: cmcController.js:34 ~ fetchDatabaseCmc ~ fetchDatabaseCmc:`,
       { collectionName, count: data.length }
     );
 
     return data;
   } catch (error) {
-    errorLogger.error(`Error in fetchCmcInDatabase: ${error.message}`, {
+    errorLogger.error(`Error in fetchDatabaseCmc: ${error.message}`, {
       error,
     });
     throw error;
@@ -53,7 +53,7 @@ async function fetchCmcInDatabase() {
  * @param {Object[]} cmcData - Array of CoinMarketCap data to be updated.
  * @param {Object} res - HTTP response object.
  */
-async function updateCmcDataInDatabase(cmcData, res) {
+async function updateDatabaseCmcData(cmcData, res) {
   const collectionName = process.env.MONGODB_COLLECTION_CMC;
   try {
     const deleteResult = await deleteAllDataMDB(collectionName);
@@ -75,10 +75,10 @@ async function updateCmcDataInDatabase(cmcData, res) {
       totalCount: cmcData.length,
     });
   } catch (error) {
-    errorLogger.error(`Error in updateCmcDataInDatabase: ${error.message}`, {
+    errorLogger.error(`Error in updateDatabaseCmcData: ${error.message}`, {
       error,
     });
-    handleErrorResponse(res, error, "updateCmcDataInDatabase");
+    handleErrorResponse(res, error, "updateDatabaseCmcData");
   }
 }
 
@@ -91,11 +91,11 @@ async function updateCmc(req, res) {
   try {
     const cmcData = await fetchCmcData();
     console.log("Fetched latest CMC data", { count: cmcData.length });
-    await updateCmcDataInDatabase(cmcData, res);
+    await updateDatabaseCmcData(cmcData, res);
   } catch (error) {
     errorLogger.error(`Error in updateCmc: ${error.message}`, { error });
     handleErrorResponse(res, error, "updateCmc");
   }
 }
 
-module.exports = { getCmc, fetchCmcInDatabase, updateCmc };
+module.exports = { getCmc, fetchDatabaseCmc, updateCmc };

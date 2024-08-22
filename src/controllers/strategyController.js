@@ -1,5 +1,5 @@
 // src/controllers/strategyController.js
-const { getData, getDataFromCollection } = require("../utils/dataUtil.js");
+const { getData } = require("../utils/dataUtil.js");
 const { deleteAllDataMDB, saveData } = require("../services/mongodbService.js");
 const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
 
@@ -28,10 +28,10 @@ async function getStrat(req, res) {
   }
 }
 
-async function fetchStratsInDatabase() {
+async function fetchDatabaseStrategies() {
   const collectionName = process.env.MONGODB_COLLECTION_STRAT;
-  const data = await getDataFromCollection(collectionName);
-  console.log(`🚀 ~ file: strategyController.js:34 ~ fetchStratsInDatabase ~ data.length:`, data.length)
+  const data = await getData(collectionName);
+  console.log(`🚀 ~ file: strategyController.js:34 ~ fetchDatabaseStrategies ~ data.length:`, data.length)
   return data;
 }
 
@@ -53,4 +53,4 @@ async function updateStrat(req, res) {
   }
 }
 
-module.exports = { getStrat, fetchStratsInDatabase, updateStrat };
+module.exports = { getStrat, fetchDatabaseStrategies, updateStrat };

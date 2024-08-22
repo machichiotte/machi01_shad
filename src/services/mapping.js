@@ -40,7 +40,7 @@ function getTotalUSDT(symbol, cost, conversionRates = {}) {
     return parseFloat(cost) * conversionRates[quoteAsset];
   }
 
-  console.warn(`Conversion rate for ${quoteAsset} not found.`);
+  //console.warn(`Conversion rate for ${quoteAsset} not found.`);
   return null;
 }
 

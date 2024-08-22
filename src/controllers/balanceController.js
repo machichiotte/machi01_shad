@@ -37,14 +37,66 @@ async function getBalances(req, res) {
  * Retrieves the latest recorded balance from the database.
  * @returns {Promise<Object[]>} - The latest recorded balance.
  */
-async function fetchBalancesInDatabase() {
+async function fetchDatabaseBalances() {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
   const data = await getData(collectionName);
   console.log(
-    `🚀 ~ file: balanceController.js:38 ~ fetchBalancesInDatabase ~ data:`,
+    `🚀 ~ file: balanceController.js:44 ~ fetchDatabaseBalances ~ data:`,
     data.length
   );
   return data;
+}
+
+/**
+ * Fetches the database balance from the specified platform.
+ * @param {string} platform - Identifier for the platform.
+ * @param {number} [retries=3] - Number of retry attempts.
+ * @returns {Promise<Object[]>} - The fetched balance data.
+ */
+async function fetchDatabaseBalancesByPlatform(platform, retries = 3) {
+  try {
+    const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
+    const data = await getData(collectionName);
+    console.log(
+      `🚀 ~ file: balanceController.js:44 ~ fetchDatabaseBalancesByPlatform ~ data:`,
+      data.length
+    );
+
+    // Filtrer les données pour ne retourner que celles correspondant à la plateforme spécifiée
+    const filteredData = data.filter(item => item.platform === platform);
+
+    console.log(
+      `🚀 ~ file: balanceController.js:50 ~ fetchDatabaseBalancesByPlatform ~ filteredData:`,
+      filteredData.length
+    );
+
+    return filteredData;
+  } catch (error) {
+    console.log(
+      `🚀 ~ file: balanceController.js:70 ~ fetchDatabaseBalancesByPlatform ~ error:`,
+      error
+    );
+
+    // Vérifiez si l'erreur justifie une nouvelle tentative
+    if (retries > 0 && shouldRetry(platform, error, errorPolicies)) {
+      const delay = Math.pow(2, 3 - retries) * 1000; // Délai exponentiel
+      console.log(
+        `Retrying fetchDatabaseBalancesByPlatform... (${3 - retries + 1}/3)`,
+        {
+          delay,
+        }
+      );
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      return fetchDatabaseBalancesByPlatform(platform, retries - 1);
+    }
+
+    // Logger les erreurs non récupérables
+    errorLogger.error("Failed to fetch current balance from platform", {
+      platform,
+      error: error.message,
+    });
+    throw error;
+  }
 }
 
 /**
@@ -53,7 +105,7 @@ async function fetchBalancesInDatabase() {
  * @param {number} [retries=3] - Number of retry attempts.
  * @returns {Promise<Object[]>} - The fetched balance data.
  */
-async function fetchCurrentBalance(platform, retries = 3) {
+async function fetchCurrentBalancesByPlatform(platform, retries = 3) {
   const errorPolicies = await loadErrorPolicies(); // Charger les politiques d'erreurs
 
   try {
@@ -61,24 +113,27 @@ async function fetchCurrentBalance(platform, retries = 3) {
     const data = await platformInstance.fetchBalance();
     const mappedData = mapBalance(platform, data);
     console.log(
-      `🚀 ~ file: balanceController.js:54 ~ fetchCurrentBalance ~ Fetched current balance from ${platform}`,
+      `🚀 ~ file: balanceController.js:64 ~ fetchCurrentBalancesByPlatform ~ Fetched current balance from ${platform}`,
       { count: mappedData.length }
     );
     return mappedData;
   } catch (error) {
     console.log(
-      `🚀 ~ file: balanceController.js:57 ~ fetchCurrentBalance ~ error:`,
+      `🚀 ~ file: balanceController.js:70 ~ fetchCurrentBalancesByPlatform ~ error:`,
       error
     );
 
     // Vérifiez si l'erreur justifie une nouvelle tentative
     if (retries > 0 && shouldRetry(platform, error, errorPolicies)) {
       const delay = Math.pow(2, 3 - retries) * 1000; // Délai exponentiel
-      console.log(`Retrying fetchCurrentBalance... (${3 - retries + 1}/3)`, {
-        delay,
-      });
+      console.log(
+        `Retrying fetchCurrentBalancesByPlatform... (${3 - retries + 1}/3)`,
+        {
+          delay,
+        }
+      );
       await new Promise((resolve) => setTimeout(resolve, delay));
-      return fetchCurrentBalance(platform, retries - 1);
+      return fetchCurrentBalancesByPlatform(platform, retries - 1);
     }
 
     // Logger les erreurs non récupérables
@@ -95,7 +150,7 @@ async function fetchCurrentBalance(platform, retries = 3) {
  * @param {Object[]} mappedData - The balance data to be saved.
  * @param {string} platform - Identifier of the platform.
  */
-async function saveBalanceInDatabase(mappedData, platform) {
+async function saveDatabaseBalance(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
   try {
     await deleteAndSaveData(mappedData, collection, platform);
@@ -118,8 +173,8 @@ async function saveBalanceInDatabase(mappedData, platform) {
 async function updateCurrentBalance(req, res) {
   const platform = req.params.platform;
   try {
-    const data = await fetchCurrentBalance(platform);
-    await saveBalanceInDatabase(data, platform);
+    const data = await fetchCurrentBalancesByPlatform(platform);
+    await saveDatabaseBalance(data, platform);
     res.status(200).json({
       status: true,
       message: "Current balance updated successfully.",
@@ -139,8 +194,9 @@ async function updateCurrentBalance(req, res) {
 
 module.exports = {
   getBalances,
-  fetchBalancesInDatabase,
-  fetchCurrentBalance,
-  saveBalanceInDatabase,
+  fetchDatabaseBalances,
+  fetchDatabaseBalancesByPlatform,
+  fetchCurrentBalancesByPlatform,
+  saveDatabaseBalance,
   updateCurrentBalance,
 };

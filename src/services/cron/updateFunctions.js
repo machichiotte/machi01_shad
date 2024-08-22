@@ -1,6 +1,6 @@
 // src/services/cron/updateFunctions.js
-const { fetchCurrentTickers, saveTickersInDatabase, getSavedAllTickersByPlatform } = require("../../controllers/tickersController.js");
-const { fetchCurrentBalance, saveBalanceInDatabase } = require("../../controllers/balanceController.js");
+const { fetchCurrentTickers, saveDatabaseTickers } = require("../../controllers/tickersController.js");
+const { fetchDatabaseBalances, fetchCurrentBalancesByPlatform, saveDatabaseBalance } = require("../../controllers/balanceController.js");
 const { fetchCurrentMarkets, saveMarketsInDatabase } = require("../../controllers/marketsController.js");
 
 const {
@@ -25,19 +25,19 @@ async function updateMarketsForPlatform(platform) {
 async function updateTickersForPlatform(platform) {
   const currentTickers = await fetchCurrentTickers(platform, 3);
   try {
-    await saveTickersInDatabase(currentTickers, platform);
+    await saveDatabaseTickers(currentTickers, platform);
   } catch (error) {
     console.log(`🚀 ~ file: updateFunctions.js:30 ~ updateTickersForPlatform ~ error:`, error)
   }
 }
 
 async function updateBalancesForPlatform(platform)  {
-  const currentBalance = await fetchCurrentBalance(platform, 3);
-  const lastBalance = await getSavedAllTickersByPlatform(platform);
-  const differences = compareBalances(lastBalance, currentBalance);
+  const currentBalances = await fetchCurrentBalancesByPlatform(platform, 3);
+  const lastBalances = await fetchDatabaseBalances(platform);
+  const differences = compareBalances(lastBalances, currentBalances);
   console.log(`🚀 ~ file: updateFunctions.js:38 ~ updateBalancesForPlatform ~ differences:`, differences)
   if (differences.length > 0) {
-    await saveBalanceInDatabase(currentBalance, platform);
+    await saveDatabaseBalance(currentBalances, platform);
     await processBalanceChanges(differences, platform);
     //await calculateMetrics(differences, exchsangeId);
   }
@@ -45,7 +45,7 @@ async function updateBalancesForPlatform(platform)  {
   try {
     const collectionName = process.env.MONGODB_COLLECTION_SHAD;
     const metrics = await calculateAllMetrics();
-    console.log(`🚀 ~ file: updateFunctions.js:48 ~ updateBalancesForPlatform ~ metrics:`, metrics.length.length)
+    console.log(`🚀 ~ file: updateFunctions.js:48 ~ updateBalancesForPlatform ~ metrics:`, metrics.length)
     deleteAndSaveObject(metrics, collectionName);
   } catch (error) {
     console.log(`🚀 ~ file: updateFunctions.js:51 ~ updateBalancesForPlatform ~ error:`, error)

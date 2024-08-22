@@ -33,7 +33,7 @@ The backend exposes the following API endpoints:
 ### Get Market Data
 
 - `GET /get/cmc`: Get market data from CoinMarketCap
-- `GET /get/markets`: Get market data from exchanges using CCXT
+- `GET /get/markets`: Get market data from platforms using CCXT
 
 ### Trading Data
 
@@ -45,10 +45,10 @@ The backend exposes the following API endpoints:
 ### Update Data
 
 - `GET /update/cmc`: Update market data from CoinMarketCap
-- `GET /update/balance/:platform`: Update account balance for a specific exchange
-- `GET /update/orders/:platform`: Update active trading orders for a specific exchange
+- `GET /update/balance/:platform`: Update account balance for a specific platform
+- `GET /update/orders/:platform`: Update active trading orders for a specific platform
 - `POST /update/strategy`: Update strategy data
-- `GET /update/trades/:platform`: Update historical trades for a specific exchange
+- `GET /update/trades/:platform`: Update historical trades for a specific platform
 - `GET /update/markets/:platform`: Update market data from platforms using CCXT
 
 ### Cancel Orders
@@ -66,7 +66,7 @@ The backend exposes the following API endpoints:
 The backend relies on the following Node.js packages:
 
 - `body-parser`: Middleware for parsing incoming HTTP requests
-- `ccxt`: Library for accessing cryptocurrency exchanges
+- `ccxt`: Library for accessing cryptocurrency platforms
 - `cors`: Middleware for handling Cross-Origin Resource Sharing (CORS) issues
 - `dotenv`: Library for loading environment variables from a `.env` file
 - `express`: Web framework for handling HTTP requests and routes

@@ -68,7 +68,7 @@ async function fetchCurrentMarkets(platform, retries = 3) {
 
     // Log non-recoverable errors
     errorLogger.error("Failed to fetch current markets from platform", {
-       platform,
+      platform,
       error: error.message,
     });
     throw error;
@@ -80,12 +80,12 @@ async function fetchCurrentMarkets(platform, retries = 3) {
  * @param {Object[]} mappedData - The market data to be saved.
  * @param {string} platform - Identifier of the platform.
  */
-async function saveMarketsInDatabase(mappedData, platform) {
+async function saveDatabaseMarkets(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   try {
     await deleteAndSaveData(mappedData, collection, platform);
     await saveLastUpdateToMongoDB(process.env.TYPE_LOAD_MARKETS, platform);
-    console.log("Saved market data to the database", {  platform });
+    console.log("Saved market data to the database", { platform });
   } catch (error) {
     errorLogger.error("Failed to save market data to database", {
       platform,
@@ -154,7 +154,10 @@ async function updateMarketDataInDatabase(data, platform, res) {
     });
     res.status(200).json(mappedData);
   } catch (error) {
-    console.log(`🚀 ~ file: marketsController.js:157 ~ updateMarketDataInDatabase ~ error:`, error)
+    console.log(
+      `🚀 ~ file: marketsController.js:157 ~ updateMarketDataInDatabase ~ error:`,
+      error
+    );
     handleErrorResponse(res, error, "updateMarketDataInDatabase");
   }
 }
@@ -170,7 +173,10 @@ async function updateMarkets(req, res) {
     const marketData = await fetchMarketData(platform);
     await updateMarketDataInDatabase(marketData, platform, res);
   } catch (error) {
-    console.log(`🚀 ~ file: marketsController.js:175 ~ updateMarkets ~ error:`, error)
+    console.log(
+      `🚀 ~ file: marketsController.js:175 ~ updateMarkets ~ error:`,
+      error
+    );
     handleErrorResponse(res, error, "updateMarkets");
   }
 }
@@ -178,7 +184,7 @@ async function updateMarkets(req, res) {
 module.exports = {
   getMarkets,
   fetchCurrentMarkets,
-  saveMarketsInDatabase,
+  saveDatabaseMarkets,
   getSavedMarkets,
   updateMarkets,
 };

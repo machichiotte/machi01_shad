@@ -5,7 +5,7 @@ const { getLastUpdate, getUniqueLastUpdate, updateLastUpdateByType} = require('.
 const router = express.Router();
 
 router.get('/get', getLastUpdate);
-router.get('/get/:type/:exchangeId', getUniqueLastUpdate);
+router.get('/get/:type/:platform', getUniqueLastUpdate);
 router.get('/update/:type', updateLastUpdateByType);
 
 module.exports = router;

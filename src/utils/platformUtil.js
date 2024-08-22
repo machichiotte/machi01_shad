@@ -1,4 +1,4 @@
-// src/utils/exchangeUtil.js
+// src/utils/platformUtil.js
 const ccxt = require("ccxt");
 const { AuthenticationError } = require("ccxt");
 //const PLATFORMS = ["binance", "kucoin", "htx", "okx", "gateio"];
@@ -53,24 +53,24 @@ function createPlatformInstance(platform) {
   }
 }
 
-function getSymbolForPlatform(platform, base) {
+function getSymbolForPlatform(platform, base, quote = "USDT") {
   let symbol;
 
   switch (platform) {
     case "kucoin":
-      symbol = `${base}-USDT`;
+      symbol = `${base}-${quote.toUpperCase()}`;
       break;
     case "binance":
-      symbol = `${base}USDT`;
+      symbol = `${base}${quote.toUpperCase()}`;
       break;
     case "htx":
-      symbol = `${base.toLowerCase()}usdt`;
+      symbol = `${base.toLowerCase()}${quote.toLowerCase()}`;
       break;
     case "gateio":
-      symbol = `${base.toUpperCase()}_USDT`;
+      symbol = `${base.toUpperCase()}_${quote.toUpperCase()}`;
       break;
     case "okx":
-      symbol = `${base}-USDT`;
+      symbol = `${base}-${quote.toUpperCase()}`;
       break;
     default:
       throw new Error(`Unsupported platform: ${platform}`);

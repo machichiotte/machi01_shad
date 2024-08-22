@@ -13,7 +13,7 @@ const {
 const router = express.Router();
 
 router.get("/get", getOrders);
-router.get("/update/:exchangeId", updateOrders);
+router.get("/update/:platform", updateOrders);
 router.post("/cancel", deleteOrder);
 router.post("/bunch-limit-sell-orders", createBunchLimitSellOrders);
 router.post("/bunch-limit-buy-orders", createBunchLimitBuyOrders);

@@ -5,6 +5,6 @@ const { getMarkets, updateMarkets} = require('../controllers/marketsController.j
 const router = express.Router();
 
 router.get('/get', getMarkets);
-router.get('/update/:exchangeId', updateMarkets);
+router.get('/update/:platform', updateMarkets);
 
 module.exports = router;

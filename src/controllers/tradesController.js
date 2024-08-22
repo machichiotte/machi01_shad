@@ -30,11 +30,11 @@ async function getTrades(req, res) {
  * Retrieves the last recorded trades from the database.
  * @returns {Object} - The last recorded trades.
  */
-async function fetchTradesInDatabase() {
+async function fetchDatabaseTrades() {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   const data = await getData(collectionName);
   console.log(
-    `🚀 ~ file: tradesController.js:34 ~ fetchTradesInDatabase ~ data:`,
+    `🚀 ~ file: tradesController.js:34 ~ fetchDatabaseTrades ~ data:`,
     data.length
   );
   return data;
@@ -75,7 +75,7 @@ async function saveTrades(newTrades, collection, isFiltered) {
     let filteredTrades = newTrades;
     if (isFiltered) {
       // Récupérer les trades déjà présents en base de données
-      const existingTrades = await fetchTradesInDatabase();
+      const existingTrades = await fetchDatabaseTrades();
 
       // Filtrer les nouveaux trades pour éviter les duplications
       filteredTrades = newTrades.filter((newTrade) => {
@@ -189,13 +189,14 @@ async function updateTrades(req, res) {
 }
 
 async function fetchLastTrades(platform, symbol) {
+  console.log(`🚀 ~ file: tradesController.js:192 ~ fetchLastTrades ~ symbol:`, symbol)
   const platformInstance = createPlatformInstance(platform);
   return platformInstance.fetchMyTrades(symbol);
 }
 
 module.exports = {
   getTrades,
-  fetchTradesInDatabase,
+  fetchDatabaseTrades,
   addTradesManually,
   updateTrades,
   fetchLastTrades,

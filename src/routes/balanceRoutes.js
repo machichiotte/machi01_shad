@@ -5,6 +5,6 @@ const { getBalances, updateCurrentBalance } = require('../controllers/balanceCon
 const router = express.Router();
 
 router.get('/get', getBalances);
-router.get('/update/:exchangeId', updateCurrentBalance);
+router.get('/update/:platform', updateCurrentBalance);
 
 module.exports = router;

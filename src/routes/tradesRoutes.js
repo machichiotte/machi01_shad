@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.get('/get', getTrades);
 router.post('/add', addTradesManually);
-router.get('/update/:exchangeId', updateTrades);
+router.get('/update/:platform', updateTrades);
 
 module.exports = router;
