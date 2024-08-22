@@ -8,10 +8,10 @@
         {{ crypto["cmc_rank"] }} - {{ crypto.name }}
       </li>
     </ul>
-    <Button @click="updateAll()" style="font-size: 18px; margin: 4px">Maj exchanges</Button>
-    <div v-for="exchangeId in exchangeIds" :key="exchangeId" style="margin-bottom: 10px;">
-      <ToggleButton :id="exchangeId" v-model="selectedExchanges[exchangeId]" :onLabel="exchangeId"
-        :offLabel="exchangeId" />
+    <Button @click="updateAll()" style="font-size: 18px; margin: 4px">Maj platform</Button>
+    <div v-for="platform in platforms" :key="platform" style="margin-bottom: 10px;">
+      <ToggleButton :id="platform" v-model="selectedPlatforms[platform]" :onLabel="platform"
+        :offLabel="platform" />
     </div>
     <div>
       <ToggleButton id="balance" v-model="updateBalance" onLabel="Balance" offLabel="Balance" />
@@ -48,14 +48,14 @@ const API_ENDPOINTS = {
 
 // Define reactive data
 const cryptoData = ref();
-const exchangeIds = ref(["binance", "kucoin", "htx", "okx", "gateio"]);
-const selectedExchanges = ref({});
+const platforms = ref(["binance", "kucoin", "htx", "okx", "gateio"]);
+const selectedPlatforms = ref({});
 const updateBalance = ref(true);
 const updateOrders = ref(true);
 
-// Initialize selectedExchanges object with default values
-exchangeIds.value.forEach(exchangeId => {
-  selectedExchanges.value[exchangeId] = false;
+// Initialize selectedPlatforms object with default values
+platforms.value.forEach(platform => {
+  selectedPlatforms.value[platform] = false;
 });
 
 // Define methods
@@ -85,7 +85,7 @@ async function fetchAndUpdateCoinMarketCapData() {
   }
 }
 
-async function updateExchangeData(exchangeId) {
+async function updatePlatformData(platform) {
   try {
     loadingSpin();
     let result = '';
@@ -94,16 +94,16 @@ async function updateExchangeData(exchangeId) {
     let ordersCount = 0;
 
     if (updateBalance.value || updateOrders.value) {
-      result += `${exchangeId.toUpperCase()} : `;
+      result += `${platform.toUpperCase()} : `;
     }
 
     if (updateBalance.value) {
-      const balance_data_response = await fetch(`${API_ENDPOINTS.UPD_BALANCE}${exchangeId}`);
+      const balance_data_response = await fetch(`${API_ENDPOINTS.UPD_BALANCE}${platform}`);
       if (balance_data_response.ok) {
         console.log('okokok');
         const balance_data = await balance_data_response.json();
 
-        saveBalancesDataToIndexedDB(balance_data.data, exchangeId);
+        saveBalancesDataToIndexedDB(balance_data.data, platform);
 
         console.log('saveBalancesDataToIndexedDB');
 
@@ -114,12 +114,12 @@ async function updateExchangeData(exchangeId) {
     }
 
     if (updateOrders.value) {
-      const orders_data_response = await fetch(`${API_ENDPOINTS.ORDERS}${exchangeId}`);
+      const orders_data_response = await fetch(`${API_ENDPOINTS.ORDERS}${platform}`);
       if (orders_data_response.ok) {
         const orders_data = await orders_data_response.json();
         console.log('orders_data', orders_data)
 
-        saveOrdersDataToIndexedDB(orders_data, exchangeId);
+        saveOrdersDataToIndexedDB(orders_data, platform);
         ordersCount = orders_data.length;
 
         result += `${ordersCount} ordres ouverts. `;
@@ -129,24 +129,24 @@ async function updateExchangeData(exchangeId) {
     if (result !== '') {
       return result;
     } else {
-      throw new Error(`No data updated for ${exchangeId.toUpperCase()}`);
+      throw new Error(`No data updated for ${platform.toUpperCase()}`);
     }
   } catch (error) {
-    throw new Error(`Error updating ${exchangeId}: ${error.message}`);
+    throw new Error(`Error updating ${platform}: ${error.message}`);
   }
 }
 
 async function updateAll() {
   try {
-    const promises = Object.keys(selectedExchanges.value)
-      .filter(exchangeId => selectedExchanges.value[exchangeId])
-      .map(exchangeId => updateExchangeData(exchangeId));
+    const promises = Object.keys(selectedPlatforms.value)
+      .filter(platform => selectedPlatforms.value[platform])
+      .map(platform => updatePlatformData(platform));
 
     const results = await Promise.all(promises);
     const finalResult = results.join('<br>');
     showUpdateResult(finalResult);
   } catch (error) {
-    handleError('Error updating exchanges:', error);
+    handleError('Error updating platforms:', error);
   }
 }
 

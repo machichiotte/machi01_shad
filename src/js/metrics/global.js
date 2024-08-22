@@ -1,8 +1,5 @@
 // src/js/metrics/global.js
-import {
-  calculateRecups,
-  calculateAmountsAndPricesForShad
-} from './strategies.js'
+import { calculateRecups, calculateAmountsAndPricesForShad } from './strategies.js'
 import { getCmcValues } from './cmc.js'
 import { getCurrentPossession, getPercentageDifference, getStatus } from './utils.js'
 import { getTotalAmountAndBuy, getTotalSell, getProfit } from './trades.js'
@@ -26,11 +23,9 @@ function updateStoreGetters() {
 }
 
 function getAllCalculs(item) {
-
   const { cmc, trades, strats, buyOrders, sellOrders } = updateStoreGetters()
 
   const { symbol, platform, balance, assetStrat, assetExpo } = item
-  const exchangeId = platform
 
   const {
     rank,
@@ -137,11 +132,9 @@ function getAllCalculs(item) {
     cryptoPercentChange30d,
     cryptoPercentChange60d,
     cryptoPercentChange90d,
-    exchangeId,
+    platform,
     percentToNextTp
   }
 }
 
-export {
-  getAllCalculs
-}
+export { getAllCalculs }

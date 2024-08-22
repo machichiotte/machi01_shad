@@ -44,9 +44,9 @@ function createPlatformColoredCell(createElement, props) {
   }, cellContent);
 }
 
-// Function to define colors based on the exchangeId
-function getPlatformColors(exchangeId) {
-  switch (exchangeId) {
+// Function to define colors based on the platform
+function getPlatformColors(platform) {
+  switch (platform) {
     case 'binance':
       return {
         backgroundColor: '#F3BA2F',

@@ -5,16 +5,16 @@ import store from '@/store/store.js'
 const ERROR_ALLOWED = 0.05
 const MAX_EXPO = 10000
 
-function getStrat(exchangeId, asset) {
+function getStrat(platform, asset) {
   const strats = store.getters['calcul/' + GET_STRATS]
 
   // Rechercher la stratégie correspondante à l'actif donné
   const filteredStrat = strats.find((strat) => strat.asset === asset) || {}
 
-  console.log('filtered', exchangeId + ' ' + asset + ' ' + filteredStrat)
+  console.log('filtered', platform + ' ' + asset + ' ' + filteredStrat)
   // Déterminer la stratégie et l'exposition maximale
-  const strat = filteredStrat.strategies?.[exchangeId] || 'No strategy'
-  const stratExpo = filteredStrat.maxExposure?.[exchangeId] || MAX_EXPO
+  const strat = filteredStrat.strategies?.[platform] || 'No strategy'
+  const stratExpo = filteredStrat.maxExposure?.[platform] || MAX_EXPO
 
   return { strat, stratExpo }
 }

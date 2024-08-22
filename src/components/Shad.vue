@@ -9,8 +9,8 @@
             :model="allRows" />
           <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected"
             :disabled="!selectedAssets || !selectedAssets.length" />
-          <MultiSelect v-model="selectedExchanges" :options="exchangeOptions" optionLabel="name" optionValue="id"
-            placeholder="Select Exchanges" class="ml-2" display="chip" :panelClass="'exchanges-multiselect-panel'">
+          <MultiSelect v-model="selectedPlatforms" :options="platformOptions" optionLabel="name" optionValue="id"
+            placeholder="Select Platforms" class="ml-2" display="chip" :panelClass="'platforms-multiselect-panel'">
             <template #item="slotProps">
               <Checkbox v-model="slotProps.checked" :label="slotProps.option.name" />
               <span>{{ slotProps.option.name }}</span>
@@ -42,7 +42,7 @@
           <Row>
             <Column header="Icon" field="iconUrl" :rowspan="2" frozen alignFrozen="left" />
             <Column header="Asset" field="asset" :rowspan="2" :sortable="true" frozen alignFrozen="left" />
-            <Column header="Exchange" field="exchangeId" :rowspan="2" sortable frozen alignFrozen="left" />
+            <Column header="Platform" field="platform" :rowspan="2" sortable frozen alignFrozen="left" />
             <Column header="Current Price" field="currentPrice" frozen alignFrozen="left" :rowspan="2" sortable />
             <Column header="Status" field="status" :rowspan="2" sortable frozen alignFrozen="left" />
             <Column header="Total Shad" field="totalShad" :rowspan="2" sortable />
@@ -96,7 +96,7 @@
           </template>
         </Column>
         <Column field="asset" frozen alignFrozen="left"></Column>
-        <Column field="exchangeId" style="min-width: 5rem" frozen alignFrozen="left"></Column>
+        <Column field="platform" style="min-width: 5rem" frozen alignFrozen="left"></Column>
         <Column field="currentPrice" frozen alignFrozen="left">
           <template #body="slotProps">
             <div style="position: relative; height: 50px; padding: 5px;">
@@ -309,13 +309,13 @@ const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
-const BINANCE_EXCHANGE_ID = 'binance';
+const BINANCE_PLATFORM_ID = 'binance';
 const BINANCE_THRESHOLD = 3; // 300%
 
-const HTX_EXCHANGE_ID = 'htx';
+const HTX_PLATFORM_ID = 'htx';
 const HTX_THRESHOLD = 3; // 300%
 
-const exchangeOptions = computed(() => {
+const platformOptions = computed(() => {
   return [
     { id: 'binance', name: 'Binance' },
     { id: 'kucoin', name: 'KuCoin' },
@@ -335,7 +335,7 @@ function selectPerformance(data) {
   }
 }
 
-const selectedExchanges = ref(exchangeOptions.value.map(exchange => exchange.id));
+const selectedPlatforms = ref(platformOptions.value.map(platform => platform.id));
 
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
 
@@ -345,23 +345,23 @@ const items = computed(() => {
 
 // Computed property to get filtered items
 const filteredItems = computed(() => {
-  if (!filters.value.global.value && selectedExchanges.value.length === 0) {
+  if (!filters.value.global.value && selectedPlatforms.value.length === 0) {
     return items.value;
   }
 
   const searchTerm = filters.value.global.value?.toLowerCase() || '';
 
   return items.value.filter(item => {
-    const matchesExchange = selectedExchanges.value.length === 0 || selectedExchanges.value.includes(item.exchangeId);
+    const matchesPlatform = selectedPlatforms.value.length === 0 || selectedPlatforms.value.includes(item.platform);
     const matchesSearch = Object.values(item).some(val => String(val).toLowerCase().includes(searchTerm));
 
-    return matchesExchange && matchesSearch;
+    return matchesPlatform && matchesSearch;
   });
 });
 
 // Génération d'une clé unique par ligne
 const rowKey = (rowData) => {
-  return `${rowData.asset}-${rowData.exchangeId}`;
+  return `${rowData.asset}-${rowData.platform}`;
 };
 
 onMounted(async () => {
@@ -380,7 +380,7 @@ const confirmDeleteSelected = () => {
 
 function getStatus(data) {
   const currentPrice = data.currentPrice;
-  const exchangeId = data.exchangeId;
+  const platform = data.platform;
 
   if (data.status === 'stable coin') {
     return { severity: 'secondary', label: 'stable coin' };
@@ -400,9 +400,9 @@ function getStatus(data) {
       if (nb5 === 5) {
         return { severity: 'success', label: '5 ordres placés' };
       } else {
-        if (exchangeId === BINANCE_EXCHANGE_ID || exchangeId === HTX_EXCHANGE_ID) {
-          const exchangeThreshold = exchangeId === BINANCE_EXCHANGE_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD;
-          const priceThreshold = calculatePriceThreshold(currentPrice, exchangeThreshold);
+        if (platform === BINANCE_PLATFORM_ID || platform === HTX_PLATFORM_ID) {
+          const platformThreshold = platform === BINANCE_PLATFORM_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD;
+          const priceThreshold = calculatePriceThreshold(currentPrice, platformThreshold);
 
           for (let i = 0; i < 5; i++) {
             if (data.status[i] === 0) {
@@ -516,7 +516,7 @@ p {
   color: #ef4444;
 }
 
-.exchanges-multiselect-panel {
+.platforms-multiselect-panel {
   min-width: 200px;
 }
 </style>

@@ -80,8 +80,8 @@ console.log(`🚀 ~ file: getter.js:70 ~ getTickers ~ getTickers`)
   }
 }
 
-const getTickersByExchange = async (exchangeId) => {
-  const ENDPOINT = `${serverHost}/${TICKERS}/get/${exchangeId}`
+const getTickersByPlatform = async (platform) => {
+  const ENDPOINT = `${serverHost}/${TICKERS}/get/${platform}`
 
   try {
     const items = await fetchDataWithCache(TICKERS, ENDPOINT, saveTickersToIndexedDB)
@@ -91,8 +91,8 @@ const getTickersByExchange = async (exchangeId) => {
   }
 }
 
-const getTickersBySymbolAndExchange = async (exchangeId, symbol) => {
-  const ENDPOINT = `${serverHost}/${TICKERS}/get/${exchangeId}`
+const getTickersBySymbolAndPlatform = async (platform, symbol) => {
+  const ENDPOINT = `${serverHost}/${TICKERS}/get/${platform}`
 
   try {
     const items = await fetchDataWithCache(TICKERS, ENDPOINT, saveTickersToIndexedDB)
@@ -153,7 +153,7 @@ const getOrders = async () => {
 const cancelOrder = async (item) => {
   try {
     const response = await fetch(
-      `${serverHost}/${ORDERS}/cancel?exchangeId=${item.platform}&oId=${item.oId}&symbol=${item.symbol}`
+      `${serverHost}/${ORDERS}/cancel?platform=${item.platform}&oId=${item.oId}&symbol=${item.symbol}`
     )
     const data = await response.json()
     console.log('cancelOrder data.code :: ', data.code)
@@ -197,6 +197,6 @@ export {
   getTrades,
   getOrders,
   getTickers,
-  getTickersByExchange,
-  getTickersBySymbolAndExchange
+  getTickersByPlatform,
+  getTickersBySymbolAndPlatform
 }

@@ -75,7 +75,7 @@ const calculateQuantity = (index) => {
 const submitOrders = async () => {
     const orderPlacementResults = await Promise.all(buyOrders.value.map(async (order) => {
         try {
-            const result = await bunchLimitBuyOrders(selectedAsset.value.exchangeId, selectedAsset.value.asset, order.quantity, order.price);
+            const result = await bunchLimitBuyOrders(selectedAsset.value.platform, selectedAsset.value.asset, order.quantity, order.price);
             return result;
         } catch (error) {
             console.error('Error placing order:', error);
@@ -95,7 +95,7 @@ const submitOrders = async () => {
 const assetOptions = computed(() => {
     const assets = props.selectedAssets.map(row => ({
         asset: row.asset,
-        exchangeId: row.exchangeId
+        platform: row.platform
     }));
 
     const uniqueAssets = Array.from(new Set(assets.map(a => a.asset)))

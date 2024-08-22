@@ -61,24 +61,24 @@ const openDatabase = async () => {
   })
 }
 
-const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterExchange) => {
+const saveDataToIndexedDBInternal = async (storeName, data, keyField, filterPlatform) => {
   try {
     const db = await openDatabase()
     const transaction = db.transaction([storeName], 'readwrite')
     const objectStore = transaction.objectStore(storeName)
-    const shouldFilterExchange = filterExchange !== null && filterExchange !== undefined
+    const shouldFilterPlatform = filterPlatform !== null && filterPlatform !== undefined
 
-    if (!shouldFilterExchange) {
+    if (!shouldFilterPlatform) {
       await clearObjectStore(objectStore)
     } else {
-      await clearObjectStoreByExchange(objectStore, filterExchange)
+      await clearObjectStoreByPlatform(objectStore, filterPlatform)
     }
 
     if (data && data.length > 0) {
       data.forEach((item) => {
         if (isValidItem(item, keyField)) {
           const itemToSave = createItemToSave(item, keyField)
-          if (shouldFilterExchange && itemToSave['platform'] !== filterExchange) {
+          if (shouldFilterPlatform && itemToSave['platform'] !== filterPlatform) {
             console.log(`Skipping item with platform ${itemToSave['platform']}.`)
             return
           }
@@ -112,7 +112,7 @@ const clearObjectStore = (objectStore) => {
   })
 }
 
-const clearObjectStoreByExchange = (objectStore, filterExchange) => {
+const clearObjectStoreByPlatform = (objectStore, filterPlatform) => {
   return new Promise((resolve, reject) => {
     const clearRequest = objectStore.openCursor()
 
@@ -122,7 +122,7 @@ const clearObjectStoreByExchange = (objectStore, filterExchange) => {
       if (cursor) {
         const item = cursor.value
 
-        if (item && item.platform === filterExchange) {
+        if (item && item.platform === filterPlatform) {
           const deleteRequest = cursor.delete()
 
           deleteRequest.onsuccess = () => {
@@ -164,12 +164,12 @@ const saveCmcToIndexedDB = async (data) => {
   await saveDataToIndexedDBInternal(CMC, data, 'cmc_rank', null)
 }
 
-const saveOrdersDataToIndexedDB = async (data, exchange) => {
-  await saveDataToIndexedDBInternal(ORDERS, data, '_id', exchange)
+const saveOrdersDataToIndexedDB = async (data, platform) => {
+  await saveDataToIndexedDBInternal(ORDERS, data, '_id', platform)
 }
 
-const saveBalancesDataToIndexedDB = async (data, exchange) => {
-  await saveDataToIndexedDBInternal(BALANCE, data, '_id', exchange)
+const saveBalancesDataToIndexedDB = async (data, platform) => {
+  await saveDataToIndexedDBInternal(BALANCE, data, '_id', platform)
 }
 
 const saveTradesDataToIndexedDB = async (data) => {

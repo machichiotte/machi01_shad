@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="right-section">
-                    <p class="exchange">{{ selectedAsset.exchangeId }}</p>
+                    <p class="platform">{{ selectedAsset.platform }}</p>
                 </div>
             </div>
 

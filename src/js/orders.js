@@ -1,5 +1,4 @@
 // src/orders.js
-// src/orders.js
 
 // Récupérer l'hôte du serveur à partir des variables d'environnement
 const serverHost = import.meta.env.VITE_SERVER_HOST
@@ -30,39 +29,39 @@ const postRequest = async (url, requestBody) => {
 }
 
 /**
- * Annule toutes les ordres pour un échange et un actif donné
- * @param {string} exchangeId - L'identifiant de l'échange
- * @param {string} asset - L'actif concerné
+ * Annule toutes les ordres pour une platform et un actif donné
+ * @param {string} platform - L'identifiant de la platforme
+ * @param {string} base - L'actif concerné
  * @returns {Promise<Object>} La réponse JSON de l'API
  */
-const cancelAllOrders = (exchangeId, asset) => {
-  return postRequest(`${serverHost}/orders/cancel/all`, { exchangeId, asset })
+const cancelAllOrders = (platform, base) => {
+  return postRequest(`${serverHost}/orders/cancel/all`, { platform, base })
 }
 
 /**
  * Annule toutes les ordres de vente pour un échange et un actif donné
- * @param {string} exchangeId - L'identifiant de l'échange
- * @param {string} asset - L'actif concerné
+ * @param {string} platform - L'identifiant de la platforme
+ * @param {string} base - L'actif concerné
  * @returns {Promise<Object>} La réponse JSON de l'API
  */
-const cancelAllSellOrders = (exchangeId, asset) => {
-  return postRequest(`${serverHost}/orders/cancel/all/sell`, { exchangeId, asset })
+const cancelAllSellOrders = (platform, base) => {
+  return postRequest(`${serverHost}/orders/cancel/all/sell`, { platform, base })
 }
 
 /**
  * Place plusieurs ordres de vente à limite pour un échange et un actif donné
- * @param {string} exchangeId - L'identifiant de l'échange
+ * @param {string} platform - L'identifiant de la platforme
  * @param {string} asset - L'actif concerné
  * @param {number} amount - Le montant de l'actif
  * @param {number} price - Le prix de l'actif
  * @returns {Promise<number>} Le statut de la réponse
  */
-const bunchLimitSellOrders = async (exchangeId, asset, amount, price) => {
+const bunchLimitSellOrders = async (platform, asset, amount, price) => {
   try {
     const response = await fetch(`${serverHost}/orders/bunch-limit-sell-orders`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ exchangeId, asset, amount, price })
+      body: JSON.stringify({ platform, asset, amount, price })
     })
 
     if (!response.ok) {
@@ -78,18 +77,18 @@ const bunchLimitSellOrders = async (exchangeId, asset, amount, price) => {
 
 /**
  * Place plusieurs ordres d'achat à limite pour un échange et un actif donné
- * @param {string} exchangeId - L'identifiant de l'échange
+ * @param {string} platform - L'identifiant de l'échange
  * @param {string} asset - L'actif concerné
  * @param {number} amount - Le montant de l'actif
  * @param {number} price - Le prix de l'actif
  * @returns {Promise<number>} Le statut de la réponse
  */
-const bunchLimitBuyOrders = async (exchangeId, asset, amount, price) => {
+const bunchLimitBuyOrders = async (platform, asset, amount, price) => {
   try {
     const response = await fetch(`${serverHost}/orders/bunch-limit-buy-orders`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ exchangeId, asset, amount, price })
+      body: JSON.stringify({ platform, asset, amount, price })
     })
 
     if (!response.ok) {

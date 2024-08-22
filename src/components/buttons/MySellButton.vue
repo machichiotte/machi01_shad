@@ -19,7 +19,7 @@ const iAmClicked = async () => {
     
   const cancellationPromises = selectedRows.map(async (row) => {
     if (row.nbOpenSellOrders > 0) {
-      const cancel = await cancelAllSellOrders(row.exchangeId, row.asset );
+      const cancel = await cancelAllSellOrders(row.platform, row.asset );
       return cancel.status === 200 ? row.asset : null; // Return asset only if cancellation successful
     }
     return row.asset; // Return asset even if no cancellation was needed
@@ -55,7 +55,7 @@ const iAmClicked = async () => {
       // Nested Promise.all for parallel bunchLimitSellOrders
       const orderResults = await Promise.all(
         amounts.map(async (amount, index) => {
-          return await bunchLimitSellOrders(selectedRow.exchangeId, asset, amount, prices[index]);
+          return await bunchLimitSellOrders(selectedRow.platform, asset, amount, prices[index]);
         })
       );
 
