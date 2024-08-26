@@ -24,7 +24,7 @@ async function initializeServer() {
     //await cronMarkets();
     await cronBalances();
 
-    //await initializeCronTasks();
+    await initializeCronTasks();
     startServer();
   } catch (error) {
     console.error('Error during server initialization:', error);

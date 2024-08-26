@@ -50,12 +50,12 @@ async function getOrders(req, res) {
  * Retrieves the last recorded orders from the database.
  * @returns {Promise<Object[]>} - The last recorded orders.
  */
-async function fetchOrdersInDatabase() {
+async function fetchDatabaseOrders() {
   const collectionName = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
   try {
     const data = await getData(collectionName);
     console.log(
-      `🚀 ~ file: ordersController.js:58 ~ fetchOrdersInDatabase ~ data:`,
+      `🚀 ~ file: ordersController.js:58 ~ fetchDatabaseOrders ~ data:`,
       {
         collectionName,
         count: data.length,
@@ -64,12 +64,9 @@ async function fetchOrdersInDatabase() {
     return data;
   } catch (error) {
     console.log(
-      `🚀 ~ file: ordersController.js:67 ~ fetchOrdersInDatabase ~ error:`,
+      `🚀 ~ file: ordersController.js:67 ~ fetchDatabaseOrders ~ error:`,
       error
     );
-    /*errorLogger.error("Failed to fetch orders from database.", {
-      error: error.message,
-    });*/
     throw error;
   }
 }
@@ -382,7 +379,7 @@ async function fetchOpenOrdersForKucoin(platformInstance) {
 
 module.exports = {
   getOrders,
-  fetchOrdersInDatabase,
+  fetchDatabaseOrders,
   updateOrders,
   updateOrdersFromServer,
   deleteOrder,

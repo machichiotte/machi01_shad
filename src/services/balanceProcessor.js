@@ -12,7 +12,7 @@ const {
   fetchLastTrades,
 } = require("../controllers/tradesController.js");
 const {
-  fetchOrdersInDatabase,
+  fetchDatabaseOrders,
   updateOrdersFromServer,
 } = require("../controllers/ordersController.js");
 const {
@@ -81,7 +81,7 @@ async function calculateAllMetrics() {
     fetchDatabaseCmc(),
     fetchDatabaseStrategies(),
     fetchDatabaseTrades(),
-    fetchOrdersInDatabase(),
+    fetchDatabaseOrders(),
     fetchDatabaseTickers(),
     fetchDatabaseBalances(),
   ]);
