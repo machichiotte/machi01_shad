@@ -95,7 +95,7 @@ async function getData() {
 
     balance.value = store.getters['calcul/' + GET_BALANCES]
     platforms.value = [...new Set(balance.value.map((item) => item.platform))].sort()
-    assets.value = [...new Set(balance.value.map((item) => item.symbol))].sort()
+    assets.value = [...new Set(balance.value.map((item) => item.base))].sort()
   } catch (err) {
     console.error(err)
   }
@@ -112,6 +112,7 @@ async function getStrat() {
           strategies: {},
           maxExposure: {}
         }
+        console.log(`🚀 ~ file: Strategy.vue:118 ~ assets.value.forEach ~ assetStrat:`, assetStrat)
         platforms.value.forEach((platform) => {
           assetStrat.strategies[platform] = ''
           assetStrat.maxExposure[platform] = ''
@@ -230,7 +231,7 @@ function setSelectedStrategy(asset, platform, value) {
 }
 
 function isDisabled(asset, platform) {
-  const assetsFiltered = balance.value.filter((item) => item.symbol === asset)
+  const assetsFiltered = balance.value.filter((item) => item.base === asset)
   const platformsFiltered = assetsFiltered.map((item) => item.platform)
   return !platformsFiltered.includes(platform)
 }
