@@ -19,7 +19,7 @@ async function initializeServer() {
   try {
     await connectToMongoDB();
 
-    //await cleanCollectionTrades();
+    await cleanCollectionTrades();
     //await cronTickers();
     //await cronMarkets();
     await cronBalances();

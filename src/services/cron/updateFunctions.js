@@ -1,6 +1,6 @@
 // src/services/cron/updateFunctions.js
 const { fetchCurrentTickers, saveDatabaseTickers } = require("../../controllers/tickersController.js");
-const { fetchDatabaseBalances, fetchCurrentBalancesByPlatform, saveDatabaseBalance } = require("../../controllers/balanceController.js");
+const { fetchDatabaseBalancesByPlatform, fetchCurrentBalancesByPlatform, saveDatabaseBalance } = require("../../controllers/balanceController.js");
 const { fetchCurrentMarkets, saveDatabaseMarkets } = require("../../controllers/marketsController.js");
 
 const {
@@ -33,8 +33,8 @@ async function updateTickersForPlatform(platform) {
 
 async function updateBalancesForPlatform(platform)  {
   const currentBalances = await fetchCurrentBalancesByPlatform(platform, 3);
-  const lastBalances = await fetchDatabaseBalances(platform);
-  const differences = compareBalances(lastBalances, currentBalances);
+  const previousBalances = await fetchDatabaseBalancesByPlatform(platform, 3);
+  const differences = compareBalances(previousBalances, currentBalances);
   console.log(`🚀 ~ file: updateFunctions.js:38 ~ updateBalancesForPlatform ~ differences:`, differences)
   if (differences.length > 0) {
     await saveDatabaseBalance(currentBalances, platform);
