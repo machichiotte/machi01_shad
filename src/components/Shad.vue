@@ -3,7 +3,9 @@
     <div class="card">
       <Toolbar class="mb-4">
         <template #start>
-          <MySellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
+          <MyBunchSellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
+            :model="allRows" />
+          <MyEmergencySellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
             :model="allRows" />
           <MyBuyButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
             :model="allRows" />
@@ -16,6 +18,7 @@
               <span>{{ slotProps.option.name }}</span>
             </template>
           </MultiSelect>
+
         </template>
         <template #end>
           <div class="flex justify-content-end">
@@ -168,7 +171,7 @@
         </Column>
 
         <Column field="profit" sortable>
-          <template #body="slotProps"> 
+          <template #body="slotProps">
             <span>
               <!-- Vérification si profit est défini et est un nombre valide -->
               {{
@@ -287,7 +290,8 @@
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { FilterMatchMode } from 'primevue/api'
-import MySellButton from './buttons/MySellButton.vue'
+import MyEmergencySellButton from './buttons/MyEmergencySellButton.vue'
+import MyBunchSellButton from './buttons/MyBunchSellButton.vue'
 import MyBuyButton from './buttons/MyBuyButton.vue'
 import { strategies } from '../js/strategies.js'
 

@@ -961,7 +961,7 @@ machi-shad
 │  │  ├─ Cmc.vue
 │  │  ├─ Converter.vue
 │  │  ├─ Home.vue
-│  │  ├─ MySellButton.vue
+│  │  ├─ MyBunchSellButton.vue
 │  │  ├─ NextSellsTable.vue
 │  │  ├─ Orders.vue
 │  │  ├─ OrdersTable.vue

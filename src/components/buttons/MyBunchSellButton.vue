@@ -1,4 +1,4 @@
-<!-- src/components/MySellButton.vue -->
+<!-- src/components/MyBunchSellButton.vue -->
 <template>
   <Button label="Add Sell Orders" icon="pi pi-cart-plus" severity="info" class="mr-2" @click="iAmClicked"> </Button>
 </template>
@@ -71,4 +71,3 @@ const iAmClicked = async () => {
   }
 }
 </script>
-../../js/orders.js../../js/spinner.js

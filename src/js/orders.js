@@ -51,6 +51,32 @@ const cancelAllSellOrders = (platform, asset) => {
 }
 
 /**
+ * Place un ordre de vente au marché pour un échange et un actif donné
+ * @param {string} platform - L'identifiant de la plateforme
+ * @param {string} asset - L'actif concerné
+ * @param {number} amount - Le montant de l'actif à vendre
+ * @returns {Promise<number>} Le statut de la réponse
+ */
+const marketSellOrder = async (platform, asset, amount) => {
+  try {
+    const response = await fetch(`${serverHost}/orders/market-sell-order`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ platform, asset, amount })
+    });
+
+    if (!response.ok) {
+      console.error(`Error: Market sell failed with status ${response.status}`);
+    }
+    return response.status;
+  } catch (error) {
+    console.error('Error placing market sell orders:', error);
+    throw error;
+  }
+};
+
+
+/**
  * Place plusieurs ordres de vente à limite pour un échange et un actif donné
  * @param {string} platform - L'identifiant de la platforme
  * @param {string} asset - L'actif concerné
@@ -60,7 +86,6 @@ const cancelAllSellOrders = (platform, asset) => {
  */
 const bunchLimitSellOrders = async (platform, asset, amount, price) => {
   try {
-    console.log('ici')
 
     const response = await fetch(`${serverHost}/orders/bunch-limit-sell-orders`, {
       method: 'POST',
@@ -68,16 +93,12 @@ const bunchLimitSellOrders = async (platform, asset, amount, price) => {
       body: JSON.stringify({ platform, asset, amount, price })
     })
 
-    console.log('la')
     if (!response.ok) {
       console.log(
         `🚀 ~ file: orders.js:73 ~ bunchLimitSellOrders ~ response.status:`,
         response.status
       )
-      //throw new Error(`HTTP error! Status: ${response.status}`)
     }
-    console.log('lalala')
-
     return response.status
   } catch (error) {
     console.error('Error placing bunch limit sell orders:', error)
@@ -116,4 +137,4 @@ const bunchLimitBuyOrders = async (platform, asset, amount, price) => {
   }
 }
 
-export { cancelAllOrders, cancelAllSellOrders, bunchLimitSellOrders, bunchLimitBuyOrders }
+export { cancelAllOrders, cancelAllSellOrders, marketSellOrder, bunchLimitSellOrders, bunchLimitBuyOrders }

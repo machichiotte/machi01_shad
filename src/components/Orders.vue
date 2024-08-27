@@ -32,7 +32,7 @@
           sortable
         ></Column>
         <template #selected-row-actions>
-          <MySellButtonVue :model="allRows" />
+          <MyBunchSellButtonVue :model="allRows" />
         </template>
       </DataTable>
     </div>
@@ -43,7 +43,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { ordersColumns } from '../js/columns.js'
 import { getOrders } from '../js/getter.js'
-import MySellButtonVue from './buttons/MySellButton.vue'
+import MyBunchSellButtonVue from './buttons/MyBunchSellButton.vue'
 import { FilterMatchMode } from 'primevue/api'
 
 // Variables réactives
@@ -96,4 +96,4 @@ onMounted(async () => {
   height: 700px;
   width: auto;
 }
-</style>./buttons/MySellButton.vue/index.js
+</style>./buttons/MyBunchSellButton.vue/index.js
