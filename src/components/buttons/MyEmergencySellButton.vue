@@ -12,7 +12,9 @@ const props = defineProps({
 })
 
 const emergencySellClicked = async () => {
+  console.log(`🚀 ~ file: MyEmergencySellButton.vue:15 ~ emergencySellClicked ~ async:`)
   const selectedRows = props.selectedAssets;
+  console.log(`🚀 ~ file: MyEmergencySellButton.vue:17 ~ emergencySellClicked ~ selectedRows:`, selectedRows)
 
   loadingSpin();
 
@@ -26,15 +28,20 @@ const emergencySellClicked = async () => {
 
   const cancellationResults = await Promise.all(cancellationPromises);
 
+  console.log(`🚀 ~ file: MyEmergencySellButton.vue:15 ~ emergencySellClicked ~ cancel:`)
+
   // Filtre les annulations réussies et extrait les actifs
   const assetsToPlaceOrders = cancellationResults.filter(Boolean);
 
   if (assetsToPlaceOrders.length > 0) {
     const orderPlacementPromises = assetsToPlaceOrders.map(async (asset) => {
       const selectedRow = selectedRows.find((row) => row.asset === asset);
-      const amount = selectedRow.amount; // Montant total à vendre au prix du marché
+      console.log(`🚀 ~ file: MyEmergencySellButton.vue:39 ~ orderPlacementPromises ~ selectedRow:`, selectedRow)
+      const balance = selectedRow.balance; // Montant total à vendre au prix du marché
+      console.log(`🚀 ~ file: MyEmergencySellButton.vue:41 ~ orderPlacementPromises ~ balance:`, balance)
 
-      const orderResult = await marketSellOrder(selectedRow.platform, asset, amount);
+      const orderResult = await marketSellOrder(selectedRow.platform, asset, balance);
+      console.log(`🚀 ~ file: MyEmergencySellButton.vue:44 ~ orderPlacementPromises ~ orderResult:`, orderResult)
 
       return `${asset}: ${orderResult}`; // Résultat pour le journal
     });
