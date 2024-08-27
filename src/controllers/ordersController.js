@@ -242,10 +242,10 @@ async function createBunchLimitBuyOrders(req, res) {
  * @param {Object} res - HTTP response object.
  */
 async function cancelAllOrders(req, res) {
-  const { platform, base } = req.body;
+  const { platform, asset } = req.body;
   try {
     const platformInstance = createPlatformInstance(platform);
-    const symbol = getSymbolForPlatform(platform, base);
+    const symbol = getSymbolForPlatform(platform, asset);
 
     let result;
     if (platform === "okx") {
@@ -266,22 +266,22 @@ async function cancelAllOrders(req, res) {
 }
 
 /**
- * Cancels all sell orders for a given base on the platform.
+ * Cancels all sell orders for a given asset on the platform.
  * @param {Object} req - HTTP request object.
  * @param {Object} res - HTTP response object.
  */
 async function cancelAllSellOrders(req, res) {
-  const { platform, base } = req.body;
+  const { platform, asset } = req.body;
   try {
     const platformInstance = createPlatformInstance(platform);
-    const symbol = getSymbolForPlatform(platform, base);
+    const symbol = getSymbolForPlatform(platform, asset);
     const openOrders = await platformInstance.fetchOpenOrders(symbol);
     const sellOrders = openOrders.filter((order) => order.side === "sell");
 
     if (sellOrders.length === 0) {
       res
         .status(200)
-        .json({ message: "No open sell orders for this base", status: 200 });
+        .json({ message: "No open sell orders for this asset", status: 200 });
       return;
     }
 

@@ -1,7 +1,7 @@
 // src/services/cron/updateFunctions.js
 const { fetchCurrentTickers, saveDatabaseTickers } = require("../../controllers/tickersController.js");
 const { fetchDatabaseBalances, fetchCurrentBalancesByPlatform, saveDatabaseBalance } = require("../../controllers/balanceController.js");
-const { fetchCurrentMarkets, saveMarketsInDatabase } = require("../../controllers/marketsController.js");
+const { fetchCurrentMarkets, saveDatabaseMarkets } = require("../../controllers/marketsController.js");
 
 const {
   deleteAndSaveObject,
@@ -16,7 +16,7 @@ const {
 async function updateMarketsForPlatform(platform) {
   const currentmarkets = await fetchCurrentMarkets(platform, 3);
   try {
-    await saveMarketsInDatabase(currentmarkets, platform);
+    await saveDatabaseMarkets(currentmarkets, platform);
   } catch (error) {
     console.log(`🚀 ~ file: updateFunctions.js:21 ~ updateMarketsForPlatform ~ error:`, error)
   }
