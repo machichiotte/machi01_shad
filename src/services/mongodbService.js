@@ -64,6 +64,7 @@ async function cleanCollectionTrades() {
             price: "$price",
             amount: "$amount",
             type: "$type",
+            timestamp: "$timestamp", // Ajouter le timestamp au groupement
           },
           count: { $sum: 1 },
           documents: { $push: "$$ROOT" },
@@ -78,28 +79,37 @@ async function cleanCollectionTrades() {
     .toArray();
 
   // Traiter chaque groupe de documents en double
-  await duplicates.forEach((group) => {
-    // Identifier le document à conserver (celui avec timestamp)
-    const documentToKeep = group.documents.find((doc) => doc.timestamp);
-    const documentsToDelete = group.documents.filter((doc) => doc.date);
+  await Promise.all(
+    duplicates.map(async (group) => {
+      const documentsToKeep = group.documents.filter((doc) => doc.timestamp);
+      const documentsToDelete = group.documents.filter((doc) => !doc.timestamp || doc.date);
 
-    if (documentToKeep) {
-      // Mettre à jour les documents à conserver
-      documentsToDelete.forEach((doc) => {
-        // Mettre à jour le document à conserver avec `totalUSDT` si nécessaire
-        if (doc.totalUSDT && !documentToKeep.totalUSDT) {
-          collectionTrades.updateOne(
-            { _id: documentToKeep._id },
-            { $set: { totalUSDT: doc.totalUSDT } }
-          );
-        }
+      if (documentsToKeep.length > 0) {
+        // Conserver un seul document avec timestamp (le premier trouvé)
+        const documentToKeep = documentsToKeep[0];
 
-        // Supprimer le document en double
-        collectionTrades.deleteOne({ _id: doc._id });
-      });
-    }
-  });
+        // Supprimer les autres documents avec timestamp ou date
+        await Promise.all(
+          group.documents
+            .filter((doc) => doc._id !== documentToKeep._id)
+            .map(async (doc) => {
+              // Mettre à jour le document à conserver avec `totalUSDT` si nécessaire
+              if (doc.totalUSDT && !documentToKeep.totalUSDT) {
+                await collectionTrades.updateOne(
+                  { _id: documentToKeep._id },
+                  { $set: { totalUSDT: doc.totalUSDT } }
+                );
+              }
+
+              // Supprimer le document en double
+              await collectionTrades.deleteOne({ _id: doc._id });
+            })
+        );
+      }
+    })
+  );
 }
+
 
 async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
   let attempts = 0;
