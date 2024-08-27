@@ -10,6 +10,8 @@ const serverHost = import.meta.env.VITE_SERVER_HOST
  * @returns {Promise<Object>} La réponse JSON
  */
 const postRequest = async (url, requestBody) => {
+  console.log(`🚀 ~ file: orders.js:13 ~ postRequest ~ requestBody:`, requestBody)
+  console.log(`🚀 ~ file: orders.js:13 ~ postRequest ~ url:`, url)
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -31,21 +33,21 @@ const postRequest = async (url, requestBody) => {
 /**
  * Annule toutes les ordres pour une platform et un actif donné
  * @param {string} platform - L'identifiant de la platforme
- * @param {string} base - L'actif concerné
+ * @param {string} asset - L'actif concerné
  * @returns {Promise<Object>} La réponse JSON de l'API
  */
-const cancelAllOrders = (platform, base) => {
-  return postRequest(`${serverHost}/orders/cancel/all`, { platform, base })
+const cancelAllOrders = (platform, asset) => {
+  return postRequest(`${serverHost}/orders/cancel/all`, { platform, asset: asset })
 }
 
 /**
  * Annule toutes les ordres de vente pour un échange et un actif donné
  * @param {string} platform - L'identifiant de la platforme
- * @param {string} base - L'actif concerné
+ * @param {string} asset - L'actif concerné
  * @returns {Promise<Object>} La réponse JSON de l'API
  */
-const cancelAllSellOrders = (platform, base) => {
-  return postRequest(`${serverHost}/orders/cancel/all/sell`, { platform, base })
+const cancelAllSellOrders = (platform, asset) => {
+  return postRequest(`${serverHost}/orders/cancel/all/sell`, { platform, asset: asset })
 }
 
 /**
@@ -58,15 +60,23 @@ const cancelAllSellOrders = (platform, base) => {
  */
 const bunchLimitSellOrders = async (platform, asset, amount, price) => {
   try {
+    console.log('ici')
+
     const response = await fetch(`${serverHost}/orders/bunch-limit-sell-orders`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ platform, asset, amount, price })
     })
 
+    console.log('la')
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`)
+      console.log(
+        `🚀 ~ file: orders.js:73 ~ bunchLimitSellOrders ~ response.status:`,
+        response.status
+      )
+      //throw new Error(`HTTP error! Status: ${response.status}`)
     }
+    console.log('lalala')
 
     return response.status
   } catch (error) {
@@ -92,7 +102,11 @@ const bunchLimitBuyOrders = async (platform, asset, amount, price) => {
     })
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`)
+      //throw new Error(`HTTP error! Status: ${response.status}`)
+      console.log(
+        `🚀 ~ file: orders.js:101 ~ bunchLimitBuyOrders ~ response.status:`,
+        response.status
+      )
     }
 
     return response.status
