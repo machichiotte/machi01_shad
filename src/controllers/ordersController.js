@@ -184,16 +184,71 @@ async function deleteOrder(req, res) {
 }
 
 /**
+ * Creates buy market order.
+ * @param {Object} req - HTTP request object.
+ * @param {Object} res - HTTP response object.
+ */
+async function createMarketBuyOrder(req, res) {
+  console.log(`🚀 ~ file: ordersController.js:201 ~ createMarketSellOrder ~ buy:`)
+  await createMarketOrder(req,res,'buy');
+}
+
+/**
+ * Creates sell mark order.
+ * @param {Object} req - HTTP request object.
+ * @param {Object} res - HTTP response object.
+ */
+async function createMarketSellOrder(req, res) {
+  console.log(`🚀 ~ file: ordersController.js:201 ~ createMarketSellOrder ~ sell:`)
+  await createMarketOrder(req,res,'sell');
+}
+
+/**
+ * Creates a market order on the platform.
+ * @param {Object} req - HTTP request object.
+ * @param {Object} res - HTTP response object.
+ * @param {string} orderType - Type of order to create ("buy" or "sell").
+ */
+async function createMarketOrder(req, res, orderType) {
+  const { platform, asset, amount } = req.body; // Pas besoin de price pour un ordre au marché
+  try {
+    const platformInstance = createPlatformInstance(platform);
+    const symbol = getSymbolForPlatform(platform, asset);
+    console.log(`🚀 ~ file: ordersController.js:215 ~ createMarketOrder ~ symbol:`, symbol)
+
+    let result;
+    if (orderType === "buy") {
+      result = await platformInstance.createMarketBuyOrder(symbol, amount);
+    } else if (orderType === "sell") {
+      result = await platformInstance.createMarketSellOrder(symbol, amount);
+    }
+
+    res.status(200).json({ message: result, status: 200 });
+    console.log(`Created ${orderType} market order for ${platform}.`, {
+      symbol,
+      amount,
+    });
+  } catch (error) {
+    console.log(
+      `🚀 ~ file: ordersController.js:221 ~ createMarketOrder ~ error:`,
+      error
+    );
+
+    handleErrorResponse(res, error, `createMarketOrder (${orderType})`);
+  }
+}
+
+/**
  * Creates a limit order on the platform.
  * @param {Object} req - HTTP request object.
  * @param {Object} res - HTTP response object.
  * @param {string} orderType - Type of order to create ("buy" or "sell").
  */
 async function createLimitOrder(req, res, orderType) {
-  const { platform, price, amount } = req.body;
+  const { platform, price, amount, asset } = req.body;
   try {
     const platformInstance = createPlatformInstance(platform);
-    const symbol = getSymbolForPlatform(platform, req.body.asset);
+    const symbol = getSymbolForPlatform(platform, asset);
 
     let result;
     if (orderType === "buy") {
@@ -224,6 +279,7 @@ async function createLimitOrder(req, res, orderType) {
  * @param {Object} res - HTTP response object.
  */
 async function createBunchLimitSellOrders(req, res) {
+  //TODO modifier parce que ca ne cree pas de bunch mais un order. rajouter boucle?
   await createLimitOrder(req, res, "sell");
 }
 
@@ -233,6 +289,7 @@ async function createBunchLimitSellOrders(req, res) {
  * @param {Object} res - HTTP response object.
  */
 async function createBunchLimitBuyOrders(req, res) {
+  //TODO modifier parce que ca ne cree pas de bunch mais un order. rajouter boucle?
   await createLimitOrder(req, res, "buy");
 }
 
@@ -387,4 +444,6 @@ module.exports = {
   createBunchLimitBuyOrders,
   cancelAllOrders,
   cancelAllSellOrders,
+  createMarketBuyOrder,
+  createMarketSellOrder
 };
