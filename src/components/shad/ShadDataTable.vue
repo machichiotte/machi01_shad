@@ -169,13 +169,7 @@
         <Column field="recupShad"></Column>
         <Column field="percentToNextTp">
             <template #body="slotProps">
-                <span :class="{
-        'text-green-500': slotProps.data.percentToNextTp > 0,
-        'text-red-500': slotProps.data.percentToNextTp < 0
-    }
-        ">
-                    {{ (100 * slotProps.data.percentToNextTp).toFixed(2) }}%
-                </span>
+                <PercentageColumn :percentage="slotProps.data.percentToNextTp" />
             </template>
         </Column>
         <Column field="recupTp1"></Column>
@@ -192,57 +186,27 @@
         <Column field="priceTp5"></Column>
         <Column field="cryptoPercentChange24h">
             <template #body="slotProps">
-                <span :class="{
-        'text-green-500': slotProps.data.cryptoPercentChange24h > 0,
-        'text-red-500': slotProps.data.cryptoPercentChange24h < 0
-    }
-        ">
-                    {{ (100 * slotProps.data.cryptoPercentChange24h).toFixed(2) }}%
-                </span>
+                <PercentageColumn :percentage="slotProps.data.cryptoPercentChange24h" />
             </template>
         </Column>
         <Column field="cryptoPercentChange7d">
             <template #body="slotProps">
-                <span :class="{
-        'text-green-500': slotProps.data.cryptoPercentChange7d > 0,
-        'text-red-500': slotProps.data.cryptoPercentChange7d < 0
-    }
-        ">
-                    {{ (100 * slotProps.data.cryptoPercentChange7d).toFixed(2) }}%
-                </span>
+                <PercentageColumn :percentage="slotProps.data.cryptoPercentChange7d" />
             </template>
         </Column>
         <Column field="cryptoPercentChange30d">
             <template #body="slotProps">
-                <span :class="{
-        'text-green-500': slotProps.data.cryptoPercentChange30d > 0,
-        'text-red-500': slotProps.data.cryptoPercentChange30d < 0
-    }
-        ">
-                    {{ (100 * slotProps.data.cryptoPercentChange30d).toFixed(2) }}%
-                </span>
+                <PercentageColumn :percentage="slotProps.data.cryptoPercentChange30d" />
             </template>
         </Column>
         <Column field="cryptoPercentChange60d">
             <template #body="slotProps">
-                <span :class="{
-        'text-green-500': slotProps.data.cryptoPercentChange60d > 0,
-        'text-red-500': slotProps.data.cryptoPercentChange60d < 0
-    }
-        ">
-                    {{ (100 * slotProps.data.cryptoPercentChange60d).toFixed(2) }}%
-                </span>
+                <PercentageColumn :percentage="slotProps.data.cryptoPercentChange60d" />
             </template>
         </Column>
         <Column field="cryptoPercentChange90d">
             <template #body="slotProps">
-                <span :class="{
-        'text-green-500': slotProps.data.cryptoPercentChange90d > 0,
-        'text-red-500': slotProps.data.cryptoPercentChange90d < 0
-    }
-        ">
-                    {{ (100 * slotProps.data.cryptoPercentChange90d).toFixed(2) }}%
-                </span>
+                <PercentageColumn :percentage="slotProps.data.cryptoPercentChange90d" />
             </template>
         </Column>
 
@@ -261,6 +225,7 @@ import { ref, computed, watch, defineProps, defineEmits } from 'vue';
 import { getStatus, updateMaxWanted, updateRowByStratChange } from '../../js/shad/shadUtils.js';
 
 import { strategies } from '../../js/strategies.js'
+import { PercentageColumn } from './PercentageColumn.vue'
 
 const strategiesList = ref(strategies);
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
@@ -296,19 +261,23 @@ const computedItems = computed(() => props.items);
 
 // Computed property to get filtered items
 const filteredItems = computed(() => {
-    if (!computedFilters.value.global.value && selectedPlatforms.value.length === 0) {
-        return computedItems.value;
+    return filterItems(props.items, computedFilters.value.global.value, selectedPlatforms.value);
+});
+
+function filterItems(items, searchTerm, selectedPlatforms) {
+    if (!searchTerm && selectedPlatforms.length === 0) {
+        return items;
     }
 
-    const searchTerm = computedFilters.value.global.value?.toLowerCase() || '';
+    searchTerm = searchTerm?.toLowerCase() || '';
 
-    return computedItems.value.filter(item => {
-        const matchesPlatform = selectedPlatforms.value.length === 0 || selectedPlatforms.value.includes(item.platform);
+    return items.filter(item => {
+        const matchesPlatform = selectedPlatforms.length === 0 || selectedPlatforms.includes(item.platform);
         const matchesSearch = Object.values(item).some(val => String(val).toLowerCase().includes(searchTerm));
 
         return matchesPlatform && matchesSearch;
     });
-});
+}
 
 // Génération d'une clé unique par ligne
 const rowKey = (rowData) => `${rowData.asset}-${rowData.platform}`;
