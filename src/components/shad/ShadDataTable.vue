@@ -1,4 +1,4 @@
-<!-- src/components/ShadDataTable.vue -->
+<!-- src/components/shad/ShadDataTable.vue -->
 <template>
     <DataTable class="mt-4" :value="filteredItems" :rows="itemsPerPage" :dataKey="rowKey" :filters="filters" :pt="{
         table: { style: 'min-width: 50rem' },
@@ -258,9 +258,9 @@
 
 <script setup>
 import { ref, computed, watch, defineProps, defineEmits } from 'vue';
-import { getStatus, updateMaxWanted, updateRowByStratChange } from '../js/shad/shadUtils.js';
+import { getStatus, updateMaxWanted, updateRowByStratChange } from '../../js/shad/shadUtils.js';
 
-import { strategies } from '../js/strategies.js'
+import { strategies } from '../../js/strategies.js'
 
 const strategiesList = ref(strategies);
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));

@@ -46,7 +46,7 @@ import { FilterMatchMode } from 'primevue/api'
 import MyEmergencySellButton from './buttons/MyEmergencySellButton.vue'
 import MyBunchSellButton from './buttons/MyBunchSellButton.vue'
 import MyBuyButton from './buttons/MyBuyButton.vue'
-import ShadDataTable from './ShadDataTable.vue'
+import ShadDataTable from './shad/ShadDataTable.vue'
 
 import {
   FETCH_SHAD, GET_SHAD
