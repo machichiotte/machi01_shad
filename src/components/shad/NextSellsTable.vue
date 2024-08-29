@@ -1,4 +1,4 @@
-<!-- src/components/NextSellsTable.vue -->
+<!-- src/components/shad/NextSellsTable.vue -->
 <template>
   <table class="my-table">
     <thead>

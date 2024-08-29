@@ -222,7 +222,7 @@
 
 <script setup>
 import { ref, computed, watch, defineProps, defineEmits } from 'vue';
-import { getStatus, updateMaxExposition, updateRowByStratChange } from '../../js/shad/shadUtils.js';
+import { calculateRecups, getStatus, updateMaxExposition, updateRowByStratChange } from '../../js/shad/shadUtils.js';
 
 import { strategies } from '../../js/strategies.js'
 import PercentageColumn from './PercentageColumn.vue'
@@ -278,6 +278,41 @@ function filterItems(items, searchTerm, selectedPlatforms) {
         return matchesPlatform && matchesSearch;
     });
 }
+
+/*function validateAndRecalculateTP(data) {
+    const originalItem = props.items.find(item => item.asset === data.asset);
+
+    try {
+        if (originalItem && originalItem.maxExposition !== data.maxExposition) {
+            console.log(`Value changed for ${data.asset} from ${originalItem.maxExposition} to ${data.maxExposition}`);
+
+            // Recalculate TP values here based on the new maxExposition value
+            const recupData = calculateRecups(
+                data.platform,
+                data.totalBuy,
+                data.totalSell,
+                props.items // Utilisation directe des données de 'items'
+            );
+
+            // Vérifiez si 'recupData' contient les valeurs attendues
+            if (!recupData || typeof recupData !== 'object') {
+                console.warn('Erreur de calcul : recupData invalide', recupData);
+                return;
+            }
+
+            // Mise à jour des valeurs recalculées
+            data.maxExposition = recupData.maxExposition;
+            data.ratioShad = recupData.ratioShad;
+            data.recupShad = recupData.recupShad;
+            data.recupTpX = recupData.recupTpX;
+            data.recupTp1 = recupData.recupTp1;
+
+            // Mise à jour d'autres valeurs dépendantes...
+        }
+    } catch (error) {
+        console.error('Erreur lors de la gestion de maxExposition:', error);
+    }
+}*/
 
 // Génération d'une clé unique par ligne
 const rowKey = (rowData) => `${rowData.asset}-${rowData.platform}`;
