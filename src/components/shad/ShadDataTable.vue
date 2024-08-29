@@ -225,7 +225,7 @@ import { ref, computed, watch, defineProps, defineEmits } from 'vue';
 import { getStatus, updateMaxWanted, updateRowByStratChange } from '../../js/shad/shadUtils.js';
 
 import { strategies } from '../../js/strategies.js'
-import { PercentageColumn } from './PercentageColumn.vue'
+import PercentageColumn from './PercentageColumn.vue'
 
 const strategiesList = ref(strategies);
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
@@ -306,5 +306,10 @@ function emitSelection(selection) {
 .icon-32 {
     width: 32px;
     height: 32px;
+}
+
+.p-datatable-frozen-view .p-datatable-thead th,
+.p-datatable-frozen-view .p-datatable-tbody td {
+    z-index: 1; /* Valeur ajustable selon votre besoin */
 }
 </style>

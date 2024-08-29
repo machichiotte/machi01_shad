@@ -98,11 +98,11 @@
 </template>
   
 <script>
-import { getTradesHistory, getDataBTC, getDataETH } from '../js/metrics/global.js';
-import ShadOverlayGraph from './ShadOverlayGraph.vue';
-import NextSellsTable from './NextSellsTable.vue';
-import OrdersTable from './OrdersTable.vue';
-import TradesTable from './TradesTable.vue';
+import { getTradesHistory, getDataBTC, getDataETH } from '../../js/metrics/global.js';
+import ShadOverlayGraph from '../ShadOverlayGraph.vue';
+import NextSellsTable from '../NextSellsTable.vue';
+import OrdersTable from '../OrdersTable.vue';
+import TradesTable from '../TradesTable.vue';
 
 export default {
     name: "ShadOverlay",
