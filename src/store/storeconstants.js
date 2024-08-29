@@ -37,4 +37,3 @@ export const GET_ORDERS = '[getters] get orders'
 export const GET_BUY_ORDERS = '[getters] get buy orders'
 export const GET_SELL_ORDERS = '[getters] get sell orders'
 export const GET_LAST_FETCH_TIMESTAMP = '[getters] get last fetch timestamp'
-

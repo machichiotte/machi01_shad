@@ -99,9 +99,9 @@
   
 <script>
 import { getTradesHistory, getDataBTC, getDataETH } from '../../js/metrics/global.js';
-import ShadOverlayGraph from '../ShadOverlayGraph.vue';
-import NextSellsTable from '../NextSellsTable.vue';
-import OrdersTable from '../OrdersTable.vue';
+import ShadOverlayGraph from './ShadOverlayGraph.vue';
+import NextSellsTable from './NextSellsTable.vue';
+import OrdersTable from '../orders/OrdersTable.vue';
 import TradesTable from '../TradesTable.vue';
 
 export default {
