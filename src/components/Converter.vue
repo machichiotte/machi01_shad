@@ -16,7 +16,7 @@
 </template>
   
 <script>
-import { getConvertedCsv } from "../js/getter.js";
+import { getConvertedCsv } from "../js/fetchFromServer.js";
 
 export default {
     name: "ConverterPage",
@@ -104,4 +104,3 @@ export default {
     overflow-x: auto;
 }
 </style>
-  

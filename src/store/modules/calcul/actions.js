@@ -17,7 +17,7 @@ import {
   SET_LAST_FETCH_TIMESTAMP
 } from '../../storeconstants'
 
-import { getCmc, getBalances, getTrades, getOrders, getStrategy, getShad } from '../../../js/getter'
+import { getCmc, getBalances, getTrades, getOrders, getStrategy, getShad } from '../../../js/fetchFromServer'
 
 const shouldFetchData = (lastFetch) => {
   const now = Date.now()

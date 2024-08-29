@@ -42,7 +42,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { ordersColumns } from '../js/columns.js'
-import { getOrders } from '../js/getter.js'
+import { getOrders } from '../js/fetchFromServer.js'
 import MyBunchSellButtonVue from './buttons/MyBunchSellButton.vue'
 import { FilterMatchMode } from 'primevue/api'
 
@@ -96,4 +96,4 @@ onMounted(async () => {
   height: 700px;
   width: auto;
 }
-</style>./buttons/MyBunchSellButton.vue/index.js
+</style>

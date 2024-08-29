@@ -41,36 +41,13 @@ const getBalances = () => fetchData('Balances', ENDPOINTS.BALANCE)
 const getTrades = () => fetchData('Trades', ENDPOINTS.TRADES)
 const getOrders = () => fetchData('Orders', ENDPOINTS.ORDERS)
 
-// Fetch tickers by platform or symbol
-const getTickersByPlatform = (platform) => fetchData('Tickers', `${ENDPOINTS.TICKERS}/${platform}`)
-const getTickersBySymbolAndPlatform = async (platform, symbol) => {
-  const items = await getTickersByPlatform(platform)
-  return items.find((item) => item.symbol === symbol)
-}
-
-// Cancel an order
-const cancelOrder = async (item) => {
-  try {
-    const response = await fetch(
-      `${serverHost}/orders/cancel?platform=${item.platform}&oId=${item.oId}&symbol=${item.symbol}`
-    )
-    const data = await response.json()
-    console.log('cancelOrder data.code :: ', data.code)
-  } catch (err) {
-    console.error("Erreur lors de la suppression de l'ordre :", err)
-  }
-}
-
 export {
   getConvertedCsv,
-  cancelOrder,
   getStrategy,
   getShad,
   getCmc,
   getBalances,
   getTrades,
   getOrders,
-  getTickers,
-  getTickersByPlatform,
-  getTickersBySymbolAndPlatform
+  getTickers
 }

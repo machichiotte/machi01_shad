@@ -13,7 +13,7 @@
 
 <script>
 import PieChart from "@/components/PieChart.vue";
-import { getShad } from '../js/getter.js';
+import { getShad } from '../js/fetchFromServer.js';
 
 export default {
   name: "HomePage",
