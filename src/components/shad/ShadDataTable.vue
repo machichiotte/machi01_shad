@@ -123,8 +123,8 @@
         <Column field="maxExposition">
             <template #body="slotProps">
                 <input type="text" v-model="slotProps.data.maxExposition"
-                    @input="updateMaxWanted(props.items, slotProps.data, $event.target.value)"
-                    @blur="updateMaxWanted(props.items, slotProps.data, $event.target.value)" />
+                    @input="updateMaxExposition(props.items, slotProps.data, $event.target.value)"
+                    @blur="updateMaxExposition(props.items, slotProps.data, $event.target.value)" />
             </template>
         </Column>
 
@@ -222,7 +222,7 @@
 
 <script setup>
 import { ref, computed, watch, defineProps, defineEmits } from 'vue';
-import { getStatus, updateMaxWanted, updateRowByStratChange } from '../../js/shad/shadUtils.js';
+import { getStatus, updateMaxExposition, updateRowByStratChange } from '../../js/shad/shadUtils.js';
 
 import { strategies } from '../../js/strategies.js'
 import PercentageColumn from './PercentageColumn.vue'

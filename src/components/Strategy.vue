@@ -81,7 +81,6 @@ const stratMap = ref([])
 const selectedStrategy = ref('')
 const selectedMaxExposure = ref('')
 
-//TODO CHANGE THIS (in global.js too)
 const strategiesList = ref(strategies);
 
 const exposures = ref([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000])
