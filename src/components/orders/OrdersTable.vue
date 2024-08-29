@@ -1,4 +1,4 @@
-<!-- src/components/OrdersTable.vue -->
+<!-- src/components/orders/OrdersTable.vue -->
 
 <template>
   <DataTable :value="rows" :rows="itemsPerPage">
@@ -15,7 +15,7 @@
 import { ref, computed } from 'vue'; // Importing ref and computed from Vue
 
 // Importing necessary columns from the columns.js file
-import { openOrdersTableColumns } from '../js/columns.js';
+import { openOrdersTableColumns } from '../../js/columns.js';
 
 // Declaring reactive variables using ref
 const itemsPerPage = ref(5);

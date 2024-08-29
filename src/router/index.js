@@ -2,8 +2,8 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@comp/Home.vue'
-import Shad from '@comp/Shad.vue'
-import Orders from '@comp/Orders.vue'
+import Shad from '@comp/shad/Shad.vue'
+import Orders from '@comp/orders/Orders.vue'
 import Cmc from '@comp/Cmc.vue'
 import Update from '@comp/Update.vue'
 import Strategy from '@comp/Strategy.vue'

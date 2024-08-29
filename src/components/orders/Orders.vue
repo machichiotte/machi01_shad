@@ -1,4 +1,4 @@
-<!-- src/components/Orders.vue -->
+<!-- src/components/orders/Orders.vue -->
 
 <template>
   <div class="page">
@@ -41,9 +41,9 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { ordersColumns } from '../js/columns.js'
-import { getOrders } from '../js/fetchFromServer.js'
-import MyBunchSellButtonVue from './buttons/MyBunchSellButton.vue'
+import { ordersColumns } from '../../js/columns.js'
+import { fetchOrders } from '../../js/fetchFromServer.js'
+import MyBunchSellButtonVue from '../buttons/MyBunchSellButton.vue'
 import { FilterMatchMode } from 'primevue/api'
 
 // Variables réactives
@@ -73,7 +73,7 @@ const rows = computed(() => {
 })
 
 const getData = async () => {
-  items.value = await getOrders()
+  items.value = await fetchOrders()
 }
 
 onMounted(async () => {

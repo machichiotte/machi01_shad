@@ -33,7 +33,7 @@
         </template>
       </Toolbar>
 
-      <ShadDataTable :items="items" :filters="filters" @update:selectedAssets="updateSelectedAssets"/>
+      <ShadDataTable :items="items" :filters="filters" @update:selectedAssets="updateSelectedAssets" />
 
     </div>
   </div>
@@ -43,14 +43,14 @@
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { FilterMatchMode } from 'primevue/api'
-import MyEmergencySellButton from './buttons/MyEmergencySellButton.vue'
-import MyBunchSellButton from './buttons/MyBunchSellButton.vue'
-import MyBuyButton from './buttons/MyBuyButton.vue'
-import ShadDataTable from './shad/ShadDataTable.vue'
+import MyEmergencySellButton from '../buttons/MyEmergencySellButton.vue'
+import MyBunchSellButton from '../buttons/MyBunchSellButton.vue'
+import MyBuyButton from '../buttons/MyBuyButton.vue'
+import ShadDataTable from './ShadDataTable.vue'
 
 import {
   FETCH_SHAD, GET_SHAD
-} from '../store/storeconstants';
+} from '../../store/storeconstants';
 
 const store = useStore();
 
@@ -95,7 +95,7 @@ const confirmDeleteSelected = () => {
 };
 
 function updateSelectedAssets(newSelection) {
-    selectedAssets.value = newSelection;
+  selectedAssets.value = newSelection;
 }
 
 </script>

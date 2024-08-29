@@ -13,7 +13,7 @@
 
 <script>
 import PieChart from "@/components/PieChart.vue";
-import { getShad } from '../js/fetchFromServer.js';
+import { fetchShad } from '../js/fetchFromServer.js';
 
 export default {
   name: "HomePage",
@@ -27,7 +27,7 @@ export default {
     async getHomeData() {
       try {
         console.log('Fetching home data...');
-        this.balances = await getShad(); // Appel à la fonction getShad pour récupérer les données
+        this.balances = await fetchShad(); // Appel à la fonction fetchShad pour récupérer les données
         this.loaded = true; // Marquer les données comme chargées
         console.log('Home data:', this.balances);
       } catch (error) {

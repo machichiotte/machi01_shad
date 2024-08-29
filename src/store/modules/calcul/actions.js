@@ -17,7 +17,14 @@ import {
   SET_LAST_FETCH_TIMESTAMP
 } from '../../storeconstants'
 
-import { getCmc, getBalances, getTrades, getOrders, getStrategy, getShad } from '../../../js/fetchFromServer'
+import {
+  fetchCmc,
+  fetchBalances,
+  fetchTrades,
+  fetchOrders,
+  fetchStrategy,
+  fetchShad
+} from '../../../js/fetchFromServer.js'
 
 const shouldFetchData = (lastFetch) => {
   const now = Date.now()
@@ -49,7 +56,7 @@ export default {
 
     try {
       if (!lastFetchBalance || shouldFetchData(lastFetchBalance)) {
-        const balances = await getBalances()
+        const balances = await fetchBalances()
         if (balances) {
           context.commit(SET_BALANCES, balances)
           context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'balances', timestamp: now })
@@ -57,7 +64,7 @@ export default {
       }
 
       if (!lastFetchTrades || shouldFetchData(lastFetchTrades)) {
-        const trades = await getTrades()
+        const trades = await fetchTrades()
         if (trades) {
           context.commit(SET_TRADES, trades)
           context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'trades', timestamp: now })
@@ -65,7 +72,7 @@ export default {
       }
 
       if (!lastFetchStrats || shouldFetchData(lastFetchStrats)) {
-        const strats = await getStrategy()
+        const strats = await fetchStrategy()
         if (strats) {
           context.commit(SET_STRATS, strats)
           context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'strats', timestamp: now })
@@ -73,7 +80,7 @@ export default {
       }
 
       if (!lastFetchCmc || shouldFetchData(lastFetchCmc)) {
-        const cmc = await getCmc()
+        const cmc = await fetchCmc()
         if (cmc) {
           context.commit(SET_CMC, cmc)
           context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'cmc', timestamp: now })
@@ -81,7 +88,7 @@ export default {
       }
 
       if (!lastFetchOrders || shouldFetchData(lastFetchOrders)) {
-        const orders = await getOrders()
+        const orders = await fetchOrders()
         if (orders) {
           context.commit(SET_ORDERS, orders)
           context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'orders', timestamp: now })
@@ -89,7 +96,7 @@ export default {
       }
 
       if (!lastFetchShad || shouldFetchData(lastFetchShad)) {
-        const shad = await getShad()
+        const shad = await fetchShad()
         if (shad) {
           context.commit(SET_SHAD, shad)
           context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'shad', timestamp: now })
@@ -112,7 +119,7 @@ export default {
 
     if (!lastFetch || shouldFetchData(lastFetch)) {
       try {
-        const data = await getBalances()
+        const data = await fetchBalances()
         context.commit(SET_BALANCES, data)
         context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'balances', timestamp: now })
       } catch (error) {
@@ -132,7 +139,7 @@ export default {
 
     if (!lastFetch || shouldFetchData(lastFetch)) {
       try {
-        const data = await getTrades()
+        const data = await fetchTrades()
         context.commit(SET_TRADES, data)
         context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'trades', timestamp: now })
       } catch (error) {
@@ -152,7 +159,7 @@ export default {
 
     if (!lastFetch || shouldFetchData(lastFetch)) {
       try {
-        const data = await getStrategy()
+        const data = await fetchStrategy()
         context.commit(SET_STRATS, data)
         context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'strats', timestamp: now })
       } catch (error) {
@@ -172,7 +179,7 @@ export default {
 
     if (!lastFetch || shouldFetchData(lastFetch)) {
       try {
-        const data = await getCmc()
+        const data = await fetchCmc()
         context.commit(SET_CMC, data)
         context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'cmc', timestamp: now })
       } catch (error) {
@@ -192,7 +199,7 @@ export default {
 
     if (!lastFetch || shouldFetchData(lastFetch)) {
       try {
-        const data = await getOrders()
+        const data = await fetchOrders()
         context.commit(SET_ORDERS, data)
         context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'orders', timestamp: now })
       } catch (error) {
@@ -212,7 +219,7 @@ export default {
 
     if (!lastFetch || shouldFetchData(lastFetch)) {
       try {
-        const data = await getShad()
+        const data = await fetchShad()
         context.commit(SET_SHAD, data)
         context.commit(SET_LAST_FETCH_TIMESTAMP, { type: 'shad', timestamp: now })
       } catch (error) {

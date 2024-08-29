@@ -53,10 +53,4 @@ const openOrdersTableColumns = [
   { header: 'Price', field: 'price' }
 ]
 
-export {
-  cmcColumns,
-  ordersColumns,
-  tradesColumns,
-  tradesTableColumns,
-  openOrdersTableColumns
-}
+export { cmcColumns, ordersColumns, tradesColumns, tradesTableColumns, openOrdersTableColumns }

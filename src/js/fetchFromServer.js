@@ -33,21 +33,21 @@ const getConvertedCsv = async (formData) => {
 }
 
 // Wrapper functions for fetching different types of data
-const getShad = () => fetchData('Shad', ENDPOINTS.SHAD)
-const getStrategy = () => fetchData('Strategy', ENDPOINTS.STRATEGY)
-const getTickers = () => fetchData('Tickers', ENDPOINTS.TICKERS)
-const getCmc = () => fetchData('CMC', ENDPOINTS.CMC)
-const getBalances = () => fetchData('Balances', ENDPOINTS.BALANCE)
-const getTrades = () => fetchData('Trades', ENDPOINTS.TRADES)
-const getOrders = () => fetchData('Orders', ENDPOINTS.ORDERS)
+const fetchShad = () => fetchData('Shad', ENDPOINTS.SHAD)
+const fetchStrategy = () => fetchData('Strategy', ENDPOINTS.STRATEGY)
+const fetchTickers = () => fetchData('Tickers', ENDPOINTS.TICKERS)
+const fetchCmc = () => fetchData('CMC', ENDPOINTS.CMC)
+const fetchBalances = () => fetchData('Balances', ENDPOINTS.BALANCE)
+const fetchTrades = () => fetchData('Trades', ENDPOINTS.TRADES)
+const fetchOrders = () => fetchData('Orders', ENDPOINTS.ORDERS)
 
 export {
   getConvertedCsv,
-  getStrategy,
-  getShad,
-  getCmc,
-  getBalances,
-  getTrades,
-  getOrders,
-  getTickers
+  fetchStrategy,
+  fetchShad,
+  fetchCmc,
+  fetchBalances,
+  fetchTrades,
+  fetchOrders,
+  fetchTickers
 }
