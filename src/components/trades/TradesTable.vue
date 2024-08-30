@@ -1,49 +1,42 @@
-<!-- src/components/TradesTable.vue -->
+<!-- src/components/TradeTable.vue -->
 <template>
-  <!-- Using PrimeVue DataTable component to display trades data -->
-  <DataTable :value="rows" :rows="itemsPerPage">
-    <!-- Dynamically rendering columns using PrimeVue Column component -->
-    <Column v-for="(col, index) in cols" :key="index" :field="col.field" :header="col.header"></Column>
-  </DataTable>
+  <div class="table-container">
+    <DataTable :value="rows" :rows="itemsPerPage" columnResizeMode="fit" :paginator="true" scrollable :filters="filters" sortField="date" :sortOrder="-1">
+      <template #header>
+        <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
+          <h4 class="m-0">Find Assets</h4>
+        </div>
+      </template>
+
+      <Column v-for="(col, index) in cols" :key="index" :field="col.field" :header="col.header" sortable></Column>
+    </DataTable>
+  </div>
 </template>
 
 <script setup>
-// Importing necessary modules from Vue
-import { ref, computed } from 'vue';
+import { defineProps } from 'vue'
+import { tradesColumns } from '../../js/columns.js'
 
-// Importing necessary columns from the columns.js file
-import { tradesTableColumns } from '../../js/columns.js';
-
-// Props declaration
 const props = defineProps({
-  trades: {
+  rows: {
     type: Array,
     required: true
+  },
+  itemsPerPage: {
+    type: Number,
+    required: true
+  },
+  filters: {
+    type: Object,
+    required: true
   }
-});
+})
 
-// Declaring reactive variables using ref
-const itemsPerPage = ref(5);
-
-// Computing rows based on trades prop
-const rows = computed(() => {
-  return props.trades.map((item) => {
-    return {
-      date: item['date'],
-      pair: item['pair'],
-      type: item['type'],
-      price: parseFloat(item['price']),
-      amount: item['amount'],
-      total: item['total'],
-      totalUSDT: item['totalUSDT'],
-      fee: item['fee'] + ' ' + item['feecoin'],
-      feecoin: item['feecoin'],
-      platform: item['platform'],
-      explatform: item['explatform']
-    };
-  });
-});
-
-// Setting up the columns
-const cols = tradesTableColumns;
+const cols = tradesColumns
 </script>
+
+<style scoped>
+.table-container {
+  margin-bottom: 1rem;
+}
+</style>
