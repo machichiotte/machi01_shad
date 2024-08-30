@@ -4,7 +4,7 @@
     <h1>Liste des trades</h1>
     <div class="card">
       <!-- Search Section -->
-      <TradesSearch :filters="filters" />
+      <SearchBar :filters="filters" />
 
       <!-- Actions Section -->
       <TradesActions @showDialog="showDialog = true" />
@@ -20,16 +20,12 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useStore } from 'vuex'
 import { FilterMatchMode } from 'primevue/api'
-
+import { fetchTrades } from '../../js/fetchFromServer.js'
 import TradesForm from "../forms/TradesForm.vue"
-import TradesSearch from "./TradesSearch.vue"
+import SearchBar from "../shad/SearchBar.vue"
 import TradesActions from "./TradesActions.vue"
 import TradesTable from "./TradesTable.vue"
-import { FETCH_TRADES, GET_TRADES } from '../../store/storeconstants'
-
-const store = useStore()
 
 const showDialog = ref(false)
 const items = ref([]) // Raw items data
@@ -37,21 +33,17 @@ const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
 
-const fetchData = async (fetchAction, getter, type) => {
-  try {
-    await store.dispatch('calcul/' + fetchAction)
-  } catch (error) {
-    console.error(`Une erreur s'est produite lors de la récupération des données de ${type} :`, error)
-  }
-  return store.getters['calcul/' + getter]
-}
-
 const getTradesData = async () => {
-  items.value = await fetchData(FETCH_TRADES, GET_TRADES, 'trades')
+  items.value = await fetchTrades()
 }
 
 onMounted(async () => {
-  await getTradesData()
+  try {
+    await getTradesData()
+  } catch (error) {
+    console.error("Une erreur s'est produite lors de la récupération des données :", error)
+    // Affichez un message d'erreur à l'utilisateur si nécessaire
+  }
 })
 </script>
 

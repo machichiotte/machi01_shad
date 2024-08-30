@@ -1,48 +1,51 @@
 <!-- src/components/orders/OrdersTable.vue -->
-
 <template>
-  <DataTable :value="filteredItems" :rows="itemsPerPage">
-    <Column
-      v-for="(col, index) in cols"
-      :key="index"
-      :field="col.field"
-      :header="col.header"
-    ></Column>
+  <DataTable :value="filteredItems" :rows="itemsPerPage" columnResizeMode="fit" :paginator="true" scrollable
+    :filters="filters">
+    <Column v-for="(col, index) in cols" :key="index" :field="col.field" :header="col.header"></Column>
   </DataTable>
 </template>
-  
-<script setup>
-import { ref, computed } from 'vue'; // Importing ref and computed from Vue
 
-// Importing necessary columns from the columns.js file
+<script setup>
+import { ref, defineProps, watchEffect } from 'vue';
 import { openOrdersTableColumns } from '../../js/columns.js';
 
-// Declaring reactive variables using ref
-const itemsPerPage = ref(5);
-const currentPage = ref(1);
+const itemsPerPage = ref(10);
 
-// Props declaration
 const props = defineProps({
-  orders: {
+  items: {
     type: Array,
+    required: true
+  },
+  filters: {
+    type: Object,
     required: true
   }
 });
 
-// Computing rows based on orders prop
-const filteredItems = computed(() => {
-  return props.orders.map((item) => {
-    return {
-      platform: item['platform'],
-      symbol: item['symbol'],
-      side: item['side'],
-      amount: parseFloat(item['amount']),
-      price: item['price']
-    };
-  });
-});
+const cols = openOrdersTableColumns
+
+// Filtered items based on search
+const filteredItems = ref([])
+
+watchEffect(() => {
+  if (Array.isArray(props.items)) {
+    // Computing rows based on orders prop
+    filteredItems.value = props.items.map((item) => {
+      return {
+        platform: item['platform'],
+        symbol: item['symbol'],
+        side: item['side'],
+        amount: parseFloat(item['amount']),
+        price: item['price']
+      };
+    })
+  }
+})
+
+
 </script>
-  
+
 <style scoped>
 .my-table {
   width: 100%;
@@ -62,4 +65,3 @@ const filteredItems = computed(() => {
   background-color: #f2f2f2;
 }
 </style>
-  

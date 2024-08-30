@@ -100,7 +100,6 @@ const shadItems = computed(() => {
 })
 
 const tradesItems = computed(() => {
-  console.log('trades.value.length', trades.value.length)
   return trades.value && trades.value.length > 0 ? trades.value : []
 })
 
@@ -116,9 +115,9 @@ onMounted(async () => {
     shad.value = await store.getters['calcul/' + GET_SHAD]
     trades.value = await store.getters['calcul/' + GET_TRADES]
     openOrders.value = await store.getters['calcul/' + GET_ORDERS]
-    console.log("Données Shad récupérées:", shad.value)
-    console.log("Données Trades récupérées:", trades.value)
-    console.log("Données Orders récupérées:", openOrders.value)
+    console.log("Données Shad récupérées:", shad.value.length)
+    console.log("Données Trades récupérées:", trades.value.length)
+    console.log("Données Orders récupérées:", openOrders.value.length)
   } catch (e) {
     console.error("Une erreur s'est produite lors de la récupération des données :", e)
   }

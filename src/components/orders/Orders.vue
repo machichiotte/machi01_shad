@@ -1,84 +1,37 @@
 <!-- src/components/orders/Orders.vue -->
-
 <template>
   <div class="page">
-    <h1>Ordres en cours</h1>
-    <div id="table">
-      <DataTable
-        :value="rows"
-        :rows="itemsPerPage"
-        :paginator="true"
-        scrollable
-        columnResizeMode="fit"
-        :filters="filters"
-      >
-        <template #header>
-          <div class="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 class="m-0">Find Orders</h4>
-            
-            <IconField iconPosition="left">
-              <InputIcon>
-                <i class="pi pi-search" />
-              </InputIcon>
-              <InputText v-model="filters['global'].value" placeholder="Search..." />
-            </IconField>
-          </div>
-        </template>
-        <Column
-          v-for="(col, index) in cols"
-          :key="index"
-          :field="col.field"
-          :header="col.header"
-          sortable
-        ></Column>
-        <template #selected-row-actions>
-          <MyBunchSellButtonVue :model="allRows" />
-        </template>
-      </DataTable>
+    <h1>Liste des ordres en cours</h1>
+    <div class="card">
+      <!-- Search Section -->
+      <SearchBar :filters="filters" />
+
+      <!-- DataTable with Orders Data -->
+      <OrdersTable :items="items" :filters="filters" />
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { ordersColumns } from '../../js/columns.js'
 import { fetchOrders } from '../../js/fetchFromServer.js'
-import MyBunchSellButtonVue from '../buttons/MyBunchSellButton.vue'
 import { FilterMatchMode } from 'primevue/api'
+import OrdersTable from "./OrdersTable.vue"
+import SearchBar from "../shad/SearchBar.vue"
 
 // Variables réactives
-const items = ref([]) // Utilisez ref pour les variables réactives
-const itemsPerPage = 13
-const cols = ordersColumns
-const allRows = ref([])
+const items = ref([])
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
-//const selectedColumns = ref(columns.value);
 
-
-// Fonction calculée pour transformer les données
-const rows = computed(() => {
-  return items.value.map((item) => {
-    return {
-      oId: item['oId'],
-      platform: item['platform'],
-      symbol: item['symbol'],
-      type: item['type'],
-      side: item['side'],
-      amount: item['amount'],
-      price: item['price']
-    }
-  })
-})
-
-const getData = async () => {
+const getOrdersData = async () => {
   items.value = await fetchOrders()
 }
 
 onMounted(async () => {
   try {
-    await getData()
+    await getOrdersData()
   } catch (error) {
     console.error("Une erreur s'est produite lors de la récupération des données :", error)
     // Affichez un message d'erreur à l'utilisateur si nécessaire
