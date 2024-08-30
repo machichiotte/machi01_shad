@@ -101,29 +101,10 @@ function getRatioShad(strat) {
 }
 
 function calculateRecups(asset, platform, totalBuy, totalSell, strats) {
- /* console.log(`🚀 ~ file: strategies.js:111 ~ calculateRecups`, {
-    totalSell,
-    totalBuy,
-    platform,
-    asset
-  });
-  */
-  //const { assetStrat, assetExpo } = item;
-
-  const symbol = asset + "/USDT";
-
   let { strat, stratExpo } = getStrat(platform, strats);
   if (stratExpo === undefined) {
     stratExpo = MAX_EXPO;
   }
-
-  /*if (assetStrat) {
-    strat = assetStrat;
-  }
-
-  if (assetExpo) {
-    stratExpo = assetExpo;
-  }*/
 
   const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo));
 
