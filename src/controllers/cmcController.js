@@ -35,7 +35,7 @@ async function fetchDatabaseCmc() {
   try {
     const data = await getData(collectionName);
     console.log(
-      `🚀 ~ file: cmcController.js:34 ~ fetchDatabaseCmc ~ fetchDatabaseCmc:`,
+      `🚀 ~ file: cmcController.js:34 ~ fetchDatabaseCmc :`,
       { collectionName, count: data.length }
     );
 

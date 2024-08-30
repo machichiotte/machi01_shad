@@ -31,8 +31,10 @@ async function getStrat(req, res) {
 async function fetchDatabaseStrategies() {
   const collectionName = process.env.MONGODB_COLLECTION_STRAT;
   const data = await getData(collectionName);
-  console.log(`🚀 ~ file: strategyController.js:34 ~ fetchDatabaseStrategies ~ data.length:`, data.length)
-  return data;
+  console.log(
+    `🚀 ~ file: strategyController.js:37 ~ fetchDatabaseStrategies :`,
+    { collectionName, count: data.length }
+  );  return data;
 }
 
 async function updateStrat(req, res) {

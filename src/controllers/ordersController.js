@@ -55,16 +55,13 @@ async function fetchDatabaseOrders() {
   try {
     const data = await getData(collectionName);
     console.log(
-      `🚀 ~ file: ordersController.js:58 ~ fetchDatabaseOrders ~ data:`,
-      {
-        collectionName,
-        count: data.length,
-      }
+      `🚀 ~ file: ordersController.js:57 ~ fetchDatabaseOrders :`,
+      { collectionName, count: data.length }
     );
     return data;
   } catch (error) {
     console.log(
-      `🚀 ~ file: ordersController.js:67 ~ fetchDatabaseOrders ~ error:`,
+      `🚀 ~ file: ordersController.js:64 ~ fetchDatabaseOrders ~ error:`,
       error
     );
     throw error;

@@ -34,8 +34,8 @@ async function fetchDatabaseTickers() {
   const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
   const data = await getData(collectionName);
   console.log(
-    `🚀 ~ file: tickersController.js:33 ~ fetchDatabaseTickers ~ data.length:`,
-    data.length
+    `🚀 ~ file: tickersController.js:37 ~ fetchDatabaseTickers :`,
+    { collectionName, count: data.length }
   );
   return data;
 }

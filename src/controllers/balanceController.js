@@ -41,8 +41,8 @@ async function fetchDatabaseBalances() {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
   const data = await getData(collectionName);
   console.log(
-    `🚀 ~ file: balanceController.js:44 ~ fetchDatabaseBalances ~ data:`,
-    data.length
+    `🚀 ~ file: balanceController.js:37 ~ fetchDatabaseBalances :`,
+    { collectionName, count: data.length }
   );
   return data;
 }

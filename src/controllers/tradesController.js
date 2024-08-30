@@ -34,8 +34,8 @@ async function fetchDatabaseTrades() {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   const data = await getData(collectionName);
   console.log(
-    `🚀 ~ file: tradesController.js:34 ~ fetchDatabaseTrades ~ data:`,
-    data.length
+    `🚀 ~ file: cmcController.js:36 ~ fetchDatabaseTrades :`,
+    { collectionName, count: data.length }
   );
   return data;
 }

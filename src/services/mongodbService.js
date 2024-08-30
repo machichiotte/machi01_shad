@@ -9,7 +9,7 @@ let db;
 async function getMongoClient() {
   if (!mongoInstance) {
     try {
-      console.log("🚀 ~ Attempting to connect to MongoDB...");
+      console.log("Attempting to connect to MongoDB...");
       mongoInstance = new MongoClient(uri, {
         serverApi: {
           version: ServerApiVersion.v1,
@@ -18,9 +18,9 @@ async function getMongoClient() {
         },
       });
       await mongoInstance.connect();
-      console.log("🚀 ~ Successfully connected to MongoDB");
+      console.log("Successfully connected to MongoDB");
     } catch (error) {
-      console.error("🚀 ~ Error connecting to MongoDB:", error);
+      console.error("Error connecting to MongoDB:", error);
       throw error;
     }
   }
