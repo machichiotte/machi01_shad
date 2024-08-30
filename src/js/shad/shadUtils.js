@@ -1,21 +1,13 @@
+// src/js/shadUtils.js
+
+// src/js/shadUtils.js
+
 import {
   BINANCE_PLATFORM_ID,
   HTX_PLATFORM_ID,
   BINANCE_THRESHOLD,
   HTX_THRESHOLD,
-  performanceOptions
 } from '../shad/constants.js'
-
-/**
- * Prompt the user to select a performance option and update the data.
- * @param {Object} data - The data object to update.
- */
-export function selectPerformance(data) {
-  const newPerformance = parseInt(prompt('Select Performance: 24, 7, 30, 60, 90 (days)'))
-  if (performanceOptions.value.includes(newPerformance)) {
-    data.selectedPerformance = newPerformance
-  }
-}
 
 /**
  * Calculate the price threshold based on the current price and a given threshold.
@@ -23,18 +15,14 @@ export function selectPerformance(data) {
  * @param {number} threshold - The threshold to apply.
  * @returns {number} - The calculated price threshold.
  */
-export function calculatePriceThreshold(currentPrice, threshold) {
-  return currentPrice * threshold
-}
+export const calculatePriceThreshold = (currentPrice, threshold) => currentPrice * threshold;
 
 /**
  * Count consecutive occurrences of the value '1' in the status array.
  * @param {Array<number>} status - The array of status values.
  * @returns {number} - The count of consecutive pairs.
  */
-export function countConsecutivePairs(status) {
-  return status.reduce((count, value) => (value === 1 ? count + 1 : count), 0)
-}
+export const countConsecutivePairs = (status) => status.filter(value => value === 1).length;
 
 /**
  * Determine the status of an asset based on its current data and trading conditions.
@@ -42,193 +30,139 @@ export function countConsecutivePairs(status) {
  * @returns {Object} - An object containing severity and label for the status.
  */
 export function getStatus(data) {
-  const { currentPrice, platform, status, nbOpenSellOrders, priceTp1, priceTp2 } = data
+  const { currentPrice, platform, status, nbOpenSellOrders, priceTp1, priceTp2 } = data;
 
   if (status === 'stable coin') {
-    return { severity: 'secondary', label: 'stable coin' }
+    return { severity: 'secondary', label: 'stable coin' };
   }
 
   if (!Array.isArray(status)) {
-    console.warn('data.status is not an array:', status)
-    return { severity: 'warning', label: `STATUS ERROR` }
+    console.warn('data.status is not an array:', status);
+    return { severity: 'warning', label: `STATUS ERROR` };
   }
 
-  const totalOrders = status.reduce((acc, val) => acc + val, 0)
+  const totalOrders = status.reduce((acc, val) => acc + val, 0);
 
   if (nbOpenSellOrders === 0) {
-    return { severity: 'danger', label: "Pas d'ordres ouverts" }
+    return { severity: 'danger', label: "Pas d'ordres ouverts" };
   } else if (currentPrice > priceTp1) {
     return priceTp1 < priceTp2
       ? { severity: 'info', label: 'Tu peux vendre depuis un moment' }
-      : { severity: 'danger', label: 'tp2 < tp1' }
+      : { severity: 'danger', label: 'tp2 < tp1' };
   }
 
   if (totalOrders === 5) {
-    return { severity: 'success', label: '5 ordres placés' }
+    return { severity: 'success', label: '5 ordres placés' };
   }
 
-  const platformThreshold = platform === BINANCE_PLATFORM_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD
-  const priceThreshold = calculatePriceThreshold(currentPrice, platformThreshold)
+  const platformThreshold = platform === BINANCE_PLATFORM_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD;
+  const priceThreshold = calculatePriceThreshold(currentPrice, platformThreshold);
 
-  for (let i = 0; i < 5; i++) {
-    if (status[i] === 0) {
-      return priceThreshold < data[`priceTp${i + 1}`]
-        ? { severity: 'success', label: 'Max ordres placés' }
-        : { severity: 'warning', label: `L'ordre ${i + 1} peut être placé` }
-    }
+  const nextOrder = status.findIndex(value => value === 0);
+  if (nextOrder !== -1) {
+    return priceThreshold < data[`priceTp${nextOrder + 1}`]
+      ? { severity: 'success', label: 'Max ordres placés' }
+      : { severity: 'warning', label: `L'ordre ${nextOrder + 1} peut être placé` };
   }
 
-  return { severity: 'warning', label: `STATUS ERROR` }
+  return { severity: 'warning', label: `STATUS ERROR` };
 }
 
 /**
- * Update the strategy of a specific item in a list.
- * @param {Ref<Array>} items - A ref to the list of items.
- * @param {Object} data - The data object to update.
- * @param {string} newStrat - The new strategy value.
- */
-export function updateRowByStratChange(items, data, strat) {
-  // Validate that 'items' is an array
-  if (!Array.isArray(items)) {
-    console.warn('Invalid items reference or items is not an array:', items)
-    return
-  }
-
-  const rowIndex = items.findIndex((item) => item.asset === data.asset)
-
-  if (rowIndex !== -1) {
-    const item = { ...items[rowIndex], strat }
-
-    // Recalculate values based on the new maxExposition
-    const recupData = calculateRecups(item)
-    Object.assign(item, recupData)
-
-    const pricesData = calculateAmountsAndPricesForShad(item)
-    Object.assign(item, pricesData)
-
-    // Update the item in the array
-    items[rowIndex] = item
-  } else {
-    console.warn('Item not found in the list:', data.asset)
-  }
-}
-
-/**
- * Update the maxExposition value of a specific item in a list.
+ * Generic function to update a specific field of an item in a list and recalculate related values.
  * @param {Array} items - A reactive list of items.
  * @param {Object} data - The data object to update.
- * @param {number} newValue - The new maxExposition value.
+ * @param {string} field - The name of the field to update.
+ * @param {*} newValue - The new value for the field.
  */
-export function updateMaxExposition(items, data, newValue) {
-  // Validate that 'items' is an array
+function updateItemField(items, data, field, newValue) {
   if (!Array.isArray(items)) {
-    console.warn('Invalid items reference or items is not an array:', items)
-    return
+    console.warn('Invalid items reference or items is not an array:', items);
+    return;
   }
 
-  // Validate that 'newValue' is a valid number
-  if (isNaN(newValue) || newValue < 0) {
-    console.warn('Invalid maxExposition value:', newValue)
-    return
+  const rowIndex = items.findIndex((item) => item.asset === data.asset);
+  if (rowIndex === -1) {
+    console.warn('Item not found in the list:', data.asset);
+    return;
   }
 
-  // Find the index of the row to update
-  const rowIndex = items.findIndex((item) => item.asset === data.asset)
-  if (rowIndex !== -1) {
-    const item = { ...items[rowIndex], maxExposition: newValue }
+  const item = { ...items[rowIndex], [field]: newValue };
 
-    // Recalculate values based on the new maxExposition
-    const recupData = calculateRecups(item)
-    Object.assign(item, recupData)
-
-    const pricesData = calculateAmountsAndPricesForShad(item)
-    Object.assign(item, pricesData)
-
-    // Update the item in the array
-    items[rowIndex] = item
-  } else {
-    console.warn('Item not found in the list:', data.asset)
-  }
+  Object.assign(item, calculateRecups(item), calculateAmountsAndPricesForShad(item));
+  items[rowIndex] = item;
 }
 
-const ERROR_ALLOWED = 0.05
-const MAX_EXPO = 10000
+export const updateRowByStratChange = (items, data, newStrat) => 
+  updateItemField(items, data, 'strat', newStrat);
 
+export const updateMaxExposition = (items, data, maxExposition) => {
+  if (isNaN(maxExposition) || maxExposition < 0) {
+    console.warn('Invalid maxExposition value:', maxExposition);
+    return;
+  }
+  updateItemField(items, data, 'maxExposition', maxExposition);
+};
+
+const ERROR_ALLOWED = 0.05;
+const MAX_EXPO = 10000;
+
+/**
+ * Calculate the amounts and prices for each take profit level.
+ * @param {Object} data - The data object containing necessary trading information.
+ * @returns {Object} - Calculated amounts and prices.
+ */
 export function calculateAmountsAndPricesForShad(data) {
-  const { recupTp1, balance, totalShad, recupTpX, averageEntryPrice, maxExposition } = data
-  const FACTOR_SELL_SHAD = 0.5
+  const { recupTp1, balance, recupTpX, averageEntryPrice, maxExposition } = data;
+  const FACTOR_SELL_SHAD = 0.5;
 
-  const parsedRecupTp1 = parseFloat(recupTp1)
-  const parsedBalance = parseFloat(balance)
-  const parsedRecupTpX = parseFloat(recupTpX)
-  const parsedAverageEntryPrice = parseFloat(averageEntryPrice)
+  const parsedRecupTp1 = parseFloat(recupTp1);
+  const parsedBalance = parseFloat(balance);
+  const parsedRecupTpX = parseFloat(recupTpX);
+  const parsedAverageEntryPrice = parseFloat(averageEntryPrice);
 
-  let amountTp1
-  let priceTp1
+  const amountTp1 = data.totalShad > -1 
+    ? FACTOR_SELL_SHAD * (parsedRecupTp1 / parsedRecupTpX) * parsedBalance 
+    : parsedBalance - maxExposition / parsedAverageEntryPrice;
 
-  if (totalShad > -1) {
-    amountTp1 = FACTOR_SELL_SHAD * (parsedRecupTp1 / parsedRecupTpX) * parsedBalance
-    priceTp1 = parsedRecupTp1 / parseFloat(amountTp1)
-  } else {
-    amountTp1 = parsedBalance - maxExposition / parsedAverageEntryPrice
-    priceTp1 = parsedAverageEntryPrice
+  const priceTp1 = data.totalShad > -1 
+    ? parsedRecupTp1 / amountTp1 
+    : parsedAverageEntryPrice;
+
+  const amountsAndPrices = { amountTp1, priceTp1 };
+
+  for (let i = 2; i <= 5; i++) {
+    const { amount, price } = calculateAmountAndPriceForShad(
+      parsedRecupTpX,
+      parsedBalance - Object.values(amountsAndPrices).reduce((acc, val) => acc + val.amount, 0),
+      FACTOR_SELL_SHAD
+    );
+    amountsAndPrices[`amountTp${i}`] = amount;
+    amountsAndPrices[`priceTp${i}`] = price;
   }
 
-  const { amount: amountTp2, price: priceTp2 } = calculateAmountAndPriceForShad(
-    parsedRecupTpX,
-    parsedBalance - amountTp1,
-    FACTOR_SELL_SHAD
-  )
-  const { amount: amountTp3, price: priceTp3 } = calculateAmountAndPriceForShad(
-    parsedRecupTpX,
-    parsedBalance - amountTp1 - amountTp2,
-    FACTOR_SELL_SHAD
-  )
-  const { amount: amountTp4, price: priceTp4 } = calculateAmountAndPriceForShad(
-    parsedRecupTpX,
-    parsedBalance - amountTp1 - amountTp2 - amountTp3,
-    FACTOR_SELL_SHAD
-  )
-  const { amount: amountTp5, price: priceTp5 } = calculateAmountAndPriceForShad(
-    parsedRecupTpX,
-    parsedBalance - amountTp1 - amountTp2 - amountTp3 - amountTp4,
-    FACTOR_SELL_SHAD
-  )
-
-  return {
-    amountTp1,
-    amountTp2,
-    amountTp3,
-    amountTp4,
-    amountTp5,
-    priceTp1,
-    priceTp2,
-    priceTp3,
-    priceTp4,
-    priceTp5
-  }
+  return amountsAndPrices;
 }
 
 function calculateAmountAndPriceForShad(parsedRecup, parsedBalance, factor) {
-  const amount = factor * parsedBalance
-  const price = parsedRecup / amount
-
-  return { amount, price }
+  const amount = factor * parsedBalance;
+  const price = parsedRecup / amount;
+  return { amount, price };
 }
 
+/**
+ * Calculate recovery values based on trading strategy and market conditions.
+ * @param {Object} data - The data object containing necessary trading information.
+ * @returns {Object} - Calculated recovery values.
+ */
 export function calculateRecups(data) {
-  let stratExpo = data.maxExposition
-  //on devrait verifier que cest bien un nombre positif, si besoin on bloque le champ pour obliger les nombre avec maximum 2 chiffres apres la virgule
-  if (stratExpo === undefined) {
-    stratExpo = MAX_EXPO
-  }
-
-  const maxExposition = Math.max(5 + 0.05, Math.min(data.totalBuy, stratExpo))
-  const ratioShad = getRatioShad(data.strat)
-  const recupShad = getRecupShad(data.totalBuy, data.totalSell, data.maxExposition)
-  const recupTpX = getRecupTpX(maxExposition, ratioShad)
-  const totalShad = getDoneShad(data.totalBuy, data.totalSell, maxExposition, recupShad, recupTpX)
-  const recupTp1 = getRecupTp1(data.totalBuy, data.totalSell, maxExposition, recupTpX, totalShad)
+  const stratExpo = data.maxExposition ?? MAX_EXPO;
+  const maxExposition = Math.max(5 + 0.05, Math.min(data.totalBuy, stratExpo));
+  const ratioShad = getRatioShad(data.strat);
+  const recupShad = getRecupShad(data.totalBuy, data.totalSell, maxExposition);
+  const recupTpX = getRecupTpX(maxExposition, ratioShad);
+  const totalShad = getDoneShad(data.totalBuy, data.totalSell, maxExposition, recupShad, recupTpX);
+  const recupTp1 = getRecupTp1(data.totalBuy, data.totalSell, maxExposition, recupTpX, totalShad);
 
   return {
     maxExposition,
@@ -237,10 +171,9 @@ export function calculateRecups(data) {
     recupShad,
     recupTp1,
     totalShad
-  }
+  };
 }
 
-// Other functions...
 function getRatioShad(strat) {
   if (strat !== undefined) {
     switch (strat) {
