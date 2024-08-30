@@ -5,31 +5,33 @@
       <!-- Toolbar at the top -->
       <Toolbar class="mb-4">
         <template #start>
-          <MyBunchSellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length" :model="allRows" />
-          <MyEmergencySellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length" :model="allRows" />
-          <MyBuyButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length" :model="allRows" />
-          <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected" :disabled="!selectedAssets || !selectedAssets.length" />
-          <MultiSelect v-model="selectedPlatforms" :options="platformOptions" optionLabel="name" optionValue="id" placeholder="Select Platforms" class="ml-2" display="chip" :panelClass="'platforms-multiselect-panel'">
+          <MyBunchSellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
+            :model="allRows" />
+          <MyEmergencySellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
+            :model="allRows" />
+          <MyBuyButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
+            :model="allRows" />
+          <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected"
+            :disabled="!selectedAssets || !selectedAssets.length" />
+          <MultiSelect v-model="selectedPlatforms" :options="platformOptions" optionLabel="name" optionValue="id"
+            placeholder="Select Platforms" class="ml-2" display="chip" :panelClass="'platforms-multiselect-panel'">
             <template #item="slotProps">
               <Checkbox v-model="slotProps.checked" :label="slotProps.option.name" />
               <span>{{ slotProps.option.name }}</span>
             </template>
           </MultiSelect>
         </template>
+
         <template #end>
           <div class="flex justify-content-end">
-            <IconField iconPosition="left">
-              <InputIcon>
-                <i class="pi pi-search" />
-              </InputIcon>
-              <InputText v-model="filters['global'].value" placeholder="Search..." />
-            </IconField>
+            <!-- Use SearchBar component -->
+            <SearchBar :filters="filters" />
           </div>
         </template>
       </Toolbar>
 
       <!-- Main Shad Data Table -->
-      <ShadDataTable :items="items" :filters="filters" @update:selectedAssets="updateSelectedAssets" />
+      <ShadDataTable :items="shadItems" :filters="filters" @update:selectedAssets="updateSelectedAssets" />
 
     </div>
 
@@ -44,8 +46,8 @@
 
       <!-- Tab Content -->
       <div class="tab-content">
-        <Trades v-if="activeTab === 'trades'" />
-        <Orders v-if="activeTab === 'orders'" />
+        <TradesTable v-if="activeTab === 'trades'" :items="tradesItems" :filters="filters" />
+        <OrdersTable v-if="activeTab === 'orders'" :items="openOrdersItems" :filters="filters" />
       </div>
     </div>
   </div>
@@ -59,17 +61,21 @@ import MyEmergencySellButton from '../buttons/MyEmergencySellButton.vue'
 import MyBunchSellButton from '../buttons/MyBunchSellButton.vue'
 import MyBuyButton from '../buttons/MyBuyButton.vue'
 import ShadDataTable from './ShadDataTable.vue'
-import Trades from '../trades/Trades.vue'
-import Orders from '../orders/Orders.vue'
+import SearchBar from './SearchBar.vue'
+import TradesTable from '../trades/TradesTable.vue'
+import OrdersTable from '../orders/OrdersTable.vue'
 
 import {
-  FETCH_SHAD, GET_SHAD
+  FETCH_SHAD, FETCH_TRADES, FETCH_ORDERS,
+  GET_ORDERS, GET_SHAD, GET_TRADES
 } from '../../store/storeconstants'
 
 const store = useStore()
 
 const selectedAssets = ref([])
 const shad = ref([])
+const trades = ref([])
+const openOrders = ref([])
 
 const showOverlay = ref(false)
 const selectedAsset = ref()
@@ -89,15 +95,30 @@ const platformOptions = computed(() => {
 })
 const selectedPlatforms = ref(platformOptions.value.map(platform => platform.id))
 
-const items = computed(() => {
+const shadItems = computed(() => {
   return shad.value && shad.value.length > 0 ? shad.value : []
+})
+
+const tradesItems = computed(() => {
+  console.log('trades.value.length', trades.value.length)
+  return trades.value && trades.value.length > 0 ? trades.value : []
+})
+
+const openOrdersItems = computed(() => {
+  return openOrders.value && openOrders.value.length > 0 ? openOrders.value : []
 })
 
 onMounted(async () => {
   try {
     await store.dispatch('calcul/' + FETCH_SHAD)
+    await store.dispatch('calcul/' + FETCH_TRADES)
+    await store.dispatch('calcul/' + FETCH_ORDERS)
     shad.value = await store.getters['calcul/' + GET_SHAD]
-    console.log("Données Shad récupérées:", shad.value)  // Check retrieved data
+    trades.value = await store.getters['calcul/' + GET_TRADES]
+    openOrders.value = await store.getters['calcul/' + GET_ORDERS]
+    console.log("Données Shad récupérées:", shad.value)
+    console.log("Données Trades récupérées:", trades.value)
+    console.log("Données Orders récupérées:", openOrders.value)
   } catch (e) {
     console.error("Une erreur s'est produite lors de la récupération des données :", e)
   }
@@ -149,11 +170,13 @@ function toggleExpandCollapse() {
 }
 
 .bottom-tab-container.expanded {
-  height: 300px; /* Adjust to desired height when expanded */
+  height: 300px;
+  /* Adjust to desired height when expanded */
 }
 
 .bottom-tab-container:not(.expanded) {
-  height: 40px; /* Height of the tab header when collapsed */
+  height: 40px;
+  /* Height of the tab header when collapsed */
 }
 
 .tab-header {
@@ -167,7 +190,8 @@ function toggleExpandCollapse() {
 }
 
 .tab-content {
-  height: calc(100% - 40px); /* Adjust height based on header */
+  height: calc(100% - 40px);
+  /* Adjust height based on header */
   overflow: auto;
 }
 

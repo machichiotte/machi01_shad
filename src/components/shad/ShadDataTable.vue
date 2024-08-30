@@ -17,7 +17,7 @@
                 <Column header="Asset" field="asset" :rowspan="2" :sortable="true" frozen alignFrozen="left" />
                 <Column header="Platform" field="platform" :rowspan="2" sortable frozen alignFrozen="left" />
                 <Column header="Current Price" field="currentPrice" frozen alignFrozen="left" :rowspan="2" sortable />
-                <Column header="Strategy" frozen alignFrozen="left" :rowspan="2" sortable />
+                <Column header="Strat" frozen alignFrozen="left" :rowspan="2" sortable />
                 <Column header="Status" field="status" :rowspan="2" sortable frozen alignFrozen="left" />
                 <Column header="Total Shad" field="totalShad" :rowspan="2" sortable />
                 <Column header="Rank" field="rank" :rowspan="2" sortable />
@@ -221,7 +221,7 @@
 
 <script setup>
 import { ref, computed, watch, defineProps, defineEmits } from 'vue';
-import { calculateRecups, getStatus, updateMaxExposition, updateRowByStratChange } from '../../js/shad/shadUtils.js';
+import { getStatus, updateMaxExposition, updateRowByStratChange } from '../../js/shad/shadUtils.js';
 
 import { strategies } from '../../js/strategies.js'
 import PercentageColumn from './PercentageColumn.vue'

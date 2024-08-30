@@ -1,7 +1,7 @@
 <!-- src/components/orders/OrdersTable.vue -->
 
 <template>
-  <DataTable :value="rows" :rows="itemsPerPage">
+  <DataTable :value="filteredItems" :rows="itemsPerPage">
     <Column
       v-for="(col, index) in cols"
       :key="index"
@@ -30,7 +30,7 @@ const props = defineProps({
 });
 
 // Computing rows based on orders prop
-const rows = computed(() => {
+const filteredItems = computed(() => {
   return props.orders.map((item) => {
     return {
       platform: item['platform'],
