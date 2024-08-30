@@ -17,6 +17,7 @@
                 <Column header="Asset" field="asset" :rowspan="2" :sortable="true" frozen alignFrozen="left" />
                 <Column header="Platform" field="platform" :rowspan="2" sortable frozen alignFrozen="left" />
                 <Column header="Current Price" field="currentPrice" frozen alignFrozen="left" :rowspan="2" sortable />
+                <Column header="StratColumn" frozen alignFrozen="left" :rowspan="2" sortable />
                 <Column header="Status" field="status" :rowspan="2" sortable frozen alignFrozen="left" />
                 <Column header="Total Shad" field="totalShad" :rowspan="2" sortable />
                 <Column header="Rank" field="rank" :rowspan="2" sortable />
@@ -25,11 +26,9 @@
                 <Column header="Total Sell" field="totalSell" :rowspan="2" sortable />
                 <Column header="Quantite total achetee" field="totalAmount" :rowspan="2" sortable />
                 <Column header="Balance" field="balance" :rowspan="2" sortable />
-                <Column header="Max wanted" field="maxExposition" :rowspan="2" sortable />
                 <Column header="Wallet" field="currentPossession" :rowspan="2" sortable />
                 <Column header="Profit" field="profit" :rowspan="2" sortable />
                 <Column header="Open Orders" :colspan="2" />
-                <Column header="Strategy" field="strat" :rowspan="2" sortable />
                 <Column header="Ratio" field="ratioShad" :rowspan="2" sortable />
                 <Column header="Recup Shad" field="recupShad" :rowspan="2" sortable />
                 <Column header="% next TP" field="percentToNextTp" sortable :rowspan="2" />
@@ -89,6 +88,23 @@
                 </div>
             </template>
         </Column>
+        <Column field="stratColumn" sortable frozen alignFrozen="left">
+            <template #body="slotProps">
+                <div>
+                    <!-- Dropdown for strat -->
+                    <select v-model="slotProps.data.strat"
+                        @change="updateRowByStratChange(props.items, slotProps.data, $event.target.value)">
+                        <option value=""></option>
+                        <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">{{ strategy }}</option>
+                    </select>
+
+                    <!-- Input for maxExposition -->
+                    <input type="text" v-model="slotProps.data.maxExposition"
+                        @input="updateMaxExposition(props.items, slotProps.data, $event.target.value)"
+                        @blur="updateMaxExposition(props.items, slotProps.data, $event.target.value)" />
+                </div>
+            </template>
+        </Column>
         <Column field="status" style="min-width: 12rem" frozen alignFrozen="left">
             <template #body="slotProps">
                 <Tag :value="getStatus(slotProps.data).label" :severity="getStatus(slotProps.data).severity" />
@@ -120,13 +136,6 @@
         <Column field="totalSell"></Column>
         <Column field="totalAmount"></Column>
         <Column field="balance"></Column>
-        <Column field="maxExposition">
-            <template #body="slotProps">
-                <input type="text" v-model="slotProps.data.maxExposition"
-                    @input="updateMaxExposition(props.items, slotProps.data, $event.target.value)"
-                    @blur="updateMaxExposition(props.items, slotProps.data, $event.target.value)" />
-            </template>
-        </Column>
 
         <Column field="currentPossession" sortable>
             <template #body="slotProps">
@@ -155,16 +164,6 @@
         </Column>
         <Column field="nbOpenBuyOrders"></Column>
         <Column field="nbOpenSellOrders"></Column>
-        <Column field="strat">
-            <template #body="slotProps">
-                <select v-model="slotProps.data.strat"
-                    @change="updateRowByStratChange(props.items, slotProps.data, $event.target.value)">
-                    <option value=""></option>
-                    <option v-for=" strategy in strategyLabels " :key="strategy" :value="strategy">{{ strategy }}
-                    </option>
-                </select>
-            </template>
-        </Column>
         <Column field="ratioShad"></Column>
         <Column field="recupShad"></Column>
         <Column field="percentToNextTp">
