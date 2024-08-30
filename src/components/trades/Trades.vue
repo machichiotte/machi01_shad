@@ -37,11 +37,12 @@
 
 <script setup>
 import { ref, watchEffect, onMounted } from 'vue'
-import { tradesColumns } from '../js/columns.js'
-import { FilterMatchMode } from 'primevue/api'
-import TradesForm from "../components/forms/TradesForm.vue";
 import { useStore } from 'vuex'
-import { FETCH_BALANCES, FETCH_TRADES, GET_BALANCES, GET_TRADES } from '../store/storeconstants'
+import { FilterMatchMode } from 'primevue/api'
+
+import { tradesColumns } from '../../js/columns.js'
+import TradesForm from "../../components/forms/TradesForm.vue";
+import { FETCH_BALANCES, FETCH_TRADES, GET_BALANCES, GET_TRADES } from '../../store/storeconstants'
 
 const store = useStore()
 

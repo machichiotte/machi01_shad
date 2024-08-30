@@ -17,7 +17,7 @@
                 <Column header="Asset" field="asset" :rowspan="2" :sortable="true" frozen alignFrozen="left" />
                 <Column header="Platform" field="platform" :rowspan="2" sortable frozen alignFrozen="left" />
                 <Column header="Current Price" field="currentPrice" frozen alignFrozen="left" :rowspan="2" sortable />
-                <Column header="StratColumn" frozen alignFrozen="left" :rowspan="2" sortable />
+                <Column header="Strategy" frozen alignFrozen="left" :rowspan="2" sortable />
                 <Column header="Status" field="status" :rowspan="2" sortable frozen alignFrozen="left" />
                 <Column header="Total Shad" field="totalShad" :rowspan="2" sortable />
                 <Column header="Rank" field="rank" :rowspan="2" sortable />

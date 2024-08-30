@@ -3,12 +3,7 @@
   <!-- Using PrimeVue DataTable component to display trades data -->
   <DataTable :value="rows" :rows="itemsPerPage">
     <!-- Dynamically rendering columns using PrimeVue Column component -->
-    <Column
-      v-for="(col, index) in cols"
-      :key="index"
-      :field="col.field"
-      :header="col.header"
-    ></Column>
+    <Column v-for="(col, index) in cols" :key="index" :field="col.field" :header="col.header"></Column>
   </DataTable>
 </template>
 
@@ -17,7 +12,7 @@
 import { ref, computed } from 'vue';
 
 // Importing necessary columns from the columns.js file
-import { tradesTableColumns } from '../js/columns.js';
+import { tradesTableColumns } from '../../js/columns.js';
 
 // Props declaration
 const props = defineProps({

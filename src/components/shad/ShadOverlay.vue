@@ -102,7 +102,7 @@ import { getTradesHistory, getDataBTC, getDataETH } from '../../js/metrics/globa
 import ShadOverlayGraph from './ShadOverlayGraph.vue';
 import NextSellsTable from './NextSellsTable.vue';
 import OrdersTable from '../orders/OrdersTable.vue';
-import TradesTable from '../TradesTable.vue';
+import TradesTable from '../trades/TradesTable.vue';
 
 export default {
     name: "ShadOverlay",
