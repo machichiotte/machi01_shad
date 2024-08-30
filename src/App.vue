@@ -1,38 +1,14 @@
 <!-- src/App.vue -->
-
-<script setup>
-import { ref } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
-
-const isMenuOpen = ref(false)
-const isDarkMode = ref(false)
-const dark = '#2c3e50'
-const light = '#ffffff'
-
-const menuButton = ref(null) // Add ref for DOM element
-
-function toggleMenu() {
-  isMenuOpen.value = !isMenuOpen.value
-  if (isMenuOpen.value) {
-    // Use ref directly instead of $refs
-    menuButton.value.style.display = 'block'
-  } else {
-    menuButton.value.style.display = 'none'
-  }
-}
-
-function toggleDarkMode() {
-  isDarkMode.value = !isDarkMode.value
-  document.body.classList.toggle('dark-mode', isDarkMode.value)
-  this.$emit('dark-mode-change', isDarkMode.value) // Use direct $emit
-}
-</script>
 <template>
   <div id="app" :class="{ 'dark-mode': isDarkMode }">
-    <div class="site-title">
-      <logo-machi :color="isDarkMode ? light : dark"></logo-machi>
+    <!-- Logo and Dark Mode Toggle in Flex Container -->
+    <div class="header-container">
+      <!-- Center the logo within its own flex container -->
+      <div class="logo-container">
+        <logo-machi :color="isDarkMode ? light : dark" class="logo" />
+      </div>
+      <button class="dark-mode-button" @click="toggleDarkMode">☾</button>
     </div>
-    <button class="dark-mode-button" @click="toggleDarkMode">☾</button>
 
     <header :class="{ 'dark-mode': isDarkMode }">
       <button class="menu-button" @click="toggleMenu">☰</button>
@@ -51,6 +27,24 @@ function toggleDarkMode() {
   </div>
 </template>
 
+<script setup>
+import { ref } from 'vue'
+import { RouterLink, RouterView } from 'vue-router'
+
+const isMenuOpen = ref(false)
+const isDarkMode = ref(false)
+const dark = '#2c3e50'
+const light = '#ffffff'
+
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+function toggleDarkMode() {
+  isDarkMode.value = !isDarkMode.value
+  document.body.classList.toggle('dark-mode', isDarkMode.value)
+}
+</script>
 <style scoped>
 body {
   background-color: var(--light-bg);
@@ -70,14 +64,56 @@ body.dark-mode {
   text-align: center;
 }
 
+/* Flex container for logo and dark mode button */
+.header-container {
+  display: flex;
+  align-items: center; /* Center vertically */
+  padding: 10px;
+  justify-content: space-between; /* Ensure logo and button are spaced evenly */
+}
+
+/* Center the logo horizontally */
+.logo-container {
+  flex-grow: 1; /* Allows the logo to take up remaining space */
+  display: flex;
+  justify-content: center; /* Centers the logo horizontally */
+  align-items: center;
+}
+
+.logo {
+  height: 6vh; /* Set logo height to 6% of the viewport height */
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Style for dark mode button */
+.dark-mode-button {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: auto; /* Pushes the button to the right */
+  color: var(--dark-text); /* Default color for light mode */
+  transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+/* Ensure the icon color changes according to the mode */
+.dark-mode-button:hover {
+  color: var(--primary-color); /* Change color on hover for better UX */
+}
+
+body.dark-mode .dark-mode-button {
+  color: var(--light-text); /* Set color for dark mode */
+}
+
 header {
   background-color: var(--dark-bg);
   color: var(--dark-text);
   margin: 10px;
   position: relative;
-  display: flex; /* Permet d'utiliser justify-content et align-items */
-  justify-content: space-between; /* Aligne les éléments à l'extrémité des côtés */
-  align-items: center; /* Centre les éléments verticalement */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 header.dark-mode {
@@ -89,16 +125,15 @@ header.dark-mode {
   font-size: 24px;
   background: none;
   border: none;
-  cursor: default; /* Rend le curseur non cliquable */
+  cursor: pointer;
   padding: 10px;
   position: absolute;
   top: 50%;
   right: 10px;
-  transform: translateY(-50%); /* Centre le bouton verticalement */
-  display: none; /* Cacher le bouton du menu par défaut */
+  transform: translateY(-50%);
+  display: none;
 }
 
-/* Style pour les grands écrans */
 nav {
   display: flex;
   justify-content: space-between;
@@ -128,14 +163,13 @@ nav.dark-mode a.selected-link {
   background-color: var(--dark-bg);
 }
 
-/* Style pour les petits écrans */
 .show-menu {
   display: none;
 }
 
 @media only screen and (max-width: 768px) {
   .menu-button {
-    display: block; /* Afficher le bouton du menu pour les petits écrans */
+    display: block;
   }
 
   nav {
@@ -175,4 +209,3 @@ nav.dark-mode a.selected-link {
   }
 }
 </style>
-../index../router/index
