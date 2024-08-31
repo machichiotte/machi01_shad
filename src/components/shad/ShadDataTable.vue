@@ -95,7 +95,8 @@
                     <select v-model="slotProps.data.strat"
                         @change="updateRowByStratChange(props.items, slotProps.data, $event.target.value)">
                         <option value=""></option>
-                        <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">{{ strategy }}</option>
+                        <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">{{ strategy }}
+                        </option>
                     </select>
 
                     <!-- Input for maxExposition -->
@@ -220,11 +221,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, defineProps, defineEmits } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted, defineProps, defineEmits } from 'vue';
 import { getStatus, updateMaxExposition, updateRowByStratChange } from '../../js/shad/shadUtils.js';
-
-import { strategies } from '../../js/strategies.js'
-import PercentageColumn from './PercentageColumn.vue'
+import { fetchTickers } from '../../js/fetchFromServer.js';  // Import the ticker fetch function
+import { strategies } from '../../js/strategies.js';
+import PercentageColumn from './PercentageColumn.vue';
 
 const strategiesList = ref(strategies);
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
@@ -256,15 +257,20 @@ const platformOptions = computed(() => {
 const selectedPlatforms = ref(platformOptions.value.map(platform => platform.id));
 
 const computedFilters = computed(() => props.filters);
-const computedItems = computed(() => props.items);
+const localItems = ref(props.items);
 
-// Computed property to get filtered items
+// Watch for changes in the items prop
+watch(() => props.items, (newItems) => {
+    localItems.value = newItems;
+    console.log('🚀 ~ New items received:', newItems);
+}, { immediate: true }); // Immediate to trigger watch on initial render
+
 const filteredItems = computed(() => {
-    return filterItems(props.items, computedFilters.value.global.value, selectedPlatforms.value);
+    return filterItems(localItems.value, computedFilters.value.global.value, selectedPlatforms.value);
 });
 
 function filterItems(items, searchTerm, selectedPlatforms) {
-    if (!searchTerm && selectedPlatforms.length === 0) {
+    if (!searchTerm && selectedPlatforms.length === platformOptions.value.length) {
         return items;
     }
 
@@ -278,42 +284,7 @@ function filterItems(items, searchTerm, selectedPlatforms) {
     });
 }
 
-/*function validateAndRecalculateTP(data) {
-    const originalItem = props.items.find(item => item.asset === data.asset);
-
-    try {
-        if (originalItem && originalItem.maxExposition !== data.maxExposition) {
-            console.log(`Value changed for ${data.asset} from ${originalItem.maxExposition} to ${data.maxExposition}`);
-
-            // Recalculate TP values here based on the new maxExposition value
-            const recupData = calculateRecups(
-                data.platform,
-                data.totalBuy,
-                data.totalSell,
-                props.items // Utilisation directe des données de 'items'
-            );
-
-            // Vérifiez si 'recupData' contient les valeurs attendues
-            if (!recupData || typeof recupData !== 'object') {
-                console.warn('Erreur de calcul : recupData invalide', recupData);
-                return;
-            }
-
-            // Mise à jour des valeurs recalculées
-            data.maxExposition = recupData.maxExposition;
-            data.ratioShad = recupData.ratioShad;
-            data.recupShad = recupData.recupShad;
-            data.recupTpX = recupData.recupTpX;
-            data.recupTp1 = recupData.recupTp1;
-
-            // Mise à jour d'autres valeurs dépendantes...
-        }
-    } catch (error) {
-        console.error('Erreur lors de la gestion de maxExposition:', error);
-    }
-}*/
-
-// Génération d'une clé unique par ligne
+// Define row key for unique identification
 const rowKey = (rowData) => `${rowData.asset}-${rowData.platform}`;
 
 const emit = defineEmits(['update:selectedAssets']);
@@ -326,7 +297,53 @@ watch(() => props.selectedAssets, (newVal) => {
 function emitSelection(selection) {
     emit('update:selectedAssets', selection);
 }
+
+// Update ticker data regularly
+function updateTickers() {
+    console.log('🚀 ~ Fetching ticker data');
+
+    fetchTickers().then(tickerData => {
+        console.log('🚀 ~ Ticker data:', tickerData);
+
+        // Filter tickers based on platforms present in localItems
+        const platforms = new Set(localItems.value.map(item => item.platform));
+        console.log(`🚀 ~ Platforms in localItems:`, platforms);
+        const filteredTickers = tickerData.filter(ticker => platforms.has(ticker.platform));
+        console.log(`🚀 ~ Filtered tickers length:`, filteredTickers.length);
+
+        // Convert filtered ticker data into a dictionary for quick lookups
+        const tickerDict = {};
+        filteredTickers.forEach(ticker => {
+            const key = `${ticker.platform}-${ticker.symbol}`;
+            tickerDict[key] = ticker;
+        });
+
+        // Iterate over local items and update their properties
+        localItems.value.forEach(item => {
+            const key = `${item.platform}-${item.asset}/USDT`; // Assuming ticker symbol format is 'ASSET/USDT'
+            if (tickerDict[key]) {
+                item.currentPrice = tickerDict[key].last;
+                // You can also update other properties if needed
+            }
+        });
+    }).catch(error => {
+        console.error('Error fetching tickers:', error);
+    });
+}
+
+// Setup interval to refresh ticker data every 60 seconds
+let tickerInterval;
+onMounted(() => {
+    tickerInterval = setInterval(updateTickers, 120000);  // Fetch every 120 seconds
+    updateTickers();  // Initial fetch
+});
+
+// Clear interval when component is destroyed
+onUnmounted(() => {
+    clearInterval(tickerInterval);
+});
 </script>
+
 
 <style scoped>
 .text-green-500 {
@@ -344,6 +361,6 @@ function emitSelection(selection) {
 
 .p-datatable-frozen-view .p-datatable-thead th,
 .p-datatable-frozen-view .p-datatable-tbody td {
-    z-index: 1; /* Valeur ajustable selon votre besoin */
+    z-index: 1;
 }
 </style>
