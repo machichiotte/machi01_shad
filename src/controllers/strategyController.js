@@ -1,10 +1,25 @@
 // src/controllers/strategyController.js
 const { getData } = require("../utils/dataUtil.js");
-const { deleteAllDataMDB, saveData } = require("../services/mongodbService.js");
+const { deleteAllDataMDB, updateDataMDB, saveData } = require("../services/mongodbService.js");
 const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
 
 const { handleErrorResponse } = require("../utils/errorUtil.js");
 const { errorLogger } = require("../utils/loggerUtil.js");
+
+/**
+ * Met à jour une stratégie dans la collection 'collection_strategy' en utilisant l'ID de la stratégie.
+ * @param {string} strategyId - L'ID de la stratégie à mettre à jour.
+ * @param {object} updatedStrategy - Les nouvelles données à mettre à jour.
+ * @returns {Promise} - Une promesse qui résout le résultat de l'opération de mise à jour.
+ */
+async function updateStrategyById(strategyId, updatedStrategy) {
+  try {
+    return await updateDataMDB("collection_strategy", { _id: strategyId }, { $set: updatedStrategy });
+  } catch (error) {
+    console.error(`Error updating strategy with ID ${strategyId}:`, error);
+    throw error;
+  }
+}
 
 async function getStrat(req, res) {
   const collectionName = process.env.MONGODB_COLLECTION_STRAT;
@@ -55,4 +70,4 @@ async function updateStrat(req, res) {
   }
 }
 
-module.exports = { getStrat, fetchDatabaseStrategies, updateStrat };
+module.exports = { getStrat, fetchDatabaseStrategies, updateStrat, updateStrategyById };

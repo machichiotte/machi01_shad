@@ -1,5 +1,5 @@
 // src/controllers/tradesController.js
-const { saveData } = require("../services/mongodbService.js");
+const { saveData, updateDataMDB } = require("../services/mongodbService.js");
 const {
   deleteAndSaveData,
   saveLastUpdateToMongoDB,
@@ -10,6 +10,21 @@ const { getData } = require("../utils/dataUtil.js");
 const { mapTrades } = require("../services/mapping.js");
 const { handleErrorResponse } = require("../utils/errorUtil.js");
 const { errorLogger } = require("../utils/loggerUtil.js");
+
+/**
+ * Met à jour un trade dans la collection 'collection_trades' en utilisant l'ID du trade.
+ * @param {string} tradeId - L'ID du trade à mettre à jour.
+ * @param {object} updatedTrade - Les nouvelles données à mettre à jour.
+ * @returns {Promise} - Une promesse qui résout le résultat de l'opération de mise à jour.
+ */
+async function updateTradeById(tradeId, updatedTrade) {
+  try {
+    return await updateDataMDB("collection_trades", { _id: tradeId }, { $set: updatedTrade });
+  } catch (error) {
+    console.error(`Error updating trade with ID ${tradeId}:`, error);
+    throw error;
+  }
+}
 
 async function getTrades(req, res) {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
@@ -202,4 +217,5 @@ module.exports = {
   fetchLastTrades,
   saveTradesToDatabase,
   saveAllTradesToDatabase,
+  updateTradeById
 };

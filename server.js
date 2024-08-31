@@ -8,7 +8,7 @@ const { app, startServer } = require("./src/services/requestHandlers.js");
 const { initializeCronTasks } = require("./src/services/cron/cronTasks.js");
 
 const { cronBalances } = require("./src/services/cron/taskExecutor.js");
-const { handleSwap } = require("./src/services/swapService.js");
+const { handleMigrationSwaps } = require("./src/services/migrationSwapsService.js");
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ async function initializeServer() {
 
     await cleanCollectionTrades();
 
-    await handleSwap();
+    await handleMigrationSwaps();
 
     await cronBalances();
 

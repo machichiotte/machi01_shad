@@ -151,10 +151,6 @@ function calculateAmountAndPriceForShad(parsedRecup, parsedBalance, factor) {
  * @returns {number} - The fee percentage for the given platform.
  */
 function getPlatformFee(platform) {
-  console.log(
-    `🚀 ~ file: strategies.js:154 ~ getPlatformFee ~ platform:`,
-    platform
-  );
   // Define the platform fees
   const fees = {
     binance: 0.1, // 0.1% fee
@@ -184,8 +180,6 @@ function calculateAmountsAndPricesForShad(
   const parsedBalance = parseFloat(balance);
   const parsedRecupTpX = parseFloat(recupTpX);
   const parsedAverageEntryPrice = parseFloat(averageEntryPrice);
-
-  console.log(`🚀 ~ file: strategies.js:187 ~ platform:`, platform);
 
   const platformFee = getPlatformFee(platform);
 
