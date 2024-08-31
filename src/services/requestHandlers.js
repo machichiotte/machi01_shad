@@ -66,7 +66,7 @@ app.use((req, res, next) => {
 // Fonction pour démarrer le serveur
 function startServer() {
   app.listen(PORT, () => {
-    console.log("🚀 ~ app.listen ~ PORT:", PORT);
+    console.log("PORT:", PORT);
   });
 }
 

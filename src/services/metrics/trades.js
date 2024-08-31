@@ -49,9 +49,10 @@ function getTotalAmountAndBuy(symbol, trades) {
       : 0
   ).toFixed(8);
 
+  //todo
   return {
       totalAmount: parseFloat(totalAmount),
-      totalBuy: parseFloat(totalBuy).toFixed(2),
+      totalBuy: parseFloat(totalBuy),
       averageEntryPrice: parseFloat(averageEntryPrice),
   };
 }
@@ -93,7 +94,9 @@ function getTotalSell(symbol, trades) {
       return total + parseFloat(trade.totalUSDT) - feeInQuote;
   }, 0);
 
-  return parseFloat(sellTotal).toFixed(2);
+  //todo
+  //return parseFloat(sellTotal).toFixed(2);
+  return parseFloat(sellTotal);
 }
 
 function getTradesHistory(symbol, trades) {

@@ -20,7 +20,7 @@ async function getMongoClient() {
       await mongoInstance.connect();
       console.log("Successfully connected to MongoDB");
     } catch (error) {
-      console.error("Error connecting to MongoDB:", error);
+      console.log("Error connecting to MongoDB:", error);
       throw error;
     }
   }
@@ -32,9 +32,9 @@ async function getDB() {
     const client = await getMongoClient();
     try {
       db = client.db(process.env.MONGODB_DATABASE);
-      console.log("🚀 ~ Database selected:", process.env.MONGODB_DATABASE);
+      console.log("Database selected:", process.env.MONGODB_DATABASE);
     } catch (error) {
-      console.error("🚀 ~ Error selecting database:", error);
+      console.log(`🚀 ~ file: mongodbService.js:37 ~ getDB ~ error:`, error);
       throw error;
     }
   }
@@ -82,7 +82,9 @@ async function cleanCollectionTrades() {
   await Promise.all(
     duplicates.map(async (group) => {
       const documentsToKeep = group.documents.filter((doc) => doc.timestamp);
-      const documentsToDelete = group.documents.filter((doc) => !doc.timestamp || doc.date);
+      const documentsToDelete = group.documents.filter(
+        (doc) => !doc.timestamp || doc.date
+      );
 
       if (documentsToKeep.length > 0) {
         // Conserver un seul document avec timestamp (le premier trouvé)
@@ -109,7 +111,6 @@ async function cleanCollectionTrades() {
     })
   );
 }
-
 
 async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
   let attempts = 0;
@@ -243,9 +244,6 @@ async function deleteAllDataMDB(collectionName) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
     const result = await collection.deleteMany({});
-    console.log(
-      `🚀 ~ deleteAllDataMDB ~ deleted ${result.deletedCount} document(s)`
-    );
     return result.deletedCount;
   }, [collectionName]);
 }
@@ -253,7 +251,7 @@ async function deleteAllDataMDB(collectionName) {
 async function connectToMongoDB() {
   try {
     await getDB();
-    console.log("🚀 ~ connectToMongoDB ~ Connected to MongoDB!");
+    console.log("Connected to MongoDB!");
 
     const collectionsToCreate = [
       "collection_active_orders",

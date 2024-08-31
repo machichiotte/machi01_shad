@@ -11,7 +11,7 @@ function getPercentageDifference(newValue, oldValue) {
     return "N/A";
   }
 
-  const percentageDifference = ((newVal - oldVal) / oldVal);
+  const percentageDifference = (newVal - oldVal) / oldVal;
   return parseFloat(percentageDifference.toFixed(2));
 }
 
@@ -69,7 +69,7 @@ function getStatus(
  */
 function getBalanceBySymbol(base, balanceObj) {
   // Vérification de la validité de l'objet balance
-  if (typeof balanceObj !== 'object' || balanceObj === null) {
+  if (typeof balanceObj !== "object" || balanceObj === null) {
     console.warn(`balanceObj is invalid: ${balanceObj}`);
     return 0;
   }
@@ -85,14 +85,31 @@ function getBalanceBySymbol(base, balanceObj) {
   if (!isNaN(balanceAsNumber)) {
     return balanceAsNumber;
   } else {
-    console.warn(`Invalid balance value for symbol ${base}: ${balanceObj.balance}`);
+    console.warn(
+      `Invalid balance value for symbol ${base}: ${balanceObj.balance}`
+    );
     return 0;
   }
 }
 
 function getProfit(totalBuy, totalSell, currentPrice, balance) {
-  const currentPossession = currentPrice * balance;
-  return currentPossession + totalSell - totalBuy;
+  // Vérification des valeurs pour éviter NaN
+  if (
+    isNaN(totalBuy) ||
+    isNaN(totalSell) ||
+    isNaN(currentPrice) ||
+    isNaN(balance)
+  ) {
+    return NaN; // Arrêter le calcul et retourner NaN
+  }
+
+  return (currentPrice * balance) + totalSell - totalBuy;
 }
 
-module.exports = { getProfit, getBalanceBySymbol, getCurrentPossession, getPercentageDifference, getStatus };
+module.exports = {
+  getProfit,
+  getBalanceBySymbol,
+  getCurrentPossession,
+  getPercentageDifference,
+  getStatus,
+};

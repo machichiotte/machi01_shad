@@ -237,8 +237,9 @@ async function calculateAllMetrics() {
         filteredTickers
       );
 
-      //console.log(`calculateAllMetrics values for ${assetSymbol}:`, values);
-      allValues.push(values);
+      if (values && values.rank > 0 && values.currentPossession) {
+        allValues.push(values);
+      } 
     }
   }
 

@@ -62,6 +62,10 @@ async function handleMigrationSwaps() {
 
           // Mettre à jour le document dans la collection
           await updateTradeById(trade._id, updatedTrade);
+
+          console.log(
+            `Trades Swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`
+          );
         }
       }
 
@@ -73,12 +77,12 @@ async function handleMigrationSwaps() {
 
           // Mettre à jour la stratégie dans la collection
           await updateStrategyById(strategy._id, updatedStrategy);
+
+          console.log(
+            `Strategy Swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`
+          );
         }
       }
-
-      console.log(
-        `Swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`
-      );
     }
   } catch (error) {
     console.error("Error handling swaps:", error);

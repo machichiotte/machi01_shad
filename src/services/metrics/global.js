@@ -73,7 +73,9 @@ function calculateAssetMetrics(
     averageEntryPrice
   );
   const currentPossession = getCurrentPossession(currentPrice, balance);
+  
   const profit = getProfit(totalBuy, totalSell, currentPrice, balance);
+
 
   // Handle stablecoin case
   if (stableCoins.includes(asset)) {
