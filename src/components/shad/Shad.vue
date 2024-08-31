@@ -1,25 +1,32 @@
 <!-- src/components/Shad.vue -->
 <template>
   <div class="shad-container">
+    <!-- Top Expandable Container -->
+    <div class="top-tab-container" :class="{ expanded: isTopExpanded }">
+      <div class="tab-header">
+        <!-- Tabs for switching between Platform Selector and Fetch From Server Selector -->
+        <Button label="Platform Selector" @click="activeTopTab = 'platforms'" :class="{ active: activeTopTab === 'platforms' }" />
+        <Button label="Fetch From Server" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
+        <Button icon="pi pi-chevron-down" @click="toggleTopExpandCollapse" class="expand-collapse-button" />
+      </div>
+
+      <!-- Top Tab Content -->
+      <div class="tab-content">
+        <PlatformSelector v-if="activeTopTab === 'platforms'" 
+                          :initialSelectedPlatforms="selectedPlatforms" 
+                          @update:selectedPlatforms="updateSelectedPlatforms" />
+        <FetchFromServerSelector v-if="activeTopTab === 'fetch'" />
+      </div>
+    </div>
+
     <div class="card">
       <!-- Toolbar at the top -->
       <Toolbar class="mb-4">
         <template #start>
-          <MyBunchSellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
-            :model="allRows" />
-          <MyEmergencySellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
-            :model="allRows" />
-          <MyBuyButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
-            :model="allRows" />
-          <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected"
-            :disabled="!selectedAssets || !selectedAssets.length" />
-          <MultiSelect v-model="selectedPlatforms" :options="platformOptions" optionLabel="name" optionValue="id"
-            placeholder="Select Platforms" class="ml-2" display="chip" :panelClass="'platforms-multiselect-panel'">
-            <template #item="slotProps">
-              <Checkbox v-model="slotProps.checked" :label="slotProps.option.name" />
-              <span>{{ slotProps.option.name }}</span>
-            </template>
-          </MultiSelect>
+          <MyBunchSellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length" :model="allRows" />
+          <MyEmergencySellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length" :model="allRows" />
+          <MyBuyButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length" :model="allRows" />
+          <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected" :disabled="!selectedAssets || !selectedAssets.length" />
         </template>
 
         <template #end>
@@ -31,12 +38,11 @@
       </Toolbar>
 
       <!-- Main Shad Data Table -->
-      <ShadDataTable :items="shadItems" :filters="filters" @update:selectedAssets="updateSelectedAssets" />
-
+      <ShadDataTable :items="filteredShadItems" :filters="filters" @update:selectedAssets="updateSelectedAssets" />
     </div>
 
     <!-- Fixed Bottom Tab Container -->
-    <div class="bottom-tab-container" :class="{ expanded: isExpanded }">
+    <div class="bottom-tab-container" :class="{ expanded: isBottomExpanded }">
       <div class="tab-header">
         <!-- Tabs for switching between Trades and Orders -->
         <Button label="Trades" @click="activeTab = 'trades'" :class="{ active: activeTab === 'trades' }" />
@@ -64,6 +70,8 @@ import ShadDataTable from './ShadDataTable.vue'
 import SearchBar from './SearchBar.vue'
 import TradesTable from '../trades/TradesTable.vue'
 import OrdersTable from '../orders/OrdersTable.vue'
+import PlatformSelector from './PlatformSelector.vue'
+import FetchFromServerSelector from './FetchFromServerSelector.vue'
 
 import {
   FETCH_SHAD, FETCH_TRADES, FETCH_ORDERS,
@@ -84,19 +92,16 @@ const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
 
-const platformOptions = computed(() => {
-  return [
-    { id: 'binance', name: 'Binance' },
-    { id: 'kucoin', name: 'KuCoin' },
-    { id: 'htx', name: 'HTX' },
-    { id: 'okx', name: 'OKX' },
-    { id: 'gateio', name: 'Gate.io' }
-  ]
-})
-const selectedPlatforms = ref(platformOptions.value.map(platform => platform.id))
+// Initialize selected platforms (all platforms selected by default)
+const selectedPlatforms = ref(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
 
 const shadItems = computed(() => {
   return shad.value && shad.value.length > 0 ? shad.value : []
+})
+
+// Filter the items based on selected platforms
+const filteredShadItems = computed(() => {
+  return shadItems.value.filter(item => selectedPlatforms.value.includes(item.platform))
 })
 
 const tradesItems = computed(() => {
@@ -131,12 +136,25 @@ function updateSelectedAssets(newSelection) {
   selectedAssets.value = newSelection
 }
 
-// Responsive tab management
-const isExpanded = ref(false)
+// Update selected platforms
+function updateSelectedPlatforms(newPlatforms) {
+  selectedPlatforms.value = newPlatforms
+}
+
+// Responsive tab management for the bottom
+const isBottomExpanded = ref(false)
 const activeTab = ref('trades')
 
 function toggleExpandCollapse() {
-  isExpanded.value = !isExpanded.value
+  isBottomExpanded.value = !isBottomExpanded.value
+}
+
+// Top tab management
+const isTopExpanded = ref(false)
+const activeTopTab = ref('platforms')
+
+function toggleTopExpandCollapse() {
+  isTopExpanded.value = !isTopExpanded.value
 }
 </script>
 
@@ -157,25 +175,25 @@ function toggleExpandCollapse() {
   overflow: auto;
 }
 
-.bottom-tab-container {
-  position: fixed;
-  bottom: 0;
+.top-tab-container {
+  position: sticky;
+  top: 0;
   left: 0;
   width: 100%;
   background-color: var(--surface-card);
-  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
   transition: height 0.3s ease;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.bottom-tab-container.expanded {
-  height: 300px;
-  /* Adjust to desired height when expanded */
+.top-tab-container.expanded {
+  height: 200px; /* Adjust to desired height when expanded */
 }
 
-.bottom-tab-container:not(.expanded) {
-  height: 40px;
-  /* Height of the tab header when collapsed */
+.top-tab-container:not(.expanded) {
+  height: 40px; /* Height of the tab header when collapsed */
 }
 
 .tab-header {
@@ -190,15 +208,29 @@ function toggleExpandCollapse() {
 
 .tab-content {
   height: calc(100% - 40px);
-  /* Adjust height based on header */
   overflow: auto;
+}
+
+.bottom-tab-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--surface-card);
+  border-top: 1px solid var(--border-color);
+  transition: height 0.3s ease;
+  overflow: hidden;
+}
+
+.bottom-tab-container.expanded {
+  height: 300px; /* Adjust to desired height when expanded */
+}
+
+.bottom-tab-container:not(.expanded) {
+  height: 40px; /* Height of the tab header when collapsed */
 }
 
 .expand-collapse-button {
   margin-left: auto;
-}
-
-.platforms-multiselect-panel {
-  min-width: 200px;
 }
 </style>
