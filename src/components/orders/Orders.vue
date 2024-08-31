@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { fetchOrders } from '../../js/fetchFromServer.js'
 import { FilterMatchMode } from 'primevue/api'
 import OrdersTable from "./OrdersTable.vue"

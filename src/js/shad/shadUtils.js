@@ -108,12 +108,33 @@ const ERROR_ALLOWED = 0.05;
 const MAX_EXPO = 10000;
 
 /**
- * Calculate the amounts and prices for each take profit level.
+ * Retrieve the platform fee percentage based on the platform name.
+ * @param {string} platform - The name of the trading platform.
+ * @returns {number} - The fee percentage for the given platform.
+ */
+function getPlatformFee(platform) {
+  // Define the platform fees
+  const fees = {
+      binance: 0.1, // 0.1% fee
+      kucoin: 0.1,  // 0.1% fee
+      htx: 0.1,     // 0.1% fee
+      okx: 0.1,     // 0.1% fee
+      gateio: 0.2,  // 0.2% fee
+      default: 0.2  // Default fee (if platform not found)
+  };
+
+  // Return the fee for the given platform, or the default fee if the platform is not found
+  return fees[platform.toLowerCase()] || fees.default;
+}
+
+/**
+ * Calculate the amounts and prices for each take profit level, considering platform fees.
  * @param {Object} data - The data object containing necessary trading information.
+ * @param {number} platformFee - The platform fee percentage (e.g., 0.1 for 0.1%).
  * @returns {Object} - Calculated amounts and prices.
  */
 export function calculateAmountsAndPricesForShad(data) {
-  const { recupTp1, balance, recupTpX, averageEntryPrice, maxExposition } = data;
+  const { recupTp1, balance, totalShad, recupTpX, averageEntryPrice, maxExposition, platform } = data;
   const FACTOR_SELL_SHAD = 0.5;
 
   const parsedRecupTp1 = parseFloat(recupTp1);
@@ -121,24 +142,32 @@ export function calculateAmountsAndPricesForShad(data) {
   const parsedRecupTpX = parseFloat(recupTpX);
   const parsedAverageEntryPrice = parseFloat(averageEntryPrice);
 
+  const platformFee = getPlatformFee(platform);
+
+  // Adjust the amount for TP1 considering the platform fee
   const amountTp1 = data.totalShad > -1 
     ? FACTOR_SELL_SHAD * (parsedRecupTp1 / parsedRecupTpX) * parsedBalance 
     : parsedBalance - maxExposition / parsedAverageEntryPrice;
 
-  const priceTp1 = data.totalShad > -1 
-    ? parsedRecupTp1 / amountTp1 
-    : parsedAverageEntryPrice;
+  // Adjust the price for TP1 to account for platform fee
+  const priceTp1 = totalShad > -1 
+    ? (parsedRecupTp1 / amountTp1) * (1 + platformFee / 100) 
+    : parsedAverageEntryPrice * (1 + platformFee / 100);
 
   const amountsAndPrices = { amountTp1, priceTp1 };
 
+  // Loop for TP2 to TP5
   for (let i = 2; i <= 5; i++) {
+    const remainingBalance = parsedBalance - Object.values(amountsAndPrices).reduce((acc, val) => acc + val.amount, 0);
     const { amount, price } = calculateAmountAndPriceForShad(
       parsedRecupTpX,
-      parsedBalance - Object.values(amountsAndPrices).reduce((acc, val) => acc + val.amount, 0),
+      remainingBalance,
       FACTOR_SELL_SHAD
     );
+
+    // Adjust the price for each take profit level to account for platform fees
     amountsAndPrices[`amountTp${i}`] = amount;
-    amountsAndPrices[`priceTp${i}`] = price;
+    amountsAndPrices[`priceTp${i}`] = price * (1 + platformFee / 100);
   }
 
   return amountsAndPrices;
