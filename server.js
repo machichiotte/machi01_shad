@@ -1,18 +1,18 @@
 // server.js
-const dotenv = require('dotenv');
-const { connectToMongoDB, cleanCollectionTrades } = require('./src/services/mongodbService.js');
-const { app, startServer } = require('./src/services/requestHandlers.js');
-const { initializeCronTasks } = require('./src/services/cron/cronTasks.js');
-
+const dotenv = require("dotenv");
 const {
-  cronTickers,
-  cronMarkets,
-  cronBalances
-} = require("./src/services/cron/taskExecutor.js");
+  connectToMongoDB,
+  cleanCollectionTrades,
+} = require("./src/services/mongodbService.js");
+const { app, startServer } = require("./src/services/requestHandlers.js");
+const { initializeCronTasks } = require("./src/services/cron/cronTasks.js");
+
+const { cronBalances } = require("./src/services/cron/taskExecutor.js");
+const { handleSwap } = require("./src/services/swapService.js");
 
 dotenv.config();
 
-const isOfflineMode = process.env.OFFLINE_MODE === 'true';
+const isOfflineMode = process.env.OFFLINE_MODE === "true";
 app.offlineMode = isOfflineMode;
 
 async function initializeServer() {
@@ -20,14 +20,15 @@ async function initializeServer() {
     await connectToMongoDB();
 
     await cleanCollectionTrades();
-    //await cronTickers();
-    //await cronMarkets();
+
+    await handleSwap();
+
     await cronBalances();
 
     await initializeCronTasks();
     startServer();
   } catch (error) {
-    console.error('Error during server initialization:', error);
+    console.error("Error during server initialization:", error);
     process.exit(1); // Exit the process if initialization fails
   }
 }

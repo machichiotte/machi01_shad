@@ -160,7 +160,8 @@ function calculateAssetMetrics(
     recups.totalShad,
     recups.recupTpX,
     averageEntryPrice,
-    recups.maxExposition
+    recups.maxExposition, 
+    platform
   );
 
   const status = getStatus(

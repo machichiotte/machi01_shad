@@ -265,6 +265,7 @@ async function connectToMongoDB() {
       "collection_tickers",
       "collection_last_update",
       "collection_shad",
+      "collection_swap",
     ];
 
     for (const collectionName of collectionsToCreate) {
