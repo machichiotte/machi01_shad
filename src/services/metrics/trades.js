@@ -56,18 +56,44 @@ function getTotalAmountAndBuy(symbol, trades) {
   };
 }
 
+/**
+ * Calculate the total sell value for a given symbol, adjusting for fees.
+ * @param {string} symbol - The trading symbol to filter trades by.
+ * @param {Array} trades - The array of trade objects.
+ * @returns {number} - The total sell value after adjusting for fees.
+ */
 function getTotalSell(symbol, trades) {
-  // Implementation for getting the total sell amount for a given symbol
+  // Helper function to validate if a value is a positive number
+  const isPositiveNumber = (value) => {
+      return typeof value === 'number' && !isNaN(value) && value > 0;
+  };
+
+  // Helper function to convert fee from base to quote
+  const convertFeeToQuote = (fee, price) => {
+      return isPositiveNumber(fee) && isPositiveNumber(price)
+          ? parseFloat(fee) * parseFloat(price)
+          : 0;
+  };
+
+  // Filter trades to include only sells for the specified symbol
   const filteredTrades = trades.filter(
-    (trade) => trade.base === symbol && trade.type === "sell"
-  );
-  //console.log(`🚀 ~ file: trades.js:32 ~ getTotalSell ~ filteredTrades:`, filteredTrades.length)
-  const sellTotal = filteredTrades.reduce(
-    (total, trade) => total + parseFloat(trade.totalUSDT),
-    0
+      (trade) => trade.base === symbol && trade.type === "sell"
   );
 
-  return Math.round(sellTotal, 2);
+  // Calculate total sell value considering fees
+  const sellTotal = filteredTrades.reduce((total, trade) => {
+      const fee = parseFloat(trade.fee);
+      const price = parseFloat(trade.price);
+      
+      // Adjust fee in quote currency based on fee type
+      const feeInQuote = trade.feecoin === trade.quote
+          ? (isPositiveNumber(fee) ? fee : 0)
+          : convertFeeToQuote(fee, price);
+
+      return total + parseFloat(trade.totalUSDT) - feeInQuote;
+  }, 0);
+
+  return parseFloat(sellTotal).toFixed(2);
 }
 
 function getTradesHistory(symbol, trades) {
