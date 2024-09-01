@@ -11,7 +11,7 @@ const config = {
   cronSchedules: {
     shad: "*/30 * * * *",
     markets: "* */12 * * *",
-    tickers: "*/10 * * * *",
+    tickers: "*/1 * * * *",
     balances: "*/10 * * * *",
   },
   logFiles: {

@@ -199,14 +199,20 @@ function calculateAmountsAndPricesForShad(
 
   // Loop for TP2 to TP5
   for (let i = 2; i <= 5; i++) {
-    const remainingBalance =
-      parsedBalance -
-      Object.values(amountsAndPrices).reduce((acc, val) => acc + val.amount, 0);
+    // Filtrer et additionner uniquement les montants (amounts)
+    const usedAmounts = Object.entries(amountsAndPrices)
+      .filter(([key]) => key.startsWith('amountTp')) // Ne garder que les clés qui commencent par 'amountTp'
+      .reduce((acc, [_, val]) => acc + val, 0) // Additionner les valeurs de ces clés
+
+    // Calculer le solde restant en soustrayant le montant déjà utilisé
+    const remainingBalance = parsedBalance - usedAmounts
+
+    // Calculer le montant et le prix pour ce niveau de prise de profit
     const { amount, price } = calculateAmountAndPriceForShad(
       parsedRecupTpX,
       remainingBalance,
       FACTOR_SELL_SHAD
-    );
+    )
 
     // Adjust the price for each take profit level to account for platform fees
     amountsAndPrices[`amountTp${i}`] = amount;
