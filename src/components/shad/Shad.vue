@@ -6,7 +6,7 @@
       <div class="tab-header">
         <!-- Tabs for switching between Platform Selector and Fetch From Server Selector -->
         <Button label="Platform Selector" @click="activeTopTab = 'platforms'" :class="{ active: activeTopTab === 'platforms' }" />
-        <Button label="Fetch From Server" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
+        <Button label="Update data" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
         <Button icon="pi pi-chevron-down" @click="toggleTopExpandCollapse" class="expand-collapse-button" />
       </div>
 
@@ -15,7 +15,7 @@
         <PlatformSelector v-if="activeTopTab === 'platforms'" 
                           :initialSelectedPlatforms="selectedPlatforms" 
                           @update:selectedPlatforms="updateSelectedPlatforms" />
-        <FetchFromServerSelector v-if="activeTopTab === 'fetch'" />
+        <UpdateBarSelector v-if="activeTopTab === 'fetch'" />
       </div>
     </div>
 
@@ -71,7 +71,7 @@ import SearchBar from './SearchBar.vue'
 import TradesTable from '../trades/TradesTable.vue'
 import OrdersTable from '../orders/OrdersTable.vue'
 import PlatformSelector from './PlatformSelector.vue'
-import FetchFromServerSelector from './FetchFromServerSelector.vue'
+import UpdateBarSelector from './UpdateBarSelector.vue'
 
 import {
   FETCH_SHAD, FETCH_TRADES, FETCH_ORDERS,

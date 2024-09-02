@@ -93,7 +93,7 @@
                 <div>
                     <!-- Dropdown for strat -->
                     <select v-model="slotProps.data.strat"
-                        @change="updateRowByStratChange(props.items, slotProps.data, $event.target.value)">
+                        @change="updateRowByStratChange(localItems.value, slotProps.data, $event.target.value)">
                         <option value=""></option>
                         <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">{{ strategy }}
                         </option>
@@ -101,8 +101,8 @@
 
                     <!-- Input for maxExposition -->
                     <input type="text" v-model="slotProps.data.maxExposition"
-                        @input="updateMaxExposition(props.items, slotProps.data, $event.target.value)"
-                        @blur="updateMaxExposition(props.items, slotProps.data, $event.target.value)" />
+                        @input="updateMaxExposition(localItems, slotProps.data, $event.target.value)"
+                        @blur="updateMaxExposition(localItems, slotProps.data, $event.target.value)" />
                 </div>
             </template>
         </Column>
@@ -223,15 +223,22 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted, defineProps, defineEmits } from 'vue';
 import { getStatus, updateMaxExposition, updateRowByStratChange } from '../../js/shad/shadUtils.js';
-import { fetchTickers } from '../../js/fetchFromServer.js';  // Import the ticker fetch function
+import { fetchTickers } from '../../js/fetchFromServer.js';
 import { strategies } from '../../js/strategies.js';
 import PercentageColumn from './PercentageColumn.vue';
 
+/* =============================
+   Définition des constantes et refs
+   ============================= */
 const strategiesList = ref(strategies);
-const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
+const itemsPerPage = ref(50);  // Nombre d'éléments par page
+const selectedPlatforms = ref([]);  // Plateformes sélectionnées pour filtrage
+const localItems = ref([]);  // Éléments locaux modifiables par l'utilisateur
+const localSelectedAssets = ref([]);  // Sélection locale d'actifs
 
-const itemsPerPage = ref(50);
-
+/* ============================
+   Définition des props et des émetteurs
+   ============================ */
 const props = defineProps({
     items: {
         type: Array,
@@ -245,30 +252,44 @@ const props = defineProps({
     }
 });
 
-const platformOptions = computed(() => {
-    return [
-        { id: 'binance', name: 'Binance' },
-        { id: 'kucoin', name: 'KuCoin' },
-        { id: 'htx', name: 'HTX' },
-        { id: 'okx', name: 'OKX' },
-        { id: 'gateio', name: 'Gate.io' }
-    ];
-});
-const selectedPlatforms = ref(platformOptions.value.map(platform => platform.id));
+const emit = defineEmits(['update:selectedAssets']);
 
+/* ============================
+   Déclaration des propriétés calculées
+   ============================ */
+const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
+
+const platformOptions = computed(() => [
+    { id: 'binance', name: 'Binance' },
+    { id: 'kucoin', name: 'KuCoin' },
+    { id: 'htx', name: 'HTX' },
+    { id: 'okx', name: 'OKX' },
+    { id: 'gateio', name: 'Gate.io' }
+]);
+
+// Plateformes sélectionnées par défaut
+selectedPlatforms.value = platformOptions.value.map(platform => platform.id);
+
+// Filtrage dynamique des éléments en fonction des filtres et des plateformes
 const computedFilters = computed(() => props.filters);
-const localItems = ref(props.items);
+const filteredItems = computed(() => filterItems(localItems.value, computedFilters.value.global.value, selectedPlatforms.value));
 
-// Watch for changes in the items prop
+/* ============================
+   Surveillance des changements
+   ============================ */
 watch(() => props.items, (newItems) => {
-    localItems.value = newItems;
-    console.log('🚀 ~ New items received:', newItems);
-}, { immediate: true }); // Immediate to trigger watch on initial render
+    localItems.value = newItems;  // Mise à jour des éléments locaux lors des changements
+}, { immediate: true });
 
-const filteredItems = computed(() => {
-    return filterItems(localItems.value, computedFilters.value.global.value, selectedPlatforms.value);
+watch(() => props.selectedAssets, (selectedItem) => {
+    console.log(`🚀 ~ file: ShadDataTable.vue:285 ~ watch ~ selectedItem:`, selectedItem);
+    localSelectedAssets.value = selectedItem;
 });
 
+/* ============================
+   Fonctions de logique
+   ============================ */
+// Filtrage des éléments en fonction des termes de recherche et des plateformes
 function filterItems(items, searchTerm, selectedPlatforms) {
     if (!searchTerm && selectedPlatforms.length === platformOptions.value.length) {
         return items;
@@ -284,46 +305,29 @@ function filterItems(items, searchTerm, selectedPlatforms) {
     });
 }
 
-// Define row key for unique identification
-const rowKey = (rowData) => `${rowData.asset}-${rowData.platform}`;
-
-const emit = defineEmits(['update:selectedAssets']);
-const localSelectedAssets = ref(props.selectedAssets);
-
-watch(() => props.selectedAssets, (newVal) => {
-    localSelectedAssets.value = newVal;
-});
-
+// Fonction pour émettre une sélection d'actifs mise à jour
 function emitSelection(selection) {
     emit('update:selectedAssets', selection);
 }
 
-// Update ticker data regularly
+// Mise à jour régulière des données des tickers
 function updateTickers() {
-    console.log('🚀 ~ Fetching ticker data');
-
     fetchTickers().then(tickerData => {
-        console.log('🚀 ~ Ticker data:', tickerData);
-
-        // Filter tickers based on platforms present in localItems
         const platforms = new Set(localItems.value.map(item => item.platform));
-        console.log(`🚀 ~ Platforms in localItems:`, platforms);
         const filteredTickers = tickerData.filter(ticker => platforms.has(ticker.platform));
-        console.log(`🚀 ~ Filtered tickers length:`, filteredTickers.length);
 
-        // Convert filtered ticker data into a dictionary for quick lookups
+        // Dictionnaire pour des recherches rapides
         const tickerDict = {};
         filteredTickers.forEach(ticker => {
             const key = `${ticker.platform}-${ticker.symbol}`;
             tickerDict[key] = ticker;
         });
 
-        // Iterate over local items and update their properties
+        // Mise à jour des éléments locaux
         localItems.value.forEach(item => {
-            const key = `${item.platform}-${item.asset}/USDT`; // Assuming ticker symbol format is 'ASSET/USDT'
+            const key = `${item.platform}-${item.asset}/USDT`;  // Assumant le format 'ASSET/USDT'
             if (tickerDict[key]) {
                 item.currentPrice = tickerDict[key].last;
-                // You can also update other properties if needed
             }
         });
     }).catch(error => {
@@ -331,18 +335,24 @@ function updateTickers() {
     });
 }
 
-// Setup interval to refresh ticker data every 60 seconds
+// Clé de ligne unique pour chaque ligne de données
+const rowKey = (rowData) => `${rowData.asset}-${rowData.platform}`;
+
+/* ============================
+   Gestion du cycle de vie du composant
+   ============================ */
 let tickerInterval;
+
 onMounted(() => {
-    tickerInterval = setInterval(updateTickers, 120000);  // Fetch every 120 seconds
-    updateTickers();  // Initial fetch
+    tickerInterval = setInterval(updateTickers, 120000);  // Rafraîchissement toutes les 120 secondes
+    updateTickers();  // Initialisation immédiate
 });
 
-// Clear interval when component is destroyed
 onUnmounted(() => {
-    clearInterval(tickerInterval);
+    clearInterval(tickerInterval);  // Nettoyage lors de la destruction du composant
 });
 </script>
+
 
 
 <style scoped>

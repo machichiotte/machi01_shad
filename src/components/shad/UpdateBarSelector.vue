@@ -1,4 +1,4 @@
-<!-- src/components/FetchFromServerSelector.vue -->
+<!-- src/components/UpdateBarSelector.vue -->
 <template>
     <div class="fetch-from-server-selector">
         <Button v-for="(fetchOption, index) in fetchOptions" :key="fetchOption.id" :label="fetchOption.name"
