@@ -344,7 +344,7 @@ const rowKey = (rowData) => `${rowData.asset}-${rowData.platform}`;
 let tickerInterval;
 
 onMounted(() => {
-    tickerInterval = setInterval(updateTickers, 60000);  // Rafraîchissement toutes les 120 secondes
+    tickerInterval = setInterval(updateTickers, 60000);  // Rafraîchissement toutes les 60 secondes
     updateTickers();  // Initialisation immédiate
 });
 

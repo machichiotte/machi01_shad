@@ -60,6 +60,8 @@
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
+    background-color: red;
+
   }
   
   .platform-button {
