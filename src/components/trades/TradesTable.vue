@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { tradesColumns } from '../../js/columns.js'
 
 const itemsPerPage = ref(10);

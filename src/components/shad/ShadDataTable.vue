@@ -221,7 +221,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted, defineProps, defineEmits } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { getStatus, updateMaxExposition, updateRowByStratChange } from '../../js/shad/shadUtils.js';
 import { fetchTickers } from '../../js/fetchFromServer.js';
 import { strategies } from '../../js/strategies.js';
@@ -344,7 +344,7 @@ const rowKey = (rowData) => `${rowData.asset}-${rowData.platform}`;
 let tickerInterval;
 
 onMounted(() => {
-    tickerInterval = setInterval(updateTickers, 120000);  // Rafraîchissement toutes les 120 secondes
+    tickerInterval = setInterval(updateTickers, 60000);  // Rafraîchissement toutes les 120 secondes
     updateTickers();  // Initialisation immédiate
 });
 

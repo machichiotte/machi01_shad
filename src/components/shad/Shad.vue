@@ -47,6 +47,7 @@
         <!-- Tabs for switching between Trades and Orders -->
         <Button label="Trades" @click="activeTab = 'trades'" :class="{ active: activeTab === 'trades' }" />
         <Button label="Orders" @click="activeTab = 'orders'" :class="{ active: activeTab === 'orders' }" />
+        <Button label="Buy Calculator" @click="activeTab = 'buyCalculator'" :class="{ active: activeTab === 'buyCalculator' }" />
         <Button icon="pi pi-chevron-up" @click="toggleExpandCollapse" class="expand-collapse-button" />
       </div>
 
@@ -54,7 +55,9 @@
       <div class="tab-content">
         <TradesTable v-if="activeTab === 'trades'" :items="tradesItems" :filters="filters" />
         <OrdersTable v-if="activeTab === 'orders'" :items="openOrdersItems" :filters="filters" />
-      </div>
+        <BuyCalculator v-if="activeTab === 'buyCalculator'" :selectedAssets="selectedAssets" />
+
+    </div>
     </div>
   </div>
 </template>
@@ -72,6 +75,7 @@ import TradesTable from '../trades/TradesTable.vue'
 import OrdersTable from '../orders/OrdersTable.vue'
 import PlatformSelector from './PlatformSelector.vue'
 import UpdateBarSelector from './UpdateBarSelector.vue'
+import BuyCalculator from './BuyCalculator.vue'
 
 import {
   FETCH_SHAD, FETCH_TRADES, FETCH_ORDERS,

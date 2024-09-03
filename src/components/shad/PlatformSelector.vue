@@ -12,7 +12,7 @@
   </template>
   
   <script setup>
-  import { ref, computed, watch, defineProps, defineEmits } from 'vue'
+  import { ref, computed, watch } from 'vue'
   
   // Define props to receive initial selected platforms from the parent
   const props = defineProps({

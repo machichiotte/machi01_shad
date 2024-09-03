@@ -1,4 +1,4 @@
-// src/getter.js
+// src/js/fetchFromServer.js
 const serverHost = import.meta.env.VITE_SERVER_HOST
 const ENDPOINTS = {
   CMC: `${serverHost}/cmc/get`,
