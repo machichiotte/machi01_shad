@@ -1,10 +1,8 @@
 // src/controllers/lastUpdateController.js
-const { getData } = require("../utils/dataUtil.js");
 const { getDataMDB } = require("../services/mongodbService.js");
-const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
-const { errorLogger } = require("../utils/loggerUtil.js");
 const { validateEnvVariables } = require("../utils/controllerUtil");
-
+const lastUpdateService = require("../services/lastUpdateService.js");
+  
 validateEnvVariables(["MONGODB_COLLECTION_LAST_UPDATE"]);
 
 /**
@@ -34,7 +32,7 @@ async function getUniqueLastUpdate(req, res) {
       res.json({ platform, type, timestamp: null });
     }
   } catch (error) {
-    errorLogger.error("Failed to get unique last update.", {
+    console.error("Failed to get unique last update.", {
       error: error.message,
       platform: req.params.platform,
       type: req.params.type,
@@ -49,38 +47,16 @@ async function getUniqueLastUpdate(req, res) {
  * @param {Object} res - HTTP response object.
  */
 async function getLastUpdate(req, res) {
-  const collection = process.env.MONGODB_COLLECTION_LAST_UPDATE;
   try {
-    const data = await getData(collection);
+    const data = await lastUpdateService.fetchDatabaseLastUpdate;
     console.log("Fetched all last update records from the database.", {
       count: data.length,
     });
   } catch (error) {
-    errorLogger.error("Failed to get all last updates.", {
+    console.error("Failed to get all last updates.", {
       error: error.message,
     });
     handleErrorResponse(res, error, "getLastUpdate");
-  }
-}
-
-/**
- * Retrieves all saved last updates from the database.
- * @returns {Promise<Object[]>} - A promise that resolves with the array of last updates.
- */
-async function getSavedLastUpdate() {
-  const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
-  try {
-    const data = await getData(collectionName);
-    console.log("Fetched saved last updates from the database.", {
-      collectionName,
-      count: data.length,
-    });
-    return data;
-  } catch (error) {
-    errorLogger.error("Failed to fetch saved last updates.", {
-      error: error.message,
-    });
-    throw error;
   }
 }
 
@@ -92,12 +68,12 @@ async function getSavedLastUpdate() {
 async function updateLastUpdateByType(req, res) {
   try {
     const { platform, type } = req.params;
-    await saveLastUpdateToMongoDB(type, platform);
+    await lastUpdateService.saveLastUpdateToDatabase(type, platform);
     const timestamp = new Date().toISOString();
     console.log("Updated last update record.", { platform, type, timestamp });
     res.json({ platform, type, timestamp });
   } catch (error) {
-    errorLogger.error("Failed to update last update by type.", {
+    console.error("Failed to update last update by type.", {
       error: error.message,
       platform: req.params.platform,
       type: req.params.type,
@@ -108,7 +84,6 @@ async function updateLastUpdateByType(req, res) {
 
 module.exports = {
   getLastUpdate,
-  getSavedLastUpdate,
   getUniqueLastUpdate,
   updateLastUpdateByType,
 };

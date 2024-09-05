@@ -1,10 +1,10 @@
 // src/controllers/strategyController.js
 const { getData } = require("../utils/dataUtil.js");
 const { deleteAllDataMDB, updateDataMDB, saveData } = require("../services/mongodbService.js");
-const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
 
 const { handleErrorResponse } = require("../utils/errorUtil.js");
-const { errorLogger } = require("../utils/loggerUtil.js");
+
+const lastUpdateService = require("../services/lastUpdateService.js");
 
 /**
  * Met à jour une stratégie dans la collection 'collection_strategy' en utilisant l'ID de la stratégie.
@@ -38,7 +38,7 @@ async function getStrat(req, res) {
       `🚀 ~ file: strategyController.js:23 ~ getStrat ~ error:`,
       error
     );
-    //errorLogger.error("Failed to get strats", { error: error.message });
+    //console.error("Failed to get strats", { error: error.message });
     handleErrorResponse(res, error, "getStrat");
   }
 }
@@ -61,7 +61,7 @@ async function updateStrat(req, res) {
     await deleteAllDataMDB(collection);
     const data = await saveData(strat, collection);
     console.log("🚀 ~ updateStrat ~ data:", data);
-    saveLastUpdateToMongoDB(process.env.TYPE_STRATEGY, "");
+    await lastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_STRATEGY, "");
 
     res.json(data);
   } catch (err) {

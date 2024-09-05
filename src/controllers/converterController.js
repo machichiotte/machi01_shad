@@ -1,5 +1,6 @@
 // src/controllers/converterController.js
 const Papa = require("papaparse");
+const converterService = require("../services/converterService");
 
 async function getConvertedCsv(req, res) {
   try {
@@ -10,7 +11,7 @@ async function getConvertedCsv(req, res) {
     Papa.parse(buffer.toString(), {
       complete: async (result) => {
         console.log("🚀 ~ complete: ~ result:", result);
-        const jsonData = result ? await convertToJSON(result.data) : [];
+        const jsonData = result ? await converterService.convertToJSON(result.data) : [];
         console.log("🚀 ~ complete: ~ jsonData:", jsonData);
 
         res.json({ success: true, data: jsonData });

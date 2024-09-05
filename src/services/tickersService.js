@@ -6,12 +6,9 @@ const {
 } = require("../utils/platformUtil.js");
 const { mapTickers } = require("./mapping.js");
 const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
-const { errorLogger } = require("../utils/loggerUtil.js");
-const {
-  saveLastUpdateToMongoDB,
-  deleteAndSaveObject,
-  deleteAndSaveData,
-} = require("../utils/mongodbUtil.js");
+
+const lastUpdateService = require("./lastUpdateService.js");
+const mongodbService = require("./mongodbService.js");
 
 async function fetchDatabaseTickers() {
   const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
@@ -55,8 +52,8 @@ async function updateAllTickers() {
     tickersData[platform] = mappedTickersData;
   }
 
-  await deleteAndSaveObject(tickersData, collectionName);
-  saveLastUpdateToMongoDB(process.env.TYPE_TICKERS, "combined");
+  await mongodbService.deleteAndSaveObject(tickersData, collectionName);
+  await lastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_TICKERS, "combined");
   return tickersData;
 }
 
@@ -90,13 +87,13 @@ async function fetchCurrentTickers(platform, retries = 3) {
 async function saveDatabaseTickers(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_TICKERS;
   try {
-    await deleteAndSaveData(mappedData, collection, platform);
-    await saveLastUpdateToMongoDB(process.env.TYPE_TICKERS, platform);
+    await mongodbService.deleteAndSaveData(mappedData, collection, platform);
+    await lastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_TICKERS, platform);
     console.log("Données des tickers sauvegardées dans la base de données", {
       platform,
     });
   } catch (error) {
-    errorLogger.error(
+    console.error(
       "Échec de la sauvegarde des données des tickers dans la base de données",
       {
         platform,

@@ -2,8 +2,7 @@
 const tickersService = require('../tickersService');
 const balanceService = require('../balanceService');
 const marketsService = require('../marketsService');
-
-const { deleteAndSaveObject } = require("../../utils/mongodbUtil.js");
+const mongodbService = require("../mongodbService.js");
 
 const {
   compareBalances,
@@ -47,7 +46,7 @@ async function updateBalancesForPlatform(platform) {
 
     const collectionName = process.env.MONGODB_COLLECTION_SHAD;
     const metrics = await calculateAllMetrics();
-    await deleteAndSaveObject(metrics, collectionName);
+    await mongodbService.deleteAndSaveObject(metrics, collectionName);
   } catch (error) {
     console.error(`Erreur lors de la mise à jour des soldes pour ${platform}:`, error);
   }

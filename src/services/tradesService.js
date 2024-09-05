@@ -1,9 +1,10 @@
 // src/services/tradeService.js
 const { saveData, updateDataMDB } = require("./mongodbService.js");
-const { deleteAndSaveData, saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
 const { createPlatformInstance } = require("../utils/platformUtil.js");
 const { mapTrades } = require("./mapping.js");
 const { getData } = require("../utils/dataUtil");
+const lastUpdateService = require("./lastUpdateService.js");
+const mongodbService = require("./mongodbService.js");
 
 async function fetchDatabaseTrades() {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
@@ -84,8 +85,8 @@ async function updateTrades(platform) {
         break;
     }
 
-    await deleteAndSaveData(mappedData, collectionName, platform);
-    saveLastUpdateToMongoDB(process.env.TYPE_TRADES, platform);
+    await mongodbService.deleteAndSaveData(mappedData, collectionName, platform);
+    await lastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_TRADES, platform);
 
     return { status: 200, data: mappedData };
   } catch (error) {

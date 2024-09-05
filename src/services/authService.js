@@ -1,8 +1,7 @@
 // src/services/authService.js
 const bcrypt = require("bcrypt"); // For password hashing
 const crypto = require("crypto"); // Use built-in crypto module
-
-const { saveData, getOne } = require("./mongodbService");
+const mongodbService = require("./mongodbService.js");
 
 async function isPasswordMatch(password, hashedPassword) {
   return await bcrypt.compare(password, hashedPassword);
@@ -14,7 +13,7 @@ async function createUserDBService(userDetails) {
     const newUser = { ...userDetails, password: hashedPassword }; // Spread operator
 
     const collection = process.env.MONGODB_COLLECTION_USERS;
-    const result = await saveData(newUser, collection);
+    const result = await mongodbService.saveData(newUser, collection);
 
     console.log(
       "🚀 ~ createUserDBService ~ result.insertedId:",
@@ -31,7 +30,7 @@ async function findUserByEmail(email) {
   try {
     const collection = process.env.MONGODB_COLLECTION_USERS;
     console.log("🚀 ~ findUserByEmail ~ collection:", collection);
-    const user = await getOne(collection, { email }); // Filter by email
+    const user = await mongodbService.getOne(collection, { email }); // Filter by email
     console.log("🚀 ~ findUserByEmail ~ user:", user);
     return user; // Return the found user object or null if not found
   } catch (err) {

@@ -1,17 +1,13 @@
 // src/controllers/ordersController.js
-const ccxt = require("ccxt");
 const {
   createPlatformInstance,
   getSymbolForPlatform,
 } = require("../utils/platformUtil.js");
 const { handleErrorResponse } = require("../utils/errorUtil.js");
 const { getData } = require("../utils/dataUtil.js");
-const {
-  saveLastUpdateToMongoDB,
-  deleteAndSaveData,
-} = require("../utils/mongodbUtil.js");
+const lastUpdateService = require("../services/lastUpdateService.js");
+const mongodbUtil = require("../utils/mongodbUtil.js");
 const { mapOrders } = require("../services/mapping.js");
-const { errorLogger } = require("../utils/loggerUtil.js");
 const { validateEnvVariables } = require("../utils/controllerUtil");
 
 validateEnvVariables([
@@ -41,7 +37,7 @@ async function getOrders(req, res) {
     });
     return res.status(200).json(orders); // Envoyer la réponse ici
   } catch (error) {
-    errorLogger.error("Failed to retrieve orders.", { error: error.message });
+    console.error("Failed to retrieve orders.", { error: error.message });
     handleErrorResponse(res, error, "getOrders"); // Envoyer la réponse en cas d'erreur
   }
 }
@@ -54,10 +50,10 @@ async function fetchDatabaseOrders() {
   const collectionName = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
   try {
     const data = await getData(collectionName);
-    console.log(
-      `🚀 ~ file: ordersController.js:57 ~ fetchDatabaseOrders :`,
-      { collectionName, count: data.length }
-    );
+    console.log(`🚀 ~ file: ordersController.js:57 ~ fetchDatabaseOrders :`, {
+      collectionName,
+      count: data.length,
+    });
     return data;
   } catch (error) {
     console.log(
@@ -101,13 +97,16 @@ async function fetchAndMapOrders(platform) {
 async function saveMappedOrders(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
   try {
-    await deleteAndSaveData(mappedData, collection, platform);
-    await saveLastUpdateToMongoDB(process.env.TYPE_ACTIVE_ORDERS, platform);
+    await mongodbUtil.deleteAndSaveData(mappedData, collection, platform);
+    await lastUpdateService.saveLastUpdateToDatabase(
+      process.env.TYPE_ACTIVE_ORDERS,
+      platform
+    );
     console.log(`Saved mapped orders to the database for ${platform}.`, {
       count: mappedData.length,
     });
   } catch (error) {
-    errorLogger.error("Failed to save mapped orders to the database.", {
+    console.error("Failed to save mapped orders to the database.", {
       error: error.message,
     });
     throw error;
@@ -149,7 +148,7 @@ async function updateOrdersFromServer(platform) {
       count: mappedData.length,
     });
   } catch (error) {
-    errorLogger.error(`Failed to update orders from server for ${platform}.`, {
+    console.error(`Failed to update orders from server for ${platform}.`, {
       error: error.message,
     });
     throw error;
@@ -186,8 +185,10 @@ async function deleteOrder(req, res) {
  * @param {Object} res - HTTP response object.
  */
 async function createMarketBuyOrder(req, res) {
-  console.log(`🚀 ~ file: ordersController.js:201 ~ createMarketSellOrder ~ buy:`)
-  await createMarketOrder(req,res,'buy');
+  console.log(
+    `🚀 ~ file: ordersController.js:201 ~ createMarketSellOrder ~ buy:`
+  );
+  await createMarketOrder(req, res, "buy");
 }
 
 /**
@@ -196,8 +197,10 @@ async function createMarketBuyOrder(req, res) {
  * @param {Object} res - HTTP response object.
  */
 async function createMarketSellOrder(req, res) {
-  console.log(`🚀 ~ file: ordersController.js:201 ~ createMarketSellOrder ~ sell:`)
-  await createMarketOrder(req,res,'sell');
+  console.log(
+    `🚀 ~ file: ordersController.js:201 ~ createMarketSellOrder ~ sell:`
+  );
+  await createMarketOrder(req, res, "sell");
 }
 
 /**
@@ -211,7 +214,10 @@ async function createMarketOrder(req, res, orderType) {
   try {
     const platformInstance = createPlatformInstance(platform);
     const symbol = getSymbolForPlatform(platform, asset);
-    console.log(`🚀 ~ file: ordersController.js:215 ~ createMarketOrder ~ symbol:`, symbol)
+    console.log(
+      `🚀 ~ file: ordersController.js:215 ~ createMarketOrder ~ symbol:`,
+      symbol
+    );
 
     let result;
     if (orderType === "buy") {
@@ -249,9 +255,17 @@ async function createLimitOrder(req, res, orderType) {
 
     let result;
     if (orderType === "buy") {
-      result = await platformInstance.createLimitBuyOrder(symbol, amount, price);
+      result = await platformInstance.createLimitBuyOrder(
+        symbol,
+        amount,
+        price
+      );
     } else if (orderType === "sell") {
-      result = await platformInstance.createLimitSellOrder(symbol, amount, price);
+      result = await platformInstance.createLimitSellOrder(
+        symbol,
+        amount,
+        price
+      );
     }
 
     res.status(200).json({ message: result, status: 200 });
@@ -393,7 +407,7 @@ async function fetchOpenOrdersByPlatform(platform) {
       return await platformInstance.fetchOpenOrders();
     }
   } catch (error) {
-    errorLogger.error(`Failed to fetch open orders for ${platform}.`, {
+    console.error(`Failed to fetch open orders for ${platform}.`, {
       error: error.message,
     });
     throw error;
@@ -442,5 +456,5 @@ module.exports = {
   cancelAllOrders,
   cancelAllSellOrders,
   createMarketBuyOrder,
-  createMarketSellOrder
+  createMarketSellOrder,
 };

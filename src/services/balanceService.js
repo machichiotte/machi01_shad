@@ -1,10 +1,12 @@
 // src/services/balanceService.js
 
-const { getData, deleteAndSaveData } = require("../utils/dataUtil");
+const { getData } = require("../utils/dataUtil");
 const { createPlatformInstance } = require("../utils/platformUtil.js");
-const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil");
 const { mapBalance } = require("../services/mapping");
 const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
+
+const lastUpdateService = require("./lastUpdateService.js");
+const mongodbService = require("./mongodbService.js");
 
 async function fetchDatabaseBalances() {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
@@ -52,8 +54,8 @@ async function fetchCurrentBalancesByPlatform(platform, retries = 3) {
 async function saveDatabaseBalance(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
   try {
-    await deleteAndSaveData(mappedData, collection, platform);
-    await saveLastUpdateToMongoDB(process.env.TYPE_BALANCE, platform);
+    await mongodbService.deleteAndSaveData(mappedData, collection, platform);
+    await lastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_BALANCE, platform);
   } catch (error) {
     console.error("Failed to save balance data to database", {
       platform,

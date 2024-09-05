@@ -1,8 +1,7 @@
 // src/services/cmcService.js
 const { getData } = require("../utils/dataUtil.js");
-const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
-const { deleteAllDataMDB, saveData } = require("./mongodbService.js");
-const { errorLogger } = require("../utils/loggerUtil.js");
+const lastUpdateService = require("../services/lastUpdateService.js");
+const mongodbService = require("./mongodbService.js");
 
 const fetch = require("node-fetch");
 
@@ -49,7 +48,7 @@ async function fetchCurrentCmc() {
       }
     }
   } catch (error) {
-    errorLogger.error(`Erreur dans fetchCmcData: ${error.message}`);
+    console.error(`Erreur dans fetchCmcData: ${error.message}`);
     throw error;
   }
 
@@ -67,7 +66,7 @@ async function fetchDatabaseCmc() {
     console.log(`🚀 ~ file: cmcService.js ~ fetchDatabaseCmc :`, { collectionName, count: data.length });
     return data;
   } catch (error) {
-    errorLogger.error(`Erreur dans fetchDatabaseCmc: ${error.message}`, { error });
+    console.error(`Erreur dans fetchDatabaseCmc: ${error.message}`, { error });
     throw error;
   }
 }
@@ -80,9 +79,9 @@ async function fetchDatabaseCmc() {
 async function updateDatabaseCmcData(data) {
   const collectionName = process.env.MONGODB_COLLECTION_CMC;
   try {
-    const deleteResult = await deleteAllDataMDB(collectionName);
-    const saveResult = await saveData(data, collectionName);
-    await saveLastUpdateToMongoDB(process.env.TYPE_CMC, "");
+    const deleteResult = await mongodbService.deleteAllDataMDB(collectionName);
+    const saveResult = await mongodbService.saveData(data, collectionName);
+    await lastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_CMC, "");
 
     console.log("Données CMC mises à jour dans la base de données", {
       deleteResult,
@@ -99,7 +98,7 @@ async function updateDatabaseCmcData(data) {
       totalCount: data.length,
     };
   } catch (error) {
-    errorLogger.error(`Erreur dans updateDatabaseCmcData: ${error.message}`, { error });
+    console.error(`Erreur dans updateDatabaseCmcData: ${error.message}`, { error });
     throw error;
   }
 }
@@ -114,7 +113,7 @@ async function updateCmcData() {
     console.log("Dernières données CMC récupérées", { count: data.length });
     return await updateDatabaseCmcData(data);
   } catch (error) {
-    errorLogger.error(`Erreur dans updateCmcData: ${error.message}`, { error });
+    console.error(`Erreur dans updateCmcData: ${error.message}`, { error });
     throw error;
   }
 }
