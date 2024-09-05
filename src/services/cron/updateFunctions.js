@@ -7,7 +7,7 @@ const {
   fetchDatabaseBalancesByPlatform,
   fetchCurrentBalancesByPlatform,
   saveDatabaseBalance,
-} = require("../../controllers/balanceController.js");
+} = require("../../services/balanceServices.js");
 const {
   fetchCurrentMarkets,
   saveDatabaseMarkets,
