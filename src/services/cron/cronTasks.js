@@ -3,25 +3,25 @@ const cron = require("node-cron");
 const { cronSchedules } = require("../config.js");
 const { errorLogger } = require("../../utils/loggerUtil.js");
 
-const {
-  cronTickers,
-  cronMarkets,
-  cronBalances
-} = require("./taskExecutor.js");
+const { cronTickers, cronMarkets, cronBalances } = require("./taskExecutor.js");
 
 async function initializeCronTasks() {
   try {
     console.log("Starting initialization of Cron tasks...");
-    
+
     const tasks = [
-      { schedule: cronSchedules.tickers, task: cronTickers },
-      { schedule: cronSchedules.markets, task: cronMarkets },
-      { schedule: cronSchedules.balances, task: cronBalances }
+      { schedule: cronSchedules.tickers, task: cronTickers, name: "Tickers" },
+      { schedule: cronSchedules.markets, task: cronMarkets, name: "Markets" },
+      {
+        schedule: cronSchedules.balances,
+        task: cronBalances,
+        name: "Balances",
+      },
     ];
 
-    tasks.forEach(({ schedule, task }) => {
+    tasks.forEach(({ schedule, task, name }) => {
       cron.schedule(schedule, task);
-      console.log(`Cron task initialized: ${task.name}`);
+      console.log(`Cron task initialized: ${name}`);
     });
 
     console.log("All Cron tasks have been successfully initialized.");

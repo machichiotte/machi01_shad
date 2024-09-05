@@ -1,12 +1,16 @@
 // src/services/balanceService.js
-
 const { getData } = require("../utils/dataUtil");
 const { createPlatformInstance } = require("../utils/platformUtil");
-const { mapBalance } = require("../services/mapping");
 const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
 
 const lastUpdateService = require("./lastUpdateService");
 const mongodbService = require("./mongodbService");
+const mapping = require("../services/mapping");
+
+
+const { validateEnvVariables } = require("../utils/controllerUtil");  
+validateEnvVariables(["MONGODB_COLLECTION_BALANCE", "TYPE_BALANCE"]);
+
 
 async function fetchDatabaseBalances() {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
@@ -36,7 +40,7 @@ async function fetchCurrentBalancesByPlatform(platform, retries = 3) {
   try {
     const platformInstance = createPlatformInstance(platform);
     const data = await platformInstance.fetchBalance();
-    return mapBalance(platform, data);
+    return mapping.mapBalance(platform, data);
   } catch (error) {
     if (retries > 0 && shouldRetry(platform, error, errorPolicies)) {
       const delay = Math.pow(2, 3 - retries) * 1000;

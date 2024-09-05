@@ -1,4 +1,4 @@
-// src/services/cron/balanceProcessor.js
+// src/services/cron/processorService.js
 const { calculateAssetMetrics } = require("./metrics/global.js");
 
 const { mapTrades } = require("./mapping.js");
@@ -290,7 +290,7 @@ function compareBalances(lastBalances, currentBalances) {
         });
       } else {
         console.log(
-          `🚀 ~ file: balanceProcessor.js:256 ~ lastBalances.forEach ~ already deleted?: ${base}`
+          `🚀 ~ file: processorService.js:256 ~ lastBalances.forEach ~ already deleted?: ${base}`
         );
       }
     } else if (matchedBalance.balance !== lastBalanceValue) {

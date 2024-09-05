@@ -1,5 +1,5 @@
-const { handleErrorResponse } = require("../utils/errorUtil.js");
-const { errorLogger } = require("../utils/loggerUtil.js");
+const { handleErrorResponse } = require("../utils/errorUtil");
+const { errorLogger } = require("../utils/loggerUtil");
 const { validateEnvVariables } = require("../utils/controllerUtil");
 const marketsService = require("../services/marketsService");
 

@@ -119,8 +119,15 @@ async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
       return await operation(...args);
     } catch (error) {
       attempts++;
-      console.warn(`Opération échouée (tentative ${attempts}/${maxRetries}): ${error.message}`);
-      if (attempts === maxRetries || !["ECONNRESET", "ETIMEDOUT", "ENETDOWN", "ENETUNREACH"].includes(error.code)) {
+      console.warn(
+        `Opération échouée (tentative ${attempts}/${maxRetries}): ${error.message}`
+      );
+      if (
+        attempts === maxRetries ||
+        !["ECONNRESET", "ETIMEDOUT", "ENETDOWN", "ENETUNREACH"].includes(
+          error.code
+        )
+      ) {
         throw error;
       }
       await new Promise((res) => setTimeout(res, retryDelay * attempts));
@@ -168,7 +175,9 @@ async function getDataMDB(collectionName) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
     const result = await collection.find().toArray();
-    console.log(`🚀 ~ getDataMDB ~ fetched ${result.length} documents`);
+    console.log(
+      `🚀 ~ getDataMDB ~ fetched ${result.length} documents in collection ${collectionName}`
+    );
     return result;
   }, [collectionName]);
 }
@@ -178,7 +187,7 @@ async function insertDataMDB(collectionName, document) {
     const collection = await getCollection(collectionName);
     const result = await collection.insertOne(document);
     console.log(
-      `🚀 ~ insertDataMDB ~ inserted document ID: ${result.insertedId}`
+      `🚀 ~ insertDataMDB ~ inserted document ID: ${result.insertedId} in collection ${collectionName}`
     );
     return result.insertedId;
   }, [collectionName, document]);
@@ -188,17 +197,27 @@ async function getOne(collectionName, query) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
     const result = await collection.findOne(query);
-    console.log("🚀 ~ getOne ~ result:", result);
+    console.log(
+      `🚀 ~ getOne ~ fetched ${result.length} documents in collection ${collectionName}`
+    );
     return result;
   }, [collectionName, query]);
 }
 
 async function getAllDataMDB(collectionName) {
+  console.log(
+    `🚀 ~ getAllDataMDB STARTED ~ fetching documents from collection ${collectionName} at ${new Date().toISOString()}`
+  );
+
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
     const result = await collection.find().toArray();
-    //console.log(`🚀 ~ getAllDataMDB ~ fetched ${result.length} documents`);
-    return result;
+    console.log(
+      `🚀 ~ getAllDataMDB COMPLETED ~ fetched ${
+        result.length
+      } documents from collection ${collectionName} at ${new Date().toISOString()}`
+    );
+    return resultArray;
   }, [collectionName]);
 }
 
@@ -218,7 +237,7 @@ async function deleteDataMDB(collectionName, filter) {
     const collection = await getCollection(collectionName);
     const result = await collection.deleteOne(filter);
     console.log(
-      `🚀 ~ deleteDataMDB ~ deleted ${result.deletedCount} document(s)`
+      `🚀 ~ deleteDataMDB ~ deleted ${result.deletedCount} document(s) in collection ${collectionName}`
     );
     return result.deletedCount;
   }, [collectionName, filter]);
@@ -229,7 +248,7 @@ async function deleteMultipleDataMDB(collectionName, deleteParam) {
     const collection = await getCollection(collectionName);
     const result = await collection.deleteMany(deleteParam);
     console.log(
-      `🚀 ~ deleteMultipleDataMDB ~ deleted ${result.deletedCount} document(s)`
+      `🚀 ~ deleteMultipleDataMDB ~ deleted ${result.deletedCount} document(s) in collection ${collectionName}`
     );
     return result.deletedCount;
   }, [collectionName, deleteParam]);

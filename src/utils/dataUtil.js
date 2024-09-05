@@ -1,7 +1,7 @@
 // src/utils/dataUtil.js
 const fs = require("fs").promises;
-const { getMockDataPath } = require("./fileUtil.js");
-const { getAllDataMDB } = require("../services/mongodbService.js");
+const { getMockDataPath } = require("./fileUtil");
+const mongodbService = require("../services/mongodbService");
 
 /**
  * Retrieves data from the specified collection.
@@ -32,8 +32,7 @@ async function getDataFromCollection(collectionName) {
       return JSON.parse(jsonData);
     } else {
       // Fetch data from MongoDB
-      const data = await getAllDataMDB(collectionName);
-
+      const data = await mongodbService.getAllDataMDB(collectionName);
       // Return data, ensuring it's an array
       return Array.isArray(data) ? data : [];
     }
@@ -44,5 +43,5 @@ async function getDataFromCollection(collectionName) {
 }
 
 module.exports = {
-  getData
+  getData,
 };

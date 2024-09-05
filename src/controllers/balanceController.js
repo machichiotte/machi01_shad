@@ -1,5 +1,4 @@
 // src/controllers/balanceController.js
-//validateEnvVariables(["MONGODB_COLLECTION_BALANCE", "TYPE_BALANCE"]);
 
 const balanceService = require('../services/balanceService');
 const { handleErrorResponse } = require("../utils/errorUtil");

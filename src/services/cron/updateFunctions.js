@@ -3,12 +3,7 @@ const tickersService = require('../tickersService');
 const balanceService = require('../balanceService');
 const marketsService = require('../marketsService');
 const mongodbService = require("../mongodbService.js");
-
-const {
-  compareBalances,
-  calculateAllMetrics,
-  processBalanceChanges,
-} = require("../balanceProcessor.js");
+const processorService = require("../processorService.js");
 
 async function updateMarketsForPlatform(platform) {
   try {
@@ -35,17 +30,17 @@ async function updateBalancesForPlatform(platform) {
       balanceService.fetchDatabaseBalancesByPlatform(platform, 3)
     ]);
     
-    const differences = compareBalances(previousBalances, currentBalances);
+    const differences = processorService.compareBalances(previousBalances, currentBalances);
     if (differences.length > 0) {
       console.log(`Différences de solde détectées pour ${platform}:`, differences);
       await Promise.all([
         balanceService.saveDatabaseBalance(currentBalances, platform),
-        processBalanceChanges(differences, platform)
+        processorService.processBalanceChanges(differences, platform)
       ]);
     }
 
     const collectionName = process.env.MONGODB_COLLECTION_SHAD;
-    const metrics = await calculateAllMetrics();
+    const metrics = await processorService.calculateAllMetrics();
     await mongodbService.deleteAndSaveObject(metrics, collectionName);
   } catch (error) {
     console.error(`Erreur lors de la mise à jour des soldes pour ${platform}:`, error);

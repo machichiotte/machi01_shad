@@ -9,10 +9,9 @@ async function fetchDatabaseLastUpdate() {
 
 async function saveLastUpdateToDatabase(type, platform) {
   const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
-
   // Récupérer les données actuelles dans la collection
-  const data = await fetchDatabaseLastUpdate(collectionName);
-
+  const data = await fetchDatabaseLastUpdate()[0] || {};
+  console.log(`saveLastUpdateToDatabase data: ${type} ${platform} ${data}`);
   // Mettre à jour les données avec le nouveau timestamp
   if (!platform) {
     data[type] = Date.now();
@@ -22,6 +21,8 @@ async function saveLastUpdateToDatabase(type, platform) {
     }
 
     data[type][platform] = Date.now();
+    console.log(`data[type] ${data[type][platform]}`);
+
   }
 
   // Enregistrer les données mises à jour dans MongoDB

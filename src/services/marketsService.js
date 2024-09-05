@@ -1,10 +1,10 @@
 // src/services/marketsService.js
-const { getData } = require("../utils/dataUtil.js");
-const { mapMarkets } = require("../services/mapping.js");
-const { createPlatformInstance } = require("../utils/platformUtil.js");
+const { getData } = require("../utils/dataUtil");
+const { createPlatformInstance } = require("../utils/platformUtil");
 const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
-const lastUpdateService = require("./lastUpdateService.js");
-const mongodbService = require("./mongodbService.js");
+const lastUpdateService = require("./lastUpdateService");
+const mongodbService = require("./mongodbService");
+const mapping = require("../services/mapping");
 /**
  * Fetches the current markets from the specified platform.
  * @param {string} platform - Identifier for the platform.
@@ -17,7 +17,7 @@ async function fetchCurrentMarkets(platform, retries = 3) {
   try {
     const platformInstance = createPlatformInstance(platform);
     const data = await platformInstance.fetchMarkets();
-    const mappedData = mapMarkets(data, platform); // Assuming you have a mapMarkets function
+    const mappedData = mapping.mapMarkets(data, platform); // Assuming you have a mapMarkets function
     return mappedData;
   } catch (error) {
     console.log(
@@ -111,7 +111,7 @@ async function fetchMarketData(platform) {
 
 async function updateMarketDataInDatabase(data, platform) {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
-  const mappedData = mapMarkets(platform, data);
+  const mappedData = mapping.mapMarkets(platform, data);
   await mongodbService.deleteAndSaveData(mappedData, collection, platform);
   await lastUpdateService.saveLastUpdateToDatabase(
     process.env.TYPE_LOAD_MARKETS,

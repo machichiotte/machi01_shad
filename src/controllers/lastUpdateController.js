@@ -1,7 +1,7 @@
 // src/controllers/lastUpdateController.js
-const { getDataMDB } = require("../services/mongodbService.js");
 const { validateEnvVariables } = require("../utils/controllerUtil");
-const lastUpdateService = require("../services/lastUpdateService.js");
+const lastUpdateService = require("../services/lastUpdateService");
+const mongodbService = require("../services/mongodbService");
   
 validateEnvVariables(["MONGODB_COLLECTION_LAST_UPDATE"]);
 
@@ -16,7 +16,7 @@ async function getUniqueLastUpdate(req, res) {
     const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
 
     const filter = { platform, type };
-    const lastUpdateData = await getDataMDB(collectionName, filter);
+    const lastUpdateData = await mongodbService.getDataMDB(collectionName, filter);
 
     if (lastUpdateData.length > 0) {
       console.log("Fetched unique last update from the database.", {
