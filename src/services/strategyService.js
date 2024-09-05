@@ -1,6 +1,7 @@
-// src/services/strategyService.js
-const { getData, deleteAllDataMDB, updateDataMDB, saveData } = require("../services/mongodbService.js");
-const lastUpdateService = require("./lastUpdateService.js");
+// src/services/strategyService.
+const { getData } = require("../utils/dataUtil");
+const { deleteAllDataMDB, updateDataMDB, saveData } = require("../services/mongodbService");
+const lastUpdateService = require("./lastUpdateService");
 
 async function fetchDatabaseStrategies() {
   const collectionName = process.env.MONGODB_COLLECTION_STRAT;

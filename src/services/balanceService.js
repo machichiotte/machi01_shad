@@ -1,12 +1,12 @@
 // src/services/balanceService.js
 
 const { getData } = require("../utils/dataUtil");
-const { createPlatformInstance } = require("../utils/platformUtil.js");
+const { createPlatformInstance } = require("../utils/platformUtil");
 const { mapBalance } = require("../services/mapping");
 const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
 
-const lastUpdateService = require("./lastUpdateService.js");
-const mongodbService = require("./mongodbService.js");
+const lastUpdateService = require("./lastUpdateService");
+const mongodbService = require("./mongodbService");
 
 async function fetchDatabaseBalances() {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
