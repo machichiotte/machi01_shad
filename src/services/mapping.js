@@ -89,17 +89,20 @@ function mapBalance(platform, data) {
 
   const platformMapping = mappings[platform];
   if (!platformMapping) {
-    console.warn(`Platform ${platform} not supported.`);
+    console.warn(`Plateforme ${platform} non supportée.`);
     return [];
   }
 
-  return Array.isArray(data.info.balances || data.info.data || data) ? 
-    (data.info.balances || data.info.data || data)
-      .filter((item) => parseFloat(item.balance || item.free || item.cashBal || item.available || item.locked) > 0)
-      .map(platformMapping) :
-    Object.entries(data)
-      .filter(([key, value]) => key !== "info" && key !== "free" && key !== "used" && key !== "total" && value.total > 0)
-      .map(platformMapping);
+  const balanceData = Array.isArray(data.info.balances || data.info.data || data) 
+    ? (data.info.balances || data.info.data || data)
+    : Object.entries(data).filter(([key, value]) => !['info', 'free', 'used', 'total'].includes(key) && value.total > 0);
+
+  return balanceData
+    .filter(item => {
+      const balance = parseFloat(item.balance || item.free || item.cashBal || item.available || item.locked || item[1]?.total || 0);
+      return balance > 0;
+    })
+    .map(platformMapping);
 }
 
 

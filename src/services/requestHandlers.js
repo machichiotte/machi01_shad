@@ -24,33 +24,25 @@ app.use(express.static("dist"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Import des routes
-const converterRoutes = require("../routes/converterRoutes.js");
-const authRoutes = require("../routes/authRoutes.js");
-const balanceRoutes = require("../routes/balanceRoutes.js");
-const cmcRoutes = require("../routes/cmcRoutes.js");
-const strategyRoutes = require("../routes/strategyRoutes.js");
-const ordersRoutes = require("../routes/ordersRoutes.js");
-const marketRoutes = require("../routes/marketsRoutes.js");
-const pricesRoutes = require("../routes/pricesRoutes.js");
-const tradesRoutes = require("../routes/tradesRoutes.js");
-const tickersRoutes = require("../routes/tickersRoutes.js");
-const lastUpdateRoutes = require("../routes/lastUpdateRoutes.js");
-const shadRoutes = require("../routes/shadRoutes.js");
+const routes = {
+  converter: require("../routes/converterRoutes.js"),
+  auth: require("../routes/authRoutes.js"),
+  balance: require("../routes/balanceRoutes.js"),
+  cmc: require("../routes/cmcRoutes.js"),
+  strategy: require("../routes/strategyRoutes.js"),
+  orders: require("../routes/ordersRoutes.js"),
+  market: require("../routes/marketsRoutes.js"),
+  prices: require("../routes/pricesRoutes.js"),
+  trades: require("../routes/tradesRoutes.js"),
+  tickers: require("../routes/tickersRoutes.js"),
+  lastUpdate: require("../routes/lastUpdateRoutes.js"),
+  shad: require("../routes/shadRoutes.js"),
+};
 
-// Utilisation des routes
-app.use("/api/converter", converterRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/balance", balanceRoutes);
-app.use("/api/cmc", cmcRoutes);
-app.use("/api/strategy", strategyRoutes);
-app.use("/api/orders", ordersRoutes);
-app.use("/api/markets", marketRoutes);
-app.use("/api/prices", pricesRoutes);
-app.use("/api/trades", tradesRoutes);
-app.use("/api/tickers", tickersRoutes);
-app.use("/api/lastUpdate", lastUpdateRoutes);
-app.use("/api/shad", shadRoutes);
+// Utilisation des routes avec une boucle
+Object.entries(routes).forEach(([name, router]) => {
+  app.use(`/api/${name}`, router);
+});
 
 // Middleware de gestion des erreurs
 app.use((err, req, res, next) => {
@@ -65,8 +57,12 @@ app.use((req, res, next) => {
 
 // Fonction pour démarrer le serveur
 function startServer() {
-  app.listen(PORT, () => {
-    console.log("PORT:", PORT);
+  return new Promise((resolve, reject) => {
+    const server = app.listen(PORT, () => {
+      console.log(`Serveur démarré sur le port: ${PORT}`);
+      resolve(server);
+    });
+    server.on("error", reject);
   });
 }
 

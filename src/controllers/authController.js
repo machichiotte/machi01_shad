@@ -32,7 +32,6 @@ async function registerUser(req, res) {
 
     if (status) {
       console.log("User registered successfully", { email });
-      console.log("🚀 ~ registerUser ~ email:", email)
       return res
         .status(201)
         .json({ status: true, message: "User created successfully" });

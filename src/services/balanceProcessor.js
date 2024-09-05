@@ -76,10 +76,14 @@ async function processBalanceChanges(differences, platform) {
  * @returns {Object[]} - Tableau des différences sans doublons.
  */
 function removeDuplicateDifferences(differences) {
-  return differences.filter(
-    (v, i, a) =>
-      a.findIndex((t) => t.base === v.base && t.platform === v.platform) === i
-  );
+  const uniqueMap = new Map();
+  differences.forEach(v => {
+    const key = `${v.base}-${v.platform}`;
+    if (!uniqueMap.has(key)) {
+      uniqueMap.set(key, v);
+    }
+  });
+  return Array.from(uniqueMap.values());
 }
 
 /**
@@ -311,7 +315,28 @@ function compareBalances(lastBalances, currentBalances) {
     }
   });
 
-  return differences;
+  return removeDuplicatesAndStablecoins(differences);
+}
+
+// Liste des stablecoins que nous voulons filtrer
+const stablecoins = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'PAX', 'GUSD', 'HUSD', 'USDN']; // Ajoutez d'autres stablecoins si nécessaire
+
+// Fonction pour supprimer les doublons basés sur 'base' et 'platform'
+function removeDuplicatesAndStablecoins(differences) {
+  // Utiliser un Map pour supprimer les doublons
+  const uniqueDifferences = new Map();
+  
+  differences.forEach(difference => {
+    const key = `${difference.base}-${difference.platform}`; // Créez une clé unique en combinant 'base' et 'platform'
+    
+    // Vérifiez que 'base' n'est pas un stablecoin et ajoutez-le au Map s'il n'est pas encore présent
+    if (!stablecoins.includes(difference.base) && !uniqueDifferences.has(key)) {
+      uniqueDifferences.set(key, difference);
+    }
+  });
+  
+  // Convertissez le Map en tableau
+  return Array.from(uniqueDifferences.values());
 }
 
 module.exports = {

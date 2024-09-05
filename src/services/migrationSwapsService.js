@@ -11,81 +11,63 @@ const {
   fetchDatabaseTrades,
   updateTradeById,
 } = require("../controllers/tradesController");
+const logger = require("../utils/loggerUtil"); // Supposons que nous avons un module de journalisation
 
-/**
- * Function to handle asset swaps in trades and strategies.
- */
+async function updateTrade(trade, oldAsset, newAsset, swapMultiplier, platform) {
+  const updatedTrade = {
+    base: newAsset,
+    pair: trade.pair.replace(oldAsset, newAsset),
+    amount: trade.amount * swapMultiplier,
+    price: trade.total / (trade.amount * swapMultiplier),
+    fee: trade.feecoin === oldAsset ? trade.fee * swapMultiplier : trade.fee,
+    feecoin: trade.feecoin === oldAsset ? newAsset : trade.feecoin,
+    swap: true,
+  };
+
+  await updateTradeById(trade._id, updatedTrade);
+  logger.info(`Trade swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`);
+}
+
+async function updateStrategy(strategy, newAsset, platform) {
+  const updatedStrategy = { asset: newAsset };
+  await updateStrategyById(strategy._id, updatedStrategy);
+  logger.info(`Strategy swap completed for ${strategy.asset} to ${newAsset} on platform ${platform}.`);
+}
+
 async function handleMigrationSwaps() {
   try {
-    // Récupération de tous les swaps
-    const swaps = await fetchDatabaseMigrationSwaps();
+    const [swaps, trades, strategies] = await Promise.all([
+      fetchDatabaseMigrationSwaps(),
+      fetchDatabaseTrades(),
+      fetchDatabaseStrategies(),
+    ]);
 
-    // Récupération des trades et des stratégies
-    const trades = await fetchDatabaseTrades();
-    const strategies = await fetchDatabaseStrategies();
+    const now = new Date();
 
     for (const swap of swaps) {
       const { oldAsset, newAsset, swapRate, platform, delistingDate } = swap;
-
-      // Vérification des dates de delisting et de listing
-      const now = new Date();
       const delisting = new Date(delistingDate);
 
-      // On attend que la date de delisting soit dépassée
       if (now < delisting) {
-        console.log(
-          `Waiting for delisting date (${delistingDate}) of ${oldAsset} to be exceeded.`
-        );
-        continue; // On continue si le delisting n'a pas encore eu lieu
+        logger.info(`Waiting for delisting date (${delistingDate}) of ${oldAsset} to be exceeded.`);
+        continue;
       }
 
-      // Application des changements pour les trades
-      for (const trade of trades) {
-        if (trade.base === oldAsset && trade.platform === platform) {
-          // Calcul du ratio de swap
-          const [oldRatio, newRatio] = swapRate.split(":").map(Number);
-          const swapMultiplier = newRatio / oldRatio;
+      const [oldRatio, newRatio] = swapRate.split(":").map(Number);
+      const swapMultiplier = newRatio / oldRatio;
 
-          // Préparer les données mises à jour
-          const updatedTrade = {
-            base: newAsset,
-            pair: trade.pair.replace(oldAsset, newAsset),
-            amount: trade.amount * swapMultiplier,
-            price: trade.total / (trade.amount * swapMultiplier),
-            fee:
-              trade.feecoin === oldAsset
-                ? trade.fee * swapMultiplier
-                : trade.fee,
-            feecoin: trade.feecoin === oldAsset ? newAsset : trade.feecoin,
-            swap: true,
-          };
+      const tradeUpdates = trades
+        .filter(trade => trade.base === oldAsset && trade.platform === platform)
+        .map(trade => updateTrade(trade, oldAsset, newAsset, swapMultiplier, platform));
 
-          // Mettre à jour le document dans la collection
-          await updateTradeById(trade._id, updatedTrade);
+      const strategyUpdates = strategies
+        .filter(strategy => strategy.asset === oldAsset && strategy.strategies[platform])
+        .map(strategy => updateStrategy(strategy, newAsset, platform));
 
-          console.log(
-            `Trades Swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`
-          );
-        }
-      }
-
-      // Application des changements pour les stratégies
-      for (const strategy of strategies) {
-        if (strategy.asset === oldAsset && strategy.strategies[platform]) {
-          // Préparer les données mises à jour
-          const updatedStrategy = { asset: newAsset };
-
-          // Mettre à jour la stratégie dans la collection
-          await updateStrategyById(strategy._id, updatedStrategy);
-
-          console.log(
-            `Strategy Swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`
-          );
-        }
-      }
+      await Promise.all([...tradeUpdates, ...strategyUpdates]);
     }
   } catch (error) {
-    console.error("Error handling swaps:", error);
+    logger.error("Error handling swaps:", error);
   }
 }
 

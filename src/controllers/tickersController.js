@@ -128,10 +128,6 @@ async function getSavedAllTickersByPlatform(platform) {
       `🚀 ~ file: tickersController.js:121 ~ getSavedAllTickersByPlatform ~ tickersData:`,
       tickersData.length
     );
-    console.log(
-      `🚀 ~ file: tickersController.js:122 ~ getSavedAllTickersByPlatform ~ tickersData:`,
-      tickersData[0]
-    );
 
     // Vérification que tickersData est bien un tableau
     if (!Array.isArray(tickersData)) {

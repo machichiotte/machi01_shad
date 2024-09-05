@@ -11,15 +11,22 @@ const {
 
 async function initializeCronTasks() {
   try {
-    console.log("Starting to initialize Cron tasks...");
-    cron.schedule(cronSchedules.tickers, cronTickers);
-    cron.schedule(cronSchedules.markets, cronMarkets);
-    cron.schedule(cronSchedules.balances, cronBalances);
-    console.log("Cron tasks initialized.");
-  } catch (error) {
-    errorLogger.error(`Error initializing cron tasks: ${error.message}`, {
-      error,
+    console.log("Starting initialization of Cron tasks...");
+    
+    const tasks = [
+      { schedule: cronSchedules.tickers, task: cronTickers },
+      { schedule: cronSchedules.markets, task: cronMarkets },
+      { schedule: cronSchedules.balances, task: cronBalances }
+    ];
+
+    tasks.forEach(({ schedule, task }) => {
+      cron.schedule(schedule, task);
+      console.log(`Cron task initialized: ${task.name}`);
     });
+
+    console.log("All Cron tasks have been successfully initialized.");
+  } catch (error) {
+    errorLogger.error("Error during Cron tasks initialization", { error });
     throw error;
   }
 }

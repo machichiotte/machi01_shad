@@ -9,7 +9,6 @@ const { getData } = require("../utils/dataUtil.js");
 
 const { mapTrades } = require("../services/mapping.js");
 const { handleErrorResponse } = require("../utils/errorUtil.js");
-const { errorLogger } = require("../utils/loggerUtil.js");
 
 /**
  * Met à jour un trade dans la collection 'collection_trades' en utilisant l'ID du trade.
@@ -19,9 +18,16 @@ const { errorLogger } = require("../utils/loggerUtil.js");
  */
 async function updateTradeById(tradeId, updatedTrade) {
   try {
-    return await updateDataMDB("collection_trades", { _id: tradeId }, { $set: updatedTrade });
+    return await updateDataMDB(
+      "collection_trades",
+      { _id: tradeId },
+      { $set: updatedTrade }
+    );
   } catch (error) {
-    console.error(`Error updating trade with ID ${tradeId}:`, error);
+    console.log(
+      `🚀 ~ file: tradesController.js:24 ~ updateTradeById ~ error:`,
+      error
+    );
     throw error;
   }
 }
@@ -30,13 +36,16 @@ async function getTrades(req, res) {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   try {
     const lastTrades = await getData(collectionName);
-    console.log("Retrieved last Trades", {
+    console.log(`🚀 ~ file: tradesController.js:33 ~ getTrades ~ lastTrades:`, {
       collectionName,
       count: lastTrades.length,
     });
     res.json(lastTrades);
   } catch (error) {
-    errorLogger.error("Failed to get trades", { error: error.message });
+    console.log(
+      `🚀 ~ file: tradesController.js:39 ~ getTrades ~ error:`,
+      error
+    );
     handleErrorResponse(res, error, "getTrades");
   }
 }
@@ -48,10 +57,10 @@ async function getTrades(req, res) {
 async function fetchDatabaseTrades() {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   const data = await getData(collectionName);
-  console.log(
-    `🚀 ~ file: cmcController.js:36 ~ fetchDatabaseTrades :`,
-    { collectionName, count: data.length }
-  );
+  console.log(`🚀 ~ file: cmcController.js:36 ~ fetchDatabaseTrades :`, {
+    collectionName,
+    count: data.length,
+  });
   return data;
 }
 
@@ -99,26 +108,33 @@ async function saveTrades(newTrades, collection, isFiltered) {
         );
       });
     }
-
-    console.log("🚀 ~ saveTrades ~ filteredTrades:", filteredTrades);
+    console.log(
+      `🚀 ~ file: tradesController.js:102 ~ filteredTrades=newTrades.filter ~ filteredTrades:`,
+      filteredTrades
+    );
 
     // Convertir chaque trade en objet s'il ne l'est pas déjà
     const tradesToInsert = filteredTrades.map((trade) => {
       return typeof trade === "object" ? trade : { trade }; // Assurez-vous que chaque trade est un objet
     });
-    console.log("🚀 ~ tradesToInsert ~ tradesToInsert:", tradesToInsert.length);
+    console.log(
+      `🚀 ~ file: tradesController.js:109 ~ saveTrades ~ tradesToInsert.length:`,
+      tradesToInsert.length
+    );
 
     // Ajouter les nouveaux trades à la base de données
     if (tradesToInsert.length > 0) {
       const result = await saveData(tradesToInsert, collection);
-
       console.log(
-        "🚀 ~ saveTrades ~ result.insertedCount:",
+        `🚀 ~ file: tradesController.js:114 ~ saveTrades ~ result.insertedCount:`,
         result.insertedCount
       );
     }
   } catch (error) {
-    console.log("🚀 ~ saveTrades ~ error:", error);
+    console.log(
+      `🚀 ~ file: tradesController.js:117 ~ saveTrades ~ error:`,
+      error
+    );
   } finally {
     //await client.close();
   }
@@ -126,7 +142,10 @@ async function saveTrades(newTrades, collection, isFiltered) {
 
 async function updateTrades(req, res) {
   const { platform } = req.params;
-  console.log("🚀 ~ updateTrades ~ platform:", platform);
+  console.log(
+    `🚀 ~ file: tradesController.js:125 ~ updateTrades ~ platform:`,
+    platform
+  );
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   const platformInstance = createPlatformInstance(platform);
 
@@ -146,9 +165,12 @@ async function updateTrades(req, res) {
             if (trades.length > 0) {
               mappedData.push(...mapTrades(platform, trades));
             }
-          } catch (err) {
-            console.log("🚀 ~ updateTrades ~ err:", err);
-            res.status(500).json({ error: err.name + ": " + err.message });
+          } catch (error) {
+            console.log(
+              `🚀 ~ file: tradesController.js:146 ~ updateTrades ~ error:`,
+              error
+            );
+            res.status(500).json({ error: error.name + ": " + error.message });
           }
         }
         break;
@@ -188,9 +210,12 @@ async function updateTrades(req, res) {
 
     try {
       await deleteAndSaveData(mappedData, collectionName, platform);
-    } catch (err) {
-      console.log("🚀 ~ updateTrades ~ err:", err);
-      res.status(500).json({ error: err.name + ": " + err.message });
+    } catch (error) {
+      console.log(
+        `🚀 ~ file: tradesController.js:188 ~ updateTrades ~ error:`,
+        error
+      );
+      res.status(500).json({ error: error.name + ": " + error.message });
     }
     if (tradesData.length > 0) {
       res.status(200).json(tradesData);
@@ -198,13 +223,20 @@ async function updateTrades(req, res) {
       res.status(201).json({ empty: "empty" });
     }
     saveLastUpdateToMongoDB(process.env.TYPE_TRADES, platform);
-  } catch (err) {
-    res.status(500).json({ error: err.name + ": " + err.message });
+  } catch (error) {
+    console.log(
+      `🚀 ~ file: tradesController.js:198 ~ updateTrades ~ error:`,
+      error
+    );
+    res.status(500).json({ error: error.name + ": " + error.message });
   }
 }
 
 async function fetchLastTrades(platform, symbol) {
-  console.log(`🚀 ~ file: tradesController.js:192 ~ fetchLastTrades ~ symbol:`, symbol)
+  console.log(
+    `🚀 ~ file: tradesController.js:192 ~ fetchLastTrades ~ symbol:`,
+    symbol
+  );
   const platformInstance = createPlatformInstance(platform);
   return platformInstance.fetchMyTrades(symbol);
 }
@@ -217,5 +249,5 @@ module.exports = {
   fetchLastTrades,
   saveTradesToDatabase,
   saveAllTradesToDatabase,
-  updateTradeById
+  updateTradeById,
 };

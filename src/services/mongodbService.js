@@ -118,19 +118,14 @@ async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
     try {
       return await operation(...args);
     } catch (error) {
-      if (
-        ["ECONNRESET", "ETIMEDOUT", "ENETDOWN", "ENETUNREACH"].includes(
-          error.code
-        )
-      ) {
-        attempts++;
-        await new Promise((res) => setTimeout(res, retryDelay * attempts));
-      } else {
+      attempts++;
+      console.warn(`Opération échouée (tentative ${attempts}/${maxRetries}): ${error.message}`);
+      if (attempts === maxRetries || !["ECONNRESET", "ETIMEDOUT", "ENETDOWN", "ENETUNREACH"].includes(error.code)) {
         throw error;
       }
+      await new Promise((res) => setTimeout(res, retryDelay * attempts));
     }
   }
-  throw new Error(`Operation failed after ${maxRetries} attempts`);
 }
 
 async function createCollectionIfNotExists(collectionName) {

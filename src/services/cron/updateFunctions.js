@@ -22,52 +22,44 @@ const {
 } = require("../balanceProcessor.js");
 
 async function updateMarketsForPlatform(platform) {
-  const currentmarkets = await fetchCurrentMarkets(platform, 3);
   try {
-    await saveDatabaseMarkets(currentmarkets, platform);
+    const currentMarkets = await fetchCurrentMarkets(platform, 3);
+    await saveDatabaseMarkets(currentMarkets, platform);
   } catch (error) {
-    console.log(
-      `🚀 ~ file: updateFunctions.js:21 ~ updateMarketsForPlatform ~ error:`,
-      error
-    );
+    console.error(`Erreur lors de la mise à jour des marchés pour ${platform}:`, error);
   }
 }
 
 async function updateTickersForPlatform(platform) {
-  const currentTickers = await fetchCurrentTickers(platform, 3);
   try {
+    const currentTickers = await fetchCurrentTickers(platform, 3);
     await saveDatabaseTickers(currentTickers, platform);
   } catch (error) {
-    console.log(
-      `🚀 ~ file: updateFunctions.js:30 ~ updateTickersForPlatform ~ error:`,
-      error
-    );
+    console.error(`Erreur lors de la mise à jour des tickers pour ${platform}:`, error);
   }
 }
 
 async function updateBalancesForPlatform(platform) {
-  const currentBalances = await fetchCurrentBalancesByPlatform(platform, 3);
-  const previousBalances = await fetchDatabaseBalancesByPlatform(platform, 3);
-  const differences = compareBalances(previousBalances, currentBalances);
-  if (differences.length > 0) {
-    console.log(
-      `🚀 ~ file: updateFunctions.js:40 ~ updateBalancesForPlatform ~ differences:`,
-      differences
-    );
-    await saveDatabaseBalance(currentBalances, platform);
-    await processBalanceChanges(differences, platform);
-    //await calculateMetrics(differences, exchsangeId);
-  }
-
   try {
+    const [currentBalances, previousBalances] = await Promise.all([
+      fetchCurrentBalancesByPlatform(platform, 3),
+      fetchDatabaseBalancesByPlatform(platform, 3)
+    ]);
+    
+    const differences = compareBalances(previousBalances, currentBalances);
+    if (differences.length > 0) {
+      console.log(`Différences de solde détectées pour ${platform}:`, differences);
+      await Promise.all([
+        saveDatabaseBalance(currentBalances, platform),
+        processBalanceChanges(differences, platform)
+      ]);
+    }
+
     const collectionName = process.env.MONGODB_COLLECTION_SHAD;
     const metrics = await calculateAllMetrics();
-    deleteAndSaveObject(metrics, collectionName);
+    await deleteAndSaveObject(metrics, collectionName);
   } catch (error) {
-    console.log(
-      `🚀 ~ file: updateFunctions.js:51 ~ updateBalancesForPlatform ~ error:`,
-      error
-    );
+    console.error(`Erreur lors de la mise à jour des soldes pour ${platform}:`, error);
   }
 }
 

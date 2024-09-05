@@ -29,20 +29,24 @@ async function fetchCmcData() {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch CoinMarketCap data: ${response.statusText}`);
+        throw new Error(`Échec de la récupération des données CoinMarketCap: ${response.statusText}`);
       }
 
-      const data = await response.json();
+      const { data, status } = await response.json();
 
-      if (data.data.length === 0) {
-        break; // No additional data, stop the loop
+      if (data.length === 0) {
+        break;
       }
 
-      allData.push(...data.data);
-      start += limit;
+      allData.push(...data);
+      start += data.length; // Utiliser la longueur réelle des données reçues
+
+      if (status.total_count <= start) {
+        break; // Arrêter si nous avons atteint le nombre total de cryptomonnaies
+      }
     }
   } catch (error) {
-    errorLogger.error(`Error in fetchCmcData: ${error.message}`);
+    errorLogger.error(`Erreur dans fetchCmcData: ${error.message}`);
     throw error;
   }
 

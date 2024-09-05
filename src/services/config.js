@@ -12,7 +12,7 @@ const config = {
     shad: "*/30 * * * *",
     markets: "* */12 * * *",
     tickers: "*/1 * * * *",
-    balances: "*/10 * * * *",
+    balances: "*/2 * * * *",
   },
   logFiles: {
     error: "error.log",

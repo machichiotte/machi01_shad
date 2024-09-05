@@ -71,33 +71,20 @@ function getStrat(platform, strats) {
     return { strat: "No strategy", stratExpo: MAX_EXPO };
   }
 
-  // Rechercher la stratégie correspondante à l'actif donné
-  const filteredStrat = strats || {};
-
-  // Déterminer la stratégie et l'exposition maximale pour la plateforme donnée
-  const strat = filteredStrat.strategies?.[platform] || "No strategy";
-  const stratExpo = filteredStrat.maxExposure?.[platform] || MAX_EXPO;
-
-  return { strat, stratExpo };
+  return {
+    strat: strats.strategies?.[platform] || "No strategy",
+    stratExpo: strats.maxExposure?.[platform] || MAX_EXPO
+  };
 }
 
 function getRatioShad(strat) {
-  if (strat !== undefined) {
-    switch (strat) {
-      case "Shad":
-        return 2;
-      case "Shad skip x2":
-        return 4;
-      case "Strategy 3":
-        return 8;
-      case "Strategy 4":
-        return 16;
-      default:
-        return "8"; // 'NULL' ou une valeur par défaut de votre choix
-    }
-  }
-  // Gérez le cas où la structure n'est pas conforme à ce que vous attendez
-  return "/"; // 'NULL' ou une valeur par défaut de votre choix
+  const ratios = {
+    "Shad": 2,
+    "Shad skip x2": 4,
+    "Strategy 3": 8,
+    "Strategy 4": 16
+  };
+  return ratios[strat] || 8;
 }
 
 function calculateRecups(asset, platform, totalBuy, totalSell, strats) {
@@ -175,48 +162,38 @@ function calculateAmountsAndPricesForShad(
   platform
 ) {
   const FACTOR_SELL_SHAD = 0.5;
-
-  const parsedRecupTp1 = parseFloat(recupTp1);
-  const parsedBalance = parseFloat(balance);
-  const parsedRecupTpX = parseFloat(recupTpX);
-  const parsedAverageEntryPrice = parseFloat(averageEntryPrice);
+  const parsedValues = {
+    recupTp1: parseFloat(recupTp1),
+    balance: parseFloat(balance),
+    recupTpX: parseFloat(recupTpX),
+    averageEntryPrice: parseFloat(averageEntryPrice)
+  };
 
   const platformFee = getPlatformFee(platform);
+  const feeMultiplier = 1 + platformFee / 100;
 
-  // Adjust the amount for TP1 considering the platform fee
-  const amountTp1 =
-    totalShad > -1
-      ? FACTOR_SELL_SHAD * (parsedRecupTp1 / parsedRecupTpX) * parsedBalance
-      : parsedBalance - maxExposition / parsedAverageEntryPrice;
+  const amountTp1 = totalShad > -1
+    ? FACTOR_SELL_SHAD * (parsedValues.recupTp1 / parsedValues.recupTpX) * parsedValues.balance
+    : parsedValues.balance - maxExposition / parsedValues.averageEntryPrice;
 
-  // Adjust the price for TP1 to account for platform fee
-  const priceTp1 =
-    totalShad > -1
-      ? (parsedRecupTp1 / amountTp1) * (1 + platformFee / 100)
-      : parsedAverageEntryPrice * (1 + platformFee / 100);
+  const priceTp1 = totalShad > -1
+    ? (parsedValues.recupTp1 / amountTp1) * feeMultiplier
+    : parsedValues.averageEntryPrice * feeMultiplier;
 
   const amountsAndPrices = { amountTp1, priceTp1 };
 
-  // Loop for TP2 to TP5
+  let remainingBalance = parsedValues.balance - amountTp1;
+
   for (let i = 2; i <= 5; i++) {
-    // Filtrer et additionner uniquement les montants (amounts)
-    const usedAmounts = Object.entries(amountsAndPrices)
-      .filter(([key]) => key.startsWith('amountTp')) // Ne garder que les clés qui commencent par 'amountTp'
-      .reduce((acc, [_, val]) => acc + val, 0) // Additionner les valeurs de ces clés
-
-    // Calculer le solde restant en soustrayant le montant déjà utilisé
-    const remainingBalance = parsedBalance - usedAmounts
-
-    // Calculer le montant et le prix pour ce niveau de prise de profit
     const { amount, price } = calculateAmountAndPriceForShad(
-      parsedRecupTpX,
+      parsedValues.recupTpX,
       remainingBalance,
       FACTOR_SELL_SHAD
-    )
+    );
 
-    // Adjust the price for each take profit level to account for platform fees
     amountsAndPrices[`amountTp${i}`] = amount;
-    amountsAndPrices[`priceTp${i}`] = price * (1 + platformFee / 100);
+    amountsAndPrices[`priceTp${i}`] = price * feeMultiplier;
+    remainingBalance -= amount;
   }
 
   return amountsAndPrices;

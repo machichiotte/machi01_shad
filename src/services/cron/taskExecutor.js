@@ -1,7 +1,6 @@
 // src/services/cron/tasExecutor.js
 const { sendMail } = require("./sendMail.js");
 const { smtp } = require("../config.js");
-
 const { errorLogger } = require("../../utils/loggerUtil.js");
 const { getPlatforms } = require("../../utils/platformUtil.js");
 
@@ -38,29 +37,22 @@ async function executeCronTask(task, isCritical = false, retries = 3) {
 }
 
 async function executeForPlatforms(taskName, taskFunction) {
-  console.log(`Running the cron job for ${taskName}...`);
+  console.log(`Executing cron job for ${taskName}...`);
   const platforms = getPlatforms();
-  for (const platform of platforms) {
-    await executeCronTask(async () => {
-      await taskFunction(platform);
-    }, true);
-  }
+  await Promise.all(platforms.map(platform => 
+    executeCronTask(() => taskFunction(platform), true)
+  ));
 }
 
-async function cronTickers() {
-  await executeForPlatforms("updateTickers", updateTickersForPlatform);
-}
-
-async function cronMarkets() {
-  await executeForPlatforms("updateMarkets", updateMarketsForPlatform);
-}
-
-async function cronBalances() {
-  await executeForPlatforms("updateBalances", updateBalancesForPlatform);
-}
-
-module.exports = {
-  cronTickers,
-  cronMarkets,
-  cronBalances
+const cronFunctions = {
+  Tickers: updateTickersForPlatform,
+  Markets: updateMarketsForPlatform,
+  Balances: updateBalancesForPlatform
 };
+
+module.exports = Object.fromEntries(
+  Object.entries(cronFunctions).map(([key, func]) => [
+    `cron${key}`,
+    () => executeForPlatforms(`update${key}`, func)
+  ])
+);

@@ -16,35 +16,54 @@ const { getTotalAmountAndBuy, getTotalSell } = require("./trades.js");
 // Define stable coins
 const stableCoins = ["USDT", "USDC", "DAI", "BUSD", "TUSD"];
 
-/**
- * Récupère le prix actuel d'un actif sur une plateforme donnée.
- *
- * @param {Array} lastTickers - Liste des tickers.
- * @param {string} asset - Le symbole de l'actif.
- * @param {string} platform - L'identifiant de la plateforme.
- * @returns {number|string} - Le prix actuel ou "N/A" si non trouvé.
- */
-function getCurrentPrice(lastTickers, asset, platform) {
+const DEFAULT_METRICS = {
+  iconUrl: "N/A",
+  asset: "N/A",
+  status: "N/A",
+  strat: "N/A",
+  ratioShad: "N/A",
+  totalShad: "N/A",
+  rank: "N/A",
+  averageEntryPrice: "N/A",
+  totalBuy: "N/A",
+  maxExposition: "N/A",
+  percentageDifference: "N/A",
+  currentPrice: "N/A",
+  currentPossession: "N/A",
+  profit: "N/A",
+  totalSell: "N/A",
+  recupShad: "N/A",
+  nbOpenBuyOrders: "N/A",
+  nbOpenSellOrders: "N/A",
+  totalAmount: "N/A",
+  balance: "N/A",
+  recupTp1: "N/A",
+  recupTpX: "N/A",
+  tp1: "N/A",
+  tp2: "N/A",
+  tp3: "N/A",
+  tp4: "N/A",
+  tp5: "N/A",
+  percentToNextTp: "N/A",
+  platform: "N/A",
+};
+
+// ... code existant ...
+
+function getCurrentPrice(lastTickers, base, platform) {
+  if (!Array.isArray(lastTickers) || !base || !platform) {
+    console.warn("Paramètres invalides pour getCurrentPrice");
+    return "N/A";
+  }
+
   const ticker = lastTickers.find(
     (ticker) =>
-      ticker.symbol === `${asset}/USDT` && ticker.platform === platform
+      ticker?.symbol === `${base}/USDT` && ticker.platform === platform
   );
+
   return ticker?.last ?? "N/A";
 }
 
-/**
- * Récupère toutes les informations de calcul pour un actif.
- *
- * @param {string} asset - Le symbole de l'actif.
- * @param {string} platform - L'identifiant de la plateforme.
- * @param {Array} lastCmc - Données CMC.
- * @param {Array} lastBalances - Soldes.
- * @param {Array} lastTrades - Transactions.
- * @param {Array} lastOpenOrders - Ordres ouverts.
- * @param {Array} lastStrategies - Stratégies.
- * @param {Array} lastTickers - Tickers.
- * @returns {Object} - Objet contenant toutes les informations de calcul.
- */
 function calculateAssetMetrics(
   asset,
   platform,
@@ -57,7 +76,7 @@ function calculateAssetMetrics(
 ) {
   const balance = getBalanceBySymbol(asset, lastBalances);
   const currentPrice = getCurrentPrice(lastTickers, asset, platform);
-  const cmcValues = getCmcValues(asset, lastCmc);
+  const cmcValues = getCmcValues(lastCmc);
   const totalSell = getTotalSell(asset, lastTrades);
   const { buyOrders, sellOrders } = filterOpenOrdersBySide(
     lastOpenOrders,
@@ -68,178 +87,79 @@ function calculateAssetMetrics(
     asset,
     lastTrades
   );
-  const percentageDifference = getPercentageDifference(
+
+  const baseMetrics = {
+    ...DEFAULT_METRICS,
+    iconUrl: cmcValues.iconUrl,
+    asset,
+    rank: cmcValues.rank,
     currentPrice,
-    averageEntryPrice
-  );
-  const currentPossession = getCurrentPossession(currentPrice, balance);
-  
-  const profit = getProfit(totalBuy, totalSell, currentPrice, balance);
+    currentPossession: getCurrentPossession(currentPrice, balance),
+    totalAmount,
+    balance,
+    ...cmcValues,
+    platform,
+  };
 
-
-  // Handle stablecoin case
   if (stableCoins.includes(asset)) {
-    return {
-      iconUrl: cmcValues.iconUrl,
-      asset,
-      status: "stable coin",
-      strat: "N/A",
-      ratioShad: "N/A",
-      totalShad: "N/A",
-      rank: cmcValues.rank,
-      averageEntryPrice: "N/A",
-      totalBuy: "N/A",
-      maxExposition: "N/A",
-      percentageDifference: "N/A",
-      currentPrice,
-      currentPossession,
-      profit: "N/A",
-      totalSell: "N/A",
-      recupShad: "N/A",
-      nbOpenBuyOrders: "N/A",
-      nbOpenSellOrders: "N/A",
-      totalAmount,
-      balance,
-      recupTp1: "N/A",
-      recupTpX: "N/A",
-      tp1: "N/A",
-      tp2: "N/A",
-      tp3: "N/A",
-      tp4: "N/A",
-      tp5: "N/A",
-      percentToNextTp: "N/A",
-      ...cmcValues,
-       platform,
-    };
+    return { ...baseMetrics, status: "stable coin" };
   }
 
-  // Handle non-stablecoin case
   if (balance === 0 || !isValidStrategies(lastStrategies)) {
     return {
-      iconUrl: cmcValues.iconUrl,
-      asset,
-      status: "N/A",
-      strat: "N/A",
-      ratioShad: "N/A",
-      totalShad: "N/A",
-      rank: cmcValues.rank,
+      ...baseMetrics,
       averageEntryPrice,
       totalBuy,
-      maxExposition: "N/A",
-      percentageDifference,
-      currentPrice,
-      currentPossession,
-      profit,
+      percentageDifference: getPercentageDifference(currentPrice, averageEntryPrice),
+      profit: getProfit(totalBuy, totalSell, currentPrice, balance),
       totalSell,
-      recupShad: "N/A",
       nbOpenBuyOrders: buyOrders.length,
       nbOpenSellOrders: sellOrders.length,
-      totalAmount,
-      balance,
-      recupTp1: "N/A",
-      recupTpX: "N/A",
-      tp1: "N/A",
-      tp2: "N/A",
-      tp3: "N/A",
-      tp4: "N/A",
-      tp5: "N/A",
-      percentToNextTp: "N/A",
-      ...cmcValues,
-       platform,
     };
   }
 
-  const recups = calculateRecups(
-    asset,
-    platform,
-    totalBuy,
-    totalSell,
-    lastStrategies
-  );
+  const recups = calculateRecups(asset, platform, totalBuy, totalSell, lastStrategies);
   const amountsAndPrices = calculateAmountsAndPricesForShad(
     recups.recupTp1,
     balance,
     recups.totalShad,
     recups.recupTpX,
     averageEntryPrice,
-    recups.maxExposition, 
+    recups.maxExposition,
     platform
   );
 
-  const status = getStatus(
-    sellOrders,
-    amountsAndPrices.amountTp1,
-    amountsAndPrices.amountTp2,
-    amountsAndPrices.amountTp3,
-    amountsAndPrices.amountTp4,
-    amountsAndPrices.amountTp5,
-    amountsAndPrices.priceTp1,
-    amountsAndPrices.priceTp2,
-    amountsAndPrices.priceTp3,
-    amountsAndPrices.priceTp4,
-    amountsAndPrices.priceTp5
-  );
-  
-  const percentToNextTp =
-    (amountsAndPrices.priceTp1 - currentPrice) / currentPrice;
-
   return {
-    iconUrl: cmcValues.iconUrl,
-    asset,
-    status,
-    strat: recups.strat,
-    ratioShad: recups.ratioShad,
-    totalShad: recups.totalShad,
-    rank: cmcValues.rank,
+    ...baseMetrics,
+    ...recups,
+    ...amountsAndPrices,
+    status: getStatus(sellOrders, ...Object.values(amountsAndPrices)),
     averageEntryPrice,
     totalBuy,
-    maxExposition: recups.maxExposition,
-    percentageDifference,
-    currentPrice,
-    currentPossession,
-    profit,
+    percentageDifference: getPercentageDifference(currentPrice, averageEntryPrice),
+    profit: getProfit(totalBuy, totalSell, currentPrice, balance),
     totalSell,
-    recupShad: recups.recupShad,
     nbOpenBuyOrders: buyOrders.length,
     nbOpenSellOrders: sellOrders.length,
-    totalAmount,
-    balance,
-    recupTp1: recups.recupTp1,
-    recupTpX: recups.recupTpX,
-    ...amountsAndPrices,
-    ...cmcValues,
-    platform,
-    percentToNextTp,
+    percentToNextTp: (amountsAndPrices.priceTp1 - currentPrice) / currentPrice,
   };
 }
 
 /**
- * Filtre les ordres ouverts par type (achat/vente) et plateforme.
+ * Filters open orders by type (buy/sell) and platform.
  *
- * @param {Array} orders - Liste des ordres ouverts.
- * @param {string} platform - L'identifiant de la plateforme.
- * @param {string} asset - Le symbole de l'actif.
- * @returns {Object} - Objets contenant les listes d'ordres d'achat et de vente.
+ * @param {Array} orders - List of open orders.
+ * @param {string} platform - The platform identifier.
+ * @param {string} base - The asset symbol.
+ * @returns {Object} - Objects containing lists of buy and sell orders.
  */
-function filterOpenOrdersBySide(orders, platform, asset) {
-  const buyOrders = orders.filter(
-    (order) => order.side === "buy" && order.platform === platform
-  );
-  const sellOrders = orders.filter(
-    (order) => order.side === "sell" && order.platform === platform
-  );
-
-  const openBuyOrders = buyOrders.filter((order) => {
-    const [leftSymbol] = order.symbol.split("/");
-    return leftSymbol === asset;
-  });
-
-  const openSellOrders = sellOrders.filter((order) => {
-    const [leftSymbol] = order.symbol.split("/");
-    return leftSymbol === asset;
-  });
-
-  return { buyOrders: openBuyOrders, sellOrders: openSellOrders };
+function filterOpenOrdersBySide(orders, platform, base) {
+  return orders.reduce((acc, order) => {
+    if (order.platform === platform && order.symbol.split("/")[0] === base) {
+      acc[order.side === "buy" ? "buyOrders" : "sellOrders"].push(order);
+    }
+    return acc;
+  }, { buyOrders: [], sellOrders: [] });
 }
 
 /**
