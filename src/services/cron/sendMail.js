@@ -8,10 +8,10 @@ const transporter = nodemailer.createTransport(smtp);
 async function sendMail(options) {
   try {
     const info = await transporter.sendMail(options);
-    console.log(`Email envoyé : ${info.response}`);
+    console.log(`Email sent: ${info.response}`);
     return info;
   } catch (error) {
-    errorLogger.error(`Erreur d'envoi d'email : ${error.message}`, { error });
+    errorLogger.error(`Error sending email: ${error.message}`, { error });
     throw error;
   }
 }

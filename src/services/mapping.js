@@ -55,36 +55,26 @@ function mapBalanceCommon(base, balance, available, platform) {
 
 function mapBalance(platform, data) {
   const mappings = {
-    binance: (item) => mapBalanceCommon(
-      item.asset,
-      parseFloat(item.free) + parseFloat(item.locked),
-      item.free,
-      platform
-    ),
-    kucoin: (item) => mapBalanceCommon(
-      item.currency,
-      item.balance,
-      item.available,
-      platform
-    ),
-    htx: ([key, value]) => mapBalanceCommon(
-      key.toUpperCase(),
-      value.total,
-      value.free,
-      platform
-    ),
-    okx: (item) => mapBalanceCommon(
-      item.ccy,
-      item.cashBal,
-      item.availBal,
-      platform
-    ),
-    gateio: (item) => mapBalanceCommon(
-      item.currency,
-      parseFloat(item.available) + parseFloat(item.locked),
-      item.available,
-      platform
-    ),
+    binance: (item) =>
+      mapBalanceCommon(
+        item.asset,
+        parseFloat(item.free) + parseFloat(item.locked),
+        item.free,
+        platform
+      ),
+    kucoin: (item) =>
+      mapBalanceCommon(item.currency, item.balance, item.available, platform),
+    htx: ([key, value]) =>
+      mapBalanceCommon(key.toUpperCase(), value.total, value.free, platform),
+    okx: (item) =>
+      mapBalanceCommon(item.ccy, item.cashBal, item.availBal, platform),
+    gateio: (item) =>
+      mapBalanceCommon(
+        item.currency,
+        parseFloat(item.available) + parseFloat(item.locked),
+        item.available,
+        platform
+      ),
   };
 
   const platformMapping = mappings[platform];
@@ -93,22 +83,38 @@ function mapBalance(platform, data) {
     return [];
   }
 
-  const balanceData = Array.isArray(data.info.balances || data.info.data || data) 
-    ? (data.info.balances || data.info.data || data)
-    : Object.entries(data).filter(([key, value]) => !['info', 'free', 'used', 'total'].includes(key) && value.total > 0);
+  const balanceData = Array.isArray(
+    data.info.balances || data.info.data || data
+  )
+    ? data.info.balances || data.info.data || data
+    : Object.entries(data).filter(
+        ([key, value]) =>
+          !["info", "free", "used", "total"].includes(key) && value.total > 0
+      );
 
   return balanceData
-    .filter(item => {
-      const balance = parseFloat(item.balance || item.free || item.cashBal || item.available || item.locked || item[1]?.total || 0);
+    .filter((item) => {
+      const balance = parseFloat(
+        item.balance ||
+          item.free ||
+          item.cashBal ||
+          item.available ||
+          item.locked ||
+          item[1]?.total ||
+          0
+      );
       return balance > 0;
     })
     .map(platformMapping);
 }
 
-
 function mapTradeCommon(item, platform, conversionRates = {}) {
   const [baseAsset, quoteAsset] = item.symbol.toUpperCase().split("/");
-  const totalUSDT = getTotalUSDT(item.symbol.toUpperCase(), item.cost, conversionRates);
+  const totalUSDT = getTotalUSDT(
+    item.symbol.toUpperCase(),
+    item.cost,
+    conversionRates
+  );
 
   const feeCost = item.fee ? parseFloat(item.fee.cost) : 0;
   const feeCurrency = item.fee ? item.fee.currency.toUpperCase() : "N/A";
@@ -130,13 +136,23 @@ function mapTradeCommon(item, platform, conversionRates = {}) {
 }
 
 function mapTrades(platform, data, conversionRates = {}) {
-  return data.map((item) => {
-    const commonData = mapTradeCommon(item, platform, conversionRates);
-    if (platform === 'okx' && data.info && data.info.data && data.info.data[0] && data.info.data[0].details) {
-      return data.info.data[0].details.map((item) => mapTradeCommon(item, "okx", conversionRates));
-    }
-    return commonData;
-  }).flat();
+  return data
+    .map((item) => {
+      const commonData = mapTradeCommon(item, platform, conversionRates);
+      if (
+        platform === "okx" &&
+        data.info &&
+        data.info.data &&
+        data.info.data[0] &&
+        data.info.data[0].details
+      ) {
+        return data.info.data[0].details.map((item) =>
+          mapTradeCommon(item, "okx", conversionRates)
+        );
+      }
+      return commonData;
+    })
+    .flat();
 }
 
 function mapOrders(platform, data) {
@@ -163,9 +179,7 @@ function mapTickers(data, platform) {
 
 function mapMarkets(data, platform) {
   return Object.values(data)
-    .filter(
-      (item) => item.quote.endsWith("USDT") || item.quote.endsWith("BUSD") //here all stableCoins instead of only 2
-    )
+    .filter((item) => stableCoins.some((coin) => item.quote === coin))
     .map((item) => ({
       symbol: item.id,
       base: item.base,
@@ -182,7 +196,6 @@ function mapMarkets(data, platform) {
       platform,
     }));
 }
-
 
 function mapTradesAddedManually(data) {
   return data.map((item) => ({

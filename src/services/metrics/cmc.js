@@ -1,9 +1,9 @@
 // src/services/metrics/cmc.js
 /**
- * Récupère les valeurs de CoinMarketCap pour un objet donné.
+ * Retrieves CoinMarketCap values for a given object.
  *
- * @param {Object} cmc - L'objet des données de CoinMarketCap.
- * @returns {Object} - Un objet contenant les informations sur la cryptomonnaie.
+ * @param {Object} cmc - The CoinMarketCap data object.
+ * @returns {Object} - An object containing information about the cryptocurrency.
  */
 function getCmcValues(cmc) {
   if (typeof cmc !== 'object' || cmc === null || Object.keys(cmc).length === 0) {
