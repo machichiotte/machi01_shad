@@ -21,7 +21,7 @@ const {
 } = require("../controllers/tickersController.js");
 const {
   fetchDatabaseBalances,
-} = require("../controllers/balanceController.js");
+} = require("../services/balanceService.js");
 const { getSymbolForPlatform } = require("../utils/platformUtil.js");
 
 /**
