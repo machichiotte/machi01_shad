@@ -1,5 +1,5 @@
 // src/services/tickersService.js
-const { getData, deleteAndSaveData } = require("../utils/dataUtil");
+const { getData } = require("../utils/dataUtil");
 const {
   createPlatformInstance,
   getPlatforms,

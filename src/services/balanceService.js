@@ -4,7 +4,6 @@ const { getData, deleteAndSaveData } = require("../utils/dataUtil");
 const { createPlatformInstance } = require("../utils/platformUtil.js");
 const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil");
 const { mapBalance } = require("../services/mapping");
-const { errorLogger } = require("../utils/loggerUtil.js");
 const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
 
 async function fetchDatabaseBalances() {
@@ -22,7 +21,7 @@ async function fetchDatabaseBalancesByPlatform(platform, retries = 3) {
       await new Promise((resolve) => setTimeout(resolve, delay));
       return fetchDatabaseBalancesByPlatform(platform, retries - 1);
     }
-    errorLogger.error("Failed to fetch current balance from platform", {
+    console.error("Failed to fetch current balance from platform", {
       platform,
       error: error.message,
     });
@@ -42,7 +41,7 @@ async function fetchCurrentBalancesByPlatform(platform, retries = 3) {
       await new Promise((resolve) => setTimeout(resolve, delay));
       return fetchCurrentBalancesByPlatform(platform, retries - 1);
     }
-    errorLogger.error("Failed to fetch current balance from platform", {
+    console.error("Failed to fetch current balance from platform", {
       platform,
       error: error.message,
     });
@@ -56,7 +55,7 @@ async function saveDatabaseBalance(mappedData, platform) {
     await deleteAndSaveData(mappedData, collection, platform);
     await saveLastUpdateToMongoDB(process.env.TYPE_BALANCE, platform);
   } catch (error) {
-    errorLogger.error("Failed to save balance data to database", {
+    console.error("Failed to save balance data to database", {
       platform,
       error: error.message,
     });

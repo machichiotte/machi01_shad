@@ -1,22 +1,5 @@
 // src/controllers/authController.js
-const bcrypt = require("bcrypt"); // For password hashing
-const crypto = require("crypto"); // Use built-in crypto module
 const authService = require("../services/authService");
-
-// Import the specific loggers
-const {errorLogger}  = require("../utils/loggerUtil.js");
-
-async function generateSessionToken() {
-  try {
-    const randomBytes = crypto.randomBytes(32); // Simplified without callback
-    const token = randomBytes.toString("base64url");
-    console.log("Session token generated successfully.");
-    return token;
-  } catch (error) {
-    errorLogger.error("Failed to generate session token", { error: error.message });
-    throw new Error("Failed to generate session token");
-  }
-}
 
 async function registerUser(req, res) {
   try {
@@ -37,12 +20,12 @@ async function registerUser(req, res) {
         .json({ status: true, message: "User created successfully" });
     }
 
-    errorLogger.error("Error creating user", { email });
+    console.error("Error creating user", { email });
     return res
       .status(400)
       .json({ status: false, message: "Error creating user" });
   } catch (error) {
-    errorLogger.error("Registration failed", { error: error.message, email: req.body.email });
+    console.error("Registration failed", { error: error.message, email: req.body.email });
     return res
       .status(500)
       .json({ status: false, message: "Internal server error" });
@@ -66,10 +49,10 @@ async function loginUser(req, res) {
         .status(401)
         .json({ status: false, message: "Invalid email or password" });
     }
+    const passwordMatch = await authService.isPasswordMatch(password, user.password);
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
     if (passwordMatch) {
-      const token = await generateSessionToken();
+      const token = await authService.generateSessionToken();
       console.log("User logged in successfully", { userId: user["_id"], email });
       return res.status(200).json({
         status: true,
@@ -85,7 +68,7 @@ async function loginUser(req, res) {
       .status(401)
       .json({ status: false, message: "Invalid email or password" });
   } catch (error) {
-    errorLogger.error("Login failed", { error: error.message, email: req.body.email });
+    console.error("Login failed", { error: error.message, email: req.body.email });
     return res
       .status(500)
       .json({ status: false, message: "Login failed due to server error" });

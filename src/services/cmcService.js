@@ -1,13 +1,16 @@
 // src/services/cmcService.js
+const { getData } = require("../utils/dataUtil.js");
+const { saveLastUpdateToMongoDB } = require("../utils/mongodbUtil.js");
+const { deleteAllDataMDB, saveData } = require("./mongodbService.js");
+const { errorLogger } = require("../utils/loggerUtil.js");
 
 const fetch = require("node-fetch");
-const {errorLogger}  = require("../utils/loggerUtil.js");
 
 /**
  * Fetches the latest CoinMarketCap data from the CoinMarketCap API.
  * @returns {Promise<Array>} - A promise resolved with the fetched CoinMarketCap data.
  */
-async function fetchCmcData() {
+async function fetchCurrentCmc() {
   const API_KEY = process.env.CMC_APIKEY;
   const limit = 5000;
   const baseStart = 1;
@@ -53,4 +56,67 @@ async function fetchCmcData() {
   return allData;
 }
 
-module.exports = { fetchCmcData };
+/**
+ * Récupère les dernières données CoinMarketCap de la base de données.
+ * @returns {Promise<Object[]>} - Les dernières données CMC de la base de données.
+ */
+async function fetchDatabaseCmc() {
+  const collectionName = process.env.MONGODB_COLLECTION_CMC;
+  try {
+    const data = await getData(collectionName);
+    console.log(`🚀 ~ file: cmcService.js ~ fetchDatabaseCmc :`, { collectionName, count: data.length });
+    return data;
+  } catch (error) {
+    errorLogger.error(`Erreur dans fetchDatabaseCmc: ${error.message}`, { error });
+    throw error;
+  }
+}
+
+/**
+ * Met à jour les données CoinMarketCap dans la base de données.
+ * @param {Object[]} data - Tableau de données CoinMarketCap à mettre à jour.
+ * @returns {Promise<Object>} - Résultat de la mise à jour.
+ */
+async function updateDatabaseCmcData(data) {
+  const collectionName = process.env.MONGODB_COLLECTION_CMC;
+  try {
+    const deleteResult = await deleteAllDataMDB(collectionName);
+    const saveResult = await saveData(data, collectionName);
+    await saveLastUpdateToMongoDB(process.env.TYPE_CMC, "");
+
+    console.log("Données CMC mises à jour dans la base de données", {
+      deleteResult,
+      saveResult,
+      totalCount: data.length,
+    });
+
+    return {
+      status: true,
+      message: "Données CMC mises à jour avec succès",
+      data: data,
+      deleteResult,
+      saveResult,
+      totalCount: data.length,
+    };
+  } catch (error) {
+    errorLogger.error(`Erreur dans updateDatabaseCmcData: ${error.message}`, { error });
+    throw error;
+  }
+}
+
+/**
+ * Met à jour les données CoinMarketCap en récupérant les dernières informations de l'API CoinMarketCap et en les sauvegardant dans la base de données.
+ * @returns {Promise<Object>} - Résultat de la mise à jour.
+ */
+async function updateCmcData() {
+  try {
+    const data = await fetchCurrentCmc();
+    console.log("Dernières données CMC récupérées", { count: data.length });
+    return await updateDatabaseCmcData(data);
+  } catch (error) {
+    errorLogger.error(`Erreur dans updateCmcData: ${error.message}`, { error });
+    throw error;
+  }
+}
+
+module.exports = { fetchCurrentCmc, fetchDatabaseCmc, updateCmcData };

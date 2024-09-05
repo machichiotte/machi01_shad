@@ -1,7 +1,7 @@
 // src/services/cron/updateFunctions.js
-const tickersService = require('../services/tickersService');
-const balanceService = require('../services/balanceService');
-const marketsService = require('../services/marketsService');
+const tickersService = require('../tickersService');
+const balanceService = require('../balanceService');
+const marketsService = require('../marketsService');
 
 const { deleteAndSaveObject } = require("../../utils/mongodbUtil.js");
 

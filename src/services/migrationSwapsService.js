@@ -1,8 +1,6 @@
 // src/services/migrationSwapsService.js
+const { getData } = require("../utils/dataUtil");
 
-const {
-  fetchDatabaseMigrationSwaps,
-} = require("../controllers/swapController");
 const {
   fetchDatabaseStrategies,
   updateStrategyById,
@@ -10,8 +8,12 @@ const {
 const {
   fetchDatabaseTrades,
   updateTradeById,
-} = require("../controllers/tradesController");
-const logger = require("../utils/loggerUtil"); // Supposons que nous avons un module de journalisation
+} = require("../services/tradesService");
+
+async function fetchDatabaseSwapMigration() {
+  const collectionName = process.env.MONGODB_COLLECTION_SWAP;
+  return await getData(collectionName);
+}
 
 async function updateTrade(trade, oldAsset, newAsset, swapMultiplier, platform) {
   const updatedTrade = {
@@ -25,19 +27,19 @@ async function updateTrade(trade, oldAsset, newAsset, swapMultiplier, platform) 
   };
 
   await updateTradeById(trade._id, updatedTrade);
-  logger.info(`Trade swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`);
+  console.info(`Trade swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`);
 }
 
 async function updateStrategy(strategy, newAsset, platform) {
   const updatedStrategy = { asset: newAsset };
   await updateStrategyById(strategy._id, updatedStrategy);
-  logger.info(`Strategy swap completed for ${strategy.asset} to ${newAsset} on platform ${platform}.`);
+  console.info(`Strategy swap completed for ${strategy.asset} to ${newAsset} on platform ${platform}.`);
 }
 
 async function handleMigrationSwaps() {
   try {
     const [swaps, trades, strategies] = await Promise.all([
-      fetchDatabaseMigrationSwaps(),
+      fetchDatabaseSwapMigration(),
       fetchDatabaseTrades(),
       fetchDatabaseStrategies(),
     ]);
@@ -49,7 +51,7 @@ async function handleMigrationSwaps() {
       const delisting = new Date(delistingDate);
 
       if (now < delisting) {
-        logger.info(`Waiting for delisting date (${delistingDate}) of ${oldAsset} to be exceeded.`);
+        console.info(`Waiting for delisting date (${delistingDate}) of ${oldAsset} to be exceeded.`);
         continue;
       }
 
@@ -67,8 +69,8 @@ async function handleMigrationSwaps() {
       await Promise.all([...tradeUpdates, ...strategyUpdates]);
     }
   } catch (error) {
-    logger.error("Error handling swaps:", error);
+    console.error("Error handling swaps:", error);
   }
 }
 
-module.exports = { handleMigrationSwaps };
+module.exports = { fetchDatabaseSwapMigration, handleMigrationSwaps };

@@ -2,26 +2,19 @@
 const { calculateAssetMetrics } = require("./metrics/global.js");
 
 const { mapTrades } = require("./mapping.js");
-const { fetchDatabaseCmc } = require("../controllers/cmcController.js");
 const {
   fetchDatabaseStrategies,
 } = require("../controllers/strategyController.js");
-const {
-  fetchDatabaseTrades,
-  saveTradesToDatabase,
-  fetchLastTrades,
-} = require("../controllers/tradesController.js");
+
+const tradesService = require("../services/tradesService.js");
+const tickersService = require("../services/tickersService.js");
+const balanceService = require("../services/balanceService.js");
+const cmcService = require("../services/cmcService.js");
 const {
   fetchDatabaseOrders,
   updateOrdersFromServer,
 } = require("../controllers/ordersController.js");
-const {
-  fetchDatabaseTickers,
-  getSavedAllTickersByPlatform,
-} = require("../controllers/tickersController.js");
-const {
-  fetchDatabaseBalances,
-} = require("../services/balanceService.js");
+
 const { getSymbolForPlatform } = require("../utils/platformUtil.js");
 
 /**
@@ -42,7 +35,7 @@ async function processBalanceChanges(differences, platform) {
     await updateOrdersFromServer(platform);
 
     // Récupération des tickers sauvegardés pour la plateforme spécifiée
-    const tickers = await getSavedAllTickersByPlatform(platform);
+    const tickers = await tickersService.getAllTickersByPlatform(platform);
 
     // Suppression des doublons dans le tableau des différences
     const uniqueDifferences = removeDuplicateDifferences(differences);
@@ -62,7 +55,7 @@ async function processBalanceChanges(differences, platform) {
 
     // Sauvegarde des nouveaux trades détectés
     if (newTrades.length > 0) {
-      await saveTradesToDatabase(newTrades);
+      await tradesService.saveTradesToDatabase(newTrades);
     }
   } catch (error) {
     console.error(`Error handling balance differences for ${platform}:`, error);
@@ -113,7 +106,7 @@ async function processDifference(
 
     if (marketExists) {
       try {
-        const tradeList = await fetchLastTrades(platform, symbol);
+        const tradeList = await tradesService.fetchLastTrades(platform, symbol);
         const mappedTrades = mapTrades(platform, tradeList);
         newTrades.push(...mappedTrades);
       } catch (err) {
@@ -154,12 +147,12 @@ async function calculateAllMetrics() {
     lastTickers,
     lastBalances,
   ] = await Promise.all([
-    fetchDatabaseCmc(),
+    cmcService.fetchDatabaseCmc(),
     fetchDatabaseStrategies(),
-    fetchDatabaseTrades(),
+    tradesService.fetchDatabaseTrades(),
     fetchDatabaseOrders(),
-    fetchDatabaseTickers(),
-    fetchDatabaseBalances(),
+    tickersService.fetchDatabaseTickers(),
+    balanceService.fetchDatabaseBalances(),
   ]);
 
   if (

@@ -1,253 +1,83 @@
 // src/controllers/tradesController.js
-const { saveData, updateDataMDB } = require("../services/mongodbService.js");
-const {
-  deleteAndSaveData,
-  saveLastUpdateToMongoDB,
-} = require("../utils/mongodbUtil.js");
-const { createPlatformInstance } = require("../utils/platformUtil.js");
-const { getData } = require("../utils/dataUtil.js");
-
-const { mapTrades } = require("../services/mapping.js");
+const tradesService = require('../services/tradesService');
 const { handleErrorResponse } = require("../utils/errorUtil.js");
 
-/**
- * Met à jour un trade dans la collection 'collection_trades' en utilisant l'ID du trade.
- * @param {string} tradeId - L'ID du trade à mettre à jour.
- * @param {object} updatedTrade - Les nouvelles données à mettre à jour.
- * @returns {Promise} - Une promesse qui résout le résultat de l'opération de mise à jour.
- */
-async function updateTradeById(tradeId, updatedTrade) {
-  try {
-    return await updateDataMDB(
-      "collection_trades",
-      { _id: tradeId },
-      { $set: updatedTrade }
-    );
-  } catch (error) {
-    console.log(
-      `🚀 ~ file: tradesController.js:24 ~ updateTradeById ~ error:`,
-      error
-    );
-    throw error;
-  }
-}
-
 async function getTrades(req, res) {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   try {
-    const lastTrades = await getData(collectionName);
-    console.log(`🚀 ~ file: tradesController.js:33 ~ getTrades ~ lastTrades:`, {
-      collectionName,
-      count: lastTrades.length,
-    });
-    res.json(lastTrades);
+    const trades = await tradesService.fetchDatabaseTrades();
+    res.json(trades);
   } catch (error) {
-    console.log(
-      `🚀 ~ file: tradesController.js:39 ~ getTrades ~ error:`,
-      error
-    );
     handleErrorResponse(res, error, "getTrades");
   }
 }
 
-/**
- * Retrieves the last recorded trades from the database.
- * @returns {Object} - The last recorded trades.
- */
-async function fetchDatabaseTrades() {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES;
-  const data = await getData(collectionName);
-  console.log(`🚀 ~ file: cmcController.js:36 ~ fetchDatabaseTrades :`, {
-    collectionName,
-    count: data.length,
-  });
-  return data;
-}
-
-async function addTradesManually(req, res) {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES;
-  const tradesData = req.body.trades_data;
+async function updateTradeById(req, res) {
+  const { tradeId } = req.params;
+  const updatedTrade = req.body;
   try {
-    const savedTrade = await saveData(tradesData, collectionName);
-
-    if (savedTrade.acknowledged) {
-      res
-        .status(200)
-        .json({ message: savedTrade, data: savedTrade, status: 200 });
-    } else {
-      res
-        .status(400)
-        .json({ message: savedTrade, data: savedTrade, status: 400 });
-    }
-  } catch (err) {
-    res.status(500).json({ error: err.name + ": " + err.message });
+    const result = await tradesService.updateTradeById(tradeId, updatedTrade);
+    res.json(result);
+  } catch (error) {
+    handleErrorResponse(res, error, "updateTradeById");
   }
 }
 
-async function saveTradesToDatabase(newTrades) {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES;
-  saveTrades(newTrades, collectionName, true);
-}
-
-async function saveAllTradesToDatabase(newTrades) {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES2;
-  saveTrades(newTrades, collectionName, false);
-}
-
-async function saveTrades(newTrades, collection, isFiltered) {
+async function addTradesManually(req, res) {
+  const tradesData = req.body.trades_data;
   try {
-    let filteredTrades = newTrades;
-    if (isFiltered) {
-      // Récupérer les trades déjà présents en base de données
-      const existingTrades = await fetchDatabaseTrades();
-
-      // Filtrer les nouveaux trades pour éviter les duplications
-      filteredTrades = newTrades.filter((newTrade) => {
-        return !existingTrades.some(
-          (existingTrade) => existingTrade.timestamp === newTrade.timestamp
-        );
-      });
-    }
-    console.log(
-      `🚀 ~ file: tradesController.js:102 ~ filteredTrades=newTrades.filter ~ filteredTrades:`,
-      filteredTrades
-    );
-
-    // Convertir chaque trade en objet s'il ne l'est pas déjà
-    const tradesToInsert = filteredTrades.map((trade) => {
-      return typeof trade === "object" ? trade : { trade }; // Assurez-vous que chaque trade est un objet
-    });
-    console.log(
-      `🚀 ~ file: tradesController.js:109 ~ saveTrades ~ tradesToInsert.length:`,
-      tradesToInsert.length
-    );
-
-    // Ajouter les nouveaux trades à la base de données
-    if (tradesToInsert.length > 0) {
-      const result = await saveData(tradesToInsert, collection);
-      console.log(
-        `🚀 ~ file: tradesController.js:114 ~ saveTrades ~ result.insertedCount:`,
-        result.insertedCount
-      );
-    }
+    const result = await tradesService.addTradesManually(tradesData);
+    res.status(result.status).json(result);
   } catch (error) {
-    console.log(
-      `🚀 ~ file: tradesController.js:117 ~ saveTrades ~ error:`,
-      error
-    );
-  } finally {
-    //await client.close();
+    handleErrorResponse(res, error, "addTradesManually");
   }
 }
 
 async function updateTrades(req, res) {
   const { platform } = req.params;
-  console.log(
-    `🚀 ~ file: tradesController.js:125 ~ updateTrades ~ platform:`,
-    platform
-  );
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES;
-  const platformInstance = createPlatformInstance(platform);
-
   try {
-    const mappedData = [];
-    switch (platform) {
-      case "kucoin":
-        const weeksBack = 4 * 52;
-        for (let i = weeksBack; i > 1; i--) {
-          try {
-            const trades = await platformInstance.fetchMyTrades(
-              undefined,
-              Date.now() - i * 7 * 86400 * 1000,
-              500
-            );
-
-            if (trades.length > 0) {
-              mappedData.push(...mapTrades(platform, trades));
-            }
-          } catch (error) {
-            console.log(
-              `🚀 ~ file: tradesController.js:146 ~ updateTrades ~ error:`,
-              error
-            );
-            res.status(500).json({ error: error.name + ": " + error.message });
-          }
-        }
-        break;
-      case "htx":
-        //const types = 'buy-market,sell-market,buy-limit,sell-limit'; // Les types d'ordre à inclure dans la recherche, séparés par des virgules
-        const currentTime = Date.now();
-        const windowSize = 48 * 60 * 60 * 1000; // Taille de la fenêtre de recherche (48 heures)
-        const totalDuration = 1 * 365 * 24 * 60 * 60 * 1000; // Durée totale de recherche (4 ans)
-        const iterations = Math.ceil(totalDuration / windowSize);
-
-        for (let i = 0; i < iterations; i++) {
-          const startTime = currentTime - (i + 1) * windowSize;
-          const endTime = currentTime - i * windowSize;
-
-          param = {
-            "start-time": startTime,
-            "end-time": endTime,
-          };
-
-          try {
-            const trades = await platformInstance.fetchMyTrades(
-              undefined,
-              undefined,
-              1000,
-              param
-            );
-            if (trades.length > 0) {
-              mappedData.push(...mapTrades(platform, trades));
-            }
-          } catch (err) {
-            console.log("🚀 ~ updateTrades ~ err:", err);
-            res.status(500).json({ error: err.name + ": " + err.message });
-          }
-        }
-        break;
-    }
-
-    try {
-      await deleteAndSaveData(mappedData, collectionName, platform);
-    } catch (error) {
-      console.log(
-        `🚀 ~ file: tradesController.js:188 ~ updateTrades ~ error:`,
-        error
-      );
-      res.status(500).json({ error: error.name + ": " + error.message });
-    }
-    if (tradesData.length > 0) {
-      res.status(200).json(tradesData);
-    } else {
-      res.status(201).json({ empty: "empty" });
-    }
-    saveLastUpdateToMongoDB(process.env.TYPE_TRADES, platform);
+    const result = await tradesService.updateTrades(platform);
+    res.status(result.status).json(result);
   } catch (error) {
-    console.log(
-      `🚀 ~ file: tradesController.js:198 ~ updateTrades ~ error:`,
-      error
-    );
-    res.status(500).json({ error: error.name + ": " + error.message });
+    handleErrorResponse(res, error, "updateTrades");
   }
 }
 
-async function fetchLastTrades(platform, symbol) {
-  console.log(
-    `🚀 ~ file: tradesController.js:192 ~ fetchLastTrades ~ symbol:`,
-    symbol
-  );
-  const platformInstance = createPlatformInstance(platform);
-  return platformInstance.fetchMyTrades(symbol);
+async function fetchLastTrades(req, res) {
+  const { platform, symbol } = req.params;
+  try {
+    const trades = await tradesService.fetchLastTrades(platform, symbol);
+    res.json(trades);
+  } catch (error) {
+    handleErrorResponse(res, error, "fetchLastTrades");
+  }
+}
+
+async function saveTradesToDatabase(req, res) {
+  const { newTrades } = req.body;
+  try {
+    await tradesService.saveTradesToDatabase(newTrades);
+    res.status(200).json({ message: "Trades sauvegardés avec succès" });
+  } catch (error) {
+    handleErrorResponse(res, error, "saveTradesToDatabase");
+  }
+}
+
+async function saveAllTradesToDatabase(req, res) {
+  const { newTrades } = req.body;
+  try {
+    await tradesService.saveAllTradesToDatabase(newTrades);
+    res.status(200).json({ message: "Tous les trades sauvegardés avec succès" });
+  } catch (error) {
+    handleErrorResponse(res, error, "saveAllTradesToDatabase");
+  }
 }
 
 module.exports = {
+  updateTradeById,
   getTrades,
-  fetchDatabaseTrades,
   addTradesManually,
   updateTrades,
   fetchLastTrades,
   saveTradesToDatabase,
   saveAllTradesToDatabase,
-  updateTradeById,
 };
