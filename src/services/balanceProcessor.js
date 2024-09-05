@@ -10,10 +10,7 @@ const tradesService = require("../services/tradesService.js");
 const tickersService = require("../services/tickersService.js");
 const balanceService = require("../services/balanceService.js");
 const cmcService = require("../services/cmcService.js");
-const {
-  fetchDatabaseOrders,
-  updateOrdersFromServer,
-} = require("../controllers/ordersController.js");
+const ordersService = require("../services/ordersService.js");
 
 const { getSymbolForPlatform } = require("../utils/platformUtil.js");
 
@@ -32,7 +29,7 @@ async function processBalanceChanges(differences, platform) {
 
   try {
     // Mise à jour des ordres depuis le serveur
-    await updateOrdersFromServer(platform);
+    await ordersService.updateOrdersFromServer(platform);
 
     // Récupération des tickers sauvegardés pour la plateforme spécifiée
     const tickers = await tickersService.getAllTickersByPlatform(platform);
@@ -150,7 +147,7 @@ async function calculateAllMetrics() {
     cmcService.fetchDatabaseCmc(),
     fetchDatabaseStrategies(),
     tradesService.fetchDatabaseTrades(),
-    fetchDatabaseOrders(),
+    ordersService.fetchDatabaseOrders(),
     tickersService.fetchDatabaseTickers(),
     balanceService.fetchDatabaseBalances(),
   ]);
