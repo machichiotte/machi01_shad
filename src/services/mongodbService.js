@@ -204,7 +204,17 @@ async function getOne(collectionName, query) {
   }, [collectionName, query]);
 }
 
+const cache = {}; // Objet de cache global
 async function getAllDataMDB(collectionName) {
+  // Vérifie si les données sont dans le cache et si elles ne sont pas expirées
+  if (
+    cache[collectionName] &&
+    Date.now() - cache[collectionName].timestamp < 30000
+  ) {
+    console.log(`Using cached data for collection: ${collectionName}`);
+    return cache[collectionName].data;
+  }
+
   console.log(
     `🚀 ~ getAllDataMDB STARTED ~ fetching documents from collection ${collectionName} at ${new Date().toISOString()}`
   );
@@ -217,7 +227,14 @@ async function getAllDataMDB(collectionName) {
         result.length
       } documents from collection ${collectionName} at ${new Date().toISOString()}`
     );
-    return resultArray;
+
+    // Mettre en cache les résultats
+    cache[collectionName] = {
+      data: result,
+      timestamp: Date.now(),
+    };
+
+    return result;
   }, [collectionName]);
 }
 
