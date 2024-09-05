@@ -2,15 +2,13 @@
 const { calculateAssetMetrics } = require("./metrics/global.js");
 
 const { mapTrades } = require("./mapping.js");
-const {
-  fetchDatabaseStrategies,
-} = require("../controllers/strategyController.js");
 
 const tradesService = require("../services/tradesService.js");
 const tickersService = require("../services/tickersService.js");
 const balanceService = require("../services/balanceService.js");
 const cmcService = require("../services/cmcService.js");
 const ordersService = require("../services/ordersService.js");
+const strategyService = require("../services/strategyService.js");
 
 const { getSymbolForPlatform } = require("../utils/platformUtil.js");
 
@@ -145,7 +143,7 @@ async function calculateAllMetrics() {
     lastBalances,
   ] = await Promise.all([
     cmcService.fetchDatabaseCmc(),
-    fetchDatabaseStrategies(),
+    strategyService.fetchDatabaseStrategies(),
     tradesService.fetchDatabaseTrades(),
     ordersService.fetchDatabaseOrders(),
     tickersService.fetchDatabaseTickers(),

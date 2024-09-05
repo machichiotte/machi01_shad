@@ -270,6 +270,29 @@ async function connectToMongoDB() {
   }
 }
 
+async function updateInDatabase(collectionName, filter, update) {
+  try {
+    await updateDataMDB(collectionName, filter, update);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function deleteAndSaveData(mapData, collection, platform) {
+  if (mapData && mapData.length > 0) {
+    const deleteParam = { platform };
+    await deleteMultipleDataMDB(collection, deleteParam);
+    await saveData(mapData, collection);
+  }
+}
+
+async function deleteAndSaveObject(mapData, collectionName) {
+  if (mapData && Object.keys(mapData).length > 0) {
+    await deleteAllDataMDB(collectionName);
+    await saveData(mapData, collectionName);
+  }
+}
+
 module.exports = {
   connectToMongoDB,
   cleanCollectionTrades,
@@ -282,4 +305,7 @@ module.exports = {
   deleteDataMDB,
   deleteMultipleDataMDB,
   deleteAllDataMDB,
+  updateInDatabase,
+  deleteAndSaveData,
+  deleteAndSaveObject,
 };

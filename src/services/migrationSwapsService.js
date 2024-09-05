@@ -1,14 +1,8 @@
 // src/services/migrationSwapsService.js
 const { getData } = require("../utils/dataUtil");
 
-const {
-  fetchDatabaseStrategies,
-  updateStrategyById,
-} = require("../controllers/strategyController");
-const {
-  fetchDatabaseTrades,
-  updateTradeById,
-} = require("../services/tradesService");
+const strategyService = require("../services/strategyService");
+const tradesService = require("../services/tradesService");
 
 async function fetchDatabaseSwapMigration() {
   const collectionName = process.env.MONGODB_COLLECTION_SWAP;
@@ -26,13 +20,13 @@ async function updateTrade(trade, oldAsset, newAsset, swapMultiplier, platform) 
     swap: true,
   };
 
-  await updateTradeById(trade._id, updatedTrade);
+  await tradesService.updateTradeById(trade._id, updatedTrade);
   console.info(`Trade swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`);
 }
 
 async function updateStrategy(strategy, newAsset, platform) {
   const updatedStrategy = { asset: newAsset };
-  await updateStrategyById(strategy._id, updatedStrategy);
+  await strategyService.updateStrategyById(strategy._id, updatedStrategy);
   console.info(`Strategy swap completed for ${strategy.asset} to ${newAsset} on platform ${platform}.`);
 }
 
@@ -40,8 +34,8 @@ async function handleMigrationSwaps() {
   try {
     const [swaps, trades, strategies] = await Promise.all([
       fetchDatabaseSwapMigration(),
-      fetchDatabaseTrades(),
-      fetchDatabaseStrategies(),
+      tradesService.fetchDatabaseTrades(),
+      strategyService.fetchDatabaseStrategies(),
     ]);
 
     const now = new Date();
