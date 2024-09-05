@@ -26,21 +26,22 @@ async function fetchAndMapOrders(platform) {
   }
 }
 
+const databaseService = require("./databaseService");
+/**
+ * Sauvegarde les données d'ordres fournies dans la base de données.
+ * @param {Object[]} mappedData - Les données de marché à sauvegarder.
+ * @param {string} platform - Identifiant de la plateforme.
+ */
 async function saveMappedOrders(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
-  try {
-    await mongodbService.deleteAndSaveData(mappedData, collection, platform);
-    await lastUpdateService.saveLastUpdateToDatabase(
-      process.env.TYPE_ACTIVE_ORDERS,
-      platform
-    );
-    console.log(`Saved mapped orders to the database for ${platform}.`, {
-      count: mappedData.length,
-    });
-  } catch (error) {
-    console.error("Failed to save mapped orders to the database.", error);
-    throw error;
-  }
+  const updateType = process.env.TYPE_ACTIVE_ORDERS;
+
+  await databaseService.saveDataToDatabase(
+    mappedData,
+    collection,
+    platform,
+    updateType
+  );
 }
 
 async function updateOrdersFromServer(platform) {

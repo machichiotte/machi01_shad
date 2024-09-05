@@ -44,27 +44,17 @@ async function fetchCurrentMarkets(platform, retries = 3) {
   }
 }
 
+const databaseService = require("./databaseService");
 /**
- * Saves the provided market data to the database.
- * @param {Object[]} mappedData - The market data to be saved.
- * @param {string} platform - Identifier of the platform.
+ * Sauvegarde les données de marché fournies dans la base de données.
+ * @param {Object[]} mappedData - Les données de marché à sauvegarder.
+ * @param {string} platform - Identifiant de la plateforme.
  */
 async function saveDatabaseMarkets(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
-  try {
-    await mongodbService.deleteAndSaveData(mappedData, collection, platform);
-    await lastUpdateService.saveLastUpdateToDatabase(
-      process.env.TYPE_LOAD_MARKETS,
-      platform
-    );
-    console.log("Saved market data to the database", { platform });
-  } catch (error) {
-    console.error("Failed to save market data to database", {
-      platform,
-      error: error.message,
-    });
-    throw error;
-  }
+  const updateType = process.env.TYPE_LOAD_MARKETS;
+  
+  await databaseService.saveDataToDatabase(mappedData, collection, platform, updateType);
 }
 
 /**

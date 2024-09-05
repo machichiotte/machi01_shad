@@ -7,10 +7,8 @@ const lastUpdateService = require("./lastUpdateService");
 const mongodbService = require("./mongodbService");
 const mapping = require("../services/mapping");
 
-
-const { validateEnvVariables } = require("../utils/controllerUtil");  
+const { validateEnvVariables } = require("../utils/controllerUtil");
 validateEnvVariables(["MONGODB_COLLECTION_BALANCE", "TYPE_BALANCE"]);
-
 
 async function fetchDatabaseBalances() {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
@@ -20,9 +18,12 @@ async function fetchDatabaseBalances() {
 async function fetchDatabaseBalancesByPlatform(platform, retries = 3) {
   try {
     const data = await fetchDatabaseBalances();
-    return data.filter(item => item.platform === platform);
+    return data.filter((item) => item.platform === platform);
   } catch (error) {
-    if (retries > 0 && shouldRetry(platform, error, await loadErrorPolicies())) {
+    if (
+      retries > 0 &&
+      shouldRetry(platform, error, await loadErrorPolicies())
+    ) {
       const delay = Math.pow(2, 3 - retries) * 1000;
       await new Promise((resolve) => setTimeout(resolve, delay));
       return fetchDatabaseBalancesByPlatform(platform, retries - 1);
@@ -55,18 +56,22 @@ async function fetchCurrentBalancesByPlatform(platform, retries = 3) {
   }
 }
 
+const databaseService = require("./databaseService");
+/**
+ * Sauvegarde les données de solde fournies dans la base de données.
+ * @param {Object[]} mappedData - Les données de marché à sauvegarder.
+ * @param {string} platform - Identifiant de la plateforme.
+ */
 async function saveDatabaseBalance(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
-  try {
-    await mongodbService.deleteAndSaveData(mappedData, collection, platform);
-    await lastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_BALANCE, platform);
-  } catch (error) {
-    console.error("Failed to save balance data to database", {
-      platform,
-      error: error.message,
-    });
-    throw error;
-  }
+  const updateType = process.env.TYPE_BALANCE;
+
+  await databaseService.saveDataToDatabase(
+    mappedData,
+    collection,
+    platform,
+    updateType
+  );
 }
 
 async function updateBalanceForPlatform(platform) {

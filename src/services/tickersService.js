@@ -53,7 +53,10 @@ async function updateAllTickers() {
   }
 
   await mongodbService.deleteAndSaveObject(tickersData, collectionName);
-  await lastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_TICKERS, "combined");
+  await lastUpdateService.saveLastUpdateToDatabase(
+    process.env.TYPE_TICKERS,
+    "combined"
+  );
   return tickersData;
 }
 
@@ -84,24 +87,22 @@ async function fetchCurrentTickers(platform, retries = 3) {
   }
 }
 
+const databaseService = require("./databaseService");
+/**
+ * Sauvegarde les données de tickers fournies dans la base de données.
+ * @param {Object[]} mappedData - Les données de tickers à sauvegarder.
+ * @param {string} platform - Identifiant de la plateforme.
+ */
 async function saveDatabaseTickers(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_TICKERS;
-  try {
-    await mongodbService.deleteAndSaveData(mappedData, collection, platform);
-    await lastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_TICKERS, platform);
-    console.log("Données des tickers sauvegardées dans la base de données", {
-      platform,
-    });
-  } catch (error) {
-    console.error(
-      "Échec de la sauvegarde des données des tickers dans la base de données",
-      {
-        platform,
-        error: error.message,
-      }
-    );
-    throw error;
-  }
+  const updateType = process.env.TYPE_TICKERS;
+
+  await databaseService.saveDataToDatabase(
+    mappedData,
+    collection,
+    platform,
+    updateType
+  );
 }
 
 module.exports = {
