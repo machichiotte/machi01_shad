@@ -151,13 +151,13 @@ async function saveData(data, collectionName) {
     if (Array.isArray(data)) {
       const result = await collection.insertMany(data);
       console.log(
-        `🚀 ~ file: mongodbService.js:92 ~ saveData ~ inserted ${result.insertedCount} items`
+        `🚀 ~ file: mongodbService.js:92 ~ saveData ~ inserted ${result.insertedCount} items in collection ${collectionName}`
       );
       return result;
     } else {
       const result = await collection.insertOne(data);
       console.log(
-        `~ file: mongodbService.js:96 ~ saveData ~ inserted document ID: ${result.insertedId}`
+        `~ file: mongodbService.js:96 ~ saveData ~ inserted document ID: ${result.insertedId} in collection ${collectionName}`
       );
       return result;
     }
