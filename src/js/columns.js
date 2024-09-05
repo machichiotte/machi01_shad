@@ -1,4 +1,4 @@
-// src/columns.js
+// src/js/columns.js
 const cmcColumns = [
   { header: 'Rank', field: 'rank', numeric: true },
   { header: 'Name', field: 'name' },

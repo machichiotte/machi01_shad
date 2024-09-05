@@ -1,3 +1,4 @@
+<!-- src/components/shad/Shad.vue -->
 <template>
   <div class="shad-container">
     <!-- Top Expandable Container -->
@@ -5,23 +6,25 @@
       <div class="tab-header">
         <Button label="Platform Selector" @click="activeTopTab = 'platforms'" :class="{ active: activeTopTab === 'platforms' }" />
         <Button label="Update data" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
+                <Button label="Actions" @click="activeTopTab = 'action'" :class="{ active: activeTopTab === 'action' }" />
         <Button icon="pi pi-chevron-down" @click="toggleTopExpandCollapse" class="expand-collapse-button" />
+
+        
       </div>
       <div class="tab-content">
         <PlatformSelector v-if="activeTopTab === 'platforms'" :initialSelectedPlatforms="selectedPlatforms" @update:selectedPlatforms="updateSelectedPlatforms" />
         <UpdateBarSelector v-if="activeTopTab === 'fetch'" />
+        <ActionSelector v-if="activeTopTab === 'action'" 
+          :selectedAssets="selectedAssets" 
+          :allRows="allRows"
+          :filters="filters"
+          @confirmDeleteSelected="confirmDeleteSelected" />
       </div>
     </div>
 
     <!-- Main Shad Data Table -->
     <div class="card">
       <Toolbar class="mb-4">
-        <template #start>
-          <MyBunchSellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length" :model="allRows" />
-          <MyEmergencySellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length" :model="allRows" />
-          <MyBuyButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length" :model="allRows" />
-          <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected" :disabled="!selectedAssets || !selectedAssets.length" />
-        </template>
         <template #end>
           <div class="flex justify-content-end">
             <SearchBar :filters="filters" />
@@ -61,6 +64,7 @@ import TradesTable from '../trades/TradesTable.vue'
 import OrdersTable from '../orders/OrdersTable.vue'
 import PlatformSelector from './PlatformSelector.vue'
 import UpdateBarSelector from './UpdateBarSelector.vue'
+//import ActionSelector from './ActionSelector.vue'
 import BuyCalculator from './BuyCalculator.vue'
 
 import {

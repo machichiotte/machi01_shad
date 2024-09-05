@@ -1,5 +1,4 @@
-// src/components/TradeForm.vue
-
+<!-- src/components/forms/TradesForm.vue -->
 <template>
     <Dialog modal header="Add trade" :style="{ width: '25rem' }">
         <div class="flex">

@@ -1,5 +1,4 @@
 <!-- src/components/Cmc.vue -->
-
 <template>
   <div class="page">
     <h1>CMC</h1>

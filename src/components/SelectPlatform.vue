@@ -1,3 +1,4 @@
+<!-- src/components/SelectPlatform.vue -->
 <template>
   <!-- Using a select dropdown to choose a platform -->
   <select v-model="selectedPlatform" @change="$emit('change', selectedPlatform)">

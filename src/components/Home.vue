@@ -1,4 +1,4 @@
-<!-- src/components/HomePage.vue -->
+<!-- src/components/Home.vue -->
 <template>
   <div class="page">
     <h1>Balances</h1>

@@ -1,7 +1,4 @@
-// src/js/shadUtils.js
-
-// src/js/shadUtils.js
-
+// src/js/shad/shadUtils.js
 import {
   BINANCE_PLATFORM_ID,
   HTX_PLATFORM_ID,

@@ -1,4 +1,4 @@
-<!-- src/components/trades/TradeSearch.vue -->
+<!-- src/components/shad/SearchBar.vue -->
 <template>
     <div class="search-container mb-4">
         <Toolbar>

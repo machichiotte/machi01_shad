@@ -1,4 +1,4 @@
-// src/indexedDB.js
+// src/jindexedDB.js
 const INDEXED_DB_NAME = 'db_test_1'
 const INDEXED_DB_VERSION = 1
 

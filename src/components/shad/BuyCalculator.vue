@@ -1,4 +1,4 @@
-<!-- src/components/BuyCalculator.vue -->
+<!-- src/components/shad/BuyCalculator.vue -->
 <template>
     <div class="buy-calculator">
         <h3>Buy Calculator</h3>

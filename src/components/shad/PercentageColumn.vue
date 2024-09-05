@@ -1,3 +1,4 @@
+<!-- src/components/shad/PercentageColumn.vue -->
 <template>
     <span v-if="isNumber" :class="{
         'text-green-500': percentage > 0,

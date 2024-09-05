@@ -1,4 +1,4 @@
-<!-- src/components/ShadOverlayGraph.vue -->
+<!-- src/components/shad/ShadOverlayGraph.vue -->
 <template>
     <div>
         <canvas ref="chart"></canvas>

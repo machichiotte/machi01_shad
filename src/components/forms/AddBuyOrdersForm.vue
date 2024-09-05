@@ -1,3 +1,4 @@
+<!-- src/components/forms/AddBuyOrdersForm.vue -->
 <template>
     <div>
         <!-- Sélecteur avec les actifs sélectionnés -->

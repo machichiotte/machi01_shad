@@ -1,4 +1,4 @@
-<!-- src/components/MyEmergencySellButton.vue -->
+<!-- src/components/buttonsMyEmergencySellButton.vue -->
 <template>
   <Button label="Emergency Sell" icon="pi pi-exclamation-triangle" severity="danger" class="mr-2" @click="emergencySellClicked"> </Button>
 </template>

@@ -1,4 +1,4 @@
-<!-- src/components/PlatformSelector.vue -->
+<!-- src/components/shad/PlatformSelector.vue -->
 <template>
     <div class="platform-selector">
       <Button
