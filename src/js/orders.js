@@ -87,12 +87,7 @@ const bunchLimitSellOrders = (platform, asset, amount, price) => {
  * @returns {Promise<number>} Le statut de la réponse
  */
 //const bunchLimitBuyOrders = (platform, asset, amount, price) => {
-const bunchLimitBuyOrders = (asset, order) => {
-  const platform = asset.platform
-  const asset = asset.asset
-  const amount = order.quantity
-  const price = order.price
-
+const bunchLimitBuyOrders = (platform, asset, amount, price) => {
   return httpRequest(`${serverHost}/orders/bunch-limit-buy-orders`, {
     platform,
     asset,

@@ -4,8 +4,7 @@
     <div style="display: flex; justify-content: flex-end">
       <button @click="updateStrat">Sauvegarder</button>
     </div>
-
-    <div>
+    <div style="text-align: left">
       <select v-model="selectedStrategy" @change="updateAllStrats">
         <option value="">Sélectionner une stratégie</option>
         <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
@@ -21,39 +20,40 @@
       </select>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Asset</th>
-          <th v-for="platform in platforms" :key="platform">{{ platform }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(asset, assetIndex) in assets" :key="assetIndex">
-          <td>{{ asset }}</td>
+    <SearchBar :filters="filters" />
 
-          <td v-for="(platform, platformIndex) in platforms" :key="platformIndex">
-            <select data-type="strategy" :value="getSelectedStrategy(asset, platform)"
-              @input="setSelectedStrategy(asset, platform, $event.target.value)"
-              :disabled="isDisabled(asset, platform)">
+    <DataTable :value="tableData" :columns="columns" :paginator="true" :rows="10" scrollable columnResizeMode="fit" :filters="filters" showGridlines>
+      <Column field="asset" header="Asset" style="text-align: center;" />
+      <Column v-for="platform in platforms" :key="platform" :field="platform" :header="platform" style="text-align: center;" headerStyle="text-align: center;">
+        <template #body="slotProps">
+          <div style="display: flex; flex-direction: row; align-items: center;">
+            <select
+              :value="slotProps.data[platform].strategy" 
+              @input="setSelectedStrategy(slotProps.data.asset, platform, $event.target.value)"
+              :disabled="slotProps.data[platform].disabled"
+              style="margin-right: 5px;"
+            >
               <option value=""></option>
               <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
                 {{ strategy }}
               </option>
             </select>
 
-            <select data-type="maxExposure" :value="getSelectedMaxExposure(asset, platform)"
-              @input="setSelectedMaxExposure(asset, platform, $event.target.value)"
-              :disabled="isDisabled(asset, platform)">
+            <select
+              :value="slotProps.data[platform].maxExposure"
+              @input="setSelectedMaxExposure(slotProps.data.asset, platform, $event.target.value)"
+              :disabled="slotProps.data[platform].disabled"
+              style="margin-left:  5px;"
+            >
               <option value=""></option>
               <option v-for="exposure in exposures" :key="exposure" :value="exposure">
                 {{ exposure }}
               </option>
             </select>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </template>
+      </Column>
+    </DataTable>
   </div>
 </template>
 
@@ -62,6 +62,14 @@ import { ref, onMounted, computed } from 'vue';
 import { successSpin, errorSpin } from '../js/spinner.js';
 import { strategies } from '../js/strategies.js';
 import { useCalculStore } from '../store/calcul.js';
+import { FilterMatchMode } from 'primevue/api'
+import SearchBar from "./shad/SearchBar.vue";
+
+const serverHost = import.meta.env.VITE_SERVER_HOST;
+
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+})
 
 const calculStore = useCalculStore();
 
@@ -78,58 +86,59 @@ const strat = computed(() => calculStore.getStrats);
 const platforms = computed(() => [...new Set(balance.value.map((item) => item.platform))].sort());
 const assets = computed(() => [...new Set(balance.value.map((item) => item.base))].sort());
 
-const updateStrat = async () => {
-  const stratMap = [];
+const columns = computed(() => {
+  return [
+    { field: 'asset', header: 'Asset' },
+    ...platforms.value.map(platform => ({ field: platform, header: platform }))
+  ];
+});
 
-  try {
-    const rows = document.querySelectorAll('tbody tr');
-
-    rows.forEach((row) => {
-      const asset = row.querySelectorAll('td')[0].textContent;
-      const strategies = {};
-      const maxExposure = {};
-
-      row.querySelectorAll('select').forEach((sel, idx) => {
-        const colName = platforms.value[Math.floor(idx / 2)];
-        const dataType = sel.dataset.type;
-        const selectedOption = sel.selectedOptions[0];
-
-        if (selectedOption && selectedOption.value) {
-          switch (dataType) {
-            case 'strategy':
-              strategies[colName] = selectedOption.value;
-              break;
-            case 'maxExposure':
-              maxExposure[colName] = selectedOption.value;
-              break;
-            default:
-              console.log('updateStrat no dataType');
-              break;
-          }
-        }
-      });
-
-      const rowData = {
-        asset: asset,
-        strategies: strategies,
-        maxExposure: maxExposure
+const tableData = computed(() => {
+  return assets.value.map(asset => {
+    const row = { asset };
+    platforms.value.forEach(platform => {
+      row[platform] = {
+        strategy: getSelectedStrategy(asset, platform),
+        maxExposure: getSelectedMaxExposure(asset, platform),
+        disabled: isDisabled(asset, platform)
       };
+    });
+    return row;
+  });
+});
 
-      stratMap.push(rowData);
+const updateStrat = async () => {
+  const stratMap = tableData.value.map(row => {
+    const strategies = {};
+    const maxExposure = {};
+
+    platforms.value.forEach(platform => {
+      if (!row[platform].disabled) {
+        strategies[platform] = row[platform].strategy;
+        maxExposure[platform] = row[platform].maxExposure;
+      }
     });
 
+    return {
+      asset: row.asset,
+      strategies: strategies,
+      maxExposure: maxExposure
+    };
+  });
+
+  try {
     const response = await fetch(`${serverHost}/strategy/update`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(stratMap)
     });
 
-    const data = await response.json();
+    await response.json();
 
-    successSpin('Save completed', `Strat : ${stratMap.length}`, true, true);
+    successSpin('Sauvegarde terminée', `Strat : ${stratMap.length}`, true, true);
   } catch (err) {
     console.error(err);
-    errorSpin('Error', `${err}`, false, true);
+    errorSpin('Erreur', `${err}`, false, true);
   }
 };
 

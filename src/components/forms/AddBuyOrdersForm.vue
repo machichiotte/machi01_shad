@@ -80,7 +80,7 @@ const submitOrders = async () => {
             console.log('submitOrders selectedAsset', selectedAsset.value)
             console.log('submitOrders order', order)
 
-            const result = await bunchLimitBuyOrders(selectedAsset.value, order);
+            const result = await bunchLimitBuyOrders(selectedAsset.value.platform, selectedAsset.value.asset, order.quantity, order.price);
             console.log('result', result.status)
             return result;
         } catch (error) {
