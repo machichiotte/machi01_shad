@@ -1,6 +1,5 @@
 // src/store/calcul.js
-import { defineStore } from 'pinia'
-
+import { defineStore } from 'pinia';
 import {
   fetchCmc,
   fetchBalances,
@@ -8,7 +7,7 @@ import {
   fetchOrders,
   fetchStrategy,
   fetchShad
-} from '../js/fetchFromServer.js'
+} from '../js/fetchFromServer.js';
 
 export const useCalculStore = defineStore('calcul', {
   state: () => ({
@@ -43,72 +42,76 @@ export const useCalculStore = defineStore('calcul', {
   },
 
   actions: {
-    async fetchData() {
-      const now = Date.now()
-      console.log(`🚀 ~ file: calcul.js:48 ~ fetchData ~ now:`, now)
-      const fetchFunctions = {
-        balances: { fetchFn: fetchBalances, setFn: this.setBalances },
-        trades: { fetchFn: fetchTrades, setFn: this.setTrades },
-        strats: { fetchFn: fetchStrategy, setFn: this.setStrats },
-        cmc: { fetchFn: fetchCmc, setFn: this.setCmc },
-        orders: { fetchFn: fetchOrders, setFn: this.setOrders },
-        shad: { fetchFn: fetchShad, setFn: this.setShad }
-      }
+    // Actions de récupération spécifiques pour chaque type de données
 
-      for (const [type, { fetchFn, setFn }] of Object.entries(fetchFunctions)) {
-        console.log(`🚀 ~ file: calcul.js:58 ~ fetchData ~ type:`, type)
-        const lastFetch = this.getLastFetchTimestamp(type)
-        console.log(`🚀 ~ file: calcul.js:60 ~ fetchData ~ lastFetch:`, lastFetch)
-        if (!lastFetch || this.shouldFetchData(lastFetch)) {
-          console.log(`🚀 ~ file: calcul.js:62 ~ fetchData ~ lastFetch: ififfff`)
-          try {
-            const data = await fetchFn()
-            if (data) {
-              console.log(`🚀 ~ file: calcul.js:63 ~ fetchData ~ data:`, data)
-              setFn(data)
-              this.setLastFetchTimestamp({ type, timestamp: now })
-              console.log(`🚀 ~ file: calcul.js:71 ~ fetchData ~ this.setLastFetchTimestamp:`, {
-                type,
-                timestamp: now
-              })
-            }
-          } catch (error) {
-            console.error(`Error fetching ${type}:`, error)
+    async fetchBalances() {
+      await this.fetchData('balances', fetchBalances, this.setBalances);
+    },
+
+    async fetchTrades() {
+      await this.fetchData('trades', fetchTrades, this.setTrades);
+    },
+
+    async fetchStrats() {
+      await this.fetchData('strats', fetchStrategy, this.setStrats);
+    },
+
+    async fetchCmc() {
+      await this.fetchData('cmc', fetchCmc, this.setCmc);
+    },
+
+    async fetchOrders() {
+      await this.fetchData('orders', fetchOrders, this.setOrders);
+    },
+
+    async fetchShad() {
+      await this.fetchData('shad', fetchShad, this.setShad);
+    },
+
+    // Fonction générique pour la récupération des données
+    async fetchData(type, fetchFn, setFn) {
+      const now = Date.now();
+      const lastFetch = this.getLastFetchTimestamp(type);
+      if (!lastFetch || this.shouldFetchData(lastFetch)) {
+        try {
+          const data = await fetchFn();
+          if (data) {
+            setFn(data);
+            this.setLastFetchTimestamp({ type, timestamp: now });
           }
+        } catch (error) {
+          console.error(`Error fetching ${type}:`, error);
         }
       }
     },
 
     shouldFetchData(lastFetch) {
-      const now = Date.now()
-      return !lastFetch || now - lastFetch > 15000
+      const now = Date.now();
+      return !lastFetch || now - lastFetch > 15000;
     },
 
     setBalances(balances) {
-      this.balances = balances
+      this.balances = balances;
     },
     setTrades(trades) {
-      this.trades = trades
+      this.trades = trades;
     },
     setStrats(strats) {
-      this.strats = strats
+      this.strats = strats;
     },
     setCmc(cmc) {
-      this.cmc = cmc
+      this.cmc = cmc;
     },
     setOrders(orders) {
-      this.orders = orders
-      this.buyOrders = orders.filter((order) => order.side === 'buy')
-      this.sellOrders = orders.filter((order) => order.side === 'sell')
+      this.orders = orders;
+      this.buyOrders = orders.filter((order) => order.side === 'buy');
+      this.sellOrders = orders.filter((order) => order.side === 'sell');
     },
     setLastFetchTimestamp({ type, timestamp }) {
-      if (!this.lastFetchTimestamp) {
-        this.lastFetchTimestamp = {}
-      }
-      this.lastFetchTimestamp[type] = timestamp
+      this.lastFetchTimestamp[type] = timestamp;
     },
     setShad(shad) {
-      this.shad = shad
+      this.shad = shad;
     }
   }
-})
+});

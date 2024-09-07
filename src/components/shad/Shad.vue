@@ -4,21 +4,20 @@
     <!-- Top Expandable Container -->
     <div class="top-tab-container" :class="{ expanded: isTopExpanded }">
       <div class="tab-header">
-        <Button label="Platform Selector" @click="activeTopTab = 'platforms'" :class="{ active: activeTopTab === 'platforms' }" />
+        <Button label="Platform Selector" @click="activeTopTab = 'platforms'"
+          :class="{ active: activeTopTab === 'platforms' }" />
         <Button label="Update data" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
-                <Button label="Actions" @click="activeTopTab = 'action'" :class="{ active: activeTopTab === 'action' }" />
+        <Button label="Actions" @click="activeTopTab = 'action'" :class="{ active: activeTopTab === 'action' }" />
         <Button icon="pi pi-chevron-down" @click="toggleTopExpandCollapse" class="expand-collapse-button" />
 
-        
+
       </div>
       <div class="tab-content">
-        <PlatformSelector v-if="activeTopTab === 'platforms'" :initialSelectedPlatforms="selectedPlatforms" @update:selectedPlatforms="updateSelectedPlatforms" />
+        <PlatformSelector v-if="activeTopTab === 'platforms'" :initialSelectedPlatforms="selectedPlatforms"
+          @update:selectedPlatforms="updateSelectedPlatforms" />
         <UpdateBarSelector v-if="activeTopTab === 'fetch'" />
-        <ActionSelector v-if="activeTopTab === 'action'" 
-          :selectedAssets="selectedAssets" 
-          :allRows="allRows"
-          :filters="filters"
-          @delete-action="handleDeleteAction" />
+        <ActionSelector v-if="activeTopTab === 'action'" :selectedAssets="selectedAssets" :allRows="allRows"
+          :filters="filters" @delete-action="handleDeleteAction" />
       </div>
     </div>
 
@@ -31,7 +30,7 @@
           </div>
         </template>
       </Toolbar>
-      <ShadDataTable :items="filteredShadItems" :filters="filters" @update:selectedAssets="updateSelectedAssets" />
+      <ShadDataTable :items="shadItems" :filters="filters" @update:selectedAssets="updateSelectedAssets" />
     </div>
 
     <!-- Fixed Bottom Tab Container -->
@@ -39,7 +38,8 @@
       <div class="tab-header">
         <Button label="Trades" @click="activeTab = 'trades'" :class="{ active: activeTab === 'trades' }" />
         <Button label="Orders" @click="activeTab = 'orders'" :class="{ active: activeTab === 'orders' }" />
-        <Button label="Buy Calculator" @click="activeTab = 'buyCalculator'" :class="{ active: activeTab === 'buyCalculator' }" />
+        <Button label="Buy Calculator" @click="activeTab = 'buyCalculator'"
+          :class="{ active: activeTab === 'buyCalculator' }" />
         <Button icon="pi pi-chevron-up" @click="toggleExpandCollapse" class="expand-collapse-button" />
       </div>
       <div class="tab-content">
@@ -56,9 +56,6 @@ import { ref, onMounted, computed } from 'vue'
 import { useCalculStore } from '@/store/calcul'; // Importer le store Pinia
 
 import { FilterMatchMode } from 'primevue/api'
-import MyEmergencySellButton from '../buttons/MyEmergencySellButton.vue'
-import MyBunchSellButton from '../buttons/MyBunchSellButton.vue'
-import MyBuyButton from '../buttons/MyBuyButton.vue'
 import ShadDataTable from './ShadDataTable.vue'
 import SearchBar from './SearchBar.vue'
 import TradesTable from '../trades/TradesTable.vue'
@@ -68,12 +65,7 @@ import UpdateBarSelector from './UpdateBarSelector.vue'
 import ActionSelector from './ActionSelector.vue'
 import BuyCalculator from './BuyCalculator.vue'
 
-const calculStore = useCalculStore();
-
 const selectedAssets = ref([])
-const shad = ref([])
-const trades = ref([])
-const openOrders = ref([])
 
 const showOverlay = ref(false)
 const selectedAsset = ref()
@@ -84,26 +76,27 @@ const filters = ref({
 
 const selectedPlatforms = ref(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
 
-const shadItems = computed(() => shad.value && shad.value.length > 0 ? shad.value : [])
+// Utiliser le store Pinia
+const calculStore = useCalculStore();
+const tradesItems = computed(() => calculStore.getTrades);
+const openOrdersItems = computed(() => calculStore.getOrders);
+const shadItems = computed(() => calculStore.getShad);
 
-const filteredShadItems = computed(() => shadItems.value.filter(item => selectedPlatforms.value.includes(item.platform)))
-
-const tradesItems = computed(() => trades.value && trades.value.length > 0 ? trades.value : [])
-
-const openOrdersItems = computed(() => openOrders.value && openOrders.value.length > 0 ? openOrders.value : [])
+const getData = async () => {
+  try {
+    await calculStore.fetchShad();
+    await calculStore.fetchTrades();
+    await calculStore.fetchOrders();
+    console.log("DonnéfetchCalculécupérées:", shadItems.value.length)
+    console.log("Données Trades récupérées:", tradesItems.value.length)
+    console.log("Données Orders récupérées:", openOrdersItems.value.length)
+  } catch (error) {
+    console.error("Une erreur s'est produite lors de la récupération des données :", error)
+  }
+}
 
 onMounted(async () => {
-  try {
-    await calculStore.fetchData()
-    shad.value = await calculStore.getShad
-    trades.value = await calculStore.getTrades
-    openOrders.value = await calculStore.getOrders
-    console.log("Données Shad récupérées:", shad.value.length)
-    console.log("Données Trades récupérées:", trades.value.length)
-    console.log("Données Orders récupérées:", openOrders.value.length)
-  } catch (e) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", e)
-  }
+  await getData()
 })
 
 const handleDeleteAction = () => {
@@ -150,7 +143,8 @@ function toggleTopExpandCollapse() {
   flex-grow: 1;
   overflow: auto;
   /* Adjust height dynamically based on top and bottom containers' expansion */
-  height: calc(100vh - 40px - 40px); /* Default height when both are collapsed */
+  height: calc(100vh - 40px - 40px);
+  /* Default height when both are collapsed */
   transition: height 0.3s ease;
 }
 

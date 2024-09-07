@@ -29,7 +29,6 @@ import { useCalculStore } from '../store/calcul'; // Importer le store Pinia
 import { cmcColumns } from '../js/columns.js'
 import { FilterMatchMode } from 'primevue/api'
 
-const items = ref([])
 const itemsPerPage = 13
 const cols = cmcColumns
 const filters = ref({
@@ -39,7 +38,7 @@ const filters = ref({
 const calculStore = useCalculStore();
 
 const rows = computed(() => {
-  return items.value.map((item) => {
+  return cmcItems.value.map((item) => {
     return {
       rank: item['cmc_rank'],
       name: item['name'],
@@ -49,9 +48,12 @@ const rows = computed(() => {
   })
 })
 
-const getData = async () => {
+const cmcItems = computed(() => calculStore.getCmc)
+
+const getCmcData = async () => {
   try {
-    items.value = calculStore.getCmc;
+    await calculStore.fetchCmc();
+    console.log("Données CMC récupérées:", calculStore.getCmc)
   } catch (error) {
     console.error("Une erreur s'est produite lors de la récupération des données :", error)
   }
@@ -59,8 +61,7 @@ const getData = async () => {
 
 onMounted(async () => {
   try {
-    //await calculStore.fetchData();
-    await getData()
+    await getCmcData()
   } catch (error) {
     console.error("Une erreur s'est produite lors de la récupération des données :", error)
   }

@@ -58,200 +58,154 @@
 </template>
 
 <script setup>
-// Importing necessary modules and functions
-import { ref, onMounted, computed } from 'vue'
-
-import { successSpin, errorSpin } from '../js/spinner.js'
-import { saveStrategyToIndexedDB } from '../js/indexedDB'
+import { ref, onMounted, computed } from 'vue';
+import { successSpin, errorSpin } from '../js/spinner.js';
 import { strategies } from '../js/strategies.js';
+import { useCalculStore } from '../store/calcul.js';
 
-import { useCalculStore } from '../store/calcul.js'; // Importer le store Pinia
 const calculStore = useCalculStore();
-// Define server host
-const serverHost = import.meta.env.VITE_SERVER_HOST
 
-// Define reactive data
-const balance = ref([])
-const platforms = ref([])
-const assets = ref([])
-const strat = ref([])
-const stratMap = ref([])
-const selectedStrategy = ref('')
-const selectedMaxExposure = ref('')
+const selectedStrategy = ref('');
+const selectedMaxExposure = ref('');
 
 const strategiesList = ref(strategies);
-
-const exposures = ref([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000])
-
+const exposures = ref([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000]);
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
 
-// Define methods
-async function getData() {
-  console.log(`🚀 ~ file: Strategy.vue:90 ~ getData `)
+// Utiliser computed pour obtenir les données du store
+const balance = computed(() => calculStore.getBalances);
+const strat = computed(() => calculStore.getStrats);
+const platforms = computed(() => [...new Set(balance.value.map((item) => item.platform))].sort());
+const assets = computed(() => [...new Set(balance.value.map((item) => item.base))].sort());
+
+const updateStrat = async () => {
+  const stratMap = [];
+
   try {
-    balance.value = calculStore.getBalances
-    platforms.value = [...new Set(balance.value.map((item) => item.platform))].sort()
-    assets.value = [...new Set(balance.value.map((item) => item.base))].sort()
-  } catch (err) {
-    console.error(err)
-  }
-}
+    const rows = document.querySelectorAll('tbody tr');
 
-async function getStrat() {
-  try {
-    const data = calculStore.getStrats;
-    console.log(`🚀 ~ file: Strategy.vue:105 ~ getStrat ~ data:`, data)
-    if (data.length === 0) {
-      assets.value.forEach((asset) => {
-        let assetStrat = {
-          symbol: asset,
-          strategies: {},
-          maxExposure: {}
-        }
-        console.log(`🚀 ~ file: Strategy.vue:113 ~ assets.value.forEach ~ assetStrat:`, assetStrat)
-        platforms.value.forEach((platform) => {
-          assetStrat.strategies[platform] = ''
-          assetStrat.maxExposure[platform] = ''
-        })
-
-        strat.value.push(assetStrat)
-      })
-    } else {
-      strat.value = data
-    }
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-async function updateStrat() {
-  stratMap.value = []
-  try {
-    const rows = document.querySelectorAll('tbody tr')
-
-    rows.forEach(async (row) => {
-      const asset = row.querySelectorAll('td')[0].textContent
-      const strategies = {}
-      const maxExposure = {}
+    rows.forEach((row) => {
+      const asset = row.querySelectorAll('td')[0].textContent;
+      const strategies = {};
+      const maxExposure = {};
 
       row.querySelectorAll('select').forEach((sel, idx) => {
-        const colName = platforms.value[Math.floor(idx / 2)]
-
-        const dataType = sel.dataset.type
-        const selectedOption = sel.selectedOptions[0]
+        const colName = platforms.value[Math.floor(idx / 2)];
+        const dataType = sel.dataset.type;
+        const selectedOption = sel.selectedOptions[0];
 
         if (selectedOption && selectedOption.value) {
           switch (dataType) {
             case 'strategy':
-              strategies[colName] = selectedOption.value
-              break
+              strategies[colName] = selectedOption.value;
+              break;
             case 'maxExposure':
-              maxExposure[colName] = selectedOption.value
-              break
+              maxExposure[colName] = selectedOption.value;
+              break;
             default:
-              console.log('updateStrat no dataType')
-              break
+              console.log('updateStrat no dataType');
+              break;
           }
         }
-      })
+      });
 
       const rowData = {
         asset: asset,
         strategies: strategies,
         maxExposure: maxExposure
-      }
+      };
 
-      stratMap.value.push(rowData)
-    })
+      stratMap.push(rowData);
+    });
 
     const response = await fetch(`${serverHost}/strategy/update`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(stratMap.value)
-    })
+      body: JSON.stringify(stratMap)
+    });
 
-    const data = await response.json()
-    await saveStrategyToIndexedDB(data)
+    const data = await response.json();
 
-    successSpin('Save completed', `Strat : ${stratMap.value.length}`, true, true)
+    successSpin('Save completed', `Strat : ${stratMap.length}`, true, true);
   } catch (err) {
-    console.error(err)
-    errorSpin('Error', `${err}`, false, true)
+    console.error(err);
+    errorSpin('Error', `${err}`, false, true);
   }
-}
+};
 
-async function updateAllStrats() {
-  const selectedStrategyValue = selectedStrategy.value
+const updateAllStrats = () => {
+  const selectedStrategyValue = selectedStrategy.value;
 
   strat.value.forEach((item) => {
-    const asset = item.asset
-    const strategies = item.strategies || {}
+    const asset = item.asset;
+    const strategies = item.strategies || {};
 
     platforms.value.forEach((platform) => {
       if (!isDisabled(asset, platform)) {
-        strategies[platform] = selectedStrategyValue
+        strategies[platform] = selectedStrategyValue;
       }
-    })
+    });
 
-    item.strategies = strategies
-  })
-}
+    item.strategies = strategies;
+  });
+};
 
-async function updateAllMaxExposure() {
-  const selectedMaxExposureValue = selectedMaxExposure.value
+const updateAllMaxExposure = () => {
+  const selectedMaxExposureValue = selectedMaxExposure.value;
 
   strat.value.forEach((item) => {
-    const asset = item.asset
-    const maxExposure = item.maxExposure || {}
+    const asset = item.asset;
+    const maxExposure = item.maxExposure || {};
 
     platforms.value.forEach((platform) => {
       if (!isDisabled(asset, platform)) {
-        maxExposure[platform] = selectedMaxExposureValue
+        maxExposure[platform] = selectedMaxExposureValue;
       }
-    })
+    });
 
-    item.maxExposure = maxExposure
-  })
-}
+    item.maxExposure = maxExposure;
+  });
+};
 
 function getSelectedStrategy(asset, platform) {
-  const item = strat.value.find((item) => item.asset === asset)
-  return item ? item.strategies[platform] || '' : ''
+  const item = strat.value.find((item) => item.asset === asset);
+  return item ? item.strategies[platform] || '' : '';
 }
 
 function setSelectedStrategy(asset, platform, value) {
-  const item = strat.value.find((item) => item.asset === asset)
+  const item = strat.value.find((item) => item.asset === asset);
   if (item) {
-    item.strategies[platform] = value
+    item.strategies[platform] = value;
   }
 }
 
 function isDisabled(asset, platform) {
-  const assetsFiltered = balance.value.filter((item) => item.base === asset)
-  const platformsFiltered = assetsFiltered.map((item) => item.platform)
-  return !platformsFiltered.includes(platform)
+  const assetsFiltered = balance.value.filter((item) => item.base === asset);
+  const platformsFiltered = assetsFiltered.map((item) => item.platform);
+  return !platformsFiltered.includes(platform);
 }
 
 function getSelectedMaxExposure(asset, platform) {
-  const item = strat.value.find((item) => item.asset === asset)
-  return item ? item.maxExposure[platform] || '' : ''
+  const item = strat.value.find((item) => item.asset === asset);
+  return item ? item.maxExposure[platform] || '' : '';
 }
 
 function setSelectedMaxExposure(asset, platform, value) {
-  const item = strat.value.find((item) => item.asset === asset)
+  const item = strat.value.find((item) => item.asset === asset);
   if (item) {
-    item.maxExposure[platform] = value
+    item.maxExposure[platform] = value;
   }
 }
 
-// Fetch data on component mount
+// Récupérer les données à l'initialisation du composant
 onMounted(async () => {
   try {
-    await calculStore.fetchData()
-    await getData()
-    await getStrat()
+    await calculStore.fetchBalances();
+    await calculStore.fetchStrats();
+    console.log("Données Strats récupérées:", strat.value);
+    console.log("Données Balances récupérées:", balance.value);
   } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", error)
+    console.error("Une erreur s'est produite lors de la récupération des données :", error);
   }
-})
+});
 </script>

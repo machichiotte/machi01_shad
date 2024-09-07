@@ -27,6 +27,7 @@ export const countConsecutivePairs = (status) => status.filter((value) => value 
  * @returns {Object} - An object containing severity and label for the status.
  */
 export function getStatus(data) {
+  console.log(`🚀 ~ file: shadUtils.js:30 ~ getStatus ~ data:`, data)
   const { currentPrice, platform, status, nbOpenSellOrders, priceTp1, priceTp2 } = data
 
   if (status === 'stable coin') {

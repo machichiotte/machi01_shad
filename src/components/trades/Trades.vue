@@ -6,12 +6,11 @@
       <SearchBar :filters="filters" />
     </div>
     <div class="card">
-      
       <!-- Actions Section -->
       <TradesActions @showDialog="showDialog = true" />
 
       <!-- DataTable with Trade Data -->
-      <TradesTable :items="items" :filters="filters" />
+      <TradesTable :items="trades" :filters="filters" />
 
       <!-- Form for Adding New Trades -->
       <TradesForm v-model:visible="showDialog" />
@@ -20,48 +19,53 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { FilterMatchMode } from 'primevue/api'
-import { fetchTrades } from '../../js/fetchFromServer.js'
-import TradesForm from "../forms/TradesForm.vue"
-import SearchBar from "../shad/SearchBar.vue"
-import TradesActions from "./TradesActions.vue"
-import TradesTable from "./TradesTable.vue"
+import { ref, computed, onMounted } from 'vue';
+import { FilterMatchMode } from 'primevue/api';
+import { useCalculStore } from '../../store/calcul'; // Importer le store Pinia
+import TradesForm from "../forms/TradesForm.vue";
+import SearchBar from "../shad/SearchBar.vue";
+import TradesActions from "./TradesActions.vue";
+import TradesTable from "./TradesTable.vue";
 
-const showDialog = ref(false)
-const items = ref([]) // Raw items data
+const showDialog = ref(false);
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-})
+});
 
+// Utiliser le store Pinia
+const calculStore = useCalculStore();
+
+// Utiliser un computed pour obtenir les trades depuis le store Pinia
+const trades = computed(() => calculStore.getTrades);
+
+// Fonction pour récupérer les données des trades via le store Pinia
 const getTradesData = async () => {
-  items.value = await fetchTrades()
-}
-
-onMounted(async () => {
   try {
-    await getTradesData()
+    await calculStore.fetchTrades(); // Appeler l'action Pinia pour récupérer les données
+    console.log("Données Trades récupérées:", trades.value.length);
   } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", error)
+    console.error("Une erreur s'est produite lors de la récupération des données :", error);
     // Affichez un message d'erreur à l'utilisateur si nécessaire
   }
-})
+};
+
+onMounted(async () => {
+  await getTradesData();
+});
 </script>
 
 <style scoped>
 .page {
   overflow-x: auto;
-  padding: 16px; /* Ajuster selon vos besoins */
-
+  padding: 16px;
 }
 
 .header {
   display: flex;
-  justify-content: space-between; /* Sépare le titre et la barre de recherche */
-  align-items: center; /* Aligne verticalement les éléments au centre */
-  margin-bottom: 16px; /* Espace en bas de la section d'en-tête */
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 }
-
 
 .card {
   background: var(--surface-card);
