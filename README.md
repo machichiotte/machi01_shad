@@ -144,19 +144,9 @@ machi-shad
 │  │  ├── SignupValidations.js
 │  │  └── Validations.js
 │  └── store
-│    ├── modules
-│    │  ├── auth
-│    │  │  ├── actions.js
-│    │  │  ├── getters.js
-│    │  │  ├── index.js
-│    │  │  └── mutations.js
-│    │  └── calcul
-│    │    ├── actions.js
-│    │    ├── getters.js
-│    │    ├── index.js
-│    │    └── mutations.js
-│    ├── store.js
-│    └── storeconstants.js
+│    ├── auth.js
+│    ├── calcul.js
+│    ├── loading.js
 ├── vite.config.js
 ├── vitest.config.js
 └── yarn.lock

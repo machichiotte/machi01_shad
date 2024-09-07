@@ -46,11 +46,8 @@
 </template>
 <script>
 import SignupValidations from '../services/SignupValidations';
-import { mapActions, mapMutations } from 'vuex';
-import {
-    LOADING_SPINNER_SHOW_MUTATION,
-    SIGNUP_ACTION,
-} from '../store/storeconstants';
+import { useAuthStore } from '../store/auth';
+
 export default {
     data() {
         return {
@@ -62,22 +59,15 @@ export default {
     },
     beforeRouteLeave() {
         console.log('route leaving');
-        console.log(this.$store);
+        console.log(this.$pinia);
     },
     beforeRouteEnter(_, _1, next) {
         next((vm) => {
             console.log('route entering');
-            console.log(vm.$store.state.auth);
+            console.log(vm.$pinia.state.auth);
         });
     },
     methods: {
-        ...mapActions('auth', {
-            signup: SIGNUP_ACTION,
-        }),
-
-        ...mapMutations({
-            showLoading: LOADING_SPINNER_SHOW_MUTATION,
-        }),
         async onSignup() {
             let validations = new SignupValidations(
                 this.email,
@@ -90,21 +80,23 @@ export default {
             }
             this.error = '';
 
-            this.showLoading(true);
+            const authStore = useAuthStore();
+
+            authStore.showLoading(true);
             try {
-                const isSigned = await this.signup({
+                const isSigned = await authStore.signup({
                     email: this.email,
                     password: this.password,
                 });
 
                 if (isSigned) {
-                    this.showLoading(false);
+                    authStore.showLoading(false);
                     this.$router.push('/login');
                 }
 
             } catch (error) {
                 this.error = error;
-                this.showLoading(false);
+                authStore.showLoading(false);
             }
         },
     },

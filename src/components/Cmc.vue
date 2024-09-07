@@ -24,13 +24,10 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex';
+import { useCalculStore } from '../store/calcul'; // Importer le store Pinia
+
 import { cmcColumns } from '../js/columns.js'
 import { FilterMatchMode } from 'primevue/api'
-import {
-  FETCH_CMC, GET_CMC
-} from '../store/storeconstants';
-const store = useStore();
 
 const items = ref([])
 const itemsPerPage = 13
@@ -38,6 +35,8 @@ const cols = cmcColumns
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
+
+const calculStore = useCalculStore();
 
 const rows = computed(() => {
   return items.value.map((item) => {
@@ -52,15 +51,19 @@ const rows = computed(() => {
 
 const getData = async () => {
   try {
-    await store.dispatch('calcul/' + FETCH_CMC)
-    items.value = store.getters['calcul/' + GET_CMC]
+    items.value = calculStore.getCmc;
   } catch (error) {
     console.error("Une erreur s'est produite lors de la récupération des données :", error)
   }
 };
 
 onMounted(async () => {
-  await getData()
+  try {
+    //await calculStore.fetchData();
+    await getData()
+  } catch (error) {
+    console.error("Une erreur s'est produite lors de la récupération des données :", error)
+  }
 })
 </script>
 

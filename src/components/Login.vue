@@ -37,16 +37,12 @@
     </div>
 </template>
 <script setup>
-import { ref } from 'vue';
-import { useStore } from 'vuex';
+import { ref } from 'vue';;
+import { useAuthStore } from '../store/auth'; // Importer le store Pinia
 import SignupValidations from '../services/SignupValidations';
-import {
-    IS_USER_AUTHENTICATE_GETTER,
-    LOADING_SPINNER_SHOW_MUTATION,
-    LOGIN_ACTION,
-} from '../store/storeconstants';
 
-const store = useStore();
+const authStore = useAuthStore();
+const loadingStore = useLoadingStore();
 
 const email = ref('');
 const password = ref('');
@@ -62,21 +58,21 @@ const onLogin = async () => {
     }
     error.value = '';
 
-    store.commit(LOADING_SPINNER_SHOW_MUTATION, true);
+    loadingStore.setLoading(true);
 
     try {
-        await store.dispatch(LOGIN_ACTION, {
+        await authStore.login({
             email: email.value,
             password: password.value,
         });
 
-        if (store.getters[IS_USER_AUTHENTICATE_GETTER]) {
-            store.commit(LOADING_SPINNER_SHOW_MUTATION, false);
+        if (authStore.isAuthenticated) {
+            loadingStore.setLoading(false);
             router.push('/shad'); // Assurez-vous d'importer router et de l'utiliser ici
         }
     } catch (e) {
         error.value = e;
-        store.commit(LOADING_SPINNER_SHOW_MUTATION, false);
+        loadingStore.setLoading(false);
     }
 };
 </script>

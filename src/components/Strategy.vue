@@ -63,12 +63,10 @@ import { ref, onMounted, computed } from 'vue'
 
 import { successSpin, errorSpin } from '../js/spinner.js'
 import { saveStrategyToIndexedDB } from '../js/indexedDB'
-import { FETCH_STRATS, FETCH_BALANCES, GET_BALANCES, GET_STRATS } from '@/store/storeconstants.js';
 import { strategies } from '../js/strategies.js';
 
-import { useStore } from 'vuex'
-const store = useStore()
-
+import { useCalculStore } from '../store/calcul.js'; // Importer le store Pinia
+const calculStore = useCalculStore();
 // Define server host
 const serverHost = import.meta.env.VITE_SERVER_HOST
 
@@ -89,10 +87,9 @@ const strategyLabels = computed(() => strategiesList.value.map(strategy => strat
 
 // Define methods
 async function getData() {
+  console.log(`🚀 ~ file: Strategy.vue:90 ~ getData `)
   try {
-    await store.dispatch('calcul/' + FETCH_BALANCES)
-
-    balance.value = store.getters['calcul/' + GET_BALANCES]
+    balance.value = calculStore.getBalances
     platforms.value = [...new Set(balance.value.map((item) => item.platform))].sort()
     assets.value = [...new Set(balance.value.map((item) => item.base))].sort()
   } catch (err) {
@@ -102,8 +99,8 @@ async function getData() {
 
 async function getStrat() {
   try {
-    await store.dispatch('calcul/' + FETCH_STRATS)
-    const data = store.getters['calcul/' + GET_STRATS];
+    const data = calculStore.getStrats;
+    console.log(`🚀 ~ file: Strategy.vue:105 ~ getStrat ~ data:`, data)
     if (data.length === 0) {
       assets.value.forEach((asset) => {
         let assetStrat = {
@@ -111,7 +108,7 @@ async function getStrat() {
           strategies: {},
           maxExposure: {}
         }
-        console.log(`🚀 ~ file: Strategy.vue:118 ~ assets.value.forEach ~ assetStrat:`, assetStrat)
+        console.log(`🚀 ~ file: Strategy.vue:113 ~ assets.value.forEach ~ assetStrat:`, assetStrat)
         platforms.value.forEach((platform) => {
           assetStrat.strategies[platform] = ''
           assetStrat.maxExposure[platform] = ''
@@ -249,7 +246,12 @@ function setSelectedMaxExposure(asset, platform, value) {
 
 // Fetch data on component mount
 onMounted(async () => {
-  await getData()
-  await getStrat()
+  try {
+    await calculStore.fetchData()
+    await getData()
+    await getStrat()
+  } catch (error) {
+    console.error("Une erreur s'est produite lors de la récupération des données :", error)
+  }
 })
 </script>

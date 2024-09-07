@@ -8,15 +8,16 @@
             :model="allRows" />
         <MyBuyButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
             :model="allRows" />
-        <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected"
-            :disabled="!selectedAssets || !selectedAssets.length" />
+        <MyDeleteButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
+            :model="allRows" @delete-clicked="onDeleteClicked" />
     </div>
 </template>
 
 <script setup>
-import { MyBunchSellButton } from '../buttons/MyBunchSellButton.vue'
-import { MyEmergencySellButton } from '../buttons/MyEmergencySellButton.vue'
-import { MyBuyButton } from '../buttons/MyBuyButton.vue'
+import MyBunchSellButton from '../buttons/MyBunchSellButton.vue'
+import MyEmergencySellButton from '../buttons/MyEmergencySellButton.vue'
+import MyBuyButton from '../buttons/MyBuyButton.vue'
+import MyDeleteButton from '../buttons/MyDeleteButton.vue'
 
 // Props à recevoir de ShadContainer.vue
 const props = defineProps({
@@ -26,7 +27,11 @@ const props = defineProps({
 });
 
 // Expose `confirmDeleteSelected` pour être appelée par les composants parents
-const emit = defineEmits(['confirmDeleteSelected']);
+const emit = defineEmits(['delete-action']);
+// Relayer l'événement vers le composant grand-parent
+const onDeleteClicked = () => {
+  emit('delete-action'); // Émettre l'événement "delete-action"
+};
 </script>
 
 <style scoped>

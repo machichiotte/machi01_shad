@@ -18,7 +18,7 @@
           :selectedAssets="selectedAssets" 
           :allRows="allRows"
           :filters="filters"
-          @confirmDeleteSelected="confirmDeleteSelected" />
+          @delete-action="handleDeleteAction" />
       </div>
     </div>
 
@@ -53,7 +53,8 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useStore } from 'vuex'
+import { useCalculStore } from '@/store/calcul'; // Importer le store Pinia
+
 import { FilterMatchMode } from 'primevue/api'
 import MyEmergencySellButton from '../buttons/MyEmergencySellButton.vue'
 import MyBunchSellButton from '../buttons/MyBunchSellButton.vue'
@@ -64,15 +65,10 @@ import TradesTable from '../trades/TradesTable.vue'
 import OrdersTable from '../orders/OrdersTable.vue'
 import PlatformSelector from './PlatformSelector.vue'
 import UpdateBarSelector from './UpdateBarSelector.vue'
-//import ActionSelector from './ActionSelector.vue'
+import ActionSelector from './ActionSelector.vue'
 import BuyCalculator from './BuyCalculator.vue'
 
-import {
-  FETCH_SHAD, FETCH_TRADES, FETCH_ORDERS,
-  GET_ORDERS, GET_SHAD, GET_TRADES
-} from '../../store/storeconstants'
-
-const store = useStore()
+const calculStore = useCalculStore();
 
 const selectedAssets = ref([])
 const shad = ref([])
@@ -98,12 +94,10 @@ const openOrdersItems = computed(() => openOrders.value && openOrders.value.leng
 
 onMounted(async () => {
   try {
-    await store.dispatch('calcul/' + FETCH_SHAD)
-    await store.dispatch('calcul/' + FETCH_TRADES)
-    await store.dispatch('calcul/' + FETCH_ORDERS)
-    shad.value = await store.getters['calcul/' + GET_SHAD]
-    trades.value = await store.getters['calcul/' + GET_TRADES]
-    openOrders.value = await store.getters['calcul/' + GET_ORDERS]
+    await calculStore.fetchData()
+    shad.value = await calculStore.getShad
+    trades.value = await calculStore.getTrades
+    openOrders.value = await calculStore.getOrders
     console.log("Données Shad récupérées:", shad.value.length)
     console.log("Données Trades récupérées:", trades.value.length)
     console.log("Données Orders récupérées:", openOrders.value.length)
@@ -112,9 +106,12 @@ onMounted(async () => {
   }
 })
 
-const confirmDeleteSelected = () => {
+const handleDeleteAction = () => {
+  console.log('Delete action received from grandchild component');
+  // Effectuer ici l'action de suppression
   deleteProductsDialog.value = true
-}
+
+};
 
 function updateSelectedAssets(newSelection) {
   selectedAssets.value = newSelection
