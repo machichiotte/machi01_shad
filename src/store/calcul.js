@@ -70,35 +70,24 @@ export const useCalculStore = defineStore('calcul', {
 
     // Fonction générique pour la récupération des données
     async fetchData(type, fetchFn, setFn) {
-      console.log('fetchData', type, fetchFn, setFn)
       const now = Date.now()
-      console.log('fetchData', 'now', now)
       const lastFetch = this.getLastFetchTimestamp(type)
-      console.log('fetchData', 'lastFetch', lastFetch)
       if (!lastFetch || this.shouldFetchData(lastFetch)) {
         try {
-          console.log('fetchData', 'tryyyyyyyyyyyyyyyyyyyyyyy')
           const data = await fetchFn()
-          console.log('fetchData', 'dataaaaaaaaaaaaaaaaaaaa', data)
           if (data) {
-            console.log('fetchData', 'if dataaaaaaaaaaaaaaaaaaaa')
             setFn(data)
-            console.log('fetchData', 'setFn(data)')
             this.setLastFetchTimestamp({ type, timestamp: now })
-            console.log('fetchData setLastFetchTimestamp', { type, timestamp: now })
           }
         } catch (error) {
-          console.log('fetchData', 'error', error)
           console.error(`Error fetching ${type}:`, error)
         }
       }
     },
 
     shouldFetchData(lastFetch) {
-      console.log('shouldFetchData', lastFetch)
       const now = Date.now()
-      console.log('shouldFetchData', now - lastFetch)
-      return !lastFetch || now - lastFetch > 15000
+      return !lastFetch || now - lastFetch > 60000
     },
 
     setBalances(balances) {
