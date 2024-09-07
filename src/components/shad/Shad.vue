@@ -30,7 +30,7 @@
           </div>
         </template>
       </Toolbar>
-      <ShadDataTable :items="shadItems" :filters="filters" @update:selectedAssets="updateSelectedAssets" />
+      <ShadDataTable :items="filteredShadItems" :filters="filters" @update:selectedAssets="updateSelectedAssets" />
     </div>
 
     <!-- Fixed Bottom Tab Container -->
@@ -82,6 +82,11 @@ const tradesItems = computed(() => calculStore.getTrades);
 const openOrdersItems = computed(() => calculStore.getOrders);
 const shadItems = computed(() => calculStore.getShad);
 
+// Filter shadItems based on selectedPlatforms
+const filteredShadItems = computed(() => {
+  return shadItems.value.filter(item => selectedPlatforms.value.includes(item.platform))
+})
+
 const getData = async () => {
   try {
     console.log('shad 87 getdataaa')
@@ -116,6 +121,7 @@ function updateSelectedAssets(newSelection) {
 }
 
 function updateSelectedPlatforms(newPlatforms) {
+  console.log('updateSelectedPlatforms', newPlatforms)
   selectedPlatforms.value = newPlatforms
 }
 
