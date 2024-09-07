@@ -12,7 +12,7 @@ validateEnvVariables(["MONGODB_COLLECTION_CMC", "TYPE_CMC"]);
 async function getShad(req, res) {
   try {
     const data = await shadService.fetchShadInDatabase();
-    console.log("Retrieved Shad data", { collectionName, count: data.length });
+    console.log("Retrieved Shad data", { count: data.length });
     res.json(data);
   } catch (error) {
     console.error(`Error in getShad: ${error.message}`, { error });
