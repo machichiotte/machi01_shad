@@ -85,12 +85,8 @@ function updateItemField(items, data, field, newValue) {
   }
 
   const item = { ...items[rowIndex], [field]: newValue }
-
-  // Object.assign(item, calculateRecups(item), calculateAmountsAndPricesForShad(item))
-  const calculatedItems = calculateRecups(item);
-  console.log(`🚀 ~ file: shadUtils.js:94 ~ updateItemField ~ calculatedItems:`, calculatedItems)
-  
-  Object.assign(item, calculatedItems)
+  const calculatedItem = calculateRecups(item)
+  Object.assign(item, calculatedItem)
   items[rowIndex] = item
 }
 
@@ -128,69 +124,6 @@ function getPlatformFee(platform) {
   return fees[platform.toLowerCase()] || fees.default
 }
 
-/**
- * Calculate the amounts and prices for each take profit level, considering platform fees.
- * @param {Object} data - The data object containing necessary trading information.
- * @param {number} platformFee - The platform fee percentage (e.g., 0.1 for 0.1%).
- * @returns {Object} - Calculated amounts and prices.
- */
-/*export function calculateAmountsAndPricesForShad(data) {
-  const { recupTp1, balance, totalShad, recupTpX, averageEntryPrice, maxExposition, platform } =
-    data
-  const FACTOR_SELL_SHAD = 0.5
-
-  const parsedRecupTp1 = parseFloat(recupTp1)
-  const parsedBalance = parseFloat(balance)
-  const parsedRecupTpX = parseFloat(recupTpX)
-  const parsedAverageEntryPrice = parseFloat(averageEntryPrice)
-
-  const platformFee = getPlatformFee(platform)
-
-  // Adjust the amount for TP1 considering the platform fee
-  const amountTp1 =
-    totalShad > -1
-      ? FACTOR_SELL_SHAD * (parsedRecupTp1 / parsedRecupTpX) * parsedBalance
-      : parsedBalance - maxExposition / parsedAverageEntryPrice
-
-  // Adjust the price for TP1 to account for platform fee
-  const priceTp1 =
-    totalShad > -1
-      ? (parsedRecupTp1 / amountTp1) * (1 + platformFee / 100)
-      : parsedAverageEntryPrice * (1 + platformFee / 100)
-
-  const amountsAndPrices = { amountTp1, priceTp1 }
-
-  // Loop for TP2 to TP5
-  for (let i = 2; i <= 5; i++) {
-    // Filtrer et additionner uniquement les montants (amounts)
-    const usedAmounts = Object.entries(amountsAndPrices)
-      .filter(([key]) => key.startsWith('amountTp')) // Ne garder que les clés qui commencent par 'amountTp'
-      .reduce((acc, [_, val]) => acc + val, 0) // Additionner les valeurs de ces clés
-
-    // Calculer le solde restant en soustrayant le montant déjà utilisé
-    const remainingBalance = parsedBalance - usedAmounts
-
-    // Calculer le montant et le prix pour ce niveau de prise de profit
-    const { amount, price } = calculateAmountAndPriceForShad(
-      parsedRecupTpX,
-      remainingBalance,
-      FACTOR_SELL_SHAD
-    )
-
-    // Ajuster le prix pour chaque niveau de prise de profit pour tenir compte des frais de la plateforme
-    amountsAndPrices[`amountTp${i}`] = amount
-    amountsAndPrices[`priceTp${i}`] = price * (1 + platformFee / 100)
-  }
-
-  return amountsAndPrices
-}*/
-
-/*function calculateAmountAndPriceForShad(parsedRecup, parsedBalance, factor) {
-  const amount = factor * parsedBalance
-  const price = parsedRecup / amount
-  return { amount, price }
-}*/
-
 function calculateValues(
   totalBuy,
   totalSell,
@@ -201,61 +134,61 @@ function calculateValues(
 ) {
   // Calculs intermédiaires
   const recupTpX = getRecupTpX(maxExposition, ratioShad) // Ligne 2
-  let recupTp1, price1, amount1
+  let recupTp1, priceTp1, amountTp1
 
   // Cas 1
   if (maxExposition < totalBuy && totalBuy > totalSell + maxExposition) {
     recupTp1 = totalBuy - totalSell - maxExposition // Ligne 3
     console.log(`🚀 ~ file: shadUtils.js:211 ~ recupTp1:`, recupTp1)
-    price1 = averageEntryPrice 
+    priceTp1 = averageEntryPrice
     if (recupTp1 < 5.05) {
       console.log(`🚀 ~ file: shadUtils.js:214 ~ recupTp1:`, recupTp1)
       recupTp1 = recupTp1 + recupTpX
       console.log(`🚀 ~ file: shadUtils.js:215 ~ recupTp1:`, recupTp1)
       //todo handle this case
-      price1 = price1 * 2 * ratioShad
+      priceTp1 = priceTp1 * 2 * ratioShad
     }
-    amount1 = recupTp1 / price1
+    amountTp1 = recupTp1 / priceTp1
   } else {
     // Cas 2
     recupTp1 = recupTpX - (totalSell % recupTpX) // Ligne 6
     console.log(`🚀 ~ file: shadUtils.js:222 ~ recupTp1:`, recupTp1)
-    price1 = (2 * recupTpX * ratioShad) / balance // Ligne 7
-    amount1 = recupTp1 / price1 // Ligne 8
+    priceTp1 = (2 * recupTpX * ratioShad) / balance // Ligne 7
+    amountTp1 = recupTp1 / priceTp1 // Ligne 8
   }
 
   // Vérification si amount1 est supérieur au balance
-  if (amount1 > balance) {
-    amount1 = balance // Assignation de balance à amount1
-    price1 = recupTp1 / balance // Recalcul de price1
+  if (amountTp1 > balance) {
+    amountTp1 = balance // Assignation de balance à amount1
+    priceTp1 = recupTp1 / balance // Recalcul de price1
   }
 
   // Calcul des montants et prix suivants
-  const amount2 = (balance - amount1) / 2 // Ligne 9
-  const amount3 = (balance - amount1 - amount2) / 2 // Ligne 10
-  const amount4 = (balance - amount1 - amount2 - amount3) / 2 // Ligne 11
-  const amount5 = (balance - amount1 - amount2 - amount3 - amount4) / 2 // Ligne 12
+  const amountTp2 = (balance - amountTp1) / 2 // Ligne 9
+  const amountTp3 = (balance - amountTp1 - amountTp2) / 2 // Ligne 10
+  const amountTp4 = (balance - amountTp1 - amountTp2 - amountTp3) / 2 // Ligne 11
+  const amountTp5 = (balance - amountTp1 - amountTp2 - amountTp3 - amountTp4) / 2 // Ligne 12
 
-  const price2 = amount2 > 0 ? recupTpX / amount2 : 0 // Ligne 13
-  const price3 = amount3 > 0 ? recupTpX / amount3 : 0 // Ligne 14
-  const price4 = amount4 > 0 ? recupTpX / amount4 : 0 // Ligne 15
-  const price5 = amount5 > 0 ? recupTpX / amount5 : 0 // Ligne 16
+  const priceTp2 = amountTp2 > 0 ? recupTpX / amountTp2 : 0 // Ligne 13
+  const priceTp3 = amountTp3 > 0 ? recupTpX / amountTp3 : 0 // Ligne 14
+  const priceTp4 = amountTp4 > 0 ? recupTpX / amountTp4 : 0 // Ligne 15
+  const priceTp5 = amountTp5 > 0 ? recupTpX / amountTp5 : 0 // Ligne 16
 
   // Retour des valeurs calculées
   return {
     averageEntryPrice,
     recupTpX,
     recupTp1,
-    price1,
-    amount1,
-    amount2,
-    amount3,
-    amount4,
-    amount5,
-    price2,
-    price3,
-    price4,
-    price5
+    priceTp1,
+    amountTp1,
+    amountTp2,
+    amountTp3,
+    amountTp4,
+    amountTp5,
+    priceTp2,
+    priceTp3,
+    priceTp4,
+    priceTp5
   }
 }
 
@@ -265,14 +198,12 @@ function calculateValues(
  * @returns {Object} - Calculated recovery values.
  */
 export function calculateRecups(data) {
-  console.time('calculateRecups Execution Time');
+  console.time('calculateRecups Execution Time')
 
-  const stratExpo = data.maxExposition ?? 0; // Ensure default value
-  console.log(`🚀 ~ StratExpo:`, stratExpo);
-
-  const maxExposition = Math.max(0, stratExpo); // Ensure non-negative exposition
-  const ratioShad = getRatioShad(data.strat);
-  const recupShad = getRecupShad(data.totalBuy, data.totalSell, maxExposition);
+  const stratExpo = data.maxExposition ?? 0 // Ensure default value
+  const maxExposition = Math.max(0, stratExpo) // Ensure non-negative exposition
+  const ratioShad = getRatioShad(data.strat)
+  const recupShad = getRecupShad(data.totalBuy, data.totalSell, maxExposition)
 
   // Calculate values required for the final result
   const calculatedValues = calculateValues(
@@ -282,21 +213,26 @@ export function calculateRecups(data) {
     maxExposition,
     ratioShad,
     data.averageEntryPrice
-  );
+  )
 
-  const totalShad = getDoneShad(data.totalBuy, data.totalSell, maxExposition, recupShad, calculatedValues.recupTpX);
+  const totalShad = getDoneShad(
+    data.totalBuy,
+    data.totalSell,
+    maxExposition,
+    recupShad,
+    calculatedValues.recupTpX
+  )
 
-  console.timeEnd('calculateRecups Execution Time');
-  
+  console.timeEnd('calculateRecups Execution Time')
+
   return {
     maxExposition,
     ratioShad,
     recupShad,
     totalShad,
     ...calculatedValues // Spread calculated values for the final output
-  };
+  }
 }
-
 
 function getRatioShad(strat) {
   if (strat !== undefined) {
@@ -328,33 +264,7 @@ function getRecupShad(totalBuy, totalSell, maxExposition) {
   return 0
 }
 
-function getRecupTp1(totalBuy, totalSell, maxExposition, recupTpX, totalShad) {
-  let valueToRecup = 0
-  if (maxExposition < totalBuy) {
-    if (totalSell < totalBuy - maxExposition) {
-      valueToRecup = totalBuy - maxExposition - totalSell
-    } else {
-      const result = (totalSell - (totalBuy - maxExposition)) / maxExposition
-      const decimalPart = result - Math.floor(result)
-      valueToRecup = decimalPart * maxExposition
-    }
-  } else if (
-    (totalShad + 1) * totalBuy > totalSell &&
-    totalShad * totalBuy < (1 - ERROR_ALLOWED) * totalSell
-  ) {
-    valueToRecup = recupTpX - (totalShad + 1) * totalBuy - totalSell
-  }
-
-  if (valueToRecup > 5.05) {
-    return valueToRecup
-  }
-
-  return recupTpX
-}
-
 function getRecupTpX(maxExposition, ratioShad) {
-  console.log(`🚀 ~ file: shadUtils.js:381 ~ getRecupTpX ~ ratioShad:`, ratioShad)
-  console.log(`🚀 ~ file: shadUtils.js:381 ~ getRecupTpX ~ maxExposition:`, maxExposition)
   const result = (maxExposition * ratioShad * 0.5).toFixed(2)
   return parseFloat(result)
 }
