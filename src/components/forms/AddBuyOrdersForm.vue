@@ -7,12 +7,13 @@
 
         <!-- Lignes de commande d'achat -->
         <div v-for="(order, index) in buyOrders" :key="index" class="order-row">
-            <InputNumber v-model="order.price" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Price" @input="updateCalculatedValues(index)" />
-            <InputNumber v-model="order.quantity" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Quantity"
-            @input="updateCalculatedValues(index)" />
+            <InputNumber v-model="order.price" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8"
+                placeholder="Price" @input="updateCalculatedValues(index)" />
+            <InputNumber v-model="order.quantity" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8"
+                placeholder="Quantity" @input="updateCalculatedValues(index)" />
             <span class="calculated-value">Calculated Total: {{ calculateTotal(index) }}</span>
-            <InputNumber v-model="order.total" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Total"
-            @input="updateCalculatedValues(index)" />
+            <InputNumber v-model="order.total" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8"
+                placeholder="Total" @input="updateCalculatedValues(index)" />
             <span class="calculated-value">Calculated Quantity: {{ calculateQuantity(index) }}</span>
             <Button icon="pi pi-times" class="p-button-danger" @click="removeOrder(index)" />
         </div>
@@ -76,7 +77,11 @@ const calculateQuantity = (index) => {
 const submitOrders = async () => {
     const orderPlacementResults = await Promise.all(buyOrders.value.map(async (order) => {
         try {
-            const result = await bunchLimitBuyOrders(selectedAsset.value.platform, selectedAsset.value.asset, order.quantity, order.price);
+            console.log('submitOrders selectedAsset', selectedAsset.value)
+            console.log('submitOrders order', order)
+
+            const result = await bunchLimitBuyOrders(selectedAsset.value, order);
+            console.log('result', result.status)
             return result;
         } catch (error) {
             console.error('Error placing order:', error);
@@ -85,7 +90,23 @@ const submitOrders = async () => {
     }));
 
     if (orderPlacementResults.length > 0) {
-        successSpinHtml('Save completed', orderPlacementResults.join('<br>'), true, true);
+        /*result:
+  {
+    message: {
+      info: { orderId: '66dca7e2c26b7a0007be5e17' },
+      id: '66dca7e2c26b7a0007be5e17',
+      symbol: 'RUNE/USDT',
+      fee: {},
+      trades: [],
+      fees: [ {} ]
+    },
+    status: 200
+  }*/
+
+        const formattedResults = orderPlacementResults.map(result => {
+            return `Status: ${result.status} - ${JSON.stringify(result.message)}`;
+        });
+        successSpinHtml('Save completed', formattedResults.join('<br>'), true, true);
     } else {
         successSpinHtml('NOTHING', 'No buy order', true, true);
     }
@@ -114,11 +135,14 @@ const assetOptions = computed(() => {
     display: flex;
     gap: 1rem;
     margin-bottom: 0.5rem;
-    flex-direction: column; /* Add this to align elements vertically */
+    flex-direction: column;
+    /* Add this to align elements vertically */
 }
 
 .calculated-value {
-    font-size: 0.8rem; /* Smaller font size for calculated values */
-    color: #888; /* Grey color for indication */
+    font-size: 0.8rem;
+    /* Smaller font size for calculated values */
+    color: #888;
+    /* Grey color for indication */
 }
 </style>
