@@ -1,5 +1,5 @@
 // src/store/calcul.js
-import { defineStore } from 'pinia';
+import { defineStore } from 'pinia'
 import {
   fetchCmc,
   fetchBalances,
@@ -7,7 +7,7 @@ import {
   fetchOrders,
   fetchStrategy,
   fetchShad
-} from '../js/fetchFromServer.js';
+} from '../js/fetchFromServer.js'
 
 export const useCalculStore = defineStore('calcul', {
   state: () => ({
@@ -45,73 +45,84 @@ export const useCalculStore = defineStore('calcul', {
     // Actions de récupération spécifiques pour chaque type de données
 
     async fetchBalances() {
-      await this.fetchData('balances', fetchBalances, this.setBalances);
+      await this.fetchData('balances', fetchBalances, this.setBalances)
     },
 
     async fetchTrades() {
-      await this.fetchData('trades', fetchTrades, this.setTrades);
+      await this.fetchData('trades', fetchTrades, this.setTrades)
     },
 
     async fetchStrats() {
-      await this.fetchData('strats', fetchStrategy, this.setStrats);
+      await this.fetchData('strats', fetchStrategy, this.setStrats)
     },
 
     async fetchCmc() {
-      await this.fetchData('cmc', fetchCmc, this.setCmc);
+      await this.fetchData('cmc', fetchCmc, this.setCmc)
     },
 
     async fetchOrders() {
-      await this.fetchData('orders', fetchOrders, this.setOrders);
+      await this.fetchData('orders', fetchOrders, this.setOrders)
     },
 
     async fetchShad() {
-      await this.fetchData('shad', fetchShad, this.setShad);
+      await this.fetchData('shad', fetchShad, this.setShad)
     },
 
     // Fonction générique pour la récupération des données
     async fetchData(type, fetchFn, setFn) {
-      const now = Date.now();
-      const lastFetch = this.getLastFetchTimestamp(type);
+      console.log('fetchData', type, fetchFn, setFn)
+      const now = Date.now()
+      console.log('fetchData', 'now', now)
+      const lastFetch = this.getLastFetchTimestamp(type)
+      console.log('fetchData', 'lastFetch', lastFetch)
       if (!lastFetch || this.shouldFetchData(lastFetch)) {
         try {
-          const data = await fetchFn();
+          console.log('fetchData', 'tryyyyyyyyyyyyyyyyyyyyyyy')
+          const data = await fetchFn()
+          console.log('fetchData', 'dataaaaaaaaaaaaaaaaaaaa', data)
           if (data) {
-            setFn(data);
-            this.setLastFetchTimestamp({ type, timestamp: now });
+            console.log('fetchData', 'if dataaaaaaaaaaaaaaaaaaaa')
+            setFn(data)
+            console.log('fetchData', 'setFn(data)')
+            this.setLastFetchTimestamp({ type, timestamp: now })
+            console.log('fetchData setLastFetchTimestamp', { type, timestamp: now })
           }
         } catch (error) {
-          console.error(`Error fetching ${type}:`, error);
+          console.log('fetchData', 'error', error)
+          console.error(`Error fetching ${type}:`, error)
         }
       }
     },
 
     shouldFetchData(lastFetch) {
-      const now = Date.now();
-      return !lastFetch || now - lastFetch > 15000;
+      console.log('shouldFetchData', lastFetch)
+      const now = Date.now()
+      console.log('shouldFetchData', now - lastFetch)
+      return !lastFetch || now - lastFetch > 15000
     },
 
     setBalances(balances) {
-      this.balances = balances;
+      this.balances = balances
     },
     setTrades(trades) {
-      this.trades = trades;
+      this.trades = trades
     },
     setStrats(strats) {
-      this.strats = strats;
+      this.strats = strats
     },
     setCmc(cmc) {
-      this.cmc = cmc;
+      this.cmc = cmc
     },
     setOrders(orders) {
-      this.orders = orders;
-      this.buyOrders = orders.filter((order) => order.side === 'buy');
-      this.sellOrders = orders.filter((order) => order.side === 'sell');
+      this.orders = orders
+      this.buyOrders = orders.filter((order) => order.side === 'buy')
+      this.sellOrders = orders.filter((order) => order.side === 'sell')
     },
     setLastFetchTimestamp({ type, timestamp }) {
-      this.lastFetchTimestamp[type] = timestamp;
+      this.lastFetchTimestamp[type] = timestamp
     },
     setShad(shad) {
-      this.shad = shad;
+      this.shad = shad
     }
   }
-});
+})

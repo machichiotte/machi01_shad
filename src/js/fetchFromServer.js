@@ -17,9 +17,9 @@ const fetchData = async (dataType, endpoint) => {
     const response = await fetch(endpoint)
     if (!response.ok) throw new Error(`Failed to fetch ${dataType}`)
     return await response.json()
-  } catch (err) {
-    console.error(`Error fetching ${dataType} data:`, err)
-    throw err
+  } catch (error) {
+    console.error(`Error fetching ${dataType} data:`, error)
+    throw error
   }
 }
 

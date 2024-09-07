@@ -344,6 +344,8 @@ const rowKey = (rowData) => `${rowData.asset}-${rowData.platform}`;
 let tickerInterval;
 
 onMounted(() => {
+    console.log("🚀 ~ file: ShadDataTable.vue:347 ~ onMounted ~ props.items.value:", props.items.value)
+    console.log("🚀 ~ file: ShadDataTable.vue:348 ~ onMounted ~ localItems.value:", localItems.value)
     tickerInterval = setInterval(updateTickers, 60000);  // Rafraîchissement toutes les 60 secondes
     updateTickers();  // Initialisation immédiate
 });

@@ -16,7 +16,7 @@
         <PlatformSelector v-if="activeTopTab === 'platforms'" :initialSelectedPlatforms="selectedPlatforms"
           @update:selectedPlatforms="updateSelectedPlatforms" />
         <UpdateBarSelector v-if="activeTopTab === 'fetch'" />
-        <ActionSelector v-if="activeTopTab === 'action'" :selectedAssets="selectedAssets" :allRows="allRows"
+        <ActionSelector v-if="activeTopTab === 'action'" :selectedAssets="selectedAssets"
           :filters="filters" @delete-action="handleDeleteAction" />
       </div>
     </div>
@@ -58,18 +58,17 @@ import { useCalculStore } from '@/store/calcul'; // Importer le store Pinia
 import { FilterMatchMode } from 'primevue/api'
 import ShadDataTable from './ShadDataTable.vue'
 import SearchBar from './SearchBar.vue'
-import TradesTable from '../trades/TradesTable.vue'
-import OrdersTable from '../orders/OrdersTable.vue'
+
 import PlatformSelector from './PlatformSelector.vue'
 import UpdateBarSelector from './UpdateBarSelector.vue'
 import ActionSelector from './ActionSelector.vue'
+
+import TradesTable from '../trades/TradesTable.vue'
+import OrdersTable from '../orders/OrdersTable.vue'
 import BuyCalculator from './BuyCalculator.vue'
 
 const selectedAssets = ref([])
 
-const showOverlay = ref(false)
-const selectedAsset = ref()
-const allRows = ref()
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
@@ -78,18 +77,24 @@ const selectedPlatforms = ref(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
 
 // Utiliser le store Pinia
 const calculStore = useCalculStore();
+
 const tradesItems = computed(() => calculStore.getTrades);
 const openOrdersItems = computed(() => calculStore.getOrders);
 const shadItems = computed(() => calculStore.getShad);
 
 const getData = async () => {
   try {
-    await calculStore.fetchShad();
+    console.log('shad 87 getdataaa')
     await calculStore.fetchTrades();
     await calculStore.fetchOrders();
-    console.log("DonnéfetchCalculécupérées:", shadItems.value.length)
+    await calculStore.fetchShad();
+
+    console.log('shad 91 fin get dataaa')
+    
     console.log("Données Trades récupérées:", tradesItems.value.length)
     console.log("Données Orders récupérées:", openOrdersItems.value.length)
+    console.log("Données Shad récupérées:", shadItems.value.length)
+
   } catch (error) {
     console.error("Une erreur s'est produite lors de la récupération des données :", error)
   }
