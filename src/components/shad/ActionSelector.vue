@@ -1,15 +1,15 @@
 <!-- src/components/shad/ActionSelector.vue -->
 <template>
     <div class="action-selector">
+        <p v-if="!selectedAssets || selectedAssets.length === 0" class="no-assets-message">
+            Aucun actif sélectionné. Veuillez sélectionner des actifs pour afficher les actions disponibles.
+        </p>
         <!-- Boutons d'action -->
-        <MyBunchSellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
-            :model="allRows" />
-        <MyEmergencySellButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
-            :model="allRows" />
-        <MyBuyButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
-            :model="allRows" />
-        <MyDeleteButton :selectedAssets="selectedAssets" :disabled="!selectedAssets || !selectedAssets.length"
-            :model="allRows" @delete-clicked="onDeleteClicked" />
+        <MyBunchSellButton v-if="selectedAssets && selectedAssets.length > 0" :selectedAssets="selectedAssets" />
+        <MyEmergencySellButton v-if="selectedAssets && selectedAssets.length > 0" :selectedAssets="selectedAssets" />
+        <MyBuyButton v-if="selectedAssets && selectedAssets.length > 0" :selectedAssets="selectedAssets" />
+        <MyDeleteButton v-if="selectedAssets && selectedAssets.length > 0" :selectedAssets="selectedAssets"
+            @delete-clicked="onDeleteClicked" />
     </div>
 </template>
 
@@ -22,7 +22,6 @@ import MyDeleteButton from '../buttons/MyDeleteButton.vue'
 // Props à recevoir de ShadContainer.vue
 const props = defineProps({
     selectedAssets: Array,
-    allRows: Array,
     filters: Object
 });
 
@@ -30,7 +29,7 @@ const props = defineProps({
 const emit = defineEmits(['delete-action']);
 // Relayer l'événement vers le composant grand-parent
 const onDeleteClicked = () => {
-  emit('delete-action'); // Émettre l'événement "delete-action"
+    emit('delete-action'); // Émettre l'événement "delete-action"
 };
 </script>
 
@@ -50,5 +49,11 @@ const onDeleteClicked = () => {
 .justify-content-end {
     margin-left: auto;
     /* Aligne à droite */
+}
+
+.no-assets-message {
+    color: black;
+    text-align: center;
+    width: 100%;
 }
 </style>
