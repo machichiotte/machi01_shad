@@ -12,21 +12,21 @@ import {
  * @param {number} threshold - The threshold to apply.
  * @returns {number} - The calculated price threshold.
  */
-export const calculatePriceThreshold = (currentPrice, threshold) => currentPrice * threshold
+export const getPriceThreshold = (currentPrice, threshold) => currentPrice * threshold
 
 /**
  * Count consecutive occurrences of the value '1' in the status array.
  * @param {Array<number>} status - The array of status values.
  * @returns {number} - The count of consecutive pairs.
  */
-export const countConsecutivePairs = (status) => status.filter((value) => value === 1).length
+export const countOccurrences = (status) => status.filter((value) => value === 1).length
 
 /**
  * Determine the status of an asset based on its current data and trading conditions.
  * @param {Object} data - The data object containing asset and trading information.
  * @returns {Object} - An object containing severity and label for the status.
  */
-export function getStatus(data) {
+export function evaluateAssetStatus(data) {
   const { currentPrice, platform, status, nbOpenSellOrders, priceTp1, priceTp2 } = data
 
   if (status === 'stable coin') {
@@ -53,7 +53,7 @@ export function getStatus(data) {
   }
 
   const platformThreshold = platform === BINANCE_PLATFORM_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD
-  const priceThreshold = calculatePriceThreshold(currentPrice, platformThreshold)
+  const priceThreshold = getPriceThreshold(currentPrice, platformThreshold)
 
   const nextOrder = status.findIndex((value) => value === 0)
   if (nextOrder !== -1) {
@@ -72,7 +72,7 @@ export function getStatus(data) {
  * @param {string} field - The name of the field to update.
  * @param {*} newValue - The new value for the field.
  */
-function updateItemField(items, data, field, newValue) {
+function updateAssetField(items, data, field, newValue) {
   if (!Array.isArray(items)) {
     console.warn('Invalid items reference or items is not an array:', items)
     return
@@ -85,20 +85,20 @@ function updateItemField(items, data, field, newValue) {
   }
 
   const item = { ...items[rowIndex], [field]: newValue }
-  const calculatedItem = calculateRecups(item)
+  const calculatedItem = getTakeProfitsTargets(item)
   Object.assign(item, calculatedItem)
   items[rowIndex] = item
 }
 
-export const updateRowByStratChange = (items, data, newStrat) =>
-  updateItemField(items, data, 'strat', newStrat)
+export const applyStrategyToRow = (items, data, newStrat) =>
+  updateAssetField(items, data, 'strat', newStrat)
 
-export const updateMaxExposition = (items, data, maxExposition) => {
+export const setMaxExposure = (items, data, maxExposition) => {
   if (isNaN(maxExposition) || maxExposition < 0) {
     console.warn('Invalid maxExposition value:', maxExposition)
     return
   }
-  updateItemField(items, data, 'maxExposition', maxExposition)
+  updateAssetField(items, data, 'maxExposition', maxExposition)
 }
 
 const ERROR_ALLOWED = 0.05
@@ -108,7 +108,7 @@ const ERROR_ALLOWED = 0.05
  * @param {string} platform - The name of the trading platform.
  * @returns {number} - The fee percentage for the given platform.
  */
-function getPlatformFee(platform) {
+function retrievePlatformFee(platform) {
   // Define the platform fees
   const fees = {
     binance: 0.1, // 0.1% fee
@@ -123,38 +123,25 @@ function getPlatformFee(platform) {
   return fees[platform.toLowerCase()] || fees.default
 }
 
-function calculateValues(
-  totalBuy,
-  totalSell,
-  balance,
-  maxExposition,
-  ratioShad,
-  averageEntryPrice
-) {
+function getTakeProfitValues(data, maxExposition, ratioShad, averageEntryPrice) {
+  const { totalBuy, totalSell, balance } = data
   // Calculs intermédiaires
-  const recupTpX = getRecupTpX(maxExposition, ratioShad) // Ligne 2
+  const recupTpX = getRecupTpX(maxExposition, ratioShad)
   let recupTp1, priceTp1, amountTp1
-
   // Cas 1
   if (maxExposition < totalBuy && totalBuy > totalSell + maxExposition) {
-    recupTp1 = totalBuy - totalSell - maxExposition // Ligne 3
-    console.log(`🚀 ~ file: shadUtils.js:211 ~ recupTp1:`, recupTp1)
+    recupTp1 = totalBuy - totalSell - maxExposition
     priceTp1 = averageEntryPrice
-    if (recupTp1 < 5.05) {
-      console.log(`🚀 ~ file: shadUtils.js:214 ~ recupTp1:`, recupTp1)
-      recupTp1 = recupTp1 + recupTpX
-      console.log(`🚀 ~ file: shadUtils.js:215 ~ recupTp1:`, recupTp1)
-      //todo handle this case
-      priceTp1 = priceTp1 * 2 * ratioShad
-    }
-    amountTp1 = recupTp1 / priceTp1
   } else {
-    // Cas 2
-    recupTp1 = recupTpX - (totalSell % recupTpX) // Ligne 6
-    console.log(`🚀 ~ file: shadUtils.js:222 ~ recupTp1:`, recupTp1)
-    priceTp1 = (2 * recupTpX * ratioShad) / balance // Ligne 7
-    amountTp1 = recupTp1 / priceTp1 // Ligne 8
+    recupTp1 = recupTpX - (totalSell % recupTpX)
+    priceTp1 = (2 * recupTpX * ratioShad) / balance
   }
+
+  if (recupTp1 < 5.05) {
+    recupTp1 = recupTp1 + recupTpX
+    priceTp1 = priceTp1 * 2 * ratioShad
+  }
+  amountTp1 = recupTp1 / priceTp1
 
   // Vérification si amount1 est supérieur au balance
   if (amountTp1 > balance) {
@@ -163,15 +150,15 @@ function calculateValues(
   }
 
   // Calcul des montants et prix suivants
-  const amountTp2 = (balance - amountTp1) / 2 // Ligne 9
-  const amountTp3 = (balance - amountTp1 - amountTp2) / 2 // Ligne 10
-  const amountTp4 = (balance - amountTp1 - amountTp2 - amountTp3) / 2 // Ligne 11
-  const amountTp5 = (balance - amountTp1 - amountTp2 - amountTp3 - amountTp4) / 2 // Ligne 12
+  const amountTp2 = (balance - amountTp1) / 2
+  const amountTp3 = (balance - amountTp1 - amountTp2) / 2
+  const amountTp4 = (balance - amountTp1 - amountTp2 - amountTp3) / 2
+  const amountTp5 = (balance - amountTp1 - amountTp2 - amountTp3 - amountTp4) / 2
 
-  const priceTp2 = amountTp2 > 0 ? recupTpX / amountTp2 : 0 // Ligne 13
-  const priceTp3 = amountTp3 > 0 ? recupTpX / amountTp3 : 0 // Ligne 14
-  const priceTp4 = amountTp4 > 0 ? recupTpX / amountTp4 : 0 // Ligne 15
-  const priceTp5 = amountTp5 > 0 ? recupTpX / amountTp5 : 0 // Ligne 16
+  const priceTp2 = amountTp2 > 0 ? recupTpX / amountTp2 : 0
+  const priceTp3 = amountTp3 > 0 ? recupTpX / amountTp3 : 0
+  const priceTp4 = amountTp4 > 0 ? recupTpX / amountTp4 : 0
+  const priceTp5 = amountTp5 > 0 ? recupTpX / amountTp5 : 0
 
   // Retour des valeurs calculées
   return {
@@ -196,33 +183,15 @@ function calculateValues(
  * @param {Object} data - The data object containing necessary trading information.
  * @returns {Object} - Calculated recovery values.
  */
-export function calculateRecups(data) {
-  console.time('calculateRecups Execution Time')
-
+export function getTakeProfitsTargets(data) {
   const stratExpo = data.maxExposition ?? 0 // Ensure default value
   const maxExposition = Math.max(0, stratExpo) // Ensure non-negative exposition
-  const ratioShad = getRatioShad(data.strat)
-  const recupShad = getRecupShad(data.totalBuy, data.totalSell, maxExposition)
+  const ratioShad = determineStrategyFactor(data.strat)
+  const recupShad = calculateRecoveryGap(data.totalBuy, data.totalSell, maxExposition)
+  const averageEntryPrice = data.totalBuy / data.totalAmount
 
-  // Calculate values required for the final result
-  const calculatedValues = calculateValues(
-    data.totalBuy,
-    data.totalSell,
-    data.balance,
-    maxExposition,
-    ratioShad,
-    data.averageEntryPrice
-  )
-
-  const totalShad = getDoneShad(
-    data.totalBuy,
-    data.totalSell,
-    maxExposition,
-    recupShad,
-    calculatedValues.recupTpX
-  )
-
-  console.timeEnd('calculateRecups Execution Time')
+  const calculatedValues = getTakeProfitValues(data, maxExposition, ratioShad, averageEntryPrice)
+  const totalShad = getDoneShad(data, maxExposition, recupShad, calculatedValues.recupTpX)
 
   return {
     maxExposition,
@@ -233,7 +202,7 @@ export function calculateRecups(data) {
   }
 }
 
-function getRatioShad(strat) {
+function determineStrategyFactor(strat) {
   if (strat !== undefined) {
     switch (strat) {
       case 'Shad':
@@ -252,7 +221,8 @@ function getRatioShad(strat) {
   return '/' // 'NULL' ou une valeur par défaut de votre choix
 }
 
-function getRecupShad(totalBuy, totalSell, maxExposition) {
+function calculateRecoveryGap(totalBuy, totalSell, maxExposition) {
+  //todo depends on the strategy
   if (totalSell > 0) {
     if (maxExposition < totalBuy && totalSell < totalBuy - maxExposition) {
       return 0
@@ -268,7 +238,8 @@ function getRecupTpX(maxExposition, ratioShad) {
   return parseFloat(result)
 }
 
-function getDoneShad(totalBuy, totalSell, maxExposition, recupShad, recupTpX) {
+function getDoneShad(data, maxExposition, recupShad, recupTpX) {
+  const { totalBuy, totalSell } = data
   if (
     maxExposition < (1 - ERROR_ALLOWED) * totalBuy &&
     totalSell < (1 - ERROR_ALLOWED) * (totalBuy - maxExposition)

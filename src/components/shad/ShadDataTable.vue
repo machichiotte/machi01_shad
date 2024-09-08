@@ -93,7 +93,7 @@
                 <div>
                     <!-- Dropdown for strat -->
                     <select v-model="slotProps.data.strat"
-                        @change="updateRowByStratChange(localItems.value, slotProps.data, $event.target.value)">
+                        @change="applyStrategyToRow(localItems.value, slotProps.data, $event.target.value)">
                         <option value=""></option>
                         <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">{{ strategy }}
                         </option>
@@ -101,14 +101,14 @@
 
                     <!-- Input for maxExposition -->
                     <input type="text" v-model="slotProps.data.maxExposition"
-                        @input="updateMaxExposition(localItems, slotProps.data, $event.target.value)"
-                        @blur="updateMaxExposition(localItems, slotProps.data, $event.target.value)" />
+                        @input="setMaxExposure(localItems, slotProps.data, $event.target.value)"
+                        @blur="setMaxExposure(localItems, slotProps.data, $event.target.value)" />
                 </div>
             </template>
         </Column>
         <Column field="status" style="min-width: 12rem" frozen alignFrozen="left">
             <template #body="slotProps">
-                <Tag :value="getStatus(slotProps.data).label" :severity="getStatus(slotProps.data).severity" />
+                <Tag :value="evaluateAssetStatus(slotProps.data).label" :severity="evaluateAssetStatus(slotProps.data).severity" />
             </template>
         </Column>
         <Column field="totalShad"></Column>
@@ -222,7 +222,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { getStatus, updateMaxExposition, updateRowByStratChange } from '../../js/shad/shadUtils.js';
+import { evaluateAssetStatus, setMaxExposure, applyStrategyToRow } from '../../js/shad/shadUtils.js';
 import { fetchTickers } from '../../js/fetchFromServer.js';
 import { strategies } from '../../js/strategies.js';
 import PercentageColumn from './PercentageColumn.vue';
