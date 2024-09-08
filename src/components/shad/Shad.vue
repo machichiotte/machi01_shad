@@ -67,34 +67,60 @@ import TradesTable from '../trades/TradesTable.vue'
 import OrdersTable from '../orders/OrdersTable.vue'
 import BuyCalculator from './BuyCalculator.vue'
 
+/**
+ * @type {import('vue').Ref<Array>}
+ */
 const selectedAssets = ref([])
 
+/**
+ * @type {import('vue').Ref<Object>}
+ */
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
 
+/**
+ * @type {import('vue').Ref<Array<string>>}
+ */
 const selectedPlatforms = ref(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
 
-// Utiliser le store Pinia
+/**
+ * @type {import('pinia').Store}
+ */
 const calculStore = useCalculStore();
 
+/**
+ * @type {import('vue').ComputedRef<Array>}
+ */
 const tradesItems = computed(() => calculStore.getTrades);
+
+/**
+ * @type {import('vue').ComputedRef<Array>}
+ */
 const openOrdersItems = computed(() => calculStore.getOrders);
+
+/**
+ * @type {import('vue').ComputedRef<Array>}
+ */
 const shadItems = computed(() => calculStore.getShad);
 
-// Filter shadItems based on selectedPlatforms
+/**
+ * @type {import('vue').ComputedRef<Array>}
+ */
 const filteredShadItems = computed(() => {
   return shadItems.value.filter(item => selectedPlatforms.value.includes(item.platform))
 })
 
+/**
+ * @async
+ * @function
+ * @returns {Promise<void>}
+ */
 const getData = async () => {
   try {
-    console.log('shad 87 getdataaa')
     await calculStore.fetchTrades();
     await calculStore.fetchOrders();
     await calculStore.fetchShad();
-
-    console.log('shad 91 fin get dataaa')
     
     console.log("Données Trades récupérées:", tradesItems.value.length)
     console.log("Données Orders récupérées:", openOrdersItems.value.length)
@@ -109,17 +135,27 @@ onMounted(async () => {
   await getData()
 })
 
+/**
+ * @function handleDeleteAction
+ */
 const handleDeleteAction = () => {
   console.log('Delete action received from grandchild component');
   // Effectuer ici l'action de suppression
   deleteProductsDialog.value = true
-
 };
 
+/**
+ * @function updateSelectedAssets
+ * @param {Array} newSelection
+ */
 function updateSelectedAssets(newSelection) {
   selectedAssets.value = newSelection
 }
 
+/**
+ * @function updateSelectedPlatforms
+ * @param {Array} newPlatforms
+ */
 function updateSelectedPlatforms(newPlatforms) {
   console.log('updateSelectedPlatforms', newPlatforms)
   selectedPlatforms.value = newPlatforms
@@ -128,6 +164,9 @@ function updateSelectedPlatforms(newPlatforms) {
 const isBottomExpanded = ref(false)
 const activeTab = ref('trades')
 
+/**
+ * @function toggleExpandCollapse
+ */
 function toggleExpandCollapse() {
   isBottomExpanded.value = !isBottomExpanded.value
 }
@@ -135,6 +174,9 @@ function toggleExpandCollapse() {
 const isTopExpanded = ref(false)
 const activeTopTab = ref('platforms')
 
+/**
+ * @function toggleTopExpandCollapse
+ */
 function toggleTopExpandCollapse() {
   isTopExpanded.value = !isTopExpanded.value
 }
