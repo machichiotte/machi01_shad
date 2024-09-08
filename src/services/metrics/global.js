@@ -1,4 +1,11 @@
 // src/services/metrics/global.js
+
+/**
+ * This module contains functions for calculating global metrics for assets.
+ * It includes utility functions for retrieving balances, prices, and other
+ * financial data, as well as the main function for calculating asset metrics.
+ */
+
 const {
   calculateRecups,
   calculateAmountsAndPricesForShad,
@@ -16,6 +23,10 @@ const { getTotalAmountAndBuy, getTotalSell } = require("./trades.js");
 // Define stable coins
 const stableCoins = ["USDT", "USDC", "DAI", "BUSD", "TUSD"];
 
+/**
+ * Default metrics object with initial values set to "N/A".
+ * This serves as a template for asset metrics.
+ */
 const DEFAULT_METRICS = {
   iconUrl: "N/A",
   asset: "N/A",
@@ -48,8 +59,14 @@ const DEFAULT_METRICS = {
   platform: "N/A",
 };
 
-// ... code existant ...
-
+/**
+ * Retrieves the current price of an asset from the last tickers.
+ * 
+ * @param {Array} lastTickers - Array of recent ticker data.
+ * @param {string} base - The base asset symbol.
+ * @param {string} platform - The platform identifier.
+ * @returns {string|number} - The current price or "N/A" if not found.
+ */
 function getCurrentPrice(lastTickers, base, platform) {
   if (!Array.isArray(lastTickers) || !base || !platform) {
     console.warn("Paramètres invalides pour getCurrentPrice");
@@ -64,6 +81,19 @@ function getCurrentPrice(lastTickers, base, platform) {
   return ticker?.last ?? "N/A";
 }
 
+/**
+ * Calculates various metrics for a given asset.
+ * 
+ * @param {string} asset - The asset symbol.
+ * @param {string} platform - The platform identifier.
+ * @param {Array} lastBalances - Recent balance data.
+ * @param {Object} lastCmc - Recent CoinMarketCap data.
+ * @param {Array} lastTrades - Recent trade data.
+ * @param {Array} lastOpenOrders - Recent open orders data.
+ * @param {Object} lastStrategies - Recent strategy data.
+ * @param {Array} lastTickers - Recent ticker data.
+ * @returns {Object} - An object containing calculated metrics for the asset.
+ */
 function calculateAssetMetrics(
   asset,
   platform,
@@ -163,10 +193,10 @@ function filterOpenOrdersBySide(orders, platform, base) {
 }
 
 /**
- * Vérifie si les stratégies sont valides.
+ * Checks if the strategies are valid.
  *
- * @param {Object} strategies - Les stratégies à vérifier.
- * @returns {boolean} - Retourne vrai si c'est un objet non vide.
+ * @param {Object} strategies - The strategies to check.
+ * @returns {boolean} - Returns true if it's a non-empty object.
  */
 function isValidStrategies(strategies) {
   const isObject = typeof strategies === "object" && strategies !== null;

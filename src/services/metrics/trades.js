@@ -1,5 +1,18 @@
 // src/js/metrics/trades.js
+
+/**
+ * Checks if a value is a positive number.
+ * @param {*} value - The value to check.
+ * @returns {boolean} - True if the value is a positive number, false otherwise.
+ */
 const isPositiveNumber = (value) => typeof value === 'number' && !isNaN(value) && value > 0;
+
+/**
+ * Converts a fee to its equivalent in the quote currency.
+ * @param {number} fee - The fee amount.
+ * @param {number} price - The price of the asset.
+ * @returns {number} - The fee converted to quote currency, or 0 if inputs are invalid.
+ */
 const convertFeeToQuote = (fee, price) => isPositiveNumber(fee) && isPositiveNumber(price) ? fee * price : 0;
 
 /**
@@ -46,6 +59,12 @@ function getTotalSell(symbol, trades) {
     }, 0);
 }
 
+/**
+ * Retrieves the trade history for a specific symbol.
+ * @param {string} symbol - The trading symbol to filter trades by.
+ * @param {Array} trades - The array of all trade objects.
+ * @returns {Array} - An array of trade objects for the specified symbol.
+ */
 function getTradesHistory(symbol, trades) {
   // Implementation for getting the trades history for a given symbol
   return trades.filter((trade) => trade.base === symbol);

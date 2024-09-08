@@ -33,6 +33,12 @@ function getCmcValues(cmc) {
   };
 }
 
+/**
+ * Generates the URL for the cryptocurrency icon based on its CoinMarketCap ID.
+ *
+ * @param {string|number} id - The CoinMarketCap ID of the cryptocurrency.
+ * @returns {string} - The URL of the cryptocurrency icon.
+ */
 function getIconUrl(id) {
   return `https://s2.coinmarketcap.com/static/img/coins/64x64/${parseInt(
     id
