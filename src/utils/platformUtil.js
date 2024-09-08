@@ -4,7 +4,13 @@ const { AuthenticationError } = require("ccxt");
 //const PLATFORMS = ["binance", "kucoin", "htx", "okx", "gateio"];
 const PLATFORMS = ["binance", "kucoin"];
 
-// Fonction utilitaire pour créer une instance d'échange
+/**
+ * Utility function to create an exchange instance
+ * @param {string} platform - The name of the trading platform
+ * @returns {Object} - An instance of the specified exchange
+ * @throws {Error} If API key or secret is missing, or if the platform is unsupported
+ * @throws {AuthenticationError} If there's an authentication error with the platform
+ */
 function createPlatformInstance(platform) {
   const apiKey = process.env[`${platform.toUpperCase()}_API_KEY`];
   const secret = process.env[`${platform.toUpperCase()}_SECRET_KEY`];
@@ -18,13 +24,13 @@ function createPlatformInstance(platform) {
     throw new Error(`API secret missing for platform: ${platform}`);
   }
 
-  // Ajoutez ceci pour vérifier si la platforme est pris en charge
+  // Check if the platform is supported
   if (!PLATFORMS.includes(platform)) {
     throw new Error(`Unsupported platform: ${platform}`);
   }
 
   try {
-    // Vérifier si la classe CCXT existe
+    // Check if the CCXT class exists
     if (!(platform in ccxt)) {
       throw new Error(`Unsupported platform: ${platform}`);
     }
@@ -33,19 +39,19 @@ function createPlatformInstance(platform) {
       apiKey,
       secret,
       ...(passphrase && { password: passphrase }),
-      timeout: 20000, // Timeout pour les requêtes
-      enableRateLimit: true, // Activer le contrôle de taux
+      timeout: 20000, // Timeout for requests
+      enableRateLimit: true, // Enable rate limiting
     };
 
     return new ccxt[platform](platformParams);
   } catch (error) {
     if (error instanceof AuthenticationError) {
-      // Gérer spécifiquement les erreurs d'authentification
+      // Handle authentication errors specifically
       throw new AuthenticationError(
         `Authentication error for ${platform}: ${error.message}`
       );
     } else {
-      // Gérer les autres erreurs
+      // Handle other errors
       throw new Error(
         `Error creating platform instance for ${platform}: ${error.message}`
       );
@@ -53,6 +59,14 @@ function createPlatformInstance(platform) {
   }
 }
 
+/**
+ * Get the symbol format for a specific platform
+ * @param {string} platform - The name of the trading platform
+ * @param {string} base - The base currency
+ * @param {string} [quote="USDT"] - The quote currency, defaults to USDT
+ * @returns {string} - The formatted symbol for the specified platform
+ * @throws {Error} If the platform is unsupported
+ */
 function getSymbolForPlatform(platform, base, quote = "USDT") {
   let symbol;
 
@@ -79,6 +93,10 @@ function getSymbolForPlatform(platform, base, quote = "USDT") {
   return symbol;
 }
 
+/**
+ * Get the list of supported platforms
+ * @returns {string[]} - An array of supported platform names
+ */
 function getPlatforms() {
   return PLATFORMS;
 }

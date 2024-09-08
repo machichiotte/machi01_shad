@@ -1,8 +1,13 @@
 // src/utils/fileUtil.js
 const path = require("path");
 
+/**
+ * Get the path to the mock data file for a given collection.
+ * @param {string} collection - The name of the collection.
+ * @returns {string} The full path to the mock data file.
+ */
 function getMockDataPath(collection) {
-  // Ajoutez la logique pour retourner le nom spécifique du mock en fonction de la collection
+  // Add logic to return the specific mock name based on the collection
   const collectionMockName = `${collection}.json`;
   return path.join(__dirname, "mockData", "mongodb", collectionMockName);
 }

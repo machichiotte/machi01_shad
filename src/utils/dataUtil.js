@@ -18,7 +18,11 @@ async function getData(collectionName) {
   }
 }
 
-// Main function to get data from the collection
+/**
+ * Main function to get data from the collection
+ * @param {string} collectionName - The name of the collection to retrieve data from
+ * @returns {Promise<Object[]>} - The retrieved data as an array of objects
+ */
 async function getDataFromCollection(collectionName) {
   try {
     if (process.env.OFFLINE_MODE === "true") {
