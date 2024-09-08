@@ -12,17 +12,21 @@
   </template>
   
   <script setup>
+  /**
+   * @component PlatformSelector
+   * @props {Array} initialSelectedPlatforms
+   * @emits {Array} update:selectedPlatforms
+   */
+
   import { ref, computed, watch } from 'vue'
   
-  // Define props to receive initial selected platforms from the parent
   const props = defineProps({
     initialSelectedPlatforms: {
       type: Array,
-      default: () => ['binance', 'kucoin', 'htx', 'okx', 'gateio'] // Default selection: all platforms
+      default: () => ['binance', 'kucoin', 'htx', 'okx', 'gateio']
     }
   })
   
-  // Emit an event to communicate the selected platforms to the parent
   const emit = defineEmits(['update:selectedPlatforms'])
   
   const platformOptions = computed(() => [
@@ -33,20 +37,20 @@
     { id: 'gateio', name: 'Gate.io' }
   ])
   
-  // Initialize selected platforms with the prop value
   const selectedPlatforms = ref([...props.initialSelectedPlatforms])
   
+  /**
+   * @param {string} platformId
+   */
   function togglePlatform(platformId) {
     if (selectedPlatforms.value.includes(platformId)) {
       selectedPlatforms.value = selectedPlatforms.value.filter(id => id !== platformId)
     } else {
       selectedPlatforms.value.push(platformId)
     }
-    // Emit the updated selected platforms to the parent
     emit('update:selectedPlatforms', selectedPlatforms.value)
   }
   
-  // Watch for changes in props to reactively update the selection
   watch(
     () => props.initialSelectedPlatforms,
     (newVal) => {
@@ -74,4 +78,3 @@
     color: white;
   }
   </style>
-  
