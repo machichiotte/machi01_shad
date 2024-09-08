@@ -1,3 +1,10 @@
+/**
+ * Task Executor for Cron Jobs
+ * 
+ * This module contains functions for executing cron tasks across different platforms.
+ * It handles task execution, error logging, and critical error notifications.
+ */
+
 // src/services/cron/tasExecutor.js
 const { sendMail } = require("./sendMail.js");
 const { smtp } = require("../config.js");
@@ -10,6 +17,12 @@ const {
   updateBalancesForPlatform
 } = require("./updateFunctions.js");
 
+/**
+ * Executes a cron task with retry mechanism and error handling
+ * @param {Function} task - The task to be executed
+ * @param {boolean} isCritical - Whether the task is critical
+ * @param {number} retries - Number of retry attempts
+ */
 async function executeCronTask(task, isCritical = false, retries = 3) {
   let attempts = 0;
   while (attempts < retries) {
@@ -36,6 +49,11 @@ async function executeCronTask(task, isCritical = false, retries = 3) {
   }
 }
 
+/**
+ * Executes a given task function for all platforms
+ * @param {string} taskName - Name of the task
+ * @param {Function} taskFunction - Function to be executed for each platform
+ */
 async function executeForPlatforms(taskName, taskFunction) {
   console.log(`Executing cron job for ${taskName}...`);
   const platforms = getPlatforms();
@@ -44,12 +62,18 @@ async function executeForPlatforms(taskName, taskFunction) {
   ));
 }
 
+/**
+ * Object containing cron functions for different tasks
+ */
 const cronFunctions = {
   Tickers: updateTickersForPlatform,
   Markets: updateMarketsForPlatform,
   Balances: updateBalancesForPlatform
 };
 
+/**
+ * Exports cron functions mapped to their respective task names
+ */
 module.exports = Object.fromEntries(
   Object.entries(cronFunctions).map(([key, func]) => [
     `cron${key}`,

@@ -5,6 +5,12 @@ const { errorLogger } = require("../../utils/loggerUtil.js");
 
 const transporter = nodemailer.createTransport(smtp);
 
+/**
+ * Sends an email using the configured SMTP transporter.
+ * @param {Object} options - The email options (to, from, subject, text, html, etc.)
+ * @returns {Promise<Object>} A promise that resolves with the info object from nodemailer
+ * @throws {Error} If there's an error sending the email
+ */
 async function sendMail(options) {
   try {
     const info = await transporter.sendMail(options);
