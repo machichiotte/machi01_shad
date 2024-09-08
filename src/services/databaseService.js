@@ -3,11 +3,11 @@ const mongodbService = require("./mongodbService");
 const lastUpdateService = require("./lastUpdateService");
 
 /**
- * Sauvegarde les données dans la base de données et met à jour la dernière date de mise à jour.
- * @param {Object[]} data - Les données à sauvegarder.
- * @param {string} collectionName - Le nom de la collection MongoDB.
- * @param {string} platform - L'identifiant de la plateforme.
- * @param {string} updateType - Le type de mise à jour pour lastUpdateService.
+ * Saves data to the database and updates the last update date.
+ * @param {Object[]} data - The data to be saved.
+ * @param {string} collectionName - The name of the MongoDB collection.
+ * @param {string} platform - The platform identifier.
+ * @param {string} updateType - The update type for lastUpdateService.
  */
 async function saveDataToDatabase(data, collectionName, platform, updateType) {
   try {

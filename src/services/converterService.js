@@ -1,3 +1,8 @@
+/**
+ * Converts input data to JSON format based on the detected model type.
+ * @param {Array} data - The input data to be converted.
+ * @returns {Promise<Array>} A promise that resolves to the converted JSON data.
+ */
 async function convertToJSON(data) {
   // Votre logique de conversion en JSON ici en fonction du modèle détecté
   const modelType = detectModelType(data);
@@ -17,6 +22,11 @@ async function convertToJSON(data) {
   }
 }
 
+/**
+ * Detects the model type of the input data.
+ * @param {Array} data - The input data to analyze.
+ * @returns {string} The detected model type.
+ */
 function detectModelType(data) {
   let modelType;
   // Votre logique pour détecter le modèle de fichier CSV
@@ -60,6 +70,13 @@ function detectModelType(data) {
   return modelType;
 }
 
+/**
+ * Retrieves the total USDT value from an API based on the deal time, quote, and total.
+ * @param {string} dealTime - The time of the deal.
+ * @param {string} quote - The quote currency.
+ * @param {number} total - The total amount.
+ * @returns {Promise<number>} A promise that resolves to the total USDT value.
+ */
 async function getTotalUSDTFromAPI(dealTime, quote, total) {
   console.log("🚀 ~ getTotalUSDTFromAPI ~ total:", total);
   console.log("🚀 ~ getTotalUSDTFromAPI ~ quote:", quote);
@@ -81,6 +98,11 @@ async function getTotalUSDTFromAPI(dealTime, quote, total) {
   return total;
 }
 
+/**
+ * Converts HTX model data to a standardized format.
+ * @param {Array} data - The HTX model data to convert.
+ * @returns {Promise<Array>} A promise that resolves to the converted data.
+ */
 async function convertModelHTX(data) {
   console.log("🚀 ~ convertModelHTX ~ data:", data);
   const convertedData = await Promise.all(
@@ -119,6 +141,11 @@ async function convertModelHTX(data) {
   return convertedData.filter(Boolean);
 }
 
+/**
+ * Converts Binance model data to a standardized format.
+ * @param {Array} data - The Binance model data to convert.
+ * @returns {Promise<Array>} A promise that resolves to the converted data.
+ */
 async function convertModelBinance(data) {
   console.log("🚀 ~ convertModelBinance ~ data:", data);
   const convertedData = await Promise.all(
@@ -175,6 +202,11 @@ async function convertModelBinance(data) {
   return convertedData.filter(Boolean);
 }
 
+/**
+ * Converts KuCoin model data to a standardized format.
+ * @param {Array} data - The KuCoin model data to convert.
+ * @returns {Promise<Array>} A promise that resolves to the converted data.
+ */
 async function convertModelKucoin(data) {
   console.log("🚀 ~ convertModelKucoin ~ data:", data);
   const convertedData = await Promise.all(
@@ -201,6 +233,11 @@ async function convertModelKucoin(data) {
   return convertedData.filter(Boolean);
 }
 
+/**
+ * Converts OKX model data to a standardized format.
+ * @param {Array} data - The OKX model data to convert.
+ * @returns {Promise<Array>} A promise that resolves to the converted data.
+ */
 async function convertModelOkx(data) {
   console.log("🚀 ~ convertModelOkx ~ data:", data);
 

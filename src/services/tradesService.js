@@ -6,11 +6,21 @@ const { getData } = require("../utils/dataUtil");
 const lastUpdateService = require("./lastUpdateService.js");
 const mongodbService = require("./mongodbService.js");
 
+/**
+ * Fetches trades from the database.
+ * @returns {Promise<Array>} A promise that resolves to an array of trades.
+ */
 async function fetchDatabaseTrades() {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   return await getData(collectionName);
 }
 
+/**
+ * Updates a trade by its ID.
+ * @param {string} tradeId - The ID of the trade to update.
+ * @param {Object} updatedTrade - The updated trade data.
+ * @returns {Promise<Object>} A promise that resolves to the update result.
+ */
 async function updateTradeById(tradeId, updatedTrade) {
   try {
     return await updateDataMDB(
@@ -19,11 +29,16 @@ async function updateTradeById(tradeId, updatedTrade) {
       { $set: updatedTrade }
     );
   } catch (error) {
-    console.error("Erreur lors de la mise à jour du trade:", error);
+    console.error("Error updating trade:", error);
     throw error;
   }
 }
 
+/**
+ * Adds trades manually to the database.
+ * @param {Array|Object} tradesData - The trade(s) data to add.
+ * @returns {Promise<Object>} A promise that resolves to the result of the operation.
+ */
 async function addTradesManually(tradesData) {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   try {
@@ -34,11 +49,16 @@ async function addTradesManually(tradesData) {
       return { message: savedTrade, data: savedTrade, status: 400 };
     }
   } catch (error) {
-    console.error("Erreur lors de l'ajout manuel des trades:", error);
+    console.error("Error adding trades manually:", error);
     throw error;
   }
 }
 
+/**
+ * Updates trades for a specific platform.
+ * @param {string} platform - The platform to update trades for.
+ * @returns {Promise<Object>} A promise that resolves to the result of the update operation.
+ */
 async function updateTrades(platform) {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   const platformInstance = createPlatformInstance(platform);
@@ -90,31 +110,54 @@ async function updateTrades(platform) {
 
     return { status: 200, data: mappedData };
   } catch (error) {
-    console.error("Erreur lors de la mise à jour des trades:", error);
+    console.error("Error updating trades:", error);
     throw error;
   }
 }
 
+/**
+ * Fetches the last trades for a specific platform and symbol.
+ * @param {string} platform - The platform to fetch trades from.
+ * @param {string} symbol - The trading symbol.
+ * @returns {Promise<Array>} A promise that resolves to an array of the last trades.
+ */
 async function fetchLastTrades(platform, symbol) {
   try {
     const platformInstance = createPlatformInstance(platform);
     return await platformInstance.fetchMyTrades(symbol);
   } catch (error) {
-    console.error("Erreur lors de la récupération des derniers trades:", error);
+    console.error("Error fetching last trades:", error);
     throw error;
   }
 }
 
+/**
+ * Saves new trades to the database.
+ * @param {Array} newTrades - The new trades to save.
+ * @returns {Promise<void>}
+ */
 async function saveTradesToDatabase(newTrades) {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   await saveTrades(newTrades, collectionName, true);
 }
 
+/**
+ * Saves all trades to the database without filtering.
+ * @param {Array} newTrades - The trades to save.
+ * @returns {Promise<void>}
+ */
 async function saveAllTradesToDatabase(newTrades) {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES2;
   await saveTrades(newTrades, collectionName, false);
 }
 
+/**
+ * Helper function to save trades to a specified collection.
+ * @param {Array} newTrades - The trades to save.
+ * @param {string} collection - The collection name to save trades to.
+ * @param {boolean} isFiltered - Whether to filter out existing trades.
+ * @returns {Promise<void>}
+ */
 async function saveTrades(newTrades, collection, isFiltered) {
   try {
     let filteredTrades = newTrades;
@@ -133,10 +176,10 @@ async function saveTrades(newTrades, collection, isFiltered) {
 
     if (tradesToInsert.length > 0) {
       const result = await saveData(tradesToInsert, collection);
-      console.log("Trades insérés:", result.insertedCount);
+      console.log("Trades inserted:", result.insertedCount);
     }
   } catch (error) {
-    console.error("Erreur lors de la sauvegarde des trades:", error);
+    console.error("Error saving trades:", error);
     throw error;
   }
 }

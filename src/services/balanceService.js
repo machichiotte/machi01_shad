@@ -3,18 +3,27 @@ const { getData } = require("../utils/dataUtil");
 const { createPlatformInstance } = require("../utils/platformUtil");
 const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
 
-const lastUpdateService = require("./lastUpdateService");
-const mongodbService = require("./mongodbService");
 const mapping = require("../services/mapping");
 
 const { validateEnvVariables } = require("../utils/controllerUtil");
 validateEnvVariables(["MONGODB_COLLECTION_BALANCE", "TYPE_BALANCE"]);
 
+/**
+ * Fetches all balance data from the database.
+ * @returns {Promise<Array>} A promise that resolves to an array of balance data.
+ */
 async function fetchDatabaseBalances() {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
   return await getData(collectionName);
 }
 
+/**
+ * Fetches balance data from the database for a specific platform.
+ * @param {string} platform - The platform identifier.
+ * @param {number} [retries=3] - The number of retry attempts.
+ * @returns {Promise<Array>} A promise that resolves to an array of balance data for the specified platform.
+ * @throws {Error} If fetching fails after all retry attempts.
+ */
 async function fetchDatabaseBalancesByPlatform(platform, retries = 3) {
   try {
     const data = await fetchDatabaseBalances();
@@ -36,6 +45,13 @@ async function fetchDatabaseBalancesByPlatform(platform, retries = 3) {
   }
 }
 
+/**
+ * Fetches current balance data from a specific platform.
+ * @param {string} platform - The platform identifier.
+ * @param {number} [retries=3] - The number of retry attempts.
+ * @returns {Promise<Array>} A promise that resolves to an array of current balance data for the specified platform.
+ * @throws {Error} If fetching fails after all retry attempts.
+ */
 async function fetchCurrentBalancesByPlatform(platform, retries = 3) {
   const errorPolicies = await loadErrorPolicies();
   try {
@@ -58,9 +74,10 @@ async function fetchCurrentBalancesByPlatform(platform, retries = 3) {
 
 const databaseService = require("./databaseService");
 /**
- * Sauvegarde les données de solde fournies dans la base de données.
- * @param {Object[]} mappedData - Les données de marché à sauvegarder.
- * @param {string} platform - Identifiant de la plateforme.
+ * Saves the provided balance data to the database.
+ * @param {Object[]} mappedData - The balance data to save.
+ * @param {string} platform - The platform identifier.
+ * @returns {Promise<void>}
  */
 async function saveDatabaseBalance(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
@@ -74,6 +91,11 @@ async function saveDatabaseBalance(mappedData, platform) {
   );
 }
 
+/**
+ * Updates the balance for a specific platform by fetching current data and saving it to the database.
+ * @param {string} platform - The platform identifier.
+ * @returns {Promise<Array>} A promise that resolves to the updated balance data.
+ */
 async function updateBalanceForPlatform(platform) {
   const data = await fetchCurrentBalancesByPlatform(platform);
   await saveDatabaseBalance(data, platform);

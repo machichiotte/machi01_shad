@@ -56,8 +56,8 @@ async function fetchCurrentCmc() {
 }
 
 /**
- * Récupère les dernières données CoinMarketCap de la base de données.
- * @returns {Promise<Object[]>} - Les dernières données CMC de la base de données.
+ * Retrieves the latest CoinMarketCap data from the database.
+ * @returns {Promise<Object[]>} - The latest CMC data from the database.
  */
 async function fetchDatabaseCmc() {
   const collectionName = process.env.MONGODB_COLLECTION_CMC;
@@ -72,9 +72,9 @@ async function fetchDatabaseCmc() {
 }
 
 /**
- * Met à jour les données CoinMarketCap dans la base de données.
- * @param {Object[]} data - Tableau de données CoinMarketCap à mettre à jour.
- * @returns {Promise<Object>} - Résultat de la mise à jour.
+ * Updates the CoinMarketCap data in the database.
+ * @param {Object[]} data - Array of CoinMarketCap data to update.
+ * @returns {Promise<Object>} - Result of the update operation.
  */
 async function updateDatabaseCmcData(data) {
   const collectionName = process.env.MONGODB_COLLECTION_CMC;
@@ -104,8 +104,8 @@ async function updateDatabaseCmcData(data) {
 }
 
 /**
- * Met à jour les données CoinMarketCap en récupérant les dernières informations de l'API CoinMarketCap et en les sauvegardant dans la base de données.
- * @returns {Promise<Object>} - Résultat de la mise à jour.
+ * Updates CoinMarketCap data by fetching the latest information from the CoinMarketCap API and saving it to the database.
+ * @returns {Promise<Object>} - Result of the update operation.
  */
 async function updateCmcData() {
   try {

@@ -5,6 +5,7 @@ const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
 const lastUpdateService = require("./lastUpdateService");
 const mongodbService = require("./mongodbService");
 const mapping = require("../services/mapping");
+
 /**
  * Fetches the current markets from the specified platform.
  * @param {string} platform - Identifier for the platform.
@@ -46,9 +47,9 @@ async function fetchCurrentMarkets(platform, retries = 3) {
 
 const databaseService = require("./databaseService");
 /**
- * Sauvegarde les données de marché fournies dans la base de données.
- * @param {Object[]} mappedData - Les données de marché à sauvegarder.
- * @param {string} platform - Identifiant de la plateforme.
+ * Saves the provided market data to the database.
+ * @param {Object[]} mappedData - The market data to be saved.
+ * @param {string} platform - Identifier of the platform.
  */
 async function saveDatabaseMarkets(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
@@ -99,6 +100,12 @@ async function fetchMarketData(platform) {
   }
 }
 
+/**
+ * Updates the market data in the database for a specific platform.
+ * @param {Object} data - The market data to be updated.
+ * @param {string} platform - Identifier of the platform.
+ * @returns {Promise<Object[]>} - The mapped and updated market data.
+ */
 async function updateMarketDataInDatabase(data, platform) {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   const mappedData = mapping.mapMarkets(platform, data);

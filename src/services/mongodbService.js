@@ -1,3 +1,11 @@
+/**
+ * MongoDB Service Module
+ * 
+ * This module provides functions for interacting with a MongoDB database.
+ * It includes operations for connecting to the database, managing collections,
+ * and performing CRUD operations.
+ */
+
 require("dotenv").config();
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
@@ -6,6 +14,10 @@ const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PAS
 let mongoInstance;
 let db;
 
+/**
+ * Establishes a connection to the MongoDB client.
+ * @returns {Promise<MongoClient>} The MongoDB client instance.
+ */
 async function getMongoClient() {
   if (!mongoInstance) {
     try {
@@ -27,6 +39,10 @@ async function getMongoClient() {
   return mongoInstance;
 }
 
+/**
+ * Retrieves the database instance.
+ * @returns {Promise<Db>} The database instance.
+ */
 async function getDB() {
   if (!db) {
     const client = await getMongoClient();
@@ -41,11 +57,20 @@ async function getDB() {
   return db;
 }
 
+/**
+ * Retrieves a specific collection from the database.
+ * @param {string} collectionName - The name of the collection to retrieve.
+ * @returns {Promise<Collection>} The requested collection.
+ */
 async function getCollection(collectionName) {
   const db = await getDB();
   return db.collection(collectionName);
 }
 
+/**
+ * Cleans the 'collection_trades' by removing duplicates and updating records.
+ * @returns {Promise<void>}
+ */
 async function cleanCollectionTrades() {
   const collectionTrades = await getCollection("collection_trades");
 
@@ -64,7 +89,7 @@ async function cleanCollectionTrades() {
             price: "$price",
             amount: "$amount",
             type: "$type",
-            timestamp: "$timestamp", // Ajouter le timestamp au groupement
+            timestamp: "$timestamp",
           },
           count: { $sum: 1 },
           documents: { $push: "$$ROOT" },
@@ -78,7 +103,6 @@ async function cleanCollectionTrades() {
     ])
     .toArray();
 
-  // Traiter chaque groupe de documents en double
   await Promise.all(
     duplicates.map(async (group) => {
       const documentsToKeep = group.documents.filter((doc) => doc.timestamp);
@@ -87,15 +111,12 @@ async function cleanCollectionTrades() {
       );
 
       if (documentsToKeep.length > 0) {
-        // Conserver un seul document avec timestamp (le premier trouvé)
         const documentToKeep = documentsToKeep[0];
 
-        // Supprimer les autres documents avec timestamp ou date
         await Promise.all(
           group.documents
             .filter((doc) => doc._id !== documentToKeep._id)
             .map(async (doc) => {
-              // Mettre à jour le document à conserver avec `totalUSDT` si nécessaire
               if (doc.totalUSDT && !documentToKeep.totalUSDT) {
                 await collectionTrades.updateOne(
                   { _id: documentToKeep._id },
@@ -103,7 +124,6 @@ async function cleanCollectionTrades() {
                 );
               }
 
-              // Supprimer le document en double
               await collectionTrades.deleteOne({ _id: doc._id });
             })
         );
@@ -112,6 +132,14 @@ async function cleanCollectionTrades() {
   );
 }
 
+/**
+ * Executes an operation with retry logic.
+ * @param {Function} operation - The operation to execute.
+ * @param {Array} args - Arguments for the operation.
+ * @param {number} retryDelay - Delay between retries in milliseconds.
+ * @param {number} maxRetries - Maximum number of retry attempts.
+ * @returns {Promise<*>} The result of the operation.
+ */
 async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
   let attempts = 0;
   while (attempts < maxRetries) {
@@ -135,6 +163,11 @@ async function handleRetry(operation, args, retryDelay = 5000, maxRetries = 5) {
   }
 }
 
+/**
+ * Creates a collection if it doesn't already exist.
+ * @param {string} collectionName - The name of the collection to create.
+ * @returns {Promise<void>}
+ */
 async function createCollectionIfNotExists(collectionName) {
   await handleRetry(async () => {
     const db = await getDB();
@@ -148,6 +181,12 @@ async function createCollectionIfNotExists(collectionName) {
   }, []);
 }
 
+/**
+ * Saves data to a specified collection.
+ * @param {Array|Object} data - The data to save.
+ * @param {string} collectionName - The name of the collection to save to.
+ * @returns {Promise<*>} The result of the save operation.
+ */
 async function saveData(data, collectionName) {
   if (!Array.isArray(data) && typeof data !== "object") {
     throw new TypeError("Data must be an array or an object");
@@ -171,6 +210,11 @@ async function saveData(data, collectionName) {
   }, [data, collectionName]);
 }
 
+/**
+ * Retrieves all data from a specified collection.
+ * @param {string} collectionName - The name of the collection to retrieve from.
+ * @returns {Promise<Array>} An array of documents from the collection.
+ */
 async function getDataMDB(collectionName) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
@@ -182,6 +226,12 @@ async function getDataMDB(collectionName) {
   }, [collectionName]);
 }
 
+/**
+ * Inserts a single document into a specified collection.
+ * @param {string} collectionName - The name of the collection to insert into.
+ * @param {Object} document - The document to insert.
+ * @returns {Promise<string>} The ID of the inserted document.
+ */
 async function insertDataMDB(collectionName, document) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
@@ -193,6 +243,12 @@ async function insertDataMDB(collectionName, document) {
   }, [collectionName, document]);
 }
 
+/**
+ * Retrieves a single document from a specified collection based on a query.
+ * @param {string} collectionName - The name of the collection to query.
+ * @param {Object} query - The query to find the document.
+ * @returns {Promise<Object|null>} The found document or null if not found.
+ */
 async function getOne(collectionName, query) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
@@ -204,9 +260,13 @@ async function getOne(collectionName, query) {
   }, [collectionName, query]);
 }
 
-const cache = {}; // Objet de cache global
+const cache = {};
+/**
+ * Retrieves all data from a specified collection with caching.
+ * @param {string} collectionName - The name of the collection to retrieve from.
+ * @returns {Promise<Array>} An array of documents from the collection.
+ */
 async function getAllDataMDB(collectionName) {
-  // Vérifie si les données sont dans le cache et si elles ne sont pas expirées
   if (
     cache[collectionName] &&
     Date.now() - cache[collectionName].timestamp < 30000
@@ -221,7 +281,6 @@ async function getAllDataMDB(collectionName) {
     const collection = await getCollection(collectionName);
     const result = await collection.find().toArray();
 
-    // Mettre en cache les résultats
     cache[collectionName] = {
       data: result,
       timestamp: Date.now(),
@@ -231,6 +290,13 @@ async function getAllDataMDB(collectionName) {
   }, [collectionName]);
 }
 
+/**
+ * Updates a document in a specified collection.
+ * @param {string} collectionName - The name of the collection to update.
+ * @param {Object} filter - The filter to find the document to update.
+ * @param {Object} update - The update to apply to the document.
+ * @returns {Promise<Object>} The result of the update operation.
+ */
 async function updateDataMDB(collectionName, filter, update) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
@@ -242,6 +308,12 @@ async function updateDataMDB(collectionName, filter, update) {
   }, [collectionName, filter, update]);
 }
 
+/**
+ * Deletes a single document from a specified collection.
+ * @param {string} collectionName - The name of the collection to delete from.
+ * @param {Object} filter - The filter to find the document to delete.
+ * @returns {Promise<number>} The number of deleted documents.
+ */
 async function deleteDataMDB(collectionName, filter) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
@@ -253,6 +325,12 @@ async function deleteDataMDB(collectionName, filter) {
   }, [collectionName, filter]);
 }
 
+/**
+ * Deletes multiple documents from a specified collection.
+ * @param {string} collectionName - The name of the collection to delete from.
+ * @param {Object} deleteParam - The filter to find the documents to delete.
+ * @returns {Promise<number>} The number of deleted documents.
+ */
 async function deleteMultipleDataMDB(collectionName, deleteParam) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
@@ -264,6 +342,11 @@ async function deleteMultipleDataMDB(collectionName, deleteParam) {
   }, [collectionName, deleteParam]);
 }
 
+/**
+ * Deletes all documents from a specified collection.
+ * @param {string} collectionName - The name of the collection to clear.
+ * @returns {Promise<number>} The number of deleted documents.
+ */
 async function deleteAllDataMDB(collectionName) {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
@@ -272,6 +355,10 @@ async function deleteAllDataMDB(collectionName) {
   }, [collectionName]);
 }
 
+/**
+ * Connects to MongoDB and creates necessary collections.
+ * @returns {Promise<void>}
+ */
 async function connectToMongoDB() {
   try {
     await getDB();
@@ -299,6 +386,13 @@ async function connectToMongoDB() {
   }
 }
 
+/**
+ * Updates a document in the database.
+ * @param {string} collectionName - The name of the collection to update.
+ * @param {Object} filter - The filter to find the document to update.
+ * @param {Object} update - The update to apply to the document.
+ * @returns {Promise<void>}
+ */
 async function updateInDatabase(collectionName, filter, update) {
   try {
     await updateDataMDB(collectionName, filter, update);
@@ -307,6 +401,13 @@ async function updateInDatabase(collectionName, filter, update) {
   }
 }
 
+/**
+ * Deletes existing data and saves new data for a specific platform.
+ * @param {Array} mapData - The new data to save.
+ * @param {string} collection - The name of the collection to update.
+ * @param {string} platform - The platform identifier.
+ * @returns {Promise<void>}
+ */
 async function deleteAndSaveData(mapData, collection, platform) {
   if (mapData && mapData.length > 0) {
     const deleteParam = { platform };
@@ -315,6 +416,12 @@ async function deleteAndSaveData(mapData, collection, platform) {
   }
 }
 
+/**
+ * Deletes all existing data and saves a new object in a collection.
+ * @param {Object} mapData - The new data object to save.
+ * @param {string} collectionName - The name of the collection to update.
+ * @returns {Promise<void>}
+ */
 async function deleteAndSaveObject(mapData, collectionName) {
   if (mapData && Object.keys(mapData).length > 0) {
     await deleteAllDataMDB(collectionName);

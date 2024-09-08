@@ -4,14 +4,22 @@ const {
 } = require("../utils/platformUtil.js");
 const { getData } = require("../utils/dataUtil.js");
 const { mapOrders } = require("./mapping.js");
-const lastUpdateService = require("./lastUpdateService.js");
-const mongodbService = require("./mongodbService.js");
 
+/**
+ * Fetches orders from the database.
+ * @returns {Promise<Array>} A promise that resolves to an array of orders.
+ */
 async function fetchDatabaseOrders() {
   const collectionName = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
   return await getData(collectionName);
 }
 
+/**
+ * Fetches and maps orders for a given platform.
+ * @param {string} platform - The platform to fetch orders for.
+ * @returns {Promise<Array>} A promise that resolves to an array of mapped orders.
+ * @throws {Error} If fetching or mapping fails.
+ */
 async function fetchAndMapOrders(platform) {
   try {
     const data = await fetchOpenOrdersByPlatform(platform);
@@ -44,6 +52,12 @@ async function saveMappedOrders(mappedData, platform) {
   );
 }
 
+/**
+ * Updates orders from the server for a given platform.
+ * @param {string} platform - The platform to update orders for.
+ * @returns {Promise<Array>} A promise that resolves to an array of updated orders.
+ * @throws {Error} If updating fails.
+ */
 async function updateOrdersFromServer(platform) {
   try {
     const mappedData = await fetchAndMapOrders(platform);
@@ -61,6 +75,14 @@ async function updateOrdersFromServer(platform) {
   }
 }
 
+/**
+ * Deletes an order for a given platform.
+ * @param {string} platform - The platform to delete the order from.
+ * @param {string} oId - The order ID to delete.
+ * @param {string} symbol - The symbol of the order.
+ * @returns {Promise<Object>} A promise that resolves to the result of the deletion.
+ * @throws {Error} If deletion fails.
+ */
 async function deleteOrder(platform, oId, symbol) {
   try {
     const platformInstance = createPlatformInstance(platform);
@@ -76,6 +98,15 @@ async function deleteOrder(platform, oId, symbol) {
   }
 }
 
+/**
+ * Creates a market order for a given platform.
+ * @param {string} platform - The platform to create the order on.
+ * @param {string} asset - The asset to trade.
+ * @param {number} amount - The amount to trade.
+ * @param {string} orderType - The type of order ('buy' or 'sell').
+ * @returns {Promise<Object>} A promise that resolves to the created order.
+ * @throws {Error} If order creation fails.
+ */
 async function createMarketOrder(platform, asset, amount, orderType) {
   try {
     const platformInstance = createPlatformInstance(platform);
@@ -97,6 +128,16 @@ async function createMarketOrder(platform, asset, amount, orderType) {
   }
 }
 
+/**
+ * Creates a limit order for a given platform.
+ * @param {string} platform - The platform to create the order on.
+ * @param {string} asset - The asset to trade.
+ * @param {number} amount - The amount to trade.
+ * @param {number} price - The price for the limit order.
+ * @param {string} orderType - The type of order ('buy' or 'sell').
+ * @returns {Promise<Object>} A promise that resolves to the created order.
+ * @throws {Error} If order creation fails.
+ */
 async function createLimitOrder(platform, asset, amount, price, orderType) {
   try {
     const platformInstance = createPlatformInstance(platform);
@@ -127,6 +168,13 @@ async function createLimitOrder(platform, asset, amount, price, orderType) {
   }
 }
 
+/**
+ * Cancels all orders for a given platform and asset.
+ * @param {string} platform - The platform to cancel orders on.
+ * @param {string} asset - The asset to cancel orders for.
+ * @returns {Promise<Object>} A promise that resolves to the result of the cancellation.
+ * @throws {Error} If cancellation fails.
+ */
 async function cancelAllOrders(platform, asset) {
   try {
     const platformInstance = createPlatformInstance(platform);
@@ -145,6 +193,13 @@ async function cancelAllOrders(platform, asset) {
   }
 }
 
+/**
+ * Cancels all sell orders for a given platform and asset.
+ * @param {string} platform - The platform to cancel orders on.
+ * @param {string} asset - The asset to cancel orders for.
+ * @returns {Promise<Object>} A promise that resolves to the result of the cancellation.
+ * @throws {Error} If cancellation fails.
+ */
 async function cancelAllSellOrders(platform, asset) {
   try {
     const platformInstance = createPlatformInstance(platform);
@@ -172,6 +227,12 @@ async function cancelAllSellOrders(platform, asset) {
   }
 }
 
+/**
+ * Cancels all orders for OKX platform.
+ * @param {Object} platformInstance - The platform instance for OKX.
+ * @param {string} symbol - The symbol to cancel orders for.
+ * @returns {Promise<Object>} A promise that resolves to the result of the cancellation.
+ */
 async function cancelAllOrdersForOkx(platformInstance, symbol) {
   const orders = await platformInstance.fetchOpenOrders(symbol);
   const orderIds = orders.map((order) => order.id);
@@ -183,6 +244,12 @@ async function cancelAllOrdersForOkx(platformInstance, symbol) {
   }
 }
 
+/**
+ * Fetches open orders for a given platform.
+ * @param {string} platform - The platform to fetch orders from.
+ * @returns {Promise<Array>} A promise that resolves to an array of open orders.
+ * @throws {Error} If fetching fails.
+ */
 async function fetchOpenOrdersByPlatform(platform) {
   const platformInstance = createPlatformInstance(platform);
   try {
@@ -201,6 +268,11 @@ async function fetchOpenOrdersByPlatform(platform) {
   }
 }
 
+/**
+ * Fetches open orders for Kucoin platform.
+ * @param {Object} platformInstance - The platform instance for Kucoin.
+ * @returns {Promise<Array>} A promise that resolves to an array of open orders.
+ */
 async function fetchOpenOrdersForKucoin(platformInstance) {
   const pageSize = 50;
   let currentPage = 1;

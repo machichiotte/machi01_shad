@@ -2,11 +2,21 @@
 const { getData } = require("../utils/dataUtil.js");
 const mongodbService = require("./mongodbService.js");
 
+/**
+ * Fetches the last update information from the database.
+ * @returns {Promise<Object>} The last update data.
+ */
 async function fetchDatabaseLastUpdate() {
   const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
   return await getData(collectionName);
 }
 
+/**
+ * Saves the last update information to the database.
+ * @param {string} type - The type of update.
+ * @param {string} [platform] - The platform for the update (optional).
+ * @returns {Promise<void>}
+ */
 async function saveLastUpdateToDatabase(type, platform) {
   const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
   // Récupérer les données actuelles dans la collection

@@ -10,11 +10,21 @@ const { loadErrorPolicies, shouldRetry } = require("../utils/errorUtil");
 const lastUpdateService = require("./lastUpdateService.js");
 const mongodbService = require("./mongodbService.js");
 
+/**
+ * Fetches tickers data from the database.
+ * @returns {Promise<Object>} The tickers data.
+ */
 async function fetchDatabaseTickers() {
   const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
   return await getData(collectionName);
 }
 
+/**
+ * Gets all tickers for a specific platform.
+ * @param {string} platform - The platform to get tickers for.
+ * @returns {Promise<Array>} An array of tickers for the platform.
+ * @throws {Error} If the platform is not found.
+ */
 async function getAllTickersByPlatform(platform) {
   const data = await fetchDatabaseTickers();
   if (data && data[platform]) {
@@ -24,6 +34,13 @@ async function getAllTickersByPlatform(platform) {
   }
 }
 
+/**
+ * Gets all tickers for a specific symbol from a platform.
+ * @param {string} platform - The platform to get tickers from.
+ * @param {string} symbol - The symbol to get tickers for.
+ * @returns {Promise<Array>} An array of tickers for the symbol and platform.
+ * @throws {Error} If the platform or symbol is not found.
+ */
 async function getAllTickersBySymbolFromPlatform(platform, symbol) {
   const data = await fetchDatabaseTickers();
   if (data && data[platform]) {
@@ -41,6 +58,10 @@ async function getAllTickersBySymbolFromPlatform(platform, symbol) {
   }
 }
 
+/**
+ * Updates all tickers for all platforms.
+ * @returns {Promise<Object>} The updated tickers data.
+ */
 async function updateAllTickers() {
   const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
   const tickersData = {};
@@ -60,6 +81,13 @@ async function updateAllTickers() {
   return tickersData;
 }
 
+/**
+ * Fetches current tickers for a specific platform.
+ * @param {string} platform - The platform to fetch tickers for.
+ * @param {number} [retries=3] - The number of retry attempts.
+ * @returns {Promise<Array>} The mapped tickers data.
+ * @throws {Error} If fetching fails after all retries.
+ */
 async function fetchCurrentTickers(platform, retries = 3) {
   const errorPolicies = await loadErrorPolicies();
 
@@ -69,14 +97,14 @@ async function fetchCurrentTickers(platform, retries = 3) {
     return mapTickers(data, platform);
   } catch (error) {
     console.log(
-      `Erreur lors de la récupération des tickers pour ${platform}:`,
+      `Error while fetching tickers for ${platform}:`,
       error
     );
 
     if (retries > 0 && shouldRetry(platform, error, errorPolicies)) {
       const delay = Math.pow(2, 3 - retries) * 1000;
       console.log(
-        `Nouvelle tentative de fetchCurrentTickers... (${3 - retries + 1}/3)`,
+        `Retrying fetchCurrentTickers... (${3 - retries + 1}/3)`,
         { delay }
       );
       await new Promise((resolve) => setTimeout(resolve, delay));
@@ -89,9 +117,9 @@ async function fetchCurrentTickers(platform, retries = 3) {
 
 const databaseService = require("./databaseService");
 /**
- * Sauvegarde les données de tickers fournies dans la base de données.
- * @param {Object[]} mappedData - Les données de tickers à sauvegarder.
- * @param {string} platform - Identifiant de la plateforme.
+ * Saves the provided tickers data to the database.
+ * @param {Object[]} mappedData - The tickers data to be saved.
+ * @param {string} platform - Identifier of the platform.
  */
 async function saveDatabaseTickers(mappedData, platform) {
   const collection = process.env.MONGODB_COLLECTION_TICKERS;

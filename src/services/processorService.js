@@ -13,14 +13,14 @@ const strategyService = require("../services/strategyService.js");
 const { getSymbolForPlatform } = require("../utils/platformUtil.js");
 
 /**
- * Traite les différences de balances détectées entre les balances actuelles et les balances précédentes.
- * Cette fonction met à jour les ordres du serveur, récupère les tickers et traite les trades pour les symboles
- * correspondant aux différences détectées. Elle gère également les nouveaux symboles, les différences de balance,
- * et les balances nulles (zéro).
+ * Processes detected balance differences between current and previous balances.
+ * This function updates server orders, retrieves tickers, and processes trades for symbols
+ * corresponding to the detected differences. It also handles new symbols, balance differences,
+ * and zero balances.
  *
- * @param {Object[]} differences - Tableau d'objets représentant les différences de balances détectées.
- * @param {string} platform - Nom de la plateforme pour laquelle les différences doivent être traitées.
- * @returns {Promise<void>} - Cette fonction est asynchrone et retourne une promesse.
+ * @param {Object[]} differences - Array of objects representing detected balance differences.
+ * @param {string} platform - Name of the platform for which differences should be processed.
+ * @returns {Promise<void>} - This function is asynchronous and returns a promise.
  */
 async function processBalanceChanges(differences, platform) {
   const quoteCurrencies = ["USDT", "BTC", "ETH", "USDC"];
@@ -59,9 +59,9 @@ async function processBalanceChanges(differences, platform) {
 }
 
 /**
- * Supprime les doublons dans les différences de balance.
- * @param {Object[]} differences - Tableau des différences de balance.
- * @returns {Object[]} - Tableau des différences sans doublons.
+ * Removes duplicates from balance differences.
+ * @param {Object[]} differences - Array of balance differences.
+ * @returns {Object[]} - Array of unique differences.
  */
 function removeDuplicateDifferences(differences) {
   const uniqueMap = new Map();
@@ -75,12 +75,12 @@ function removeDuplicateDifferences(differences) {
 }
 
 /**
- * Traite une différence spécifique, récupère les trades, et met à jour la liste des nouveaux trades.
- * @param {Object} difference - Objet représentant une différence de balance.
- * @param {string} platform - Nom de la plateforme.
- * @param {Object[]} tickers - Tableau des tickers pour la plateforme.
- * @param {string[]} quoteCurrencies - Liste des devises de référence.
- * @param {Object[]} newTrades - Tableau des nouveaux trades détectés.
+ * Processes a specific difference, retrieves trades, and updates the list of new trades.
+ * @param {Object} difference - Object representing a balance difference.
+ * @param {string} platform - Name of the platform.
+ * @param {Object[]} tickers - Array of tickers for the platform.
+ * @param {string[]} quoteCurrencies - List of quote currencies.
+ * @param {Object[]} newTrades - Array of newly detected trades.
  * @returns {Promise<void>}
  */
 async function processDifference(
@@ -116,8 +116,8 @@ async function processDifference(
 }
 
 /**
- * Log des informations basées sur le type de différence détectée.
- * @param {Object} difference - Objet représentant une différence de balance.
+ * Logs information based on the type of detected difference.
+ * @param {Object} difference - Object representing a balance difference.
  */
 function logDifferenceType(difference) {
   if (difference.newSymbol) {
@@ -133,6 +133,10 @@ function logDifferenceType(difference) {
   }
 }
 
+/**
+ * Calculates all metrics for assets.
+ * @returns {Promise<Array>} - Returns a promise that resolves to an array of calculated asset metrics.
+ */
 async function calculateAllMetrics() {
   const [
     lastCmc,
@@ -239,10 +243,10 @@ async function calculateAllMetrics() {
 }
 
 /**
- * Compare les balances actuelles avec celles de la base de données précédente.
- * @param {Object[]} lastBalances - Tableau d'objets représentant les balances précédentes.
- * @param {Object[]} currentBalances - Tableau d'objets représentant les balances actuelles.
- * @returns {Object[]} - Retourne un tableau d'objets représentant les différences trouvées.
+ * Compares current balances with those from the previous database.
+ * @param {Object[]} lastBalances - Array of objects representing previous balances.
+ * @param {Object[]} currentBalances - Array of objects representing current balances.
+ * @returns {Object[]} - Returns an array of objects representing the differences found.
  */
 function compareBalances(lastBalances, currentBalances) {
   const differences = [];
@@ -310,6 +314,11 @@ function compareBalances(lastBalances, currentBalances) {
 const stablecoins = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'PAX', 'GUSD', 'HUSD', 'USDN']; // Ajoutez d'autres stablecoins si nécessaire
 
 // Fonction pour supprimer les doublons basés sur 'base' et 'platform'
+/**
+ * Removes duplicates and stablecoins from the differences array.
+ * @param {Object[]} differences - Array of difference objects.
+ * @returns {Object[]} - Array of unique differences, excluding stablecoins.
+ */
 function removeDuplicatesAndStablecoins(differences) {
   // Utiliser un Map pour supprimer les doublons
   const uniqueDifferences = new Map();

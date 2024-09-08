@@ -1,5 +1,9 @@
 // src/services/mapping.js
 
+/**
+ * List of supported stablecoins.
+ * @type {string[]}
+ */
 const stableCoins = [
   "USDT",
   "USDC",
@@ -14,17 +18,38 @@ const stableCoins = [
   "GUSD",
   "LUSD",
 ];
+
+/**
+ * List of major cryptocurrency pairs.
+ * @type {string[]}
+ */
 const cryptoMajorPairs = ["BTC", "ETH"];
 
+/**
+ * Checks if a given symbol is a stablecoin.
+ * @param {string} symbol - The symbol to check.
+ * @returns {boolean} True if the symbol is a stablecoin, false otherwise.
+ */
 function isStableCoin(symbol) {
   return stableCoins.includes(symbol.toUpperCase());
 }
 
+/**
+ * Checks if a given symbol is a major cryptocurrency pair.
+ * @param {string} symbol - The symbol to check.
+ * @returns {boolean} True if the symbol is a major pair, false otherwise.
+ */
 function isMajorCryptoPair(symbol) {
   return cryptoMajorPairs.includes(symbol.toUpperCase());
 }
 
-// Utility function to get the value in USDT
+/**
+ * Calculates the total value in USDT for a given symbol and cost.
+ * @param {string} symbol - The trading pair symbol.
+ * @param {number} cost - The transaction cost.
+ * @param {Object} conversionRates - Conversion rates (optional).
+ * @returns {number|null} The total value in USDT or null if unable to calculate.
+ */
 function getTotalUSDT(symbol, cost, conversionRates = {}) {
   const [baseAsset, quoteAsset] = symbol.split("/");
   if (!quoteAsset || !baseAsset) {
@@ -44,6 +69,14 @@ function getTotalUSDT(symbol, cost, conversionRates = {}) {
   return null;
 }
 
+/**
+ * Maps common balance data across all platforms.
+ * @param {string} base - The base asset.
+ * @param {number} balance - The total balance.
+ * @param {number} available - The available balance.
+ * @param {string} platform - The exchange platform.
+ * @returns {Object} An object containing the mapped balance information.
+ */
 function mapBalanceCommon(base, balance, available, platform) {
   return {
     base,
@@ -53,6 +86,12 @@ function mapBalanceCommon(base, balance, available, platform) {
   };
 }
 
+/**
+ * Maps balance data for a specific platform.
+ * @param {string} platform - The exchange platform.
+ * @param {Object} data - The raw balance data.
+ * @returns {Object[]} An array of objects containing the mapped balances.
+ */
 function mapBalance(platform, data) {
   const mappings = {
     binance: (item) =>
@@ -79,7 +118,7 @@ function mapBalance(platform, data) {
 
   const platformMapping = mappings[platform];
   if (!platformMapping) {
-    console.warn(`Plateforme ${platform} non supportée.`);
+    console.warn(`Platform ${platform} not supported.`);
     return [];
   }
 
@@ -108,6 +147,13 @@ function mapBalance(platform, data) {
     .map(platformMapping);
 }
 
+/**
+ * Maps common trade data across all platforms.
+ * @param {Object} item - The raw trade data.
+ * @param {string} platform - The exchange platform.
+ * @param {Object} conversionRates - Conversion rates (optional).
+ * @returns {Object} An object containing the mapped trade information.
+ */
 function mapTradeCommon(item, platform, conversionRates = {}) {
   const [baseAsset, quoteAsset] = item.symbol.toUpperCase().split("/");
   const totalUSDT = getTotalUSDT(
@@ -135,6 +181,13 @@ function mapTradeCommon(item, platform, conversionRates = {}) {
   };
 }
 
+/**
+ * Maps trade data for a specific platform.
+ * @param {string} platform - The exchange platform.
+ * @param {Object[]} data - The raw trade data.
+ * @param {Object} conversionRates - Conversion rates (optional).
+ * @returns {Object[]} An array of objects containing the mapped trades.
+ */
 function mapTrades(platform, data, conversionRates = {}) {
   return data
     .map((item) => {
@@ -155,6 +208,12 @@ function mapTrades(platform, data, conversionRates = {}) {
     .flat();
 }
 
+/**
+ * Maps order data for a specific platform.
+ * @param {string} platform - The exchange platform.
+ * @param {Object[]} data - The raw order data.
+ * @returns {Object[]} An array of objects containing the mapped orders.
+ */
 function mapOrders(platform, data) {
   return data.map((item) => ({
     oId: item.id,
@@ -168,6 +227,12 @@ function mapOrders(platform, data) {
   }));
 }
 
+/**
+ * Maps ticker data for a specific platform.
+ * @param {Object} data - The raw ticker data.
+ * @param {string} platform - The exchange platform.
+ * @returns {Object[]} An array of objects containing the mapped tickers.
+ */
 function mapTickers(data, platform) {
   return Object.values(data).map((item) => ({
     symbol: item.symbol,
@@ -177,6 +242,12 @@ function mapTickers(data, platform) {
   }));
 }
 
+/**
+ * Maps market data for a specific platform.
+ * @param {Object} data - The raw market data.
+ * @param {string} platform - The exchange platform.
+ * @returns {Object[]} An array of objects containing the mapped markets.
+ */
 function mapMarkets(data, platform) {
   return Object.values(data)
     .filter((item) => stableCoins.some((coin) => item.quote === coin))
@@ -197,6 +268,11 @@ function mapMarkets(data, platform) {
     }));
 }
 
+/**
+ * Maps manually added trade data.
+ * @param {Object[]} data - The raw trade data.
+ * @returns {Object[]} An array of objects containing the mapped trades.
+ */
 function mapTradesAddedManually(data) {
   return data.map((item) => ({
     date: item.date,
