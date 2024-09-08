@@ -1,9 +1,7 @@
 <!-- src/components/SelectPlatform.vue -->
 <template>
-  <!-- Using a select dropdown to choose a platform -->
   <select v-model="selectedPlatform" @change="$emit('change', selectedPlatform)">
     <option value="">Select a platform</option>
-    <!-- Looping through options to populate the dropdown -->
     <option v-for="platform in options" :key="platform.value" :value="platform.value">
       {{ platform.label }}
     </option>
@@ -11,10 +9,17 @@
 </template>
 
 <script setup>
-// Importing necessary functions from Vue
 import { ref } from 'vue';
 
-// Props declaration
+/**
+ * @typedef {Object} PlatformOption
+ * @property {string} value
+ * @property {string} label
+ */
+
+/**
+ * @type {import('vue').PropType<PlatformOption[]>}
+ */
 const props = defineProps({
   options: {
     type: Array,
@@ -22,6 +27,5 @@ const props = defineProps({
   }
 });
 
-// Declaring a reactive variable using ref for selectedPlatform
 const selectedPlatform = ref('');
 </script>
