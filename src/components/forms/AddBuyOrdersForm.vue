@@ -42,22 +42,36 @@ const selectedAsset = ref(null)
 
 const buyOrders = ref([{ price: null, quantity: null, total: null }])
 
+/**
+ * @returns {void}
+ */
 const addOrder = () => {
     if (buyOrders.value.length < 10) {
         buyOrders.value.push({ price: null, quantity: null, total: null })
     }
 }
 
+/**
+ * @param {number} index
+ * @returns {void}
+ */
 const removeOrder = (index) => {
     buyOrders.value.splice(index, 1)
 }
 
+/**
+ * @param {number} index
+ * @returns {void}
+ */
 const updateCalculatedValues = (index) => {
-    // This function will be used to trigger recalculations
     calculateTotal(index)
     calculateQuantity(index)
 }
 
+/**
+ * @param {number} index
+ * @returns {number|null}
+ */
 const calculateTotal = (index) => {
     const order = buyOrders.value[index]
     if (order.price != null && order.quantity != null) {
@@ -66,6 +80,10 @@ const calculateTotal = (index) => {
     return null
 }
 
+/**
+ * @param {number} index
+ * @returns {number|null}
+ */
 const calculateQuantity = (index) => {
     const order = buyOrders.value[index]
     if (order.total != null && order.price != null) {
@@ -74,14 +92,13 @@ const calculateQuantity = (index) => {
     return null
 }
 
+/**
+ * @returns {Promise<void>}
+ */
 const submitOrders = async () => {
     const orderPlacementResults = await Promise.all(buyOrders.value.map(async (order) => {
         try {
-            console.log('submitOrders selectedAsset', selectedAsset.value)
-            console.log('submitOrders order', order)
-
             const result = await bunchLimitBuyOrders(selectedAsset.value.platform, selectedAsset.value.asset, order.quantity, order.price);
-            console.log('result', result.status)
             return result;
         } catch (error) {
             console.error('Error placing order:', error);
@@ -90,19 +107,6 @@ const submitOrders = async () => {
     }));
 
     if (orderPlacementResults.length > 0) {
-        /*result:
-  {
-    message: {
-      info: { orderId: '66dca7e2c26b7a0007be5e17' },
-      id: '66dca7e2c26b7a0007be5e17',
-      symbol: 'RUNE/USDT',
-      fee: {},
-      trades: [],
-      fees: [ {} ]
-    },
-    status: 200
-  }*/
-
         const formattedResults = orderPlacementResults.map(result => {
             return `Status: ${result.status} - ${JSON.stringify(result.message)}`;
         });
