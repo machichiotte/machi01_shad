@@ -5,6 +5,11 @@ const marketsService = require("../services/marketsService");
 
 validateEnvVariables(["MONGODB_COLLECTION_LOAD_MARKETS", "TYPE_LOAD_MARKETS"]);
 
+/**
+ * Retrieves saved market data.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 async function getMarkets(req, res) {
   try {
     const data = await marketsService.getSavedMarkets();
@@ -17,6 +22,11 @@ async function getMarkets(req, res) {
   }
 }
 
+/**
+ * Updates market data for a specific platform.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 async function updateMarkets(req, res) {
   const { platform } = req.params;
   try {

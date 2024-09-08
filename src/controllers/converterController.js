@@ -2,12 +2,17 @@
 const Papa = require("papaparse");
 const converterService = require("../services/converterService");
 
+/**
+ * Converts a CSV file to JSON format.
+ * @param {Object} req - The HTTP request object containing the CSV file.
+ * @param {Object} res - The HTTP response object.
+ */
 async function getConvertedCsv(req, res) {
   try {
     const { file } = req;
     const { buffer } = file;
 
-    // Utilisation de PapaParse pour lire les données CSV depuis le buffer
+    // Use PapaParse to read CSV data from the buffer
     Papa.parse(buffer.toString(), {
       complete: async (result) => {
         console.log("🚀 ~ complete: ~ result:", result);
@@ -18,7 +23,7 @@ async function getConvertedCsv(req, res) {
       },
       error: (error) => {
         console.log("🚀 ~ Papa.parse ~ error:", error);
-        res.status(500).json({ success: false, message: "Erreur serveur" });
+        res.status(500).json({ success: false, message: "Server Error" });
       },
       header: true,
     });

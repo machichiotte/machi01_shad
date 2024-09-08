@@ -2,6 +2,11 @@
 const { handleErrorResponse } = require("../utils/errorUtil.js");
 const tickersService = require('../services/tickersService.js');
 
+/**
+ * Retrieves all tickers from the database.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 async function getAllTickers(req, res) {
   try {
     const data = await tickersService.fetchDatabaseTickers();
@@ -11,6 +16,12 @@ async function getAllTickers(req, res) {
   }
 }
 
+/**
+ * Retrieves all tickers for a specific platform.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {string} platform - The platform to retrieve tickers for.
+ */
 async function getAllTickersByPlatform(req, res, platform) {
   try {
     const platformTickersData = await tickersService.getAllTickersByPlatform(platform);
@@ -20,6 +31,13 @@ async function getAllTickersByPlatform(req, res, platform) {
   }
 }
 
+/**
+ * Retrieves all tickers for a specific symbol from a specific platform.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {string} platform - The platform to retrieve tickers from.
+ * @param {string} symbol - The symbol to filter tickers by.
+ */
 async function getAllTickersBySymbolFromPlatform(req, res, platform, symbol) {
   try {
     const filteredTickersData = await tickersService.getAllTickersBySymbolFromPlatform(platform, symbol);
@@ -29,6 +47,11 @@ async function getAllTickersBySymbolFromPlatform(req, res, platform, symbol) {
   }
 }
 
+/**
+ * Updates all tickers in the database.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 async function updateAllTickers(req, res) {
   try {
     const tickersData = await tickersService.updateAllTickers();

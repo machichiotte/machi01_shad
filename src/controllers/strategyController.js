@@ -4,7 +4,11 @@ const { handleErrorResponse } = require("../utils/errorUtil.js");
 const lastUpdateService = require("../services/lastUpdateService.js");
 const strategyService = require("../services/strategyService.js");
 
-
+/**
+ * Retrieves strategies from the database.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 async function getStrat(req, res) {
   try {
     const data = await strategyService.fetchDatabaseStrategies();
@@ -19,6 +23,11 @@ async function getStrat(req, res) {
   }
 }
 
+/**
+ * Updates strategies in the database.
+ * @param {Object} req - The request object containing the strategy data in the body.
+ * @param {Object} res - The response object.
+ */
 async function updateStrat(req, res) {
   const strat = req.body;
   try {
@@ -31,6 +40,11 @@ async function updateStrat(req, res) {
   }
 }
 
+/**
+ * Updates a specific strategy by its ID.
+ * @param {Object} req - The request object containing the strategyId in params and updated strategy data in body.
+ * @param {Object} res - The response object.
+ */
 async function updateStrategyById(req, res) {
   const { strategyId } = req.params;
   const updatedStrategy = req.body;

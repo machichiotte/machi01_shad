@@ -2,6 +2,11 @@
 const tradesService = require('../services/tradesService');
 const { handleErrorResponse } = require("../utils/errorUtil.js");
 
+/**
+ * Retrieves all trades from the database.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 async function getTrades(req, res) {
   try {
     const trades = await tradesService.fetchDatabaseTrades();
@@ -11,6 +16,11 @@ async function getTrades(req, res) {
   }
 }
 
+/**
+ * Updates a specific trade by its ID.
+ * @param {Object} req - The request object containing the tradeId in params and updated trade data in body.
+ * @param {Object} res - The response object.
+ */
 async function updateTradeById(req, res) {
   const { tradeId } = req.params;
   const updatedTrade = req.body;
@@ -22,6 +32,11 @@ async function updateTradeById(req, res) {
   }
 }
 
+/**
+ * Adds trades manually to the database.
+ * @param {Object} req - The request object containing the trades data in the body.
+ * @param {Object} res - The response object.
+ */
 async function addTradesManually(req, res) {
   const tradesData = req.body.trades_data;
   try {
@@ -32,6 +47,11 @@ async function addTradesManually(req, res) {
   }
 }
 
+/**
+ * Updates trades for a specific platform.
+ * @param {Object} req - The request object containing the platform in params.
+ * @param {Object} res - The response object.
+ */
 async function updateTrades(req, res) {
   const { platform } = req.params;
   try {
@@ -42,6 +62,11 @@ async function updateTrades(req, res) {
   }
 }
 
+/**
+ * Fetches the last trades for a specific platform and symbol.
+ * @param {Object} req - The request object containing the platform and symbol in params.
+ * @param {Object} res - The response object.
+ */
 async function fetchLastTrades(req, res) {
   const { platform, symbol } = req.params;
   try {
@@ -52,6 +77,11 @@ async function fetchLastTrades(req, res) {
   }
 }
 
+/**
+ * Saves new trades to the database.
+ * @param {Object} req - The request object containing the new trades in the body.
+ * @param {Object} res - The response object.
+ */
 async function saveTradesToDatabase(req, res) {
   const { newTrades } = req.body;
   try {
@@ -62,6 +92,11 @@ async function saveTradesToDatabase(req, res) {
   }
 }
 
+/**
+ * Saves all new trades to the database.
+ * @param {Object} req - The request object containing all new trades in the body.
+ * @param {Object} res - The response object.
+ */
 async function saveAllTradesToDatabase(req, res) {
   const { newTrades } = req.body;
   try {

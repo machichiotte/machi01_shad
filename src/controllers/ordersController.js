@@ -7,6 +7,12 @@ validateEnvVariables([
   "TYPE_ACTIVE_ORDERS",
 ]);
 
+/**
+ * Retrieves all orders from the database.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON response with orders or error.
+ */
 async function getOrders(req, res) {
   try {
     const orders = await ordersService.fetchDatabaseOrders();
@@ -16,6 +22,12 @@ async function getOrders(req, res) {
   }
 }
 
+/**
+ * Updates orders from the server for a specific platform.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON response with mapped data or error.
+ */
 async function updateOrders(req, res) {
   const { platform } = req.params;
   try {
@@ -26,6 +38,12 @@ async function updateOrders(req, res) {
   }
 }
 
+/**
+ * Deletes a specific order.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON response with deletion result or error.
+ */
 async function deleteOrder(req, res) {
   const { platform, oId, symbol } = req.body;
   try {
@@ -36,14 +54,31 @@ async function deleteOrder(req, res) {
   }
 }
 
+/**
+ * Creates a market buy order.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 async function createMarketBuyOrder(req, res) {
   await createMarketOrder(req, res, "buy");
 }
 
+/**
+ * Creates a market sell order.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 async function createMarketSellOrder(req, res) {
   await createMarketOrder(req, res, "sell");
 }
 
+/**
+ * Creates a market order (buy or sell).
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {string} orderType - The type of order ("buy" or "sell").
+ * @returns {Object} JSON response with order creation result or error.
+ */
 async function createMarketOrder(req, res, orderType) {
   const { platform, asset, amount } = req.body;
   try {
@@ -54,6 +89,13 @@ async function createMarketOrder(req, res, orderType) {
   }
 }
 
+/**
+ * Creates a limit order (buy or sell).
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {string} orderType - The type of order ("buy" or "sell").
+ * @returns {Object} JSON response with order creation result or error.
+ */
 async function createLimitOrder(req, res, orderType) {
   const { platform, price, amount, asset } = req.body;
   try {
@@ -66,14 +108,30 @@ async function createLimitOrder(req, res, orderType) {
   }
 }
 
+/**
+ * Creates a bunch of limit sell orders.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 async function createBunchLimitSellOrders(req, res) {
   await createLimitOrder(req, res, "sell");
 }
 
+/**
+ * Creates a bunch of limit buy orders.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 async function createBunchLimitBuyOrders(req, res) {
   await createLimitOrder(req, res, "buy");
 }
 
+/**
+ * Cancels all orders for a specific platform and asset.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON response with cancellation result or error.
+ */
 async function cancelAllOrders(req, res) {
   const { platform, asset } = req.body;
   try {
@@ -84,6 +142,12 @@ async function cancelAllOrders(req, res) {
   }
 }
 
+/**
+ * Cancels all sell orders for a specific platform and asset.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON response with cancellation result or error.
+ */
 async function cancelAllSellOrders(req, res) {
   const { platform, asset } = req.body;
   try {

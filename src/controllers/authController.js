@@ -1,6 +1,11 @@
 // src/controllers/authController.js
 const authService = require("../services/authService");
 
+/**
+ * Registers a new user.
+ * @param {Object} req - The HTTP request object
+ * @param {Object} res - The HTTP response object
+ */
 async function registerUser(req, res) {
   try {
     const { email, password } = req.body;
@@ -32,6 +37,11 @@ async function registerUser(req, res) {
   }
 }
 
+/**
+ * Authenticates a user and generates a session token.
+ * @param {Object} req - The HTTP request object
+ * @param {Object} res - The HTTP response object
+ */
 async function loginUser(req, res) {
   try {
     const { email, password } = req.body;
