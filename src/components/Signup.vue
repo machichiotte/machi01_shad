@@ -68,6 +68,9 @@ export default {
         });
     },
     methods: {
+        /**
+         * @returns {Promise<void>}
+         */
         async onSignup() {
             let validations = new SignupValidations(
                 this.email,

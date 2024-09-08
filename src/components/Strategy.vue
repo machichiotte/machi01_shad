@@ -41,7 +41,7 @@
             <select :value="slotProps.data[platform].maxExposure"
               @input="setSelectedMaxExposure(strat, slotProps.data.asset, platform, $event.target.value)"
               :disabled="slotProps.data[platform].disabled" style="margin-left:  5px;">
-              <option value=""></option>
+              <option value=""></option> 
               <option v-for="exposure in exposures" :key="exposure" :value="exposure">
                 {{ exposure }}
               </option>
@@ -77,7 +77,6 @@ const strategiesList = ref(strategies);
 const exposures = ref([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000]);
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
 
-// Utiliser computed pour obtenir les données du store
 const balance = computed(() => calculStore.getBalances);
 const strat = computed(() => calculStore.getStrats);
 const platforms = computed(() => [...new Set(balance.value.map((item) => item.platform))].sort());
@@ -104,6 +103,9 @@ const tableData = computed(() => {
   });
 });
 
+/**
+ * @returns {Promise<void>}
+ */
 const updateStrat = async () => {
   const stratMap = tableData.value.map(row => {
     const strategies = {};
@@ -139,6 +141,9 @@ const updateStrat = async () => {
   }
 };
 
+/**
+ * @returns {void}
+ */
 const updateAllStrats = () => {
   const selectedStrategyValue = selectedStrategy.value;
 
@@ -156,6 +161,9 @@ const updateAllStrats = () => {
   });
 };
 
+/**
+ * @returns {void}
+ */
 const updateAllMaxExposure = () => {
   const selectedMaxExposureValue = selectedMaxExposure.value;
 
@@ -173,7 +181,6 @@ const updateAllMaxExposure = () => {
   });
 };
 
-// Récupérer les données à l'initialisation du composant
 onMounted(async () => {
   try {
     await calculStore.fetchBalances();

@@ -11,6 +11,9 @@
 </template>
 
 <script setup>
+/**
+ * @emits showDialog
+ */
 const emit = defineEmits(['showDialog'])
 
 function handleShowDialog() {

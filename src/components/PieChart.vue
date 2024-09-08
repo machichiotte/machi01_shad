@@ -9,6 +9,11 @@
 <script>
 import Chart from "chart.js/auto";
 
+/**
+ * @component PieChart
+ * @props {Array} balances
+ * @props {String} platform
+ */
 export default {
     name: "PieChart",
     props: {

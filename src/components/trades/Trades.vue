@@ -19,9 +19,13 @@
 </template>
 
 <script setup>
+/**
+ * @component Trades
+ */
+
 import { ref, computed, onMounted } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
-import { useCalculStore } from '../../store/calcul'; // Importer le store Pinia
+import { useCalculStore } from '../../store/calcul';
 import TradesForm from "../forms/TradesForm.vue";
 import SearchBar from "../shad/SearchBar.vue";
 import TradesActions from "./TradesActions.vue";
@@ -32,20 +36,16 @@ const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
-// Utiliser le store Pinia
 const calculStore = useCalculStore();
 
-// Utiliser un computed pour obtenir les trades depuis le store Pinia
 const trades = computed(() => calculStore.getTrades);
 
-// Fonction pour récupérer les données des trades via le store Pinia
 const getTradesData = async () => {
   try {
-    await calculStore.fetchTrades(); // Appeler l'action Pinia pour récupérer les données
+    await calculStore.fetchTrades();
     console.log("Données Trades récupérées:", trades.value.length);
   } catch (error) {
     console.error("Une erreur s'est produite lors de la récupération des données :", error);
-    // Affichez un message d'erreur à l'utilisateur si nécessaire
   }
 };
 

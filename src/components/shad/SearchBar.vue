@@ -15,6 +15,10 @@
 </template>
 
 <script setup>
+/**
+ * @component SearchBar
+ * @props {Object} filters
+ */
 const props = defineProps({
     filters: {
         type: Object,

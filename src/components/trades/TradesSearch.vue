@@ -15,6 +15,10 @@
 </template>
 
 <script setup>
+/**
+ * @component TradesSearch
+ * @props {Object} filters - Required
+ */
 const props = defineProps({
     filters: {
         type: Object,

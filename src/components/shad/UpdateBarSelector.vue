@@ -8,6 +8,10 @@
 </template>
 
 <script setup>
+/**
+ * @component UpdateBarSelector
+ */
+
 import { ref } from 'vue'
 import {
     fetchCmc,
@@ -19,7 +23,6 @@ import {
     fetchShad
 } from '../../js/fetchFromServer'
 
-// Define fetch options for buttons
 const fetchOptions = [
     { id: 'fetchCmc', name: 'Fetch CMC Data', fetchFunction: fetchCmc },
     { id: 'fetchBalances', name: 'Fetch Balances Data', fetchFunction: fetchBalances },
@@ -30,27 +33,27 @@ const fetchOptions = [
     { id: 'fetchShad', name: 'Fetch Shad Data', fetchFunction: fetchShad }
 ]
 
-// Track loading states and errors for each button
 const loading = ref(Array(fetchOptions.length).fill(false))
 const errors = ref(Array(fetchOptions.length).fill(false))
 
+/**
+ * @async
+ * @param {Function} fetchFunction
+ * @param {number} index
+ * @returns {Promise<void>}
+ */
 async function fetchData(fetchFunction, index) {
-    // Reset error state for the current button
     errors.value[index] = false
 
     try {
-        // Set loading state to true for the current button
         loading.value[index] = true
-
-        // Call the actual fetch function
         await fetchFunction()
-
         console.log(`${fetchOptions[index].name} fetched successfully`)
     } catch (error) {
         console.error(`Error fetching ${fetchOptions[index].name}:`, error)
-        errors.value[index] = true  // Mark button as errored
+        errors.value[index] = true
     } finally {
-        loading.value[index] = false  // Reset loading state
+        loading.value[index] = false
     }
 }
 </script>
@@ -71,7 +74,6 @@ async function fetchData(fetchFunction, index) {
     min-width: 150px;
 }
 
-/* Style for buttons with an error */
 .fetch-button.error {
     background-color: red;
     color: white;

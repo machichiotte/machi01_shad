@@ -26,7 +26,6 @@
 <script setup>
 import { ref } from 'vue';
 
-// Importing necessary modules and functions
 import {
   loadingSpin,
   successSpinHtml,
@@ -39,7 +38,6 @@ import {
   saveCmcToIndexedDB,
 } from "../js/indexedDB";
 
-// Define API endpoints
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 const API_ENDPOINTS = {
   UPD_BALANCE: `${serverHost}/balance/update/`,
@@ -47,19 +45,19 @@ const API_ENDPOINTS = {
   CMC_DATA: `${serverHost}/cmc/update/`,
 };
 
-// Define reactive data
 const cryptoData = ref();
 const platforms = ref(["binance", "kucoin", "htx", "okx", "gateio"]);
 const selectedPlatforms = ref({});
 const updateBalance = ref(true);
 const updateOrders = ref(true);
 
-// Initialize selectedPlatforms object with default values
 platforms.value.forEach(platform => {
   selectedPlatforms.value[platform] = false;
 });
 
-// Define methods
+/**
+ * @returns {Promise<void>}
+ */
 async function fetchAndUpdateCoinMarketCapData() {
   try {
     loadingSpin();
@@ -86,6 +84,10 @@ async function fetchAndUpdateCoinMarketCapData() {
   }
 }
 
+/**
+ * @param {string} platform
+ * @returns {Promise<string>}
+ */
 async function updatePlatformData(platform) {
   try {
     loadingSpin();
@@ -137,6 +139,9 @@ async function updatePlatformData(platform) {
   }
 }
 
+/**
+ * @returns {Promise<void>}
+ */
 async function updateAll() {
   try {
     const promises = Object.keys(selectedPlatforms.value)
@@ -151,7 +156,9 @@ async function updateAll() {
   }
 }
 
-
+/**
+ * @param {string} finalResult
+ */
 function showUpdateResult(finalResult) {
   successSpinHtml(
     "Sauvegarde terminée",
@@ -161,6 +168,10 @@ function showUpdateResult(finalResult) {
   );
 }
 
+/**
+ * @param {string} message
+ * @param {Error} error
+ */
 function handleError(message, error) {
   console.error(message, error);
   errorSpin(

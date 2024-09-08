@@ -15,20 +15,26 @@
 import PieChart from "@/components/PieChart.vue";
 import { fetchShad } from '../js/fetchFromServer.js';
 
+/**
+ * @component
+ */
 export default {
   name: "HomePage",
   data() {
     return {
-      loaded: false, // Suivre si les données ont été chargées
+      loaded: false,
       balances: []
     };
   },
   methods: {
+    /**
+     * @async
+     */
     async getHomeData() {
       try {
         console.log('Fetching home data...');
-        this.balances = await fetchShad(); // Appel à la fonction fetchShad pour récupérer les données
-        this.loaded = true; // Marquer les données comme chargées
+        this.balances = await fetchShad();
+        this.loaded = true;
         console.log('Home data:', this.balances);
       } catch (error) {
         console.error("Une erreur s'est produite lors de la récupération des données :", error);
@@ -44,6 +50,9 @@ export default {
     }
   },
   computed: {
+    /**
+     * @returns {Object}
+     */
     groupedBalances() {
       const groups = this.balances.reduce((groups, balance) => {
         groups[balance.platform] = (groups[balance.platform] || []).concat(balance);

@@ -29,8 +29,11 @@ export default {
         };
     },
     methods: {
+        /**
+         * @async
+         * @returns {Promise<void>}
+         */
         async uploadCsv() {
-            // Réinitialiser le statut de l'upload et les indicateurs de téléchargement
             this.uploadSuccess = null;
             this.jsonAvailable = false;
             this.downloadable = false;
@@ -44,17 +47,14 @@ export default {
                 try {
                     const response = await getConvertedCsv(formData);
 
-                    // Mettre à jour les données pour activer le bouton de téléchargement
                     this.jsonAvailable = true;
                     this.downloadable = true;
                     this.jsonData = response.data;
 
-                    // Mettre à jour le statut de l'upload
                     this.uploadSuccess = response.success;
                 } catch (error) {
                     console.error("Erreur lors de l'envoi du fichier CSV", error);
 
-                    // Mettre à jour le statut de l'upload en cas d'échec
                     this.uploadSuccess = false;
                     this.jsonAvailable = false; 
                     this.downloadable = false; 
@@ -62,36 +62,30 @@ export default {
             } else {
                 console.error("Aucun fichier sélectionné");
 
-                // Mettre à jour le statut de l'upload en cas d'échec
                 this.uploadSuccess = false;
             }
         },
 
+        /**
+         * @returns {void}
+         */
         downloadJson() {
-            // Vérifier que les données JSON sont disponibles
             if (this.jsonData) {
-                // Créer un fichier JSON
                 const jsonData = JSON.stringify(this.jsonData);
                 const blob = new Blob([jsonData], { type: "application/json" });
 
-                // Créer une URL objet pour le blob
                 const url = URL.createObjectURL(blob);
 
-                // Créer un lien <a> pour déclencher le téléchargement
                 const downloadLink = document.createElement("a");
                 downloadLink.href = url;
                 downloadLink.download = "data.json";
 
-                // Ajouter le lien au document
                 document.body.appendChild(downloadLink);
 
-                // Cliquer sur le lien pour déclencher le téléchargement
                 downloadLink.click();
 
-                // Retirer le lien du document
                 document.body.removeChild(downloadLink);
 
-                // Révoquer l'URL objet pour libérer les ressources
                 URL.revokeObjectURL(url);
             }
         },
