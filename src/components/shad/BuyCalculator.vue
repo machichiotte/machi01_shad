@@ -78,6 +78,9 @@ watch(
 );
 
 // Calculer les résultats à chaque modification
+/**
+ * @param {Object} asset
+ */
 function calculateResults(asset) {
     asset.significantPriceDigits= getSignificantDigits(asset.currentPrice),
     asset.significantAmountDigits= getSignificantDigits(asset.balance),
@@ -92,46 +95,90 @@ function calculateResults(asset) {
 }
 
 // Intermediary calculation functions
+/**
+ * @param {Object} asset
+ * @returns {number}
+ */
 function calculateDepense(asset) {
     return asset.invest ? asset.invest - calculateFee(asset) : 0;
 }
 
+/**
+ * @param {Object} asset
+ * @returns {number}
+ */
 function calculateFee(asset) {
     return (asset.fee / 100) * asset.invest;
 }
 
+/**
+ * @param {Object} asset
+ * @returns {number}
+ */
 function calculateAmountBuyFromInvest(asset) {
     return calculateDepense(asset) / asset.currentPrice;
 }
 
+/**
+ * @param {Object} asset
+ * @returns {number}
+ */
 function calculateFuturTotalAmountBuy(asset) {
     return calculateAmountBuyFromInvest(asset) + asset.balance;
 }
 
+/**
+ * @param {Object} asset
+ * @returns {number}
+ */
 function calculateFuturTotalBuy(asset) {
     return asset.invest + asset.totalBuy - asset.totalSell;
 }
 
+/**
+ * @param {Object} asset
+ * @returns {number}
+ */
 function calculateFuturAvg(asset) {
     return calculateFuturTotalBuy(asset) / calculateFuturTotalAmountBuy(asset);
 }
 
+/**
+ * @param {Object} asset
+ * @returns {number}
+ */
 function calculateFuturAvgWithFee(asset) {
     return calculateFuturAvg(asset) + (asset.fee / 100) * calculateFuturAvg(asset);
 }
 
+/**
+ * @param {Object} asset
+ * @returns {number}
+ */
 function calculateFuturAmountToSell(asset) {
     return ((calculateFuturTotalBuy(asset) - asset.maxExposition) * calculateFuturTotalAmountBuy(asset) / calculateFuturTotalBuy(asset));
 }
 
+/**
+ * @param {Object} asset
+ * @returns {number}
+ */
 function calculateBaissePrixEntree(asset) {
     return 100 * ((calculateFuturAvgWithFee(asset) - asset.averageEntryPrice) / asset.averageEntryPrice);
 }
 
+/**
+ * @param {Object} asset
+ * @returns {number}
+ */
 function calculateNextTp(asset) {
     return 100 * ((calculateFuturAvgWithFee(asset) - asset.currentPrice) / asset.currentPrice);
 }
 
+/**
+ * @param {number} value
+ * @returns {number}
+ */
 function getSignificantDigits(value) {
     if (!value || typeof value !== 'number') return 2;
     const valueStr = value.toString();
@@ -141,6 +188,11 @@ function getSignificantDigits(value) {
     return 0;
 }
 
+/**
+ * @param {number} value
+ * @param {number} digits
+ * @returns {string}
+ */
 function formatSignificantDigits(value, digits) {
     return parseFloat(value).toFixed(digits);
 }
