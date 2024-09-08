@@ -84,64 +84,57 @@ const serverHost = import.meta.env.VITE_SERVER_HOST;
 const types = ref(['buy', 'sell'])
 const platforms = ref(['binance', 'gateio', 'htx', 'kucoin', 'okx'])
 
-// Méthode pour vérifier l'état de remplissage des champs du formulaire
+/**
+ * @returns {void}
+ */
 const checkFormValidity = () => {
     const formDataValue = formData.value;
     formDataValue.pair = formDataValue.base + '/' + formDataValue.quote;
 
     const allFieldsFilled = Object.keys(formDataValue).every(key => {
         if (typeof formDataValue[key] === 'string' && !formDataValue[key].trim()) {
-            return false; // Stop iterating if an empty string is found
+            return false;
         } else if (typeof formDataValue[key] === 'number' && formDataValue[key] <= 0) {
-            return false; // Stop iterating if a number is non-positive
-        } /*else if (key === 'date') {
-            // Vérifier le format de la date
-            const date = formDataValue[key];
-            if (!isValidDateFormat(date)) {
-                return false; // Stop iterating if the date format is invalid
-            }
-        }*/
-       /* if (key === 'date') {
-            // Convertir la date en format YYYY-MM-DD HH:mm:ss
-            const formattedDate = new Date(formDataValue[key]).toISOString().slice(0, -1).replace('T', ' ');
-            formDataValue[key] = formattedDate;
-        }*/
-        return true; // Continue iterating if the field is valid
+            return false;
+        }
+        return true;
     });
 
-    // Mettre à jour l'état du bouton "Save"
     isSaveDisabled.value = !allFieldsFilled;
 }
 
-// Méthode pour vérifier si le format de la date est valide
+/**
+ * @param {string} dateString
+ * @returns {boolean}
+ */
 const isValidDateFormat = (dateString) => {
-    // Combine patterns for both ISO 8601 and custom format:
     const combinedRegex = /^(?:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z|^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})$/;
-
     return combinedRegex.test(dateString);
 };
 
-// Méthode pour sauvegarder le trade
+/**
+ * @returns {void}
+ */
 const saveTrade = () => {
     const formDataValue = formData.value;
     formDataValue.base = formDataValue.base.toUpperCase()
     formDataValue.quote = formDataValue.quote.toUpperCase()
 
-
     if (!isSaveDisabled.value) {
         addTradesToDatabase(formDataValue);
 
-        // Réinitialiser les champs du formulaire
         Object.keys(formDataInitial).forEach((key) => {
             formDataValue[key] = formDataInitial[key];
         });
     } else {
-        // Afficher un message à l'utilisateur indiquant que tous les champs doivent être remplis
         console.error("Tous les champs doivent être remplis avant de sauvegarder.");
     }
 }
 
-// Define methods
+/**
+ * @param {Object} formDataValue
+ * @returns {Promise<void>}
+ */
 async function addTradesToDatabase(formDataValue) {
     try {
         const response = await fetch(`${serverHost}/trades/add`, {
@@ -185,13 +178,10 @@ const formDataInitial = {
     feecoin: ''
 }
 
-// Copier les valeurs initiales de formDataInitial pour initialiser formData
 const formData = ref({ ...formDataInitial })
 
-// État pour gérer la disponibilité du bouton "Save"
 const isSaveDisabled = ref(true);
 
-// Appeler la méthode pour vérifier l'état de remplissage des champs chaque fois que les données du formulaire sont modifiées
 watch(formData, () => {
     checkFormValidity();
 }, { deep: true });
@@ -201,4 +191,4 @@ watch(formData, () => {
 .field-group {
     margin-bottom: 16px;
 }
-</style>../../js/spinner.js
+</style>
