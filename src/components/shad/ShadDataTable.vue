@@ -227,18 +227,24 @@ import { fetchTickers } from '../../js/fetchFromServer.js';
 import { strategies } from '../../js/strategies.js';
 import PercentageColumn from './PercentageColumn.vue';
 
-/* =============================
-   Définition des constantes et refs
-   ============================= */
+/**
+ * @constant
+ */
 const strategiesList = ref(strategies);
-const itemsPerPage = ref(50);  // Nombre d'éléments par page
-const selectedPlatforms = ref([]);  // Plateformes sélectionnées pour filtrage
-const localItems = ref([]);  // Éléments locaux modifiables par l'utilisateur
-const localSelectedAssets = ref([]);  // Sélection locale d'actifs
+const itemsPerPage = ref(50);
+const selectedPlatforms = ref([]);
+const localItems = ref([]);
+const localSelectedAssets = ref([]);
 
-/* ============================
-   Définition des props et des émetteurs
-   ============================ */
+/**
+ * @typedef {Object} Props
+ * @property {Array} items
+ * @property {Object} filters
+ */
+
+/**
+ * @type {Props}
+ */
 const props = defineProps({
     items: {
         type: Array,
@@ -252,13 +258,19 @@ const props = defineProps({
     }
 });
 
+/**
+ * @type {function}
+ */
 const emit = defineEmits(['update:selectedAssets']);
 
-/* ============================
-   Déclaration des propriétés calculées
-   ============================ */
+/**
+ * @type {import('vue').ComputedRef}
+ */
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
 
+/**
+ * @type {import('vue').ComputedRef}
+ */
 const platformOptions = computed(() => [
     { id: 'binance', name: 'Binance' },
     { id: 'kucoin', name: 'KuCoin' },
@@ -267,18 +279,20 @@ const platformOptions = computed(() => [
     { id: 'gateio', name: 'Gate.io' }
 ]);
 
-// Plateformes sélectionnées par défaut
 selectedPlatforms.value = platformOptions.value.map(platform => platform.id);
 
-// Filtrage dynamique des éléments en fonction des filtres et des plateformes
+/**
+ * @type {import('vue').ComputedRef}
+ */
 const computedFilters = computed(() => props.filters);
+
+/**
+ * @type {import('vue').ComputedRef}
+ */
 const filteredItems = computed(() => filterItems(localItems.value, computedFilters.value.global.value, selectedPlatforms.value));
 
-/* ============================
-   Surveillance des changements
-   ============================ */
 watch(() => props.items, (newItems) => {
-    localItems.value = newItems;  // Mise à jour des éléments locaux lors des changements
+    localItems.value = newItems;
 }, { immediate: true });
 
 watch(() => props.selectedAssets, (selectedItem) => {
@@ -286,10 +300,12 @@ watch(() => props.selectedAssets, (selectedItem) => {
     localSelectedAssets.value = selectedItem;
 });
 
-/* ============================
-   Fonctions de logique
-   ============================ */
-// Filtrage des éléments en fonction des termes de recherche et des plateformes
+/**
+ * @param {Array} items
+ * @param {string} searchTerm
+ * @param {Array} selectedPlatforms
+ * @returns {Array}
+ */
 function filterItems(items, searchTerm, selectedPlatforms) {
     if (!searchTerm && selectedPlatforms.length === platformOptions.value.length) {
         return items;
@@ -305,27 +321,29 @@ function filterItems(items, searchTerm, selectedPlatforms) {
     });
 }
 
-// Fonction pour émettre une sélection d'actifs mise à jour
+/**
+ * @param {Array} selection
+ */
 function emitSelection(selection) {
     emit('update:selectedAssets', selection);
 }
 
-// Mise à jour régulière des données des tickers
+/**
+ * @returns {void}
+ */
 function updateTickers() {
     fetchTickers().then(tickerData => {
         const platforms = new Set(localItems.value.map(item => item.platform));
         const filteredTickers = tickerData.filter(ticker => platforms.has(ticker.platform));
 
-        // Dictionnaire pour des recherches rapides
         const tickerDict = filteredTickers.reduce((dict, ticker) => {
             const key = `${ticker.platform}-${ticker.symbol}`;
             dict[key] = ticker;
             return dict;
         }, {});
 
-        // Mise à jour des éléments locaux
         localItems.value.forEach(item => {
-            const key = `${item.platform}-${item.asset}/USDT`;  // Assumant le format 'ASSET/USDT'
+            const key = `${item.platform}-${item.asset}/USDT`;
             if (tickerDict[key]) {
                 item.currentPrice = tickerDict[key].last;
             }
@@ -335,25 +353,23 @@ function updateTickers() {
     });
 }
 
-// Clé de ligne unique pour chaque ligne de données
+/**
+ * @param {Object} rowData
+ * @returns {string}
+ */
 const rowKey = (rowData) => `${rowData.asset}-${rowData.platform}`;
 
-/* ============================
-   Gestion du cycle de vie du composant
-   ============================ */
 let tickerInterval;
 
 onMounted(() => {
-    tickerInterval = setInterval(updateTickers, 60000);  // Rafraîchissement toutes les 60 secondes
-    updateTickers();  // Initialisation immédiate
+    tickerInterval = setInterval(updateTickers, 60000);
+    updateTickers();
 });
 
 onUnmounted(() => {
-    clearInterval(tickerInterval);  // Nettoyage lors de la destruction du composant
+    clearInterval(tickerInterval);
 });
 </script>
-
-
 
 <style scoped>
 .text-green-500 {
