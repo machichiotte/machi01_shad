@@ -11,7 +11,11 @@ const ENDPOINTS = {
   SHAD: `${serverHost}/shad/get`
 }
 
-// Generic function to fetch data from the API
+/**
+ * @param {string} dataType
+ * @param {string} endpoint
+ * @returns {Promise<any>}
+ */
 const fetchData = async (dataType, endpoint) => {
   try {
     const response = await fetch(endpoint)
@@ -23,7 +27,10 @@ const fetchData = async (dataType, endpoint) => {
   }
 }
 
-// Function to post CSV data for conversion
+/**
+ * @param {FormData} formData
+ * @returns {Promise<any>}
+ */
 const getConvertedCsv = async (formData) => {
   console.log('getter getConvertedCsv formData', formData.get('csvFile'))
   return fetchData('converter CSV', ENDPOINTS.CONVERTER, {
