@@ -37,7 +37,7 @@ export default {
         this.loaded = true;
         console.log('Home data:', this.balances);
       } catch (error) {
-        console.error("Une erreur s'est produite lors de la récupération des données :", error);
+        console.error("An error occurred while retrieving data:", error);
       }
     },
   },
@@ -46,7 +46,7 @@ export default {
       console.log('Mounted component, fetching data...');
       await this.getHomeData();
     } catch (error) {
-      console.error("Une erreur s'est produite lors de la récupération des données :", error);
+      console.error("An error occurred while retrieving data:", error);
     }
   },
   computed: {

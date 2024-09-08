@@ -3,7 +3,7 @@
     <div class="actions-container mb-4">
         <Toolbar>
             <template #start>
-                <Button label="Add New Trade" icon="pi pi-cart-plus" severity="info" class="mr-2"
+                <Button label="Add a new trade" icon="pi pi-cart-plus" severity="info" class="mr-2"
                     @click="handleShowDialog" />
             </template>
         </Toolbar>

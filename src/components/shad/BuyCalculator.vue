@@ -7,7 +7,7 @@
         <div v-for="(asset, index) in reactiveAssets" :key="asset.asset" class="asset-row">
             <h4>{{ asset.asset }}</h4>
 
-            <!-- todo ici je veux ajouter entre parentheses le totalBuy avant invest et la moyenne dentree avant invest-->
+            <!-- todo here I want to add in parentheses the totalBuy before invest and the average entry price before invest-->
             <h4>Total Buy : {{ formatSignificantDigits(asset.totalBuy,2) }}</h4>
             <h4>AVG : {{ formatSignificantDigits(asset.averageEntryPrice,
                 asset.significantPriceDigits) }}</h4>
@@ -31,7 +31,7 @@
                     }}</p>
                 <p>Amount to Sell: {{ formatSignificantDigits(asset.amountToSell, asset.significantAmountDigits)
                     }}</p>
-                <p>Baisse du Prix d'Entrée: {{ formatSignificantDigits(asset.baissePrixEntree, 2)
+                <p>Entry Price Decrease: {{ formatSignificantDigits(asset.baissePrixEntree, 2)
                     }}%</p>
                 <p>Next TP: {{ formatSignificantDigits(asset.nextTp, 2) }}%</p>
             </div>
@@ -55,11 +55,11 @@ const reactiveAssets = ref([]);
 watch(
     () => props.selectedAssets,
     (newAssets) => {
-        // Réinitialiser reactiveAssets avec les nouveaux assets
+        // Reset reactiveAssets with new assets
         reactiveAssets.value = newAssets.map((asset) =>
             reactive({
-                fee: asset.fee !== undefined ? asset.fee : 0.1, // Valeur par défaut des frais
-                invest: asset.invest !== undefined ? asset.invest : 995, // Investissement initial
+                fee: asset.fee !== undefined ? asset.fee : 0.1, // Default fee value
+                invest: asset.invest !== undefined ? asset.invest : 995, // Initial investment
                 avgWithFee: asset.avgWithFee,
                 amountToSell: asset.amountToSell,
                 baissePrixEntree: asset.baissePrixEntree,
@@ -71,13 +71,13 @@ watch(
             })
         );
 
-        // Recalculer les résultats pour chaque asset
+        // Recalculate results for each asset
         reactiveAssets.value.forEach((asset) => calculateResults(asset));
     },
-    { deep: true, immediate: true } // Écoute profonde pour détecter tous les changements
+    { deep: true, immediate: true } // Deep watch to detect all changes
 );
 
-// Calculer les résultats à chaque modification
+// Calculate results on each modification
 /**
  * @param {Object} asset
  */
@@ -210,44 +210,44 @@ function formatSignificantDigits(value, digits) {
 
 .asset-row {
     display: flex;
-    /* Utiliser Flexbox pour disposition horizontale */
+    /* Use Flexbox for horizontal layout */
     align-items: center;
-    /* Aligner verticalement les éléments au centre */
+    /* Vertically align items to the center */
     gap: 1rem;
-    /* Espacement entre les éléments */
+    /* Spacing between elements */
     margin-bottom: 1rem;
     padding: 1rem;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     flex-wrap: wrap;
-    /* Permet de passer à la ligne si l'espace est insuffisant */
+    /* Allow wrapping to next line if space is insufficient */
 }
 
 .input-group {
     display: flex;
-    /* Flexbox pour aligner les inputs horizontalement */
+    /* Flexbox to align inputs horizontally */
     gap: 0.5rem;
-    /* Réduire l'espacement entre les inputs */
+    /* Reduce spacing between inputs */
     flex: 1;
-    /* Permet aux inputs de se redimensionner pour tenir dans l'espace disponible */
+    /* Allow inputs to resize to fit available space */
     min-width: 200px;
-    /* Largeur minimale pour les inputs */
+    /* Minimum width for inputs */
 }
 
 .input-group input {
     width: 70px;
-    /* Ajuste la largeur des champs d'entrée */
+    /* Adjust width of input fields */
 }
 
 .results {
     display: flex;
-    /* Flexbox pour disposition horizontale */
+    /* Flexbox for horizontal layout */
     gap: 1rem;
-    /* Espacement entre les résultats */
+    /* Spacing between results */
     flex-wrap: wrap;
-    /* Permet de passer à la ligne si l'espace est insuffisant */
+    /* Allow wrapping to next line if space is insufficient */
     flex: 2;
-    /* Permet aux résultats d'occuper plus d'espace que les inputs */
+    /* Allow results to occupy more space than inputs */
 }
 
 .results p {

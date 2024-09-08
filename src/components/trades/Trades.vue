@@ -2,7 +2,7 @@
 <template>
   <div class="page">
     <div class="header">
-      <h1>Liste des trades</h1>
+      <h1>Trade List</h1>
       <SearchBar :filters="filters" />
     </div>
     <div class="card">
@@ -43,9 +43,9 @@ const trades = computed(() => calculStore.getTrades);
 const getTradesData = async () => {
   try {
     await calculStore.fetchTrades();
-    console.log("Données Trades récupérées:", trades.value.length);
+    console.log("Trade data retrieved:", trades.value.length);
   } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", error);
+    console.error("An error occurred while retrieving data:", error);
   }
 };
 

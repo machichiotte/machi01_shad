@@ -5,12 +5,12 @@
 
         <form @submit.prevent="uploadCsv">
             <input type="file" ref="csvFileInput" accept=".csv" />
-            <button type="submit">Envoyer le fichier CSV</button>
+            <button type="submit">Upload CSV file</button>
         </form>
 
-        <!-- Bouton pour télécharger le fichier JSON -->
+        <!-- Button to download JSON file -->
         <button v-if="downloadable" @click="downloadJson" :disabled="!jsonAvailable">
-            Télécharger le fichier JSON
+            Download JSON file
         </button>
     </div>
 </template>
@@ -53,14 +53,14 @@ export default {
 
                     this.uploadSuccess = response.success;
                 } catch (error) {
-                    console.error("Erreur lors de l'envoi du fichier CSV", error);
+                    console.error("Error while sending CSV file", error);
 
                     this.uploadSuccess = false;
                     this.jsonAvailable = false; 
                     this.downloadable = false; 
                 }
             } else {
-                console.error("Aucun fichier sélectionné");
+                console.error("No file selected");
 
                 this.uploadSuccess = false;
             }

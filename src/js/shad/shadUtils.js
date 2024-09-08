@@ -41,15 +41,15 @@ export function evaluateAssetStatus(data) {
   const totalOrders = status.reduce((acc, val) => acc + val, 0)
 
   if (nbOpenSellOrders === 0) {
-    return { severity: 'danger', label: "Pas d'ordres ouverts" }
+    return { severity: 'danger', label: "No open orders" }
   } else if (currentPrice > priceTp1) {
     return priceTp1 < priceTp2
-      ? { severity: 'info', label: 'Tu peux vendre depuis un moment' }
+      ? { severity: 'info', label: 'You can sell for a while' }
       : { severity: 'danger', label: 'tp2 < tp1' }
   }
 
   if (totalOrders === 5) {
-    return { severity: 'success', label: '5 ordres placés' }
+    return { severity: 'success', label: '5 orders placed' }
   }
 
   const platformThreshold = platform === BINANCE_PLATFORM_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD
@@ -58,8 +58,8 @@ export function evaluateAssetStatus(data) {
   const nextOrder = status.findIndex((value) => value === 0)
   if (nextOrder !== -1) {
     return priceThreshold < data[`priceTp${nextOrder + 1}`]
-      ? { severity: 'success', label: 'Max ordres placés' }
-      : { severity: 'warning', label: `L'ordre ${nextOrder + 1} peut être placé` }
+      ? { severity: 'success', label: 'Max orders placed' }
+      : { severity: 'warning', label: `Order ${nextOrder + 1} can be placed` }
   }
 
   return { severity: 'warning', label: `STATUS ERROR` }
@@ -91,11 +91,11 @@ function updateAssetField(items, data, field, newValue) {
 }
 
 /**
- * Applique une nouvelle stratégie à une ligne d'actif spécifique dans la liste des éléments.
+ * Applies a new strategy to a specific asset row in the list of items.
  * 
- * @param {Array} items - Une liste réactive d'éléments représentant des actifs.
- * @param {Object} data - L'objet de données de l'actif à mettre à jour.
- * @param {string|Object} newStrat - La nouvelle stratégie à appliquer à l'actif.
+ * @param {Array} items - A reactive list of items representing assets.
+ * @param {Object} data - The data object of the asset to update.
+ * @param {string|Object} newStrat - The new strategy to apply to the asset.
  */
 export const applyStrategyToRow = (items, data, newStrat) =>
   updateAssetField(items, data, 'strat', newStrat)
@@ -167,10 +167,10 @@ function retrievePlatformFee(platform) {
  */
 function getTakeProfitValues(data, maxExposition, ratioShad, averageEntryPrice) {
   const { totalBuy, totalSell, balance } = data
-  // Calculs intermédiaires
+  // Intermediate calculations
   const recupTpX = getRecupTpX(maxExposition, ratioShad)
   let recupTp1, priceTp1, amountTp1
-  // Cas 1
+  // Case 1
   if (maxExposition < totalBuy && totalBuy > totalSell + maxExposition) {
     recupTp1 = totalBuy - totalSell - maxExposition
     priceTp1 = averageEntryPrice
@@ -185,13 +185,13 @@ function getTakeProfitValues(data, maxExposition, ratioShad, averageEntryPrice) 
   }
   amountTp1 = recupTp1 / priceTp1
 
-  // Vérification si amount1 est supérieur au balance
+  // Check if amount1 is greater than balance
   if (amountTp1 > balance) {
-    amountTp1 = balance // Assignation de balance à amount1
-    priceTp1 = recupTp1 / balance // Recalcul de price1
+    amountTp1 = balance // Assign balance to amount1
+    priceTp1 = recupTp1 / balance // Recalculate price1
   }
 
-  // Calcul des montants et prix suivants
+  // Calculate subsequent amounts and prices
   const amountTp2 = (balance - amountTp1) / 2
   const amountTp3 = (balance - amountTp1 - amountTp2) / 2
   const amountTp4 = (balance - amountTp1 - amountTp2 - amountTp3) / 2
@@ -202,7 +202,7 @@ function getTakeProfitValues(data, maxExposition, ratioShad, averageEntryPrice) 
   const priceTp4 = amountTp4 > 0 ? recupTpX / amountTp4 : 0
   const priceTp5 = amountTp5 > 0 ? recupTpX / amountTp5 : 0
 
-  // Retour des valeurs calculées
+  // Return calculated values
   return {
     averageEntryPrice,
     recupTpX,
@@ -245,10 +245,10 @@ export function getTakeProfitsTargets(data) {
 }
 
 /**
- * Détermine le facteur de stratégie en fonction de la stratégie donnée.
+ * Determines the strategy factor based on the given strategy.
  * 
- * @param {string} strat - La stratégie à évaluer.
- * @returns {number|string} Le facteur de stratégie correspondant ou une valeur par défaut.
+ * @param {string} strat - The strategy to evaluate.
+ * @returns {number|string} The corresponding strategy factor or a default value.
  */
 function determineStrategyFactor(strat) {
   if (strat !== undefined) {
@@ -262,19 +262,19 @@ function determineStrategyFactor(strat) {
       case 'Strategy 4':
         return 16
       default:
-        return '8' // Valeur par défaut pour les stratégies non reconnues
+        return '8' // Default value for unrecognized strategies
     }
   }
-  return '/' // Valeur par défaut si la stratégie est indéfinie
+  return '/' // Default value if strategy is undefined
 }
 
 /**
- * Calcule l'écart de récupération en fonction du total des achats, des ventes et de l'exposition maximale.
+ * Calculates the recovery gap based on total purchases, sales, and maximum exposure.
  * 
- * @param {number} totalBuy - Le montant total des achats.
- * @param {number} totalSell - Le montant total des ventes.
- * @param {number} maxExposition - L'exposition maximale autorisée.
- * @returns {number} L'écart de récupération calculé.
+ * @param {number} totalBuy - The total amount of purchases.
+ * @param {number} totalSell - The total amount of sales.
+ * @param {number} maxExposition - The maximum allowed exposure.
+ * @returns {number} The calculated recovery gap.
  */
 function calculateRecoveryGap(totalBuy, totalSell, maxExposition) {
   //todo depends on the strategy
@@ -289,11 +289,11 @@ function calculateRecoveryGap(totalBuy, totalSell, maxExposition) {
 }
 
 /**
- * Calcule la valeur de récupération pour un Take Profit X (TpX).
+ * Calculates the recovery value for a Take Profit X (TpX).
  * 
- * @param {number} maxExposition - L'exposition maximale autorisée.
- * @param {number} ratioShad - Le ratio Shad utilisé pour le calcul.
- * @returns {number} La valeur de récupération calculée pour TpX.
+ * @param {number} maxExposition - The maximum allowed exposure.
+ * @param {number} ratioShad - The Shad ratio used for calculation.
+ * @returns {number} The calculated recovery value for TpX.
  */
 function getRecupTpX(maxExposition, ratioShad) {
   const result = (maxExposition * ratioShad * 0.5).toFixed(2)

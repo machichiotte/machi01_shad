@@ -13,12 +13,12 @@
     <header :class="{ 'dark-mode': isDarkMode }">
       <button class="menu-button" @click="toggleMenu">☰</button>
       <nav :class="{ 'show-menu': isMenuOpen, 'dark-mode': isDarkMode }">
-        <RouterLink to="/" active-class="selected-link">Accueil</RouterLink>
-        <RouterLink to="/update" active-class="selected-link">Mise à jour</RouterLink>
-        <RouterLink to="/orders" active-class="selected-link">Ordres ouverts</RouterLink>
-        <RouterLink to="/cmc" active-class="selected-link">Montrer données</RouterLink>
+        <RouterLink to="/" active-class="selected-link">Home</RouterLink>
+        <RouterLink to="/update" active-class="selected-link">Update</RouterLink>
+        <RouterLink to="/orders" active-class="selected-link">Open Orders</RouterLink>
+        <RouterLink to="/cmc" active-class="selected-link">Show Data</RouterLink>
         <RouterLink to="/shad" active-class="selected-link">SHAD</RouterLink>
-        <RouterLink to="/strategy" active-class="selected-link">Stratégie</RouterLink>
+        <RouterLink to="/strategy" active-class="selected-link">Strategy</RouterLink>
         <RouterLink to="/trades" active-class="selected-link">Trades</RouterLink>
         <RouterLink to="/converter" active-class="selected-link">Converter</RouterLink>
       </nav>

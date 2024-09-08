@@ -24,14 +24,14 @@
                 <Column header="Average Entry Price" field="averageEntryPrice" :rowspan="2" sortable />
                 <Column header="Total Buy" field="totalBuy" :rowspan="2" sortable />
                 <Column header="Total Sell" field="totalSell" :rowspan="2" sortable />
-                <Column header="Quantite total achetee" field="totalAmount" :rowspan="2" sortable />
+                <Column header="Total Amount Bought" field="totalAmount" :rowspan="2" sortable />
                 <Column header="Balance" field="balance" :rowspan="2" sortable />
                 <Column header="Wallet" field="currentPossession" :rowspan="2" sortable />
                 <Column header="Profit" field="profit" :rowspan="2" sortable />
                 <Column header="Open Orders" :colspan="2" />
                 <Column header="Ratio" field="ratioShad" :rowspan="2" sortable />
-                <Column header="Recup Shad" field="recupShad" :rowspan="2" sortable />
-                <Column header="% next TP" field="percentToNextTp" sortable :rowspan="2" />
+                <Column header="Shad Recovery" field="recupShad" :rowspan="2" sortable />
+                <Column header="% to next TP" field="percentToNextTp" sortable :rowspan="2" />
                 <Column header="Take Profit" :colspan="2" />
                 <Column header="TP1" :colspan="2" />
                 <Column header="TP2" :colspan="2" />
@@ -73,11 +73,11 @@
         <Column field="currentPrice" frozen alignFrozen="left">
             <template #body="slotProps">
                 <div style="position: relative; height: 50px; padding: 5px;">
-                    <!-- Texte principal centré -->
+                    <!-- Main text centered -->
                     <div style="text-align: center; font-size: 1rem; line-height: 20px;">
                         {{ slotProps.data.currentPrice }}
                     </div>
-                    <!-- Texte secondaire en bas à droite -->
+                    <!-- Secondary text at bottom right -->
                     <div :class="{
         'text-green-500': slotProps.data.cryptoPercentChange24h > 0,
         'text-red-500': slotProps.data.cryptoPercentChange24h < 0
@@ -117,11 +117,11 @@
         <Column field="averageEntryPrice">
             <template #body="slotProps">
                 <div style="position: relative; height: 50px; padding: 5px;">
-                    <!-- Texte principal centré -->
+                    <!-- Main text centered -->
                     <div style="text-align: center; font-size: 1rem; line-height: 20px;">
                         {{ slotProps.data.averageEntryPrice }}
                     </div>
-                    <!-- Texte secondaire en bas à droite -->
+                    <!-- Secondary text at bottom right -->
                     <div :class="{
         'text-green-500': slotProps.data.percentageDifference > 0,
         'text-red-500': slotProps.data.percentageDifference < 0
@@ -141,7 +141,7 @@
         <Column field="currentPossession" sortable>
             <template #body="slotProps">
                 <span>
-                    <!-- Vérification si currentPossession est défini et est un nombre valide -->
+                    <!-- Check if currentPossession is defined and is a valid number -->
                     {{
         typeof slotProps.data.currentPossession === 'number'
             ? slotProps.data.currentPossession.toFixed(2) + '$'
@@ -154,7 +154,7 @@
         <Column field="profit" sortable>
             <template #body="slotProps">
                 <span>
-                    <!-- Vérification si profit est défini et est un nombre valide -->
+                    <!-- Check if profit is defined and is a valid number -->
                     {{
         typeof slotProps.data.profit === 'number'
             ? slotProps.data.profit.toFixed(2) + '$'

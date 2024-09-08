@@ -181,7 +181,7 @@ export default {
     },
     methods: {
         updateNextSells() {
-            // Utilisez votre fonction calculateAmountsAndPricesForShad pour mettre à jour this.nextSells
+            // Use your calculateAmountsAndPricesForShad function to update this.nextSells
             //this.nextSells = calculateAmountsAndPricesForShad(/* ... */);
         },
         getOrdersBySide(orders, side) {
@@ -190,7 +190,7 @@ export default {
             if (filteredOrders.length > 0) {
                 return filteredOrders;
             } else {
-                console.error(`Aucun ordre trouvé pour 'asset' (${tradingPairPrefix}) dans open${side}Orders.`);
+                console.error(`No orders found for 'asset' (${tradingPairPrefix}) in open${side}Orders.`);
                 return null;
             }
         },
@@ -376,18 +376,18 @@ export default {
 
 .asset .logo {
     margin-right: 8px;
-    /* Espacement entre le logo et le titre */
+    /* Spacing between logo and title */
 }
 
 .asset .title {
     margin: 0;
-    /* Suppression des marges par défaut */
+    /* Remove default margins */
 }
 
 .asset .description {
     font-size: 12px;
     margin: 0;
-    /* Suppression des marges par défaut */
+    /* Remove default margins */
 }
 
 .asset .description-container {
@@ -398,17 +398,17 @@ export default {
 
 .center-content {
     text-align: center;
-    /* Centrer horizontalement le contenu de la balise <div> */
+    /* Center the content of the <div> tag horizontally */
 }
 
 .block-title {
     display: inline-block;
-    /* Permet de centrer le texte indépendamment du bouton */
+    /* Allows centering the text independently of the button */
 }
 
 .title-text {
     display: inline-block;
-    /* Permet de centrer le texte indépendamment du bouton */
+    /* Allows centering the text independently of the button */
 }
 
 .block.current-value,

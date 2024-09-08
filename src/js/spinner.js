@@ -6,8 +6,8 @@ import Swal from 'sweetalert2';
  */
 const loadingSpin = () => {
     Swal.fire({
-        title: 'Traitement en cours',
-        text: 'Veuillez patienter...',
+        title: 'Processing',
+        text: 'Please wait...',
         allowOutsideClick: false
     });
 }

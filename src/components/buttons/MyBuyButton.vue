@@ -13,13 +13,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue' // Importer computed depuis la bibliothèque vue
+import { ref } from 'vue' // Import computed from the vue library
 import AddBuyOrdersForm from '../forms/AddBuyOrdersForm.vue'
 
-//const selectedAssets = ref([]) // déclarer la référence selectedAssets
+//const selectedAssets = ref([]) // declare the selectedAssets reference
 
 const props = defineProps({
-    selectedAssets: Object // Définir le type de la prop comme un objet
+    selectedAssets: Object // Define the prop type as an object
 })
 
 const showBuyOrdersForm = ref(false)

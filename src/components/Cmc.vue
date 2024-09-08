@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useCalculStore } from '../store/calcul'; // Importer le store Pinia
+import { useCalculStore } from '../store/calcul';
 import { cmcColumns } from '../js/columns.js'
 import { FilterMatchMode } from 'primevue/api'
 import SearchBar from "./shad/SearchBar.vue";
@@ -43,9 +43,9 @@ const cmcItems = computed(() => calculStore.getCmc)
 const getCmcData = async () => {
   try {
     await calculStore.fetchCmc();
-    console.log("Données CMC récupérées:", calculStore.getCmc)
+    console.log("CMC data retrieved:", calculStore.getCmc)
   } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", error)
+    console.error("An error occurred while retrieving data:", error)
   }
 };
 
@@ -53,7 +53,7 @@ onMounted(async () => {
   try {
     await getCmcData()
   } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", error)
+    console.error("An error occurred while retrieving data:", error)
   }
 })
 </script>

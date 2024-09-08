@@ -70,7 +70,7 @@
                 :modelValue="formData['feecoin']" @input="formData['feecoin'] = $event.target.value.toUpperCase()" />
         </div>
 
-        <!-- Boutons -->
+        <!-- Buttons -->
         <Button type="button" label="Save" :disabled="isSaveDisabled" @click="saveTrade"></Button>
 
     </Dialog>
@@ -127,7 +127,7 @@ const saveTrade = () => {
             formDataValue[key] = formDataInitial[key];
         });
     } else {
-        console.error("Tous les champs doivent être remplis avant de sauvegarder.");
+        console.error("All fields must be filled before saving.");
     }
 }
 

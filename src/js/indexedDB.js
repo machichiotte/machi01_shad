@@ -23,7 +23,6 @@ const openDatabase = async () => {
       const db = event.target.result
       console.log('Upgrade needed!')
 
-      // Créez un object store pour stocker les données de crypto (CMC)
       if (!db.objectStoreNames.contains(CMC)) {
         db.createObjectStore(CMC, { keyPath: 'cmc_rank' })
       }
@@ -156,7 +155,7 @@ const isValidItem = (item, keyField) => {
 const createItemToSave = (item, keyField) => {
   return {
     [keyField]: item[keyField],
-    ...item // Copie des autres propriétés
+    ...item // Copy of other properties
   }
 }
 

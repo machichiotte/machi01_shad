@@ -4,7 +4,7 @@
         <div class="col-md-6 offset-md-3">
             <div>
                 <div>
-                    <h3>Signup</h3>
+                    <h3>Sign up</h3>
                     <hr />
                 </div>
                 <div class="alert alert-danger" v-if="error">
@@ -36,7 +36,7 @@
 
                     <div class="my-3">
                         <button type="submit" class="btn btn-primary">
-                            Signup
+                            Sign up
                         </button>
                     </div>
                 </form>

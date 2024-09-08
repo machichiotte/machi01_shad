@@ -1,7 +1,7 @@
 <!-- src/components/orders/Orders.vue -->
 <template>
   <div class="page">
-    <h1>Liste des ordres en cours</h1>
+    <h1>Current Orders List</h1>
     <div class="card">
       <!-- Search Section -->
       <SearchBar :filters="filters" />
@@ -14,30 +14,30 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { useCalculStore } from '../../store/calcul'; // Importer le store Pinia
+import { useCalculStore } from '../../store/calcul'; // Import Pinia store
 import { FilterMatchMode } from 'primevue/api';
 import OrdersTable from "./OrdersTable.vue";
 import SearchBar from "../shad/SearchBar.vue";
 
-// Utiliser le store Pinia
+// Use Pinia store
 const calculStore = useCalculStore();
 
-// Variables réactives
+// Reactive variables
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 
-// Accéder aux commandes à partir du store Pinia
+// Access orders from Pinia store
 const orders = computed(() => calculStore.getOrders);
 
-// Fonction pour récupérer les données des ordres en utilisant le store Pinia
+// Function to fetch order data using Pinia store
 const getOrdersData = async () => {
   try {
-    await calculStore.fetchOrders(); // Appeler l'action Pinia pour récupérer les données
-    console.log("Données Orders récupérées:", orders.value.length);
+    await calculStore.fetchOrders(); // Call Pinia action to fetch data
+    console.log("Orders data retrieved:", orders.value.length);
   } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", error);
-    // Affichez un message d'erreur à l'utilisateur si nécessaire
+    console.error("An error occurred while fetching data:", error);
+    // Display an error message to the user if necessary
   }
 };
 

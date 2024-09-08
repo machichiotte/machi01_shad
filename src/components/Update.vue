@@ -1,15 +1,15 @@
 <!-- src/components/Update.vue -->
 <template>
   <div>
-    <h1>Mise à jour des données</h1>
-    <h2>Possibilité de mise à jour</h2>
-    <Button @click="fetchAndUpdateCoinMarketCapData" style="font-size: 18px; margin: 4px">Maj cmc</Button>
+    <h1>Data Update</h1>
+    <h2>Update Options</h2>
+    <Button @click="fetchAndUpdateCoinMarketCapData" style="font-size: 18px; margin: 4px">Update CMC</Button>
     <ul v-if="cryptoData">
       <li v-for="crypto in cryptoData" :key="crypto.name">
         {{ crypto["cmc_rank"] }} - {{ crypto.name }}
       </li>
     </ul>
-    <Button @click="updateAll()" style="font-size: 18px; margin: 4px">Maj platform</Button>
+    <Button @click="updateAll()" style="font-size: 18px; margin: 4px">Update platform</Button>
     <div v-for="platform in platforms" :key="platform" style="margin-bottom: 10px;">
       <ToggleButton :id="platform" v-model="selectedPlatforms[platform]" :onLabel="platform"
         :offLabel="platform" />
@@ -71,8 +71,8 @@ async function fetchAndUpdateCoinMarketCapData() {
     await saveCmcToIndexedDB(response);
 
     successSpinHtml(
-      "Mise a jour terminee",
-      `Résultat : ${totalCount}`,
+      "Update completed",
+      `Result: ${totalCount}`,
       true,
       true
     );
@@ -97,7 +97,7 @@ async function updatePlatformData(platform) {
     let ordersCount = 0;
 
     if (updateBalance.value || updateOrders.value) {
-      result += `${platform.toUpperCase()} : `;
+      result += `${platform.toUpperCase()}: `;
     }
 
     if (updateBalance.value) {
@@ -125,7 +125,7 @@ async function updatePlatformData(platform) {
         saveOrdersDataToIndexedDB(orders_data, platform);
         ordersCount = orders_data.length;
 
-        result += `${ordersCount} ordres ouverts. `;
+        result += `${ordersCount} open orders. `;
       }
     }
 
@@ -161,7 +161,7 @@ async function updateAll() {
  */
 function showUpdateResult(finalResult) {
   successSpinHtml(
-    "Sauvegarde terminée",
+    "Save completed",
     finalResult,
     true,
     true

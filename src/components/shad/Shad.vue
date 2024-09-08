@@ -53,7 +53,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useCalculStore } from '@/store/calcul'; // Importer le store Pinia
+import { useCalculStore } from '@/store/calcul'; // Import the Pinia store
 
 import { FilterMatchMode } from 'primevue/api'
 import ShadDataTable from './ShadDataTable.vue'
@@ -122,12 +122,12 @@ const getData = async () => {
     await calculStore.fetchOrders();
     await calculStore.fetchShad();
     
-    console.log("Données Trades récupérées:", tradesItems.value.length)
-    console.log("Données Orders récupérées:", openOrdersItems.value.length)
-    console.log("Données Shad récupérées:", shadItems.value.length)
+    console.log("Trades data retrieved:", tradesItems.value.length)
+    console.log("Orders data retrieved:", openOrdersItems.value.length)
+    console.log("Shad data retrieved:", shadItems.value.length)
 
   } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", error)
+    console.error("An error occurred while retrieving data:", error)
   }
 }
 
@@ -140,7 +140,7 @@ onMounted(async () => {
  */
 const handleDeleteAction = () => {
   console.log('Delete action received from grandchild component');
-  // Effectuer ici l'action de suppression
+  // Perform the delete action here
   deleteProductsDialog.value = true
 };
 

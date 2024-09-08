@@ -94,7 +94,7 @@ export default {
                 .filter(balance => (balance.currentPossession / totalBalance) <= 0.01);
 
             const otherBalance = {
-                label: "Autre",
+                label: "Other",
                 value: smallBalances.reduce((acc, balance) => acc + parseFloat(balance.value), 0),
             };
 
@@ -128,12 +128,12 @@ export default {
             return balances.reduce((total, balance) => {
                 const currentPossession = parseFloat(balance.currentPossession);
 
-                // Ajouter à la somme seulement si currentPossession est un nombre
+                // Add to the sum only if currentPossession is a number
                 if (!isNaN(currentPossession)) {
                     return total + currentPossession;
                 }
 
-                // Si ce n'est pas un nombre, retourner simplement le total actuel
+                // If it's not a number, simply return the current total
                 return total;
             }, 0);
         },

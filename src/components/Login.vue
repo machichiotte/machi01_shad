@@ -38,7 +38,7 @@
 </template>
 <script setup>
 import { ref } from 'vue';;
-import { useAuthStore } from '../store/auth'; // Importer le store Pinia
+import { useAuthStore } from '../store/auth';
 import SignupValidations from '../services/SignupValidations';
 
 const authStore = useAuthStore();
@@ -68,7 +68,7 @@ const onLogin = async () => {
 
         if (authStore.isAuthenticated) {
             loadingStore.setLoading(false);
-            router.push('/shad'); // Assurez-vous d'importer router et de l'utiliser ici
+            router.push('/shad'); // Make sure to import router and use it here
         }
     } catch (e) {
         error.value = e;

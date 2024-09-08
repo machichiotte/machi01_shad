@@ -1,14 +1,14 @@
 // src/orders.js
 
-// Récupérer l'hôte du serveur à partir des variables d'environnement
+// Get the server host from environment variables
 const serverHost = import.meta.env.VITE_SERVER_HOST
 
 /**
- * Fonction générique pour envoyer une requête HTTP avec un corps JSON
- * @param {string} url - L'URL de la requête
- * @param {Object} requestBody - Le corps de la requête
- * @param {string} [method='POST'] - La méthode HTTP (par défaut 'POST')
- * @returns {Promise<Object|number>} La réponse JSON ou le statut de la réponse
+ * Generic function to send an HTTP request with a JSON body
+ * @param {string} url - The request URL
+ * @param {Object} requestBody - The request body
+ * @param {string} [method='POST'] - The HTTP method (default 'POST')
+ * @returns {Promise<Object|number>} The JSON response or the response status
  */
 const httpRequest = async (url, requestBody, method = 'POST') => {
   try {
@@ -31,43 +31,43 @@ const httpRequest = async (url, requestBody, method = 'POST') => {
 }
 
 /**
- * Annule toutes les ordres pour une plateforme et un actif donné
- * @param {string} platform - L'identifiant de la plateforme
- * @param {string} asset - L'actif concerné
- * @returns {Promise<Object>} La réponse JSON de l'API
+ * Cancels all orders for a given platform and asset
+ * @param {string} platform - The platform identifier
+ * @param {string} asset - The concerned asset
+ * @returns {Promise<Object>} The JSON response from the API
  */
 const cancelAllOrders = (platform, asset) => {
   return httpRequest(`${serverHost}/orders/cancel/all`, { platform, asset })
 }
 
 /**
- * Annule toutes les ordres de vente pour une plateforme et un actif donné
- * @param {string} platform - L'identifiant de la plateforme
- * @param {string} asset - L'actif concerné
- * @returns {Promise<Object>} La réponse JSON de l'API
+ * Cancels all sell orders for a given platform and asset
+ * @param {string} platform - The platform identifier
+ * @param {string} asset - The concerned asset
+ * @returns {Promise<Object>} The JSON response from the API
  */
 const cancelAllSellOrders = (platform, asset) => {
   return httpRequest(`${serverHost}/orders/cancel/all/sell`, { platform, asset })
 }
 
 /**
- * Place un ordre de vente au marché pour une plateforme et un actif donné
- * @param {string} platform - L'identifiant de la plateforme
- * @param {string} asset - L'actif concerné
- * @param {number} amount - Le montant de l'actif à vendre
- * @returns {Promise<number>} Le statut de la réponse
+ * Places a market sell order for a given platform and asset
+ * @param {string} platform - The platform identifier
+ * @param {string} asset - The concerned asset
+ * @param {number} amount - The amount of the asset to sell
+ * @returns {Promise<number>} The response status
  */
 const marketSellOrder = (platform, asset, amount) => {
   return httpRequest(`${serverHost}/orders/market-sell-order`, { platform, asset, amount })
 }
 
 /**
- * Place plusieurs ordres de vente à limite pour une plateforme et un actif donné
- * @param {string} platform - L'identifiant de la plateforme
- * @param {string} asset - L'actif concerné
- * @param {number} amount - Le montant de l'actif
- * @param {number} price - Le prix de l'actif
- * @returns {Promise<number>} Le statut de la réponse
+ * Places multiple limit sell orders for a given platform and asset
+ * @param {string} platform - The platform identifier
+ * @param {string} asset - The concerned asset
+ * @param {number} amount - The amount of the asset
+ * @param {number} price - The price of the asset
+ * @returns {Promise<number>} The response status
  */
 const bunchLimitSellOrders = (platform, asset, amount, price) => {
   return httpRequest(`${serverHost}/orders/bunch-limit-sell-orders`, {
@@ -79,12 +79,12 @@ const bunchLimitSellOrders = (platform, asset, amount, price) => {
 }
 
 /**
- * Place plusieurs ordres d'achat à limite pour une plateforme et un actif donné
- * @param {string} platform - L'identifiant de l'échange
- * @param {string} asset - L'actif concerné
- * @param {number} amount - Le montant de l'actif
- * @param {number} price - Le prix de l'actif
- * @returns {Promise<number>} Le statut de la réponse
+ * Places multiple limit buy orders for a given platform and asset
+ * @param {string} platform - The exchange identifier
+ * @param {string} asset - The concerned asset
+ * @param {number} amount - The amount of the asset
+ * @param {number} price - The price of the asset
+ * @returns {Promise<number>} The response status
  */
 //const bunchLimitBuyOrders = (platform, asset, amount, price) => {
 const bunchLimitBuyOrders = (platform, asset, amount, price) => {

@@ -2,9 +2,9 @@
 <template>
     <div class="action-selector">
         <p v-if="!selectedAssets || selectedAssets.length === 0" class="no-assets-message">
-            Aucun actif sélectionné. Veuillez sélectionner des actifs pour afficher les actions disponibles.
+            No assets selected. Please select assets to display available actions.
         </p>
-        <!-- Boutons d'action -->
+        <!-- Action buttons -->
         <MyBunchSellButton v-if="selectedAssets && selectedAssets.length > 0" :selectedAssets="selectedAssets" />
         <MyEmergencySellButton v-if="selectedAssets && selectedAssets.length > 0" :selectedAssets="selectedAssets" />
         <MyBuyButton v-if="selectedAssets && selectedAssets.length > 0" :selectedAssets="selectedAssets" />
@@ -19,17 +19,17 @@ import MyEmergencySellButton from '../buttons/MyEmergencySellButton.vue'
 import MyBuyButton from '../buttons/MyBuyButton.vue'
 import MyDeleteButton from '../buttons/MyDeleteButton.vue'
 
-// Props à recevoir de ShadContainer.vue
+// Props to receive from ShadContainer.vue
 const props = defineProps({
     selectedAssets: Array,
     filters: Object
 });
 
-// Expose `confirmDeleteSelected` pour être appelée par les composants parents
+// Expose `confirmDeleteSelected` to be called by parent components
 const emit = defineEmits(['delete-action']);
-// Relayer l'événement vers le composant grand-parent
+// Relay the event to the grandparent component
 const onDeleteClicked = () => {
-    emit('delete-action'); // Émettre l'événement "delete-action"
+    emit('delete-action'); // Emit the "delete-action" event
 };
 </script>
 
@@ -37,7 +37,7 @@ const onDeleteClicked = () => {
 .action-selector {
     display: flex;
     justify-content: space-between;
-    /* Répartit les boutons d'action et la barre de recherche */
+    /* Distributes action buttons and search bar */
     align-items: center;
     margin-bottom: 16px;
 }
@@ -48,7 +48,7 @@ const onDeleteClicked = () => {
 
 .justify-content-end {
     margin-left: auto;
-    /* Aligne à droite */
+    /* Aligns to the right */
 }
 
 .no-assets-message {

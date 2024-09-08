@@ -2,18 +2,18 @@
 <template>
   <div>
     <div style="display: flex; justify-content: flex-end">
-      <button @click="updateStrat">Sauvegarder</button>
+      <button @click="updateStrat">Save</button>
     </div>
     <div style="text-align: left">
       <select v-model="selectedStrategy" @change="updateAllStrats">
-        <option value="">Sélectionner une stratégie</option>
+        <option value="">Select a strategy</option>
         <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
           {{ strategy }}
         </option>
       </select>
 
       <select v-model="selectedMaxExposure" @change="updateAllMaxExposure">
-        <option value="">Sélectionner une exposition max</option>
+        <option value="">Select max exposure</option>
         <option v-for="exposure in exposures" :key="exposure" :value="exposure">
           {{ exposure }}
         </option>
@@ -134,10 +134,10 @@ const updateStrat = async () => {
 
     await response.json();
 
-    successSpin('Sauvegarde terminée', `Strat : ${stratMap.length}`, true, true);
+    successSpin('Save completed', `Strat: ${stratMap.length}`, true, true);
   } catch (err) {
     console.error(err);
-    errorSpin('Erreur', `${err}`, false, true);
+    errorSpin('Error', `${err}`, false, true);
   }
 };
 
@@ -185,10 +185,10 @@ onMounted(async () => {
   try {
     await calculStore.fetchBalances();
     await calculStore.fetchStrats();
-    console.log("Données Strats récupérées:", strat.value);
-    console.log("Données Balances récupérées:", balance.value);
+    console.log("Strats data retrieved:", strat.value);
+    console.log("Balances data retrieved:", balance.value);
   } catch (error) {
-    console.error("Une erreur s'est produite lors de la récupération des données :", error);
+    console.error("An error occurred while retrieving data:", error);
   }
 });
 </script>

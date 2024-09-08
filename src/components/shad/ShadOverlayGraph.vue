@@ -58,22 +58,22 @@ export default {
             prices: [],
             chartData: null,
             chartOptions: {
-                // Options de configuration du graphique
+                // Chart configuration options
             }
         };
     },
     mounted() {
-        // Récupération des données des trades et des prix depuis vos sources de données
+        // Retrieve trade and price data from your data sources
 
-        // Préparation des données pour le graphique
+        // Prepare data for the chart
         this.prepareChartData();
 
-        // Initialisation du graphique
+        // Initialize the chart
         this.initChart();
     },
     methods: {
         prepareChartData() {
-            // Préparation des données pour le graphique
+            // Prepare data for the chart
             this.chartData = {
                 labels: this.prices.map(price => price.snapped_at),
                 datasets: [
@@ -89,13 +89,13 @@ export default {
         calculateTotalQuantity(date) {
             let totalQuantity = 0;
 
-            // Parcourez les trades et effectuez les calculs appropriés
+            // Loop through trades and perform appropriate calculations
             this.trades.forEach(trade => {
                 const tradeDate = new Date(trade.date);
 
-                // Vérifiez si la date du trade correspond à la date spécifiée
+                // Check if the trade date matches the specified date
                 if (tradeDate.getTime() === date.getTime()) {
-                    // Calculez la quantité en fonction du type de trade (achat ou vente)
+                    // Calculate quantity based on trade type (buy or sell)
                     if (trade.type === 'buy') {
                         totalQuantity += parseFloat(trade.amount);
                     } else if (trade.type === 'sell') {
@@ -125,4 +125,3 @@ canvas {
     margin: 0 auto;
 }
 </style>
-  

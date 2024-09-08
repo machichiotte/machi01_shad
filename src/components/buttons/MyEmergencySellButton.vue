@@ -8,7 +8,7 @@ import { marketSellOrder, cancelAllSellOrders } from '../../js/orders.js'
 import { loadingSpin, successSpinHtml } from '../../js/spinner.js'
 
 const props = defineProps({
-  selectedAssets: Object // Prop pour les assets sélectionnés
+  selectedAssets: Object // Prop for selected assets
 })
 
 /**

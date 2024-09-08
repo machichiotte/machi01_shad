@@ -51,7 +51,7 @@ const placeSellOrders = async (assetsToPlaceOrders, selectedRows) => {
         amounts.map(async (amount, index) => {
           try {
             const result = await bunchLimitSellOrders(selectedRow.platform, asset, amount, prices[index]);
-            console.log('résultat', result);
+            console.log('result', result);
             return result.status;
           } catch (error) {
             return error.response ? error.response.status : 500;

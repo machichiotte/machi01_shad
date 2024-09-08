@@ -16,15 +16,15 @@ import { computed } from 'vue';
 
 const props = defineProps({
     percentage: {
-        type: [Number, String], // Accepter Number ou String
-        default: 'N/A' // Valeur par défaut si null ou undefined
+        type: [Number, String], // Accept Number or String
+        default: 'N/A' // Default value if null or undefined
     }
 });
 
-// Vérifier si la valeur est un nombre valide
+// Check if the value is a valid number
 const isNumber = computed(() => typeof props.percentage === 'number' && !isNaN(props.percentage));
 
-// Afficher la valeur par défaut ou le pourcentage formaté
+// Display the default value or the formatted percentage
 const displayValue = computed(() => {
   return isNumber.value ? `${(props.percentage * 100).toFixed(2)}%` : props.percentage;
 });

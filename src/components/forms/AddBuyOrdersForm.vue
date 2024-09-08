@@ -1,11 +1,11 @@
 <!-- src/components/forms/AddBuyOrdersForm.vue -->
 <template>
     <div>
-        <!-- Sélecteur avec les actifs sélectionnés -->
+        <!-- Dropdown with selected assets -->
         <Dropdown :options="assetOptions" optionLabel="asset" placeholder="Select Asset" v-model="selectedAsset"
             class="mb-3" />
 
-        <!-- Lignes de commande d'achat -->
+        <!-- Buy order lines -->
         <div v-for="(order, index) in buyOrders" :key="index" class="order-row">
             <InputNumber v-model="order.price" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8"
                 placeholder="Price" @input="updateCalculatedValues(index)" />
@@ -17,9 +17,9 @@
             <span class="calculated-value">Calculated Quantity: {{ calculateQuantity(index) }}</span>
             <Button icon="pi pi-times" class="p-button-danger" @click="removeOrder(index)" />
         </div>
-        <!-- Bouton pour ajouter une ligne de commande -->
+        <!-- Button to add an order line -->
         <Button label="Add Line" @click="addOrder" :disabled="buyOrders.length >= 10" />
-        <!-- Bouton pour soumettre les commandes -->
+        <!-- Button to submit orders -->
         <Button label="Submit" class="p-button-success" @click="submitOrders" />
     </div>
 </template>
