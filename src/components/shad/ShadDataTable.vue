@@ -317,11 +317,11 @@ function updateTickers() {
         const filteredTickers = tickerData.filter(ticker => platforms.has(ticker.platform));
 
         // Dictionnaire pour des recherches rapides
-        const tickerDict = {};
-        filteredTickers.forEach(ticker => {
+        const tickerDict = filteredTickers.reduce((dict, ticker) => {
             const key = `${ticker.platform}-${ticker.symbol}`;
-            tickerDict[key] = ticker;
-        });
+            dict[key] = ticker;
+            return dict;
+        }, {});
 
         // Mise à jour des éléments locaux
         localItems.value.forEach(item => {
@@ -344,8 +344,6 @@ const rowKey = (rowData) => `${rowData.asset}-${rowData.platform}`;
 let tickerInterval;
 
 onMounted(() => {
-    console.log("🚀 ~ file: ShadDataTable.vue:347 ~ onMounted ~ props.items.value:", props.items.value)
-    console.log("🚀 ~ file: ShadDataTable.vue:348 ~ onMounted ~ localItems.value:", localItems.value)
     tickerInterval = setInterval(updateTickers, 60000);  // Rafraîchissement toutes les 60 secondes
     updateTickers();  // Initialisation immédiate
 });
