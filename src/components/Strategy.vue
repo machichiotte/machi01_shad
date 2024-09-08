@@ -22,29 +22,25 @@
 
     <SearchBar :filters="filters" />
 
-    <DataTable :value="tableData" :columns="columns" :paginator="true" :rows="10" scrollable columnResizeMode="fit" :filters="filters" showGridlines>
+    <DataTable :value="tableData" :columns="columns" :paginator="true" :rows="10" scrollable columnResizeMode="fit"
+      :filters="filters" showGridlines>
       <Column field="asset" header="Asset" style="text-align: center;" />
-      <Column v-for="platform in platforms" :key="platform" :field="platform" :header="platform" style="text-align: center;" headerStyle="text-align: center;">
+      <Column v-for="platform in platforms" :key="platform" :field="platform" :header="platform"
+        style="text-align: center;" headerStyle="text-align: center;">
         <template #body="slotProps">
           <div style="display: flex; flex-direction: row; align-items: center;">
-            <select
-              :value="slotProps.data[platform].strategy" 
-              @input="setSelectedStrategy(slotProps.data.asset, platform, $event.target.value)"
-              :disabled="slotProps.data[platform].disabled"
-              style="margin-right: 5px;"
-            >
+            <select :value="slotProps.data[platform].strategy"
+              @input="setSelectedStrategy(strat, slotProps.data.asset, platform, $event.target.value)"
+              :disabled="slotProps.data[platform].disabled" style="margin-right: 5px;">
               <option value=""></option>
               <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
                 {{ strategy }}
               </option>
             </select>
 
-            <select
-              :value="slotProps.data[platform].maxExposure"
-              @input="setSelectedMaxExposure(slotProps.data.asset, platform, $event.target.value)"
-              :disabled="slotProps.data[platform].disabled"
-              style="margin-left:  5px;"
-            >
+            <select :value="slotProps.data[platform].maxExposure"
+              @input="setSelectedMaxExposure(strat, slotProps.data.asset, platform, $event.target.value)"
+              :disabled="slotProps.data[platform].disabled" style="margin-left:  5px;">
               <option value=""></option>
               <option v-for="exposure in exposures" :key="exposure" :value="exposure">
                 {{ exposure }}
@@ -64,6 +60,7 @@ import { strategies } from '../js/strategies.js';
 import { useCalculStore } from '../store/calcul.js';
 import { FilterMatchMode } from 'primevue/api'
 import SearchBar from "./shad/SearchBar.vue";
+import { getSelectedStrategy, setSelectedStrategy, isDisabled, getSelectedMaxExposure, setSelectedMaxExposure } from '../js/utils/strategyUtils.js';
 
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 
@@ -98,9 +95,9 @@ const tableData = computed(() => {
     const row = { asset };
     platforms.value.forEach(platform => {
       row[platform] = {
-        strategy: getSelectedStrategy(asset, platform),
-        maxExposure: getSelectedMaxExposure(asset, platform),
-        disabled: isDisabled(asset, platform)
+        strategy: getSelectedStrategy(strat, asset, platform),
+        maxExposure: getSelectedMaxExposure(strat, asset, platform),
+        disabled: isDisabled(balance, asset, platform)
       };
     });
     return row;
@@ -150,7 +147,7 @@ const updateAllStrats = () => {
     const strategies = item.strategies || {};
 
     platforms.value.forEach((platform) => {
-      if (!isDisabled(asset, platform)) {
+      if (!isDisabled(balance, asset, platform)) {
         strategies[platform] = selectedStrategyValue;
       }
     });
@@ -167,7 +164,7 @@ const updateAllMaxExposure = () => {
     const maxExposure = item.maxExposure || {};
 
     platforms.value.forEach((platform) => {
-      if (!isDisabled(asset, platform)) {
+      if (!isDisabled(balance, asset, platform)) {
         maxExposure[platform] = selectedMaxExposureValue;
       }
     });
@@ -175,36 +172,6 @@ const updateAllMaxExposure = () => {
     item.maxExposure = maxExposure;
   });
 };
-
-function getSelectedStrategy(asset, platform) {
-  const item = strat.value.find((item) => item.asset === asset);
-  return item ? item.strategies[platform] || '' : '';
-}
-
-function setSelectedStrategy(asset, platform, value) {
-  const item = strat.value.find((item) => item.asset === asset);
-  if (item) {
-    item.strategies[platform] = value;
-  }
-}
-
-function isDisabled(asset, platform) {
-  const assetsFiltered = balance.value.filter((item) => item.base === asset);
-  const platformsFiltered = assetsFiltered.map((item) => item.platform);
-  return !platformsFiltered.includes(platform);
-}
-
-function getSelectedMaxExposure(asset, platform) {
-  const item = strat.value.find((item) => item.asset === asset);
-  return item ? item.maxExposure[platform] || '' : '';
-}
-
-function setSelectedMaxExposure(asset, platform, value) {
-  const item = strat.value.find((item) => item.asset === asset);
-  if (item) {
-    item.maxExposure[platform] = value;
-  }
-}
 
 // Récupérer les données à l'initialisation du composant
 onMounted(async () => {

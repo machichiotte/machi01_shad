@@ -102,7 +102,6 @@ export const updateMaxExposition = (items, data, maxExposition) => {
 }
 
 const ERROR_ALLOWED = 0.05
-const MAX_EXPO = 10000
 
 /**
  * Retrieve the platform fee percentage based on the platform name.
