@@ -215,18 +215,11 @@ async function getAllDataMDB(collectionName) {
     return cache[collectionName].data;
   }
 
-  console.log(
-    `🚀 ~ getAllDataMDB STARTED ~ fetching documents from collection ${collectionName} at ${new Date().toISOString()}`
-  );
+  console.log(`Not using cached data for collection: ${collectionName}`);
 
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName);
     const result = await collection.find().toArray();
-    console.log(
-      `🚀 ~ getAllDataMDB COMPLETED ~ fetched ${
-        result.length
-      } documents from collection ${collectionName} at ${new Date().toISOString()}`
-    );
 
     // Mettre en cache les résultats
     cache[collectionName] = {
@@ -243,7 +236,7 @@ async function updateDataMDB(collectionName, filter, update) {
     const collection = await getCollection(collectionName);
     const result = await collection.updateOne(filter, update, { upsert: true });
     console.log(
-      `🚀 ~ deleteDataMDB ~ modified ${result.modifiedCount} document(s)`
+      `🚀 ~ updateDataMDB ~ modified ${result.modifiedCount} document(s)`
     );
     return result;
   }, [collectionName, filter, update]);

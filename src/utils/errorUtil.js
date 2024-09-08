@@ -5,6 +5,8 @@ const path = require("path");
 
 function handleErrorResponse(res, error, functionName) {
   if (error instanceof AuthenticationError) {
+    console.log(`🚀 ~ file: errorUtil.js:8 ~ handleErrorResponse ~ error:`, error)
+    
     console.error(`Authentication error in ${functionName}:`, error.message);
     res.status(401).json({
       success: false,
@@ -12,6 +14,7 @@ function handleErrorResponse(res, error, functionName) {
       message: error.message,
     });
   } else {
+    console.log('eleeeee')
     console.error(`Error in ${functionName}:`, error);
     res.status(500).json({ success: false, error });
   }

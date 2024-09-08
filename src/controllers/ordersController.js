@@ -60,7 +60,9 @@ async function createLimitOrder(req, res, orderType) {
     const result = await ordersService.createLimitOrder(platform, asset, amount, price, orderType);
     res.status(200).json({ message: result, status: 200 });
   } catch (error) {
+    console.log(`🚀 ~ file: ordersController.js:63 ~ createLimitOrder ~ error:`, error)
     handleErrorResponse(res, error, `createLimitOrder (${orderType})`);
+    res.status(500)
   }
 }
 
