@@ -1,39 +1,55 @@
 // src/services/SignupValidations.js
 
-import Validations from './Validations';
+import Validations from './Validations'
 
+/**
+ * @class
+ */
 export default class SignupValidations {
-    constructor(email, password) {
-        this.email = email;
-        this.password = password;
+  /**
+   * @constructor
+   * @param {string} email
+   * @param {string} password
+   */
+  constructor(email, password) {
+    this.email = email
+    this.password = password
+  }
+
+  /**
+   * @returns {Object}
+   */
+  checkValidations() {
+    let errors = []
+
+    //email validations
+    if (!Validations.checkEmail(this.email)) {
+      errors['email'] = 'Invalid Email'
     }
 
-    checkValidations() {
-        let errors = [];
-
-        //email validations
-        if (!Validations.checkEmail(this.email)) {
-            errors['email'] = 'Invalid Email';
-        }
-
-        //password Validations
-        if (!Validations.minLength(this.password, 6)) {
-            errors['password'] = 'password should be of 6 characters';
-        }
-
-        return errors;
+    //password Validations
+    if (!Validations.minLength(this.password, 6)) {
+      errors['password'] = 'password should be of 6 characters'
     }
 
-    static getErrorMessageFromCode(errorCode) {
-        switch (errorCode) {
-            case 'EMAIL_EXISTS':
-                return 'Email already exists';
-            case 'EMAIL_NOT_FOUND':
-                return 'Email Not Found';
-            case 'INVALID_PASSWORD':
-                return 'Invalid Password';
-            default:
-                return 'Unexpected error occurred. Please try again';
-        }
+    return errors
+  }
+
+  /**
+   * @static
+   * @param {string} errorCode
+   * @returns {string}
+   */
+  static getErrorMessageFromCode(errorCode) {
+    switch (errorCode) {
+      case 'EMAIL_EXISTS':
+        return 'Email already exists'
+      case 'EMAIL_NOT_FOUND':
+        return 'Email Not Found'
+      case 'INVALID_PASSWORD':
+        return 'Invalid Password'
+      default:
+        return 'Unexpected error occurred. Please try again'
     }
+  }
 }
