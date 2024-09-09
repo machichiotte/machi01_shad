@@ -30,13 +30,13 @@ Le backend Machi GPT Shad Server est construit avec Node.js et Express.js. Il g�
 
 ## Fonctionnalités principales
 
-🚀 Gestion des ordres de trading en temps réel
-📊 Récupération et mise à jour des données de marché
-🔗 Intégration avec plusieurs plateformes d'échange
-🔒 Système d'authentification sécurisé
-📈 Gestion des stratégies de trading
-🔄 Conversion de fichiers CSV pour l'importation de données
-⏱️ Planification de tâches automatisées
+`🚀 Gestion des ordres de trading en temps réel`
+`📊 Récupération et mise à jour des données de marché`
+`🔗 Intégration avec plusieurs plateformes d'échange`
+`🔒 Système d'authentification sécurisé`
+`📈 Gestion des stratégies de trading`
+`🔄 Conversion de fichiers CSV pour l'importation de données`
+`⏱️ Planification de tâches automatisées`
 
 ## Démarrage rapide
 
