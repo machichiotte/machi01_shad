@@ -4,20 +4,15 @@ import { createPlatformInstance } from "../utils/platformUtil";
 import { loadErrorPolicies, shouldRetry } from "../utils/errorUtil";
 import { validateEnvVariables } from "../utils/controllerUtil";
 import { saveDataToDatabase } from "./databaseService";
-import { mapBalance } from "./mapping";
+import { mapBalance, MappedBalance } from "./mapping";
 
 validateEnvVariables(["MONGODB_COLLECTION_BALANCE", "TYPE_BALANCE"]);
 
-interface BalanceData {
-  platform: string;
-  [key: string]: any;
-}
-
 /**
  * Fetches all balance data from the database.
- * @returns {Promise<BalanceData[]>} A promise that resolves to an array of balance data.
+ * @returns {Promise<MappedBalance[]>} A promise that resolves to an array of balance data.
  */
-async function fetchDatabaseBalances(): Promise<BalanceData[]> {
+async function fetchDatabaseBalances(): Promise<MappedBalance[]> {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
   return await getData(collectionName as string);
 }
@@ -26,13 +21,13 @@ async function fetchDatabaseBalances(): Promise<BalanceData[]> {
  * Fetches balance data from the database for a specific platform.
  * @param {string} platform - The platform identifier.
  * @param {number} [retries=3] - The number of retry attempts.
- * @returns {Promise<BalanceData[]>} A promise that resolves to an array of balance data for the specified platform.
+ * @returns {Promise<MappedBalance[]>} A promise that resolves to an array of balance data for the specified platform.
  * @throws {Error} If fetching fails after all retry attempts.
  */
-async function fetchDatabaseBalancesByPlatform(platform: string, retries: number = 3): Promise<BalanceData[]> {
+async function fetchDatabaseBalancesByPlatform(platform: string, retries: number = 3): Promise<MappedBalance[]> {
   try {
     const data = await fetchDatabaseBalances();
-    return data.filter((item: BalanceData) => item.platform === platform);
+    return data.filter((item: MappedBalance) => item.platform === platform);
   } catch (error:any) {
     if (
       retries > 0 &&
@@ -57,7 +52,7 @@ async function fetchDatabaseBalancesByPlatform(platform: string, retries: number
  * @returns {Promise<BalanceData[]>} A promise that resolves to an array of current balance data for the specified platform.
  * @throws {Error} If fetching fails after all retry attempts.
  */
-async function fetchCurrentBalancesByPlatform(platform: string, retries: number = 3): Promise<BalanceData[]> {
+async function fetchCurrentBalancesByPlatform(platform: string, retries: number = 3): Promise<MappedBalance[]> {
   const errorPolicies = await loadErrorPolicies();
   try {
     const platformInstance = createPlatformInstance(platform);
@@ -83,7 +78,7 @@ async function fetchCurrentBalancesByPlatform(platform: string, retries: number 
  * @param {string} platform - The platform identifier.
  * @returns {Promise<void>}
  */
-async function saveDatabaseBalance(mappedData: BalanceData[], platform: string): Promise<void> {
+async function saveDatabaseBalance(mappedData: MappedBalance[], platform: string): Promise<void> {
   const collection = process.env.MONGODB_COLLECTION_BALANCE;
   const updateType = process.env.TYPE_BALANCE;
 
@@ -104,7 +99,7 @@ async function saveDatabaseBalance(mappedData: BalanceData[], platform: string):
  * @param {string} platform - The platform identifier.
  * @returns {Promise<BalanceData[]>} A promise that resolves to the updated balance data.
  */
-async function updateBalanceForPlatform(platform: string): Promise<BalanceData[]> {
+async function updateBalanceForPlatform(platform: string): Promise<MappedBalance[]> {
   const data = await fetchCurrentBalancesByPlatform(platform);
   await saveDatabaseBalance(data, platform);
   return data;

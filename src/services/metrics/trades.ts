@@ -1,4 +1,5 @@
 // src/services/metrics/trades.ts
+import { MappedTrade } from "../mapping";
 
 /**
  * Checks if a value is a positive number.
@@ -29,49 +30,51 @@ interface Trade {
 interface TotalAmountAndBuy {
   totalAmount: number;
   totalBuy: number;
+  averageEntryPrice: number;
 }
 
 /**
  * Calculate the total amount, total buy value, and average entry price from trades.
  * @param {string} symbol - The trading symbol to filter trades by.
- * @param {Trade[]} trades - The array of trade objects.
+ * @param {MappedTrade[]} trades - The array of trade objects.
  * @returns {TotalAmountAndBuy} - An object containing total amount and total buy value.
  */
-function getTotalAmountAndBuy(symbol: string, trades: Trade[]): TotalAmountAndBuy {
-    const filteredTrades = trades.filter(trade => trade.base === symbol && trade.type === "buy");
-    
-    return filteredTrades.reduce((acc: TotalAmountAndBuy, trade: Trade) => {
-      const fee = parseFloat(trade.fee);
-      const price = parseFloat(trade.price);
-      const feeInQuote = trade.feecoin === trade.quote ? (isPositiveNumber(fee) ? fee : 0) : convertFeeToQuote(fee, price);
-      const amount = isPositiveNumber(parseFloat(trade.amount)) ? parseFloat(trade.amount) : 0;
-  
-      acc.totalBuy += parseFloat(trade.totalUSDT) + feeInQuote;
-      acc.totalAmount += amount;
-  
-      return acc;
-    }, { totalAmount: 0, totalBuy: 0 });
-  }
+function getTotalAmountAndBuy(symbol: string, trades: MappedTrade[]): TotalAmountAndBuy {
+  const filteredTrades = trades.filter(trade => trade.base === symbol && trade.type === "buy");
+
+  return filteredTrades.reduce((acc: any, trade: MappedTrade) => {
+    const fee = trade.fee;
+    const price = trade.price;
+    const feeInQuote = trade.feecoin === trade.quote ? (fee > 0 ? fee : 0) : convertFeeToQuote(fee, price);
+    const amount = (trade.amount > 0) ? trade.amount : 0;
+
+    acc.totalBuy += trade.totalUSDT + feeInQuote;
+    acc.totalAmount += amount;
+    acc.averageEntryPrice = acc.totalBuy / acc.totalAmount;
+
+    return acc;
+  }, { totalAmount: 0, totalBuy: 0 });
+}
 
 /**
  * Calculate the total sell value for a given symbol, adjusting for fees.
  * @param {string} symbol - The trading symbol to filter trades by.
- * @param {Trade[]} trades - The array of trade objects.
+ * @param {MappedTrade[]} trades - The array of trade objects.
  * @returns {number} - The total sell value after adjusting for fees.
  */
-function getTotalSell(symbol: string, trades: Trade[]): number {
+function getTotalSell(symbol: string, trades: MappedTrade[]): number {
   return trades
     .filter((trade) => trade.base === symbol && trade.type === "sell")
-    .reduce((total: number, trade: Trade) => {
-      const fee = parseFloat(trade.fee);
-      const price = parseFloat(trade.price);
+    .reduce((total: number, trade: MappedTrade) => {
+      const fee = trade.fee;
+      const price = trade.price;
       const feeInQuote =
         trade.feecoin === trade.quote
           ? isPositiveNumber(fee)
             ? fee
             : 0
           : convertFeeToQuote(fee, price);
-      return total + parseFloat(trade.totalUSDT) - feeInQuote;
+      return total + trade.totalUSDT - feeInQuote;
     }, 0);
 }
 

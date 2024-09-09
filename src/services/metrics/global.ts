@@ -14,8 +14,10 @@ import {
   getCurrentPossession,
   getPercentageDifference,
   getStatus,
+  getPercentageToNextTp,
 } from "./utils";
 import { getTotalAmountAndBuy, getTotalSell } from "./trades";
+import { MappedBalance, MappedOrder, MappedTrade, MappedTicker } from "../mapping";
 
 // Define stable coins
 const stableCoins: string[] = ["USDT", "USDC", "DAI", "BUSD", "TUSD"];
@@ -70,10 +72,10 @@ interface Ticker {
  * @param {string} platform - The platform identifier.
  * @returns {string|number} - The current price or "N/A" if not found.
  */
-function getCurrentPrice(lastTickers: Ticker[], base: string, platform: string): string | number {
+function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: string): number | undefined {
   if (!Array.isArray(lastTickers) || !base || !platform) {
     console.warn("Paramètres invalides pour getCurrentPrice");
-    return "N/A";
+    return -1;
   }
 
   const ticker = lastTickers.find(
@@ -81,14 +83,14 @@ function getCurrentPrice(lastTickers: Ticker[], base: string, platform: string):
       ticker?.symbol === `${base}/USDT` && ticker.platform === platform
   );
 
-  return ticker?.last ?? "N/A";
+  return ticker?.last ?? -1;
 }
 
 interface AssetMetrics extends Record<string, any> {
   iconUrl: string;
   asset: string;
   rank: number;
-  currentPrice: string | number;
+  currentPrice: number | undefined;
   currentPossession: number;
   totalAmount: number;
   balance: number;
@@ -111,14 +113,14 @@ interface AssetMetrics extends Record<string, any> {
 function calculateAssetMetrics(
   asset: string,
   platform: string,
-  lastBalances: any[],
+  assetBalance: MappedBalance,
   lastCmc: any,
-  lastTrades: any[],
-  lastOpenOrders: any[],
+  lastTrades: MappedTrade[],
+  lastOpenOrders: MappedOrder[],
   lastStrategies: any,
-  lastTickers: Ticker[]
+  lastTickers: MappedTicker[]
 ): AssetMetrics {
-  const balance = getBalanceBySymbol(asset, lastBalances);
+  const balance = getBalanceBySymbol(asset, assetBalance);
   const currentPrice = getCurrentPrice(lastTickers, asset, platform);
   const cmcValues = getCmcValues(lastCmc);
   const totalSell = getTotalSell(asset, lastTrades);
@@ -134,9 +136,7 @@ function calculateAssetMetrics(
 
   const baseMetrics: AssetMetrics = {
     ...DEFAULT_METRICS,
-    iconUrl: cmcValues.iconUrl,
     asset,
-    rank: cmcValues.rank,
     currentPrice,
     currentPossession: getCurrentPossession(currentPrice, balance),
     totalAmount,
@@ -185,19 +185,8 @@ function calculateAssetMetrics(
     totalSell,
     nbOpenBuyOrders: buyOrders.length,
     nbOpenSellOrders: sellOrders.length,
-    percentToNextTp: (amountsAndPrices.priceTp1 - currentPrice) / currentPrice,
+    percentToNextTp: getPercentageToNextTp(currentPrice, amountsAndPrices.priceTp1),
   };
-}
-
-interface Order {
-  platform: string;
-  symbol: string;
-  side: string;
-}
-
-interface OrdersBySide {
-  buyOrders: Order[];
-  sellOrders: Order[];
 }
 
 /**
@@ -208,8 +197,8 @@ interface OrdersBySide {
  * @param {string} base - The asset symbol.
  * @returns {OrdersBySide} - Objects containing lists of buy and sell orders.
  */
-function filterOpenOrdersBySide(orders: Order[], platform: string, base: string): OrdersBySide {
-  return orders.reduce((acc: OrdersBySide, order: Order) => {
+function filterOpenOrdersBySide(orders: MappedOrder[], platform: string, base: string): any {
+  return orders.reduce((acc: any, order: MappedOrder) => {
     if (order.platform === platform && order.symbol.split("/")[0] === base) {
       acc[order.side === "buy" ? "buyOrders" : "sellOrders"].push(order);
     }

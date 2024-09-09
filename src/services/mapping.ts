@@ -1,6 +1,6 @@
 // src/services/mapping.ts
 
-import { Trade, Balances, Ticker, Market, Order } from 'ccxt'; // Importation des types nécessaires de ccxt
+import { Trade, Balances, Ticker, Market, Order, Tickers } from 'ccxt'; // Importation des types nécessaires de ccxt
 import { isStableCoin, getStableCoins, isMajorCryptoPair, getTotalUSDT } from '../utils/mappingUtil';
 
 // Interface pour le mapping des balances
@@ -13,6 +13,7 @@ export interface MappedBalance {
 
 // Interface pour le mapping des trades
 export interface MappedTrade {
+  _id?: string;
   base: string;
   quote: string;
   pair: string;
@@ -148,7 +149,7 @@ function mapBalance(platform: string, data: Balances): MappedBalance[] {
  * @param {Record<string, number>} conversionRates - Conversion rates (optional).
  * @returns {Record<string, any>} An object containing the mapped trade information.
  */
-function mapTradeCommon(item: Trade, platform: string, conversionRates: Record<string, number> = {}): MappedTrade {
+function mapTradeCommon(item: Trade, platform: string, conversionRates: Record<string, number> = {}): Omit<MappedTrade, '_id'> {
   const [baseAsset, quoteAsset] = item?.symbol?.toUpperCase().split("/") || [];
   const totalUSDT = getTotalUSDT(
     item.symbol?.toUpperCase() || "",
@@ -182,7 +183,7 @@ function mapTradeCommon(item: Trade, platform: string, conversionRates: Record<s
  * @param {Record<string, number>} conversionRates - Conversion rates (optional).
  * @returns {Record<string, any>[]} An array of objects containing the mapped trades.
  */
-function mapTrades(platform: string, data: Trade[], conversionRates: Record<string, number> = {}): MappedTrade[] {
+function mapTrades(platform: string, data: Trade[], conversionRates: Record<string, number> = {}): Omit<MappedTrade, '_id'>[] {
   return data.map((item) => {
       const commonData = mapTradeCommon(item, platform, conversionRates);
       if (
@@ -223,7 +224,7 @@ function mapOrders(platform: string, data: Order[]): MappedOrder[] {
  * @param {string} platform - The exchange platform.
  * @returns {Record<string, any>[]} An array of objects containing the mapped tickers.
  */
-function mapTickers(platform: string, data: Ticker[]): MappedTicker[] {
+function mapTickers(platform: string, data: Tickers): MappedTicker[] {
   return Object.values(data).map((item) => ({
     symbol: item.symbol,
     timestamp: item.timestamp,

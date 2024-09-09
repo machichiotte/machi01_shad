@@ -10,56 +10,69 @@ import { deleteAndSaveObject } from "./mongodbService";
 import { saveDataToDatabase } from "./databaseService";
 import { mapTickers, MappedTicker } from "./mapping";
 
-import { Ticker } from "ccxt";
-
 /**
  * Fetches tickers data from the database.
  * @returns {Promise<TickerData>} The tickers data.
  */
 async function fetchDatabaseTickers(): Promise<MappedTicker[]> {
   const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
-  if (!collectionName) throw new Error("MONGODB_COLLECTION_TICKERS non défini");
+  if (!collectionName) throw new Error("MONGODB_COLLECTION_TICKERS not defined");
   const data = await getData(collectionName);
   return data;
 }
 
 /**
- * Obtient tous les tickers pour une plateforme spécifique.
+ * Gets filtered tickers for a specific platform.
+ * @param {string} platform - The platform to get tickers for.
+ * @param {(ticker: MappedTicker) => boolean} [additionalFilter] - Optional additional filter.
+ * @returns {Promise<MappedTicker[]>} An array of tickers for the platform.
+ * @throws {Error} If the platform is not found or if no data is available.
+ */
+async function getFilteredTickers(
+  platform: string,
+  additionalFilter?: (ticker: MappedTicker) => boolean
+): Promise<MappedTicker[]> {
+  const data = await fetchDatabaseTickers();
+
+  if (!Array.isArray(data) || data.length === 0) {
+    throw new Error("No data found");
+  }
+
+  let filteredData = data.filter((ticker: MappedTicker) => ticker.platform === platform);
+
+  if (filteredData.length === 0) {
+    throw new Error("Platform not found");
+  }
+
+  if (additionalFilter) {
+    filteredData = filteredData.filter(additionalFilter);
+    if (filteredData.length === 0) {
+      throw new Error("No tickers found after additional filtering");
+    }
+  }
+
+  return filteredData;
+}
+
+/**
+ * Gets all tickers for a specific platform.
  * @param {string} platform - The platform to get tickers for.
  * @returns {Promise<MappedTicker[]>} An array of tickers for the platform.
  * @throws {Error} If the platform is not found.
  */
 async function getAllTickersByPlatform(platform: string): Promise<MappedTicker[]> {
-  const data = await fetchDatabaseTickers();
-  if (data && data[platform]) {
-    return data[platform];
-  } else {
-    throw new Error("Platform not found");
-  }
+  return getFilteredTickers(platform);
 }
 
 /**
  * Gets all tickers for a specific symbol from a platform.
  * @param {string} platform - The platform to get tickers from.
  * @param {string} symbol - The symbol to get tickers for.
- * @returns {Promise<any[]>} An array of tickers for the symbol and platform.
+ * @returns {Promise<MappedTicker[]>} An array of tickers for the symbol and platform.
  * @throws {Error} If the platform or symbol is not found.
  */
 async function getAllTickersBySymbolFromPlatform(platform: string, symbol: string): Promise<MappedTicker[]> {
-  const data = await fetchDatabaseTickers();
-  if (data && data[platform]) {
-    const platformTickersData = data[platform];
-    const filteredTickersData = platformTickersData.filter(
-      (ticker: any) => ticker.symbol === symbol
-    );
-    if (filteredTickersData.length > 0) {
-      return filteredTickersData;
-    } else {
-      throw new Error("Symbol not found for the given platform");
-    }
-  } else {
-    throw new Error("Platform not found");
-  }
+  return getFilteredTickers(platform, (ticker: MappedTicker) => ticker.symbol === symbol);
 }
 
 /**
@@ -76,9 +89,9 @@ async function updateAllTickers(): Promise<MappedTicker[]> {
     tickersData.push(...mapTickers(platform, data));
   }
 
-  await deleteAndSaveObject(tickersData, collectionName);
+  await deleteAndSaveObject(tickersData, collectionName as string);
   await saveLastUpdateToDatabase(
-    process.env.TYPE_TICKERS,
+    process.env.TYPE_TICKERS as string,
     "combined"
   );
   return tickersData;
@@ -91,14 +104,14 @@ async function updateAllTickers(): Promise<MappedTicker[]> {
  * @returns {Promise<any[]>} The mapped tickers data.
  * @throws {Error} If fetching fails after all retries.
  */
-async function fetchCurrentTickers(platform: string, retries: number = 3): Promise<Ticker[]> {
+async function fetchCurrentTickers(platform: string, retries: number = 3): Promise<MappedTicker[]> {
   const errorPolicies = await loadErrorPolicies();
 
   try {
     const platformInstance = createPlatformInstance(platform);
     const data = await platformInstance.fetchTickers();
-    return mapTickers(data, platform);
-  } catch (error) {
+    return mapTickers(platform, data);
+  } catch (error: any) {
     console.log(
       `Error while fetching tickers for ${platform}:`,
       error
@@ -124,14 +137,14 @@ async function fetchCurrentTickers(platform: string, retries: number = 3): Promi
  * @param {string} platform - Identifier of the platform.
  */
 async function saveDatabaseTickers(mappedData: any[], platform: string): Promise<void> {
-  const collection = process.env.MONGODB_COLLECTION_TICKERS;
+  const collectionName = process.env.MONGODB_COLLECTION_TICKERS;
   const updateType = process.env.TYPE_TICKERS;
 
   await saveDataToDatabase(
     mappedData,
-    collection,
+    collectionName as string,
     platform,
-    updateType
+    updateType as string
   );
 }
 

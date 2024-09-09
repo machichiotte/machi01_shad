@@ -186,10 +186,10 @@ async function calculateAllMetrics(): Promise<any[]> {
   }
   const allValues: any[] = [];
 
-  for (const balance of dbBalances) {
-    if (balance.balance !== "" && balance.balance > 0) {
-      const assetBase = balance.base;
-      const assetPlatform = balance.platform;
+  for (const bal of dbBalances) {
+    if (bal.balance !== undefined && bal.balance > 0) {
+      const assetBase = bal.base;
+      const assetPlatform = bal.platform;
 
       const filteredCmc = dbCmc.find((cmc) => cmc.symbol === assetBase) || {};
       const filteredTrades =
@@ -215,18 +215,19 @@ async function calculateAllMetrics(): Promise<any[]> {
         ) || [];
 
       let values;
+      //TODO verifier quoi exactement on doit verifier pour filteredStrategy
       if (
         !filteredCmc.length &&
         !filteredTrades.length &&
         !filteredOpenOrders.length &&
-        !filteredStrategy.length &&
-        !filteredTickers.length
+        !filteredTickers.length &&
+        !filteredStrategy 
       ) {
         if (assetBase === "USDT" || assetBase === "USDC") {
           values = calculateAssetMetrics(
             assetBase,
             assetPlatform,
-            balance,
+            bal,
             [],
             [],
             [],
@@ -242,7 +243,7 @@ async function calculateAllMetrics(): Promise<any[]> {
       values = calculateAssetMetrics(
         assetBase,
         assetPlatform,
-        balance,
+        bal,
         filteredCmc,
         filteredTrades,
         filteredOpenOrders,

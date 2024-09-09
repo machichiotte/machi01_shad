@@ -36,8 +36,8 @@ async function executeCronTask(task: () => Promise<void>, isCritical: boolean = 
           await new Promise((res) => setTimeout(res, 5000 * (attempts + 1)));
         } else {
           sendMail({
-            from: config.smtp.auth.user,
-            to: process.env.EMAIL_ADDRESS_SEND,
+            from: config.smtp.auth.user as string,
+            to: process.env.EMAIL_ADDRESS_SEND as string,
             subject: "Critical Error Alert",
             text: `Critical error in scheduled task: ${(error as Error).message}`,
           });

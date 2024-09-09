@@ -242,7 +242,8 @@ async function cancelAllOrdersForOkx(platformInstance: Exchange, symbol: string)
   if (orderIds.length === 0) {
     return { message: "No open orders for this symbol" };
   } else {
-    return platformInstance.cancelOrders(orderIds, symbol);
+    //todo trouver la fonction qui permet de canceler plusieurs ordres en une seule requête
+    //return platformInstance.cancelOrders(orderIds, symbol);
   }
 }
 

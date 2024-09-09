@@ -1,5 +1,7 @@
 // src/services/metrics/utils.ts
 
+import { MappedBalance } from "../mapping";
+
 const THRESHOLD = 0.01; // 1% threshold
 
 /**
@@ -8,7 +10,8 @@ const THRESHOLD = 0.01; // 1% threshold
  * @param {number} balance - Le solde.
  * @returns {number} La possession actuelle arrondie à deux décimales.
  */
-function getCurrentPossession(currentPrice: number, balance: number): number {
+function getCurrentPossession(currentPrice: number | undefined, balance: number | undefined): number {
+  if (currentPrice === undefined || balance === undefined) return -1;
   return Math.round(currentPrice * balance * 100) / 100;
 }
 
@@ -18,12 +21,12 @@ function getCurrentPossession(currentPrice: number, balance: number): number {
  * @param {number|string} oldValue - L'ancienne valeur.
  * @returns {number|string} La différence en pourcentage ou "N/A" si invalide.
  */
-function getPercentageDifference(newValue: number | string, oldValue: number | string): number | string {
-  const [newVal, oldVal] = [parseFloat(newValue as string), parseFloat(oldValue as string)];
+function getPercentageDifference(newValue: number | undefined, oldValue: number | undefined): number | undefined {
+  //if newValue or oldValue is undefined, return undefined
+  if (newValue === undefined || newValue < 0) return undefined;
+  if (oldValue === undefined || oldValue < 0) return undefined;
 
-  if (isNaN(newVal) || isNaN(oldVal) || oldVal === 0) return "N/A";
-
-  return parseFloat(((newVal - oldVal) / oldVal).toFixed(2));
+  return Number(((newValue - oldValue) / oldValue).toFixed(2));
 }
 
 /**
@@ -34,19 +37,20 @@ function getPercentageDifference(newValue: number | string, oldValue: number | s
  * @param {number} balance - Le solde.
  * @returns {number} Le profit calculé ou NaN si les entrées sont invalides.
  */
-function getProfit(totalBuy: number, totalSell: number, currentPrice: number, balance: number): number {
-  if ([totalBuy, totalSell, currentPrice, balance].some(isNaN)) return NaN;
-
+function getProfit(totalBuy: number | undefined, totalSell: number | undefined, currentPrice: number | undefined, balance: number | undefined): number {
+  if (currentPrice === undefined || balance === undefined) return -1;
+  if (totalBuy === undefined) totalBuy = 0;
+  if (totalSell === undefined) totalSell = 0;
   return currentPrice * balance + totalSell - totalBuy;
 }
 
 /**
  * Récupère le solde pour un symbole donné à partir d'un objet de solde.
  * @param {string} base - Le symbole de base.
- * @param {Object} balanceObj - L'objet contenant les informations de solde.
+ * @param {MappedBalance} balanceObj - L'objet contenant les informations de solde.
  * @returns {number} Le solde pour le symbole donné ou 0 si invalide.
  */
-function getBalanceBySymbol(base: string, balanceObj: { base: string; balance: string | number }): number {
+function getBalanceBySymbol(base: string, balanceObj: MappedBalance): number {
   if (typeof balanceObj !== "object" || balanceObj === null) {
     console.warn(`balanceObj is invalid: ${balanceObj}`);
     return 0;
@@ -57,7 +61,7 @@ function getBalanceBySymbol(base: string, balanceObj: { base: string; balance: s
     return 0;
   }
 
-  const balanceAsNumber = parseFloat(balanceObj.balance as string);
+  const balanceAsNumber = balanceObj.balance;
   if (!isNaN(balanceAsNumber)) return balanceAsNumber;
 
   console.warn(`Invalid balance value for symbol ${base}: ${balanceObj.balance}`);
