@@ -236,10 +236,10 @@ function calculateAmountsAndPricesForShad(
 ): AmountsAndPrices {
   const FACTOR_SELL_SHAD = 0.5;
   const parsedValues = {
-    recupTp1: parseFloat(recupTp1.toString()),
-    balance: parseFloat(balance.toString()),
-    recupTpX: parseFloat(recupTpX.toString()),
-    averageEntryPrice: parseFloat(averageEntryPrice.toString())
+    recupTp1,
+    balance,
+    recupTpX,
+    averageEntryPrice
   };
 
   const platformFee = getPlatformFee(platform);
