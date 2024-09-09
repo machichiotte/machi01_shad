@@ -23,23 +23,27 @@ interface Routes {
 }
 
 const routes: Routes = {
-  converter: require("../routes/converterRoutes"),
-  auth: require("../routes/authRoutes"),
-  balance: require("../routes/balanceRoutes"),
-  cmc: require("../routes/cmcRoutes"),
-  strategy: require("../routes/strategyRoutes"),
-  orders: require("../routes/ordersRoutes"),
-  market: require("../routes/marketsRoutes"),
-  prices: require("../routes/pricesRoutes"),
-  trades: require("../routes/tradesRoutes"),
-  tickers: require("../routes/tickersRoutes"),
-  lastUpdate: require("../routes/lastUpdateRoutes"),
-  shad: require("../routes/shadRoutes"),
+  converter: require("../routes/converterRoutes").default,
+  auth: require("../routes/authRoutes").default,
+  balance: require("../routes/balanceRoutes").default,
+  cmc: require("../routes/cmcRoutes").default,
+  strategy: require("../routes/strategyRoutes").default,
+  orders: require("../routes/ordersRoutes").default,
+  market: require("../routes/marketsRoutes").default,
+  prices: require("../routes/pricesRoutes").default,
+  trades: require("../routes/tradesRoutes").default,
+  tickers: require("../routes/tickersRoutes").default,
+  lastUpdate: require("../routes/lastUpdateRoutes").default,
+  shad: require("../routes/shadRoutes").default,
 };
 
 // Utilisation des routes avec une boucle
 Object.entries(routes).forEach(([name, router]) => {
-  app.use(`/api/${name}`, router);
+  if (router && typeof router === 'function') {
+    app.use(`/api/${name}`, router);
+  } else {
+    console.error(`La route ${name} n'est pas une fonction middleware valide.`);
+  }
 });
 
 // Middleware de gestion des erreurs

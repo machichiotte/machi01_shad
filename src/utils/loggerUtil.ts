@@ -6,7 +6,7 @@
 
 // src/utils/loggerUtil.ts
 import winston from "winston";
-import config from "../services/config.js";
+import config from "../services/config";
 
 const errorLogger = winston.createLogger({
   level: "error",
