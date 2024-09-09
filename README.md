@@ -6,11 +6,30 @@ Ce projet est le backend de l'application Machi GPT Shad. Il sert de logique cô
 
 Le backend est construit avec Node.js et Express.js, ainsi que d'autres bibliothèques nécessaires pour gérer les requêtes HTTP, se connecter à MongoDB et récupérer des données de sources externes.
 
+## Fonctionnalités principales
+
+- Gestion des ordres de trading en temps réel
+- Récupération et mise à jour des données de marché
+- Intégration avec plusieurs plateformes d'échange de cryptomonnaies
+- Système d'authentification sécurisé
+- Gestion des stratégies de trading
+- Conversion de fichiers CSV pour l'importation de données
+- Planification de tâches automatisées
+
 ## Installation
 
-1. Clonez le dépôt depuis GitHub : `git clone https://github.com/machichiotte/machi-shad-backend.git`
-2. Installez les dépendances : `npm install`
-
+1. Clonez le dépôt depuis GitHub : 
+```bash
+git clone https://github.com/machichiotte/machi-shad-backend.git
+```
+2. Installez les dépendances : 
+```bash
+npm install
+```
+ou si vous utilisez yarn :
+```bash
+yarn install
+```
 ## Prérequis
 
 Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments suivants installés sur votre système :
@@ -34,9 +53,34 @@ Remplacez les valeurs par vos propres paramètres.
 
 ## Utilisation
 
-Pour démarrer le serveur backend, exécutez la commande suivante : `yarn dev`
+Pour démarrer le serveur backend, exécutez la commande suivante : 
+```bash
+npm run dev
+```
+ou si vous utilisez yarn :
+```bash
+yarn dev
+```
 
 Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant prêt à traiter les requêtes entrantes.
+
+## Architecture
+
+Le backend est structuré selon une architecture MVC (Modèle-Vue-Contrôleur) :
+
+- Modèles : Représentent les données et la logique métier
+- Contrôleurs : Gèrent les requêtes HTTP et coordonnent les actions
+- Services : Contiennent la logique métier complexe
+- Routes : Définissent les points d'entrée de l'API
+- Middleware : Gèrent les aspects transversaux comme l'authentification et la gestion des erreurs
+
+## Sécurité
+
+- Utilisation de bcrypt pour le hachage des mots de passe
+- Implémentation de JWT (JSON Web Tokens) pour l'authentification
+- Protection contre les attaques CSRF et XSS grâce à Helmet
+- Validation des entrées utilisateur
+- Gestion sécurisée des clés API et des secrets via les variables d'environnement
 
 ## Points d'API
 
@@ -116,7 +160,32 @@ ou si vous utilisez yarn :
 yarn test
 ```
     
+## Déploiement
 
+Le backend peut être déployé sur diverses plateformes cloud comme Heroku, AWS, ou Google Cloud Platform. Assurez-vous de configurer correctement les variables d'environnement sur votre plateforme de déploiement.
+
+Pour un déploiement sur Heroku, par exemple :
+
+1. Créez une application Heroku
+2. Connectez votre dépôt GitHub à Heroku
+3. Configurez les variables d'environnement dans les paramètres de l'application
+4. Déployez l'application via le tableau de bord Heroku ou en poussant vers la branche main
+
+## Surveillance et journalisation
+
+Le backend utilise Winston pour la journalisation. Les logs sont configurés pour être envoyés à la console et potentiellement à un service de gestion des logs externe.
+
+Pour surveiller les performances et les erreurs en production, envisagez d'intégrer des outils tels que New Relic, Sentry ou ELK Stack.
+
+## Roadmap
+
+Voici quelques fonctionnalités prévues pour les futures versions :
+
+- Intégration de WebSockets pour les mises à jour en temps réel
+- Ajout de nouvelles stratégies de trading automatisées
+- Amélioration de l'analyse des données historiques
+- Intégration avec plus de plateformes d'échange
+- Mise en place d'un système de notifications avancé
 
 ## Contribution
 
