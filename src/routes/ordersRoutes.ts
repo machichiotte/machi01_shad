@@ -1,6 +1,6 @@
-// src/routes/ordersRoutes.js
-const express = require("express");
-const {
+// src/routes/ordersRoutes.ts
+import express from "express";
+import {
   getOrders,
   updateOrders,
   deleteOrder,
@@ -10,7 +10,7 @@ const {
   createBunchLimitSellOrders,
   cancelAllOrders,
   cancelAllSellOrders,
-} = require("../controllers/ordersController.js");
+} from "../controllers/ordersController";
 
 const router = express.Router();
 
@@ -24,4 +24,4 @@ router.post("/bunch-limit-buy-orders", createBunchLimitBuyOrders);
 router.post("/cancel/all", cancelAllOrders);
 router.post("/cancel/all/sell", cancelAllSellOrders);
 
-module.exports = router;
+export default router;

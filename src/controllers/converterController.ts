@@ -1,5 +1,5 @@
 // src/controllers/converterController.ts
-import Papa, { LocalFile } from 'papaparse';
+import Papa from 'papaparse';
 import { Request, Response } from 'express';
 import * as converterService from '../services/converterService';
 
