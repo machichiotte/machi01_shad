@@ -41,9 +41,9 @@ Le backend Machi GPT Shad Server est construit avec Node.js et Express.js. Il g�
 ## Démarrage rapide
 
 1. Clonez le dépôt
-2. Installez les dépendances : `npm install`
+2. Installez les dépendances : `npm install` / `yarn install`
 3. Configurez les variables d'environnement dans `.env`
-4. Lancez le serveur : `npm run dev`
+4. Lancez le serveur : `npm run dev` / `yarn dev`
 
 Le serveur sera accessible à `http://localhost:10000`.
 
@@ -63,36 +63,24 @@ Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments 
 git clone https://github.com/machichiotte/machi-shad-backend.git
 ```
 2. Installez les dépendances : 
-```bash
-npm install
-```
-ou si vous utilisez yarn :
-```bash
-yarn install
-```
+`npm install` / `yarn install`
 
 ## Configuration
 
 Avant d'exécuter le backend, assurez-vous de configurer les variables d'environnement. Créez un fichier `.env` dans le répertoire racine du backend avec le contenu suivant :
 
-- MONGODB_URI=votre_chaine_de_connexion_mongodb
-- CMC_APIKEY=votre_cle_api_coinmarketcap
-- MONGODB_COLLECTION_CMC=nom_de_votre_collection_cmc
-- TYPE_CMC=type_de_donnees_cmc
-- OFFLINE_MODE=true_ou_false
+- `MONGODB_URI=votre_chaine_de_connexion_mongodb`
+- `CMC_APIKEY=votre_cle_api_coinmarketcap`
+- `MONGODB_COLLECTION_CMC=nom_de_votre_collection_cmc`
+- `TYPE_CMC=type_de_donnees_cmc`
+- `OFFLINE_MODE=true_ou_false`
 
 Remplacez les valeurs par vos propres paramètres.
 
 ## Utilisation
 
 Pour démarrer le serveur backend, exécutez la commande suivante : 
-```bash
-npm run dev
-```
-ou si vous utilisez yarn :
-```bash
-yarn dev
-```
+`npm run dev` ou `yarn dev`
 
 Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant prêt à traiter les requêtes entrantes.
 
@@ -100,13 +88,13 @@ Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant pr
 
 Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 
-src/
-├── models/ # Modèles de données
-├── controllers/ # Contrôleurs pour gérer les requêtes
-├── services/ # Services pour la logique métier
-├── routes/ # Définition des routes API
-├── middleware/ # Middleware pour l'authentification, etc.
-└── utils/ # Utilitaires et helpers
+- src/
+- ├── models/ # Modèles de données
+- ├── controllers/ # Contrôleurs pour gérer les requêtes
+- ├── services/ # Services pour la logique métier
+- ├── routes/ # Définition des routes API
+- ├── middleware/ # Middleware pour l'authentification, etc.
+- └── utils/ # Utilitaires et helpers
 
 ## Sécurité
 
