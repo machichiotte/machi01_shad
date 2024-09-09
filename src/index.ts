@@ -1,4 +1,4 @@
-// src/server.ts
+// src/index.ts
 import dotenv from "dotenv";
 import {
   connectToMongoDB,

@@ -1,84 +1,137 @@
 # Machi GPT Shad Server
 
-This project is the backend of the Machi GPT Shad application. It serves as the server-side logic for managing trading orders and market data.
+Ce projet est le backend de l'application Machi GPT Shad. Il sert de logique côté serveur pour gérer les ordres de trading et les données de marché.
 
 ## Description
 
-The backend is built using Node.js and Express.js, along with other necessary libraries to handle HTTP requests, connect to MongoDB, and fetch data from external sources.
+Le backend est construit avec Node.js et Express.js, ainsi que d'autres bibliothèques nécessaires pour gérer les requêtes HTTP, se connecter à MongoDB et récupérer des données de sources externes.
 
 ## Installation
 
-1. Clone the repository from GitHub: `git clone https://github.com/your_username/backend.git`
-2. Install dependencies: `npm install`
+1. Clonez le dépôt depuis GitHub : `git clone https://github.com/machichiotte/machi-shad-backend.git`
+2. Installez les dépendances : `npm install`
+
+## Prérequis
+
+Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments suivants installés sur votre système :
+
+- Node.js (version 14 ou supérieure recommandée)
+- npm ou yarn
+- MongoDB (installé localement ou accès à une instance distante)
+- Git
 
 ## Configuration
 
-Before running the backend, make sure to set up the environment variables. Create a `.env` file in the root directory of the backend with the following content:
+Avant d'exécuter le backend, assurez-vous de configurer les variables d'environnement. Créez un fichier `.env` dans le répertoire racine du backend avec le contenu suivant :
 
-- MONGODB_URI=your_mongodb_connection_string
-- CMC_APIKEY=your_coinmarketcap_api_key
+- MONGODB_URI=votre_chaine_de_connexion_mongodb
+- CMC_APIKEY=votre_cle_api_coinmarketcap
+- MONGODB_COLLECTION_CMC=nom_de_votre_collection_cmc
+- TYPE_CMC=type_de_donnees_cmc
+- OFFLINE_MODE=true_ou_false
 
-Replace `your_mongodb_connection_string` with the actual connection string for your MongoDB database, and `your_coinmarketcap_api_key` with your API key for CoinMarketCap.
+Remplacez les valeurs par vos propres paramètres.
 
-## Usage
+## Utilisation
 
-To start the backend server, run the following command: `yarn start src/server.ts`
+Pour démarrer le serveur backend, exécutez la commande suivante : `yarn dev`
 
-The server will start running on `http://localhost:3000`. The backend is now ready to handle incoming requests.
+Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant prêt à traiter les requêtes entrantes.
 
-## API Endpoints
+## Points d'API
 
-The backend exposes the following API endpoints:
+Le backend expose les points d'API suivants :
 
-### Get Market Data
+### Données de marché et CMC
 
-- `GET /get/cmc`: Get market data from CoinMarketCap
-- `GET /get/markets`: Get market data from platforms using CCXT
+- `GET /api/cmc/get`: Obtenir les données CMC
+- `GET /api/cmc/update`: Mettre à jour les données CMC
+- `GET /api/market/get`: Obtenir les données de marché
+- `GET /api/prices/get/history/btc`: Obtenir l'historique des prix BTC
+- `GET /api/prices/get/history/eth`: Obtenir l'historique des prix ETH
+- `GET /api/tickers/get`: Obtenir tous les tickers
+- `GET /api/tickers/update`: Mettre à jour tous les tickers
 
-### Trading Data
+### Données de trading
 
-- `GET /get/balance`: Get account balance
-- `GET /get/orders`: Get active trading orders
-- `GET /get/strategy`: Get strategy data
-- `GET /get/trades`: Get historical trades
+- `GET /api/balance/get`: Obtenir le solde du compte
+- `GET /api/balance/update/:platform`: Mettre à jour le solde actuel pour une plateforme spécifique
+- `GET /api/orders/get`: Obtenir les ordres de trading actifs
+- `GET /api/orders/update/:platform`: Mettre à jour les ordres pour une plateforme spécifique
+- `GET /api/strategy/get`: Obtenir les données de stratégie
+- `POST /api/strategy/update`: Mettre à jour les données de stratégie
+- `GET /api/trades/get`: Obtenir les trades historiques
+- `POST /api/trades/add`: Ajouter des trades manuellement
+- `GET /api/trades/update/:platform`: Mettre à jour les trades pour une plateforme spécifique
+- `GET /api/shad/get`: Obtenir les données SHAD
 
-### Update Data
+### Gestion des ordres
 
-- `GET /update/cmc`: Update market data from CoinMarketCap
-- `GET /update/balance/:platform`: Update account balance for a specific platform
-- `GET /update/orders/:platform`: Update active trading orders for a specific platform
-- `POST /update/strategy`: Update strategy data
-- `GET /update/trades/:platform`: Update historical trades for a specific platform
-- `GET /update/markets/:platform`: Update market data from platforms using CCXT
+- `POST /api/orders/cancel`: Annuler un ordre spécifique
+- `POST /api/orders/cancel/all`: Annuler tous les ordres
+- `POST /api/orders/cancel/all/sell`: Annuler tous les ordres de vente
+- `POST /api/orders/market-buy-order`: Créer un ordre d'achat au marché
+- `POST /api/orders/market-sell-order`: Créer un ordre de vente au marché
+- `POST /api/orders/bunch-limit-buy-orders`: Créer plusieurs ordres d'achat limites
+- `POST /api/orders/bunch-limit-sell-orders`: Créer plusieurs ordres de vente limites
 
-### Cancel Orders
+### Autres
 
-- `POST /cancel/order`: Cancel a specific order
-- `POST /cancel/all-orders`: Cancel all open orders for a specific asset
+- `POST /api/converter/post`: Convertir un fichier CSV
+- `POST /api/auth/login`: Connexion utilisateur
+- `POST /api/auth/register`: Inscription utilisateur
+- `GET /api/lastUpdate/get`: Obtenir la dernière mise à jour
+- `GET /api/lastUpdate/get/:type/:platform`: Obtenir une mise à jour spécifique
+- `GET /api/lastUpdate/update/:type`: Mettre à jour par type
 
-### Create Bunch Orders
+## Dépendances
 
-- `POST /bunch-limit-sell-orders`: Create multiple orders at once
-- `POST /bunch-limit-buy-orders`: Create multiple orders at once
+Le backend utilise les packages Node.js suivants :
 
-## Dependencies
+- `bcrypt`: Pour le hachage des mots de passe
+- `body-parser`: Middleware pour analyser les requêtes HTTP entrantes
+- `ccxt`: Bibliothèque pour accéder aux plateformes de cryptomonnaies
+- `cors`: Middleware pour gérer les problèmes de partage de ressources entre origines (CORS)
+- `dotenv`: Bibliothèque pour charger les variables d'environnement à partir d'un fichier `.env`
+- `express`: Framework web pour gérer les requêtes HTTP et les routes
+- `fs`: Module système de fichiers pour lire et écrire des fichiers
+- `helmet`: Middleware pour sécuriser les applications Express
+- `mongodb`: Pilote MongoDB pour Node.js pour se connecter et interagir avec une base de données MongoDB
+- `multer`: Middleware pour gérer les données multipart/form-data
+- `node-cron`: Pour planifier des tâches
+- `nodemailer`: Pour envoyer des emails
+- `papaparse`: Pour analyser les fichiers CSV
+- `winston`: Pour la journalisation
 
-The backend relies on the following Node.js packages:
+## Tests
 
-- `body-parser`: Middleware for parsing incoming HTTP requests
-- `ccxt`: Library for accessing cryptocurrency platforms
-- `cors`: Middleware for handling Cross-Origin Resource Sharing (CORS) issues
-- `dotenv`: Library for loading environment variables from a `.env` file
-- `express`: Web framework for handling HTTP requests and routes
-- `fs`: File system module for reading and writing files
-- `mongodb`: MongoDB driver for Node.js to connect and interact with a MongoDB database
-- `node-fetch`: Library for making HTTP requests to external APIs
+Pour exécuter les tests, utilisez la commande suivante :
 
-## License
+```bash
+npm test
+```
+ou si vous utilisez yarn :
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+```bash
+yarn test
+```
+    
+
+
+## Contribution
+
+Les contributions à ce projet sont les bienvenues. Pour contribuer :
+
+1. Forkez le projet
+2. Créez votre branche de fonctionnalité (`git checkout -b feature/AmazingFeature`)
+3. Committez vos changements (`git commit -m 'Add some AmazingFeature'`)
+4. Poussez vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrez une Pull Request
+
+## Licence
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus d'informations.
 
 ## Contact
 
-If you have any questions or need further assistance, please feel free to contact us at [machichiotte@gmail.com](mailto:machichiotte@gmail.com).
-
+Si vous avez des questions ou besoin d'aide supplémentaire, n'hésitez pas à nous contacter à [machichiotte@gmail.com](mailto:machichiotte@gmail.com).
