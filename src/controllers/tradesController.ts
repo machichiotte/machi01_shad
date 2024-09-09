@@ -12,7 +12,7 @@ async function getTrades(req: Request, res: Response): Promise<void> {
   try {
     const trades = await tradesService.fetchDatabaseTrades();
     res.json(trades);
-  } catch (error) {
+  } catch (error: any) {
     handleErrorResponse(res, error, "getTrades");
   }
 }
@@ -28,7 +28,7 @@ async function updateTradeById(req: Request, res: Response): Promise<void> {
   try {
     const result = await tradesService.updateTradeById(tradeId, updatedTrade);
     res.json(result);
-  } catch (error) {
+  } catch (error: any) {
     handleErrorResponse(res, error, "updateTradeById");
   }
 }
@@ -43,7 +43,7 @@ async function addTradesManually(req: Request, res: Response): Promise<void> {
   try {
     const result = await tradesService.addTradesManually(tradesData);
     res.status(result.status).json(result);
-  } catch (error) {
+  } catch (error: any) {
     handleErrorResponse(res, error, "addTradesManually");
   }
 }
@@ -58,7 +58,7 @@ async function updateTrades(req: Request, res: Response): Promise<void> {
   try {
     const result = await tradesService.updateTrades(platform);
     res.status(result.status).json(result);
-  } catch (error) {
+  } catch (error: any) {
     handleErrorResponse(res, error, "updateTrades");
   }
 }
@@ -73,7 +73,7 @@ async function fetchLastTrades(req: Request, res: Response): Promise<void> {
   try {
     const trades = await tradesService.fetchLastTrades(platform, symbol);
     res.json(trades);
-  } catch (error) {
+  } catch (error: any) {
     handleErrorResponse(res, error, "fetchLastTrades");
   }
 }
@@ -88,7 +88,7 @@ async function saveTradesToDatabase(req: Request, res: Response): Promise<void> 
   try {
     await tradesService.saveTradesToDatabase(newTrades);
     res.status(200).json({ message: "Trades sauvegardés avec succès" });
-  } catch (error) {
+  } catch (error: any) {
     handleErrorResponse(res, error, "saveTradesToDatabase");
   }
 }
@@ -103,7 +103,7 @@ async function saveAllTradesToDatabase(req: Request, res: Response): Promise<voi
   try {
     await tradesService.saveAllTradesToDatabase(newTrades);
     res.status(200).json({ message: "Tous les trades sauvegardés avec succès" });
-  } catch (error) {
+  } catch (error: any) {
     handleErrorResponse(res, error, "saveAllTradesToDatabase");
   }
 }

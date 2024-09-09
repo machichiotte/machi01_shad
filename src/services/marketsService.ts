@@ -23,9 +23,9 @@ async function fetchCurrentMarkets(platform: string, retries: number = 3): Promi
   try {
     const platformInstance = createPlatformInstance(platform);
     const data = await platformInstance.fetchMarkets();
-    const mappedData = mapMarkets(data, platform);
+    const mappedData = mapMarkets(platform, data);
     return mappedData;
-  } catch (error) {
+  } catch (error: any) {
     console.log(
       `🚀 ~ file: marketController.ts:58 ~ fetchCurrentMarkets ~ error:`,
       error

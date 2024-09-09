@@ -13,7 +13,7 @@ async function getStrat(req: Request, res: Response): Promise<void> {
   try {
     const data = await strategyService.fetchDatabaseStrategies();
     res.json(data);
-  } catch (error) {
+  } catch (error: any) {
     console.log(
       `🚀 ~ file: strategyController.ts:23 ~ getStrat ~ error:`,
       error
@@ -34,9 +34,9 @@ async function updateStrat(req: Request, res: Response): Promise<void> {
     const data = await strategyService.updateStrategies(strat);
     await lastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_STRATEGY as string, "");
     res.json(data);
-  } catch (err) {
-    console.log("🚀 ~ updateStrat ~ err:", err);
-    res.status(500).send({ error: `${(err as Error).name}: ${(err as Error).message}` });
+  } catch (error) {
+    console.log("🚀 ~ updateStrat ~ err:", error);
+    res.status(500).send({ error: `${(error as Error).name}: ${(error as Error).message}` });
   }
 }
 
@@ -51,7 +51,7 @@ async function updateStrategyById(req: Request, res: Response): Promise<void> {
   try {
     const result = await strategyService.updateStrategyById(strategyId, updatedStrategy);
     res.json(result);
-  } catch (error) {
+  } catch (error: any) {
     handleErrorResponse(res, error, "updateStrategyById");
   }
 }

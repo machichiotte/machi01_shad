@@ -15,7 +15,7 @@ async function getMarkets(req: Request, res: Response): Promise<void> {
   try {
     const data = await marketsService.getSavedMarkets();
     res.json(data);
-  } catch (error) {
+  } catch (error: any) {
     errorLogger.error("Échec de la récupération des données de marché.", {
       error: (error as Error).message,
     });
@@ -34,7 +34,7 @@ async function updateMarkets(req: Request, res: Response): Promise<void> {
     const marketData = await marketsService.fetchMarketData(platform);
     const updatedData = await marketsService.updateMarketDataInDatabase(marketData, platform);
     res.status(200).json(updatedData);
-  } catch (error) {
+  } catch (error:any) {
     console.log(
       `🚀 ~ file: marketsController.ts:175 ~ updateMarkets ~ error:`,
       error

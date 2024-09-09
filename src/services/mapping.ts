@@ -42,8 +42,8 @@ export interface MappedOrder {
 // Interface pour le mapping des tickers
 export interface MappedTicker {
   symbol: string;
-  timestamp: number;
-  last: number;
+  timestamp: number | undefined;
+  last: number | undefined;
   platform: string;
 }
 
@@ -223,7 +223,7 @@ function mapOrders(platform: string, data: Order[]): MappedOrder[] {
  * @param {string} platform - The exchange platform.
  * @returns {Record<string, any>[]} An array of objects containing the mapped tickers.
  */
-function mapTickers(data: Ticker[], platform: string): Record<string, any>[] {
+function mapTickers(platform: string, data: Ticker[]): MappedTicker[] {
   return Object.values(data).map((item) => ({
     symbol: item.symbol,
     timestamp: item.timestamp,
@@ -238,7 +238,7 @@ function mapTickers(data: Ticker[], platform: string): Record<string, any>[] {
  * @param {string} platform - The exchange platform.
  * @returns {Record<string, any>[]} An array of objects containing the mapped markets.
  */
-function mapMarkets(data: Market[], platform: string): Record<string, any>[] {
+function mapMarkets(platform: string, data: Market[]): Record<string, any>[] {
   return Object.values(data)
     .filter((item): item is Market => getStableCoins().some((coin) => item?.quote === coin))
     .map((item) => ({

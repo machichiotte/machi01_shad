@@ -122,8 +122,8 @@ async function processDifference(
         const tradeList = await fetchLastTrades(platform, symbol);
         const mappedTrades = mapTrades(platform, tradeList, {});
         newTrades.push(...mappedTrades);
-      } catch (err: any) {
-        console.error(`Error fetching trades for ${symbol}: ${err.message}`);
+      } catch (error: any) {
+        console.error(`Error fetching trades for ${symbol}: ${error.message}`);
       }
     } else {
       console.log(`Symbol not available: ${symbol}`);
@@ -157,12 +157,12 @@ function logDifferenceType(difference: Difference): void {
  */
 async function calculateAllMetrics(): Promise<any[]> {
   const [
-    lastCmc,
-    lastStrategies,
-    lastTrades,
-    lastOpenOrders,
-    lastTickers,
-    lastBalances,
+    dbCmc,
+    dbStrategies,
+    dbTrades,
+    dbOpenOrders,
+    dbTickers,
+    dbBalances,
   ] = await Promise.all([
     fetchDatabaseCmc(),
     fetchDatabaseStrategies(),
@@ -172,12 +172,12 @@ async function calculateAllMetrics(): Promise<any[]> {
     fetchDatabaseBalances(),
   ]);
   if (
-    !lastCmc ||
-    !lastStrategies ||
-    !lastTrades ||
-    !lastOpenOrders ||
-    !lastTickers ||
-    !lastBalances
+    !dbCmc ||
+    !dbStrategies ||
+    !dbTrades ||
+    !dbOpenOrders ||
+    !dbTickers ||
+    !dbBalances
   ) {
     console.error(
       "Error: One or more data retrieval functions returned invalid data."
@@ -186,29 +186,29 @@ async function calculateAllMetrics(): Promise<any[]> {
   }
   const allValues: any[] = [];
 
-  for (const balance of lastBalances) {
+  for (const balance of dbBalances) {
     if (balance.balance !== "" && balance.balance > 0) {
       const assetBase = balance.base;
       const assetPlatform = balance.platform;
 
-      const filteredCmc = lastCmc.find((cmc) => cmc.symbol === assetBase) || {};
+      const filteredCmc = dbCmc.find((cmc) => cmc.symbol === assetBase) || {};
       const filteredTrades =
-        lastTrades.filter((trade) => trade.base === assetBase) || [];
+        dbTrades.filter((trade) => trade.base === assetBase) || [];
       const filteredOpenOrders =
-        lastOpenOrders.filter(
+        dbOpenOrders.filter(
           (order) =>
             order.symbol === assetBase + "/USDT" ||
             order.symbol === assetBase + "/USDC" ||
             order.symbol === assetBase + "/BTC"
         ) || [];
       const filteredStrategy =
-        lastStrategies.find(
+        dbStrategies.find(
           (strategy) =>
             strategy.asset === assetBase && strategy.strategies[assetPlatform]
         ) || {};
 
       const filteredTickers =
-        lastTickers.filter(
+        dbTickers.filter(
           (ticker) =>
             ticker.symbol.startsWith(`${assetBase}/`) &&
             ticker.platform === assetPlatform

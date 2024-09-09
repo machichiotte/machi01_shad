@@ -14,8 +14,8 @@ async function getConvertedCsv(req: Request, res: Response): Promise<void> {
     const { buffer } = file;
 
     // Utiliser PapaParse pour lire les données CSV du buffer
-    Papa.parse(buffer.toString(), {
-      complete: async (result: Papa.ParseResult<unknown>) => {
+    Papa.parse(buffer.toString('utf-8'), {
+      complete: async (result: Papa.ParseResult<unknown[]>) => {
         console.log("🚀 ~ complete: ~ result:", result);
         const jsonData = result ? await converterService.convertToJSON(result.data) : [];
         console.log("🚀 ~ complete: ~ jsonData:", jsonData);

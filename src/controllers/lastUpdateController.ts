@@ -1,8 +1,11 @@
 // src/controllers/lastUpdateController.ts
 import { validateEnvVariables } from "../utils/controllerUtil";
-import * as lastUpdateService from "../services/lastUpdateService";
-import * as mongodbService from "../services/mongodbService";
+import { fetchDatabaseLastUpdate, saveLastUpdateToDatabase } from "../services/lastUpdateService";
+import { getDataMDB } from "../services/mongodbService";
 import { Request, Response } from "express";
+
+import { handleErrorResponse } from "../utils/errorUtil";
+
 
 validateEnvVariables(["MONGODB_COLLECTION_LAST_UPDATE"]);
 
@@ -21,7 +24,8 @@ async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
     }
 
     const filter = { platform, type };
-    const lastUpdateData = await mongodbService.getDataMDB(collectionName, filter);
+    // check si besoin de filter
+    const lastUpdateData = await getDataMDB(collectionName);
 
     if (lastUpdateData.length > 0) {
       console.log("Dernière mise à jour unique récupérée de la base de données.", {
@@ -53,12 +57,12 @@ async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
  */
 async function getLastUpdate(req: Request, res: Response): Promise<void> {
   try {
-    const data = await lastUpdateService.fetchDatabaseLastUpdate();
+    const data = await fetchDatabaseLastUpdate();
     console.log("Tous les enregistrements de dernière mise à jour récupérés de la base de données.", {
       count: data.length,
     });
     res.json(data);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Échec de la récupération de toutes les dernières mises à jour.", {
       error: error instanceof Error ? error.message : "Erreur inconnue",
     });
@@ -74,7 +78,7 @@ async function getLastUpdate(req: Request, res: Response): Promise<void> {
 async function updateLastUpdateByType(req: Request, res: Response): Promise<void> {
   try {
     const { platform, type } = req.params;
-    await lastUpdateService.saveLastUpdateToDatabase(type, platform);
+    await saveLastUpdateToDatabase(type, platform);
     const timestamp = new Date().toISOString();
     console.log("Enregistrement de dernière mise à jour mis à jour.", { platform, type, timestamp });
     res.json({ platform, type, timestamp });

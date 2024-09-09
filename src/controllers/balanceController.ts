@@ -13,7 +13,7 @@ async function getBalances(req: Request, res: Response): Promise<void> {
   try {
     const data = await balanceService.fetchDatabaseBalances();
     res.json(data);
-  } catch (error) {
+  } catch (error: any) {
     handleErrorResponse(res, error, "getBalances");
   }
 }
@@ -32,7 +32,7 @@ async function updateCurrentBalance(req: Request, res: Response): Promise<void> 
       message: "Le solde actuel a été mis à jour avec succès.",
       data: data,
     });
-  } catch (error) {
+  } catch (error: any) {
     handleErrorResponse(res, error, "updateCurrentBalance");
   }
 }

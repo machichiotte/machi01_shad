@@ -22,7 +22,7 @@ Replace `your_mongodb_connection_string` with the actual connection string for y
 
 ## Usage
 
-To start the backend server, run the following command: `node server.ts`
+To start the backend server, run the following command: `yarn start src/server.ts`
 
 The server will start running on `http://localhost:3000`. The backend is now ready to handle incoming requests.
 

@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2020",                      // Version ECMAScript cible
-    "module": "CommonJS",                    // Module utilisé par Node.js
+    "moduleResolution": "node",
+    "target": "ES6",                      // Version ECMAScript cible
+    "module": "ES6",                    // Module utilisé par Node.js
     "outDir": "./dist",                      // Dossier de sortie des fichiers compilés
     "rootDir": "./src",                      // Dossier racine des fichiers source
     "strict": true,                          // Activer les vérifications strictes

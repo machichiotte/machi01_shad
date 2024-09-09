@@ -19,7 +19,7 @@ interface BalanceData {
  */
 async function fetchDatabaseBalances(): Promise<BalanceData[]> {
   const collectionName = process.env.MONGODB_COLLECTION_BALANCE;
-  return await getData(collectionName);
+  return await getData(collectionName as string);
 }
 
 /**
@@ -33,7 +33,7 @@ async function fetchDatabaseBalancesByPlatform(platform: string, retries: number
   try {
     const data = await fetchDatabaseBalances();
     return data.filter((item: BalanceData) => item.platform === platform);
-  } catch (error) {
+  } catch (error:any) {
     if (
       retries > 0 &&
       shouldRetry(platform, error, await loadErrorPolicies())
@@ -63,7 +63,7 @@ async function fetchCurrentBalancesByPlatform(platform: string, retries: number 
     const platformInstance = createPlatformInstance(platform);
     const data = await platformInstance.fetchBalance();
     return mapBalance(platform, data);
-  } catch (error) {
+  } catch (error:any) {
     if (retries > 0 && shouldRetry(platform, error, errorPolicies)) {
       const delay = Math.pow(2, 3 - retries) * 1000;
       await new Promise((resolve) => setTimeout(resolve, delay));

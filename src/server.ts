@@ -1,14 +1,14 @@
-// server.ts
+// src/server.ts
 import dotenv from "dotenv";
 import {
   connectToMongoDB,
   cleanCollectionTrades,
-} from "./src/services/mongodbService";
-import { app, startServer } from "./src/services/requestHandlers";
-import { initializeCronTasks } from "./src/services/cron/cronTasks";
+} from "./services/mongodbService";
+import { app, startServer } from "./services/requestHandlers";
+import { initializeCronTasks } from "./services/cron/cronTasks";
 
-import { cronBalances } from "./src/services/cron/taskExecutor";
-import { handleMigrationSwaps } from "./src/services/migrationSwapsService";
+import { cronBalances } from "./services/cron/taskExecutor";
+import { handleMigrationSwaps } from "./services/migrationSwapsService";
 
 dotenv.config();
 

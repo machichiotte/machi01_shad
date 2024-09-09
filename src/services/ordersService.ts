@@ -1,34 +1,14 @@
 import { createPlatformInstance, getSymbolForPlatform } from "../utils/platformUtil";
 import { getData } from "../utils/dataUtil";
-import { mapOrders } from "./mapping";
 import { saveDataToDatabase } from "./databaseService";
-
-interface Order {
-  id: string;
-  symbol: string;
-  side: string;
-  // Add other properties as needed
-}
-
-interface PlatformInstance {
-  cancelOrder: (id: string, symbol: string) => Promise<any>;
-  createMarketBuyOrder: (symbol: string, amount: number) => Promise<any>;
-  createMarketSellOrder: (symbol: string, amount: number) => Promise<any>;
-  createLimitBuyOrder: (symbol: string, amount: number, price: number) => Promise<any>;
-  createLimitSellOrder: (symbol: string, amount: number, price: number) => Promise<any>;
-  cancelAllOrders: (symbol: string) => Promise<any>;
-  fetchOpenOrders: (symbol?: string, since?: number, limit?: number, params?: any) => Promise<Order[]>;
-  options?: {
-    warnOnFetchOpenOrdersWithoutSymbol: boolean;
-  };
-  // Add other methods as needed
-}
+import { mapOrders, MappedOrder } from "./mapping";
+import { Order, Exchange } from "ccxt";
 
 /**
  * Fetches orders from the database.
- * @returns {Promise<Order[]>} A promise that resolves to an array of orders.
+ * @returns {Promise<MappedOrder[]>} A promise that resolves to an array of orders.
  */
-async function fetchDatabaseOrders(): Promise<Order[]> {
+async function fetchDatabaseOrders(): Promise<MappedOrder[]> {
   const collectionName = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
   return await getData(collectionName as string);
 }
@@ -36,10 +16,10 @@ async function fetchDatabaseOrders(): Promise<Order[]> {
 /**
  * Fetches and maps orders for a given platform.
  * @param {string} platform - The platform to fetch orders for.
- * @returns {Promise<Order[]>} A promise that resolves to an array of mapped orders.
+ * @returns {Promise<MappedOrder[]>} A promise that resolves to an array of mapped orders.
  * @throws {Error} If fetching or mapping fails.
  */
-async function fetchAndMapOrders(platform: string): Promise<Order[]> {
+async function fetchAndMapOrders(platform: string): Promise<MappedOrder[]> {
   try {
     const data = await fetchOpenOrdersByPlatform(platform);
     const mappedData = mapOrders(platform, data);
@@ -55,10 +35,10 @@ async function fetchAndMapOrders(platform: string): Promise<Order[]> {
 
 /**
  * Sauvegarde les données d'ordres fournies dans la base de données.
- * @param {Order[]} mappedData - Les données de marché à sauvegarder.
+ * @param {MappedOrder[]} mappedData - Les données de marché à sauvegarder.
  * @param {string} platform - Identifiant de la plateforme.
  */
-async function saveMappedOrders(mappedData: Order[], platform: string): Promise<void> {
+async function saveMappedOrders(platform: string, mappedData: MappedOrder[]): Promise<void> {
   const collection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS;
   const updateType = process.env.TYPE_ACTIVE_ORDERS;
 
@@ -80,10 +60,10 @@ async function saveMappedOrders(mappedData: Order[], platform: string): Promise<
  * @returns {Promise<Order[]>} A promise that resolves to an array of updated orders.
  * @throws {Error} If updating fails.
  */
-async function updateOrdersFromServer(platform: string): Promise<Order[]> {
+async function updateOrdersFromServer(platform: string): Promise<MappedOrder[]> {
   try {
     const mappedData = await fetchAndMapOrders(platform);
-    await saveMappedOrders(mappedData, platform);
+    await saveMappedOrders(platform, mappedData);
     console.log(`Updated orders from server for ${platform}.`, {
       count: mappedData.length,
     });
@@ -255,7 +235,7 @@ async function cancelAllSellOrders(platform: string, asset: string): Promise<any
  * @param {string} symbol - The symbol to cancel orders for.
  * @returns {Promise<any>} A promise that resolves to the result of the cancellation.
  */
-async function cancelAllOrdersForOkx(platformInstance: PlatformInstance, symbol: string): Promise<any> {
+async function cancelAllOrdersForOkx(platformInstance: Exchange, symbol: string): Promise<any> {
   const orders = await platformInstance.fetchOpenOrders(symbol);
   const orderIds = orders.map((order) => order.id);
 
@@ -295,7 +275,7 @@ async function fetchOpenOrdersByPlatform(platform: string): Promise<Order[]> {
  * @param {PlatformInstance} platformInstance - The platform instance for Kucoin.
  * @returns {Promise<Order[]>} A promise that resolves to an array of open orders.
  */
-async function fetchOpenOrdersForKucoin(platformInstance: PlatformInstance): Promise<Order[]> {
+async function fetchOpenOrdersForKucoin(platformInstance: Exchange): Promise<Order[]> {
   const pageSize = 50;
   let currentPage = 1;
   let data: Order[] = [];

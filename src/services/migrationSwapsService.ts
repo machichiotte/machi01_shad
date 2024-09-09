@@ -36,7 +36,7 @@ interface Strategy {
  */
 async function fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
   const collectionName = process.env.MONGODB_COLLECTION_SWAP;
-  return await getData(collectionName);
+  return await getData(collectionName as string);
 }
 
 /**

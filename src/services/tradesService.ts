@@ -3,19 +3,15 @@ import { createPlatformInstance } from "../utils/platformUtil";
 import { getData } from "../utils/dataUtil";
 import { updateDataMDB, deleteAndSaveData, saveData } from "./mongodbService";
 import { saveLastUpdateToDatabase } from "./lastUpdateService";
-import { mapTrades } from "./mapping";
+import { mapTrades, MappedTrade } from "./mapping";
 
-
-interface Trade {
-  timestamp: number;
-  [key: string]: any;
-}
+import { Trade } from "ccxt";
 
 /**
  * Fetches trades from the database.
  * @returns {Promise<Trade[]>} A promise that resolves to an array of trades.
  */
-async function fetchDatabaseTrades(): Promise<Trade[]> {
+async function fetchDatabaseTrades(): Promise<MappedTrade[]> {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   return await getData(collectionName as string);
 }
@@ -64,12 +60,12 @@ async function addTradesManually(tradesData: Trade | Trade[]): Promise<{ message
  * @param {string} platform - The platform to update trades for.
  * @returns {Promise<{status: number, data: Trade[]}>} A promise that resolves to the result of the update operation.
  */
-async function updateTrades(platform: string): Promise<{ status: number, data: Trade[] }> {
+async function updateTrades(platform: string): Promise<{ status: number, data: MappedTrade[] }> {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   const platformInstance = createPlatformInstance(platform);
 
   try {
-    const mappedData: Trade[] = [];
+    const mappedData: MappedTrade[] = [];
     switch (platform) {
       case "kucoin":
         const weeksBack = 4 * 52;

@@ -397,8 +397,8 @@ async function connectToMongoDB(): Promise<void> {
 async function updateInDatabase(collectionName: string, filter: object, update: object): Promise<void> {
   try {
     await updateDataMDB(collectionName, filter, update);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
   }
 }
 
