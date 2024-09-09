@@ -1,8 +1,8 @@
 // src/services/balanceService.ts
-import { getData } from "../utils/dataUtil";
-import { createPlatformInstance } from "../utils/platformUtil";
-import { loadErrorPolicies, shouldRetry } from "../utils/errorUtil";
-import { validateEnvVariables } from "../utils/controllerUtil";
+import { getData } from "@utils/dataUtil";
+import { createPlatformInstance } from "@utils/platformUtil";
+import { loadErrorPolicies, shouldRetry } from "@utils/errorUtil";
+import { validateEnvVariables } from "@utils/controllerUtil";
 import { saveDataToDatabase } from "./databaseService";
 import { mapBalance, MappedBalance } from "./mapping";
 

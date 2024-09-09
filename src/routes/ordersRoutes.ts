@@ -10,7 +10,7 @@ import {
   createBunchLimitSellOrders,
   cancelAllOrders,
   cancelAllSellOrders,
-} from "../controllers/ordersController";
+} from "@controllers/ordersController";
 
 const router = express.Router();
 

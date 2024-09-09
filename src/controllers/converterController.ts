@@ -1,7 +1,7 @@
 // src/controllers/converterController.ts
 import Papa from 'papaparse';
 import { Request, Response } from 'express';
-import * as converterService from '../services/converterService';
+import * as converterService from '@services/converterService';
 
 /**
  * Convert a CSV file to JSON format.

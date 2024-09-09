@@ -1,5 +1,5 @@
 // src/services/lastUpdateService.ts
-import { getData } from "../utils/dataUtil";
+import { getData } from "@utils/dataUtil";
 import { updateInDatabase } from "./mongodbService";
 
 interface LastUpdateData {

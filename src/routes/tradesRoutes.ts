@@ -1,6 +1,6 @@
 // src/routes/tradesRoutes.ts
 import express from 'express';
-import { getTrades, addTradesManually, updateTrades } from '../controllers/tradesController';
+import { getTrades, addTradesManually, updateTrades } from '@controllers/tradesController';
 
 const router = express.Router();
 

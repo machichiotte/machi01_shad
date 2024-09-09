@@ -1,8 +1,8 @@
 // src/controllers/strategyController.ts
 import { Request, Response } from 'express';
-import { handleErrorResponse } from "../utils/errorUtil";
-import * as lastUpdateService from "../services/lastUpdateService";
-import * as strategyService from "../services/strategyService";
+import { handleErrorResponse } from "@utils/errorUtil";
+import * as lastUpdateService from "@services/lastUpdateService";
+import * as strategyService from "@services/strategyService";
 
 /**
  * Récupère les stratégies de la base de données.

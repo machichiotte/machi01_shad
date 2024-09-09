@@ -1,6 +1,6 @@
 // src/routes/lastUpdateRoutes.ts
 import express from 'express';
-import { getLastUpdate, getUniqueLastUpdate, updateLastUpdateByType } from '../controllers/lastUpdateController';
+import { getLastUpdate, getUniqueLastUpdate, updateLastUpdateByType } from '@controllers/lastUpdateController';
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 // src/services/strategyService.ts
-import { getData } from "../utils/dataUtil";
+import { getData } from "@utils/dataUtil";
 import { saveLastUpdateToDatabase } from "./lastUpdateService";
 import { updateDataMDB, deleteAllDataMDB, saveData } from "./mongodbService";
 import { MappedStrategy } from "./mapping";

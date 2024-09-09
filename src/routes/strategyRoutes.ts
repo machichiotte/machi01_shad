@@ -1,6 +1,6 @@
 // src/routes/strategyRoutes.ts
 import express from 'express';
-import { getStrat, updateStrat } from '../controllers/strategyController';
+import { getStrat, updateStrat } from '@controllers/strategyController';
 
 const router = express.Router();
 

@@ -4,12 +4,12 @@ import { mapTrades } from "./mapping";
 import {
   saveTradesToDatabase, fetchLastTrades, fetchDatabaseTrades
 } from "./tradesService";
-import { getAllTickersByPlatform, fetchDatabaseTickers } from "../services/tickersService";
-import { fetchDatabaseBalances } from "../services/balanceService";
-import { fetchDatabaseCmc } from "../services/cmcService";
-import { updateOrdersFromServer, fetchDatabaseOrders } from "../services/ordersService";
+import { getAllTickersByPlatform, fetchDatabaseTickers } from "@services/tickersService";
+import { fetchDatabaseBalances } from "@services/balanceService";
+import { fetchDatabaseCmc } from "@services/cmcService";
+import { updateOrdersFromServer, fetchDatabaseOrders } from "@services/ordersService";
 import { fetchDatabaseStrategies } from "./strategyService";
-import { getSymbolForPlatform } from "../utils/platformUtil";
+import { getSymbolForPlatform } from "@utils/platformUtil";
 
 interface Difference {
   base: string;

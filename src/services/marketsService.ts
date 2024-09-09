@@ -1,7 +1,7 @@
 // src/services/marketsService.ts
-import { getData } from "../utils/dataUtil";
-import { createPlatformInstance } from "../utils/platformUtil";
-import { loadErrorPolicies, shouldRetry } from "../utils/errorUtil";
+import { getData } from "@utils/dataUtil";
+import { createPlatformInstance } from "@utils/platformUtil";
+import { loadErrorPolicies, shouldRetry } from "@utils/errorUtil";
 import { saveLastUpdateToDatabase } from "./lastUpdateService";
 import { deleteAndSaveData } from "./mongodbService";
 import { mapMarkets, MappedMarket } from "./mapping";

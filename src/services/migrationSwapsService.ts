@@ -1,5 +1,5 @@
 // src/services/migrationSwapsService.ts
-import { getData } from "../utils/dataUtil";
+import { getData } from "@utils/dataUtil";
 import { MappedTrade, MappedStrategy } from "./mapping";
 import { updateStrategyById, fetchDatabaseStrategies } from "./strategyService";
 import { updateTradeById, fetchDatabaseTrades } from "./tradesService";

@@ -1,6 +1,6 @@
 // src/services/metrics/utils.ts
 
-import { MappedBalance } from "../mapping";
+import { MappedBalance } from "@services/mapping";
 
 const THRESHOLD = 0.01; // 1% threshold
 

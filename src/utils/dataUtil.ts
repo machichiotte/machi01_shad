@@ -1,7 +1,7 @@
 // src/utils/dataUtil.ts
 import { promises as fs } from 'fs';
 import { getMockDataPath } from './fileUtil';
-import { getAllDataMDB } from '../services/mongodbService';
+import { getAllDataMDB } from '@services/mongodbService';
 
 /**
  * Retrieves data from the specified collection.

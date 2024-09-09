@@ -1,10 +1,10 @@
 // src/services/tickersService.ts
-import { getData } from "../utils/dataUtil";
+import { getData } from "@utils/dataUtil";
 import {
   createPlatformInstance,
   getPlatforms,
-} from "../utils/platformUtil";
-import { loadErrorPolicies, shouldRetry } from "../utils/errorUtil";
+} from "@utils/platformUtil";
+import { loadErrorPolicies, shouldRetry } from "@utils/errorUtil";
 import { saveLastUpdateToDatabase } from "./lastUpdateService";
 import { deleteAndSaveObject } from "./mongodbService";
 import { saveDataToDatabase } from "./databaseService";

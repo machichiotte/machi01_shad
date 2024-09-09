@@ -1,7 +1,7 @@
 // src/services/mapping.ts
 
 import { Trade, Balances, Market, Order, Tickers, Dictionary } from 'ccxt'; // Importation des types nécessaires de ccxt
-import { isStableCoin, getStableCoins, isMajorCryptoPair, getTotalUSDT } from '../utils/mappingUtil';
+import { isStableCoin, getStableCoins, isMajorCryptoPair, getTotalUSDT } from '@utils/mappingUtil';
 
 // Interface pour le mapping des balances
 export interface MappedBalance {

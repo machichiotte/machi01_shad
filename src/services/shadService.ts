@@ -1,5 +1,5 @@
 // src/services/shadService.ts
-import { getData } from "../utils/dataUtil";
+import { getData } from "@utils/dataUtil";
 
 interface ShadData {
   // Define the structure of SHAD data here

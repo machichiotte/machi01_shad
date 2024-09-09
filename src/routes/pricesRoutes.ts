@@ -1,6 +1,6 @@
 // src/routes/pricesRoutes.ts
 import express from 'express';
-import { getPriceBtc, getPriceEth } from '../controllers/pricesController';
+import { getPriceBtc, getPriceEth } from '@controllers/pricesController';
 
 const router = express.Router();
 

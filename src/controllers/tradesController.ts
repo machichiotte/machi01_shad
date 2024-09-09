@@ -1,7 +1,7 @@
 // src/controllers/tradesController.ts
 import { Request, Response } from 'express';
-import * as tradesService from '../services/tradesService';
-import { handleErrorResponse } from "../utils/errorUtil";
+import * as tradesService from '@services/tradesService';
+import { handleErrorResponse } from "@utils/errorUtil";
 
 /**
  * Récupère tous les trades de la base de données.

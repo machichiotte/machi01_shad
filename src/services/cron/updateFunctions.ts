@@ -4,12 +4,12 @@
  * This module contains functions for updating markets, tickers, and balances for a given platform.
  * It uses various services to fetch, compare, and save data to the database.
  */
-import { deleteAndSaveObject } from "../mongodbService";
+import { deleteAndSaveObject } from "@services/mongodbService";
 
-import { fetchCurrentMarkets, saveDatabaseMarkets } from '../marketsService';
-import { processBalanceChanges, compareBalances, calculateAllMetrics } from "../processorService";
-import { fetchCurrentTickers, saveDatabaseTickers } from '../tickersService';
-import { fetchCurrentBalancesByPlatform, fetchDatabaseBalancesByPlatform, saveDatabaseBalance } from '../balanceService';
+import { fetchCurrentMarkets, saveDatabaseMarkets } from '@services/marketsService';
+import { processBalanceChanges, compareBalances, calculateAllMetrics } from '@services/processorService';
+import { fetchCurrentTickers, saveDatabaseTickers } from '@services/tickersService';
+import { fetchCurrentBalancesByPlatform, fetchDatabaseBalancesByPlatform, saveDatabaseBalance } from '@services/balanceService';
 
 /**
  * Updates the markets for a specified platform.

@@ -1,9 +1,9 @@
 // src/controllers/cmcController.ts
 import { Request, Response } from 'express';
-import { handleErrorResponse } from '../utils/errorUtil';
-import { errorLogger } from '../utils/loggerUtil';
-import { validateEnvVariables } from '../utils/controllerUtil';
-import * as cmcService from '../services/cmcService';
+import { handleErrorResponse } from '@utils/errorUtil';
+import { errorLogger } from '@utils/loggerUtil';
+import { validateEnvVariables } from '@utils/controllerUtil';
+import * as cmcService from '@services/cmcService';
 
 validateEnvVariables(["MONGODB_COLLECTION_CMC", "TYPE_CMC"]);
 

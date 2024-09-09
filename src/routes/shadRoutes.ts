@@ -1,6 +1,6 @@
 // src/routes/shadRoutes.ts
 import express from 'express';
-import { getShad } from '../controllers/shadController';
+import { getShad } from '@controllers/shadController';
 
 const router = express.Router();
 

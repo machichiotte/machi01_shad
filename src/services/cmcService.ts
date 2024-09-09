@@ -1,5 +1,5 @@
 // src/services/cmcService.ts
-import { getData } from "../utils/dataUtil";
+import { getData } from "@utils/dataUtil";
 import { saveLastUpdateToDatabase } from "./lastUpdateService";
 import { deleteAllDataMDB, saveData } from "./mongodbService";
 

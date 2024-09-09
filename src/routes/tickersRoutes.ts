@@ -1,6 +1,6 @@
 // src/routes/tickersRoutes.ts
 import express from 'express';
-import { getAllTickers, updateAllTickers } from '../controllers/tickersController';
+import { getAllTickers, updateAllTickers } from '@controllers/tickersController';
 
 const router = express.Router();
 

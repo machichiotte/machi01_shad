@@ -1,7 +1,7 @@
 // src/services/cron/sendMail.ts
 import nodemailer, { Transporter, SentMessageInfo } from "nodemailer";
 import config from "../config";
-import { errorLogger } from "../../utils/loggerUtil";
+import { errorLogger } from "@utils/loggerUtil";
 
 const transporter: Transporter = nodemailer.createTransport(config.smtp);
 

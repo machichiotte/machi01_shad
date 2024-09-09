@@ -1,6 +1,6 @@
 // src/services/tradeService.ts
-import { createPlatformInstance } from "../utils/platformUtil";
-import { getData } from "../utils/dataUtil";
+import { createPlatformInstance } from "@utils/platformUtil";
+import { getData } from "@utils/dataUtil";
 import { updateDataMDB, deleteAndSaveData, saveData } from "./mongodbService";
 import { saveLastUpdateToDatabase } from "./lastUpdateService";
 import { mapTrades, MappedTrade } from "./mapping";

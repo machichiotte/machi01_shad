@@ -17,7 +17,7 @@ import {
   getPercentageToNextTp,
 } from "./utils";
 import { getTotalAmountAndBuy, getTotalSell } from "./trades";
-import { MappedBalance, MappedOrder, MappedTrade, MappedTicker } from "../mapping";
+import { MappedBalance, MappedOrder, MappedTrade, MappedTicker } from "@services/mapping";
 
 // Define stable coins
 const stableCoins: string[] = ["USDT", "USDC", "DAI", "BUSD", "TUSD"];

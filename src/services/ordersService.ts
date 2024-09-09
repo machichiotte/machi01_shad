@@ -1,5 +1,5 @@
-import { createPlatformInstance, getSymbolForPlatform } from "../utils/platformUtil";
-import { getData } from "../utils/dataUtil";
+import { createPlatformInstance, getSymbolForPlatform } from "@utils/platformUtil";
+import { getData } from "@utils/dataUtil";
 import { saveDataToDatabase } from "./databaseService";
 import { mapOrders, MappedOrder } from "./mapping";
 import { Order, Exchange } from "ccxt";

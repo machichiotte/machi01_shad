@@ -1,7 +1,7 @@
 // src/controllers/tickersController.ts
 import { Request, Response } from 'express';
-import { handleErrorResponse } from "../utils/errorUtil";
-import * as tickersService from '../services/tickersService';
+import { handleErrorResponse } from "@utils/errorUtil";
+import * as tickersService from '@services/tickersService';
 
 /**
  * Récupère tous les tickers de la base de données.

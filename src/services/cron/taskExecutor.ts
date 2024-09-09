@@ -7,8 +7,8 @@
 
 import { sendMail } from "./sendMail";
 import config from "../config";
-import { errorLogger } from "../../utils/loggerUtil";
-import { getPlatforms } from "../../utils/platformUtil";
+import { errorLogger } from "@utils/loggerUtil";
+import { getPlatforms } from "@utils/platformUtil";
 
 import {
   updateMarketsForPlatform,

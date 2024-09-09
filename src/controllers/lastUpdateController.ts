@@ -1,10 +1,10 @@
 // src/controllers/lastUpdateController.ts
-import { validateEnvVariables } from "../utils/controllerUtil";
-import { fetchDatabaseLastUpdate, saveLastUpdateToDatabase } from "../services/lastUpdateService";
-import { getDataMDB } from "../services/mongodbService";
+import { validateEnvVariables } from "@utils/controllerUtil";
+import { fetchDatabaseLastUpdate, saveLastUpdateToDatabase } from "@services/lastUpdateService";
+import { getDataMDB } from "@services/mongodbService";
 import { Request, Response } from "express";
 
-import { handleErrorResponse } from "../utils/errorUtil";
+import { handleErrorResponse } from "@utils/errorUtil";
 
 
 validateEnvVariables(["MONGODB_COLLECTION_LAST_UPDATE"]);

@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
-import * as ordersService from '../services/ordersService';
-import { handleErrorResponse } from "../utils/errorUtil";
-import { validateEnvVariables } from "../utils/controllerUtil";
+import * as ordersService from '@services/ordersService';
+import { handleErrorResponse } from "@utils/errorUtil";
+import { validateEnvVariables } from "@utils/controllerUtil";
 
-import { Order } from 'ccxt';
-import { MappedOrder } from '../services/mapping';
+import { MappedOrder } from '@services/mapping';
 
 validateEnvVariables([
   "MONGODB_COLLECTION_ACTIVE_ORDERS",

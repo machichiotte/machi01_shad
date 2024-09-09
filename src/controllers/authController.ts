@@ -1,6 +1,6 @@
 // src/controllers/authController.ts
 import { Request, Response } from 'express';
-import * as authService from '../services/authService';
+import * as authService from '@services/authService';
 
 /**
  * Registers a new user.
