@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { getBalances, updateCurrentBalance } from '@controllers/balanceController';
 import * as balanceService from '@services/balanceService';
-import { handleErrorResponse } from "@utils/errorUtil";
+import { handleErrorResponse } from "../../../src/utils/errorUtil";
 
 jest.mock('@services/balanceService');
-jest.mock('@utils/errorUtil');
+jest.mock('../../../src/utils/errorUtil');
 
 describe('Balance Controller', () => {
   let mockRequest: Partial<Request>;

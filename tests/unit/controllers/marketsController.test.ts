@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { getMarkets } from '@controllers/marketsController';
 import { getSavedMarkets } from '@services/marketsService';
-import { handleErrorResponse } from '@utils/errorUtil';
-import { errorLogger } from '@utils/loggerUtil';
+import { handleErrorResponse } from '../../../src/utils/errorUtil';
+import { errorLogger } from '../../../src/utils/loggerUtil';
 
 jest.mock('@services/marketsService');
-jest.mock('@utils/errorUtil');
-jest.mock('@utils/loggerUtil');
+jest.mock('../../../src/utils/errorUtil');
+jest.mock('../../../src/utils/loggerUtil');
 
 describe('getMarkets', () => {
   let mockRequest: Partial<Request>;

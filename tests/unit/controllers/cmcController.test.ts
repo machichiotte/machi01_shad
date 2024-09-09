@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { getCmc, updateCmc } from '@controllers/cmcController';
 import * as cmcService from '@services/cmcService';
-import { handleErrorResponse } from "@utils/errorUtil";
-import { errorLogger } from '@utils/loggerUtil';
+import { handleErrorResponse } from "../../../src/utils/errorUtil";
+import { errorLogger } from '../../../src/utils/loggerUtil';
 
 jest.mock('@services/cmcService');
 jest.mock('@utils/errorUtil');
