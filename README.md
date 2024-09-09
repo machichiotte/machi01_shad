@@ -1,20 +1,60 @@
 # Machi GPT Shad Server
 
-Ce projet est le backend de l'application Machi GPT Shad. Il sert de logique côté serveur pour gérer les ordres de trading et les données de marché.
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+
+Backend pour l'application Machi GPT Shad, gérant les ordres de trading et les données de marché.
+
+## Table des matières
+
+- [Description](#description)
+- [Fonctionnalités principales](#fonctionnalités-principales)
+- [Démarrage rapide](#démarrage-rapide)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Utilisation](#utilisation)
+- [Architecture](#architecture)
+- [API](#api)
+- [Sécurité](#sécurité)
+- [Tests](#tests)
+- [Déploiement](#déploiement)
+- [FAQ](#faq)
+- [Contribution](#contribution)
+- [Licence](#licence)
+- [Contact](#contact)
 
 ## Description
 
-Le backend est construit avec Node.js et Express.js, ainsi que d'autres bibliothèques nécessaires pour gérer les requêtes HTTP, se connecter à MongoDB et récupérer des données de sources externes.
+Le backend Machi GPT Shad Server est construit avec Node.js et Express.js. Il gère les ordres de trading en temps réel, récupère et met à jour les données de marché, et s'intègre à plusieurs plateformes d'échange de cryptomonnaies.
 
 ## Fonctionnalités principales
 
-- Gestion des ordres de trading en temps réel
-- Récupération et mise à jour des données de marché
-- Intégration avec plusieurs plateformes d'échange de cryptomonnaies
-- Système d'authentification sécurisé
-- Gestion des stratégies de trading
-- Conversion de fichiers CSV pour l'importation de données
-- Planification de tâches automatisées
+🚀 Gestion des ordres de trading en temps réel
+📊 Récupération et mise à jour des données de marché
+🔗 Intégration avec plusieurs plateformes d'échange
+🔒 Système d'authentification sécurisé
+📈 Gestion des stratégies de trading
+🔄 Conversion de fichiers CSV pour l'importation de données
+⏱️ Planification de tâches automatisées
+
+## Démarrage rapide
+
+1. Clonez le dépôt
+2. Installez les dépendances : `npm install`
+3. Configurez les variables d'environnement dans `.env`
+4. Lancez le serveur : `npm run dev`
+
+Le serveur sera accessible à `http://localhost:10000`.
+
+## Prérequis
+
+Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments suivants installés sur votre système :
+
+- Node.js (version 14 ou supérieure recommandée)
+- npm ou yarn
+- MongoDB (installé localement ou accès à une instance distante)
+- Git
 
 ## Installation
 
@@ -30,14 +70,6 @@ ou si vous utilisez yarn :
 ```bash
 yarn install
 ```
-## Prérequis
-
-Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments suivants installés sur votre système :
-
-- Node.js (version 14 ou supérieure recommandée)
-- npm ou yarn
-- MongoDB (installé localement ou accès à une instance distante)
-- Git
 
 ## Configuration
 
@@ -66,13 +98,15 @@ Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant pr
 
 ## Architecture
 
-Le backend est structuré selon une architecture MVC (Modèle-Vue-Contrôleur) :
+Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 
-- Modèles : Représentent les données et la logique métier
-- Contrôleurs : Gèrent les requêtes HTTP et coordonnent les actions
-- Services : Contiennent la logique métier complexe
-- Routes : Définissent les points d'entrée de l'API
-- Middleware : Gèrent les aspects transversaux comme l'authentification et la gestion des erreurs
+src/
+├── models/ # Modèles de données
+├── controllers/ # Contrôleurs pour gérer les requêtes
+├── services/ # Services pour la logique métier
+├── routes/ # Définition des routes API
+├── middleware/ # Middleware pour l'authentification, etc.
+└── utils/ # Utilitaires et helpers
 
 ## Sécurité
 
@@ -173,9 +207,7 @@ Pour un déploiement sur Heroku, par exemple :
 
 ## Surveillance et journalisation
 
-Le backend utilise Winston pour la journalisation. Les logs sont configurés pour être envoyés à la console et potentiellement à un service de gestion des logs externe.
-
-Pour surveiller les performances et les erreurs en production, envisagez d'intégrer des outils tels que New Relic, Sentry ou ELK Stack.
+Nous utilisons Winston pour la journalisation. Configurez des alertes dans votre outil de surveillance préféré pour être informé des erreurs critiques.
 
 ## Roadmap
 
