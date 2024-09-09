@@ -19,7 +19,6 @@ Backend pour l'application Machi GPT Shad, gérant les ordres de trading et les 
 - [Sécurité](#sécurité)
 - [Tests](#tests)
 - [Déploiement](#déploiement)
-- [FAQ](#faq)
 - [Contribution](#contribution)
 - [Licence](#licence)
 - [Contact](#contact)
