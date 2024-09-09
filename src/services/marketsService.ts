@@ -4,12 +4,8 @@ import { createPlatformInstance } from "../utils/platformUtil";
 import { loadErrorPolicies, shouldRetry } from "../utils/errorUtil";
 import { saveLastUpdateToDatabase } from "./lastUpdateService";
 import { deleteAndSaveData } from "./mongodbService";
-import { mapMarkets } from "./mapping";
+import { mapMarkets, MappedMarket } from "./mapping";
 import { saveDataToDatabase } from "./databaseService";
-
-interface MarketData {
-  [key: string]: any;
-}
 
 /**
  * Fetches the current markets from the specified platform.
@@ -17,7 +13,7 @@ interface MarketData {
  * @param {number} [retries=3] - Number of retry attempts.
  * @returns {Promise<MarketData[]>} - The fetched market data.
  */
-async function fetchCurrentMarkets(platform: string, retries: number = 3): Promise<MarketData[]> {
+async function fetchCurrentMarkets(platform: string, retries: number = 3): Promise<MappedMarket[]> {
   const errorPolicies = await loadErrorPolicies(); // Load error policies
 
   try {
@@ -55,7 +51,7 @@ async function fetchCurrentMarkets(platform: string, retries: number = 3): Promi
  * @param {MarketData[]} mappedData - The market data to be saved.
  * @param {string} platform - Identifier of the platform.
  */
-async function saveDatabaseMarkets(mappedData: MarketData[], platform: string): Promise<void> {
+async function saveDatabaseMarkets(mappedData: MappedMarket[], platform: string): Promise<void> {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   const updateType = process.env.TYPE_LOAD_MARKETS;
 
@@ -70,7 +66,7 @@ async function saveDatabaseMarkets(mappedData: MarketData[], platform: string): 
  * Retrieves the latest market data from the database.
  * @returns {Promise<MarketData[]>} - The last recorded markets.
  */
-async function getSavedMarkets(): Promise<MarketData[]> {
+async function getSavedMarkets(): Promise<MappedMarket[]> {
   const collectionName = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   if (!collectionName) {
     throw new Error("Missing environment variable for collection name");
@@ -91,33 +87,12 @@ async function getSavedMarkets(): Promise<MarketData[]> {
 }
 
 /**
- * Fetches the latest market data from a platform.
- * @param {string} platform - Identifier of the platform.
- * @returns {Promise<MarketData>} - The fetched market data.
- */
-async function fetchMarketData(platform: string): Promise<MarketData> {
-  try {
-    const platformInstance = createPlatformInstance(platform);
-    const data = await platformInstance.loadMarkets();
-    console.log(`Fetched market data from ${platform}.`, {
-      count: Object.keys(data).length,
-    });
-    return data;
-  } catch (error) {
-    console.error(`Failed to fetch market data from ${platform}.`, {
-      error: error instanceof Error ? error.message : String(error),
-    });
-    throw error;
-  }
-}
-
-/**
  * Updates the market data in the database for a specific platform.
  * @param {MarketData} data - The market data to be updated.
  * @param {string} platform - Identifier of the platform.
  * @returns {Promise<MarketData[]>} - The mapped and updated market data.
  */
-async function updateMarketDataInDatabase(data: MarketData[], platform: string): Promise<MarketData[]> {
+async function updateMarketDataInDatabase(platform: string, data: MappedMarket[]): Promise<MappedMarket[]> {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   if (!collection) {
     throw new Error("Missing environment variable for collection");
@@ -137,6 +112,5 @@ export {
   fetchCurrentMarkets,
   saveDatabaseMarkets,
   getSavedMarkets,
-  fetchMarketData,
   updateMarketDataInDatabase,
 };

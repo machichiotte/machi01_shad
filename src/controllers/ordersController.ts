@@ -104,7 +104,7 @@ async function createMarketOrder(req: Request, res: Response, orderType: "buy" |
 async function createLimitOrder(req: Request, res: Response, orderType: "buy" | "sell"): Promise<Response> {
   const { platform, price, amount, asset } = req.body;
   try {
-    const result = await ordersService.createLimitOrder(platform, asset, amount, price, orderType);
+    const result = await ordersService.createLimitOrder(platform, asset, amount, orderType, price);
     return res.status(200).json({ message: result, status: 200 });
   } catch (error: any) {
     console.log(`🚀 ~ file: ordersController.ts:63 ~ createLimitOrder ~ error:`, error);

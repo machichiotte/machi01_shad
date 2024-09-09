@@ -110,24 +110,7 @@ async function deleteOrder(platform: string, oId: string, symbol: string): Promi
  * @throws {Error} If order creation fails.
  */
 async function createMarketOrder(platform: string, asset: string, amount: number, orderType: 'buy' | 'sell'): Promise<any> {
-  try {
-    const platformInstance = createPlatformInstance(platform);
-    const symbol = getSymbolForPlatform(platform, asset);
-    let result;
-    if (orderType === "buy") {
-      result = await platformInstance.createMarketBuyOrder(symbol, amount);
-    } else if (orderType === "sell") {
-      result = await platformInstance.createMarketSellOrder(symbol, amount);
-    }
-    console.log(`Created ${orderType} market order for ${platform}.`, {
-      symbol,
-      amount,
-    });
-    return result;
-  } catch (error) {
-    console.error(`Failed to create market order for ${platform}:`, error);
-    throw error;
-  }
+  createOrder(platform, asset, amount, orderType, 'market');
 }
 
 /**
@@ -140,35 +123,64 @@ async function createMarketOrder(platform: string, asset: string, amount: number
  * @returns {Promise<any>} A promise that resolves to the created order.
  * @throws {Error} If order creation fails.
  */
-async function createLimitOrder(platform: string, asset: string, amount: number, price: number, orderType: 'buy' | 'sell'): Promise<any> {
+async function createLimitOrder(platform: string, asset: string, amount: number, orderType: 'buy' | 'sell', price: number): Promise<any> {
+  createOrder(platform, asset, amount, orderType, 'limit', price);
+}
+
+/**
+ * Creates an order for a given platform.
+ * @param {string} platform - The platform to create the order on.
+ * @param {string} asset - The asset to trade.
+ * @param {number} amount - The amount to trade.
+ * @param {string} orderType - The type of order ('buy' or 'sell').
+ * @param {string} orderMode - The mode of order ('market' or 'limit').
+ * @param {number} [price] - The price for limit orders.
+ * @returns {Promise<any>} A promise that resolves to the created order.
+ * @throws {Error} If order creation fails.
+ */
+async function createOrder(
+  platform: string,
+  asset: string,
+  amount: number,
+  orderType: 'buy' | 'sell',
+  orderMode: 'market' | 'limit',
+  price?: number
+): Promise<any> {
   try {
     const platformInstance = createPlatformInstance(platform);
     const symbol = getSymbolForPlatform(platform, asset);
+
     let result;
-    if (orderType === "buy") {
-      result = await platformInstance.createLimitBuyOrder(
-        symbol,
-        amount,
-        price
-      );
-    } else if (orderType === "sell") {
-      result = await platformInstance.createLimitSellOrder(
-        symbol,
-        amount,
-        price
-      );
+    // Determine the type of order and mode
+    if (orderMode === 'market') {
+      result = orderType === 'buy'
+        ? await platformInstance.createMarketBuyOrder(symbol, amount)
+        : await platformInstance.createMarketSellOrder(symbol, amount);
+    } else if (orderMode === 'limit') {
+      if (price === undefined) {
+        throw new Error('Price must be specified for limit orders.');
+      }
+      result = orderType === 'buy'
+        ? await platformInstance.createLimitBuyOrder(symbol, amount, price)
+        : await platformInstance.createLimitSellOrder(symbol, amount, price);
     }
-    console.log(`Created ${orderType} limit order for ${platform}.`, {
+
+    //todo ici recuperer le result pour trouver le price par exemple si cest en market
+
+
+    console.log(`Created ${orderType} ${orderMode} order for ${platform}.`, {
       symbol,
-      price,
       amount,
+      price: result?.price,
     });
+
     return result;
   } catch (error) {
-    console.error(`Failed to create limit order for ${platform}:`, error);
+    console.error(`Failed to create ${orderType} ${orderMode} order for ${platform}:`, error);
     throw error;
   }
 }
+
 
 /**
  * Cancels all orders for a given platform and asset.

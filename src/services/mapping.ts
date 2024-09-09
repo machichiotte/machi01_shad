@@ -1,6 +1,6 @@
 // src/services/mapping.ts
 
-import { Trade, Balances, Market, Order, Tickers } from 'ccxt'; // Importation des types nécessaires de ccxt
+import { Trade, Balances, Market, Order, Tickers, Dictionary } from 'ccxt'; // Importation des types nécessaires de ccxt
 import { isStableCoin, getStableCoins, isMajorCryptoPair, getTotalUSDT } from '../utils/mappingUtil';
 
 // Interface pour le mapping des balances
@@ -131,23 +131,23 @@ function mapBalance(platform: string, data: Balances): MappedBalance[] {
 
   const balanceData = Array.isArray(
     data.info?.balances || data.info?.data || data
-  ) 
+  )
     ? (data.info?.balances || data.info?.data || data)
     : Object.entries(data).filter(
-        ([key, value]) =>
-          !["info", "free", "used", "total"].includes(key) && (value as any).total > 0
-      );
+      ([key, value]) =>
+        !["info", "free", "used", "total"].includes(key) && (value as any).total > 0
+    );
 
   return balanceData
     .filter((item: any) => {
       const balance = parseFloat(
         item.balance ||
-          item.free ||
-          item.cashBal ||
-          item.available ||
-          item.locked ||
-          item[1]?.total ||
-          "0"
+        item.free ||
+        item.cashBal ||
+        item.available ||
+        item.locked ||
+        item[1]?.total ||
+        "0"
       );
       return balance > 0;
     })
@@ -178,7 +178,7 @@ function mapTradeCommon(item: Trade, platform: string, conversionRates: Record<s
     pair: item.symbol?.toUpperCase() || "",
     timestamp: item.timestamp || -1,
     type: item.side || "",
-    price: parseFloat(item.price?.toString() || "0" ),
+    price: parseFloat(item.price?.toString() || "0"),
     amount: parseFloat(item.amount?.toString() || "0"),
     total: parseFloat(item.cost?.toString() || "0"),
     fee: feeCost,
@@ -197,17 +197,17 @@ function mapTradeCommon(item: Trade, platform: string, conversionRates: Record<s
  */
 function mapTrades(platform: string, data: Trade[], conversionRates: Record<string, number> = {}): Omit<MappedTrade, '_id'>[] {
   return data.map((item) => {
-      const commonData = mapTradeCommon(item, platform, conversionRates);
-      if (
-        platform === "okx" &&
-        item.info?.data?.[0]?.details
-      ) {
-        return item.info.data[0].details.map((item: Trade) =>
-          mapTradeCommon(item, "okx", conversionRates)
-        );
-      }
-      return commonData;
-    })
+    const commonData = mapTradeCommon(item, platform, conversionRates);
+    if (
+      platform === "okx" &&
+      item.info?.data?.[0]?.details
+    ) {
+      return item.info.data[0].details.map((item: Trade) =>
+        mapTradeCommon(item, "okx", conversionRates)
+      );
+    }
+    return commonData;
+  })
     .flat();
 }
 
@@ -264,7 +264,7 @@ function mapMarkets(platform: string, data: Market[]): MappedMarket[] {
       amountMax: item?.limits.amount?.max || 0,
       priceMin: item?.limits.price?.min || 0,
       priceMax: item?.limits.price?.max || 0,
-      precisionAmount: item?.precision?.amount ?? 0 ,
+      precisionAmount: item?.precision?.amount ?? 0,
       precisionPrice: item?.precision?.price ?? 0,
       platform,
     }));

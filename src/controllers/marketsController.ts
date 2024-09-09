@@ -23,27 +23,6 @@ async function getMarkets(req: Request, res: Response): Promise<void> {
   }
 }
 
-/**
- * Met à jour les données de marché pour une plateforme spécifique.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
- */
-async function updateMarkets(req: Request, res: Response): Promise<void> {
-  const { platform } = req.params;
-  try {
-    const marketData = await marketsService.fetchMarketData(platform);
-    const updatedData = await marketsService.updateMarketDataInDatabase(marketData, platform);
-    res.status(200).json(updatedData);
-  } catch (error:any) {
-    console.log(
-      `🚀 ~ file: marketsController.ts:175 ~ updateMarkets ~ error:`,
-      error
-    );
-    handleErrorResponse(res, error, "updateMarkets");
-  }
-}
-
 export {
   getMarkets,
-  updateMarkets,
 };

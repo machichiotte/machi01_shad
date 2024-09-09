@@ -297,8 +297,7 @@ async function convertModelOkx(data: Array<any>): Promise<Array<any>> {
 
       processedOrders.set(orderId, previousObject);
     } else {
-      const value = await getTotalUSDTFromAPI(date, balanceUnit, amount);
-      const totalUSDT = parseFloat(value);
+      const totalUSDT = await getTotalUSDTFromAPI(date, balanceUnit, amount);
 
       processedOrders.set(orderId, {
         base,
