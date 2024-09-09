@@ -19,10 +19,14 @@ async function fetchDatabaseTrades(): Promise<MappedTrade[]> {
 /**
  * Updates a trade by its ID.
  * @param {string} tradeId - The ID of the trade to update.
- * @param {Partial<Trade>} updatedTrade - The updated trade data.
+ * @param {Partial<MappedTrade>} updatedTrade - The updated trade data.
  * @returns {Promise<any>} A promise that resolves to the update result.
  */
-async function updateTradeById(tradeId: string, updatedTrade: Partial<Trade>): Promise<any> {
+async function updateTradeById(tradeId: string | undefined, updatedTrade: Partial<MappedTrade>): Promise<any> {
+  if (!tradeId) {
+    throw new Error("Trade ID is required");
+  }
+
   try {
     return await updateDataMDB(
       "collection_trades",
@@ -37,10 +41,10 @@ async function updateTradeById(tradeId: string, updatedTrade: Partial<Trade>): P
 
 /**
  * Adds trades manually to the database.
- * @param {Trade | Trade[]} tradesData - The trade(s) data to add.
+ * @param {MappedTrade | MappedTrade[]} MappedTrade - The trade(s) data to add.
  * @returns {Promise<{message: any, data: any, status: number}>} A promise that resolves to the result of the operation.
  */
-async function addTradesManually(tradesData: Trade | Trade[]): Promise<{ message: any, data: any, status: number }> {
+async function addTradesManually(tradesData: MappedTrade | MappedTrade[]): Promise<{ message: any, data: any, status: number }> {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES;
   try {
     const savedTrade = await saveData(tradesData, collectionName as string);

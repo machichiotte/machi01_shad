@@ -117,21 +117,20 @@ async function fetchMarketData(platform: string): Promise<MarketData> {
  * @param {string} platform - Identifier of the platform.
  * @returns {Promise<MarketData[]>} - The mapped and updated market data.
  */
-async function updateMarketDataInDatabase(data: MarketData, platform: string): Promise<MarketData[]> {
+async function updateMarketDataInDatabase(data: MarketData[], platform: string): Promise<MarketData[]> {
   const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS;
   if (!collection) {
     throw new Error("Missing environment variable for collection");
   }
-  const mappedData = mapMarkets(platform, data);
-  await deleteAndSaveData(mappedData, collection, platform);
+  await deleteAndSaveData(data, collection, platform);
   await saveLastUpdateToDatabase(
     process.env.TYPE_LOAD_MARKETS || "",
     platform
   );
   console.log(`Updated market data in database for ${platform}.`, {
-    count: mappedData.length,
+    count: data.length,
   });
-  return mappedData;
+  return data;
 }
 
 export {

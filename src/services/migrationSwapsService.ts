@@ -1,5 +1,6 @@
 // src/services/migrationSwapsService.ts
 import { getData } from "../utils/dataUtil";
+import { MappedTrade, MappedStrategy } from "./mapping";
 import { updateStrategyById, fetchDatabaseStrategies } from "./strategyService";
 import { updateTradeById, fetchDatabaseTrades } from "./tradesService";
 
@@ -9,25 +10,6 @@ interface SwapMigration {
   swapRate: string;
   platform: string;
   delistingDate: string;
-}
-
-interface Trade {
-  _id: string;
-  base: string;
-  pair: string;
-  amount: number;
-  total: number;
-  fee: number;
-  feecoin: string;
-  platform: string;
-}
-
-interface Strategy {
-  _id: string;
-  asset: string;
-  strategies: {
-    [key: string]: any;
-  };
 }
 
 /**
@@ -48,7 +30,7 @@ async function fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
  * @param {string} platform - The platform where the trade occurred.
  * @returns {Promise<void>}
  */
-async function updateTrade(trade: Trade, oldAsset: string, newAsset: string, swapMultiplier: number, platform: string): Promise<void> {
+async function updateTrade(trade: MappedTrade, oldAsset: string, newAsset: string, swapMultiplier: number, platform: string): Promise<void> {
   const updatedTrade = {
     base: newAsset,
     pair: trade.pair.replace(oldAsset, newAsset),
@@ -70,7 +52,7 @@ async function updateTrade(trade: Trade, oldAsset: string, newAsset: string, swa
  * @param {string} platform - The platform where the strategy is applied.
  * @returns {Promise<void>}
  */
-async function updateStrategy(strategy: Strategy, newAsset: string, platform: string): Promise<void> {
+async function updateStrategy(strategy: MappedStrategy, newAsset: string, platform: string): Promise<void> {
   const updatedStrategy = { asset: newAsset };
   await updateStrategyById(strategy._id, updatedStrategy);
   console.info(`Strategy swap completed for ${strategy.asset} to ${newAsset} on platform ${platform}.`);

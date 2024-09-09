@@ -1,10 +1,11 @@
 // src/services/mapping.ts
 
-import { Trade, Balances, Ticker, Market, Order, Tickers } from 'ccxt'; // Importation des types nécessaires de ccxt
+import { Trade, Balances, Market, Order, Tickers } from 'ccxt'; // Importation des types nécessaires de ccxt
 import { isStableCoin, getStableCoins, isMajorCryptoPair, getTotalUSDT } from '../utils/mappingUtil';
 
 // Interface pour le mapping des balances
 export interface MappedBalance {
+  _id?: string;
   base: string;
   balance: number;
   available: number;
@@ -30,6 +31,7 @@ export interface MappedTrade {
 
 // Interface pour le mapping des ordres
 export interface MappedOrder {
+  _id?: string;
   oId: string;
   cId: string | undefined;
   platform: string;
@@ -42,6 +44,7 @@ export interface MappedOrder {
 
 // Interface pour le mapping des tickers
 export interface MappedTicker {
+  _id?: string;
   symbol: string;
   timestamp: number | undefined;
   last: number | undefined;
@@ -50,6 +53,7 @@ export interface MappedTicker {
 
 // Interface pour le mapping des marchés
 export interface MappedMarket {
+  _id?: string;
   symbol: string;
   base: string;
   quote: string;
@@ -62,6 +66,14 @@ export interface MappedMarket {
   precisionAmount?: number;
   precisionPrice?: number;
   platform: string;
+}
+
+export interface MappedStrategy {
+  _id?: string;
+  asset: string;
+  strategies: {
+    [key: string]: any;
+  };
 }
 
 /**
@@ -239,21 +251,21 @@ function mapTickers(platform: string, data: Tickers): MappedTicker[] {
  * @param {string} platform - The exchange platform.
  * @returns {Record<string, any>[]} An array of objects containing the mapped markets.
  */
-function mapMarkets(platform: string, data: Market[]): Record<string, any>[] {
+function mapMarkets(platform: string, data: Market[]): MappedMarket[] {
   return Object.values(data)
     .filter((item): item is Market => getStableCoins().some((coin) => item?.quote === coin))
     .map((item) => ({
-      symbol: item?.id,
-      base: item?.base,
-      quote: item?.quote,
-      active: item?.active,
-      type: item?.type,
+      symbol: item?.id ?? '',
+      base: item?.base ?? '',
+      quote: item?.quote ?? '',
+      active: item?.active ?? false,
+      type: item?.type ?? '',
       amountMin: item?.limits.amount?.min || 0,
       amountMax: item?.limits.amount?.max || 0,
       priceMin: item?.limits.price?.min || 0,
       priceMax: item?.limits.price?.max || 0,
-      precisionAmount: item?.precision?.amount,
-      precisionPrice: item?.precision?.price,
+      precisionAmount: item?.precision?.amount ?? 0 ,
+      precisionPrice: item?.precision?.price ?? 0,
       platform,
     }));
 }

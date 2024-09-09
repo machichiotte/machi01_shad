@@ -2,17 +2,15 @@
 import { getData } from "../utils/dataUtil";
 import { saveLastUpdateToDatabase } from "./lastUpdateService";
 import { updateDataMDB, deleteAllDataMDB, saveData } from "./mongodbService";
+import { MappedStrategy } from "./mapping";
 
-interface Strategy {
-  _id: string;
-  [key: string]: any;
-}
+
 
 /**
  * Fetches strategies from the database.
  * @returns {Promise<Strategy[]>} A promise that resolves to an array of strategies.
  */
-async function fetchDatabaseStrategies(): Promise<Strategy[]> {
+async function fetchDatabaseStrategies(): Promise<MappedStrategy[]> {
   const collectionName = process.env.MONGODB_COLLECTION_STRAT;
   return await getData(collectionName as string);
 }
@@ -24,7 +22,10 @@ async function fetchDatabaseStrategies(): Promise<Strategy[]> {
  * @returns {Promise<any>} A promise that resolves to the update result.
  * @throws {Error} If the update fails.
  */
-async function updateStrategyById(strategyId: string, updatedStrategy: Partial<Strategy>): Promise<any> {
+async function updateStrategyById(strategyId: string | undefined, updatedStrategy: Partial<MappedStrategy>): Promise<any> {
+  if (!strategyId) {
+    throw new Error("Strategy ID is required");
+  }
   try {
     return await updateDataMDB("collection_strategy", { _id: strategyId }, { $set: updatedStrategy });
   } catch (error) {
@@ -38,7 +39,7 @@ async function updateStrategyById(strategyId: string, updatedStrategy: Partial<S
  * @param {Strategy[]} strategies - The array of strategies to update.
  * @returns {Promise<any>} A promise that resolves to the save result.
  */
-async function updateStrategies(strategies: Strategy[]): Promise<any> {
+async function updateStrategies(strategies: MappedStrategy[]): Promise<any> {
   const collection = process.env.MONGODB_COLLECTION_STRAT;
   await deleteAllDataMDB(collection as string);
   const data = await saveData(strategies, collection as string);

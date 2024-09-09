@@ -89,10 +89,24 @@ function getStatus(openSellOrders: Array<{ amount: number; price: number }>, ...
   return results;
 }
 
+/**
+ * Calcule le pourcentage de progression entre deux valeurs.
+ * @param {number} newValue - La nouvelle valeur.
+ * @param {number} oldValue - L'ancienne valeur.
+ * @returns {number} Le pourcentage de progression ou undefined si invalide.
+ */
+function getPercentageToNextTp(newValue: number | undefined, oldValue: number | undefined): number | undefined {
+  if (newValue === undefined || newValue < 0) return undefined;
+  if (oldValue === undefined || oldValue < 0) return undefined;
+
+  return Number((((oldValue - newValue) / newValue) * 100).toFixed(2));
+}
+
 export {
   getCurrentPossession,
   getPercentageDifference,
   getProfit,
   getBalanceBySymbol,
   getStatus,
+  getPercentageToNextTp
 };
