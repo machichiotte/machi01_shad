@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { handleErrorResponse } from '@utils/errorUtil';
-import { errorLogger } from '@utils/loggerUtil';
-import { validateEnvVariables } from '@utils/controllerUtil';
-import { getSavedMarkets } from '@services/marketsService';
+import { handleErrorResponse } from '../utils/errorUtil';
+import { errorLogger } from '../utils/loggerUtil';
+import { validateEnvVariables } from '../utils/controllerUtil';
+import { getSavedMarkets } from '../services/marketsService';
 
 validateEnvVariables(["MONGODB_COLLECTION_LOAD_MARKETS", "TYPE_LOAD_MARKETS"]);
 

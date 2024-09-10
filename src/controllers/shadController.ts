@@ -1,8 +1,8 @@
 // src/controllers/shadController.ts
 import { Request, Response } from 'express';
-import { handleErrorResponse } from '@utils/errorUtil';
-import { validateEnvVariables } from '@utils/controllerUtil';
-import * as shadService from '@services/shadService';
+import { handleErrorResponse } from '../utils/errorUtil';
+import { validateEnvVariables } from '../utils/controllerUtil';
+import * as shadService from '../services/shadService';
 
 validateEnvVariables(["MONGODB_COLLECTION_CMC", "TYPE_CMC"]);
 

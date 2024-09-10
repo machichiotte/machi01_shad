@@ -4,7 +4,7 @@
   "description": "",
   "main": "mongodb.js",
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "tsc",
     "start": "node dist/index.ts",
     "dev": "ts-node -r tsconfig-paths/register src/index.ts",
     "test": "jest --config jest.config.js"

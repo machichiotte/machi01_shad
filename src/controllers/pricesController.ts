@@ -1,6 +1,6 @@
 // src/controllers/pricesController.ts
 import { Request, Response } from 'express';
-import { getData } from '@utils/dataUtil';
+import { getData } from '../utils/dataUtil';
 
 /**
  * Récupère les données de prix à partir d'une collection MongoDB spécifiée.
