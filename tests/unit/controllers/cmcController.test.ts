@@ -12,6 +12,7 @@ describe('CMC Controller', () => {
   let mockRequest: Partial<Request>;
   let mockResponse: Partial<Response>;
   let responseObject: any;
+  let originalConsoleLog: any;
 
   beforeEach(() => {
     mockRequest = {};
@@ -21,8 +22,18 @@ describe('CMC Controller', () => {
     };
     mockResponse = responseObject;
     process.env.MONGODB_COLLECTION_CMC = 'testCollection';
+
+     // Sauvegarder la fonction console.log originale
+     originalConsoleLog = console.log;
+     // Remplacer console.log par un mock
+     console.log = jest.fn();
   });
 
+  afterEach(() => {
+    // Restaurer la fonction console.log originale après chaque test
+    console.log = originalConsoleLog;
+  });
+  
   describe('getCmc', () => {
     it('devrait récupérer les données CMC avec succès', async () => {
       const mockCmcData = [{ id: 1, name: 'Bitcoin' }];

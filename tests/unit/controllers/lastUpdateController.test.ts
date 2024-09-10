@@ -54,16 +54,28 @@ describe('lastUpdateController', () => {
   describe('updateLastUpdateByType', () => {
     it('devrait mettre à jour la dernière mise à jour et retourner les détails', async () => {
       mockRequest.params = { platform: 'test', type: 'testType' };
-      jest.spyOn(global.Date, 'now').mockImplementation(() => new Date('2023-01-01T00:00:00.000Z').valueOf());
-
+      
+      // Simuler la date actuelle
+      const mockDate = new Date('2023-01-01T00:00:00.000Z');
+      jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
+      
+      (saveLastUpdateToDatabase as jest.Mock).mockResolvedValue({
+        platform: 'test',
+        type: 'testType',
+        timestamp: mockDate.toISOString()
+      });
+  
       await updateLastUpdateByType(mockRequest as Request, mockResponse as Response);
-
+  
       expect(saveLastUpdateToDatabase).toHaveBeenCalledWith('testType', 'test');
       expect(mockJson).toHaveBeenCalledWith({
         platform: 'test',
         type: 'testType',
-        timestamp: '2023-01-01T00:00:00.000Z'
+        timestamp: mockDate.toISOString()
       });
+  
+      // Restaurer l'implémentation originale de Date
+      jest.spyOn(global, 'Date').mockRestore();
     });
   });
 });

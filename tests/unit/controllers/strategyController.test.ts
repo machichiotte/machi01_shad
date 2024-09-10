@@ -80,19 +80,20 @@ describe('strategyController', () => {
       mockRequest.body = mockUpdatedStrategy;
       const mockResult = { success: true };
       (strategyService.updateStrategyById as jest.Mock).mockResolvedValue(mockResult);
-
+  
       await updateStrategyById(mockRequest as Request, mockResponse as Response);
-
+  
       expect(strategyService.updateStrategyById).toHaveBeenCalledWith(mockStrategyId, mockUpdatedStrategy);
       expect(mockJson).toHaveBeenCalledWith(mockResult);
     });
-
+  
     it('devrait gérer les erreurs', async () => {
       const mockError = new Error('Erreur de mise à jour');
+      mockRequest.params = { strategyId: '1' }; // Ajoutez cette ligne
       (strategyService.updateStrategyById as jest.Mock).mockRejectedValue(mockError);
-
+  
       await updateStrategyById(mockRequest as Request, mockResponse as Response);
-
+  
       expect(handleErrorResponse).toHaveBeenCalledWith(mockResponse, mockError, 'updateStrategyById');
     });
   });

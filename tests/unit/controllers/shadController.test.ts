@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getShad } from '@controllers/shadController';
 import * as shadService from '@services/shadService';
-import { handleErrorResponse } from '@utils/errorUtil';
+import { handleErrorResponse } from "@utils/errorUtil";
 
 jest.mock('@services/shadService');
 jest.mock('@utils/errorUtil');
@@ -10,6 +10,7 @@ describe('getShad', () => {
   let mockRequest: Partial<Request>;
   let mockResponse: Partial<Response>;
   let mockJson: jest.Mock;
+  let consoleErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     mockRequest = {};
@@ -18,6 +19,11 @@ describe('getShad', () => {
       json: mockJson,
     };
     jest.clearAllMocks();
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+  });
+
+  afterEach(() => {
+    consoleErrorSpy.mockRestore();
   });
 
   it('devrait renvoyer les données Shad avec succès', async () => {
@@ -38,5 +44,9 @@ describe('getShad', () => {
 
     expect(shadService.fetchShadInDatabase).toHaveBeenCalled();
     expect(handleErrorResponse).toHaveBeenCalledWith(mockResponse, mockError, 'getShad');
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Erreur dans getShad: Erreur de test',
+      { error: mockError }
+    );
   });
 });

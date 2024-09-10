@@ -32,7 +32,36 @@ describe('TradesController', () => {
 
     describe('getTrades', () => {
         it('devrait retourner tous les trades', async () => {
-            const mockTrades = [{ id: 1 }, { id: 2 }];
+            const mockTrades = [{
+                id: 1,
+                "base": "EQX",
+                "quote": "USDT",
+                "pair": "EQX/USDT",
+                "timestamp": 1725396742065,
+                "type": "buy",
+                "price": 0.002799,
+                "amount": 1532.9761,
+                "total": 4.2908001039,
+                "fee": 0.0128724003117,
+                "feecoin": "USDT",
+                "platform": "kucoin",
+                "totalUSDT": 4.2908001039
+            }, {
+                id: 2,
+                "base": "EQX",
+                "quote": "USDT",
+                "pair": "EQX/USDT",
+                "timestamp": 1725396742065,
+                "type": "buy",
+                "price": 0.002799,
+                "amount": 1532.9761,
+                "total": 4.2908001039,
+                "fee": 0.0128724003117,
+                "feecoin": "USDT",
+                "platform": "kucoin",
+                "totalUSDT": 4.2908001039
+            }];
+            ;
             (tradesService.fetchDatabaseTrades as jest.Mock).mockResolvedValue(mockTrades);
 
             await getTrades(mockRequest as Request, mockResponse as Response);
@@ -53,9 +82,24 @@ describe('TradesController', () => {
     describe('updateTradeById', () => {
         it('devrait mettre à jour un trade par son ID', async () => {
             const mockTradeId = '123';
-            const mockUpdatedTrade = { id: '123', status: 'completed' };
-            mockRequest.params = { id: mockTradeId };
+            const mockUpdatedTrade = {
+                "base": "EQX",
+                "quote": "USDT",
+                "pair": "EQX/USDT",
+                "timestamp": 1725396742065,
+                "type": "buy",
+                "price": 0.002799,
+                "amount": 1532.9761,
+                "total": 4.2908001039,
+                "fee": 0.0128724003117,
+                "feecoin": "USDT",
+                "platform": "kucoin",
+                "totalUSDT": 4.2908001039
+            };
+
+            mockRequest.params = { tradeId: mockTradeId };
             mockRequest.body = mockUpdatedTrade;
+
             (tradesService.updateTradeById as jest.Mock).mockResolvedValue(mockUpdatedTrade);
 
             await updateTradeById(mockRequest as Request, mockResponse as Response);
@@ -78,14 +122,43 @@ describe('TradesController', () => {
 
     describe('addTradesManually', () => {
         it('devrait ajouter des trades manuellement', async () => {
-            const mockTrades = [{ id: '1' }, { id: '2' }];
-            mockRequest.body = mockTrades;
-            (tradesService.addTradesManually as jest.Mock).mockResolvedValue(mockTrades);
+            const mockTrades = [
+                {
+                    "base": "EQX",
+                    "quote": "USDT",
+                    "pair": "EQX/USDT",
+                    "timestamp": 1725396742065,
+                    "type": "buy",
+                    "price": 0.002799,
+                    "amount": 1532.9761,
+                    "total": 4.2908001039,
+                    "fee": 0.0128724003117,
+                    "feecoin": "USDT",
+                    "platform": "kucoin",
+                    "totalUSDT": 4.2908001039
+                }, {
+                    "base": "EQX",
+                    "quote": "USDT",
+                    "pair": "EQX/USDT",
+                    "timestamp": 1725396685920,
+                    "type": "buy",
+                    "price": 0.002799,
+                    "amount": 9790.3127,
+                    "total": 27.4030852473,
+                    "fee": 0.0822092557419,
+                    "feecoin": "USDT",
+                    "platform": "kucoin",
+                    "totalUSDT": 27.4030852473
+                }];
+            mockRequest.body = { trades_data: mockTrades };
+            const mockResult = { status: 200, message: "Trades ajoutés avec succès" };
+            (tradesService.addTradesManually as jest.Mock).mockResolvedValue(mockResult);
 
             await addTradesManually(mockRequest as Request, mockResponse as Response);
 
             expect(tradesService.addTradesManually).toHaveBeenCalledWith(mockTrades);
-            expect(mockJson).toHaveBeenCalledWith(mockTrades);
+            expect(mockStatus).toHaveBeenCalledWith(mockResult.status);
+            expect(mockJson).toHaveBeenCalledWith(mockResult);
         });
 
         it('devrait gérer les erreurs lors de l\'ajout manuel', async () => {
@@ -101,19 +174,22 @@ describe('TradesController', () => {
 
     describe('updateTrades', () => {
         it('devrait mettre à jour plusieurs trades', async () => {
-            const mockUpdatedTrades = [{ id: '1', status: 'completed' }, { id: '2', status: 'pending' }];
-            mockRequest.body = mockUpdatedTrades;
-            (tradesService.updateTrades as jest.Mock).mockResolvedValue(mockUpdatedTrades);
+            const mockPlatform = 'testPlatform';
+            const mockResult = { status: 200, message: 'Trades mis à jour avec succès' };
+
+            mockRequest.params = { platform: mockPlatform };
+            (tradesService.updateTrades as jest.Mock).mockResolvedValue(mockResult);
 
             await updateTrades(mockRequest as Request, mockResponse as Response);
 
-            expect(tradesService.updateTrades).toHaveBeenCalledWith(mockUpdatedTrades);
-            expect(mockJson).toHaveBeenCalledWith(mockUpdatedTrades);
+            expect(tradesService.updateTrades).toHaveBeenCalledWith(mockPlatform);
+            expect(mockStatus).toHaveBeenCalledWith(200);
+            expect(mockJson).toHaveBeenCalledWith(mockResult);
         });
 
         it('devrait gérer les erreurs lors de la mise à jour multiple', async () => {
             const mockError = new Error('Erreur de mise à jour multiple');
-            mockRequest.body = [{ id: '1' }];
+            mockRequest.params = {};
             (tradesService.updateTrades as jest.Mock).mockRejectedValue(mockError);
 
             await updateTrades(mockRequest as Request, mockResponse as Response);
@@ -126,7 +202,34 @@ describe('TradesController', () => {
         it('devrait récupérer les derniers trades', async () => {
             const mockPlatform = 'binance';
             const mockSymbol = 'BTCUSDT';
-            const mockTrades = [{ id: '1' }, { id: '2' }];
+            const mockTrades = [
+                {
+                    "base": "EQX",
+                    "quote": "USDT",
+                    "pair": "EQX/USDT",
+                    "timestamp": 1725396742065,
+                    "type": "buy",
+                    "price": 0.002799,
+                    "amount": 1532.9761,
+                    "total": 4.2908001039,
+                    "fee": 0.0128724003117,
+                    "feecoin": "USDT",
+                    "platform": "kucoin",
+                    "totalUSDT": 4.2908001039
+                }, {
+                    "base": "EQX",
+                    "quote": "USDT",
+                    "pair": "EQX/USDT",
+                    "timestamp": 1725396685920,
+                    "type": "buy",
+                    "price": 0.002799,
+                    "amount": 9790.3127,
+                    "total": 27.4030852473,
+                    "fee": 0.0822092557419,
+                    "feecoin": "USDT",
+                    "platform": "kucoin",
+                    "totalUSDT": 27.4030852473
+                }];
             mockRequest.params = { platform: mockPlatform, symbol: mockSymbol };
             (tradesService.fetchLastTrades as jest.Mock).mockResolvedValue(mockTrades);
 
@@ -149,7 +252,34 @@ describe('TradesController', () => {
 
     describe('saveTradesToDatabase', () => {
         it('devrait sauvegarder les trades dans la base de données', async () => {
-            const mockNewTrades = [{ id: '1' }, { id: '2' }];
+            const mockNewTrades = [
+                {
+                    "base": "EQX",
+                    "quote": "USDT",
+                    "pair": "EQX/USDT",
+                    "timestamp": 1725396742065,
+                    "type": "buy",
+                    "price": 0.002799,
+                    "amount": 1532.9761,
+                    "total": 4.2908001039,
+                    "fee": 0.0128724003117,
+                    "feecoin": "USDT",
+                    "platform": "kucoin",
+                    "totalUSDT": 4.2908001039
+                }, {
+                    "base": "EQX",
+                    "quote": "USDT",
+                    "pair": "EQX/USDT",
+                    "timestamp": 1725396685920,
+                    "type": "buy",
+                    "price": 0.002799,
+                    "amount": 9790.3127,
+                    "total": 27.4030852473,
+                    "fee": 0.0822092557419,
+                    "feecoin": "USDT",
+                    "platform": "kucoin",
+                    "totalUSDT": 27.4030852473
+                }];
             mockRequest.body = { newTrades: mockNewTrades };
             (tradesService.saveTradesToDatabase as jest.Mock).mockResolvedValue(undefined);
 
@@ -173,7 +303,34 @@ describe('TradesController', () => {
 
     describe('saveAllTradesToDatabase', () => {
         it('devrait sauvegarder tous les trades dans la base de données', async () => {
-            const mockNewTrades = [{ id: '1' }, { id: '2' }];
+            const mockNewTrades = [
+                {
+                    "base": "EQX",
+                    "quote": "USDT",
+                    "pair": "EQX/USDT",
+                    "timestamp": 1725396742065,
+                    "type": "buy",
+                    "price": 0.002799,
+                    "amount": 1532.9761,
+                    "total": 4.2908001039,
+                    "fee": 0.0128724003117,
+                    "feecoin": "USDT",
+                    "platform": "kucoin",
+                    "totalUSDT": 4.2908001039
+                }, {
+                    "base": "EQX",
+                    "quote": "USDT",
+                    "pair": "EQX/USDT",
+                    "timestamp": 1725396685920,
+                    "type": "buy",
+                    "price": 0.002799,
+                    "amount": 9790.3127,
+                    "total": 27.4030852473,
+                    "fee": 0.0822092557419,
+                    "feecoin": "USDT",
+                    "platform": "kucoin",
+                    "totalUSDT": 27.4030852473
+                }];
             mockRequest.body = { newTrades: mockNewTrades };
             (tradesService.saveAllTradesToDatabase as jest.Mock).mockResolvedValue(undefined);
 

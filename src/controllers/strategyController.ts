@@ -14,7 +14,7 @@ async function getStrat(req: Request, res: Response): Promise<void> {
     const data = await strategyService.fetchDatabaseStrategies();
     res.json(data);
   } catch (error: any) {
-    console.log(
+    console.error(
       `🚀 ~ file: strategyController.ts:23 ~ getStrat ~ error:`,
       error
     );
