@@ -1,13 +1,15 @@
 // src/controllers/lastUpdateController.ts
-import { validateEnvVariables } from "@utils/controllerUtil";
-import { fetchDatabaseLastUpdate, saveLastUpdateToDatabase } from "@services/lastUpdateService";
-import { getDataMDB } from "@services/mongodbService";
-import { Request, Response } from "express";
+import { validateEnvVariables } from '@utils/controllerUtil'
+import {
+  fetchDatabaseLastUpdate,
+  saveLastUpdateToDatabase
+} from '@services/lastUpdateService'
+import { getDataMDB } from '@services/mongodbService'
+import { Request, Response } from 'express'
 
-import { handleErrorResponse } from "@utils/errorUtil";
+import { handleErrorResponse } from '@utils/errorUtil'
 
-
-validateEnvVariables(["MONGODB_COLLECTION_LAST_UPDATE"]);
+validateEnvVariables(['MONGODB_COLLECTION_LAST_UPDATE'])
 
 /**
  * Récupère l'enregistrement de dernière mise à jour unique pour une plateforme et un type donnés.
@@ -16,37 +18,46 @@ validateEnvVariables(["MONGODB_COLLECTION_LAST_UPDATE"]);
  */
 async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
   try {
-    const { platform, type } = req.params;
-    const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE;
+    const { platform, type } = req.params
+    const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE
 
     if (!collectionName) {
-      throw new Error("MONGODB_COLLECTION_LAST_UPDATE is not defined");
+      throw new Error('MONGODB_COLLECTION_LAST_UPDATE is not defined')
     }
 
-    const filter = { platform, type };
+    const filter = { platform, type }
     // check si besoin de filter
-    const lastUpdateData = await getDataMDB(collectionName);
+    const lastUpdateData = await getDataMDB(collectionName)
 
     if (lastUpdateData.length > 0) {
-      console.log("Dernière mise à jour unique récupérée de la base de données.", {
-        platform,
-        type,
-      });
-      res.json(lastUpdateData[0]);
+      console.log(
+        'Dernière mise à jour unique récupérée de la base de données.',
+        {
+          platform,
+          type
+        }
+      )
+      res.json(lastUpdateData[0])
     } else {
-      console.log("Aucune dernière mise à jour trouvée, retour d'un horodatage nul.", {
-        platform,
-        type,
-      });
-      res.json({ platform, type, timestamp: null });
+      console.log(
+        "Aucune dernière mise à jour trouvée, retour d'un horodatage nul.",
+        {
+          platform,
+          type
+        }
+      )
+      res.json({ platform, type, timestamp: null })
     }
   } catch (error) {
-    console.error("Échec de la récupération de la dernière mise à jour unique.", {
-      error: error instanceof Error ? error.message : "Erreur inconnue",
-      platform: req.params.platform,
-      type: req.params.type,
-    });
-    res.status(500).json({ error: "Erreur interne du serveur" });
+    console.error(
+      'Échec de la récupération de la dernière mise à jour unique.',
+      {
+        error: error instanceof Error ? error.message : 'Erreur inconnue',
+        platform: req.params.platform,
+        type: req.params.type
+      }
+    )
+    res.status(500).json({ error: 'Erreur interne du serveur' })
   }
 }
 
@@ -57,16 +68,22 @@ async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
  */
 async function getLastUpdate(req: Request, res: Response): Promise<void> {
   try {
-    const data = await fetchDatabaseLastUpdate();
-    console.log("Tous les enregistrements de dernière mise à jour récupérés de la base de données.", {
-      count: data.length,
-    });
-    res.json(data);
+    const data = await fetchDatabaseLastUpdate()
+    console.log(
+      'Tous les enregistrements de dernière mise à jour récupérés de la base de données.',
+      {
+        count: data.length
+      }
+    )
+    res.json(data)
   } catch (error: any) {
-    console.error("Échec de la récupération de toutes les dernières mises à jour.", {
-      error: error instanceof Error ? error.message : "Erreur inconnue",
-    });
-    handleErrorResponse(res, error, "getLastUpdate");
+    console.error(
+      'Échec de la récupération de toutes les dernières mises à jour.',
+      {
+        error: error instanceof Error ? error.message : 'Erreur inconnue'
+      }
+    )
+    handleErrorResponse(res, error, 'getLastUpdate')
   }
 }
 
@@ -75,25 +92,31 @@ async function getLastUpdate(req: Request, res: Response): Promise<void> {
  * @param {Request} req - Objet de requête HTTP.
  * @param {Response} res - Objet de réponse HTTP.
  */
-async function updateLastUpdateByType(req: Request, res: Response): Promise<void> {
+async function updateLastUpdateByType(
+  req: Request,
+  res: Response
+): Promise<void> {
   try {
-    const { platform, type } = req.params;
-    await saveLastUpdateToDatabase(type, platform);
-    const timestamp = new Date().toISOString();
-    console.log("Enregistrement de dernière mise à jour mis à jour.", { platform, type, timestamp });
-    res.json({ platform, type, timestamp });
+    const { platform, type } = req.params
+    await saveLastUpdateToDatabase(type, platform)
+    const timestamp = new Date().toISOString()
+    console.log('Enregistrement de dernière mise à jour mis à jour.', {
+      platform,
+      type,
+      timestamp
+    })
+    res.json({ platform, type, timestamp })
   } catch (error) {
-    console.error("Échec de la mise à jour de la dernière mise à jour par type.", {
-      error: error instanceof Error ? error.message : "Erreur inconnue",
-      platform: req.params.platform,
-      type: req.params.type,
-    });
-    res.status(500).json({ error: "Erreur interne du serveur" });
+    console.error(
+      'Échec de la mise à jour de la dernière mise à jour par type.',
+      {
+        error: error instanceof Error ? error.message : 'Erreur inconnue',
+        platform: req.params.platform,
+        type: req.params.type
+      }
+    )
+    res.status(500).json({ error: 'Erreur interne du serveur' })
   }
 }
 
-export {
-  getLastUpdate,
-  getUniqueLastUpdate,
-  updateLastUpdateByType,
-};
+export { getLastUpdate, getUniqueLastUpdate, updateLastUpdateByType }

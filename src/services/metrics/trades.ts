@@ -1,12 +1,13 @@
 // src/services/metrics/trades.ts
-import { MappedTrade } from "@services/mapping";
+import { MappedTrade } from '@services/mapping'
 
 /**
  * Checks if a value is a positive number.
  * @param {unknown} value - The value to check.
  * @returns {boolean} - True if the value is a positive number, false otherwise.
  */
-const isPositiveNumber = (value: unknown): boolean => typeof value === 'number' && !isNaN(value) && value > 0;
+const isPositiveNumber = (value: unknown): boolean =>
+  typeof value === 'number' && !isNaN(value) && value > 0
 
 /**
  * Converts a fee to its equivalent in the quote currency.
@@ -14,23 +15,24 @@ const isPositiveNumber = (value: unknown): boolean => typeof value === 'number' 
  * @param {number} price - The price of the asset.
  * @returns {number} - The fee converted to quote currency, or 0 if inputs are invalid.
  */
-const convertFeeToQuote = (fee: number, price: number): number => isPositiveNumber(fee) && isPositiveNumber(price) ? fee * price : 0;
+const convertFeeToQuote = (fee: number, price: number): number =>
+  isPositiveNumber(fee) && isPositiveNumber(price) ? fee * price : 0
 
 interface Trade {
-  base: string;
-  type: string;
-  fee: string;
-  price: string;
-  feecoin: string;
-  quote: string;
-  amount: string;
-  totalUSDT: string;
+  base: string
+  type: string
+  fee: string
+  price: string
+  feecoin: string
+  quote: string
+  amount: string
+  totalUSDT: string
 }
 
 interface TotalAmountAndBuy {
-  totalAmount: number;
-  totalBuy: number;
-  averageEntryPrice: number;
+  totalAmount: number
+  totalBuy: number
+  averageEntryPrice: number
 }
 
 /**
@@ -39,21 +41,34 @@ interface TotalAmountAndBuy {
  * @param {MappedTrade[]} trades - The array of trade objects.
  * @returns {TotalAmountAndBuy} - An object containing total amount and total buy value.
  */
-function getTotalAmountAndBuy(symbol: string, trades: MappedTrade[]): TotalAmountAndBuy {
-  const filteredTrades = trades.filter(trade => trade.base === symbol && trade.type === "buy");
+function getTotalAmountAndBuy(
+  symbol: string,
+  trades: MappedTrade[]
+): TotalAmountAndBuy {
+  const filteredTrades = trades.filter(
+    (trade) => trade.base === symbol && trade.type === 'buy'
+  )
 
-  return filteredTrades.reduce((acc: any, trade: MappedTrade) => {
-    const fee = trade.fee;
-    const price = trade.price;
-    const feeInQuote = trade.feecoin === trade.quote ? (fee > 0 ? fee : 0) : convertFeeToQuote(fee, price);
-    const amount = (trade.amount > 0) ? trade.amount : 0;
+  return filteredTrades.reduce(
+    (acc: any, trade: MappedTrade) => {
+      const fee = trade.fee
+      const price = trade.price
+      const feeInQuote =
+        trade.feecoin === trade.quote
+          ? fee > 0
+            ? fee
+            : 0
+          : convertFeeToQuote(fee, price)
+      const amount = trade.amount > 0 ? trade.amount : 0
 
-    acc.totalBuy += trade.totalUSDT + feeInQuote;
-    acc.totalAmount += amount;
-    acc.averageEntryPrice = acc.totalBuy / acc.totalAmount;
+      acc.totalBuy += trade.totalUSDT + feeInQuote
+      acc.totalAmount += amount
+      acc.averageEntryPrice = acc.totalBuy / acc.totalAmount
 
-    return acc;
-  }, { totalAmount: 0, totalBuy: 0 });
+      return acc
+    },
+    { totalAmount: 0, totalBuy: 0 }
+  )
 }
 
 /**
@@ -64,18 +79,18 @@ function getTotalAmountAndBuy(symbol: string, trades: MappedTrade[]): TotalAmoun
  */
 function getTotalSell(symbol: string, trades: MappedTrade[]): number {
   return trades
-    .filter((trade) => trade.base === symbol && trade.type === "sell")
+    .filter((trade) => trade.base === symbol && trade.type === 'sell')
     .reduce((total: number, trade: MappedTrade) => {
-      const fee = trade.fee;
-      const price = trade.price;
+      const fee = trade.fee
+      const price = trade.price
       const feeInQuote =
         trade.feecoin === trade.quote
           ? isPositiveNumber(fee)
             ? fee
             : 0
-          : convertFeeToQuote(fee, price);
-      return total + trade.totalUSDT - feeInQuote;
-    }, 0);
+          : convertFeeToQuote(fee, price)
+      return total + trade.totalUSDT - feeInQuote
+    }, 0)
 }
 
 /**
@@ -85,11 +100,7 @@ function getTotalSell(symbol: string, trades: MappedTrade[]): number {
  * @returns {Trade[]} - An array of trade objects for the specified symbol.
  */
 function getTradesHistory(symbol: string, trades: Trade[]): Trade[] {
-  return trades.filter((trade) => trade.base === symbol);
+  return trades.filter((trade) => trade.base === symbol)
 }
 
-export {
-  getTotalAmountAndBuy,
-  getTotalSell,
-  getTradesHistory,
-};
+export { getTotalAmountAndBuy, getTotalSell, getTradesHistory }

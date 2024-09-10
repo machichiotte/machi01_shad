@@ -1,11 +1,11 @@
 // src/controllers/cmcController.ts
-import { Request, Response } from 'express';
-import { handleErrorResponse } from '@utils/errorUtil';
-import { errorLogger } from '@utils/loggerUtil';
-import { validateEnvVariables } from '@utils/controllerUtil';
-import * as cmcService from '@services/cmcService';
+import { Request, Response } from 'express'
+import { handleErrorResponse } from '@utils/errorUtil'
+import { errorLogger } from '@utils/loggerUtil'
+import { validateEnvVariables } from '@utils/controllerUtil'
+import * as cmcService from '@services/cmcService'
 
-validateEnvVariables(["MONGODB_COLLECTION_CMC", "TYPE_CMC"]);
+validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
 
 /**
  * Récupère les dernières données CoinMarketCap de la base de données.
@@ -14,15 +14,15 @@ validateEnvVariables(["MONGODB_COLLECTION_CMC", "TYPE_CMC"]);
  */
 async function getCmc(req: Request, res: Response): Promise<void> {
   try {
-    const data = await cmcService.fetchDatabaseCmc();
-    console.log("Données CMC récupérées", {
+    const data = await cmcService.fetchDatabaseCmc()
+    console.log('Données CMC récupérées', {
       collectionName: process.env.MONGODB_COLLECTION_CMC,
-      count: data.length,
-    });
-    res.json(data);
+      count: data.length
+    })
+    res.json(data)
   } catch (error: any) {
-    errorLogger.error(`Erreur dans getCmc: ${error.message}`, { error });
-    handleErrorResponse(res, error, "getCmc");
+    errorLogger.error(`Erreur dans getCmc: ${error.message}`, { error })
+    handleErrorResponse(res, error, 'getCmc')
   }
 }
 
@@ -33,12 +33,12 @@ async function getCmc(req: Request, res: Response): Promise<void> {
  */
 async function updateCmc(req: Request, res: Response): Promise<void> {
   try {
-    const result = await cmcService.updateCmcData();
-    res.status(200).json(result);
+    const result = await cmcService.updateCmcData()
+    res.status(200).json(result)
   } catch (error: any) {
-    errorLogger.error(`Erreur dans updateCmc: ${error.message}`, { error });
-    handleErrorResponse(res, error, "updateCmc");
+    errorLogger.error(`Erreur dans updateCmc: ${error.message}`, { error })
+    handleErrorResponse(res, error, 'updateCmc')
   }
 }
 
-export { getCmc, updateCmc };
+export { getCmc, updateCmc }

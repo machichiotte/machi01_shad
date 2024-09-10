@@ -3,8 +3,8 @@
 /**
  * Constants for error margin and maximum exposure
  */
-const ERROR_ALLOWED = 0.05;
-const MAX_EXPO = 10000;
+const ERROR_ALLOWED = 0.05
+const MAX_EXPO = 10000
 
 /**
  * Calculates the recovery amount for SHAD strategy
@@ -13,15 +13,19 @@ const MAX_EXPO = 10000;
  * @param {number} maxExposition - Maximum exposure allowed
  * @returns {number} Recovery amount for SHAD
  */
-function getRecupShad(totalBuy: number, totalSell: number, maxExposition: number): number {
+function getRecupShad(
+  totalBuy: number,
+  totalSell: number,
+  maxExposition: number
+): number {
   if (totalSell > 0) {
     if (maxExposition < totalBuy && totalSell < totalBuy - maxExposition) {
-      return 0;
+      return 0
     } else {
-      return Math.round(totalSell - (totalBuy - maxExposition));
+      return Math.round(totalSell - (totalBuy - maxExposition))
     }
   }
-  return 0;
+  return 0
 }
 
 /**
@@ -33,28 +37,34 @@ function getRecupShad(totalBuy: number, totalSell: number, maxExposition: number
  * @param {number} totalShad - Total SHAD amount
  * @returns {number} Recovery amount for TP1
  */
-function getRecupTp1(totalBuy: number, totalSell: number, maxExposition: number, recupTpX: number, totalShad: number): number {
-  let valueToRecup = 0;
+function getRecupTp1(
+  totalBuy: number,
+  totalSell: number,
+  maxExposition: number,
+  recupTpX: number,
+  totalShad: number
+): number {
+  let valueToRecup = 0
   if (maxExposition < totalBuy) {
     if (totalSell < totalBuy - maxExposition) {
-      valueToRecup = totalBuy - maxExposition - totalSell;
+      valueToRecup = totalBuy - maxExposition - totalSell
     } else {
-      const result = (totalSell - (totalBuy - maxExposition)) / maxExposition;
-      const decimalPart = result - Math.floor(result);
-      valueToRecup = decimalPart * maxExposition;
+      const result = (totalSell - (totalBuy - maxExposition)) / maxExposition
+      const decimalPart = result - Math.floor(result)
+      valueToRecup = decimalPart * maxExposition
     }
   } else if (
     (totalShad + 1) * totalBuy > totalSell &&
     totalShad * totalBuy < (1 - ERROR_ALLOWED) * totalSell
   ) {
-    valueToRecup = recupTpX - (totalShad + 1) * totalBuy - totalSell;
+    valueToRecup = recupTpX - (totalShad + 1) * totalBuy - totalSell
   }
 
   if (valueToRecup > 5.05) {
-    return valueToRecup;
+    return valueToRecup
   }
 
-  return recupTpX;
+  return recupTpX
 }
 
 /**
@@ -64,9 +74,13 @@ function getRecupTp1(totalBuy: number, totalSell: number, maxExposition: number,
  * @param {number} ratioShad - SHAD ratio
  * @returns {number} Recovery amount for TPX
  */
-function getRecupTpX(assetStrat: string, maxExposition: number, ratioShad: number): number {
-  const result = (maxExposition * ratioShad * 0.5).toFixed(2);
-  return parseFloat(result);
+function getRecupTpX(
+  assetStrat: string,
+  maxExposition: number,
+  ratioShad: number
+): number {
+  const result = (maxExposition * ratioShad * 0.5).toFixed(2)
+  return parseFloat(result)
 }
 
 /**
@@ -78,22 +92,28 @@ function getRecupTpX(assetStrat: string, maxExposition: number, ratioShad: numbe
  * @param {number} recupTpX - Recovery amount for TPX
  * @returns {number} Number of completed SHAD cycles
  */
-function getDoneShad(totalBuy: number, totalSell: number, maxExposition: number, recupShad: number, recupTpX: number): number {
+function getDoneShad(
+  totalBuy: number,
+  totalSell: number,
+  maxExposition: number,
+  recupShad: number,
+  recupTpX: number
+): number {
   if (
     maxExposition < (1 - ERROR_ALLOWED) * totalBuy &&
     totalSell < (1 - ERROR_ALLOWED) * (totalBuy - maxExposition)
   ) {
-    return -1;
+    return -1
   } else if (recupShad >= (1 - ERROR_ALLOWED) * recupTpX) {
-    return -1 + Math.round(1 + ERROR_ALLOWED + recupShad / recupTpX);
+    return -1 + Math.round(1 + ERROR_ALLOWED + recupShad / recupTpX)
   } else {
-    return 0;
+    return 0
   }
 }
 
 interface Strats {
-  strategies?: Record<string, string>;
-  maxExposure?: Record<string, number>;
+  strategies?: Record<string, string>
+  maxExposure?: Record<string, number>
 }
 
 /**
@@ -102,16 +122,19 @@ interface Strats {
  * @param {Strats} strats - Saved strategies
  * @returns {Object} Strategy and maximum exposure
  */
-function getStrat(platform: string, strats: Strats): { strat: string; stratExpo: number } {
-  if (!strats || typeof strats !== "object") {
-    console.warn("🚀 ~ getStrat ~ strats is invalid or not an object:", strats);
-    return { strat: "No strategy", stratExpo: MAX_EXPO };
+function getStrat(
+  platform: string,
+  strats: Strats
+): { strat: string; stratExpo: number } {
+  if (!strats || typeof strats !== 'object') {
+    console.warn('🚀 ~ getStrat ~ strats is invalid or not an object:', strats)
+    return { strat: 'No strategy', stratExpo: MAX_EXPO }
   }
 
   return {
-    strat: strats.strategies?.[platform] || "No strategy",
+    strat: strats.strategies?.[platform] || 'No strategy',
     stratExpo: strats.maxExposure?.[platform] || MAX_EXPO
-  };
+  }
 }
 
 /**
@@ -121,12 +144,12 @@ function getStrat(platform: string, strats: Strats): { strat: string; stratExpo:
  */
 function getRatioShad(strat: string): number {
   const ratios: Record<string, number> = {
-    "Shad": 2,
-    "Shad skip x2": 4,
-    "Strategy 3": 8,
-    "Strategy 4": 16
-  };
-  return ratios[strat] || 8;
+    Shad: 2,
+    'Shad skip x2': 4,
+    'Strategy 3': 8,
+    'Strategy 4': 16
+  }
+  return ratios[strat] || 8
 }
 
 /**
@@ -138,31 +161,37 @@ function getRatioShad(strat: string): number {
  * @param {Strats} strats - Saved strategies
  * @returns {Object} Calculated recovery amounts and strategy parameters
  */
-function calculateRecups(asset: string, platform: string, totalBuy: number, totalSell: number, strats: Strats) {
-  let { strat, stratExpo } = getStrat(platform, strats);
+function calculateRecups(
+  asset: string,
+  platform: string,
+  totalBuy: number,
+  totalSell: number,
+  strats: Strats
+) {
+  let { strat, stratExpo } = getStrat(platform, strats)
   if (stratExpo === undefined) {
-    stratExpo = MAX_EXPO;
+    stratExpo = MAX_EXPO
   }
 
-  const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo));
+  const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo))
 
-  const ratioShad = getRatioShad(strat);
-  const recupShad = getRecupShad(totalBuy, totalSell, maxExposition);
-  const recupTpX = getRecupTpX(strat, maxExposition, ratioShad);
+  const ratioShad = getRatioShad(strat)
+  const recupShad = getRecupShad(totalBuy, totalSell, maxExposition)
+  const recupTpX = getRecupTpX(strat, maxExposition, ratioShad)
   const totalShad = getDoneShad(
     totalBuy,
     totalSell,
     maxExposition,
     recupShad,
     recupTpX
-  );
+  )
   const recupTp1 = getRecupTp1(
     totalBuy,
     totalSell,
     maxExposition,
     recupTpX,
     totalShad
-  );
+  )
 
   return {
     strat,
@@ -172,8 +201,8 @@ function calculateRecups(asset: string, platform: string, totalBuy: number, tota
     recupTpX,
     recupShad,
     recupTp1,
-    totalShad,
-  };
+    totalShad
+  }
 }
 
 /**
@@ -183,11 +212,15 @@ function calculateRecups(asset: string, platform: string, totalBuy: number, tota
  * @param {number} factor - Factor for calculation
  * @returns {Object} Calculated amount and price
  */
-function calculateAmountAndPriceForShad(parsedRecup: number, parsedBalance: number, factor: number): { amount: number; price: number } {
-  const amount = factor * parsedBalance;
-  const price = parsedRecup / amount;
+function calculateAmountAndPriceForShad(
+  parsedRecup: number,
+  parsedBalance: number,
+  factor: number
+): { amount: number; price: number } {
+  const amount = factor * parsedBalance
+  const price = parsedRecup / amount
 
-  return { amount, price };
+  return { amount, price }
 }
 
 /**
@@ -202,16 +235,16 @@ function getPlatformFee(platform: string): number {
     htx: 0.1,
     okx: 0.1,
     gateio: 0.2,
-    default: 0.2,
-  };
+    default: 0.2
+  }
 
-  return fees[platform.toLowerCase()] || fees.default;
+  return fees[platform.toLowerCase()] || fees.default
 }
 
 interface AmountsAndPrices {
-  amountTp1: number;
-  priceTp1: number;
-  [key: string]: number;
+  amountTp1: number
+  priceTp1: number
+  [key: string]: number
 }
 
 /**
@@ -234,42 +267,46 @@ function calculateAmountsAndPricesForShad(
   maxExposition: number,
   platform: string
 ): AmountsAndPrices {
-  const FACTOR_SELL_SHAD = 0.5;
+  const FACTOR_SELL_SHAD = 0.5
   const parsedValues = {
     recupTp1,
     balance,
     recupTpX,
     averageEntryPrice
-  };
+  }
 
-  const platformFee = getPlatformFee(platform);
-  const feeMultiplier = 1 + platformFee / 100;
+  const platformFee = getPlatformFee(platform)
+  const feeMultiplier = 1 + platformFee / 100
 
-  const amountTp1 = totalShad > -1
-    ? FACTOR_SELL_SHAD * (parsedValues.recupTp1 / parsedValues.recupTpX) * parsedValues.balance
-    : parsedValues.balance - maxExposition / parsedValues.averageEntryPrice;
+  const amountTp1 =
+    totalShad > -1
+      ? FACTOR_SELL_SHAD *
+        (parsedValues.recupTp1 / parsedValues.recupTpX) *
+        parsedValues.balance
+      : parsedValues.balance - maxExposition / parsedValues.averageEntryPrice
 
-  const priceTp1 = totalShad > -1
-    ? (parsedValues.recupTp1 / amountTp1) * feeMultiplier
-    : parsedValues.averageEntryPrice * feeMultiplier;
+  const priceTp1 =
+    totalShad > -1
+      ? (parsedValues.recupTp1 / amountTp1) * feeMultiplier
+      : parsedValues.averageEntryPrice * feeMultiplier
 
-  const amountsAndPrices: AmountsAndPrices = { amountTp1, priceTp1 };
+  const amountsAndPrices: AmountsAndPrices = { amountTp1, priceTp1 }
 
-  let remainingBalance = parsedValues.balance - amountTp1;
+  let remainingBalance = parsedValues.balance - amountTp1
 
   for (let i = 2; i <= 5; i++) {
     const { amount, price } = calculateAmountAndPriceForShad(
       parsedValues.recupTpX,
       remainingBalance,
       FACTOR_SELL_SHAD
-    );
+    )
 
-    amountsAndPrices[`amountTp${i}`] = amount;
-    amountsAndPrices[`priceTp${i}`] = price * feeMultiplier;
-    remainingBalance -= amount;
+    amountsAndPrices[`amountTp${i}`] = amount
+    amountsAndPrices[`priceTp${i}`] = price * feeMultiplier
+    remainingBalance -= amount
   }
 
-  return amountsAndPrices;
+  return amountsAndPrices
 }
 
 export {
@@ -278,5 +315,5 @@ export {
   getRecupShad,
   getDoneShad,
   calculateRecups,
-  calculateAmountsAndPricesForShad,
-};
+  calculateAmountsAndPricesForShad
+}

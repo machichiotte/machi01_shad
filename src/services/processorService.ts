@@ -1,33 +1,41 @@
 // src/services/cron/processorService.ts
-import { calculateAssetMetrics } from "./metrics/global";
-import { mapTrades } from "./mapping";
+import { calculateAssetMetrics } from './metrics/global'
+import { mapTrades } from './mapping'
 import {
-  saveTradesToDatabase, fetchLastTrades, fetchDatabaseTrades
-} from "./tradesService";
-import { getAllTickersByPlatform, fetchDatabaseTickers } from "@services/tickersService";
-import { fetchDatabaseBalances } from "@services/balanceService";
-import { fetchDatabaseCmc } from "@services/cmcService";
-import { updateOrdersFromServer, fetchDatabaseOrders } from "@services/ordersService";
-import { fetchDatabaseStrategies } from "./strategyService";
-import { getSymbolForPlatform } from "@utils/platformUtil";
+  saveTradesToDatabase,
+  fetchLastTrades,
+  fetchDatabaseTrades
+} from './tradesService'
+import {
+  getAllTickersByPlatform,
+  fetchDatabaseTickers
+} from '@services/tickersService'
+import { fetchDatabaseBalances } from '@services/balanceService'
+import { fetchDatabaseCmc } from '@services/cmcService'
+import {
+  updateOrdersFromServer,
+  fetchDatabaseOrders
+} from '@services/ordersService'
+import { fetchDatabaseStrategies } from './strategyService'
+import { getSymbolForPlatform } from '@utils/platformUtil'
 
 interface Difference {
-  base: string;
-  platform: string;
-  newSymbol?: boolean;
-  balanceDifference?: boolean;
-  zeroBalance?: boolean;
+  base: string
+  platform: string
+  newSymbol?: boolean
+  balanceDifference?: boolean
+  zeroBalance?: boolean
 }
 
 interface Balance {
-  platform: string;
-  base: string;
-  balance: number;
+  platform: string
+  base: string
+  balance: number
 }
 
 interface Ticker {
-  symbol: string;
-  platform: string;
+  symbol: string
+  platform: string
 }
 
 /**
@@ -40,20 +48,24 @@ interface Ticker {
  * @param {string} platform - Name of the platform for which differences should be processed.
  * @returns {Promise<void>} - This function is asynchronous and returns a promise.
  */
-async function processBalanceChanges(differences: Difference[], platform: string): Promise<void> {
-  const quoteCurrencies: string[] = ["USDT", "BTC", "ETH", "USDC"];
+async function processBalanceChanges(
+  differences: Difference[],
+  platform: string
+): Promise<void> {
+  const quoteCurrencies: string[] = ['USDT', 'BTC', 'ETH', 'USDC']
 
   try {
     // Mise à jour des ordres depuis le serveur
-    await updateOrdersFromServer(platform);
+    await updateOrdersFromServer(platform)
 
     // Récupération des tickers sauvegardés pour la plateforme spécifiée
-    const tickers: Ticker[] = await getAllTickersByPlatform(platform);
+    const tickers: Ticker[] = await getAllTickersByPlatform(platform)
 
     // Suppression des doublons dans le tableau des différences
-    const uniqueDifferences: Difference[] = removeDuplicateDifferences(differences);
+    const uniqueDifferences: Difference[] =
+      removeDuplicateDifferences(differences)
 
-    const newTrades: any[] = [];
+    const newTrades: any[] = []
 
     // Boucle sur les différences sans doublons
     for (const difference of uniqueDifferences) {
@@ -63,16 +75,16 @@ async function processBalanceChanges(differences: Difference[], platform: string
         tickers,
         quoteCurrencies,
         newTrades
-      );
+      )
     }
 
     // Sauvegarde des nouveaux trades détectés
     if (newTrades.length > 0) {
-      await saveTradesToDatabase(newTrades);
+      await saveTradesToDatabase(newTrades)
     }
   } catch (error) {
-    console.error(`Error handling balance differences for ${platform}:`, error);
-    throw error;
+    console.error(`Error handling balance differences for ${platform}:`, error)
+    throw error
   }
 }
 
@@ -82,14 +94,14 @@ async function processBalanceChanges(differences: Difference[], platform: string
  * @returns {Difference[]} - Array of unique differences.
  */
 function removeDuplicateDifferences(differences: Difference[]): Difference[] {
-  const uniqueMap = new Map<string, Difference>();
-  differences.forEach(v => {
-    const key = `${v.base}-${v.platform}`;
+  const uniqueMap = new Map<string, Difference>()
+  differences.forEach((v) => {
+    const key = `${v.base}-${v.platform}`
     if (!uniqueMap.has(key)) {
-      uniqueMap.set(key, v);
+      uniqueMap.set(key, v)
     }
-  });
-  return Array.from(uniqueMap.values());
+  })
+  return Array.from(uniqueMap.values())
 }
 
 /**
@@ -109,28 +121,28 @@ async function processDifference(
   newTrades: any[]
 ): Promise<void> {
   for (const quote of quoteCurrencies) {
-    const symbol = getSymbolForPlatform(platform, difference.base, quote);
+    const symbol = getSymbolForPlatform(platform, difference.base, quote)
 
     const marketExists = tickers.some(
       (ticker) =>
-        ticker.symbol === difference.base + "/" + quote &&
+        ticker.symbol === difference.base + '/' + quote &&
         ticker.platform === platform
-    );
+    )
 
     if (marketExists) {
       try {
-        const tradeList = await fetchLastTrades(platform, symbol);
-        const mappedTrades = mapTrades(platform, tradeList, {});
-        newTrades.push(...mappedTrades);
+        const tradeList = await fetchLastTrades(platform, symbol)
+        const mappedTrades = mapTrades(platform, tradeList, {})
+        newTrades.push(...mappedTrades)
       } catch (error: any) {
-        console.error(`Error fetching trades for ${symbol}: ${error.message}`);
+        console.error(`Error fetching trades for ${symbol}: ${error.message}`)
       }
     } else {
-      console.log(`Symbol not available: ${symbol}`);
+      console.log(`Symbol not available: ${symbol}`)
     }
   }
 
-  logDifferenceType(difference);
+  logDifferenceType(difference)
 }
 
 /**
@@ -139,15 +151,15 @@ async function processDifference(
  */
 function logDifferenceType(difference: Difference): void {
   if (difference.newSymbol) {
-    console.log(`New symbol detected: ${difference.base}`);
+    console.log(`New symbol detected: ${difference.base}`)
   }
 
   if (difference.balanceDifference) {
-    console.log(`Balance difference detected for symbol: ${difference.base}`);
+    console.log(`Balance difference detected for symbol: ${difference.base}`)
   }
 
   if (difference.zeroBalance) {
-    console.log(`Zero balance symbol detected: ${difference.base}`);
+    console.log(`Zero balance symbol detected: ${difference.base}`)
   }
 }
 
@@ -156,21 +168,15 @@ function logDifferenceType(difference: Difference): void {
  * @returns {Promise<any[]>} - Returns a promise that resolves to an array of calculated asset metrics.
  */
 async function calculateAllMetrics(): Promise<any[]> {
-  const [
-    dbCmc,
-    dbStrategies,
-    dbTrades,
-    dbOpenOrders,
-    dbTickers,
-    dbBalances,
-  ] = await Promise.all([
-    fetchDatabaseCmc(),
-    fetchDatabaseStrategies(),
-    fetchDatabaseTrades(),
-    fetchDatabaseOrders(),
-    fetchDatabaseTickers(),
-    fetchDatabaseBalances(),
-  ]);
+  const [dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances] =
+    await Promise.all([
+      fetchDatabaseCmc(),
+      fetchDatabaseStrategies(),
+      fetchDatabaseTrades(),
+      fetchDatabaseOrders(),
+      fetchDatabaseTickers(),
+      fetchDatabaseBalances()
+    ])
   if (
     !dbCmc ||
     !dbStrategies ||
@@ -180,50 +186,50 @@ async function calculateAllMetrics(): Promise<any[]> {
     !dbBalances
   ) {
     console.error(
-      "Error: One or more data retrieval functions returned invalid data."
-    );
-    return [];
+      'Error: One or more data retrieval functions returned invalid data.'
+    )
+    return []
   }
-  const allValues: any[] = [];
+  const allValues: any[] = []
 
   for (const bal of dbBalances) {
     if (bal.balance !== undefined && bal.balance > 0) {
-      const assetBase = bal.base;
-      const assetPlatform = bal.platform;
+      const assetBase = bal.base
+      const assetPlatform = bal.platform
 
-      const filteredCmc = dbCmc.find((cmc) => cmc.symbol === assetBase) || {};
+      const filteredCmc = dbCmc.find((cmc) => cmc.symbol === assetBase) || {}
       const filteredTrades =
-        dbTrades.filter((trade) => trade.base === assetBase) || [];
+        dbTrades.filter((trade) => trade.base === assetBase) || []
       const filteredOpenOrders =
         dbOpenOrders.filter(
           (order) =>
-            order.symbol === assetBase + "/USDT" ||
-            order.symbol === assetBase + "/USDC" ||
-            order.symbol === assetBase + "/BTC"
-        ) || [];
+            order.symbol === assetBase + '/USDT' ||
+            order.symbol === assetBase + '/USDC' ||
+            order.symbol === assetBase + '/BTC'
+        ) || []
       const filteredStrategy =
         dbStrategies.find(
           (strategy) =>
             strategy.asset === assetBase && strategy.strategies[assetPlatform]
-        ) || {};
+        ) || {}
 
       const filteredTickers =
         dbTickers.filter(
           (ticker) =>
             ticker.symbol.startsWith(`${assetBase}/`) &&
             ticker.platform === assetPlatform
-        ) || [];
+        ) || []
 
-      let values;
+      let values
       //TODO verifier quoi exactement on doit verifier pour filteredStrategy
       if (
         !filteredCmc.length &&
         !filteredTrades.length &&
         !filteredOpenOrders.length &&
         !filteredTickers.length &&
-        !filteredStrategy 
+        !filteredStrategy
       ) {
-        if (assetBase === "USDT" || assetBase === "USDC") {
+        if (assetBase === 'USDT' || assetBase === 'USDC') {
           values = calculateAssetMetrics(
             assetBase,
             assetPlatform,
@@ -233,10 +239,10 @@ async function calculateAllMetrics(): Promise<any[]> {
             [],
             [],
             filteredTickers
-          );
+          )
         } else {
-          console.warn(`Skipping ${assetBase} due to insufficient data.`);
-          continue;
+          console.warn(`Skipping ${assetBase} due to insufficient data.`)
+          continue
         }
       }
 
@@ -249,15 +255,15 @@ async function calculateAllMetrics(): Promise<any[]> {
         filteredOpenOrders,
         filteredStrategy,
         filteredTickers
-      );
+      )
 
       if (values && values.rank > 0 && values.currentPossession) {
-        allValues.push(values);
+        allValues.push(values)
       }
     }
   }
 
-  return allValues;
+  return allValues
 }
 
 /**
@@ -266,41 +272,44 @@ async function calculateAllMetrics(): Promise<any[]> {
  * @param {Balance[]} currentBalances - Array of objects representing current balances.
  * @returns {Difference[]} - Returns an array of objects representing the differences found.
  */
-function compareBalances(lastBalances: Balance[], currentBalances: Balance[]): Difference[] {
-  const differences: Difference[] = [];
+function compareBalances(
+  lastBalances: Balance[],
+  currentBalances: Balance[]
+): Difference[] {
+  const differences: Difference[] = []
 
   // Vérification des balances actuelles par rapport aux balances précédentes
   currentBalances.forEach((currentBalance) => {
-    const { platform, base, balance: currentBalanceValue } = currentBalance;
+    const { platform, base, balance: currentBalanceValue } = currentBalance
 
     const matchedBalance = lastBalances.find(
       (item) => item.platform === platform && item.base === base
-    );
+    )
 
     if (!matchedBalance) {
       // Nouveau symbole trouvé
       differences.push({
         base,
         platform,
-        newSymbol: true,
-      });
+        newSymbol: true
+      })
     } else if (matchedBalance.balance !== currentBalanceValue) {
       // Différence de balance trouvée
       differences.push({
         base,
         platform,
-        balanceDifference: true,
-      });
+        balanceDifference: true
+      })
     }
-  });
+  })
 
   // Vérification des balances précédentes pour détecter celles qui ne sont plus présentes
   lastBalances.forEach((lastBalance) => {
-    const { platform, base, balance: lastBalanceValue } = lastBalance;
+    const { platform, base, balance: lastBalanceValue } = lastBalance
 
     const matchedBalance = currentBalances.find(
       (item) => item.platform === platform && item.base === base
-    );
+    )
 
     if (!matchedBalance) {
       if (lastBalanceValue !== 0) {
@@ -308,28 +317,38 @@ function compareBalances(lastBalances: Balance[], currentBalances: Balance[]): D
         differences.push({
           base,
           platform,
-          zeroBalance: true,
-        });
+          zeroBalance: true
+        })
       } else {
         console.log(
           `🚀 ~ file: processorService.ts:256 ~ lastBalances.forEach ~ already deleted?: ${base}`
-        );
+        )
       }
     } else if (matchedBalance.balance !== lastBalanceValue) {
       // Différence de balance trouvée
       differences.push({
         base,
         platform,
-        balanceDifference: true,
-      });
+        balanceDifference: true
+      })
     }
-  });
+  })
 
-  return removeDuplicatesAndStablecoins(differences);
+  return removeDuplicatesAndStablecoins(differences)
 }
 
 // Liste des stablecoins que nous voulons filtrer
-const stablecoins: string[] = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'PAX', 'GUSD', 'HUSD', 'USDN']; // Ajoutez d'autres stablecoins si nécessaire
+const stablecoins: string[] = [
+  'USDT',
+  'USDC',
+  'BUSD',
+  'DAI',
+  'TUSD',
+  'PAX',
+  'GUSD',
+  'HUSD',
+  'USDN'
+] // Ajoutez d'autres stablecoins si nécessaire
 
 // Fonction pour supprimer les doublons basés sur 'base' et 'platform'
 /**
@@ -337,25 +356,23 @@ const stablecoins: string[] = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'PAX', 'GU
  * @param {Difference[]} differences - Array of difference objects.
  * @returns {Difference[]} - Array of unique differences, excluding stablecoins.
  */
-function removeDuplicatesAndStablecoins(differences: Difference[]): Difference[] {
+function removeDuplicatesAndStablecoins(
+  differences: Difference[]
+): Difference[] {
   // Utiliser un Map pour supprimer les doublons
-  const uniqueDifferences = new Map<string, Difference>();
+  const uniqueDifferences = new Map<string, Difference>()
 
-  differences.forEach(difference => {
-    const key = `${difference.base}-${difference.platform}`; // Créez une clé unique en combinant 'base' et 'platform'
+  differences.forEach((difference) => {
+    const key = `${difference.base}-${difference.platform}` // Créez une clé unique en combinant 'base' et 'platform'
 
     // Vérifiez que 'base' n'est pas un stablecoin et ajoutez-le au Map s'il n'est pas encore présent
     if (!stablecoins.includes(difference.base) && !uniqueDifferences.has(key)) {
-      uniqueDifferences.set(key, difference);
+      uniqueDifferences.set(key, difference)
     }
-  });
+  })
 
   // Convertissez le Map en tableau
-  return Array.from(uniqueDifferences.values());
+  return Array.from(uniqueDifferences.values())
 }
 
-export {
-  processBalanceChanges,
-  calculateAllMetrics,
-  compareBalances,
-};
+export { processBalanceChanges, calculateAllMetrics, compareBalances }

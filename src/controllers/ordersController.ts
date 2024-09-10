@@ -1,14 +1,11 @@
-import { Request, Response } from 'express';
-import * as ordersService from '../services/ordersService';
-import { handleErrorResponse } from "@utils/errorUtil";
-import { validateEnvVariables } from "@utils/controllerUtil";
+import { Request, Response } from 'express'
+import * as ordersService from '../services/ordersService'
+import { handleErrorResponse } from '@utils/errorUtil'
+import { validateEnvVariables } from '@utils/controllerUtil'
 
-import { MappedOrder } from '../services/mapping';
+import { MappedOrder } from '../services/mapping'
 
-validateEnvVariables([
-  "MONGODB_COLLECTION_ACTIVE_ORDERS",
-  "TYPE_ACTIVE_ORDERS",
-]);
+validateEnvVariables(['MONGODB_COLLECTION_ACTIVE_ORDERS', 'TYPE_ACTIVE_ORDERS'])
 
 //TODO se mettre daccord sur la forme des retours, que ce soit avec json ou autre
 /**
@@ -19,10 +16,10 @@ validateEnvVariables([
  */
 async function getOrders(req: Request, res: Response): Promise<any> {
   try {
-    const orders = await ordersService.fetchDatabaseOrders();
-    return res.status(200).json(orders);
+    const orders = await ordersService.fetchDatabaseOrders()
+    return res.status(200).json(orders)
   } catch (error: any) {
-    handleErrorResponse(res, error, "getOrders");
+    handleErrorResponse(res, error, 'getOrders')
   }
 }
 
@@ -33,12 +30,12 @@ async function getOrders(req: Request, res: Response): Promise<any> {
  * @returns {Promise<Response>} Réponse JSON avec les données mappées ou une erreur.
  */
 async function updateOrders(req: Request, res: Response): Promise<any> {
-  const { platform } = req.params;
+  const { platform } = req.params
   try {
-    const mappedData = await ordersService.updateOrdersFromServer(platform);
-    return res.status(200).json(mappedData);
+    const mappedData = await ordersService.updateOrdersFromServer(platform)
+    return res.status(200).json(mappedData)
   } catch (error: any) {
-    handleErrorResponse(res, error, "updateOrders");
+    handleErrorResponse(res, error, 'updateOrders')
   }
 }
 
@@ -49,12 +46,12 @@ async function updateOrders(req: Request, res: Response): Promise<any> {
  * @returns {Promise<Response>} Réponse JSON avec le résultat de la suppression ou une erreur.
  */
 async function deleteOrder(req: Request, res: Response): Promise<any> {
-  const { platform, oId, symbol } = req.body;
+  const { platform, oId, symbol } = req.body
   try {
-    const data = await ordersService.deleteOrder(platform, oId, symbol);
-    return res.json(data);
+    const data = await ordersService.deleteOrder(platform, oId, symbol)
+    return res.json(data)
   } catch (error: any) {
-    handleErrorResponse(res, error, "deleteOrder");
+    handleErrorResponse(res, error, 'deleteOrder')
   }
 }
 
@@ -63,8 +60,11 @@ async function deleteOrder(req: Request, res: Response): Promise<any> {
  * @param {Request} req - L'objet de requête.
  * @param {Response} res - L'objet de réponse.
  */
-async function createMarketBuyOrder(req: Request, res: Response): Promise<void> {
-  await createMarketOrder(req, res, "buy");
+async function createMarketBuyOrder(
+  req: Request,
+  res: Response
+): Promise<void> {
+  await createMarketOrder(req, res, 'buy')
 }
 
 /**
@@ -72,8 +72,11 @@ async function createMarketBuyOrder(req: Request, res: Response): Promise<void> 
  * @param {Request} req - L'objet de requête.
  * @param {Response} res - L'objet de réponse.
  */
-async function createMarketSellOrder(req: Request, res: Response): Promise<void> {
-  await createMarketOrder(req, res, "sell");
+async function createMarketSellOrder(
+  req: Request,
+  res: Response
+): Promise<void> {
+  await createMarketOrder(req, res, 'sell')
 }
 
 /**
@@ -83,13 +86,22 @@ async function createMarketSellOrder(req: Request, res: Response): Promise<void>
  * @param {string} orderType - Le type d'ordre ("buy" ou "sell").
  * @returns {Promise<Response>} Réponse JSON avec le résultat de la création de l'ordre ou une erreur.
  */
-async function createMarketOrder(req: Request, res: Response, orderType: "buy" | "sell"): Promise<any> {
-  const { platform, asset, amount } = req.body;
+async function createMarketOrder(
+  req: Request,
+  res: Response,
+  orderType: 'buy' | 'sell'
+): Promise<any> {
+  const { platform, asset, amount } = req.body
   try {
-    const result = await ordersService.createMarketOrder(platform, asset, amount, orderType);
-    return res.status(200).json({ message: result, status: 200 });
+    const result = await ordersService.createMarketOrder(
+      platform,
+      asset,
+      amount,
+      orderType
+    )
+    return res.status(200).json({ message: result, status: 200 })
   } catch (error: any) {
-    handleErrorResponse(res, error, `createMarketOrder (${orderType})`);
+    handleErrorResponse(res, error, `createMarketOrder (${orderType})`)
   }
 }
 
@@ -100,15 +112,32 @@ async function createMarketOrder(req: Request, res: Response, orderType: "buy" |
  * @param {string} orderType - Le type d'ordre ("buy" ou "sell").
  * @returns {Promise<Response>} Réponse JSON avec le résultat de la création de l'ordre ou une erreur.
  */
-async function createLimitOrder(req: Request, res: Response, orderType: "buy" | "sell"): Promise<Response> {
-  const { platform, price, amount, asset } = req.body;
+async function createLimitOrder(
+  req: Request,
+  res: Response,
+  orderType: 'buy' | 'sell'
+): Promise<Response> {
+  const { platform, price, amount, asset } = req.body
   try {
-    const result = await ordersService.createLimitOrder(platform, asset, amount, orderType, price);
-    return res.status(200).json({ message: result, status: 200 });
+    const result = await ordersService.createLimitOrder(
+      platform,
+      asset,
+      amount,
+      orderType,
+      price
+    )
+    return res.status(200).json({ message: result, status: 200 })
   } catch (error: any) {
-    console.log(`🚀 ~ file: ordersController.ts:63 ~ createLimitOrder ~ error:`, error);
-    handleErrorResponse(res, error, `createLimitOrder (${orderType})`);
-    return res.status(500).json({ error: "Une erreur est survenue lors de la création de l'ordre limite" });
+    console.log(
+      `🚀 ~ file: ordersController.ts:63 ~ createLimitOrder ~ error:`,
+      error
+    )
+    handleErrorResponse(res, error, `createLimitOrder (${orderType})`)
+    return res
+      .status(500)
+      .json({
+        error: "Une erreur est survenue lors de la création de l'ordre limite"
+      })
   }
 }
 
@@ -117,8 +146,11 @@ async function createLimitOrder(req: Request, res: Response, orderType: "buy" | 
  * @param {Request} req - L'objet de requête.
  * @param {Response} res - L'objet de réponse.
  */
-async function createBunchLimitSellOrders(req: Request, res: Response): Promise<void> {
-  await createLimitOrder(req, res, "sell");
+async function createBunchLimitSellOrders(
+  req: Request,
+  res: Response
+): Promise<void> {
+  await createLimitOrder(req, res, 'sell')
 }
 
 /**
@@ -126,8 +158,11 @@ async function createBunchLimitSellOrders(req: Request, res: Response): Promise<
  * @param {Request} req - L'objet de requête.
  * @param {Response} res - L'objet de réponse.
  */
-async function createBunchLimitBuyOrders(req: Request, res: Response): Promise<void> {
-  await createLimitOrder(req, res, "buy");
+async function createBunchLimitBuyOrders(
+  req: Request,
+  res: Response
+): Promise<void> {
+  await createLimitOrder(req, res, 'buy')
 }
 
 /**
@@ -137,12 +172,12 @@ async function createBunchLimitBuyOrders(req: Request, res: Response): Promise<v
  * @returns {Promise<Response>} Réponse JSON avec le résultat de l'annulation ou une erreur.
  */
 async function cancelAllOrders(req: Request, res: Response): Promise<any> {
-  const { platform, asset } = req.body;
+  const { platform, asset } = req.body
   try {
-    const result = await ordersService.cancelAllOrders(platform, asset);
-    return res.status(200).json({ message: result, status: 200 });
+    const result = await ordersService.cancelAllOrders(platform, asset)
+    return res.status(200).json({ message: result, status: 200 })
   } catch (error: any) {
-    handleErrorResponse(res, error, "cancelAllOrders");
+    handleErrorResponse(res, error, 'cancelAllOrders')
   }
 }
 
@@ -153,12 +188,12 @@ async function cancelAllOrders(req: Request, res: Response): Promise<any> {
  * @returns {Promise<Response>} Réponse JSON avec le résultat de l'annulation ou une erreur.
  */
 async function cancelAllSellOrders(req: Request, res: Response): Promise<any> {
-  const { platform, asset } = req.body;
+  const { platform, asset } = req.body
   try {
-    const result = await ordersService.cancelAllSellOrders(platform, asset);
-    return res.status(200).json(result);
+    const result = await ordersService.cancelAllSellOrders(platform, asset)
+    return res.status(200).json(result)
   } catch (error: any) {
-    handleErrorResponse(res, error, "cancelAllSellOrders");
+    handleErrorResponse(res, error, 'cancelAllSellOrders')
   }
 }
 
@@ -171,5 +206,5 @@ export {
   cancelAllOrders,
   cancelAllSellOrders,
   createMarketBuyOrder,
-  createMarketSellOrder,
-};
+  createMarketSellOrder
+}

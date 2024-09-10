@@ -1,10 +1,10 @@
 // src/routes/cmcRoutes.ts
-import express from 'express';
-import { getCmc, updateCmc } from '@controllers/cmcController';
+import express from 'express'
+import { getCmc, updateCmc } from '@controllers/cmcController'
 
-const router = express.Router();
+const router = express.Router()
 
-router.get('/get', getCmc);
-router.get('/update', updateCmc);
+router.get('/get', getCmc)
+router.get('/update', updateCmc)
 
-export default router;
+export default router

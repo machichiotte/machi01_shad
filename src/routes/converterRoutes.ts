@@ -1,12 +1,17 @@
 // src/routes/converterRoutes.ts
-import express from 'express';
-import multer from 'multer';
-import { getConvertedCsv } from '@controllers/converterController';
-import { fileUploadMiddleware } from '../middlewares/fileUploadMiddleware';
+import express from 'express'
+import multer from 'multer'
+import { getConvertedCsv } from '@controllers/converterController'
+import { fileUploadMiddleware } from '../middlewares/fileUploadMiddleware'
 
-const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage() });
+const router = express.Router()
+const upload = multer({ storage: multer.memoryStorage() })
 
-router.post('/post', upload.single('csvFile'), fileUploadMiddleware, getConvertedCsv);
+router.post(
+  '/post',
+  upload.single('csvFile'),
+  fileUploadMiddleware,
+  getConvertedCsv
+)
 
-export default router;
+export default router

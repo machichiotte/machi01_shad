@@ -1,8 +1,8 @@
 // src/utils/platformUtil.ts
-import * as ccxt from 'ccxt';
-import { AuthenticationError } from 'ccxt';
+import * as ccxt from 'ccxt'
+import { AuthenticationError } from 'ccxt'
 
-const PLATFORMS: string[] = ["binance", "kucoin"];
+const PLATFORMS: string[] = ['binance', 'kucoin']
 
 /**
  * Utility function to create an exchange instance
@@ -12,27 +12,27 @@ const PLATFORMS: string[] = ["binance", "kucoin"];
  * @throws {AuthenticationError} If there's an authentication error with the platform
  */
 function createPlatformInstance(platform: string): ccxt.Exchange {
-  const apiKey = process.env[`${platform.toUpperCase()}_API_KEY`];
-  const secret = process.env[`${platform.toUpperCase()}_SECRET_KEY`];
-  const passphrase = process.env[`${platform.toUpperCase()}_PASSPHRASE`] || "";
+  const apiKey = process.env[`${platform.toUpperCase()}_API_KEY`]
+  const secret = process.env[`${platform.toUpperCase()}_SECRET_KEY`]
+  const passphrase = process.env[`${platform.toUpperCase()}_PASSPHRASE`] || ''
 
   if (!apiKey) {
-    throw new Error(`API key missing for platform: ${platform}`);
+    throw new Error(`API key missing for platform: ${platform}`)
   }
 
   if (!secret) {
-    throw new Error(`API secret missing for platform: ${platform}`);
+    throw new Error(`API secret missing for platform: ${platform}`)
   }
 
   // Check if the platform is supported
   if (!PLATFORMS.includes(platform)) {
-    throw new Error(`Unsupported platform: ${platform}`);
+    throw new Error(`Unsupported platform: ${platform}`)
   }
 
   try {
     // Check if the CCXT class exists
     if (!(platform in ccxt)) {
-      throw new Error(`Unsupported platform: ${platform}`);
+      throw new Error(`Unsupported platform: ${platform}`)
     }
 
     const platformParams: ccxt.Exchange['options'] = {
@@ -40,21 +40,21 @@ function createPlatformInstance(platform: string): ccxt.Exchange {
       secret,
       ...(passphrase && { password: passphrase }),
       timeout: 20000, // Timeout for requests
-      enableRateLimit: true, // Enable rate limiting
-    };
+      enableRateLimit: true // Enable rate limiting
+    }
 
-    return new (ccxt as any)[platform](platformParams);
+    return new (ccxt as any)[platform](platformParams)
   } catch (error) {
     if (error instanceof AuthenticationError) {
       // Handle authentication errors specifically
       throw new AuthenticationError(
         `Authentication error for ${platform}: ${error.message}`
-      );
+      )
     } else {
       // Handle other errors
       throw new Error(
         `Error creating platform instance for ${platform}: ${(error as Error).message}`
-      );
+      )
     }
   }
 }
@@ -67,30 +67,34 @@ function createPlatformInstance(platform: string): ccxt.Exchange {
  * @returns {string} - The formatted symbol for the specified platform
  * @throws {Error} If the platform is unsupported
  */
-function getSymbolForPlatform(platform: string, base: string, quote: string = "USDT"): string {
-  let symbol: string;
+function getSymbolForPlatform(
+  platform: string,
+  base: string,
+  quote: string = 'USDT'
+): string {
+  let symbol: string
 
   switch (platform) {
-    case "kucoin":
-      symbol = `${base}-${quote.toUpperCase()}`;
-      break;
-    case "binance":
-      symbol = `${base}${quote.toUpperCase()}`;
-      break;
-    case "htx":
-      symbol = `${base.toLowerCase()}${quote.toLowerCase()}`;
-      break;
-    case "gateio":
-      symbol = `${base.toUpperCase()}_${quote.toUpperCase()}`;
-      break;
-    case "okx":
-      symbol = `${base}-${quote.toUpperCase()}`;
-      break;
+    case 'kucoin':
+      symbol = `${base}-${quote.toUpperCase()}`
+      break
+    case 'binance':
+      symbol = `${base}${quote.toUpperCase()}`
+      break
+    case 'htx':
+      symbol = `${base.toLowerCase()}${quote.toLowerCase()}`
+      break
+    case 'gateio':
+      symbol = `${base.toUpperCase()}_${quote.toUpperCase()}`
+      break
+    case 'okx':
+      symbol = `${base}-${quote.toUpperCase()}`
+      break
     default:
-      throw new Error(`Unsupported platform: ${platform}`);
+      throw new Error(`Unsupported platform: ${platform}`)
   }
 
-  return symbol;
+  return symbol
 }
 
 /**
@@ -98,11 +102,7 @@ function getSymbolForPlatform(platform: string, base: string, quote: string = "U
  * @returns {string[]} - An array of supported platform names
  */
 function getPlatforms(): string[] {
-  return PLATFORMS;
+  return PLATFORMS
 }
 
-export {
-  createPlatformInstance,
-  getSymbolForPlatform,
-  getPlatforms,
-};
+export { createPlatformInstance, getSymbolForPlatform, getPlatforms }

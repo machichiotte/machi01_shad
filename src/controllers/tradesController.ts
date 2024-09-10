@@ -1,7 +1,7 @@
 // src/controllers/tradesController.ts
-import { Request, Response } from 'express';
-import * as tradesService from '@services/tradesService';
-import { handleErrorResponse } from "@utils/errorUtil";
+import { Request, Response } from 'express'
+import * as tradesService from '@services/tradesService'
+import { handleErrorResponse } from '@utils/errorUtil'
 
 /**
  * Récupère tous les trades de la base de données.
@@ -10,10 +10,10 @@ import { handleErrorResponse } from "@utils/errorUtil";
  */
 async function getTrades(req: Request, res: Response): Promise<void> {
   try {
-    const trades = await tradesService.fetchDatabaseTrades();
-    res.json(trades);
+    const trades = await tradesService.fetchDatabaseTrades()
+    res.json(trades)
   } catch (error: any) {
-    handleErrorResponse(res, error, "getTrades");
+    handleErrorResponse(res, error, 'getTrades')
   }
 }
 
@@ -23,13 +23,13 @@ async function getTrades(req: Request, res: Response): Promise<void> {
  * @param {Response} res - L'objet de réponse.
  */
 async function updateTradeById(req: Request, res: Response): Promise<void> {
-  const { tradeId } = req.params;
-  const updatedTrade = req.body;
+  const { tradeId } = req.params
+  const updatedTrade = req.body
   try {
-    const result = await tradesService.updateTradeById(tradeId, updatedTrade);
-    res.json(result);
+    const result = await tradesService.updateTradeById(tradeId, updatedTrade)
+    res.json(result)
   } catch (error: any) {
-    handleErrorResponse(res, error, "updateTradeById");
+    handleErrorResponse(res, error, 'updateTradeById')
   }
 }
 
@@ -39,12 +39,12 @@ async function updateTradeById(req: Request, res: Response): Promise<void> {
  * @param {Response} res - L'objet de réponse.
  */
 async function addTradesManually(req: Request, res: Response): Promise<void> {
-  const tradesData = req.body.trades_data;
+  const tradesData = req.body.trades_data
   try {
-    const result = await tradesService.addTradesManually(tradesData);
-    res.status(result.status).json(result);
+    const result = await tradesService.addTradesManually(tradesData)
+    res.status(result.status).json(result)
   } catch (error: any) {
-    handleErrorResponse(res, error, "addTradesManually");
+    handleErrorResponse(res, error, 'addTradesManually')
   }
 }
 
@@ -54,12 +54,12 @@ async function addTradesManually(req: Request, res: Response): Promise<void> {
  * @param {Response} res - L'objet de réponse.
  */
 async function updateTrades(req: Request, res: Response): Promise<void> {
-  const { platform } = req.params;
+  const { platform } = req.params
   try {
-    const result = await tradesService.updateTrades(platform);
-    res.status(result.status).json(result);
+    const result = await tradesService.updateTrades(platform)
+    res.status(result.status).json(result)
   } catch (error: any) {
-    handleErrorResponse(res, error, "updateTrades");
+    handleErrorResponse(res, error, 'updateTrades')
   }
 }
 
@@ -69,12 +69,12 @@ async function updateTrades(req: Request, res: Response): Promise<void> {
  * @param {Response} res - L'objet de réponse.
  */
 async function fetchLastTrades(req: Request, res: Response): Promise<void> {
-  const { platform, symbol } = req.params;
+  const { platform, symbol } = req.params
   try {
-    const trades = await tradesService.fetchLastTrades(platform, symbol);
-    res.json(trades);
+    const trades = await tradesService.fetchLastTrades(platform, symbol)
+    res.json(trades)
   } catch (error: any) {
-    handleErrorResponse(res, error, "fetchLastTrades");
+    handleErrorResponse(res, error, 'fetchLastTrades')
   }
 }
 
@@ -83,13 +83,16 @@ async function fetchLastTrades(req: Request, res: Response): Promise<void> {
  * @param {Request} req - L'objet de requête contenant les nouveaux trades dans le corps.
  * @param {Response} res - L'objet de réponse.
  */
-async function saveTradesToDatabase(req: Request, res: Response): Promise<void> {
-  const { newTrades } = req.body;
+async function saveTradesToDatabase(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const { newTrades } = req.body
   try {
-    await tradesService.saveTradesToDatabase(newTrades);
-    res.status(200).json({ message: "Trades sauvegardés avec succès" });
+    await tradesService.saveTradesToDatabase(newTrades)
+    res.status(200).json({ message: 'Trades sauvegardés avec succès' })
   } catch (error: any) {
-    handleErrorResponse(res, error, "saveTradesToDatabase");
+    handleErrorResponse(res, error, 'saveTradesToDatabase')
   }
 }
 
@@ -98,13 +101,16 @@ async function saveTradesToDatabase(req: Request, res: Response): Promise<void> 
  * @param {Request} req - L'objet de requête contenant tous les nouveaux trades dans le corps.
  * @param {Response} res - L'objet de réponse.
  */
-async function saveAllTradesToDatabase(req: Request, res: Response): Promise<void> {
-  const { newTrades } = req.body;
+async function saveAllTradesToDatabase(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const { newTrades } = req.body
   try {
-    await tradesService.saveAllTradesToDatabase(newTrades);
-    res.status(200).json({ message: "Tous les trades sauvegardés avec succès" });
+    await tradesService.saveAllTradesToDatabase(newTrades)
+    res.status(200).json({ message: 'Tous les trades sauvegardés avec succès' })
   } catch (error: any) {
-    handleErrorResponse(res, error, "saveAllTradesToDatabase");
+    handleErrorResponse(res, error, 'saveAllTradesToDatabase')
   }
 }
 
@@ -115,5 +121,5 @@ export {
   updateTrades,
   fetchLastTrades,
   saveTradesToDatabase,
-  saveAllTradesToDatabase,
-};
+  saveAllTradesToDatabase
+}

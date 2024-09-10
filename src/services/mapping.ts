@@ -1,79 +1,84 @@
 // src/services/mapping.ts
 
-import { Trade, Balances, Market, Order, Tickers, Dictionary } from 'ccxt'; // Importation des types nécessaires de ccxt
-import { isStableCoin, getStableCoins, isMajorCryptoPair, getTotalUSDT } from '@utils/mappingUtil';
+import { Trade, Balances, Market, Order, Tickers, Dictionary } from 'ccxt' // Importation des types nécessaires de ccxt
+import {
+  isStableCoin,
+  getStableCoins,
+  isMajorCryptoPair,
+  getTotalUSDT
+} from '@utils/mappingUtil'
 
 // Interface pour le mapping des balances
 export interface MappedBalance {
-  _id?: string;
-  base: string;
-  balance: number;
-  available: number;
-  platform: string;
+  _id?: string
+  base: string
+  balance: number
+  available: number
+  platform: string
 }
 
 // Interface pour le mapping des trades
 export interface MappedTrade {
-  _id?: string;
-  base: string;
-  quote: string;
-  pair: string;
-  timestamp: number;
-  type: string;
-  price: number;
-  amount: number;
-  total: number;
-  fee: number;
-  feecoin: string;
-  platform: string;
-  totalUSDT: number;
+  _id?: string
+  base: string
+  quote: string
+  pair: string
+  timestamp: number
+  type: string
+  price: number
+  amount: number
+  total: number
+  fee: number
+  feecoin: string
+  platform: string
+  totalUSDT: number
 }
 
 // Interface pour le mapping des ordres
 export interface MappedOrder {
-  _id?: string;
-  oId: string;
-  cId: string | undefined;
-  platform: string;
-  symbol: string;
-  type: string | undefined;
-  side: string | undefined;
-  amount: number;
-  price: number;
+  _id?: string
+  oId: string
+  cId: string | undefined
+  platform: string
+  symbol: string
+  type: string | undefined
+  side: string | undefined
+  amount: number
+  price: number
 }
 
 // Interface pour le mapping des tickers
 export interface MappedTicker {
-  _id?: string;
-  symbol: string;
-  timestamp: number | undefined;
-  last: number | undefined;
-  platform: string;
+  _id?: string
+  symbol: string
+  timestamp: number | undefined
+  last: number | undefined
+  platform: string
 }
 
 // Interface pour le mapping des marchés
 export interface MappedMarket {
-  _id?: string;
-  symbol: string;
-  base: string;
-  quote: string;
-  active: boolean;
-  type: string;
-  amountMin: number;
-  amountMax: number;
-  priceMin: number;
-  priceMax: number;
-  precisionAmount?: number;
-  precisionPrice?: number;
-  platform: string;
+  _id?: string
+  symbol: string
+  base: string
+  quote: string
+  active: boolean
+  type: string
+  amountMin: number
+  amountMax: number
+  priceMin: number
+  priceMax: number
+  precisionAmount?: number
+  precisionPrice?: number
+  platform: string
 }
 
 export interface MappedStrategy {
-  _id?: string;
-  asset: string;
+  _id?: string
+  asset: string
   strategies: {
-    [key: string]: any;
-  };
+    [key: string]: any
+  }
 }
 
 /**
@@ -84,13 +89,18 @@ export interface MappedStrategy {
  * @param {string} platform - The exchange platform.
  * @returns {Object} An object containing the mapped balance information.
  */
-function mapBalanceCommon(base: string, balance: number, available: number, platform: string): MappedBalance {
+function mapBalanceCommon(
+  base: string,
+  balance: number,
+  available: number,
+  platform: string
+): MappedBalance {
   return {
     base,
     balance: parseFloat(balance.toString()),
     available: parseFloat(available.toString()),
-    platform,
-  };
+    platform
+  }
 }
 
 /**
@@ -101,57 +111,58 @@ function mapBalanceCommon(base: string, balance: number, available: number, plat
  */
 function mapBalance(platform: string, data: Balances): MappedBalance[] {
   const mappings: Record<string, (item: any) => MappedBalance> = {
-    binance: item =>
+    binance: (item) =>
       mapBalanceCommon(
         item.asset,
         parseFloat(item.free) + parseFloat(item.locked),
         item.free,
         platform
       ),
-    kucoin: item =>
+    kucoin: (item) =>
       mapBalanceCommon(item.currency, item.balance, item.available, platform),
     htx: ([key, value]) =>
       mapBalanceCommon(key.toUpperCase(), value.total, value.free, platform),
-    okx: item =>
+    okx: (item) =>
       mapBalanceCommon(item.ccy, item.cashBal, item.availBal, platform),
-    gateio: item =>
+    gateio: (item) =>
       mapBalanceCommon(
         item.currency,
         parseFloat(item.available) + parseFloat(item.locked),
         item.available,
         platform
-      ),
-  };
+      )
+  }
 
-  const platformMapping = mappings[platform];
+  const platformMapping = mappings[platform]
   if (!platformMapping) {
-    console.warn(`Platform ${platform} not supported.`);
-    return [];
+    console.warn(`Platform ${platform} not supported.`)
+    return []
   }
 
   const balanceData = Array.isArray(
     data.info?.balances || data.info?.data || data
   )
-    ? (data.info?.balances || data.info?.data || data)
+    ? data.info?.balances || data.info?.data || data
     : Object.entries(data).filter(
-      ([key, value]) =>
-        !["info", "free", "used", "total"].includes(key) && (value as any).total > 0
-    );
+        ([key, value]) =>
+          !['info', 'free', 'used', 'total'].includes(key) &&
+          (value as any).total > 0
+      )
 
   return balanceData
     .filter((item: any) => {
       const balance = parseFloat(
         item.balance ||
-        item.free ||
-        item.cashBal ||
-        item.available ||
-        item.locked ||
-        item[1]?.total ||
-        "0"
-      );
-      return balance > 0;
+          item.free ||
+          item.cashBal ||
+          item.available ||
+          item.locked ||
+          item[1]?.total ||
+          '0'
+      )
+      return balance > 0
     })
-    .map(platformMapping);
+    .map(platformMapping)
 }
 
 /**
@@ -161,31 +172,37 @@ function mapBalance(platform: string, data: Balances): MappedBalance[] {
  * @param {Record<string, number>} conversionRates - Conversion rates (optional).
  * @returns {Record<string, any>} An object containing the mapped trade information.
  */
-function mapTradeCommon(item: Trade, platform: string, conversionRates: Record<string, number> = {}): Omit<MappedTrade, '_id'> {
-  const [baseAsset, quoteAsset] = item?.symbol?.toUpperCase().split("/") || [];
+function mapTradeCommon(
+  item: Trade,
+  platform: string,
+  conversionRates: Record<string, number> = {}
+): Omit<MappedTrade, '_id'> {
+  const [baseAsset, quoteAsset] = item?.symbol?.toUpperCase().split('/') || []
   const totalUSDT = getTotalUSDT(
-    item.symbol?.toUpperCase() || "",
+    item.symbol?.toUpperCase() || '',
     item.cost || 0,
     conversionRates
-  );
+  )
 
-  const feeCost = item.fee ? parseFloat(item.fee.cost?.toString() || "0") : 0;
-  const feeCurrency = item.fee ? item.fee.currency?.toUpperCase() || "N/A" : "N/A";
+  const feeCost = item.fee ? parseFloat(item.fee.cost?.toString() || '0') : 0
+  const feeCurrency = item.fee
+    ? item.fee.currency?.toUpperCase() || 'N/A'
+    : 'N/A'
 
   return {
     base: baseAsset,
     quote: quoteAsset,
-    pair: item.symbol?.toUpperCase() || "",
+    pair: item.symbol?.toUpperCase() || '',
     timestamp: item.timestamp || -1,
-    type: item.side || "",
-    price: parseFloat(item.price?.toString() || "0"),
-    amount: parseFloat(item.amount?.toString() || "0"),
-    total: parseFloat(item.cost?.toString() || "0"),
+    type: item.side || '',
+    price: parseFloat(item.price?.toString() || '0'),
+    amount: parseFloat(item.amount?.toString() || '0'),
+    total: parseFloat(item.cost?.toString() || '0'),
     fee: feeCost,
     feecoin: feeCurrency,
     platform,
-    totalUSDT: totalUSDT || 0,
-  };
+    totalUSDT: totalUSDT || 0
+  }
 }
 
 /**
@@ -195,20 +212,22 @@ function mapTradeCommon(item: Trade, platform: string, conversionRates: Record<s
  * @param {Record<string, number>} conversionRates - Conversion rates (optional).
  * @returns {Record<string, any>[]} An array of objects containing the mapped trades.
  */
-function mapTrades(platform: string, data: Trade[], conversionRates: Record<string, number> = {}): Omit<MappedTrade, '_id'>[] {
-  return data.map((item) => {
-    const commonData = mapTradeCommon(item, platform, conversionRates);
-    if (
-      platform === "okx" &&
-      item.info?.data?.[0]?.details
-    ) {
-      return item.info.data[0].details.map((item: Trade) =>
-        mapTradeCommon(item, "okx", conversionRates)
-      );
-    }
-    return commonData;
-  })
-    .flat();
+function mapTrades(
+  platform: string,
+  data: Trade[],
+  conversionRates: Record<string, number> = {}
+): Omit<MappedTrade, '_id'>[] {
+  return data
+    .map((item) => {
+      const commonData = mapTradeCommon(item, platform, conversionRates)
+      if (platform === 'okx' && item.info?.data?.[0]?.details) {
+        return item.info.data[0].details.map((item: Trade) =>
+          mapTradeCommon(item, 'okx', conversionRates)
+        )
+      }
+      return commonData
+    })
+    .flat()
 }
 
 /**
@@ -226,8 +245,8 @@ function mapOrders(platform: string, data: Order[]): MappedOrder[] {
     type: item?.type,
     side: item?.side,
     amount: item.amount,
-    price: item.price,
-  }));
+    price: item.price
+  }))
 }
 
 /**
@@ -241,8 +260,8 @@ function mapTickers(platform: string, data: Tickers): MappedTicker[] {
     symbol: item.symbol,
     timestamp: item.timestamp,
     last: item.last,
-    platform,
-  }));
+    platform
+  }))
 }
 
 /**
@@ -253,7 +272,9 @@ function mapTickers(platform: string, data: Tickers): MappedTicker[] {
  */
 function mapMarkets(platform: string, data: Market[]): MappedMarket[] {
   return Object.values(data)
-    .filter((item): item is Market => getStableCoins().some((coin) => item?.quote === coin))
+    .filter((item): item is Market =>
+      getStableCoins().some((coin) => item?.quote === coin)
+    )
     .map((item) => ({
       symbol: item?.id ?? '',
       base: item?.base ?? '',
@@ -266,8 +287,8 @@ function mapMarkets(platform: string, data: Market[]): MappedMarket[] {
       priceMax: item?.limits.price?.max || 0,
       precisionAmount: item?.precision?.amount ?? 0,
       precisionPrice: item?.precision?.price ?? 0,
-      platform,
-    }));
+      platform
+    }))
 }
 
 export {
@@ -278,5 +299,5 @@ export {
   mapTrades,
   getTotalUSDT,
   isStableCoin,
-  isMajorCryptoPair,
-};
+  isMajorCryptoPair
+}

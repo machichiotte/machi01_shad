@@ -1,9 +1,9 @@
 // src/routes/marketsRoutes.ts
-import express from 'express';
-import { getMarkets } from '@controllers/marketsController';
+import express from 'express'
+import { getMarkets } from '@controllers/marketsController'
 
-const router = express.Router();
+const router = express.Router()
 
-router.get('/get', getMarkets);
+router.get('/get', getMarkets)
 
-export default router;
+export default router

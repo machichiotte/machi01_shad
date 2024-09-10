@@ -1,10 +1,10 @@
 // src/routes/strategyRoutes.ts
-import express from 'express';
-import { getStrat, updateStrat } from '@controllers/strategyController';
+import express from 'express'
+import { getStrat, updateStrat } from '@controllers/strategyController'
 
-const router = express.Router();
+const router = express.Router()
 
-router.get('/get', getStrat);
-router.post('/update', updateStrat);
+router.get('/get', getStrat)
+router.post('/update', updateStrat)
 
-export default router;
+export default router

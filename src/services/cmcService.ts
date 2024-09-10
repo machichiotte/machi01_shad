@@ -1,18 +1,18 @@
 // src/services/cmcService.ts
-import { getData } from "@utils/dataUtil";
-import { saveLastUpdateToDatabase } from "./lastUpdateService";
-import { deleteAllDataMDB, saveData } from "./mongodbService";
+import { getData } from '@utils/dataUtil'
+import { saveLastUpdateToDatabase } from './lastUpdateService'
+import { deleteAllDataMDB, saveData } from './mongodbService'
 
 interface CmcData {
   // Define the structure of CoinMarketCap data
-  [key: string]: any;
+  [key: string]: any
 }
 
 interface FetchResponse {
-  data: CmcData[];
+  data: CmcData[]
   status: {
-    total_count: number;
-  };
+    total_count: number
+  }
 }
 
 /**
@@ -20,49 +20,51 @@ interface FetchResponse {
  * @returns {Promise<CmcData[]>} - A promise resolved with the fetched CoinMarketCap data.
  */
 async function fetchCurrentCmc(): Promise<CmcData[]> {
-  const API_KEY = process.env.CMC_APIKEY;
-  const limit = 5000;
-  const baseStart = 1;
-  const convert = "USD";
+  const API_KEY = process.env.CMC_APIKEY
+  const limit = 5000
+  const baseStart = 1
+  const convert = 'USD'
 
-  let start = baseStart;
-  const allData: CmcData[] = [];
+  let start = baseStart
+  const allData: CmcData[] = []
 
   try {
     while (true) {
-      const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=${start}&limit=${limit}&convert=${convert}`;
+      const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=${start}&limit=${limit}&convert=${convert}`
 
       const response = await fetch(URL, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
-          "X-CMC_PRO_API_KEY": API_KEY as string,
-        },
-      });
+          'Content-Type': 'application/json',
+          'X-CMC_PRO_API_KEY': API_KEY as string
+        }
+      })
 
       if (!response.ok) {
-        throw new Error(`Échec de la récupération des données CoinMarketCap: ${response.statusText}`);
+        throw new Error(
+          `Échec de la récupération des données CoinMarketCap: ${response.statusText}`
+        )
       }
 
-      const { data, status }: FetchResponse = await response.json();
+      const { data, status }: FetchResponse = await response.json()
 
       if (data.length === 0) {
-        break;
+        break
       }
 
-      allData.push(...data);
-      start += data.length;
+      allData.push(...data)
+      start += data.length
 
       if (status.total_count <= start) {
-        break;
+        break
       }
     }
   } catch (error) {
-    console.error(`Erreur dans fetchCmcData: ${(error as Error).message}`);
-    throw error;
+    console.error(`Erreur dans fetchCmcData: ${(error as Error).message}`)
+    throw error
   }
 
-  return allData;
+  return allData
 }
 
 /**
@@ -70,14 +72,19 @@ async function fetchCurrentCmc(): Promise<CmcData[]> {
  * @returns {Promise<CmcData[]>} - The latest CMC data from the database.
  */
 async function fetchDatabaseCmc(): Promise<CmcData[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_CMC;
+  const collectionName = process.env.MONGODB_COLLECTION_CMC
   try {
-    const data = await getData(collectionName as string);
-    console.log(`🚀 ~ file: cmcService.ts ~ fetchDatabaseCmc :`, { collectionName, count: data.length });
-    return data;
+    const data = await getData(collectionName as string)
+    console.log(`🚀 ~ file: cmcService.ts ~ fetchDatabaseCmc :`, {
+      collectionName,
+      count: data.length
+    })
+    return data
   } catch (error) {
-    console.error(`Erreur dans fetchDatabaseCmc: ${(error as Error).message}`, { error });
-    throw error;
+    console.error(`Erreur dans fetchDatabaseCmc: ${(error as Error).message}`, {
+      error
+    })
+    throw error
   }
 }
 
@@ -87,29 +94,32 @@ async function fetchDatabaseCmc(): Promise<CmcData[]> {
  * @returns {Promise<Object>} - Result of the update operation.
  */
 async function updateDatabaseCmcData(data: CmcData[]): Promise<Object> {
-  const collectionName = process.env.MONGODB_COLLECTION_CMC;
+  const collectionName = process.env.MONGODB_COLLECTION_CMC
   try {
-    const deleteResult = await deleteAllDataMDB(collectionName as string);
-    const saveResult = await saveData(data, collectionName as string);
-    await saveLastUpdateToDatabase(process.env.TYPE_CMC as string, "");
+    const deleteResult = await deleteAllDataMDB(collectionName as string)
+    const saveResult = await saveData(data, collectionName as string)
+    await saveLastUpdateToDatabase(process.env.TYPE_CMC as string, '')
 
-    console.log("Données CMC mises à jour dans la base de données", {
+    console.log('Données CMC mises à jour dans la base de données', {
       deleteResult,
       saveResult,
-      totalCount: data.length,
-    });
+      totalCount: data.length
+    })
 
     return {
       status: true,
-      message: "Données CMC mises à jour avec succès",
+      message: 'Données CMC mises à jour avec succès',
       data: data,
       deleteResult,
       saveResult,
-      totalCount: data.length,
-    };
+      totalCount: data.length
+    }
   } catch (error) {
-    console.error(`Erreur dans updateDatabaseCmcData: ${(error as Error).message}`, { error });
-    throw error;
+    console.error(
+      `Erreur dans updateDatabaseCmcData: ${(error as Error).message}`,
+      { error }
+    )
+    throw error
   }
 }
 
@@ -119,13 +129,15 @@ async function updateDatabaseCmcData(data: CmcData[]): Promise<Object> {
  */
 async function updateCmcData(): Promise<Object> {
   try {
-    const data = await fetchCurrentCmc();
-    console.log("Dernières données CMC récupérées", { count: data.length });
-    return await updateDatabaseCmcData(data);
+    const data = await fetchCurrentCmc()
+    console.log('Dernières données CMC récupérées', { count: data.length })
+    return await updateDatabaseCmcData(data)
   } catch (error) {
-    console.error(`Erreur dans updateCmcData: ${(error as Error).message}`, { error });
-    throw error;
+    console.error(`Erreur dans updateCmcData: ${(error as Error).message}`, {
+      error
+    })
+    throw error
   }
 }
 
-export { fetchCurrentCmc, fetchDatabaseCmc, updateCmcData };
+export { fetchCurrentCmc, fetchDatabaseCmc, updateCmcData }

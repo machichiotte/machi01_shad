@@ -57,12 +57,14 @@ Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments 
 
 ## Installation
 
-1. Clonez le dépôt depuis GitHub : 
+1. Clonez le dépôt depuis GitHub :
+
 ```bash
 git clone https://github.com/machichiotte/machi-shad-backend.git
 ```
-2. Installez les dépendances : 
-`npm install` / `yarn install`
+
+2. Installez les dépendances :
+   `npm install` / `yarn install`
 
 ## Configuration
 
@@ -78,7 +80,7 @@ Remplacez les valeurs par vos propres paramètres.
 
 ## Utilisation
 
-Pour démarrer le serveur backend, exécutez la commande suivante : 
+Pour démarrer le serveur backend, exécutez la commande suivante :
 `npm run dev` ou `yarn dev`
 
 Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant prêt à traiter les requêtes entrantes.
@@ -175,12 +177,13 @@ Pour exécuter les tests, utilisez la commande suivante :
 ```bash
 npm test
 ```
+
 ou si vous utilisez yarn :
 
 ```bash
 yarn test
 ```
-    
+
 ## Déploiement
 
 Le backend peut être déployé sur diverses plateformes cloud comme Heroku, AWS, ou Google Cloud Platform. Assurez-vous de configurer correctement les variables d'environnement sur votre plateforme de déploiement.

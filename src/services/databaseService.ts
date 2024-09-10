@@ -1,6 +1,6 @@
 // src/services/databaseService.ts
-import { deleteAndSaveData } from "./mongodbService";
-import { saveLastUpdateToDatabase } from "./lastUpdateService";
+import { deleteAndSaveData } from './mongodbService'
+import { saveLastUpdateToDatabase } from './lastUpdateService'
 
 /**
  * Saves data to the database and updates the last update date.
@@ -9,21 +9,30 @@ import { saveLastUpdateToDatabase } from "./lastUpdateService";
  * @param {string} platform - The platform identifier.
  * @param {string} updateType - The update type for lastUpdateService.
  */
-async function saveDataToDatabase(data: Object[], collectionName: string, platform: string, updateType: string): Promise<void> {
+async function saveDataToDatabase(
+  data: Object[],
+  collectionName: string,
+  platform: string,
+  updateType: string
+): Promise<void> {
   try {
-    await deleteAndSaveData(data, collectionName, platform);
-    await saveLastUpdateToDatabase(updateType, platform);
-    console.log(`Données sauvegardées dans la base de données`, { platform, collectionName });
-  } catch (error) {
-    console.error(`Échec de la sauvegarde des données dans la base de données`, {
+    await deleteAndSaveData(data, collectionName, platform)
+    await saveLastUpdateToDatabase(updateType, platform)
+    console.log(`Données sauvegardées dans la base de données`, {
       platform,
-      collectionName,
-      error: (error as Error).message,
-    });
-    throw error;
+      collectionName
+    })
+  } catch (error) {
+    console.error(
+      `Échec de la sauvegarde des données dans la base de données`,
+      {
+        platform,
+        collectionName,
+        error: (error as Error).message
+      }
+    )
+    throw error
   }
 }
 
-export {
-  saveDataToDatabase,
-};
+export { saveDataToDatabase }

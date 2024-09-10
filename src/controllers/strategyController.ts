@@ -1,8 +1,8 @@
 // src/controllers/strategyController.ts
-import { Request, Response } from 'express';
-import { handleErrorResponse } from "@utils/errorUtil";
-import * as lastUpdateService from "@services/lastUpdateService";
-import * as strategyService from "@services/strategyService";
+import { Request, Response } from 'express'
+import { handleErrorResponse } from '@utils/errorUtil'
+import * as lastUpdateService from '@services/lastUpdateService'
+import * as strategyService from '@services/strategyService'
 
 /**
  * Récupère les stratégies de la base de données.
@@ -11,15 +11,15 @@ import * as strategyService from "@services/strategyService";
  */
 async function getStrat(req: Request, res: Response): Promise<void> {
   try {
-    const data = await strategyService.fetchDatabaseStrategies();
-    res.json(data);
+    const data = await strategyService.fetchDatabaseStrategies()
+    res.json(data)
   } catch (error: any) {
     console.error(
       `🚀 ~ file: strategyController.ts:23 ~ getStrat ~ error:`,
       error
-    );
+    )
     //console.error("Échec de la récupération des stratégies", { error: (error as Error).message });
-    handleErrorResponse(res, error, "getStrat");
+    handleErrorResponse(res, error, 'getStrat')
   }
 }
 
@@ -29,14 +29,19 @@ async function getStrat(req: Request, res: Response): Promise<void> {
  * @param {Response} res - L'objet de réponse.
  */
 async function updateStrat(req: Request, res: Response): Promise<void> {
-  const strat = req.body;
+  const strat = req.body
   try {
-    const data = await strategyService.updateStrategies(strat);
-    await lastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_STRATEGY as string, "");
-    res.json(data);
+    const data = await strategyService.updateStrategies(strat)
+    await lastUpdateService.saveLastUpdateToDatabase(
+      process.env.TYPE_STRATEGY as string,
+      ''
+    )
+    res.json(data)
   } catch (error) {
-    console.log("🚀 ~ updateStrat ~ err:", error);
-    res.status(500).send({ error: `${(error as Error).name}: ${(error as Error).message}` });
+    console.log('🚀 ~ updateStrat ~ err:', error)
+    res
+      .status(500)
+      .send({ error: `${(error as Error).name}: ${(error as Error).message}` })
   }
 }
 
@@ -46,14 +51,17 @@ async function updateStrat(req: Request, res: Response): Promise<void> {
  * @param {Response} res - L'objet de réponse.
  */
 async function updateStrategyById(req: Request, res: Response): Promise<void> {
-  const { strategyId } = req.params;
-  const updatedStrategy = req.body;
+  const { strategyId } = req.params
+  const updatedStrategy = req.body
   try {
-    const result = await strategyService.updateStrategyById(strategyId, updatedStrategy);
-    res.json(result);
+    const result = await strategyService.updateStrategyById(
+      strategyId,
+      updatedStrategy
+    )
+    res.json(result)
   } catch (error: any) {
-    handleErrorResponse(res, error, "updateStrategyById");
+    handleErrorResponse(res, error, 'updateStrategyById')
   }
 }
 
-export { getStrat, updateStrat, updateStrategyById };
+export { getStrat, updateStrat, updateStrategyById }

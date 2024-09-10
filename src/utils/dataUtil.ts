@@ -1,7 +1,7 @@
 // src/utils/dataUtil.ts
-import { promises as fs } from 'fs';
-import { getMockDataPath } from './fileUtil';
-import { getAllDataMDB } from '@services/mongodbService';
+import { promises as fs } from 'fs'
+import { getMockDataPath } from './fileUtil'
+import { getAllDataMDB } from '@services/mongodbService'
 
 /**
  * Retrieves data from the specified collection.
@@ -10,11 +10,11 @@ import { getAllDataMDB } from '@services/mongodbService';
  */
 async function getData(collectionName: string): Promise<any[]> {
   try {
-    const data = await getDataFromCollection(collectionName);
-    return data;
+    const data = await getDataFromCollection(collectionName)
+    return data
   } catch (error) {
-    console.log("🚀 ~ getData ~ error:", error);
-    throw new Error("Failed to get data from collection");
+    console.log('🚀 ~ getData ~ error:', error)
+    throw new Error('Failed to get data from collection')
   }
 }
 
@@ -25,27 +25,25 @@ async function getData(collectionName: string): Promise<any[]> {
  */
 async function getDataFromCollection(collectionName: string): Promise<any[]> {
   try {
-    if (process.env.OFFLINE_MODE === "true") {
+    if (process.env.OFFLINE_MODE === 'true') {
       // Get the mock data file path for the given collection
-      const mockDataPath = getMockDataPath(collectionName);
+      const mockDataPath = getMockDataPath(collectionName)
 
       // Read the mock data from the file
-      const jsonData = await fs.readFile(mockDataPath, "utf8");
+      const jsonData = await fs.readFile(mockDataPath, 'utf8')
 
       // Return parsed JSON data
-      return JSON.parse(jsonData);
+      return JSON.parse(jsonData)
     } else {
       // Fetch data from MongoDB
-      const data = await getAllDataMDB(collectionName);
+      const data = await getAllDataMDB(collectionName)
       // Return data, ensuring it's an array
-      return Array.isArray(data) ? data : [];
+      return Array.isArray(data) ? data : []
     }
   } catch (error) {
-    console.log("🚀 ~ getDataFromCollection ~ error:", error);
-    return [];
+    console.log('🚀 ~ getDataFromCollection ~ error:', error)
+    return []
   }
 }
 
-export {
-  getData,
-};
+export { getData }

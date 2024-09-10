@@ -1,60 +1,62 @@
-[{
-  "_id": {
-    "$oid": "64930c45299550a380858eae"
+[
+  {
+    "_id": {
+      "$oid": "64930c45299550a380858eae"
+    },
+    "platform": "binance",
+    "timestamp": {
+      "trades": "",
+      "openOrders": "",
+      "balance": "",
+      "loadMarket": ""
+    }
   },
-  "platform": "binance",
-  "timestamp": {
-    "trades": "",
-    "openOrders": "",
-    "balance": "",
-    "loadMarket": ""
-  }
-},
-{
-  "_id": {
-    "$oid": "64930c45299550a380858eaf"
+  {
+    "_id": {
+      "$oid": "64930c45299550a380858eaf"
+    },
+    "platform": "kucoin",
+    "timestamp": {
+      "trades": "",
+      "openOrders": "",
+      "balance": "",
+      "loadMarket": ""
+    }
   },
-  "platform": "kucoin",
-  "timestamp": {
-    "trades": "",
-    "openOrders": "",
-    "balance": "",
-    "loadMarket": ""
-  }
-},
-{
-  "_id": {
-    "$oid": "64930c45299550a380858eb0"
+  {
+    "_id": {
+      "$oid": "64930c45299550a380858eb0"
+    },
+    "platform": "htx",
+    "timestamp": {
+      "trades": "",
+      "openOrders": "",
+      "balance": "",
+      "loadMarket": ""
+    }
   },
-  "platform": "htx",
-  "timestamp": {
-    "trades": "",
-    "openOrders": "",
-    "balance": "",
-    "loadMarket": ""
-  }
-},
-{
-  "_id": {
-    "$oid": "64930c45299550a380858eb1"
+  {
+    "_id": {
+      "$oid": "64930c45299550a380858eb1"
+    },
+    "platform": "okx",
+    "timestamp": {
+      "trades": "",
+      "openOrders": "",
+      "balance": "",
+      "loadMarket": ""
+    }
   },
-  "platform": "okx",
-  "timestamp": {
-    "trades": "",
-    "openOrders": "",
-    "balance": "",
-    "loadMarket": ""
+  {
+    "_id": {
+      "$oid": "64930c45299550a380858eb2"
+    },
+    "platform": "gateio",
+    "timestamp": {
+      "trades": "",
+      "openOrders": "",
+      "balance": "",
+      "loadMarket": ""
+    }
   }
-},
-{
-  "_id": {
-    "$oid": "64930c45299550a380858eb2"
-  },
-  "platform": "gateio",
-  "timestamp": {
-    "trades": "",
-    "openOrders": "",
-    "balance": "",
-    "loadMarket": ""
-  }
-}]
+]

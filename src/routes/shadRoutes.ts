@@ -1,9 +1,9 @@
 // src/routes/shadRoutes.ts
-import express from 'express';
-import { getShad } from '@controllers/shadController';
+import express from 'express'
+import { getShad } from '@controllers/shadController'
 
-const router = express.Router();
+const router = express.Router()
 
-router.get('/get', getShad);
+router.get('/get', getShad)
 
-export default router;
+export default router

@@ -1,29 +1,29 @@
 // src/services/metrics/cmc.ts
 
 interface CmcData {
-  cmc_rank?: string;
+  cmc_rank?: string
   quote?: {
     USD?: {
-      price?: number;
-      percent_change_24h?: number;
-      percent_change_7d?: number;
-      percent_change_30d?: number;
-      percent_change_60d?: number;
-      percent_change_90d?: number;
-    };
-  };
-  id?: string | number;
+      price?: number
+      percent_change_24h?: number
+      percent_change_7d?: number
+      percent_change_30d?: number
+      percent_change_60d?: number
+      percent_change_90d?: number
+    }
+  }
+  id?: string | number
 }
 
 interface CmcValues {
-  rank: number;
-  currentCmcPrice: number | "N/A";
-  iconUrl: string;
-  cryptoPercentChange24h: number | "N/A";
-  cryptoPercentChange7d: number | "N/A";
-  cryptoPercentChange30d: number | "N/A";
-  cryptoPercentChange60d: number | "N/A";
-  cryptoPercentChange90d: number | "N/A";
+  rank: number
+  currentCmcPrice: number | 'N/A'
+  iconUrl: string
+  cryptoPercentChange24h: number | 'N/A'
+  cryptoPercentChange7d: number | 'N/A'
+  cryptoPercentChange30d: number | 'N/A'
+  cryptoPercentChange60d: number | 'N/A'
+  cryptoPercentChange90d: number | 'N/A'
 }
 
 /**
@@ -33,32 +33,44 @@ interface CmcValues {
  * @returns {CmcValues} - An object containing information about the cryptocurrency.
  */
 function getCmcValues(cmc: CmcData): CmcValues {
-  if (typeof cmc !== 'object' || cmc === null || Object.keys(cmc).length === 0) {
+  if (
+    typeof cmc !== 'object' ||
+    cmc === null ||
+    Object.keys(cmc).length === 0
+  ) {
     return {
       rank: 0,
-      currentCmcPrice: "N/A",
-      iconUrl: "",
-      cryptoPercentChange24h: "N/A",
-      cryptoPercentChange7d: "N/A",
-      cryptoPercentChange30d: "N/A",
-      cryptoPercentChange60d: "N/A",
-      cryptoPercentChange90d: "N/A"
-    };
+      currentCmcPrice: 'N/A',
+      iconUrl: '',
+      cryptoPercentChange24h: 'N/A',
+      cryptoPercentChange7d: 'N/A',
+      cryptoPercentChange30d: 'N/A',
+      cryptoPercentChange60d: 'N/A',
+      cryptoPercentChange90d: 'N/A'
+    }
   }
 
-  const getPercentChange = (value: number | undefined): number | "N/A" => 
-    value !== undefined ? value / 100 : "N/A";
+  const getPercentChange = (value: number | undefined): number | 'N/A' =>
+    value !== undefined ? value / 100 : 'N/A'
 
   return {
-    rank: parseInt(cmc.cmc_rank || "0") || 0,
-    currentCmcPrice: cmc.quote?.USD?.price ? parseFloat(cmc.quote.USD.price.toFixed(7)) : "N/A",
-    iconUrl: cmc.id ? getIconUrl(cmc.id) : "",
-    cryptoPercentChange24h: getPercentChange(cmc.quote?.USD?.percent_change_24h),
+    rank: parseInt(cmc.cmc_rank || '0') || 0,
+    currentCmcPrice: cmc.quote?.USD?.price
+      ? parseFloat(cmc.quote.USD.price.toFixed(7))
+      : 'N/A',
+    iconUrl: cmc.id ? getIconUrl(cmc.id) : '',
+    cryptoPercentChange24h: getPercentChange(
+      cmc.quote?.USD?.percent_change_24h
+    ),
     cryptoPercentChange7d: getPercentChange(cmc.quote?.USD?.percent_change_7d),
-    cryptoPercentChange30d: getPercentChange(cmc.quote?.USD?.percent_change_30d),
-    cryptoPercentChange60d: getPercentChange(cmc.quote?.USD?.percent_change_60d),
+    cryptoPercentChange30d: getPercentChange(
+      cmc.quote?.USD?.percent_change_30d
+    ),
+    cryptoPercentChange60d: getPercentChange(
+      cmc.quote?.USD?.percent_change_60d
+    ),
     cryptoPercentChange90d: getPercentChange(cmc.quote?.USD?.percent_change_90d)
-  };
+  }
 }
 
 /**
@@ -70,7 +82,7 @@ function getCmcValues(cmc: CmcData): CmcValues {
 function getIconUrl(id: string | number): string {
   return `https://s2.coinmarketcap.com/static/img/coins/64x64/${parseInt(
     id.toString()
-  )}.png`;
+  )}.png`
 }
 
-export { getCmcValues, getIconUrl };
+export { getCmcValues, getIconUrl }

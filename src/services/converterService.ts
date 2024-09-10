@@ -4,20 +4,20 @@
  * @returns {Promise<Array<any>>} A promise that resolves to the converted JSON data.
  */
 async function convertToJSON(data: Array<any>): Promise<Array<any>> {
-  const modelType = detectModelType(data);
+  const modelType = detectModelType(data)
 
   switch (modelType) {
-    case "model_kucoin":
-      return convertModelKucoin(data);
-    case "model_okx":
-      return convertModelOkx(data);
-    case "model_binance":
-      return convertModelBinance(data);
-    case "model_htx":
-      return await convertModelHTX(data);
+    case 'model_kucoin':
+      return convertModelKucoin(data)
+    case 'model_okx':
+      return convertModelOkx(data)
+    case 'model_binance':
+      return convertModelBinance(data)
+    case 'model_htx':
+      return await convertModelHTX(data)
     default:
-      console.error("Modèle de fichier CSV non pris en charge");
-      return [];
+      console.error('Modèle de fichier CSV non pris en charge')
+      return []
   }
 }
 
@@ -27,44 +27,44 @@ async function convertToJSON(data: Array<any>): Promise<Array<any>> {
  * @returns {string} The detected model type.
  */
 function detectModelType(data: Array<any>): string {
-  let modelType: string;
+  let modelType: string
   if (
     data[0] &&
-    data[0]["uid"] &&
-    data[0]["symbol"] &&
-    data[0]["deal_type"] &&
-    data[0]["deal_time"]
+    data[0]['uid'] &&
+    data[0]['symbol'] &&
+    data[0]['deal_type'] &&
+    data[0]['deal_time']
   ) {
-    modelType = "model_htx";
+    modelType = 'model_htx'
   } else if (
     data[0] &&
-    data[0]["Order ID"] &&
-    data[0]["Order Time(UTC-03:00)"]
+    data[0]['Order ID'] &&
+    data[0]['Order Time(UTC-03:00)']
   ) {
-    modelType = "model_kucoin";
+    modelType = 'model_kucoin'
   } else if (
     data[0] &&
-    data[0]["Order id"] &&
-    data[0]["Instrument"] &&
-    data[0]["Time"]
+    data[0]['Order id'] &&
+    data[0]['Instrument'] &&
+    data[0]['Time']
   ) {
-    modelType = "model_okx";
+    modelType = 'model_okx'
   } else if (
     data[0] &&
-    data[0]["Date(UTC)"] &&
-    data[0]["Pair"] &&
-    data[0]["Side"] &&
-    data[0]["Price"] &&
-    data[0]["Executed"] &&
-    data[0]["Amount"] &&
-    data[0]["Fee"]
+    data[0]['Date(UTC)'] &&
+    data[0]['Pair'] &&
+    data[0]['Side'] &&
+    data[0]['Price'] &&
+    data[0]['Executed'] &&
+    data[0]['Amount'] &&
+    data[0]['Fee']
   ) {
-    modelType = "model_binance";
+    modelType = 'model_binance'
   } else {
-    modelType = "model_unknown";
+    modelType = 'model_unknown'
   }
-  console.log("🚀 ~ detectModelType ~ modelType:", modelType);
-  return modelType;
+  console.log('🚀 ~ detectModelType ~ modelType:', modelType)
+  return modelType
 }
 
 /**
@@ -74,12 +74,16 @@ function detectModelType(data: Array<any>): string {
  * @param {number} total - The total amount.
  * @returns {Promise<number>} A promise that resolves to the total USDT value.
  */
-async function getTotalUSDTFromAPI(dealTime: string, quote: string, total: number): Promise<number> {
-  console.log("🚀 ~ getTotalUSDTFromAPI ~ total:", total);
-  console.log("🚀 ~ getTotalUSDTFromAPI ~ quote:", quote);
-  console.log("🚀 ~ getTotalUSDTFromAPI ~ dealTime:", dealTime);
+async function getTotalUSDTFromAPI(
+  dealTime: string,
+  quote: string,
+  total: number
+): Promise<number> {
+  console.log('🚀 ~ getTotalUSDTFromAPI ~ total:', total)
+  console.log('🚀 ~ getTotalUSDTFromAPI ~ quote:', quote)
+  console.log('🚀 ~ getTotalUSDTFromAPI ~ dealTime:', dealTime)
 
-  if (quote && !["USDT", "BUSD", "USDC"].includes(quote.toUpperCase())) {
+  if (quote && !['USDT', 'BUSD', 'USDC'].includes(quote.toUpperCase())) {
     /*try {
         const response = await axios.get('URL_DE_L_API', {
           params: { date: dealTime, quote },
@@ -90,9 +94,9 @@ async function getTotalUSDTFromAPI(dealTime: string, quote: string, total: numbe
         console.error("Erreur lors de l'appel API pour obtenir le taux de conversion :", error);
         return null;
       }*/
-    return 0;
+    return 0
   }
-  return total;
+  return total
 }
 
 /**
@@ -101,40 +105,40 @@ async function getTotalUSDTFromAPI(dealTime: string, quote: string, total: numbe
  * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
 async function convertModelHTX(data: Array<any>): Promise<Array<any>> {
-  console.log("🚀 ~ convertModelHTX ~ data:", data);
+  console.log('🚀 ~ convertModelHTX ~ data:', data)
   const convertedData = await Promise.all(
     data.map(async (item) => {
       if (
         item &&
-        item["uid"] &&
-        item["symbol"] &&
-        item["deal_type"] &&
-        item["deal_time"]
+        item['uid'] &&
+        item['symbol'] &&
+        item['deal_type'] &&
+        item['deal_time']
       ) {
-        const [base, quote] = item["symbol"].split("/");
-        const date = item["deal_time"];
-        const total = parseFloat(item["amount"]);
-        const totalUSDT = await getTotalUSDTFromAPI(date, quote, total);
+        const [base, quote] = item['symbol'].split('/')
+        const date = item['deal_time']
+        const total = parseFloat(item['amount'])
+        const totalUSDT = await getTotalUSDTFromAPI(date, quote, total)
 
         return {
           base: base,
           quote: quote,
           date: date,
-          pair: item["symbol"],
-          type: item["deal_type"].toLowerCase(),
-          price: parseFloat(item["price"]),
-          amount: parseFloat(item["volume"]),
+          pair: item['symbol'],
+          type: item['deal_type'].toLowerCase(),
+          price: parseFloat(item['price']),
+          amount: parseFloat(item['volume']),
           total: total,
           totalUSDT: totalUSDT,
-          fee: parseFloat(item["fee_amount"]),
-          feecoin: item["fee_currency"].toUpperCase(),
-          platform: "htx",
-        };
+          fee: parseFloat(item['fee_amount']),
+          feecoin: item['fee_currency'].toUpperCase(),
+          platform: 'htx'
+        }
       }
-      return null;
+      return null
     })
-  );
-  return convertedData.filter(Boolean);
+  )
+  return convertedData.filter(Boolean)
 }
 
 /**
@@ -143,57 +147,61 @@ async function convertModelHTX(data: Array<any>): Promise<Array<any>> {
  * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
 async function convertModelBinance(data: Array<any>): Promise<Array<any>> {
-  console.log("🚀 ~ convertModelBinance ~ data:", data);
+  console.log('🚀 ~ convertModelBinance ~ data:', data)
   const convertedData = await Promise.all(
     data.map(async (item) => {
       if (
         item &&
-        item["Date(UTC)"] &&
-        item["Pair"] &&
-        item["Side"] &&
-        item["Price"] &&
-        item["Executed"] &&
-        item["Amount"] &&
-        item["Fee"]
+        item['Date(UTC)'] &&
+        item['Pair'] &&
+        item['Side'] &&
+        item['Price'] &&
+        item['Executed'] &&
+        item['Amount'] &&
+        item['Fee']
       ) {
-        const [total, quote] = item["Amount"]
+        const [total, quote] = item['Amount']
           .match(/([0-9.]+)?([A-Za-z]+)([A-Za-z0-9]+)?/)
           .slice(1, 3)
-          .filter(Boolean);
+          .filter(Boolean)
 
         const base = (() => {
-          const baseStartIndex = item["Pair"].indexOf(quote);
-          return item["Pair"].substring(0, baseStartIndex).toUpperCase();
-        })();
+          const baseStartIndex = item['Pair'].indexOf(quote)
+          return item['Pair'].substring(0, baseStartIndex).toUpperCase()
+        })()
 
-        const date = item["Date(UTC)"];
-        const amount = parseFloat(item["Executed"].replace(base, ""));
-        const totalUSDT = await getTotalUSDTFromAPI(date, quote, parseFloat(total));
-        const feecoin = item["Fee"].includes(base)
+        const date = item['Date(UTC)']
+        const amount = parseFloat(item['Executed'].replace(base, ''))
+        const totalUSDT = await getTotalUSDTFromAPI(
+          date,
+          quote,
+          parseFloat(total)
+        )
+        const feecoin = item['Fee'].includes(base)
           ? base
-          : item["Fee"].includes(quote)
-          ? quote
-          : "/";
+          : item['Fee'].includes(quote)
+            ? quote
+            : '/'
 
         return {
           base: base,
           quote: quote,
           date: date,
-          pair: item["Pair"],
-          type: item["Side"].toLowerCase(),
-          price: parseFloat(item["Price"]),
+          pair: item['Pair'],
+          type: item['Side'].toLowerCase(),
+          price: parseFloat(item['Price']),
           amount: amount,
           total: parseFloat(total),
           totalUSDT: totalUSDT,
-          fee: parseFloat(item["Fee"]),
+          fee: parseFloat(item['Fee']),
           feecoin: feecoin,
-          platform: "binance",
-        };
+          platform: 'binance'
+        }
       }
-      return null;
+      return null
     })
-  );
-  return convertedData.filter(Boolean);
+  )
+  return convertedData.filter(Boolean)
 }
 
 /**
@@ -202,29 +210,29 @@ async function convertModelBinance(data: Array<any>): Promise<Array<any>> {
  * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
 async function convertModelKucoin(data: Array<any>): Promise<Array<any>> {
-  console.log("🚀 ~ convertModelKucoin ~ data:", data);
+  console.log('🚀 ~ convertModelKucoin ~ data:', data)
   const convertedData = await Promise.all(
     data.map(async (item) => {
-      if (item && item.Symbol && item.Symbol.includes("-")) {
+      if (item && item.Symbol && item.Symbol.includes('-')) {
         return {
-          base: item.Symbol.split("-")[0],
-          quote: item.Symbol.split("-")[1],
-          date: item["Order Time(UTC-03:00)"],
+          base: item.Symbol.split('-')[0],
+          quote: item.Symbol.split('-')[1],
+          date: item['Order Time(UTC-03:00)'],
           pair: item.Symbol,
           type: item.Side.toLowerCase(),
-          price: parseFloat(item["Avg. Filled Price"]),
-          amount: parseFloat(item["Filled Amount"]),
-          total: parseFloat(item["Filled Volume"]),
-          totalUSDT: parseFloat(item["Filled Volume (USDT)"]),
+          price: parseFloat(item['Avg. Filled Price']),
+          amount: parseFloat(item['Filled Amount']),
+          total: parseFloat(item['Filled Volume']),
+          totalUSDT: parseFloat(item['Filled Volume (USDT)']),
           fee: parseFloat(item.Fee),
-          feecoin: item["Fee Currency"],
-          platform: "kucoin",
-        };
+          feecoin: item['Fee Currency'],
+          platform: 'kucoin'
+        }
       }
-      return null;
+      return null
     })
-  );
-  return convertedData.filter(Boolean);
+  )
+  return convertedData.filter(Boolean)
 }
 
 /**
@@ -233,40 +241,40 @@ async function convertModelKucoin(data: Array<any>): Promise<Array<any>> {
  * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
 async function convertModelOkx(data: Array<any>): Promise<Array<any>> {
-  console.log("🚀 ~ convertModelOkx ~ data:", data);
+  console.log('🚀 ~ convertModelOkx ~ data:', data)
 
-  const processedOrders = new Map<string, any>();
+  const processedOrders = new Map<string, any>()
 
   const convertItem = async (item: any) => {
     const {
-      "Order id": orderId,
-      "Trading Unit": base,
+      'Order id': orderId,
+      'Trading Unit': base,
       Time: date,
-      "Trade Type": tradeType,
+      'Trade Type': tradeType,
       Instrument: instrument,
       Action: action,
-      "Fill Price": fillPrice,
+      'Fill Price': fillPrice,
       Balance: balance,
       Amount: amount,
       Fee: fee,
-      "Balance Unit": balanceUnit,
-    } = item;
+      'Balance Unit': balanceUnit
+    } = item
 
     if (
       !orderId ||
       !instrument ||
       !date ||
-      !instrument.includes("-") ||
-      tradeType !== "Spot"
+      !instrument.includes('-') ||
+      tradeType !== 'Spot'
     ) {
-      return null;
+      return null
     }
 
-    console.log("🚀 ~ convertItem ~ orderId:", orderId);
+    console.log('🚀 ~ convertItem ~ orderId:', orderId)
     if (processedOrders.has(orderId)) {
-      const previousObject = processedOrders.get(orderId);
+      const previousObject = processedOrders.get(orderId)
 
-      console.log("🚀 ~ convertItem ~ already processed orderId:", orderId);
+      console.log('🚀 ~ convertItem ~ already processed orderId:', orderId)
 
       if (base === balanceUnit) {
         Object.assign(previousObject, {
@@ -275,29 +283,29 @@ async function convertModelOkx(data: Array<any>): Promise<Array<any>> {
           pair: instrument,
           type: action.toLowerCase(),
           price: fillPrice,
-          amount: balance,
-        });
+          amount: balance
+        })
 
         if (fee !== 0) {
-          previousObject.fee = fee;
-          previousObject.feecoin = balanceUnit;
+          previousObject.fee = fee
+          previousObject.feecoin = balanceUnit
         }
       } else {
         Object.assign(previousObject, {
           quote: balanceUnit,
           total: amount,
-          totalUSDT: balanceUnit === "USDT" ? amount : 0,
-        });
+          totalUSDT: balanceUnit === 'USDT' ? amount : 0
+        })
 
         if (fee !== 0) {
-          previousObject.fee = fee;
-          previousObject.feecoin = balanceUnit;
+          previousObject.fee = fee
+          previousObject.feecoin = balanceUnit
         }
       }
 
-      processedOrders.set(orderId, previousObject);
+      processedOrders.set(orderId, previousObject)
     } else {
-      const totalUSDT = await getTotalUSDTFromAPI(date, balanceUnit, amount);
+      const totalUSDT = await getTotalUSDTFromAPI(date, balanceUnit, amount)
 
       processedOrders.set(orderId, {
         base,
@@ -311,23 +319,23 @@ async function convertModelOkx(data: Array<any>): Promise<Array<any>> {
         totalUSDT,
         fee,
         feecoin: balanceUnit,
-        platform: "okx",
-      });
+        platform: 'okx'
+      })
     }
-  };
+  }
 
-  await Promise.all(data.map(convertItem));
+  await Promise.all(data.map(convertItem))
 
   const allProcessedOrders = Array.from(processedOrders.values()).map(
     (order) => {
-      order.fee = Math.abs(order.fee);
-      return order;
+      order.fee = Math.abs(order.fee)
+      return order
     }
-  );
+  )
 
-  console.log("🚀 ~ convertModelOkx ~ allProcessedOrders:", allProcessedOrders);
+  console.log('🚀 ~ convertModelOkx ~ allProcessedOrders:', allProcessedOrders)
 
-  return allProcessedOrders.filter(Boolean);
+  return allProcessedOrders.filter(Boolean)
 }
 
 export {
@@ -337,5 +345,5 @@ export {
   convertModelHTX,
   convertModelBinance,
   convertModelKucoin,
-  convertModelOkx,
-};
+  convertModelOkx
+}
