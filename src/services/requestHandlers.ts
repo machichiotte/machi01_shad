@@ -23,18 +23,18 @@ interface Routes {
 }
 
 const routes: Routes = {
-  converter: require("@routes/converterRoutes").default,
-  auth: require("@routes/authRoutes").default,
-  balance: require("@routes/balanceRoutes").default,
-  cmc: require("@routes/cmcRoutes").default,
-  strategy: require("@routes/strategyRoutes").default,
-  orders: require("@routes/ordersRoutes").default,
-  market: require("@routes/marketsRoutes").default,
-  prices: require("@routes/pricesRoutes").default,
-  trades: require("@routes/tradesRoutes").default,
-  tickers: require("@routes/tickersRoutes").default,
-  lastUpdate: require("@routes/lastUpdateRoutes").default,
-  shad: require("@routes/shadRoutes").default,
+  converter: require("../routes/converterRoutes"),
+  auth: require("../routes/authRoutes").default,
+  balance: require("../routes/balanceRoutes").default,
+  cmc: require("../routes/cmcRoutes").default,
+  strategy: require("../routes/strategyRoutes").default,
+  orders: require("../routes/ordersRoutes").default,
+  market: require("../routes/marketsRoutes").default,
+  prices: require("../routes/pricesRoutes").default,
+  trades: require("../routes/tradesRoutes").default,
+  tickers: require("../routes/tickersRoutes").default,
+  lastUpdate: require("../routes/lastUpdateRoutes").default,
+  shad: require("../routes/shadRoutes").default,
 };
 
 // Utilisation des routes avec une boucle
