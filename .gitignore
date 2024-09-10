@@ -27,3 +27,4 @@ pnpm-debug.log*
 
 error.log
 info.log
+package-lock.json
