@@ -12,7 +12,7 @@ jest.mock('@utils/errorUtil')
 describe('Balance Controller', () => {
   let mockRequest: Partial<Request>
   let mockResponse: Partial<Response>
-  let responseObject: any
+  let responseObject: { json: jest.Mock; status: jest.Mock }
 
   beforeEach(() => {
     mockRequest = {}
@@ -26,9 +26,9 @@ describe('Balance Controller', () => {
   describe('getBalances', () => {
     it('devrait renvoyer les soldes avec succès', async () => {
       const mockBalances = [{ platform: 'test', balance: 100 }]
-      ;(balanceService.fetchDatabaseBalances as jest.Mock).mockResolvedValue(
-        mockBalances
-      )
+        ; (balanceService.fetchDatabaseBalances as jest.Mock).mockResolvedValue(
+          mockBalances
+        )
 
       await getBalances(mockRequest as Request, mockResponse as Response)
 
@@ -37,9 +37,9 @@ describe('Balance Controller', () => {
 
     it('devrait gérer les erreurs correctement', async () => {
       const mockError = new Error('Erreur de test')
-      ;(balanceService.fetchDatabaseBalances as jest.Mock).mockRejectedValue(
-        mockError
-      )
+        ; (balanceService.fetchDatabaseBalances as jest.Mock).mockRejectedValue(
+          mockError
+        )
 
       await getBalances(mockRequest as Request, mockResponse as Response)
 
@@ -55,9 +55,9 @@ describe('Balance Controller', () => {
     it('devrait mettre à jour le solde avec succès', async () => {
       mockRequest.params = { platform: 'testPlatform' }
       const mockUpdatedBalance = { platform: 'testPlatform', balance: 200 }
-      ;(balanceService.updateBalanceForPlatform as jest.Mock).mockResolvedValue(
-        mockUpdatedBalance
-      )
+        ; (balanceService.updateBalanceForPlatform as jest.Mock).mockResolvedValue(
+          mockUpdatedBalance
+        )
 
       await updateCurrentBalance(
         mockRequest as Request,
@@ -75,9 +75,9 @@ describe('Balance Controller', () => {
     it('devrait gérer les erreurs correctement', async () => {
       mockRequest.params = { platform: 'testPlatform' }
       const mockError = new Error('Erreur de test')
-      ;(balanceService.updateBalanceForPlatform as jest.Mock).mockRejectedValue(
-        mockError
-      )
+        ; (balanceService.updateBalanceForPlatform as jest.Mock).mockRejectedValue(
+          mockError
+        )
 
       await updateCurrentBalance(
         mockRequest as Request,

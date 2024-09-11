@@ -144,21 +144,21 @@ function mapBalance(platform: string, data: Balances): MappedBalance[] {
   )
     ? data.info?.balances || data.info?.data || data
     : Object.entries(data).filter(
-        ([key, value]) =>
-          !['info', 'free', 'used', 'total'].includes(key) &&
-          (value as any).total > 0
-      )
+      ([key, value]) =>
+        !['info', 'free', 'used', 'total'].includes(key) &&
+        (value as any).total > 0
+    )
 
   return balanceData
     .filter((item: any) => {
       const balance = parseFloat(
         item.balance ||
-          item.free ||
-          item.cashBal ||
-          item.available ||
-          item.locked ||
-          item[1]?.total ||
-          '0'
+        item.free ||
+        item.cashBal ||
+        item.available ||
+        item.locked ||
+        item[1]?.total ||
+        '0'
       )
       return balance > 0
     })

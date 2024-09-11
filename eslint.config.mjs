@@ -9,7 +9,7 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    ignores: ['node_modules', 'dist']
+    ignores: ['node_modules', 'dist', 'src'] // Remove the src directory from the ignores to have 'yarn lint'
   },
   eslintConfigPrettier
 ]
