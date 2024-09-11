@@ -16,8 +16,7 @@ export default [
       'src/services',
       'src/utils',
       'src/config',
-      'src/middlewares',
-      'src/routes'
+      'src/middlewares'
     ] // Remove the src directory from the ignores to have 'yarn lint'
   },
   eslintConfigPrettier
