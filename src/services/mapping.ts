@@ -23,7 +23,8 @@ export interface MappedTrade {
   base: string
   quote: string
   pair: string
-  timestamp: number
+  date?: string
+  timestamp?: number
   type: string
   price: number
   amount: number

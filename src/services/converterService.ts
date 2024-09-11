@@ -1,71 +1,111 @@
+import { MappedTrade } from "./mapping"
+
 /**
  * Converts input data to JSON format based on the detected model type.
  * @param {Array<any>} data - The input data to be converted.
  * @returns {Promise<Array<any>>} A promise that resolves to the converted JSON data.
  */
-async function convertToJSON(data: Array<any>): Promise<Array<any>> {
+async function convertToJSON(data: TradeModel[]): Promise<MappedTrade[]> {
   const modelType = detectModelType(data)
 
   switch (modelType) {
     case 'model_kucoin':
-      return convertModelKucoin(data)
+      return convertModelKucoin(data as ModelKucoin[])
     case 'model_okx':
-      return convertModelOkx(data)
+      return convertModelOkx(data as ModelOkx[])
     case 'model_binance':
-      return convertModelBinance(data)
+      return convertModelBinance(data as ModelBinance[])
     case 'model_htx':
-      return await convertModelHTX(data)
+      return await convertModelHTX(data as ModelHtx[])
     default:
       console.error('Modèle de fichier CSV non pris en charge')
       return []
   }
 }
 
+// Define types for different models
+type ModelHtx = {
+  uid: string;
+  symbol: string;
+  deal_type: string;
+  deal_time: string;
+  [key: string]: string;
+};
+
+type ModelKucoin = {
+  "Order ID": string;
+  "Order Time(UTC-03:00)": string;
+  [key: string]: string;
+};
+
+type ModelOkx = {
+  "Order id": string;
+  Instrument: string;
+  Time: string;
+  [key: string]: string;
+};
+
+type ModelBinance = {
+  "Date(UTC)": string;
+  Pair: string;
+  Side: string;
+  Price: string;
+  Executed: string;
+  Amount: string;
+  Fee: string;
+  [key: string]: string;
+};
+
+// Define a union type for all possible models
+export type TradeModel = ModelHtx | ModelKucoin | ModelOkx | ModelBinance;
+
+
 /**
  * Detects the model type of the input data.
- * @param {Array<any>} data - The input data to analyze.
+ * @param {TradeModel[]} data - The input data to analyze.
  * @returns {string} The detected model type.
  */
-function detectModelType(data: Array<any>): string {
-  let modelType: string
-  if (
-    data[0] &&
-    data[0]['uid'] &&
-    data[0]['symbol'] &&
-    data[0]['deal_type'] &&
-    data[0]['deal_time']
-  ) {
-    modelType = 'model_htx'
-  } else if (
-    data[0] &&
-    data[0]['Order ID'] &&
-    data[0]['Order Time(UTC-03:00)']
-  ) {
-    modelType = 'model_kucoin'
-  } else if (
-    data[0] &&
-    data[0]['Order id'] &&
-    data[0]['Instrument'] &&
-    data[0]['Time']
-  ) {
-    modelType = 'model_okx'
-  } else if (
-    data[0] &&
-    data[0]['Date(UTC)'] &&
-    data[0]['Pair'] &&
-    data[0]['Side'] &&
-    data[0]['Price'] &&
-    data[0]['Executed'] &&
-    data[0]['Amount'] &&
-    data[0]['Fee']
-  ) {
-    modelType = 'model_binance'
-  } else {
-    modelType = 'model_unknown'
+function detectModelType(data: TradeModel[]): string {
+  if (data.length === 0) {
+    return 'model_unknown';
   }
-  console.log('🚀 ~ detectModelType ~ modelType:', modelType)
-  return modelType
+
+  const firstItem = data[0];
+
+  // Use type guards to check for each model type
+  if (
+    (firstItem as ModelHtx).uid &&
+    (firstItem as ModelHtx).symbol &&
+    (firstItem as ModelHtx).deal_type &&
+    (firstItem as ModelHtx).deal_time
+  ) {
+    return 'model_htx';
+  } else if (
+    (firstItem as ModelKucoin)["Order ID"] &&
+    (firstItem as ModelKucoin)["Order Time(UTC-03:00)"]
+  ) {
+    return 'model_kucoin';
+  } else if (
+    (firstItem as ModelOkx)["Order id"] &&
+    (firstItem as ModelOkx).Instrument &&
+    (firstItem as ModelOkx).Time
+  ) {
+    return 'model_okx';
+  } else if (
+    (firstItem as ModelBinance)["Date(UTC)"] &&
+    (firstItem as ModelBinance).Pair &&
+    (firstItem as ModelBinance).Side &&
+    (firstItem as ModelBinance).Price &&
+    (firstItem as ModelBinance).Executed &&
+    (firstItem as ModelBinance).Amount &&
+    (firstItem as ModelBinance).Fee
+  ) {
+    return 'model_binance';
+  } else {
+    return 'model_unknown';
+  }
 }
+
 
 /**
  * Retrieves the total USDT value from an API based on the deal time, quote, and total.
@@ -104,7 +144,7 @@ async function getTotalUSDTFromAPI(
  * @param {Array<any>} data - The HTX model data to convert.
  * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
-async function convertModelHTX(data: Array<any>): Promise<Array<any>> {
+async function convertModelHTX(data: Array<ModelHtx>): Promise<MappedTrade[]> {
   console.log('🚀 ~ convertModelHTX ~ data:', data)
   const convertedData = await Promise.all(
     data.map(async (item) => {
@@ -124,6 +164,7 @@ async function convertModelHTX(data: Array<any>): Promise<Array<any>> {
           base: base,
           quote: quote,
           date: date,
+          timestamp: new Date(date).getTime(),
           pair: item['symbol'],
           type: item['deal_type'].toLowerCase(),
           price: parseFloat(item['price']),
@@ -138,7 +179,7 @@ async function convertModelHTX(data: Array<any>): Promise<Array<any>> {
       return null
     })
   )
-  return convertedData.filter(Boolean)
+  return convertedData.filter(Boolean) as MappedTrade[]
 }
 
 /**
@@ -146,7 +187,7 @@ async function convertModelHTX(data: Array<any>): Promise<Array<any>> {
  * @param {Array<any>} data - The Binance model data to convert.
  * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
-async function convertModelBinance(data: Array<any>): Promise<Array<any>> {
+async function convertModelBinance(data: Array<ModelBinance>): Promise<MappedTrade[]> {
   console.log('🚀 ~ convertModelBinance ~ data:', data)
   const convertedData = await Promise.all(
     data.map(async (item) => {
@@ -160,10 +201,7 @@ async function convertModelBinance(data: Array<any>): Promise<Array<any>> {
         item['Amount'] &&
         item['Fee']
       ) {
-        const [total, quote] = item['Amount']
-          .match(/([0-9.]+)?([A-Za-z]+)([A-Za-z0-9]+)?/)
-          .slice(1, 3)
-          .filter(Boolean)
+        const [total, quote] = item['Amount']?.match(/([0-9.]+)?([A-Za-z]+)([A-Za-z0-9]+)?/)?.slice(1, 3)?.filter(Boolean) ?? []
 
         const base = (() => {
           const baseStartIndex = item['Pair'].indexOf(quote)
@@ -187,6 +225,7 @@ async function convertModelBinance(data: Array<any>): Promise<Array<any>> {
           base: base,
           quote: quote,
           date: date,
+          timestamp: new Date(date).getTime(),
           pair: item['Pair'],
           type: item['Side'].toLowerCase(),
           price: parseFloat(item['Price']),
@@ -201,7 +240,7 @@ async function convertModelBinance(data: Array<any>): Promise<Array<any>> {
       return null
     })
   )
-  return convertedData.filter(Boolean)
+  return convertedData.filter(Boolean) as MappedTrade[]
 }
 
 /**
@@ -209,7 +248,7 @@ async function convertModelBinance(data: Array<any>): Promise<Array<any>> {
  * @param {Array<any>} data - The KuCoin model data to convert.
  * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
-async function convertModelKucoin(data: Array<any>): Promise<Array<any>> {
+async function convertModelKucoin(data: Array<ModelKucoin>): Promise<MappedTrade[]> {
   console.log('🚀 ~ convertModelKucoin ~ data:', data)
   const convertedData = await Promise.all(
     data.map(async (item) => {
@@ -218,6 +257,7 @@ async function convertModelKucoin(data: Array<any>): Promise<Array<any>> {
           base: item.Symbol.split('-')[0],
           quote: item.Symbol.split('-')[1],
           date: item['Order Time(UTC-03:00)'],
+          timestamp: new Date(item['Order Time(UTC-03:00)']).getTime(),
           pair: item.Symbol,
           type: item.Side.toLowerCase(),
           price: parseFloat(item['Avg. Filled Price']),
@@ -232,7 +272,7 @@ async function convertModelKucoin(data: Array<any>): Promise<Array<any>> {
       return null
     })
   )
-  return convertedData.filter(Boolean)
+  return convertedData.filter(Boolean) as MappedTrade[]
 }
 
 /**
@@ -240,12 +280,12 @@ async function convertModelKucoin(data: Array<any>): Promise<Array<any>> {
  * @param {Array<any>} data - The OKX model data to convert.
  * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
-async function convertModelOkx(data: Array<any>): Promise<Array<any>> {
+async function convertModelOkx(data: Array<ModelOkx>): Promise<MappedTrade[]> {
   console.log('🚀 ~ convertModelOkx ~ data:', data)
 
-  const processedOrders = new Map<string, any>()
+  const processedOrders = new Map<string, MappedTrade>()
 
-  const convertItem = async (item: any) => {
+  const convertItem = async (item: ModelOkx) => {
     const {
       'Order id': orderId,
       'Trading Unit': base,
@@ -272,7 +312,7 @@ async function convertModelOkx(data: Array<any>): Promise<Array<any>> {
 
     console.log('🚀 ~ convertItem ~ orderId:', orderId)
     if (processedOrders.has(orderId)) {
-      const previousObject = processedOrders.get(orderId)
+      const previousObject = processedOrders.get(orderId)!
 
       console.log('🚀 ~ convertItem ~ already processed orderId:', orderId)
 
@@ -285,39 +325,35 @@ async function convertModelOkx(data: Array<any>): Promise<Array<any>> {
           price: fillPrice,
           amount: balance
         })
-
-        if (fee !== 0) {
-          previousObject.fee = fee
-          previousObject.feecoin = balanceUnit
-        }
       } else {
         Object.assign(previousObject, {
           quote: balanceUnit,
           total: amount,
           totalUSDT: balanceUnit === 'USDT' ? amount : 0
         })
+      }
 
-        if (fee !== 0) {
-          previousObject.fee = fee
-          previousObject.feecoin = balanceUnit
-        }
+      if (parseFloat(fee) !== 0) {
+        previousObject.fee = parseFloat(fee)
+        previousObject.feecoin = balanceUnit
       }
 
       processedOrders.set(orderId, previousObject)
     } else {
-      const totalUSDT = await getTotalUSDTFromAPI(date, balanceUnit, amount)
+      const totalUSDT = await getTotalUSDTFromAPI(date, balanceUnit, parseFloat(amount))
 
       processedOrders.set(orderId, {
         base,
         quote: balanceUnit,
-        date,
+        date: date,
+        timestamp: new Date(date).getTime(),
         pair: instrument,
         type: action.toLowerCase(),
-        price: fillPrice,
-        amount: balance,
-        total: amount,
+        price: parseFloat(fillPrice),
+        amount: parseFloat(balance),
+        total: parseFloat(amount),
         totalUSDT,
-        fee,
+        fee: parseFloat(fee),
         feecoin: balanceUnit,
         platform: 'okx'
       })

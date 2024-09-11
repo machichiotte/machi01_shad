@@ -1,7 +1,7 @@
 // src/controllers/converterController.ts
 import Papa from 'papaparse'
 import { Request, Response } from 'express'
-import * as converterService from '@services/converterService'
+import { convertToJSON, TradeModel } from '@services/converterService'
 
 /**
  * Convert a CSV file to JSON format.
@@ -25,11 +25,11 @@ async function getConvertedCsv(req: Request, res: Response): Promise<void> {
     // Use PapaParse to read CSV data from the string
     Papa.parse(csvString, {
       header: true,
-      complete: async (result: Papa.ParseResult<unknown[]>) => {
+      complete: async (result: Papa.ParseResult<object>) => {
         // Use a service to convert parsed data to JSON if necessary
         const jsonData =
           result.data.length > 0
-            ? await converterService.convertToJSON(result.data)
+            ? await convertToJSON(result.data as TradeModel[])
             : []
         res.json({ success: true, data: jsonData })
       },
