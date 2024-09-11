@@ -31,8 +31,9 @@ function createPlatformInstance(platform: string): ccxt.Exchange {
 
   try {
     // Check if the CCXT class exists
-    if (!(platform in ccxt)) {
-      throw new Error(`Unsupported platform: ${platform}`)
+    const exchangeClass = ccxt[platform as keyof typeof ccxt] as typeof ccxt.Exchange
+    if (typeof exchangeClass !== 'function') {
+      throw new Error(`Plateforme non supportée : ${platform}`)
     }
 
     const platformParams: ccxt.Exchange['options'] = {
@@ -43,7 +44,7 @@ function createPlatformInstance(platform: string): ccxt.Exchange {
       enableRateLimit: true // Enable rate limiting
     }
 
-    return new (ccxt as any)[platform](platformParams)
+    return new exchangeClass(platformParams)
   } catch (error) {
     if (error instanceof AuthenticationError) {
       // Handle authentication errors specifically
