@@ -3,9 +3,9 @@ import { getData } from '@utils/dataUtil'
 import { saveLastUpdateToDatabase } from './lastUpdateService'
 import { deleteAllDataMDB, saveData } from './mongodbService'
 
-interface CmcData {
+export interface CmcData {
   // Define the structure of CoinMarketCap data
-  [key: string]: any
+  [key: string]: string | number | object | undefined
 }
 
 interface FetchResponse {
@@ -72,14 +72,14 @@ async function fetchCurrentCmc(): Promise<CmcData[]> {
  * @returns {Promise<CmcData[]>} - The latest CMC data from the database.
  */
 async function fetchDatabaseCmc(): Promise<CmcData[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_CMC
+  const collectionName = process.env.MONGODB_COLLECTION_CMC as string
   try {
-    const data = await getData(collectionName as string)
+    const data = await getData(collectionName)
     console.log(`🚀 ~ file: cmcService.ts ~ fetchDatabaseCmc :`, {
       collectionName,
       count: data.length
     })
-    return data
+    return data as CmcData[]
   } catch (error) {
     console.error(`Erreur dans fetchDatabaseCmc: ${(error as Error).message}`, {
       error
@@ -93,7 +93,7 @@ async function fetchDatabaseCmc(): Promise<CmcData[]> {
  * @param {CmcData[]} data - Array of CoinMarketCap data to update.
  * @returns {Promise<Object>} - Result of the update operation.
  */
-async function updateDatabaseCmcData(data: CmcData[]): Promise<Object> {
+async function updateDatabaseCmcData(data: CmcData[]): Promise<object> {
   const collectionName = process.env.MONGODB_COLLECTION_CMC
   try {
     const deleteResult = await deleteAllDataMDB(collectionName as string)
@@ -127,7 +127,7 @@ async function updateDatabaseCmcData(data: CmcData[]): Promise<Object> {
  * Updates CoinMarketCap data by fetching the latest information from the CoinMarketCap API and saving it to the database.
  * @returns {Promise<Object>} - Result of the update operation.
  */
-async function updateCmcData(): Promise<Object> {
+async function updateCmcData(): Promise<object> {
   try {
     const data = await fetchCurrentCmc()
     console.log('Dernières données CMC récupérées', { count: data.length })
