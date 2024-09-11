@@ -6,7 +6,7 @@ import { saveData, getOne } from './mongodbService'
 interface User {
   email: string
   password: string
-  [key: string]: any
+  [key: string]: string | number | boolean | undefined
 }
 
 /**
@@ -64,6 +64,7 @@ async function findUserByEmail(email: string): Promise<User | null> {
     const user = await getOne(collection, { email }) // Filtrer par e-mail
     return user as User | null // Retourne l'objet utilisateur trouvé ou null s'il n'est pas trouvé
   } catch (error) {
+    console.log('🚀 ~ findUserByEmail ~ error:', error)
     return null // Indique une erreur ou que l'utilisateur n'a pas été trouvé
   }
 }
