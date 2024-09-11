@@ -25,8 +25,9 @@ async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
       throw new Error('MONGODB_COLLECTION_LAST_UPDATE is not defined')
     }
 
-    const filter = { platform, type }
     // check si besoin de filter
+    //const filter = { platform, type }
+
     const lastUpdateData = await getDataMDB(collectionName)
 
     if (lastUpdateData.length > 0) {
@@ -76,14 +77,14 @@ async function getLastUpdate(req: Request, res: Response): Promise<void> {
       }
     )
     res.json(data)
-  } catch (error: any) {
+  } catch (error) {
     console.error(
       'Échec de la récupération de toutes les dernières mises à jour.',
       {
         error: error instanceof Error ? error.message : 'Erreur inconnue'
       }
     )
-    handleErrorResponse(res, error, 'getLastUpdate')
+    handleErrorResponse(res, error as Error, 'getLastUpdate')
   }
 }
 

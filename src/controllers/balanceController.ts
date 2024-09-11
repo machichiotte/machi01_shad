@@ -13,8 +13,8 @@ async function getBalances(req: Request, res: Response): Promise<void> {
   try {
     const data = await balanceService.fetchDatabaseBalances()
     res.json(data)
-  } catch (error: any) {
-    handleErrorResponse(res, error, 'getBalances')
+  } catch (error) {
+    handleErrorResponse(res, error as Error, 'getBalances')
   }
 }
 
@@ -35,8 +35,8 @@ async function updateCurrentBalance(
       message: 'Le solde actuel a été mis à jour avec succès.',
       data: data
     })
-  } catch (error: any) {
-    handleErrorResponse(res, error, 'updateCurrentBalance')
+  } catch (error) {
+    handleErrorResponse(res, error as Error, 'updateCurrentBalance')
   }
 }
 

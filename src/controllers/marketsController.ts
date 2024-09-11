@@ -15,11 +15,11 @@ async function getMarkets(req: Request, res: Response): Promise<void> {
   try {
     const data = await getSavedMarkets()
     res.json(data)
-  } catch (error: any) {
+  } catch (error) {
     errorLogger.error('Échec de la récupération des données de marché.', {
       error: (error as Error).message
     })
-    handleErrorResponse(res, error, 'getMarkets')
+    handleErrorResponse(res, error as Error, 'getMarkets')
   }
 }
 

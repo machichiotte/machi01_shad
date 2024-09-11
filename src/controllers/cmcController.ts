@@ -20,9 +20,9 @@ async function getCmc(req: Request, res: Response): Promise<void> {
       count: data.length
     })
     res.json(data)
-  } catch (error: any) {
-    errorLogger.error(`Erreur dans getCmc: ${error.message}`, { error })
-    handleErrorResponse(res, error, 'getCmc')
+  } catch (error) {
+    errorLogger.error(`Erreur dans getCmc: ${(error as Error).message}`, { error })
+    handleErrorResponse(res, error as Error, 'getCmc')
   }
 }
 
@@ -35,9 +35,9 @@ async function updateCmc(req: Request, res: Response): Promise<void> {
   try {
     const result = await cmcService.updateCmcData()
     res.status(200).json(result)
-  } catch (error: any) {
-    errorLogger.error(`Erreur dans updateCmc: ${error.message}`, { error })
-    handleErrorResponse(res, error, 'updateCmc')
+  } catch (error) {
+    errorLogger.error(`Erreur dans updateCmc: ${(error as Error).message}`, { error })
+    handleErrorResponse(res, error as Error, 'updateCmc')
   }
 }
 

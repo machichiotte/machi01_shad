@@ -12,8 +12,8 @@ async function getAllTickers(req: Request, res: Response): Promise<void> {
   try {
     const data = await tickersService.fetchDatabaseTickers()
     res.json(data)
-  } catch (error: any) {
-    handleErrorResponse(res, error, 'getAllTickers')
+  } catch (error) {
+    handleErrorResponse(res, error as Error, 'getAllTickers')
   }
 }
 
@@ -32,8 +32,8 @@ async function getAllTickersByPlatform(
     const platformTickersData =
       await tickersService.getAllTickersByPlatform(platform)
     res.status(200).json(platformTickersData)
-  } catch (error: any) {
-    handleErrorResponse(res, error, 'getAllTickersByPlatform')
+  } catch (error) {
+    handleErrorResponse(res, error as Error, 'getAllTickersByPlatform')
   }
 }
 
@@ -54,8 +54,8 @@ async function getAllTickersBySymbolFromPlatform(
     const filteredTickersData =
       await tickersService.getAllTickersBySymbolFromPlatform(platform, symbol)
     res.status(200).json(filteredTickersData)
-  } catch (error: any) {
-    handleErrorResponse(res, error, 'getAllTickersBySymbolFromPlatform')
+  } catch (error) {
+    handleErrorResponse(res, error as Error, 'getAllTickersBySymbolFromPlatform')
   }
 }
 
@@ -68,8 +68,8 @@ async function updateAllTickers(req: Request, res: Response): Promise<void> {
   try {
     const tickersData = await tickersService.updateAllTickers()
     res.status(200).json(tickersData)
-  } catch (error: any) {
-    handleErrorResponse(res, error, 'updateAllTickers')
+  } catch (error) {
+    handleErrorResponse(res, error as Error, 'updateAllTickers')
   }
 }
 

@@ -13,13 +13,13 @@ async function getStrat(req: Request, res: Response): Promise<void> {
   try {
     const data = await strategyService.fetchDatabaseStrategies()
     res.json(data)
-  } catch (error: any) {
+  } catch (error) {
     console.error(
       `🚀 ~ file: strategyController.ts:23 ~ getStrat ~ error:`,
       error
     )
     //console.error("Échec de la récupération des stratégies", { error: (error as Error).message });
-    handleErrorResponse(res, error, 'getStrat')
+    handleErrorResponse(res, error as Error, 'getStrat')
   }
 }
 
@@ -59,8 +59,8 @@ async function updateStrategyById(req: Request, res: Response): Promise<void> {
       updatedStrategy
     )
     res.json(result)
-  } catch (error: any) {
-    handleErrorResponse(res, error, 'updateStrategyById')
+  } catch (error) {
+    handleErrorResponse(res, error as Error, 'updateStrategyById')
   }
 }
 
