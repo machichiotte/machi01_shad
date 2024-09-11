@@ -31,10 +31,10 @@ async function fetchDatabaseBalancesByPlatform(
   try {
     const data = await fetchDatabaseBalances()
     return data.filter((item: MappedBalance) => item.platform === platform)
-  } catch (error: any) {
+  } catch (error) {
     if (
       retries > 0 &&
-      shouldRetry(platform, error, await loadErrorPolicies())
+      shouldRetry(platform, error as Error, await loadErrorPolicies())
     ) {
       const delay = Math.pow(2, 3 - retries) * 1000
       await new Promise((resolve) => setTimeout(resolve, delay))
@@ -64,8 +64,8 @@ async function fetchCurrentBalancesByPlatform(
     const platformInstance = createPlatformInstance(platform)
     const data = await platformInstance.fetchBalance()
     return mapBalance(platform, data)
-  } catch (error: any) {
-    if (retries > 0 && shouldRetry(platform, error, errorPolicies)) {
+  } catch (error) {
+    if (retries > 0 && shouldRetry(platform, error as Error, errorPolicies)) {
       const delay = Math.pow(2, 3 - retries) * 1000
       await new Promise((resolve) => setTimeout(resolve, delay))
       return fetchCurrentBalancesByPlatform(platform, retries - 1)
