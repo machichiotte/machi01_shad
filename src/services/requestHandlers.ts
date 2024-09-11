@@ -7,6 +7,19 @@ const PORT = process.env.PORT || 10000
 
 const app = express() as express.Application
 
+import converterRoutes from '@routes/converterRoutes'
+import authRoutes from '@routes/authRoutes'
+import balanceRoutes from '@routes/balanceRoutes'
+import cmcRoutes from '@routes/cmcRoutes'
+import strategyRoutes from '@routes/strategyRoutes'
+import ordersRoutes from '@routes/ordersRoutes'
+import marketsRoutes from '@routes/marketsRoutes'
+import pricesRoutes from '@routes/pricesRoutes'
+import tradesRoutes from '@routes/tradesRoutes'
+import tickersRoutes from '@routes/tickersRoutes'
+import lastUpdateRoutes from '@routes/lastUpdateRoutes'
+import shadRoutes from '@routes/shadRoutes'
+
 // Middleware CORS
 app.use(cors())
 
@@ -23,18 +36,18 @@ interface Routes {
 }
 
 const routes: Routes = {
-  converter: require('@routes/converterRoutes').default,
-  auth: require('@routes/authRoutes').default,
-  balance: require('@routes/balanceRoutes').default,
-  cmc: require('@routes/cmcRoutes').default,
-  strategy: require('@routes/strategyRoutes').default,
-  orders: require('@routes/ordersRoutes').default,
-  market: require('@routes/marketsRoutes').default,
-  prices: require('@routes/pricesRoutes').default,
-  trades: require('@routes/tradesRoutes').default,
-  tickers: require('@routes/tickersRoutes').default,
-  lastUpdate: require('@routes/lastUpdateRoutes').default,
-  shad: require('@routes/shadRoutes').default
+  converter: converterRoutes,
+  auth: authRoutes,
+  balance: balanceRoutes,
+  cmc: cmcRoutes,
+  strategy: strategyRoutes,
+  orders: ordersRoutes,
+  market: marketsRoutes,
+  prices: pricesRoutes,
+  trades: tradesRoutes,
+  tickers: tickersRoutes,
+  lastUpdate: lastUpdateRoutes,
+  shad: shadRoutes
 }
 
 // Utilisation des routes avec une boucle
@@ -50,11 +63,13 @@ Object.entries(routes).forEach(([name, router]) => {
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack)
   res.status(500).json({ error: 'Internal Server Error' })
+  next()
 })
 
 // Middleware de gestion des erreurs 404
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({ error: 'Not Found' })
+  next()
 })
 
 // Fonction pour démarrer le serveur

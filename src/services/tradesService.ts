@@ -12,8 +12,8 @@ import { Trade } from 'ccxt'
  * @returns {Promise<Trade[]>} A promise that resolves to an array of trades.
  */
 async function fetchDatabaseTrades(): Promise<MappedTrade[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES
-  return await getData(collectionName as string)
+  const collectionName = process.env.MONGODB_COLLECTION_TRADES as string
+  return await getData(collectionName) as MappedTrade[]
 }
 
 /**
@@ -49,7 +49,7 @@ async function updateTradeById(
  */
 async function addTradesManually(
   tradesData: MappedTrade | MappedTrade[]
-): Promise<{ message: any; data: any; status: number }> {
+): Promise<object> {
   const collectionName = process.env.MONGODB_COLLECTION_TRADES
   try {
     const savedTrade = await saveData(tradesData, collectionName as string)
@@ -78,7 +78,7 @@ async function updateTrades(
   try {
     const mappedData: MappedTrade[] = []
     switch (platform) {
-      case 'kucoin':
+      case 'kucoin': {
         const weeksBack = 4 * 52
         for (let i = weeksBack; i > 1; i--) {
           const trades = await platformInstance.fetchMyTrades(
@@ -91,7 +91,9 @@ async function updateTrades(
           }
         }
         break
-      case 'htx':
+      }
+
+      case 'htx': {
         const currentTime = Date.now()
         const windowSize = 48 * 60 * 60 * 1000
         const totalDuration = 1 * 365 * 24 * 60 * 60 * 1000
@@ -115,6 +117,7 @@ async function updateTrades(
           }
         }
         break
+      }
     }
 
     await deleteAndSaveData(mappedData, collectionName as string, platform)

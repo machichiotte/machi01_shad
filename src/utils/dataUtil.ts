@@ -2,16 +2,14 @@
 import { promises as fs } from 'fs'
 import { getMockDataPath } from './fileUtil'
 import { getAllDataMDB } from '@services/mongodbService'
-import { MappedBalance, MappedTrade, MappedOrder, MappedTicker } from '@services/mapping'
-import { CmcData } from '@services/cmcService'
+import { MappedData } from '@services/mapping'
 
-type Data = MappedBalance | MappedOrder | MappedTrade | MappedTicker | CmcData;
 /**
  * Retrieves data from the specified collection.
  * @param {string} collectionName - The MongoDB collection name.
- * @returns {Promise<Data[]>} - The retrieved data.
+ * @returns {Promise<MappedData[]>} - The retrieved data.
  */
-async function getData(collectionName: string): Promise<Data[]> {
+async function getData(collectionName: string): Promise<MappedData[]> {
   try {
     const data = await getDataFromCollection(collectionName)
     return data
@@ -24,9 +22,9 @@ async function getData(collectionName: string): Promise<Data[]> {
 /**
  * Main function to get data from the collection
  * @param {string} collectionName - The name of the collection to retrieve data from
- * @returns {Promise<Data[]>} - The retrieved data as an array of objects
+ * @returns {Promise<MappedData[]>} - The retrieved data as an array of objects
  */
-async function getDataFromCollection(collectionName: string): Promise<Data[]> {
+async function getDataFromCollection(collectionName: string): Promise<MappedData[]> {
   try {
     if (process.env.OFFLINE_MODE === 'true') {
       // Get the mock data file path for the given collection

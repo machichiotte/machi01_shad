@@ -3,13 +3,10 @@ import { getData } from '@utils/dataUtil'
 import { saveLastUpdateToDatabase } from './lastUpdateService'
 import { deleteAllDataMDB, saveData } from './mongodbService'
 
-export interface CmcData {
-  // Define the structure of CoinMarketCap data
-  [key: string]: string | number | object | undefined
-}
+import { MappedCmc } from './mapping'
 
 interface FetchResponse {
-  data: CmcData[]
+  data: MappedCmc[]
   status: {
     total_count: number
   }
@@ -17,16 +14,16 @@ interface FetchResponse {
 
 /**
  * Fetches the latest CoinMarketCap data from the CoinMarketCap API.
- * @returns {Promise<CmcData[]>} - A promise resolved with the fetched CoinMarketCap data.
+ * @returns {Promise<MappedCmc[]>} - A promise resolved with the fetched CoinMarketCap data.
  */
-async function fetchCurrentCmc(): Promise<CmcData[]> {
+async function fetchCurrentCmc(): Promise<MappedCmc[]> {
   const API_KEY = process.env.CMC_APIKEY
   const limit = 5000
   const baseStart = 1
   const convert = 'USD'
 
   let start = baseStart
-  const allData: CmcData[] = []
+  const allData: MappedCmc[] = []
 
   try {
     while (true) {
@@ -69,9 +66,9 @@ async function fetchCurrentCmc(): Promise<CmcData[]> {
 
 /**
  * Retrieves the latest CoinMarketCap data from the database.
- * @returns {Promise<CmcData[]>} - The latest CMC data from the database.
+ * @returns {Promise<MappedCmc[]>} - The latest CMC data from the database.
  */
-async function fetchDatabaseCmc(): Promise<CmcData[]> {
+async function fetchDatabaseCmc(): Promise<MappedCmc[]> {
   const collectionName = process.env.MONGODB_COLLECTION_CMC as string
   try {
     const data = await getData(collectionName)
@@ -79,7 +76,7 @@ async function fetchDatabaseCmc(): Promise<CmcData[]> {
       collectionName,
       count: data.length
     })
-    return data as CmcData[]
+    return data as MappedCmc[]
   } catch (error) {
     console.error(`Erreur dans fetchDatabaseCmc: ${(error as Error).message}`, {
       error
@@ -90,10 +87,10 @@ async function fetchDatabaseCmc(): Promise<CmcData[]> {
 
 /**
  * Updates the CoinMarketCap data in the database.
- * @param {CmcData[]} data - Array of CoinMarketCap data to update.
+ * @param {MappedCmc[]} data - Array of CoinMarketCap data to update.
  * @returns {Promise<Object>} - Result of the update operation.
  */
-async function updateDatabaseCmcData(data: CmcData[]): Promise<object> {
+async function updateDatabaseCmcData(data: MappedCmc[]): Promise<object> {
   const collectionName = process.env.MONGODB_COLLECTION_CMC
   try {
     const deleteResult = await deleteAllDataMDB(collectionName as string)

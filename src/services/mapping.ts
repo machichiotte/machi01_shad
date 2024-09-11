@@ -1,12 +1,19 @@
 // src/services/mapping.ts
 
-import { Trade, Balances, Market, Order, Tickers, Dictionary } from 'ccxt' // Importation des types nécessaires de ccxt
+import { Trade, Balances, Market, Order, Tickers } from 'ccxt' // Importation des types nécessaires de ccxt
 import {
   isStableCoin,
   getStableCoins,
   isMajorCryptoPair,
   getTotalUSDT
 } from '@utils/mappingUtil'
+
+export type MappedData = MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc;
+
+export interface MappedCmc {
+  // Define the structure of CoinMarketCap data
+  [key: string]: string | number | object | undefined
+}
 
 // Interface pour le mapping des balances
 export interface MappedBalance {
@@ -78,7 +85,10 @@ export interface MappedStrategy {
   _id?: string
   asset: string
   strategies: {
-    [key: string]: any
+    [key: string]: string
+  }
+  maxExposure: {
+    [key: string]: number
   }
 }
 

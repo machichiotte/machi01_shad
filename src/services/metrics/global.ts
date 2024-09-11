@@ -63,12 +63,6 @@ const DEFAULT_METRICS: Record<string, string | number> = {
   platform: 'N/A'
 }
 
-interface Ticker {
-  symbol: string
-  platform: string
-  last?: number
-}
-
 /**
  * Retrieves the current price of an asset from the last tickers.
  *

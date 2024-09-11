@@ -1,5 +1,7 @@
 // src/services/metrics/strategies.ts
 
+import { MappedStrategy } from "@services/mapping"
+
 /**
  * Constants for error margin and maximum exposure
  */
@@ -111,11 +113,6 @@ function getDoneShad(
   }
 }
 
-interface Strats {
-  strategies?: Record<string, string>
-  maxExposure?: Record<string, number>
-}
-
 /**
  * Retrieves the strategy and maximum exposure for an asset on a given platform
  * @param {string} platform - Platform identifier
@@ -123,18 +120,14 @@ interface Strats {
  * @returns {Object} Strategy and maximum exposure
  */
 function getStrat(
+  asset: string,
   platform: string,
-  strats: Strats
+  strats: MappedStrategy[]
 ): { strat: string; stratExpo: number } {
-  if (!strats || typeof strats !== 'object') {
-    console.warn('🚀 ~ getStrat ~ strats is invalid or not an object:', strats)
-    return { strat: 'No strategy', stratExpo: MAX_EXPO }
-  }
+  const strat = strats.find(strat => strat.asset === asset)?.strategies?.[platform] || 'No strategy'
+  const stratExpo = strats.find(strat => strat.asset === asset)?.maxExposure?.[platform] || MAX_EXPO
 
-  return {
-    strat: strats.strategies?.[platform] || 'No strategy',
-    stratExpo: strats.maxExposure?.[platform] || MAX_EXPO
-  }
+  return { strat, stratExpo }
 }
 
 /**
@@ -166,14 +159,11 @@ function calculateRecups(
   platform: string,
   totalBuy: number,
   totalSell: number,
-  strats: Strats
+  strats: MappedStrategy[]
 ) {
-  let { strat, stratExpo } = getStrat(platform, strats)
-  if (stratExpo === undefined) {
-    stratExpo = MAX_EXPO
-  }
+  const { strat, stratExpo } = getStrat(asset, platform, strats)
 
-  const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo))
+  const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo || MAX_EXPO))
 
   const ratioShad = getRatioShad(strat)
   const recupShad = getRecupShad(totalBuy, totalSell, maxExposition)
@@ -281,8 +271,8 @@ function calculateAmountsAndPricesForShad(
   const amountTp1 =
     totalShad > -1
       ? FACTOR_SELL_SHAD *
-        (parsedValues.recupTp1 / parsedValues.recupTpX) *
-        parsedValues.balance
+      (parsedValues.recupTp1 / parsedValues.recupTpX) *
+      parsedValues.balance
       : parsedValues.balance - maxExposition / parsedValues.averageEntryPrice
 
   const priceTp1 =

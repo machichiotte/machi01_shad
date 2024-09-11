@@ -101,10 +101,7 @@ async function cleanCollectionTrades(): Promise<void> {
   await Promise.all(
     duplicates.map(async (group: any) => {
       const documentsToKeep = group.documents.filter(
-        (doc: any) => doc.timestamp
-      )
-      const documentsToDelete = group.documents.filter(
-        (doc: any) => !doc.timestamp || doc.date
+        (doc: any) => doc.timestamp && !doc.date
       )
 
       if (documentsToKeep.length > 0) {
@@ -147,15 +144,15 @@ async function handleRetry(
   while (attempts < maxRetries) {
     try {
       return await operation(...args)
-    } catch (error: any) {
+    } catch (error) {
       attempts++
       console.warn(
-        `Opération échouée (tentative ${attempts}/${maxRetries}): ${error.message}`
+        `Opération échouée (tentative ${attempts}/${maxRetries}): ${(error as Error).message}`
       )
       if (
         attempts === maxRetries ||
         !['ECONNRESET', 'ETIMEDOUT', 'ENETDOWN', 'ENETUNREACH'].includes(
-          error.code
+          (error as Error).message
         )
       ) {
         throw error
@@ -309,18 +306,25 @@ async function getAllDataMDB(collectionName: string): Promise<any[]> {
   }, [collectionName])
 }
 
+interface UpdateDataMDBParams {
+  matchedCount: number
+  modifiedCount: number
+  upsertedId: object
+  upsertedCount: number
+}
+
 /**
  * Updates a document in a specified collection.
  * @param {string} collectionName - The name of the collection to update.
  * @param {Object} filter - The filter to find the document to update.
  * @param {Object} update - The update to apply to the document.
- * @returns {Promise<any>} The result of the update operation.
+ * @returns {Promise<UpdateDataMDBParams>} The result of the update operation.
  */
 async function updateDataMDB(
   collectionName: string,
   filter: object,
   update: object
-): Promise<any> {
+): Promise<UpdateDataMDBParams> {
   return await handleRetry(async () => {
     const collection = await getCollection(collectionName)
     const result = await collection.updateOne(filter, update, { upsert: true })
