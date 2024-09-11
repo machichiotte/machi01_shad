@@ -4,16 +4,13 @@ import {
   connectToMongoDB,
   cleanCollectionTrades
 } from './services/mongodbService'
-import { app, startServer } from './services/requestHandlers'
+import { startServer } from './services/requestHandlers'
 import { initializeCronTasks } from './services/cron/cronTasks'
 
 import { cronBalances } from './services/cron/taskExecutor'
 import { handleMigrationSwaps } from './services/migrationSwapsService'
 
 dotenv.config()
-
-const isOfflineMode = process.env.OFFLINE_MODE === 'true'
-;(app as any).offlineMode = isOfflineMode
 
 async function initializeServer(): Promise<void> {
   try {

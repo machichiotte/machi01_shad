@@ -203,6 +203,11 @@ Nous utilisons Winston pour la journalisation. Configurez des alertes dans votre
 
 Voici quelques fonctionnalités prévues pour les futures versions :
 
+- Implémenter un mode hors ligne robuste pour les tests, utilisant des fichiers JSON comme données simulées
+- Améliorer la couverture des tests en incluant des scénarios pour le mode hors ligne
+- Développer un outil pour générer et maintenir facilement les données de test JSON
+- Intégrer le mode hors ligne dans le pipeline CI/CD pour des tests plus fiables
+
 - Intégration de WebSockets pour les mises à jour en temps réel
 - Ajout de nouvelles stratégies de trading automatisées
 - Amélioration de l'analyse des données historiques

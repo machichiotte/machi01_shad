@@ -5,7 +5,7 @@ import cors from 'cors'
 
 const PORT = process.env.PORT || 10000
 
-const app = express()
+const app = express() as express.Application
 
 // Middleware CORS
 app.use(cors())
