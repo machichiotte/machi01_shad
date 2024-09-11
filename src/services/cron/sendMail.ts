@@ -11,7 +11,7 @@ interface EmailOptions {
   subject: string
   text?: string
   html?: string
-  [key: string]: any
+  [key: string]: string | number | boolean | object | undefined
 }
 
 /**
