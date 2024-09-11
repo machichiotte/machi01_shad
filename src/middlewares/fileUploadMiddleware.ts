@@ -28,7 +28,7 @@ function fileUploadMiddleware(
     }
 
     // Set the file in the request object for further processing
-    ;(req as any).uploadedFile = req.file
+    req.uploadedFile = req.file
 
     // Continue to the next middleware or route handler
     next()
