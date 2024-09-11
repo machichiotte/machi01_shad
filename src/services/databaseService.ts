@@ -10,7 +10,7 @@ import { saveLastUpdateToDatabase } from './lastUpdateService'
  * @param {string} updateType - The update type for lastUpdateService.
  */
 async function saveDataToDatabase(
-  data: Object[],
+  data: object[],
   collectionName: string,
   platform: string,
   updateType: string
