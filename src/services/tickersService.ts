@@ -12,10 +12,8 @@ import { mapTickers, MappedTicker } from './mapping'
  * @returns {Promise<TickerData>} The tickers data.
  */
 async function fetchDatabaseTickers(): Promise<MappedTicker[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_TICKERS
-  if (!collectionName) throw new Error('MONGODB_COLLECTION_TICKERS not defined')
-  const data = await getData(collectionName)
-  return data
+  const collectionName = process.env.MONGODB_COLLECTION_TICKERS as string
+  return await getData(collectionName) as MappedTicker[]
 }
 
 /**

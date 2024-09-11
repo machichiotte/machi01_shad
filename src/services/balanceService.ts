@@ -13,8 +13,8 @@ validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE'])
  * @returns {Promise<MappedBalance[]>} A promise that resolves to an array of balance data.
  */
 async function fetchDatabaseBalances(): Promise<MappedBalance[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_BALANCE
-  return await getData(collectionName as string)
+  const collectionName = process.env.MONGODB_COLLECTION_BALANCE as string
+  return await getData(collectionName) as MappedBalance[]
 }
 
 /**

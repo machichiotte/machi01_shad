@@ -2,9 +2,9 @@
 import { promises as fs } from 'fs'
 import { getMockDataPath } from './fileUtil'
 import { getAllDataMDB } from '@services/mongodbService'
-import { MappedBalance, MappedTrade, MappedOrder } from '@services/mapping'
+import { MappedBalance, MappedTrade, MappedOrder, MappedTicker } from '@services/mapping'
 
-type Data = MappedBalance | MappedOrder | MappedTrade;
+type Data = MappedBalance | MappedOrder | MappedTrade | MappedTicker;
 /**
  * Retrieves data from the specified collection.
  * @param {string} collectionName - The MongoDB collection name.
