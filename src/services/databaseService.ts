@@ -1,6 +1,7 @@
 // src/services/databaseService.ts
 import { deleteAndSaveData } from './mongodbService'
 import { saveLastUpdateToDatabase } from './lastUpdateService'
+import { MappedData } from './mapping'
 
 /**
  * Saves data to the database and updates the last update date.
@@ -10,13 +11,13 @@ import { saveLastUpdateToDatabase } from './lastUpdateService'
  * @param {string} updateType - The update type for lastUpdateService.
  */
 async function saveDataToDatabase(
-  data: object[],
+  data: MappedData[],
   collectionName: string,
   platform: string,
   updateType: string
 ): Promise<void> {
   try {
-    await deleteAndSaveData(data, collectionName, platform)
+    await deleteAndSaveData(collectionName, data, platform)
     await saveLastUpdateToDatabase(updateType, platform)
     console.log(`Données sauvegardées dans la base de données`, {
       platform,

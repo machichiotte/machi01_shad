@@ -75,12 +75,10 @@ async function saveDatabaseMarkets(
  * @returns {Promise<MarketData[]>} - The last recorded markets.
  */
 async function getSavedMarkets(): Promise<MappedMarket[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_LOAD_MARKETS
-  if (!collectionName) {
-    throw new Error('Missing environment variable for collection name')
-  }
+  const collectionName = process.env.MONGODB_COLLECTION_LOAD_MARKETS as string
+
   try {
-    const data = await getData(collectionName)
+    const data = await getData(collectionName) as MappedMarket[]
     console.log('Fetched saved market data from the database.', {
       collectionName,
       count: data.length
@@ -96,24 +94,22 @@ async function getSavedMarkets(): Promise<MappedMarket[]> {
 
 /**
  * Updates the market data in the database for a specific platform.
- * @param {MarketData} data - The market data to be updated.
+ * @param {MarketData} mappedData - The market data to be updated.
  * @param {string} platform - Identifier of the platform.
  * @returns {Promise<MarketData[]>} - The mapped and updated market data.
  */
 async function updateMarketDataInDatabase(
   platform: string,
-  data: MappedMarket[]
+  mappedData: MappedMarket[]
 ): Promise<MappedMarket[]> {
-  const collection = process.env.MONGODB_COLLECTION_LOAD_MARKETS
-  if (!collection) {
-    throw new Error('Missing environment variable for collection')
-  }
-  await deleteAndSaveData(data, collection, platform)
+  const collectionName = process.env.MONGODB_COLLECTION_LOAD_MARKETS as string
+
+  await deleteAndSaveData(collectionName, mappedData, platform)
   await saveLastUpdateToDatabase(process.env.TYPE_LOAD_MARKETS || '', platform)
   console.log(`Updated market data in database for ${platform}.`, {
-    count: data.length
+    count: mappedData.length
   })
-  return data
+  return mappedData
 }
 
 export {

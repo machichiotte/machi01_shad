@@ -2,7 +2,10 @@
 import { Request, Response } from 'express'
 import { handleErrorResponse } from '@utils/errorUtil'
 import * as lastUpdateService from '@services/lastUpdateService'
-import * as strategyService from '@services/strategyService'
+
+import { StrategyService } from '@services/strategyService'
+
+const strategyService = new StrategyService()
 
 /**
  * Récupère les stratégies de la base de données.

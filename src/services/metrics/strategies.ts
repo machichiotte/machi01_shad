@@ -15,11 +15,7 @@ const MAX_EXPO = 10000
  * @param {number} maxExposition - Maximum exposure allowed
  * @returns {number} Recovery amount for SHAD
  */
-function getRecupShad(
-  totalBuy: number,
-  totalSell: number,
-  maxExposition: number
-): number {
+function getRecupShad(totalBuy: number, totalSell: number, maxExposition: number): number {
   if (totalSell > 0) {
     if (maxExposition < totalBuy && totalSell < totalBuy - maxExposition) {
       return 0
@@ -39,13 +35,7 @@ function getRecupShad(
  * @param {number} totalShad - Total SHAD amount
  * @returns {number} Recovery amount for TP1
  */
-function getRecupTp1(
-  totalBuy: number,
-  totalSell: number,
-  maxExposition: number,
-  recupTpX: number,
-  totalShad: number
-): number {
+function getRecupTp1(totalBuy: number, totalSell: number, maxExposition: number, recupTpX: number, totalShad: number): number {
   let valueToRecup = 0
   if (maxExposition < totalBuy) {
     if (totalSell < totalBuy - maxExposition) {
@@ -76,11 +66,7 @@ function getRecupTp1(
  * @param {number} ratioShad - SHAD ratio
  * @returns {number} Recovery amount for TPX
  */
-function getRecupTpX(
-  assetStrat: string,
-  maxExposition: number,
-  ratioShad: number
-): number {
+function getRecupTpX(assetStrat: string, maxExposition: number, ratioShad: number): number {
   const result = (maxExposition * ratioShad * 0.5).toFixed(2)
   return parseFloat(result)
 }
@@ -111,19 +97,6 @@ function getDoneShad(
   } else {
     return 0
   }
-}
-
-/**
- * Retrieves the strategy and maximum exposure for an asset on a given platform
- * @param {string} platform - Platform identifier
- * @param {Strats} strats - Saved strategies
- * @returns {Object} Strategy and maximum exposure
- */
-function getStrat(asset: string, platform: string, strats: MappedStrategy[]): { strat: string; stratExpo: number } {
-  const strat = strats.find(strat => strat.asset === asset)?.strategies?.[platform] || 'No strategy'
-  const stratExpo = strats.find(strat => strat.asset === asset)?.maxExposure?.[platform] || MAX_EXPO
-
-  return { strat, stratExpo }
 }
 
 /**

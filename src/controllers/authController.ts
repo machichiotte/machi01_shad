@@ -1,6 +1,6 @@
 // src/controllers/authController.ts
 import { Request, Response } from 'express'
-import * as authService from '@services/authService'
+import AuthService from '@services/authService'
 
 /**
  * Registers a new user.
@@ -18,7 +18,7 @@ async function registerUser(req: Request, res: Response): Promise<void> {
       return
     }
 
-    const status = await authService.createUserDBService(req.body)
+    const status = await AuthService.createUserDBService(req.body)
 
     if (status) {
       console.log('User registered successfully', { email })
@@ -55,7 +55,7 @@ async function loginUser(req: Request, res: Response): Promise<void> {
       return
     }
 
-    const user = await authService.findUserByEmail(email)
+    const user = await AuthService.findUserByEmail(email)
     if (!user) {
       console.log('Login attempt with invalid email', { email })
       res
@@ -63,13 +63,13 @@ async function loginUser(req: Request, res: Response): Promise<void> {
         .json({ status: false, message: 'Invalid email or password' })
       return
     }
-    const passwordMatch = await authService.isPasswordMatch(
+    const passwordMatch = await AuthService.isPasswordMatch(
       password,
       user.password
     )
 
     if (passwordMatch) {
-      const token = await authService.generateSessionToken()
+      const token = await AuthService.generateSessionToken()
       console.log('User logged in successfully', { userId: user['_id'], email })
       res.status(200).json({
         status: true,

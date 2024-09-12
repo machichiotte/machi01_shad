@@ -1,120 +1,117 @@
 // src/services/balanceService.ts
-import { getData } from '@utils/dataUtil'
-import { createPlatformInstance } from '@utils/platformUtil'
-import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil'
-import { validateEnvVariables } from '@utils/controllerUtil'
-import { saveDataToDatabase } from './databaseService'
-import { mapBalance, MappedBalance } from './mapping'
 
-validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE'])
+import { getData } from '@utils/dataUtil';
+import { createPlatformInstance } from '@utils/platformUtil';
+import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil';
+import { validateEnvVariables } from '@utils/controllerUtil';
+import { saveDataToDatabase } from './databaseService';
+import { mapBalance, MappedBalance } from './mapping';
 
-/**
- * Fetches all balance data from the database.
- * @returns {Promise<MappedBalance[]>} A promise that resolves to an array of balance data.
- */
-async function fetchDatabaseBalances(): Promise<MappedBalance[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_BALANCE as string
-  return await getData(collectionName) as MappedBalance[]
-}
+// Valide que les variables d'environnement nécessaires sont définies
+validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE']);
 
-/**
- * Fetches balance data from the database for a specific platform.
- * @param {string} platform - The platform identifier.
- * @param {number} [retries=3] - The number of retry attempts.
- * @returns {Promise<MappedBalance[]>} A promise that resolves to an array of balance data for the specified platform.
- * @throws {Error} If fetching fails after all retry attempts.
- */
-async function fetchDatabaseBalancesByPlatform(
-  platform: string,
-  retries: number = 3
-): Promise<MappedBalance[]> {
-  try {
-    const data = await fetchDatabaseBalances()
-    return data.filter((item: MappedBalance) => item.platform === platform)
-  } catch (error) {
-    if (
-      retries > 0 &&
-      shouldRetry(platform, error as Error, await loadErrorPolicies())
-    ) {
-      const delay = Math.pow(2, 3 - retries) * 1000
-      await new Promise((resolve) => setTimeout(resolve, delay))
-      return fetchDatabaseBalancesByPlatform(platform, retries - 1)
+// Définition de la classe BalanceService
+export default class BalanceService {
+  /**
+   * Récupère toutes les données de solde de la base de données.
+   * @returns {Promise<MappedBalance[]>} Une promesse qui se résout à un tableau de données de solde.
+   */
+  public static async fetchDatabaseBalances(): Promise<MappedBalance[]> {
+    const collectionName = process.env.MONGODB_COLLECTION_BALANCE as string;
+    return await getData(collectionName) as MappedBalance[];
+  }
+
+  /**
+   * Récupère les données de solde de la base de données pour une plateforme spécifique.
+   * @param {string} platform - L'identifiant de la plateforme.
+   * @param {number} [retries=3] - Le nombre de tentatives de réessai.
+   * @returns {Promise<MappedBalance[]>} Une promesse qui se résout à un tableau de données de solde pour la plateforme spécifiée.
+   * @throws {Error} Si la récupération échoue après toutes les tentatives.
+   */
+  public static async fetchDatabaseBalancesByPlatform(
+    platform: string,
+    retries: number = 3
+  ): Promise<MappedBalance[]> {
+    try {
+      const data = await this.fetchDatabaseBalances();
+      return data.filter((item: MappedBalance) => item.platform === platform);
+    } catch (error) {
+      if (
+        retries > 0 &&
+        shouldRetry(platform, error as Error, await loadErrorPolicies())
+      ) {
+        const delay = Math.pow(2, 3 - retries) * 1000;
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        return this.fetchDatabaseBalancesByPlatform(platform, retries - 1);
+      }
+      console.error('Failed to fetch current balance from platform', {
+        platform,
+        error: (error as Error).message
+      });
+      throw error;
     }
-    console.error('Failed to fetch current balance from platform', {
-      platform,
-      error: (error as Error).message
-    })
-    throw error
   }
-}
 
-/**
- * Fetches current balance data from a specific platform.
- * @param {string} platform - The platform identifier.
- * @param {number} [retries=3] - The number of retry attempts.
- * @returns {Promise<BalanceData[]>} A promise that resolves to an array of current balance data for the specified platform.
- * @throws {Error} If fetching fails after all retry attempts.
- */
-async function fetchCurrentBalancesByPlatform(
-  platform: string,
-  retries: number = 3
-): Promise<MappedBalance[]> {
-  const errorPolicies = await loadErrorPolicies()
-  try {
-    const platformInstance = createPlatformInstance(platform)
-    const data = await platformInstance.fetchBalance()
-    return mapBalance(platform, data)
-  } catch (error) {
-    if (retries > 0 && shouldRetry(platform, error as Error, errorPolicies)) {
-      const delay = Math.pow(2, 3 - retries) * 1000
-      await new Promise((resolve) => setTimeout(resolve, delay))
-      return fetchCurrentBalancesByPlatform(platform, retries - 1)
+  /**
+   * Récupère les données de solde actuelles d'une plateforme spécifique.
+   * @param {string} platform - L'identifiant de la plateforme.
+   * @param {number} [retries=3] - Le nombre de tentatives de réessai.
+   * @returns {Promise<MappedBalance[]>} Une promesse qui se résout à un tableau de données de solde actuelles pour la plateforme spécifiée.
+   * @throws {Error} Si la récupération échoue après toutes les tentatives.
+   */
+  public static async fetchCurrentBalancesByPlatform(
+    platform: string,
+    retries: number = 3
+  ): Promise<MappedBalance[]> {
+    const errorPolicies = await loadErrorPolicies();
+    try {
+      const platformInstance = createPlatformInstance(platform);
+      const data = await platformInstance.fetchBalance();
+      return mapBalance(platform, data);
+    } catch (error) {
+      if (retries > 0 && shouldRetry(platform, error as Error, errorPolicies)) {
+        const delay = Math.pow(2, 3 - retries) * 1000;
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        return this.fetchCurrentBalancesByPlatform(platform, retries - 1);
+      }
+      console.error('Failed to fetch current balance from platform', {
+        platform,
+        error: (error as Error).message
+      });
+      throw error;
     }
-    console.error('Failed to fetch current balance from platform', {
-      platform,
-      error: (error as Error).message
-    })
-    throw error
   }
-}
 
-/**
- * Saves the provided balance data to the database.
- * @param {BalanceData[]} mappedData - The balance data to save.
- * @param {string} platform - The platform identifier.
- * @returns {Promise<void>}
- */
-async function saveDatabaseBalance(
-  mappedData: MappedBalance[],
-  platform: string
-): Promise<void> {
-  const collection = process.env.MONGODB_COLLECTION_BALANCE
-  const updateType = process.env.TYPE_BALANCE
+  /**
+   * Enregistre les données de solde fournies dans la base de données.
+   * @param {MappedBalance[]} mappedData - Les données de solde à enregistrer.
+   * @param {string} platform - L'identifiant de la plateforme.
+   * @returns {Promise<void>}
+   */
+  public static async saveDatabaseBalance(
+    mappedData: MappedBalance[],
+    platform: string
+  ): Promise<void> {
+    const collection = process.env.MONGODB_COLLECTION_BALANCE;
+    const updateType = process.env.TYPE_BALANCE;
 
-  if (collection && updateType) {
-    await saveDataToDatabase(mappedData, collection, platform, updateType)
-  } else {
-    throw new Error('Required environment variables are not set')
+    if (collection && updateType) {
+      await saveDataToDatabase(mappedData, collection, platform, updateType);
+    } else {
+      throw new Error('Required environment variables are not set');
+    }
   }
-}
 
-/**
- * Updates the balance for a specific platform by fetching current data and saving it to the database.
- * @param {string} platform - The platform identifier.
- * @returns {Promise<BalanceData[]>} A promise that resolves to the updated balance data.
- */
-async function updateBalanceForPlatform(
-  platform: string
-): Promise<MappedBalance[]> {
-  const data = await fetchCurrentBalancesByPlatform(platform)
-  await saveDatabaseBalance(data, platform)
-  return data
-}
-
-export {
-  fetchDatabaseBalances,
-  fetchDatabaseBalancesByPlatform,
-  fetchCurrentBalancesByPlatform,
-  saveDatabaseBalance,
-  updateBalanceForPlatform
+  /**
+   * Met à jour le solde pour une plateforme spécifique en récupérant les données actuelles et en les enregistrant dans la base de données.
+   * @param {string} platform - L'identifiant de la plateforme.
+   * @returns {Promise<MappedBalance[]>} Une promesse qui se résout aux données de solde mises à jour.
+   */
+  public static async updateBalanceForPlatform(
+    platform: string
+  ): Promise<MappedBalance[]> {
+    const data = await this.fetchCurrentBalancesByPlatform(platform);
+    await this.saveDatabaseBalance(data, platform);
+    return data;
+  }
 }

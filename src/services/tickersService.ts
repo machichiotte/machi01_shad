@@ -3,7 +3,7 @@ import { getData } from '@utils/dataUtil'
 import { createPlatformInstance, getPlatforms } from '@utils/platformUtil'
 import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil'
 import { saveLastUpdateToDatabase } from './lastUpdateService'
-import { deleteAndSaveObject } from './mongodbService'
+import { deleteAndReplaceAll } from './mongodbService'
 import { saveDataToDatabase } from './databaseService'
 import { mapTickers, MappedTicker } from './mapping'
 
@@ -85,7 +85,8 @@ async function getAllTickersBySymbolFromPlatform(
  * @returns {Promise<TickerData>} The updated tickers data.
  */
 async function updateAllTickers(): Promise<MappedTicker[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_TICKERS
+  const collectionName = process.env.MONGODB_COLLECTION_TICKERS as string
+  const collectionType = process.env.TYPE_TICKERS as string
   const tickersData: MappedTicker[] = []
   const platforms = getPlatforms()
   for (const platform of platforms) {
@@ -94,8 +95,8 @@ async function updateAllTickers(): Promise<MappedTicker[]> {
     tickersData.push(...mapTickers(platform, data))
   }
 
-  await deleteAndSaveObject(tickersData, collectionName as string)
-  await saveLastUpdateToDatabase(process.env.TYPE_TICKERS as string, 'combined')
+  await deleteAndReplaceAll(collectionName, tickersData)
+  await saveLastUpdateToDatabase(collectionType, 'combined')
   return tickersData
 }
 

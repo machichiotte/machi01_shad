@@ -9,7 +9,7 @@ import {
 } from '@utils/mappingUtil'
 
 import { ShadData } from '@services/shadService'
-export type MappedData = MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrategy | ShadData;
+export type MappedData = MappedMarket | MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrategy | ShadData;
 
 export interface MappedCmc {
   // Define the structure of CoinMarketCap data

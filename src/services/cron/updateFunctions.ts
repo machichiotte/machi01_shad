@@ -4,7 +4,7 @@
  * This module contains functions for updating markets, tickers, and balances for a given platform.
  * It uses various services to fetch, compare, and save data to the database.
  */
-import { deleteAndSaveObject } from '@services/mongodbService'
+import { deleteAndReplaceAll } from '@services/mongodbService'
 
 import {
   fetchCurrentMarkets,
@@ -81,9 +81,9 @@ async function updateBalancesForPlatform(platform: string): Promise<void> {
       ])
     }
 
-    const collectionName = process.env.MONGODB_COLLECTION_SHAD
+    const collectionName = process.env.MONGODB_COLLECTION_SHAD as string
     const metrics = await calculateAllMetrics()
-    await deleteAndSaveObject(metrics, collectionName as string)
+    await deleteAndReplaceAll(collectionName, metrics)
   } catch (error) {
     console.error(
       `Erreur lors de la mise à jour des soldes pour ${platform}:`,

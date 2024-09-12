@@ -1,6 +1,7 @@
 // src/services/mongodbService.ts
 import dotenv from 'dotenv'
-import { MongoClient, ServerApiVersion, Db, Collection, InsertManyResult, InsertOneResult, WithId, DeleteResult } from 'mongodb'
+import { MongoClient, ServerApiVersion, Db, InsertManyResult, InsertOneResult, WithId } from 'mongodb'
+import { MappedData } from './mapping'
 
 dotenv.config()
 
@@ -8,6 +9,13 @@ const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PAS
 
 let mongoInstance: MongoClient | null = null
 let db: Db | null = null
+
+export interface UpdateDataMDBParams {
+  matchedCount: number
+  modifiedCount: number
+  upsertedId: object
+  upsertedCount: number
+}
 
 /**
  * Establishes a connection to the MongoDB client.
@@ -52,15 +60,16 @@ async function getDB(): Promise<Db> {
   return db
 }
 
+
 /**
  * Retrieves a specific collection from the database.
  * @param {string} collectionName - The name of the collection to retrieve.
  * @returns {Promise<Collection>} The requested collection.
- */
+ *//*
 async function getCollection(collectionName: string): Promise<Collection> {
-  const db = await getDB()
-  return db.collection(collectionName)
-}
+const db = await getDB()
+return db.collection(collectionName)
+}*/
 
 /**
  * Cleans the 'collection_trades' by removing duplicates and updating records.
@@ -187,24 +196,6 @@ async function saveData(collectionName: string, data: object[] | object): Promis
   }
 }
 
-async function insertOne(collectionName: string, data: object): Promise<InsertOneResult<Document>> {
-  const collection = await getCollection(collectionName)
-  const result = await collection.insertOne(data)
-  console.log(
-    `Inserted ${result.insertedId} in collection ${collectionName}`
-  )
-  return result
-}
-
-async function insertMany(collectionName: string, data: object[]): Promise<InsertManyResult<Document>> {
-  const collection = await getCollection(collectionName)
-  const result = await collection.insertMany(data as object[])
-  console.log(
-    `Inserted ${result.insertedCount} items in collection ${collectionName}`
-  )
-  return result
-}
-
 /**
  * Retrieves all data from a specified collection.
  * @param {string} collectionName - The name of the collection to retrieve from.
@@ -212,15 +203,6 @@ async function insertMany(collectionName: string, data: object[]): Promise<Inser
  */
 async function getDataMDB(collectionName: string): Promise<WithId<Document>[]> {
   return await retry(findArray, [collectionName], 3)
-}
-
-async function findArray(collectionName: string): Promise<WithId<Document>[]> {
-  const collection = await getCollection(collectionName)
-  const result = await collection.find().toArray()
-  console.log(
-    `🚀 ~ getDataMDB ~ fetched ${result.length} documents in collection ${collectionName}`
-  )
-  return result as WithId<Document>[]
 }
 
 /**
@@ -231,15 +213,6 @@ async function findArray(collectionName: string): Promise<WithId<Document>[]> {
  */
 async function getOne(collectionName: string, query: object): Promise<WithId<Document>> {
   return await retry(findOne, [collectionName, query], 3)
-}
-
-async function findOne(collectionName: string, query: object): Promise<WithId<Document>> {
-  const collection = await getCollection(collectionName)
-  const result = await collection.findOne(query)
-  console.log(
-    `🚀 ~ getOne ~ fetched document in collection ${collectionName}`
-  )
-  return result as WithId<Document>
 }
 
 interface CacheItem {
@@ -288,12 +261,7 @@ function addToCache(collectionName: string, data: any): void {
   }
 }
 
-export interface UpdateDataMDBParams {
-  matchedCount: number
-  modifiedCount: number
-  upsertedId: object
-  upsertedCount: number
-}
+
 
 /**
  * Updates a document in a specified collection.
@@ -304,13 +272,6 @@ export interface UpdateDataMDBParams {
  */
 async function updateDataMDB(collectionName: string, filter: object, update: object): Promise<UpdateDataMDBParams> {
   return await retry(updateOne, [collectionName, filter, update, true], 3)
-}
-
-async function updateOne(collectionName: string, filter: object, update: object, upsert: boolean): Promise<UpdateDataMDBParams> {
-  const collection = await getCollection(collectionName)
-  const result = await collection.updateOne(filter, update, { upsert }) as UpdateDataMDBParams
-  console.log(`Update ${result.modifiedCount} document`)
-  return result
 }
 
 /**
@@ -343,24 +304,6 @@ async function deleteMultipleDataMDB(collectionName: string, filter: object): Pr
 async function deleteAllDataMDB(collectionName: string): Promise<number> {
   const deleteResult = await retry(deleteMany, [collectionName, {}], 3)
   return deleteResult.deletedCount
-}
-
-async function deleteOne(collectionName: string, filter: object): Promise<DeleteResult> {
-  const collection = await getCollection(collectionName)
-  const result = await collection.deleteOne(filter)
-  console.log(
-    `Deleted ${result.deletedCount} document in collection ${collectionName}`
-  )
-  return result
-}
-
-async function deleteMany(collectionName: string, filter: object): Promise<DeleteResult> {
-  const collection = await getCollection(collectionName)
-  const result = await collection.deleteMany(filter)
-  console.log(
-    `Deleted ${result.deletedCount} document(s) in collection ${collectionName}`
-  )
-  return result
 }
 
 const activeOrdersCollection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS
@@ -432,7 +375,7 @@ async function updateInDatabase(
  * @param {string} platform - The platform identifier.
  * @returns {Promise<void>}
  */
-async function deleteAndSaveData(mapData: any[], collectionName: string, platform: string): Promise<void> {
+async function deleteAndSaveData(collectionName: string, mapData: MappedData[], platform: string): Promise<void> {
   if (mapData && mapData.length > 0) {
     const deleteParam = { platform }
     await deleteMultipleDataMDB(collectionName, deleteParam)
@@ -446,8 +389,8 @@ async function deleteAndSaveData(mapData: any[], collectionName: string, platfor
  * @param {string} collectionName - The name of the collection to update.
  * @returns {Promise<void>}
  */
-async function deleteAndSaveObject(mapData: Record<string, any>, collectionName: string): Promise<void> {
-  if (mapData && Object.keys(mapData).length > 0) {
+async function deleteAndReplaceAll(collectionName: string, mapData: MappedData[]): Promise<void> {
+  if (mapData && mapData.length > 0) {
     await deleteAllDataMDB(collectionName)
     await saveData(collectionName, mapData)
   }
@@ -466,7 +409,8 @@ export {
   deleteAllDataMDB,
   updateInDatabase,
   deleteAndSaveData,
-  deleteAndSaveObject
+  deleteAndReplaceAll,
+  getDB
 }
 
 

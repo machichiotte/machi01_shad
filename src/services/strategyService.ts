@@ -4,53 +4,56 @@ import { saveLastUpdateToDatabase } from './lastUpdateService'
 import { updateDataMDB, deleteAllDataMDB, saveData } from './mongodbService'
 import { MappedStrategy } from './mapping'
 import { UpdateDataMDBParams } from './mongodbService'
-/**
- * Fetches strategies from the database.
- * @returns {Promise<Strategy[]>} A promise that resolves to an array of strategies.
- */
-async function fetchDatabaseStrategies(): Promise<MappedStrategy[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_STRAT as string
-  return await getData(collectionName) as MappedStrategy[]
-}
 
-/**
- * Updates a strategy by its ID.
- * @param {string} strategyId - The ID of the strategy to update.
- * @param {Partial<Strategy>} updatedStrategy - The updated strategy data.
- * @returns {Promise<any>} A promise that resolves to the update result.
- * @throws {Error} If the update fails.
- */
-async function updateStrategyById(
-  strategyId: string | undefined,
-  updatedStrategy: Partial<MappedStrategy>
-): Promise<UpdateDataMDBParams> {
-  if (!strategyId) {
-    throw new Error('Strategy ID is required')
+export class StrategyService {
+  private collectionName: string;
+  private collectionType: string;
+
+  constructor() {
+    this.collectionName = process.env.MONGODB_COLLECTION_STRAT as string;
+    this.collectionType = process.env.TYPE_STRATEGY as string;
   }
-  try {
-    return await updateDataMDB(
-      'collection_strategy',
-      { _id: strategyId },
-      { $set: updatedStrategy }
-    )
-  } catch (error) {
-    console.error(`Error updating strategy with ID ${strategyId}:`, error)
-    throw error
+
+  /**
+   * Récupère les stratégies de la base de données.
+   * @returns {Promise<MappedStrategy[]>} Une promesse qui se résout en un tableau de stratégies.
+   */
+  async fetchDatabaseStrategies(): Promise<MappedStrategy[]> {
+    return await getData(this.collectionName) as MappedStrategy[];
+  }
+
+  /**
+   * Met à jour une stratégie par son ID.
+   * @param {string} strategyId - L'ID de la stratégie à mettre à jour.
+   * @param {Partial<MappedStrategy>} updatedStrategy - Les données mises à jour de la stratégie.
+   * @returns {Promise<UpdateDataMDBParams>} Une promesse qui se résout avec le résultat de la mise à jour.
+   * @throws {Error} Si la mise à jour échoue.
+   */
+  async updateStrategyById(strategyId: string | undefined, updatedStrategy: Partial<MappedStrategy>): Promise<UpdateDataMDBParams> {
+    if (!strategyId) {
+      throw new Error('L\'ID de la stratégie est requis');
+    }
+    try {
+      return await updateDataMDB(
+        this.collectionName,
+        { _id: strategyId },
+        { $set: updatedStrategy }
+      );
+    } catch (error) {
+      console.error(`Erreur lors de la mise à jour de la stratégie avec l'ID ${strategyId}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Met à jour toutes les stratégies dans la base de données.
+   * @param {MappedStrategy[]} strategies - Le tableau de stratégies à mettre à jour.
+   * @returns {Promise<InsertOneResult<Document> | InsertManyResult<Document>>} Une promesse qui se résout avec le résultat de la sauvegarde.
+   */
+  async updateStrategies(strategies: MappedStrategy[]): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
+    await deleteAllDataMDB(this.collectionName);
+    const data = await saveData(this.collectionName, strategies);
+    await saveLastUpdateToDatabase(this.collectionType, '');
+    return data;
   }
 }
-
-/**
- * Updates all strategies in the database.
- * @param {Strategy[]} strategies - The array of strategies to update.
- * @returns {Promise<any>} A promise that resolves to the save result.
- */
-async function updateStrategies(strategies: MappedStrategy[]): Promise<any> {
-  const collectionName = process.env.MONGODB_COLLECTION_STRAT as string
-  const collectionType = process.env.TYPE_STRATEGY as string
-  await deleteAllDataMDB(collectionName as string)
-  const data = await saveData(collectionName, strategies)
-  await saveLastUpdateToDatabase(collectionType, '')
-  return data
-}
-
-export { fetchDatabaseStrategies, updateStrategyById, updateStrategies }

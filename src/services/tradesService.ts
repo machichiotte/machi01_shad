@@ -72,7 +72,7 @@ async function addTradesManually(
 async function updateTrades(
   platform: string
 ): Promise<{ status: number; data: MappedTrade[] }> {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES
+  const collectionName = process.env.MONGODB_COLLECTION_TRADES as string
   const platformInstance = createPlatformInstance(platform)
 
   try {
@@ -120,7 +120,7 @@ async function updateTrades(
       }
     }
 
-    await deleteAndSaveData(mappedData, collectionName as string, platform)
+    await deleteAndSaveData(collectionName, mappedData, platform)
     await saveLastUpdateToDatabase(process.env.TYPE_TRADES as string, platform)
 
     return { status: 200, data: mappedData }

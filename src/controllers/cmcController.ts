@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { handleErrorResponse } from '@utils/errorUtil'
 import { errorLogger } from '@utils/loggerUtil'
 import { validateEnvVariables } from '@utils/controllerUtil'
-import * as cmcService from '@services/cmcService'
+import CmcService from '@services/cmcService'
 
 validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
 
@@ -14,7 +14,7 @@ validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
  */
 async function getCmc(req: Request, res: Response): Promise<void> {
   try {
-    const data = await cmcService.fetchDatabaseCmc()
+    const data = await CmcService.fetchDatabaseCmc()
     console.log('Données CMC récupérées', {
       collectionName: process.env.MONGODB_COLLECTION_CMC,
       count: data.length
@@ -33,7 +33,7 @@ async function getCmc(req: Request, res: Response): Promise<void> {
  */
 async function updateCmc(req: Request, res: Response): Promise<void> {
   try {
-    const result = await cmcService.updateCmcData()
+    const result = await CmcService.updateCmcData()
     res.status(200).json(result)
   } catch (error) {
     errorLogger.error(`Erreur dans updateCmc: ${(error as Error).message}`, { error })

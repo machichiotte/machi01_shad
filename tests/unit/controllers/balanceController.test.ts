@@ -3,7 +3,7 @@ import {
   getBalances,
   updateCurrentBalance
 } from '@controllers/balanceController'
-import * as balanceService from '@services/balanceService'
+import BalanceService from '@services/balanceService'
 import { handleErrorResponse } from '@utils/errorUtil'
 
 jest.mock('@services/balanceService')
@@ -26,7 +26,7 @@ describe('Balance Controller', () => {
   describe('getBalances', () => {
     it('devrait renvoyer les soldes avec succès', async () => {
       const mockBalances = [{ platform: 'test', balance: 100 }]
-        ; (balanceService.fetchDatabaseBalances as jest.Mock).mockResolvedValue(
+        ; (BalanceService.fetchDatabaseBalances as jest.Mock).mockResolvedValue(
           mockBalances
         )
 
@@ -37,7 +37,7 @@ describe('Balance Controller', () => {
 
     it('devrait gérer les erreurs correctement', async () => {
       const mockError = new Error('Erreur de test')
-        ; (balanceService.fetchDatabaseBalances as jest.Mock).mockRejectedValue(
+        ; (BalanceService.fetchDatabaseBalances as jest.Mock).mockRejectedValue(
           mockError
         )
 
@@ -55,7 +55,7 @@ describe('Balance Controller', () => {
     it('devrait mettre à jour le solde avec succès', async () => {
       mockRequest.params = { platform: 'testPlatform' }
       const mockUpdatedBalance = { platform: 'testPlatform', balance: 200 }
-        ; (balanceService.updateBalanceForPlatform as jest.Mock).mockResolvedValue(
+        ; (BalanceService.updateBalanceForPlatform as jest.Mock).mockResolvedValue(
           mockUpdatedBalance
         )
 
@@ -75,7 +75,7 @@ describe('Balance Controller', () => {
     it('devrait gérer les erreurs correctement', async () => {
       mockRequest.params = { platform: 'testPlatform' }
       const mockError = new Error('Erreur de test')
-        ; (balanceService.updateBalanceForPlatform as jest.Mock).mockRejectedValue(
+        ; (BalanceService.updateBalanceForPlatform as jest.Mock).mockRejectedValue(
           mockError
         )
 
