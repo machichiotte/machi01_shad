@@ -96,6 +96,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 - ├── routes/ # Définition des routes API
 - ├── middleware/ # Middleware pour l'authentification, etc.
 - └── utils/ # Utilitaires et helpers
+- index.ts
 
 ## Sécurité
 
