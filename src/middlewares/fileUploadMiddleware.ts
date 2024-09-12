@@ -1,41 +1,31 @@
-// src/middlewares/fileUploadMiddleware.ts
+// Importer les types nécessaires depuis Express
+import { Request, Response, NextFunction } from 'express';
 
-import { Request, Response, NextFunction } from 'express'
+// Définir une interface pour étendre la requête avec le fichier uploadé
+interface FileUploadRequest extends Request {
+  file?: Express.Multer.File; // Optionnel: Type pour le fichier uploadé
+  uploadedFile?: Express.Multer.File; // Type ajouté pour le fichier traité
+}
 
-/**
- * Middleware function to handle file uploads
- *
- * This middleware checks if a file has been uploaded with the request.
- * If a file is present, it sets the file in the request object for further processing.
- * If no file is uploaded, it returns a 400 Bad Request response.
- * In case of any errors, it returns a 500 Internal Server Error response.
- *
- * @param {Request} req - The request object
- * @param {Response} res - The response object
- * @param {NextFunction} next - The next middleware function
- * @returns {void}
- */
-function fileUploadMiddleware(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
+// Middleware pour la gestion de l'upload de fichier
+function fileUploadMiddleware(req: FileUploadRequest, res: Response, next: NextFunction): void {
   try {
-    // Check if a file has been uploaded
+    // Vérifier si un fichier a été uploadé
     if (!req.file) {
-      res.status(400).json({ success: false, message: 'No file uploaded.' })
+      res.status(400).json({ success: false, message: 'No file uploaded.' });
       return
     }
 
-    // Set the file in the request object for further processing
-    req.uploadedFile = req.file
+    // Assigner le fichier uploadé à une nouvelle propriété de la requête pour traitement ultérieur
+    req.uploadedFile = req.file;
 
-    // Continue to the next middleware or route handler
-    next()
+    // Continuer vers le prochain middleware ou gestionnaire de route
+    next();
   } catch (error) {
-    console.error('Error in fileUploadMiddleware:', error)
-    res.status(500).json({ success: false, message: 'Internal Server Error' })
+    // Gestion des erreurs
+    console.error('Erreur lors du téléchargement du fichier:', error);
+    res.status(500).json({ success: false, message: 'Une erreur s\'est produite lors du téléchargement du fichier.', error: error instanceof Error ? error.message : String(error) });
   }
 }
 
-export { fileUploadMiddleware }
+export { fileUploadMiddleware };
