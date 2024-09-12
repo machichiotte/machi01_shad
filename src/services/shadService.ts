@@ -1,9 +1,9 @@
 // src/services/shadService.ts
 import { getData } from '@utils/dataUtil'
 
-interface ShadData {
+export interface ShadData {
   // Define the structure of SHAD data here
-  [key: string]: any
+  [key: string]: string | number | object
 }
 
 /**

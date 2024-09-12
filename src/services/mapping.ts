@@ -8,7 +8,8 @@ import {
   getTotalUSDT
 } from '@utils/mappingUtil'
 
-export type MappedData = MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrategy;
+import { ShadData } from '@services/shadService'
+export type MappedData = MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrategy | ShadData;
 
 export interface MappedCmc {
   // Define the structure of CoinMarketCap data
