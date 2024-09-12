@@ -2,6 +2,7 @@
 import express, { Request, Response, NextFunction } from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import { Server } from 'http'; // Importation du type Server
 
 const PORT = process.env.PORT || 10000
 
@@ -73,7 +74,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 })
 
 // Fonction pour démarrer le serveur
-function startServer(): Promise<any> {
+function startServer(): Promise<Server> {
   return new Promise((resolve, reject) => {
     const server = app.listen(PORT, () => {
       console.log(`Serveur démarré sur le port: ${PORT}`)
