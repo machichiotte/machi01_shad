@@ -1,6 +1,6 @@
 // src/services/mongodbService.ts
 import dotenv from 'dotenv'
-import { MongoClient, ServerApiVersion, Db, Collection } from 'mongodb'
+import { MongoClient, ServerApiVersion, Db, Collection, InsertManyResult, InsertOneResult, WithId, DeleteResult } from 'mongodb'
 
 dotenv.config()
 
@@ -175,7 +175,7 @@ async function createCollection(collectionName: string): Promise<void> {
  * @param {string} collectionName - The name of the collection to save to.
  * @returns {Promise<any>} The result of the save operation.
  */
-async function saveData(collectionName: string, data: object[] | object): Promise<any> {
+async function saveData(collectionName: string, data: object[] | object): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
   if (!Array.isArray(data) && typeof data !== 'object') {
     throw new TypeError('Data must be an array or an object')
   }
@@ -187,7 +187,7 @@ async function saveData(collectionName: string, data: object[] | object): Promis
   }
 }
 
-async function insertOne(collectionName: string, data: object) {
+async function insertOne(collectionName: string, data: object): Promise<InsertOneResult<Document>> {
   const collection = await getCollection(collectionName)
   const result = await collection.insertOne(data)
   console.log(
@@ -196,7 +196,7 @@ async function insertOne(collectionName: string, data: object) {
   return result
 }
 
-async function insertMany(collectionName: string, data: object[]) {
+async function insertMany(collectionName: string, data: object[]): Promise<InsertManyResult<Document>> {
   const collection = await getCollection(collectionName)
   const result = await collection.insertMany(data as object[])
   console.log(
@@ -210,18 +210,17 @@ async function insertMany(collectionName: string, data: object[]) {
  * @param {string} collectionName - The name of the collection to retrieve from.
  * @returns {Promise<any[]>} An array of documents from the collection.
  */
-async function getDataMDB(collectionName: string): Promise<any> {
+async function getDataMDB(collectionName: string): Promise<WithId<Document>[]> {
   return await retry(findArray, [collectionName], 3)
 }
 
-async function findArray(collectionName: string) {
+async function findArray(collectionName: string): Promise<WithId<Document>[]> {
   const collection = await getCollection(collectionName)
   const result = await collection.find().toArray()
   console.log(
     `🚀 ~ getDataMDB ~ fetched ${result.length} documents in collection ${collectionName}`
   )
-  return result
-
+  return result as WithId<Document>[]
 }
 
 /**
@@ -230,17 +229,17 @@ async function findArray(collectionName: string) {
  * @param {Object} query - The query to find the document.
  * @returns {Promise<Object|null>} The found document or null if not found.
  */
-async function getOne(collectionName: string, query: object): Promise<any> {
+async function getOne(collectionName: string, query: object): Promise<WithId<Document>> {
   return await retry(findOne, [collectionName, query], 3)
 }
 
-async function findOne(collectionName: string, query: object) {
+async function findOne(collectionName: string, query: object): Promise<WithId<Document>> {
   const collection = await getCollection(collectionName)
   const result = await collection.findOne(query)
   console.log(
     `🚀 ~ getOne ~ fetched document in collection ${collectionName}`
   )
-  return result
+  return result as WithId<Document>
 }
 
 interface CacheItem {
@@ -280,7 +279,7 @@ async function getAllDataMDB(collectionName: string): Promise<any[]> {
 }
 
 
-function addToCache(collectionName: string, data: any) {
+function addToCache(collectionName: string, data: any): void {
   if (data.length > 0) {
     cache[collectionName] = {
       data,
@@ -325,24 +324,6 @@ async function deleteOneDataMDB(collectionName: string, filter: object): Promise
   return deleteResult.deletedCount
 }
 
-async function deleteOne(collectionName: string, filter: object) {
-  const collection = await getCollection(collectionName)
-  const result = await collection.deleteOne(filter)
-  console.log(
-    `Deleted ${result.deletedCount} document in collection ${collectionName}`
-  )
-  return result
-}
-
-async function deleteMany(collectionName: string, filter: object) {
-  const collection = await getCollection(collectionName)
-  const result = await collection.deleteMany(filter)
-  console.log(
-    `Deleted ${result.deletedCount} document(s) in collection ${collectionName}`
-  )
-  return result
-}
-
 /**
  * Deletes multiple documents from a specified collection.
  * @param {string} collectionName - The name of the collection to delete from.
@@ -364,6 +345,35 @@ async function deleteAllDataMDB(collectionName: string): Promise<number> {
   return deleteResult.deletedCount
 }
 
+async function deleteOne(collectionName: string, filter: object): Promise<DeleteResult> {
+  const collection = await getCollection(collectionName)
+  const result = await collection.deleteOne(filter)
+  console.log(
+    `Deleted ${result.deletedCount} document in collection ${collectionName}`
+  )
+  return result
+}
+
+async function deleteMany(collectionName: string, filter: object): Promise<DeleteResult> {
+  const collection = await getCollection(collectionName)
+  const result = await collection.deleteMany(filter)
+  console.log(
+    `Deleted ${result.deletedCount} document(s) in collection ${collectionName}`
+  )
+  return result
+}
+
+const activeOrdersCollection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS
+const balanceCollection = process.env.MONGODB_COLLECTION_BALANCE
+const cmcCollection = process.env.MONGODB_COLLECTION_CMC
+const lastUpdateCollection = process.env.MONGODB_COLLECTION_LAST_UPDATE
+const loadMarketsCollection = process.env.MONGODB_COLLECTION_LOAD_MARKETS
+const shadCollection = process.env.MONGODB_COLLECTION_SHAD
+const stratCollection = process.env.MONGODB_COLLECTION_STRAT
+const swapCollection = process.env.MONGODB_COLLECTION_SWAP
+const tradesCollection = process.env.MONGODB_COLLECTION_TRADES
+const tickersCollection = process.env.MONGODB_COLLECTION_TICKERS
+const usersCollection = process.env.MONGODB_COLLECTION_USERS
 /**
  * Connects to MongoDB and creates necessary collections.
  * @returns {Promise<void>}
@@ -374,20 +384,21 @@ async function connectToMongoDB(): Promise<void> {
     console.log('Connected to MongoDB!')
 
     const collectionsToCreate = [
-      'collection_active_orders',
-      'collection_balance',
-      'collection_cmc',
-      'collection_load_markets',
-      'collection_strategy',
-      'collection_trades',
-      'collection_tickers',
-      'collection_last_update',
-      'collection_shad',
-      'collection_swap'
+      activeOrdersCollection,
+      balanceCollection,
+      cmcCollection,
+      lastUpdateCollection,
+      loadMarketsCollection,
+      shadCollection,
+      stratCollection,
+      swapCollection,
+      tradesCollection,
+      tickersCollection,
+      usersCollection
     ]
 
     for (const collectionName of collectionsToCreate) {
-      await createCollectionIfNotExists(collectionName)
+      await createCollectionIfNotExists(collectionName as string)
     }
   } catch (error) {
     console.error('🚀 ~ connectToMongoDB ~ error:', error)

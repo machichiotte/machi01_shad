@@ -197,8 +197,7 @@ async function saveTrades(
     })
 
     if (tradesToInsert.length > 0) {
-      const result = await saveData(collection, tradesToInsert)
-      console.log('Trades inserted:', result.insertedCount)
+      await saveData(collection, tradesToInsert)
     }
   } catch (error) {
     console.error('Error saving trades:', error)
