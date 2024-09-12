@@ -1,0 +1,115 @@
+// src/services/databaseOperationsService.ts
+import { Collection, Document, ObjectId, InsertManyResult, UpdateResult, AggregateOptions, AggregationCursor, FindOptions, BulkWriteResult } from 'mongodb';
+import { getDB } from '@services/mongodbService';
+
+interface DatabaseOperations {
+    insertOne: (collectionName: string, document: Document) => Promise<ObjectId>;
+    insertMany: (collectionName: string, documents: Document[]) => Promise<InsertManyResult>;
+    updateOne: (collectionName: string, filter: Document, update: Document) => Promise<boolean>;
+    updateMany: (collectionName: string, filter: Document, update: Document) => Promise<UpdateResult>;
+    deleteOne: (collectionName: string, filter: Document) => Promise<boolean>;
+    deleteMany: (collectionName: string, filter: Document) => Promise<number>;
+    find: (collectionName: string, filter: Document, options?: FindOptions) => Promise<Document[]>;
+    findOne: (collectionName: string, filter: Document) => Promise<Document | null>;
+    aggregate: (collectionName: string, pipeline: Document[], options?: AggregateOptions) => Promise<Document[]>;
+    count: (collectionName: string, filter: Document) => Promise<number>;
+    distinct: (collectionName: string, field: string, filter: Document) => Promise<any[]>;
+    bulkWrite: (collectionName: string, operations: Document[]) => Promise<BulkWriteResult>;
+    createIndex: (collectionName: string, fieldOrSpec: string | Document, options?: Document) => Promise<string>;
+    dropIndex: (collectionName: string, indexName: string) => Promise<void>;
+    findOneAndUpdate: (collectionName: string, filter: Document, update: Document, options?: Document) => Promise<Document | null>;
+    findOneAndDelete: (collectionName: string, filter: Document, options?: Document) => Promise<Document | null>;
+}
+
+const getCollection = async (collectionName: string): Promise<Collection> => {
+    const db = await getDB();
+    return db.collection(collectionName);
+};
+
+export const databaseOperations: DatabaseOperations = {
+    insertOne: async (collectionName: string, document: Document): Promise<ObjectId> => {
+        const collection = await getCollection(collectionName);
+        const result = await collection.insertOne(document);
+        return result.insertedId;
+    },
+
+    insertMany: async (collectionName: string, documents: Document[]): Promise<InsertManyResult> => {
+        const collection = await getCollection(collectionName);
+        return await collection.insertMany(documents);
+    },
+
+    updateOne: async (collectionName: string, filter: Document, update: Document): Promise<boolean> => {
+        const collection = await getCollection(collectionName);
+        const result = await collection.updateOne(filter, { $set: update });
+        return result.modifiedCount > 0;
+    },
+
+    updateMany: async (collectionName: string, filter: Document, update: Document): Promise<UpdateResult> => {
+        const collection = await getCollection(collectionName);
+        return await collection.updateMany(filter, { $set: update });
+    },
+
+    deleteOne: async (collectionName: string, filter: Document): Promise<boolean> => {
+        const collection = await getCollection(collectionName);
+        const result = await collection.deleteOne(filter);
+        return result.deletedCount > 0;
+    },
+
+    deleteMany: async (collectionName: string, filter: Document): Promise<number> => {
+        const collection = await getCollection(collectionName);
+        const result = await collection.deleteMany(filter);
+        return result.deletedCount;
+    },
+
+    find: async (collectionName: string, filter: Document, options?: FindOptions): Promise<Document[]> => {
+        const collection = await getCollection(collectionName);
+        return collection.find(filter, options).toArray();
+    },
+
+    findOne: async (collectionName: string, filter: Document): Promise<Document | null> => {
+        const collection = await getCollection(collectionName);
+        return collection.findOne(filter);
+    },
+
+    aggregate: async (collectionName: string, pipeline: Document[], options?: AggregateOptions): Promise<Document[]> => {
+        const collection = await getCollection(collectionName);
+        return collection.aggregate(pipeline, options).toArray();
+    },
+
+    count: async (collectionName: string, filter: Document): Promise<number> => {
+        const collection = await getCollection(collectionName);
+        return collection.countDocuments(filter);
+    },
+
+    distinct: async (collectionName: string, field: string, filter: Document): Promise<any[]> => {
+        const collection = await getCollection(collectionName);
+        return collection.distinct(field, filter);
+    },
+
+    bulkWrite: async (collectionName: string, operations: Document[]): Promise<BulkWriteResult> => {
+        const collection = await getCollection(collectionName);
+        return collection.bulkWrite(operations);
+    },
+
+    createIndex: async (collectionName: string, fieldOrSpec: string | Document, options?: Document): Promise<string> => {
+        const collection = await getCollection(collectionName);
+        return collection.createIndex(fieldOrSpec, options);
+    },
+
+    dropIndex: async (collectionName: string, indexName: string): Promise<void> => {
+        const collection = await getCollection(collectionName);
+        await collection.dropIndex(indexName);
+    },
+
+    findOneAndUpdate: async (collectionName: string, filter: Document, update: Document, options?: Document): Promise<Document | null> => {
+        const collection = await getCollection(collectionName);
+        const result = await collection.findOneAndUpdate(filter, update, options);
+        return result.value;
+    },
+
+    findOneAndDelete: async (collectionName: string, filter: Document, options?: Document): Promise<Document | null> => {
+        const collection = await getCollection(collectionName);
+        const result = await collection.findOneAndDelete(filter, options);
+        return result.value;
+    },
+};
