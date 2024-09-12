@@ -21,7 +21,9 @@ import {
   MappedBalance,
   MappedOrder,
   MappedTrade,
-  MappedTicker
+  MappedTicker,
+  MappedCmc,
+  MappedStrategy
 } from '@services/mapping'
 
 // Define stable coins
@@ -105,11 +107,11 @@ interface AssetMetrics extends Record<string, any> {
  *
  * @param {string} asset - The asset symbol.
  * @param {string} platform - The platform identifier.
- * @param {any[]} lastBalances - Recent balance data.
- * @param {any} lastCmc - Recent CoinMarketCap data.
- * @param {any[]} lastTrades - Recent trade data.
- * @param {any[]} lastOpenOrders - Recent open orders data.
- * @param {any} lastStrategies - Recent strategy data.
+ * @param {MappedBalance[]} lastBalances - Recent balance data.
+ * @param {MappedCmc[]} lastCmc - Recent CoinMarketCap data.
+ * @param {MappedTrade[]} lastTrades - Recent trade data.
+ * @param {MappedOrder[]} lastOpenOrders - Recent open orders data.
+ * @param {MappedStrategy} strategy - Recent strategy data.
  * @param {Ticker[]} lastTickers - Recent ticker data.
  * @returns {AssetMetrics} - An object containing calculated metrics for the asset.
  */
@@ -117,15 +119,15 @@ function calculateAssetMetrics(
   asset: string,
   platform: string,
   assetBalance: MappedBalance,
-  lastCmc: any,
+  lastCmc: MappedCmc[],
   lastTrades: MappedTrade[],
   lastOpenOrders: MappedOrder[],
-  lastStrategies: any,
+  strategy: MappedStrategy,
   lastTickers: MappedTicker[]
 ): AssetMetrics {
   const balance = getBalanceBySymbol(asset, assetBalance)
   const currentPrice = getCurrentPrice(lastTickers, asset, platform)
-  const cmcValues = getCmcValues(lastCmc)
+  const cmcValues = getCmcValues(lastCmc, currentPrice)
   const totalSell = getTotalSell(asset, lastTrades)
   const { buyOrders, sellOrders } = filterOpenOrdersBySide(
     lastOpenOrders,
@@ -152,7 +154,7 @@ function calculateAssetMetrics(
     return { ...baseMetrics, status: 'stable coin' }
   }
 
-  if (balance === 0 || !isValidStrategies(lastStrategies)) {
+  if (balance === 0 || !isValidStrategies(strategy)) {
     return {
       ...baseMetrics,
       averageEntryPrice,
@@ -173,7 +175,7 @@ function calculateAssetMetrics(
     platform,
     totalBuy,
     totalSell,
-    lastStrategies
+    strategy
   )
   const amountsAndPrices = calculateAmountsAndPricesForShad(
     recups.recupTp1,

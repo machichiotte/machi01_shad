@@ -119,11 +119,7 @@ function getDoneShad(
  * @param {Strats} strats - Saved strategies
  * @returns {Object} Strategy and maximum exposure
  */
-function getStrat(
-  asset: string,
-  platform: string,
-  strats: MappedStrategy[]
-): { strat: string; stratExpo: number } {
+function getStrat(asset: string, platform: string, strats: MappedStrategy[]): { strat: string; stratExpo: number } {
   const strat = strats.find(strat => strat.asset === asset)?.strategies?.[platform] || 'No strategy'
   const stratExpo = strats.find(strat => strat.asset === asset)?.maxExposure?.[platform] || MAX_EXPO
 
@@ -151,7 +147,7 @@ function getRatioShad(strat: string): number {
  * @param {string} platform - Platform identifier
  * @param {number} totalBuy - Total buy amount
  * @param {number} totalSell - Total sell amount
- * @param {Strats} strats - Saved strategies
+ * @param {Strats} strat - Saved strategies
  * @returns {Object} Calculated recovery amounts and strategy parameters
  */
 function calculateRecups(
@@ -159,9 +155,10 @@ function calculateRecups(
   platform: string,
   totalBuy: number,
   totalSell: number,
-  strats: MappedStrategy[]
+  myStrat: MappedStrategy
 ) {
-  const { strat, stratExpo } = getStrat(asset, platform, strats)
+  const strat = myStrat.strategies[platform] || 'No strategy';
+  const stratExpo = myStrat.maxExposure[platform] || MAX_EXPO;
 
   const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo || MAX_EXPO))
 

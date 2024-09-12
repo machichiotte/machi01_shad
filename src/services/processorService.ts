@@ -1,6 +1,6 @@
 // src/services/cron/processorService.ts
 import { calculateAssetMetrics } from './metrics/global'
-import { mapTrades } from './mapping'
+import { MappedStrategy, mapTrades } from './mapping'
 import {
   saveTradesToDatabase,
   fetchLastTrades,
@@ -197,7 +197,8 @@ async function calculateAllMetrics(): Promise<any[]> {
       const assetBase = bal.base
       const assetPlatform = bal.platform
 
-      const filteredCmc = dbCmc.find((cmc) => cmc.symbol === assetBase) || {}
+      const filteredCmc = dbCmc.filter((cmc) => cmc.symbol === assetBase) || []
+
       const filteredTrades =
         dbTrades.filter((trade) => trade.base === assetBase) || []
       const filteredOpenOrders =
@@ -211,7 +212,7 @@ async function calculateAllMetrics(): Promise<any[]> {
         dbStrategies.find(
           (strategy) =>
             strategy.asset === assetBase && strategy.strategies[assetPlatform]
-        ) || {}
+        ) || {} as MappedStrategy
 
       const filteredTickers =
         dbTickers.filter(
@@ -237,7 +238,11 @@ async function calculateAllMetrics(): Promise<any[]> {
             [],
             [],
             [],
-            [],
+            {
+              asset: '',
+              strategies: {},
+              maxExposure: {}
+            },
             filteredTickers
           )
         } else {

@@ -37,7 +37,7 @@ async function createUserDBService(userDetails: User): Promise<boolean> {
     if (!collection) {
       throw new Error("La collection MongoDB n'est pas définie")
     }
-    const result = await saveData(newUser, collection)
+    const result = await saveData(collection, newUser)
 
     console.log(
       '🚀 ~ createUserDBService ~ result.insertedId:',

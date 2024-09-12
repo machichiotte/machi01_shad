@@ -24,14 +24,14 @@ async function fetchCurrentMarkets(
     const data = await platformInstance.fetchMarkets()
     const mappedData = mapMarkets(platform, data)
     return mappedData
-  } catch (error: any) {
+  } catch (error) {
     console.log(
       `🚀 ~ file: marketController.ts:58 ~ fetchCurrentMarkets ~ error:`,
       error
     )
 
     // Check if the error justifies a retry
-    if (retries > 0 && shouldRetry(platform, error, errorPolicies)) {
+    if (retries > 0 && shouldRetry(platform, error as Error, errorPolicies)) {
       const delay = Math.pow(2, 3 - retries) * 1000 // Exponential delay
       console.log(`Retrying fetchCurrentMarkets... (${3 - retries + 1}/3)`, {
         delay

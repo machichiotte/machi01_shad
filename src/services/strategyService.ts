@@ -3,14 +3,14 @@ import { getData } from '@utils/dataUtil'
 import { saveLastUpdateToDatabase } from './lastUpdateService'
 import { updateDataMDB, deleteAllDataMDB, saveData } from './mongodbService'
 import { MappedStrategy } from './mapping'
-
+import { UpdateDataMDBParams } from './mongodbService'
 /**
  * Fetches strategies from the database.
  * @returns {Promise<Strategy[]>} A promise that resolves to an array of strategies.
  */
 async function fetchDatabaseStrategies(): Promise<MappedStrategy[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_STRAT
-  return await getData(collectionName as string)
+  const collectionName = process.env.MONGODB_COLLECTION_STRAT as string
+  return await getData(collectionName) as MappedStrategy[]
 }
 
 /**
@@ -23,7 +23,7 @@ async function fetchDatabaseStrategies(): Promise<MappedStrategy[]> {
 async function updateStrategyById(
   strategyId: string | undefined,
   updatedStrategy: Partial<MappedStrategy>
-): Promise<any> {
+): Promise<UpdateDataMDBParams> {
   if (!strategyId) {
     throw new Error('Strategy ID is required')
   }
@@ -45,10 +45,11 @@ async function updateStrategyById(
  * @returns {Promise<any>} A promise that resolves to the save result.
  */
 async function updateStrategies(strategies: MappedStrategy[]): Promise<any> {
-  const collection = process.env.MONGODB_COLLECTION_STRAT
-  await deleteAllDataMDB(collection as string)
-  const data = await saveData(strategies, collection as string)
-  await saveLastUpdateToDatabase(process.env.TYPE_STRATEGY as string, '')
+  const collectionName = process.env.MONGODB_COLLECTION_STRAT as string
+  const collectionType = process.env.TYPE_STRATEGY as string
+  await deleteAllDataMDB(collectionName as string)
+  const data = await saveData(collectionName, strategies)
+  await saveLastUpdateToDatabase(collectionType, '')
   return data
 }
 

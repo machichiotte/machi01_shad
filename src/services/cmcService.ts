@@ -91,11 +91,12 @@ async function fetchDatabaseCmc(): Promise<MappedCmc[]> {
  * @returns {Promise<Object>} - Result of the update operation.
  */
 async function updateDatabaseCmcData(data: MappedCmc[]): Promise<object> {
-  const collectionName = process.env.MONGODB_COLLECTION_CMC
+  const collectionName = process.env.MONGODB_COLLECTION_CMC as string
+  const collectionType = process.env.TYPE_CMC as string
   try {
-    const deleteResult = await deleteAllDataMDB(collectionName as string)
-    const saveResult = await saveData(data, collectionName as string)
-    await saveLastUpdateToDatabase(process.env.TYPE_CMC as string, '')
+    const deleteResult = await deleteAllDataMDB(collectionName)
+    const saveResult = await saveData(collectionName, data)
+    await saveLastUpdateToDatabase(collectionType, '')
 
     console.log('Données CMC mises à jour dans la base de données', {
       deleteResult,

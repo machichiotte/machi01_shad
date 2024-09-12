@@ -8,7 +8,7 @@ import {
   getTotalUSDT
 } from '@utils/mappingUtil'
 
-export type MappedData = MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc;
+export type MappedData = MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrategy;
 
 export interface MappedCmc {
   // Define the structure of CoinMarketCap data
@@ -181,7 +181,7 @@ function mapBalance(platform: string, data: Balances): MappedBalance[] {
  * @param {Trade} item - The raw trade data.
  * @param {string} platform - The exchange platform.
  * @param {Record<string, number>} conversionRates - Conversion rates (optional).
- * @returns {Record<string, any>} An object containing the mapped trade information.
+ * @returns {Omit<MappedTrade, string>} An object containing the mapped trade information.
  */
 function mapTradeCommon(
   item: Trade,
@@ -221,7 +221,7 @@ function mapTradeCommon(
  * @param {string} platform - The exchange platform.
  * @param {Trade[]} data - The raw trade data.
  * @param {Record<string, number>} conversionRates - Conversion rates (optional).
- * @returns {Record<string, any>[]} An array of objects containing the mapped trades.
+ * @returns {Omit<MappedTrade, string>[]} An array of objects containing the mapped trades.
  */
 function mapTrades(
   platform: string,
@@ -245,7 +245,7 @@ function mapTrades(
  * Maps order data for a specific platform.
  * @param {string} platform - The exchange platform.
  * @param {Order[]} data - The raw order data.
- * @returns {Record<string, any>[]} An array of objects containing the mapped orders.
+ * @returns {MappedOrder[]} An array of objects containing the mapped orders.
  */
 function mapOrders(platform: string, data: Order[]): MappedOrder[] {
   return data.map((item) => ({
@@ -264,7 +264,7 @@ function mapOrders(platform: string, data: Order[]): MappedOrder[] {
  * Maps ticker data for a specific platform.
  * @param {Ticker[]} data - The raw ticker data.
  * @param {string} platform - The exchange platform.
- * @returns {Record<string, any>[]} An array of objects containing the mapped tickers.
+ * @returns {MappedTicker[]} An array of objects containing the mapped tickers.
  */
 function mapTickers(platform: string, data: Tickers): MappedTicker[] {
   return Object.values(data).map((item) => ({
@@ -279,7 +279,7 @@ function mapTickers(platform: string, data: Tickers): MappedTicker[] {
  * Maps market data for a specific platform.
  * @param {Market[]} data - The raw market data.
  * @param {string} platform - The exchange platform.
- * @returns {Record<string, any>[]} An array of objects containing the mapped markets.
+ * @returns {MappedMarket[]} An array of objects containing the mapped markets.
  */
 function mapMarkets(platform: string, data: Market[]): MappedMarket[] {
   return Object.values(data)

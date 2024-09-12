@@ -45,7 +45,7 @@ async function getDB(): Promise<Db> {
       db = client.db(process.env.MONGODB_DATABASE)
       console.log('Database selected:', process.env.MONGODB_DATABASE)
     } catch (error) {
-      console.log(`🚀 ~ file: mongodbService.ts:37 ~ getDB ~ error:`, error)
+      console.log(`Error, no database selected:`, error)
       throw error
     }
   }
@@ -127,38 +127,25 @@ async function cleanCollectionTrades(): Promise<void> {
 }
 
 /**
- * Executes an operation with retry logic.
- * @param {Function} operation - The operation to execute.
- * @param {Array} args - Arguments for the operation.
- * @param {number} retryDelay - Delay between retries in milliseconds.
- * @param {number} maxRetries - Maximum number of retry attempts.
- * @returns {Promise<any>} The result of the operation.
+ * Retries a function n number of times before giving up
  */
-async function handleRetry(
-  operation: Function,
-  args: any[],
-  retryDelay: number = 5000,
-  maxRetries: number = 5
-): Promise<any> {
-  let attempts = 0
-  while (attempts < maxRetries) {
-    try {
-      return await operation(...args)
-    } catch (error) {
-      attempts++
-      console.warn(
-        `Opération échouée (tentative ${attempts}/${maxRetries}): ${(error as Error).message}`
-      )
-      if (
-        attempts === maxRetries ||
-        !['ECONNRESET', 'ETIMEDOUT', 'ENETDOWN', 'ENETUNREACH'].includes(
-          (error as Error).message
-        )
-      ) {
-        throw error
-      }
-      await new Promise((res) => setTimeout(res, retryDelay * attempts))
+export async function retry<T extends (...arg0: any[]) => any>(
+  fn: T,
+  args: Parameters<T>,
+  maxTry: number,
+  retryCount = 1
+): Promise<Awaited<ReturnType<T>>> {
+  const currRetry = typeof retryCount === 'number' ? retryCount : 1;
+  try {
+    const result = await fn(...args);
+    return result;
+  } catch (e) {
+    console.log(`Retry ${currRetry} failed.`);
+    if (currRetry > maxTry) {
+      console.log(`All ${maxTry} retry attempts exhausted`);
+      throw e;
     }
+    return retry(fn, args, maxTry, currRetry + 1);
   }
 }
 
@@ -167,19 +154,19 @@ async function handleRetry(
  * @param {string} collectionName - The name of the collection to create.
  * @returns {Promise<void>}
  */
-async function createCollectionIfNotExists(
-  collectionName: string
-): Promise<void> {
-  await handleRetry(async () => {
-    const db = await getDB()
-    const collections = await db
-      .listCollections({ name: collectionName })
-      .toArray()
-    if (collections.length === 0) {
-      await db.createCollection(collectionName)
-      console.log(`Collection ${collectionName} created.`)
-    }
-  }, [])
+async function createCollectionIfNotExists(collectionName: string): Promise<void> {
+  await retry(createCollection, [collectionName], 3)
+}
+
+async function createCollection(collectionName: string): Promise<void> {
+  const db = await getDB()
+  const collections = await db
+    .listCollections({ name: collectionName })
+    .toArray()
+  if (collections.length === 0) {
+    await db.createCollection(collectionName)
+    console.log(`Collection ${collectionName} created.`)
+  }
 }
 
 /**
@@ -188,30 +175,34 @@ async function createCollectionIfNotExists(
  * @param {string} collectionName - The name of the collection to save to.
  * @returns {Promise<any>} The result of the save operation.
  */
-async function saveData(
-  data: any[] | object,
-  collectionName: string
-): Promise<any> {
+async function saveData(collectionName: string, data: object[] | object): Promise<any> {
   if (!Array.isArray(data) && typeof data !== 'object') {
     throw new TypeError('Data must be an array or an object')
   }
 
-  return await handleRetry(async () => {
-    const collection = await getCollection(collectionName)
-    if (Array.isArray(data)) {
-      const result = await collection.insertMany(data)
-      console.log(
-        `🚀 ~ file: mongodbService.ts:92 ~ saveData ~ inserted ${result.insertedCount} items in collection ${collectionName}`
-      )
-      return result
-    } else {
-      const result = await collection.insertOne(data)
-      console.log(
-        `~ file: mongodbService.ts:96 ~ saveData ~ inserted document ID: ${result.insertedId} in collection ${collectionName}`
-      )
-      return result
-    }
-  }, [data, collectionName])
+  if (Array.isArray(data)) {
+    return await retry(insertMany, [collectionName, data], 3)
+  } else {
+    return await retry(insertOne, [collectionName, data], 3)
+  }
+}
+
+async function insertOne(collectionName: string, data: object) {
+  const collection = await getCollection(collectionName)
+  const result = await collection.insertOne(data)
+  console.log(
+    `Inserted ${result.insertedId} in collection ${collectionName}`
+  )
+  return result
+}
+
+async function insertMany(collectionName: string, data: object[]) {
+  const collection = await getCollection(collectionName)
+  const result = await collection.insertMany(data as object[])
+  console.log(
+    `Inserted ${result.insertedCount} items in collection ${collectionName}`
+  )
+  return result
 }
 
 /**
@@ -219,35 +210,18 @@ async function saveData(
  * @param {string} collectionName - The name of the collection to retrieve from.
  * @returns {Promise<any[]>} An array of documents from the collection.
  */
-async function getDataMDB(collectionName: string): Promise<any[]> {
-  return await handleRetry(async () => {
-    const collection = await getCollection(collectionName)
-    const result = await collection.find().toArray()
-    console.log(
-      `🚀 ~ getDataMDB ~ fetched ${result.length} documents in collection ${collectionName}`
-    )
-    return result
-  }, [collectionName])
+async function getDataMDB(collectionName: string): Promise<any> {
+  return await retry(findArray, [collectionName], 3)
 }
 
-/**
- * Inserts a single document into a specified collection.
- * @param {string} collectionName - The name of the collection to insert into.
- * @param {Object} document - The document to insert.
- * @returns {Promise<string>} The ID of the inserted document.
- */
-async function insertDataMDB(
-  collectionName: string,
-  document: object
-): Promise<string> {
-  return await handleRetry(async () => {
-    const collection = await getCollection(collectionName)
-    const result = await collection.insertOne(document)
-    console.log(
-      `🚀 ~ insertDataMDB ~ inserted document ID: ${result.insertedId} in collection ${collectionName}`
-    )
-    return result.insertedId.toString()
-  }, [collectionName, document])
+async function findArray(collectionName: string) {
+  const collection = await getCollection(collectionName)
+  const result = await collection.find().toArray()
+  console.log(
+    `🚀 ~ getDataMDB ~ fetched ${result.length} documents in collection ${collectionName}`
+  )
+  return result
+
 }
 
 /**
@@ -256,18 +230,17 @@ async function insertDataMDB(
  * @param {Object} query - The query to find the document.
  * @returns {Promise<Object|null>} The found document or null if not found.
  */
-async function getOne(
-  collectionName: string,
-  query: object
-): Promise<object | null> {
-  return await handleRetry(async () => {
-    const collection = await getCollection(collectionName)
-    const result = await collection.findOne(query)
-    console.log(
-      `🚀 ~ getOne ~ fetched document in collection ${collectionName}`
-    )
-    return result
-  }, [collectionName, query])
+async function getOne(collectionName: string, query: object): Promise<any> {
+  return await retry(findOne, [collectionName, query], 3)
+}
+
+async function findOne(collectionName: string, query: object) {
+  const collection = await getCollection(collectionName)
+  const result = await collection.findOne(query)
+  console.log(
+    `🚀 ~ getOne ~ fetched document in collection ${collectionName}`
+  )
+  return result
 }
 
 interface CacheItem {
@@ -283,30 +256,40 @@ const cache: { [key: string]: CacheItem } = {}
  * @returns {Promise<any[]>} An array of documents from the collection.
  */
 async function getAllDataMDB(collectionName: string): Promise<any[]> {
-  if (
-    cache[collectionName] &&
-    Date.now() - cache[collectionName].timestamp < 30000
-  ) {
-    console.log(`Using cached data for collection: ${collectionName}`)
-    return cache[collectionName].data
+  // Toujours retourner le cache si disponible
+  if (cache[collectionName]) {
+    console.log(`Using cached data for collection: ${collectionName}`);
+
+    // Si le cache est encore valide, le retourner
+    if (Date.now() - cache[collectionName].timestamp < 30000) {
+      return cache[collectionName].data;
+    }
   }
 
-  console.log(`Not using cached data for collection: ${collectionName}`)
-
-  return await handleRetry(async () => {
-    const collection = await getCollection(collectionName)
-    const result = await collection.find().toArray()
-
-    cache[collectionName] = {
-      data: result,
-      timestamp: Date.now()
-    }
-
-    return result
-  }, [collectionName])
+  // Tenter de récupérer les données si le cache est expiré ou non existant
+  try {
+    console.log(`Fetching new data for collection: ${collectionName}`);
+    const result = await retry(findArray, [collectionName], 3);
+    addToCache(collectionName, result);
+    return result;
+  } catch (error) {
+    console.error(`Failed to fetch data for collection: ${collectionName}`, error);
+    // Retourner le cache existant même s'il est expiré, ou un tableau vide
+    return cache[collectionName]?.data || [];
+  }
 }
 
-interface UpdateDataMDBParams {
+
+function addToCache(collectionName: string, data: any) {
+  if (data.length > 0) {
+    cache[collectionName] = {
+      data,
+      timestamp: Date.now()
+    }
+  }
+}
+
+export interface UpdateDataMDBParams {
   matchedCount: number
   modifiedCount: number
   upsertedId: object
@@ -320,19 +303,15 @@ interface UpdateDataMDBParams {
  * @param {Object} update - The update to apply to the document.
  * @returns {Promise<UpdateDataMDBParams>} The result of the update operation.
  */
-async function updateDataMDB(
-  collectionName: string,
-  filter: object,
-  update: object
-): Promise<UpdateDataMDBParams> {
-  return await handleRetry(async () => {
-    const collection = await getCollection(collectionName)
-    const result = await collection.updateOne(filter, update, { upsert: true })
-    console.log(
-      `🚀 ~ updateDataMDB ~ modified ${result.modifiedCount} document(s)`
-    )
-    return result
-  }, [collectionName, filter, update])
+async function updateDataMDB(collectionName: string, filter: object, update: object): Promise<UpdateDataMDBParams> {
+  return await retry(updateOne, [collectionName, filter, update, true], 3)
+}
+
+async function updateOne(collectionName: string, filter: object, update: object, upsert: boolean): Promise<UpdateDataMDBParams> {
+  const collection = await getCollection(collectionName)
+  const result = await collection.updateOne(filter, update, { upsert }) as UpdateDataMDBParams
+  console.log(`Update ${result.modifiedCount} document`)
+  return result
 }
 
 /**
@@ -341,38 +320,38 @@ async function updateDataMDB(
  * @param {Object} filter - The filter to find the document to delete.
  * @returns {Promise<number>} The number of deleted documents.
  */
-async function deleteDataMDB(
-  collectionName: string,
-  filter: object
-): Promise<number> {
-  return await handleRetry(async () => {
-    const collection = await getCollection(collectionName)
-    const result = await collection.deleteOne(filter)
-    console.log(
-      `🚀 ~ deleteDataMDB ~ deleted ${result.deletedCount} document(s) in collection ${collectionName}`
-    )
-    return result.deletedCount
-  }, [collectionName, filter])
+async function deleteOneDataMDB(collectionName: string, filter: object): Promise<number> {
+  const deleteResult = await retry(deleteOne, [collectionName, filter], 3)
+  return deleteResult.deletedCount
+}
+
+async function deleteOne(collectionName: string, filter: object) {
+  const collection = await getCollection(collectionName)
+  const result = await collection.deleteOne(filter)
+  console.log(
+    `Deleted ${result.deletedCount} document in collection ${collectionName}`
+  )
+  return result
+}
+
+async function deleteMany(collectionName: string, filter: object) {
+  const collection = await getCollection(collectionName)
+  const result = await collection.deleteMany(filter)
+  console.log(
+    `Deleted ${result.deletedCount} document(s) in collection ${collectionName}`
+  )
+  return result
 }
 
 /**
  * Deletes multiple documents from a specified collection.
  * @param {string} collectionName - The name of the collection to delete from.
- * @param {Object} deleteParam - The filter to find the documents to delete.
+ * @param {Object} filter - The filter to find the documents to delete.
  * @returns {Promise<number>} The number of deleted documents.
  */
-async function deleteMultipleDataMDB(
-  collectionName: string,
-  deleteParam: object
-): Promise<number> {
-  return await handleRetry(async () => {
-    const collection = await getCollection(collectionName)
-    const result = await collection.deleteMany(deleteParam)
-    console.log(
-      `🚀 ~ deleteMultipleDataMDB ~ deleted ${result.deletedCount} document(s) in collection ${collectionName}`
-    )
-    return result.deletedCount
-  }, [collectionName, deleteParam])
+async function deleteMultipleDataMDB(collectionName: string, filter: object): Promise<number> {
+  const deleteResult = await retry(deleteMany, [collectionName, filter], 3)
+  return deleteResult.deletedCount
 }
 
 /**
@@ -381,11 +360,8 @@ async function deleteMultipleDataMDB(
  * @returns {Promise<number>} The number of deleted documents.
  */
 async function deleteAllDataMDB(collectionName: string): Promise<number> {
-  return await handleRetry(async () => {
-    const collection = await getCollection(collectionName)
-    const result = await collection.deleteMany({})
-    return result.deletedCount
-  }, [collectionName])
+  const deleteResult = await retry(deleteMany, [collectionName, {}], 3)
+  return deleteResult.deletedCount
 }
 
 /**
@@ -445,15 +421,11 @@ async function updateInDatabase(
  * @param {string} platform - The platform identifier.
  * @returns {Promise<void>}
  */
-async function deleteAndSaveData(
-  mapData: any[],
-  collection: string,
-  platform: string
-): Promise<void> {
+async function deleteAndSaveData(mapData: any[], collectionName: string, platform: string): Promise<void> {
   if (mapData && mapData.length > 0) {
     const deleteParam = { platform }
-    await deleteMultipleDataMDB(collection, deleteParam)
-    await saveData(mapData, collection)
+    await deleteMultipleDataMDB(collectionName, deleteParam)
+    await saveData(collectionName, mapData)
   }
 }
 
@@ -463,13 +435,10 @@ async function deleteAndSaveData(
  * @param {string} collectionName - The name of the collection to update.
  * @returns {Promise<void>}
  */
-async function deleteAndSaveObject(
-  mapData: Record<string, any>,
-  collectionName: string
-): Promise<void> {
+async function deleteAndSaveObject(mapData: Record<string, any>, collectionName: string): Promise<void> {
   if (mapData && Object.keys(mapData).length > 0) {
     await deleteAllDataMDB(collectionName)
-    await saveData(mapData, collectionName)
+    await saveData(collectionName, mapData)
   }
 }
 
@@ -479,13 +448,14 @@ export {
   saveData,
   getDataMDB,
   getOne,
-  insertDataMDB,
   getAllDataMDB,
   updateDataMDB,
-  deleteDataMDB,
+  deleteOneDataMDB,
   deleteMultipleDataMDB,
   deleteAllDataMDB,
   updateInDatabase,
   deleteAndSaveData,
   deleteAndSaveObject
 }
+
+

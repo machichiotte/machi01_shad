@@ -20,12 +20,12 @@ async function fetchDatabaseTrades(): Promise<MappedTrade[]> {
  * Updates a trade by its ID.
  * @param {string} tradeId - The ID of the trade to update.
  * @param {Partial<MappedTrade>} updatedTrade - The updated trade data.
- * @returns {Promise<any>} A promise that resolves to the update result.
+ * @returns {Promise<object>} A promise that resolves to the update result.
  */
 async function updateTradeById(
   tradeId: string | undefined,
   updatedTrade: Partial<MappedTrade>
-): Promise<any> {
+): Promise<object> {
   if (!tradeId) {
     throw new Error('Trade ID is required')
   }
@@ -50,9 +50,9 @@ async function updateTradeById(
 async function addTradesManually(
   tradesData: MappedTrade | MappedTrade[]
 ): Promise<object> {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES
+  const collectionName = process.env.MONGODB_COLLECTION_TRADES as string
   try {
-    const savedTrade = await saveData(tradesData, collectionName as string)
+    const savedTrade = await saveData(collectionName, tradesData)
     if (savedTrade.acknowledged) {
       return { message: savedTrade, data: savedTrade, status: 200 }
     } else {
@@ -197,7 +197,7 @@ async function saveTrades(
     })
 
     if (tradesToInsert.length > 0) {
-      const result = await saveData(tradesToInsert, collection)
+      const result = await saveData(collection, tradesToInsert)
       console.log('Trades inserted:', result.insertedCount)
     }
   } catch (error) {

@@ -41,16 +41,13 @@ interface TotalAmountAndBuy {
  * @param {MappedTrade[]} trades - The array of trade objects.
  * @returns {TotalAmountAndBuy} - An object containing total amount and total buy value.
  */
-function getTotalAmountAndBuy(
-  symbol: string,
-  trades: MappedTrade[]
-): TotalAmountAndBuy {
+function getTotalAmountAndBuy(symbol: string, trades: MappedTrade[]): TotalAmountAndBuy {
   const filteredTrades = trades.filter(
     (trade) => trade.base === symbol && trade.type === 'buy'
   )
 
   return filteredTrades.reduce(
-    (acc: any, trade: MappedTrade) => {
+    (acc: TotalAmountAndBuy, trade: MappedTrade) => {
       const fee = trade.fee
       const price = trade.price
       const feeInQuote =
@@ -67,7 +64,7 @@ function getTotalAmountAndBuy(
 
       return acc
     },
-    { totalAmount: 0, totalBuy: 0 }
+    { totalAmount: 0, totalBuy: 0, averageEntryPrice: 0 }
   )
 }
 
