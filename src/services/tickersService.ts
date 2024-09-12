@@ -116,10 +116,10 @@ async function fetchCurrentTickers(
     const platformInstance = createPlatformInstance(platform)
     const data = await platformInstance.fetchTickers()
     return mapTickers(platform, data)
-  } catch (error: any) {
-    console.log(`Error while fetching tickers for ${platform}:`, error)
+  } catch (error) {
+    console.log(`Error while fetching tickers for ${platform}:`, error as Error)
 
-    if (retries > 0 && shouldRetry(platform, error, errorPolicies)) {
+    if (retries > 0 && shouldRetry(platform, error as Error, errorPolicies)) {
       const delay = Math.pow(2, 3 - retries) * 1000
       console.log(`Retrying fetchCurrentTickers... (${3 - retries + 1}/3)`, {
         delay
@@ -138,7 +138,7 @@ async function fetchCurrentTickers(
  * @param {string} platform - Identifier of the platform.
  */
 async function saveDatabaseTickers(
-  mappedData: any[],
+  mappedData: MappedTicker[],
   platform: string
 ): Promise<void> {
   const collectionName = process.env.MONGODB_COLLECTION_TICKERS
