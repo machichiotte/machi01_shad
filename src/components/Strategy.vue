@@ -1,10 +1,10 @@
 <!-- src/components/Strategy.vue -->
 <template>
   <div>
-    <div style="display: flex; justify-content: flex-end">
+    <div class="button-container">
       <button @click="updateStrat">Save</button>
     </div>
-    <div style="text-align: left">
+    <div class="text-align-left">
       <select v-model="selectedStrategy" @change="updateAllStrats">
         <option value="">Select a strategy</option>
         <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
@@ -24,14 +24,14 @@
 
     <DataTable :value="tableData" :columns="columns" :paginator="true" :rows="10" scrollable columnResizeMode="fit"
       :filters="filters" showGridlines>
-      <Column field="asset" header="Asset" style="text-align: center;" />
+      <Column field="asset" header="Asset" class="centered-column" />
       <Column v-for="platform in platforms" :key="platform" :field="platform" :header="platform"
-        style="text-align: center;" headerStyle="text-align: center;">
+        class="centered-column">
         <template #body="slotProps">
-          <div style="display: flex; flex-direction: row; align-items: center;">
+          <div class="select-container">
             <select :value="slotProps.data[platform].strategy"
               @input="setSelectedStrategy(strat, slotProps.data.asset, platform, $event.target.value)"
-              :disabled="slotProps.data[platform].disabled" style="margin-right: 5px;">
+              :disabled="slotProps.data[platform].disabled">
               <option value=""></option>
               <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
                 {{ strategy }}
@@ -40,8 +40,8 @@
 
             <select :value="slotProps.data[platform].maxExposure"
               @input="setSelectedMaxExposure(strat, slotProps.data.asset, platform, $event.target.value)"
-              :disabled="slotProps.data[platform].disabled" style="margin-left:  5px;">
-              <option value=""></option> 
+              :disabled="slotProps.data[platform].disabled">
+              <option value=""></option>
               <option v-for="exposure in exposures" :key="exposure" :value="exposure">
                 {{ exposure }}
               </option>
@@ -192,3 +192,32 @@ onMounted(async () => {
   }
 });
 </script>
+
+<style scoped>
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+.centered-column {
+  text-align: center;
+}
+
+.select-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.select-container select {
+  margin-right: 5px;
+}
+
+.select-container select:last-child {
+  margin-left: 5px;
+}
+</style>

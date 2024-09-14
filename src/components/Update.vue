@@ -1,23 +1,24 @@
 <!-- src/components/Update.vue -->
+<!-- src/components/Update.vue -->
 <template>
   <div>
-    <h1>Data Update</h1>
-    <h2>Update Options</h2>
-    <Button @click="fetchAndUpdateCoinMarketCapData" style="font-size: 18px; margin: 4px">Update CMC</Button>
+    <h1 class="title">Data Update</h1>
+    <h2 class="subtitle">Update Options</h2>
+    <Button @click="fetchAndUpdateCoinMarketCapData" class="update-button">Update CMC</Button>
     <ul v-if="cryptoData">
       <li v-for="crypto in cryptoData" :key="crypto.name">
         {{ crypto["cmc_rank"] }} - {{ crypto.name }}
       </li>
     </ul>
-    <Button @click="updateAll()" style="font-size: 18px; margin: 4px">Update platform</Button>
-    <div v-for="platform in platforms" :key="platform" style="margin-bottom: 10px;">
+    <Button @click="updateAll()" class="update-button">Update platform</Button>
+    <div v-for="platform in platforms" :key="platform" class="platform-container">
       <ToggleButton :id="platform" v-model="selectedPlatforms[platform]" :onLabel="platform"
         :offLabel="platform" />
     </div>
-    <div>
+    <div class="toggle-container">
       <ToggleButton id="balance" v-model="updateBalance" onLabel="Balance" offLabel="Balance" />
     </div>
-    <div>
+    <div class="toggle-container">
       <ToggleButton id="orders" v-model="updateOrders" onLabel="Orders" offLabel="Orders" />
     </div>
   </div>
@@ -61,7 +62,7 @@ platforms.value.forEach(platform => {
 async function fetchAndUpdateCoinMarketCapData() {
   try {
     loadingSpin();
-    const response = await fetch(API_ENDPOINTS.CMC_DATA)
+    const response = await fetch(API_ENDPOINTS.CMC_DATA);
     const data = await response.json();
 
     const totalCount = data.totalCount;
@@ -103,12 +104,9 @@ async function updatePlatformData(platform) {
     if (updateBalance.value) {
       const balance_data_response = await fetch(`${API_ENDPOINTS.UPD_BALANCE}${platform}`);
       if (balance_data_response.ok) {
-        console.log('okokok');
         const balance_data = await balance_data_response.json();
 
         saveBalancesDataToIndexedDB(balance_data.data, platform);
-
-        console.log('saveBalancesDataToIndexedDB');
 
         balanceCount = balance_data.data.length;
 
@@ -120,7 +118,6 @@ async function updatePlatformData(platform) {
       const orders_data_response = await fetch(`${API_ENDPOINTS.ORDERS}${platform}`);
       if (orders_data_response.ok) {
         const orders_data = await orders_data_response.json();
-        console.log('orders_data', orders_data)
 
         saveOrdersDataToIndexedDB(orders_data, platform);
         ordersCount = orders_data.length;
@@ -182,3 +179,26 @@ function handleError(message, error) {
   );
 }
 </script>
+
+<style scoped>
+.title {
+  font-size: 24px;
+}
+
+.subtitle {
+  font-size: 20px;
+}
+
+.update-button {
+  font-size: 18px;
+  margin: 4px;
+}
+
+.platform-container {
+  margin-bottom: 10px;
+}
+
+.toggle-container {
+  margin-bottom: 10px;
+}
+</style>

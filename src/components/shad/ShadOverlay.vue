@@ -353,12 +353,10 @@ export default {
 }
 
 .block {
-    /* Styles for each block */
     background-color: #f1f1f1;
 }
 
 .asset {
-    /* Styles for the asset block */
     grid-column: 1 / 4;
     display: grid;
     grid-template-rows: auto auto;
@@ -506,7 +504,6 @@ export default {
     border-collapse: collapse;
 }
 
-/* Ajoutez un style pour l'icône */
 .toggle-icon {
     font-size: 12px;
     margin-left: 5px;

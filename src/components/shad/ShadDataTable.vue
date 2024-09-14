@@ -1,11 +1,11 @@
 <!-- src/components/shad/ShadDataTable.vue -->
 <template>
-    <DataTable class="mt-4" :value="filteredItems" :rows="itemsPerPage" :dataKey="rowKey" :filters="filters" :pt="{
-        table: { style: 'min-width: 50rem' },
-        bodyrow: ({ props }) => ({
-            class: [{ 'font-bold': props.frozenRow }]
-        })
-    }" paginator stripedRows scrollable scroll-height="530px" v-model:selection="localSelectedAssets"
+    <DataTable class="mt-4 custom-data-table" :value="filteredItems" :rows="itemsPerPage" :dataKey="rowKey"
+        :filters="filters" :pt="{
+            bodyrow: ({ props }) => ({
+                class: [{ 'bold-row': props.frozenRow }]
+            })
+        }" paginator stripedRows scrollable scroll-height="530px" v-model:selection="localSelectedAssets"
         @update:selection="emitSelection" selectionMode="multiple" dataKey="rank"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25, 100, 500]"
@@ -69,20 +69,19 @@
             </template>
         </Column>
         <Column field="asset" frozen alignFrozen="left"></Column>
-        <Column field="platform" style="min-width: 5rem" frozen alignFrozen="left"></Column>
+        <Column field="platform" class="platform-column" frozen alignFrozen="left"></Column>
         <Column field="currentPrice" frozen alignFrozen="left">
             <template #body="slotProps">
-                <div style="position: relative; height: 50px; padding: 5px;">
+                <div class="current-price-container">
                     <!-- Main text centered -->
-                    <div style="text-align: center; font-size: 1rem; line-height: 20px;">
+                    <div class="current-price-main-text">
                         {{ slotProps.data.currentPrice }}
                     </div>
                     <!-- Secondary text at bottom right -->
                     <div :class="{
-        'text-green-500': slotProps.data.cryptoPercentChange24h > 0,
-        'text-red-500': slotProps.data.cryptoPercentChange24h < 0
-    }
-        " style="position: absolute; bottom: 2px; right: 5px; font-size: 0.8rem;">
+                        'text-green': slotProps.data.cryptoPercentChange24h > 0,
+                        'text-red': slotProps.data.cryptoPercentChange24h < 0
+                    } + ' current-price-secondary-text'">
                         {{ (100 * slotProps.data.cryptoPercentChange24h).toFixed(2) }}%
                     </div>
                 </div>
@@ -106,9 +105,10 @@
                 </div>
             </template>
         </Column>
-        <Column field="status" style="min-width: 12rem" frozen alignFrozen="left">
+        <Column field="status" class="status-column" frozen alignFrozen="left">
             <template #body="slotProps">
-                <Tag :value="evaluateAssetStatus(slotProps.data).label" :severity="evaluateAssetStatus(slotProps.data).severity" />
+                <Tag :value="evaluateAssetStatus(slotProps.data).label"
+                    :severity="evaluateAssetStatus(slotProps.data).severity" />
             </template>
         </Column>
         <Column field="totalShad"></Column>
@@ -116,17 +116,16 @@
 
         <Column field="averageEntryPrice">
             <template #body="slotProps">
-                <div style="position: relative; height: 50px; padding: 5px;">
+                <div class="price-container">
                     <!-- Main text centered -->
-                    <div style="text-align: center; font-size: 1rem; line-height: 20px;">
+                    <div class="main-text">
                         {{ slotProps.data.averageEntryPrice }}
                     </div>
                     <!-- Secondary text at bottom right -->
                     <div :class="{
-        'text-green-500': slotProps.data.percentageDifference > 0,
-        'text-red-500': slotProps.data.percentageDifference < 0
-    }
-        " style="position: absolute; bottom: 2px; right: 5px; font-size: 0.8rem;">
+                        'text-green': slotProps.data.percentageDifference > 0,
+                        'text-red': slotProps.data.percentageDifference < 0
+                    } + ' percentage-text'">
                         {{ (100 * slotProps.data.percentageDifference).toFixed(2) }}%
                     </div>
                 </div>
@@ -143,10 +142,10 @@
                 <span>
                     <!-- Check if currentPossession is defined and is a valid number -->
                     {{
-        typeof slotProps.data.currentPossession === 'number'
-            ? slotProps.data.currentPossession.toFixed(2) + '$'
-            : 'N/A'
-    }}
+                        typeof slotProps.data.currentPossession === 'number'
+                            ? slotProps.data.currentPossession.toFixed(2) + '$'
+                            : 'N/A'
+                    }}
                 </span>
             </template>
         </Column>
@@ -156,10 +155,10 @@
                 <span>
                     <!-- Check if profit is defined and is a valid number -->
                     {{
-        typeof slotProps.data.profit === 'number'
-            ? slotProps.data.profit.toFixed(2) + '$'
-            : 'N/A'
-    }}
+                        typeof slotProps.data.profit === 'number'
+                            ? slotProps.data.profit.toFixed(2) + '$'
+                            : 'N/A'
+                    }}
                 </span>
             </template>
         </Column>
@@ -210,13 +209,14 @@
             </template>
         </Column>
 
-        <Column :exportable="false" style="min-width: 8rem">
+        <Column :exportable="false" class="actions-column">
             <template #body="slotProps">
-                <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editProduct(slotProps.data)" />
-                <Button icon="pi pi-trash" outlined rounded severity="danger"
-                    @click="confirmDeleteProduct(slotProps.data)" />
+              <div class="actions-container">
+                <Button icon="pi pi-pencil" outlined rounded class="action-button edit-button" @click="editProduct(slotProps.data)" />
+                <Button icon="pi pi-trash" outlined rounded severity="danger" class="action-button delete-button" @click="confirmDeleteProduct(slotProps.data)" />
+              </div>
             </template>
-        </Column>
+          </Column>
     </DataTable>
 </template>
 
@@ -372,11 +372,69 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.text-green-500 {
+.custom-data-table {
+    min-width: 50rem;
+}
+
+.bold-row {
+    font-weight: bold;
+}
+
+.platform-column {
+    min-width: 5rem;
+}
+
+.status-column {
+    min-width: 12rem;
+}
+
+.actions-column {
+    min-width: 8rem;
+  }
+
+.price-container {
+    position: relative;
+    height: 50px;
+    padding: 5px;
+}
+
+.main-text {
+    text-align: center;
+    font-size: 1rem;
+    line-height: 20px;
+}
+
+.percentage-text {
+    position: absolute;
+    bottom: 2px;
+    right: 5px;
+    font-size: 0.8rem;
+}
+
+.current-price-container {
+    position: relative;
+    height: 50px;
+    padding: 5px;
+}
+
+.current-price-main-text {
+    text-align: center;
+    font-size: 1rem;
+    line-height: 20px;
+}
+
+.current-price-secondary-text {
+    position: absolute;
+    bottom: 2px;
+    right: 5px;
+    font-size: 0.8rem;
+}
+
+.text-green {
     color: #10b981;
 }
 
-.text-red-500 {
+.text-red {
     color: #ef4444;
 }
 

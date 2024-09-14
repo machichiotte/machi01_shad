@@ -4,8 +4,7 @@
     <h1>Balances</h1>
     <div class="pie-charts-container">
       <div v-for="(balances, platform) in groupedBalances" :key="platform">
-        <PieChart v-if="loaded && balances.length" :platform="platform" :balances="balances"
-          style="width: 300px; height: 300px;" />
+        <PieChart v-if="loaded && balances.length" :platform="platform" :balances="balances" class="pie-chart" />
       </div>
     </div>
   </div>
@@ -77,8 +76,8 @@ export default {
 }
 
 .pie-chart {
-  width: 400px;
-  height: 400px;
-  margin: 10px;
+  width: 300px;
+  height: 300px;
 }
+
 </style>

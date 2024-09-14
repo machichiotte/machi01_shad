@@ -1,6 +1,4 @@
-// main.js
-import './assets/main.css'
-
+// index.js
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
@@ -43,6 +41,8 @@ import Calendar from 'primevue/calendar'
 import ToggleButton from 'primevue/togglebutton'
 import MultiSelect from 'primevue/multiselect'
 import Checkbox from 'primevue/checkbox'
+
+import './assets/main.css'
 
 const app = createApp(App)
 app.component('LogoMachi', LogoMachi)

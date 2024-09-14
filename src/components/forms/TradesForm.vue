@@ -1,6 +1,6 @@
 <!-- src/components/forms/TradesForm.vue -->
 <template>
-    <Dialog modal header="Add trade" :style="{ width: '25rem' }">
+    <Dialog modal header="Add trade" class="dialog-custom">
         <div class="flex">
             <Dropdown placeholder="Select a Platform" :options="platforms" id="platform" class="field-group"
                 v-model="formData['platform']" @update:model-value="formData['platform'] = $event" />
@@ -188,6 +188,10 @@ watch(formData, () => {
 </script>
 
 <style scoped>
+.dialog-custom {
+    width: 25rem;
+}
+
 .field-group {
     margin-bottom: 16px;
 }
