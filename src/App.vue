@@ -86,7 +86,6 @@ body.dark-mode {
   object-fit: contain;
 }
 
-/* Style for dark mode button */
 .dark-mode-button {
   font-size: 24px;
   background: none;
