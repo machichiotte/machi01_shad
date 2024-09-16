@@ -12,7 +12,7 @@ interface PlatformErrorPolicies {
   [errorName: string]: ErrorPolicy
 }
 
-interface ErrorPolicies {
+export interface ErrorPolicies {
   [platform: string]: PlatformErrorPolicies
 }
 

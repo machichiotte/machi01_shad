@@ -1,7 +1,7 @@
 // src/controllers/tickersController.ts
 import { Request, Response } from 'express'
 import { handleErrorResponse } from '@utils/errorUtil'
-import * as tickersService from '@services/tickersService'
+import { TickersService } from '@services/tickersService'
 
 /**
  * Récupère tous les tickers de la base de données.
@@ -10,7 +10,7 @@ import * as tickersService from '@services/tickersService'
  */
 async function getAllTickers(req: Request, res: Response): Promise<void> {
   try {
-    const data = await tickersService.fetchDatabaseTickers()
+    const data = await TickersService.fetchDatabaseTickers()
     res.json(data)
   } catch (error) {
     handleErrorResponse(res, error as Error, 'getAllTickers')
@@ -30,7 +30,7 @@ async function getAllTickersByPlatform(
 ): Promise<void> {
   try {
     const platformTickersData =
-      await tickersService.getAllTickersByPlatform(platform)
+      await TickersService.getAllTickersByPlatform(platform)
     res.status(200).json(platformTickersData)
   } catch (error) {
     handleErrorResponse(res, error as Error, 'getAllTickersByPlatform')
@@ -52,7 +52,7 @@ async function getAllTickersBySymbolFromPlatform(
 ): Promise<void> {
   try {
     const filteredTickersData =
-      await tickersService.getAllTickersBySymbolFromPlatform(platform, symbol)
+      await TickersService.getAllTickersBySymbolFromPlatform(platform, symbol)
     res.status(200).json(filteredTickersData)
   } catch (error) {
     handleErrorResponse(res, error as Error, 'getAllTickersBySymbolFromPlatform')
@@ -66,7 +66,7 @@ async function getAllTickersBySymbolFromPlatform(
  */
 async function updateAllTickers(req: Request, res: Response): Promise<void> {
   try {
-    const tickersData = await tickersService.updateAllTickers()
+    const tickersData = await TickersService.updateAllTickers()
     res.status(200).json(tickersData)
   } catch (error) {
     handleErrorResponse(res, error as Error, 'updateAllTickers')

@@ -3,214 +3,144 @@ import { createPlatformInstance } from '@utils/platformUtil'
 import { getData } from '@utils/dataUtil'
 import { updateDataMDB, deleteAndSaveData, saveData } from './mongodbService'
 import { saveLastUpdateToDatabase } from './lastUpdateService'
-import { mapTrades, MappedTrade } from './mapping'
-
+import { mapTrades } from './mapping'
+import { MappedTrade } from 'src/models/dbTypes'
 import { Trade } from 'ccxt'
+import { InsertOneResult, InsertManyResult } from 'mongodb'
+import Exchange from 'ccxt/js/src/abstract/kucoin'
 
-/**
- * Fetches trades from the database.
- * @returns {Promise<Trade[]>} A promise that resolves to an array of trades.
- */
-async function fetchDatabaseTrades(): Promise<MappedTrade[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES as string
-  return await getData(collectionName) as MappedTrade[]
-}
+const TRADES_COLLECTION = process.env.MONGODB_COLLECTION_TRADES as string
+const TRADES_COLLECTION_2 = process.env.MONGODB_COLLECTION_TRADES2 as string
+const TRADES_TYPE = process.env.TYPE_TRADES as string
 
-/**
- * Updates a trade by its ID.
- * @param {string} tradeId - The ID of the trade to update.
- * @param {Partial<MappedTrade>} updatedTrade - The updated trade data.
- * @returns {Promise<object>} A promise that resolves to the update result.
- */
-async function updateTradeById(
-  tradeId: string | undefined,
-  updatedTrade: Partial<MappedTrade>
-): Promise<object> {
-  if (!tradeId) {
-    throw new Error('Trade ID is required')
+export class TradesService {
+  // Méthodes de récupération
+  static async fetchDatabaseTrades(): Promise<MappedTrade[]> {
+    return await getData(TRADES_COLLECTION) as MappedTrade[]
   }
 
-  try {
-    return await updateDataMDB(
-      'collection_trades',
-      { _id: tradeId },
-      { $set: updatedTrade }
-    )
-  } catch (error) {
-    console.error('Error updating trade:', error)
-    throw error
-  }
-}
-
-/**
- * Adds trades manually to the database.
- * @param {MappedTrade | MappedTrade[]} MappedTrade - The trade(s) data to add.
- * @returns {Promise<{message: any, data: any, status: number}>} A promise that resolves to the result of the operation.
- */
-async function addTradesManually(
-  tradesData: MappedTrade | MappedTrade[]
-): Promise<object> {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES as string
-  try {
-    const savedTrade = await saveData(collectionName, tradesData)
-    if (savedTrade.acknowledged) {
-      return { message: savedTrade, data: savedTrade, status: 200 }
-    } else {
-      return { message: savedTrade, data: savedTrade, status: 400 }
+  static async fetchLastTrades(platform: string, symbol: string): Promise<Trade[]> {
+    try {
+      const platformInstance = createPlatformInstance(platform)
+      return await platformInstance.fetchMyTrades(symbol)
+    } catch (error) {
+      console.error(`Erreur lors de la récupération des derniers trades pour ${platform}:`, error)
+      throw error
     }
-  } catch (error) {
-    console.error('Error adding trades manually:', error)
-    throw error
   }
-}
 
-/**
- * Updates trades for a specific platform.
- * @param {string} platform - The platform to update trades for.
- * @returns {Promise<{status: number, data: Trade[]}>} A promise that resolves to the result of the update operation.
- */
-async function updateTrades(
-  platform: string
-): Promise<{ status: number; data: MappedTrade[] }> {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES as string
-  const platformInstance = createPlatformInstance(platform)
+  // Méthodes de mise à jour
+  static async updateTradeById(tradeId: string, updatedTrade: Partial<MappedTrade>): Promise<object> {
+    if (!tradeId) {
+      throw new Error('L\'ID du trade est requis')
+    }
 
-  try {
-    const mappedData: MappedTrade[] = []
+    try {
+      return await updateDataMDB(TRADES_COLLECTION, { _id: tradeId }, { $set: updatedTrade })
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du trade:', error)
+      throw error
+    }
+  }
+
+  static async updateTrades(platform: string): Promise<{ data: MappedTrade[] }> {
+    try {
+      const mappedData = await this.fetchPlatformTrades(platform)
+      await deleteAndSaveData(TRADES_COLLECTION, mappedData, platform)
+      await saveLastUpdateToDatabase(TRADES_TYPE, platform)
+      return { data: mappedData }
+    } catch (error) {
+      console.error(`Erreur lors de la mise à jour des trades pour ${platform}:`, error)
+      throw error
+    }
+  }
+
+  // Méthodes d'ajout
+  static async addTradesManually(tradesData: MappedTrade | MappedTrade[]): Promise<{ data: InsertOneResult<Document> | InsertManyResult<Document> }> {
+    try {
+      const savedTrade = await saveData(TRADES_COLLECTION, tradesData)
+      return { data: savedTrade }
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout manuel des trades:', error)
+      throw error
+    }
+  }
+
+  static async saveTradesToDatabase(newTrades: MappedTrade[]): Promise<void> {
+    await this.saveTrades(newTrades, TRADES_COLLECTION, true)
+  }
+
+  static async saveAllTradesToDatabase(newTrades: MappedTrade[]): Promise<void> {
+    await this.saveTrades(newTrades, TRADES_COLLECTION_2, false)
+  }
+
+  // Méthodes privées
+  private static async fetchPlatformTrades(platform: string): Promise<MappedTrade[]> {
+    const platformInstance = createPlatformInstance(platform) as Exchange
+    let trades: Trade[] = []
+
     switch (platform) {
-      case 'kucoin': {
-        const weeksBack = 4 * 52
-        for (let i = weeksBack; i > 1; i--) {
-          const trades = await platformInstance.fetchMyTrades(
-            undefined,
-            Date.now() - i * 7 * 86400 * 1000,
-            500
-          )
-          if (trades.length > 0) {
-            mappedData.push(...mapTrades(platform, trades))
-          }
-        }
+      case 'kucoin':
+        trades = await this.fetchKucoinTrades(platformInstance)
         break
-      }
-
-      case 'htx': {
-        const currentTime = Date.now()
-        const windowSize = 48 * 60 * 60 * 1000
-        const totalDuration = 1 * 365 * 24 * 60 * 60 * 1000
-        const iterations = Math.ceil(totalDuration / windowSize)
-
-        for (let i = 0; i < iterations; i++) {
-          const startTime = currentTime - (i + 1) * windowSize
-          const endTime = currentTime - i * windowSize
-          const param = {
-            'start-time': startTime,
-            'end-time': endTime
-          }
-          const trades = await platformInstance.fetchMyTrades(
-            undefined,
-            undefined,
-            1000,
-            param
-          )
-          if (trades.length > 0) {
-            mappedData.push(...mapTrades(platform, trades))
-          }
-        }
+      case 'htx':
+        trades = await this.fetchHtxTrades(platformInstance)
         break
-      }
+      default:
+        throw new Error(`Plateforme non supportée: ${platform}`)
     }
 
-    await deleteAndSaveData(collectionName, mappedData, platform)
-    await saveLastUpdateToDatabase(process.env.TYPE_TRADES as string, platform)
-
-    return { status: 200, data: mappedData }
-  } catch (error) {
-    console.error('Error updating trades:', error)
-    throw error
+    return mapTrades(platform, trades)
   }
-}
 
-/**
- * Fetches the last trades for a specific platform and symbol.
- * @param {string} platform - The platform to fetch trades from.
- * @param {string} symbol - The trading symbol.
- * @returns {Promise<Trade[]>} A promise that resolves to an array of the last trades.
- */
-async function fetchLastTrades(
-  platform: string,
-  symbol: string
-): Promise<Trade[]> {
-  try {
-    const platformInstance = createPlatformInstance(platform)
-    return await platformInstance.fetchMyTrades(symbol)
-  } catch (error) {
-    console.error('Error fetching last trades:', error)
-    throw error
+  private static async fetchKucoinTrades(platformInstance: Exchange): Promise<Trade[]> {
+    const weeksBack = 4 * 52
+    let allTrades: Trade[] = []
+    for (let i = weeksBack; i > 1; i--) {
+      const trades = await platformInstance.fetchMyTrades(
+        undefined,
+        Date.now() - i * 7 * 86400 * 1000,
+        500
+      )
+      allTrades = allTrades.concat(trades)
+    }
+    return allTrades
   }
-}
 
-/**
- * Saves new trades to the database.
- * @param {Trade[]} newTrades - The new trades to save.
- * @returns {Promise<void>}
- */
-async function saveTradesToDatabase(newTrades: Trade[]): Promise<void> {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES
-  await saveTrades(newTrades, collectionName as string, true)
-}
+  private static async fetchHtxTrades(platformInstance: Exchange): Promise<Trade[]> {
+    const currentTime = Date.now()
+    const windowSize = 48 * 60 * 60 * 1000
+    const totalDuration = 1 * 365 * 24 * 60 * 60 * 1000
+    const iterations = Math.ceil(totalDuration / windowSize)
+    let allTrades: Trade[] = []
 
-/**
- * Saves all trades to the database without filtering.
- * @param {Trade[]} newTrades - The trades to save.
- * @returns {Promise<void>}
- */
-async function saveAllTradesToDatabase(newTrades: Trade[]): Promise<void> {
-  const collectionName = process.env.MONGODB_COLLECTION_TRADES2
-  await saveTrades(newTrades, collectionName as string, false)
-}
+    for (let i = 0; i < iterations; i++) {
+      const startTime = currentTime - (i + 1) * windowSize
+      const endTime = currentTime - i * windowSize
+      const param = { 'start-time': startTime, 'end-time': endTime }
+      const trades = await platformInstance.fetchMyTrades(undefined, undefined, 1000, param)
+      allTrades = allTrades.concat(trades)
+    }
+    return allTrades
+  }
 
-/**
- * Helper function to save trades to a specified collection.
- * @param {Trade[]} newTrades - The trades to save.
- * @param {string} collection - The collection name to save trades to.
- * @param {boolean} isFiltered - Whether to filter out existing trades.
- * @returns {Promise<void>}
- */
-async function saveTrades(
-  newTrades: Trade[],
-  collection: string,
-  isFiltered: boolean
-): Promise<void> {
-  try {
-    let filteredTrades = newTrades
-    if (isFiltered) {
-      const existingTrades = await fetchDatabaseTrades()
-      filteredTrades = newTrades.filter((newTrade) => {
-        return !existingTrades.some(
-          (existingTrade) => existingTrade.timestamp === newTrade.timestamp
+  private static async saveTrades(newTrades: MappedTrade[], collection: string, isFiltered: boolean): Promise<void> {
+    try {
+      let tradesToInsert = newTrades
+
+      if (isFiltered) {
+        const existingTrades = await this.fetchDatabaseTrades()
+        tradesToInsert = newTrades.filter(newTrade =>
+          !existingTrades.some(existingTrade => existingTrade.timestamp === newTrade.timestamp)
         )
-      })
-    }
+      }
 
-    const tradesToInsert = filteredTrades.map((trade) => {
-      return typeof trade === 'object' ? trade : { trade }
-    })
-
-    if (tradesToInsert.length > 0) {
-      await saveData(collection, tradesToInsert)
+      if (tradesToInsert.length > 0) {
+        await saveData(collection, tradesToInsert)
+      }
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde des trades:', error)
+      throw error
     }
-  } catch (error) {
-    console.error('Error saving trades:', error)
-    throw error
   }
-}
-
-export {
-  updateTradeById,
-  fetchDatabaseTrades,
-  addTradesManually,
-  updateTrades,
-  fetchLastTrades,
-  saveTradesToDatabase,
-  saveAllTradesToDatabase
 }

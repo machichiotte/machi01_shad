@@ -2,7 +2,7 @@
 import { Request, Response } from 'express'
 import { handleErrorResponse } from '../utils/errorUtil'
 import { validateEnvVariables } from '../utils/controllerUtil'
-import * as shadService from '../services/shadService'
+import { ShadService } from '../services/shadService'
 
 validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
 
@@ -13,7 +13,7 @@ validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
  */
 async function getShad(req: Request, res: Response): Promise<void> {
   try {
-    const data = await shadService.fetchShadInDatabase()
+    const data = await ShadService.fetchShadInDatabase()
     console.log('Données Shad récupérées', { count: data.length })
     res.json(data)
   } catch (error: unknown) {

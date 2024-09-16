@@ -2,7 +2,7 @@
 
 import { Request, Response } from 'express'
 import { handleErrorResponse } from '@utils/errorUtil'
-import BalanceService from '@services/balanceService'
+import { BalancesService } from '@services/balancesService'
 
 /**
  * Récupère le dernier solde enregistré dans la base de données.
@@ -11,7 +11,7 @@ import BalanceService from '@services/balanceService'
  */
 async function getBalances(req: Request, res: Response): Promise<void> {
   try {
-    const data = await BalanceService.fetchDatabaseBalances()
+    const data = await BalancesService.fetchDatabaseBalances()
     res.json(data)
   } catch (error) {
     handleErrorResponse(res, error as Error, 'getBalances')
@@ -29,7 +29,7 @@ async function updateCurrentBalance(
 ): Promise<void> {
   const platform = req.params.platform
   try {
-    const data = await BalanceService.updateBalanceForPlatform(platform)
+    const data = await BalancesService.updateBalanceForPlatform(platform)
     res.status(200).json({
       status: true,
       message: 'Le solde actuel a été mis à jour avec succès.',

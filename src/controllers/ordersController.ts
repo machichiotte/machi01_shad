@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import * as ordersService from '../services/ordersService'
+import { OrdersService } from '../services/ordersService'
 import { handleErrorResponse } from '@utils/errorUtil'
 import { validateEnvVariables } from '@utils/controllerUtil'
 
@@ -14,7 +14,7 @@ validateEnvVariables(['MONGODB_COLLECTION_ACTIVE_ORDERS', 'TYPE_ACTIVE_ORDERS'])
  */
 async function getOrders(req: Request, res: Response): Promise<void> {
   try {
-    const orders = await ordersService.fetchDatabaseOrders()
+    const orders = await OrdersService.fetchDatabaseOrders()
     res.status(200).json(orders)
   } catch (error) {
     handleErrorResponse(res, error as Error, 'getOrders')
@@ -30,7 +30,7 @@ async function getOrders(req: Request, res: Response): Promise<void> {
 async function updateOrders(req: Request, res: Response): Promise<void> {
   const { platform } = req.params
   try {
-    const mappedData = await ordersService.updateOrdersFromServer(platform)
+    const mappedData = await OrdersService.updateOrdersFromServer(platform)
     res.status(200).json(mappedData)
   } catch (error) {
     handleErrorResponse(res, error as Error, 'updateOrders')
@@ -46,8 +46,8 @@ async function updateOrders(req: Request, res: Response): Promise<void> {
 async function deleteOrder(req: Request, res: Response): Promise<void> {
   const { platform, oId, symbol } = req.body
   try {
-    const data = await ordersService.deleteOrder(platform, oId, symbol)
-    res.status(200).json(data)
+    await OrdersService.deleteOrder(platform, oId, symbol)
+    res.status(200)
   } catch (error) {
     handleErrorResponse(res, error as Error, 'deleteOrder')
   }
@@ -91,7 +91,7 @@ async function createMarketOrder(
 ): Promise<void> {
   const { platform, asset, amount } = req.body
   try {
-    const result = await ordersService.createMarketOrder(
+    const result = await OrdersService.createMarketOrder(
       platform,
       asset,
       amount,
@@ -117,7 +117,7 @@ async function createLimitOrder(
 ): Promise<void> {
   const { platform, price, amount, asset } = req.body
   try {
-    const result = await ordersService.createLimitOrder(
+    const result = await OrdersService.createLimitOrder(
       platform,
       asset,
       amount,
@@ -172,8 +172,8 @@ async function createBunchLimitBuyOrders(
 async function cancelAllOrders(req: Request, res: Response): Promise<void> {
   const { platform, asset } = req.body
   try {
-    const result = await ordersService.cancelAllOrders(platform, asset)
-    res.status(200).json({ message: result, status: 200 })
+    const result = await OrdersService.cancelAllOrders(platform, asset)
+    res.status(200).json({ message: result.message })
   } catch (error) {
     handleErrorResponse(res, error as Error, 'cancelAllOrders')
   }
@@ -188,8 +188,8 @@ async function cancelAllOrders(req: Request, res: Response): Promise<void> {
 async function cancelAllSellOrders(req: Request, res: Response): Promise<void> {
   const { platform, asset } = req.body
   try {
-    const result = await ordersService.cancelAllSellOrders(platform, asset)
-    res.status(200).json(result)
+    const result = await OrdersService.cancelAllSellOrders(platform, asset)
+    res.status(200).json({ message: result.message })
   } catch (error) {
     handleErrorResponse(res, error as Error, 'cancelAllSellOrders')
   }

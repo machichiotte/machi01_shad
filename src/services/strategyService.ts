@@ -2,40 +2,28 @@
 import { getData } from '@utils/dataUtil'
 import { saveLastUpdateToDatabase } from './lastUpdateService'
 import { updateDataMDB, deleteAllDataMDB, saveData } from './mongodbService'
-import { MappedStrategy } from './mapping'
+import { MappedStrategy } from 'src/models/dbTypes'
 import { UpdateDataMDBParams } from './mongodbService'
+import { InsertManyResult, InsertOneResult } from 'mongodb'
 
 export class StrategyService {
-  private collectionName: string;
-  private collectionType: string;
-
-  constructor() {
-    this.collectionName = process.env.MONGODB_COLLECTION_STRAT as string;
-    this.collectionType = process.env.TYPE_STRATEGY as string;
-  }
-
   /**
    * Récupère les stratégies de la base de données.
-   * @returns {Promise<MappedStrategy[]>} Une promesse qui se résout en un tableau de stratégies.
    */
-  async fetchDatabaseStrategies(): Promise<MappedStrategy[]> {
-    return await getData(this.collectionName) as MappedStrategy[];
+  static async fetchDatabaseStrategies(): Promise<MappedStrategy[]> {
+    return await getData(process.env.MONGODB_COLLECTION_STRAT as string) as MappedStrategy[];
   }
 
   /**
    * Met à jour une stratégie par son ID.
-   * @param {string} strategyId - L'ID de la stratégie à mettre à jour.
-   * @param {Partial<MappedStrategy>} updatedStrategy - Les données mises à jour de la stratégie.
-   * @returns {Promise<UpdateDataMDBParams>} Une promesse qui se résout avec le résultat de la mise à jour.
-   * @throws {Error} Si la mise à jour échoue.
    */
-  async updateStrategyById(strategyId: string | undefined, updatedStrategy: Partial<MappedStrategy>): Promise<UpdateDataMDBParams> {
+  static async updateStrategyById(strategyId: string | undefined, updatedStrategy: Partial<MappedStrategy>): Promise<UpdateDataMDBParams> {
     if (!strategyId) {
       throw new Error('L\'ID de la stratégie est requis');
     }
     try {
       return await updateDataMDB(
-        this.collectionName,
+        process.env.MONGODB_COLLECTION_STRAT as string,
         { _id: strategyId },
         { $set: updatedStrategy }
       );
@@ -47,13 +35,12 @@ export class StrategyService {
 
   /**
    * Met à jour toutes les stratégies dans la base de données.
-   * @param {MappedStrategy[]} strategies - Le tableau de stratégies à mettre à jour.
-   * @returns {Promise<InsertOneResult<Document> | InsertManyResult<Document>>} Une promesse qui se résout avec le résultat de la sauvegarde.
    */
-  async updateStrategies(strategies: MappedStrategy[]): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
-    await deleteAllDataMDB(this.collectionName);
-    const data = await saveData(this.collectionName, strategies);
-    await saveLastUpdateToDatabase(this.collectionType, '');
+  static async updateStrategies(strategies: MappedStrategy[]): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
+    const collectionName = process.env.MONGODB_COLLECTION_STRAT as string;
+    await deleteAllDataMDB(collectionName);
+    const data = await saveData(collectionName, strategies);
+    await saveLastUpdateToDatabase(process.env.TYPE_STRATEGY as string, '');
     return data;
   }
 }

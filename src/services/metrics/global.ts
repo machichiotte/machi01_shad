@@ -24,8 +24,9 @@ import {
   MappedTicker,
   MappedCmc,
   MappedStrategy
-} from '@services/mapping'
+} from '@models/dbTypes'
 
+import { AssetMetrics } from '@models/dbTypes'
 // Define stable coins
 const stableCoins: string[] = ['USDT', 'USDC', 'DAI', 'BUSD', 'TUSD']
 
@@ -33,7 +34,7 @@ const stableCoins: string[] = ['USDT', 'USDC', 'DAI', 'BUSD', 'TUSD']
  * Default metrics object with initial values set to "N/A".
  * This serves as a template for asset metrics.
  */
-const DEFAULT_METRICS: Record<string, string | number> = {
+const DEFAULT_METRICS: AssetMetrics = {
   iconUrl: 'N/A',
   asset: 'N/A',
   status: 'N/A',
@@ -91,17 +92,6 @@ function getCurrentPrice(
   return ticker?.last ?? -1
 }
 
-interface AssetMetrics extends Record<string, any> {
-  iconUrl: string
-  asset: string
-  rank: number
-  currentPrice: number | undefined
-  currentPossession: number
-  totalAmount: number
-  balance: number
-  platform: string
-}
-
 /**
  * Calculates various metrics for a given asset.
  *
@@ -154,7 +144,7 @@ function calculateAssetMetrics(
     return { ...baseMetrics, status: 'stable coin' }
   }
 
-  if (balance === 0 || !isValidStrategies(strategy)) {
+  if (balance === 0 || strategy !== undefined) {
     return {
       ...baseMetrics,
       averageEntryPrice,
@@ -221,9 +211,9 @@ function filterOpenOrdersBySide(
   orders: MappedOrder[],
   platform: string,
   base: string
-): any {
+): { buyOrders: MappedOrder[], sellOrders: MappedOrder[] } {
   return orders.reduce(
-    (acc: any, order: MappedOrder) => {
+    (acc: { buyOrders: MappedOrder[], sellOrders: MappedOrder[] }, order: MappedOrder) => {
       if (order.platform === platform && order.symbol.split('/')[0] === base) {
         acc[order.side === 'buy' ? 'buyOrders' : 'sellOrders'].push(order)
       }
@@ -231,18 +221,6 @@ function filterOpenOrdersBySide(
     },
     { buyOrders: [], sellOrders: [] }
   )
-}
-
-/**
- * Checks if the strategies are valid.
- *
- * @param {Record<string, any>} strategies - The strategies to check.
- * @returns {boolean} - Returns true if it's a non-empty object.
- */
-function isValidStrategies(strategies: Record<string, any>): boolean {
-  const isObject = typeof strategies === 'object' && strategies !== null
-  const isNotEmpty = isObject && Object.keys(strategies).length > 0
-  return isObject && isNotEmpty
 }
 
 export { calculateAssetMetrics }

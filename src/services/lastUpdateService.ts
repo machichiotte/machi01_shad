@@ -11,8 +11,8 @@ interface LastUpdateData {
  * @returns {Promise<LastUpdateData[]>} The last update data.
  */
 async function fetchDatabaseLastUpdate(): Promise<LastUpdateData[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE
-  return await getData(collectionName as string)
+  const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE as string
+  return await getData(collectionName) as LastUpdateData[]
 }
 
 /**
@@ -39,7 +39,7 @@ async function saveLastUpdateToDatabase(
       data[type] = {}
     }
 
-    ;(data[type] as { [key: string]: number })[platform] = Date.now()
+    ; (data[type] as { [key: string]: number })[platform] = Date.now()
     console.log(
       `data[type] ${(data[type] as { [key: string]: number })[platform]}`
     )

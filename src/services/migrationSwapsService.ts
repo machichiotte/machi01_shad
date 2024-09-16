@@ -1,24 +1,18 @@
 // src/services/migrationSwapsService.ts
 import { getData } from '@utils/dataUtil'
-import { MappedTrade, MappedStrategy } from './mapping'
-import { updateStrategyById, fetchDatabaseStrategies } from './strategyService'
+import { MappedTrade, MappedStrategy, SwapMigration } from 'src/models/dbTypes'
+import { StrategyService } from './strategyService'
 import { updateTradeById, fetchDatabaseTrades } from './tradesService'
 
-interface SwapMigration {
-  oldAsset: string
-  newAsset: string
-  swapRate: string
-  platform: string
-  delistingDate: string
-}
+
 
 /**
  * Fetches swap migration data from the database.
  * @returns {Promise<SwapMigration[]>} A promise that resolves to an array of swap migration objects.
  */
 async function fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_SWAP
-  return await getData(collectionName as string)
+  const collectionName = process.env.MONGODB_COLLECTION_SWAP as string
+  return await getData(collectionName as string) as SwapMigration[]
 }
 
 /**
@@ -66,7 +60,7 @@ async function updateStrategy(
   platform: string
 ): Promise<void> {
   const updatedStrategy = { asset: newAsset }
-  await updateStrategyById(strategy._id, updatedStrategy)
+  await StrategyService.updateStrategyById(strategy._id, updatedStrategy)
   console.info(
     `Strategy swap completed for ${strategy.asset} to ${newAsset} on platform ${platform}.`
   )
@@ -82,8 +76,8 @@ async function handleMigrationSwaps(): Promise<void> {
   try {
     const [swaps, trades, strategies] = await Promise.all([
       fetchDatabaseSwapMigration(),
-      fetchDatabaseTrades(),
-      fetchDatabaseStrategies()
+      fetchDatabaseTrades() as MappedTrade[],
+      StrategyService.fetchDatabaseStrategies() as MappedStrategy[]
     ])
 
     const now = new Date()

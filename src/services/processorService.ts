@@ -1,22 +1,13 @@
 // src/services/cron/processorService.ts
 import { calculateAssetMetrics } from './metrics/global'
-import { MappedStrategy, mapTrades } from './mapping'
-import {
-  saveTradesToDatabase,
-  fetchLastTrades,
-  fetchDatabaseTrades
-} from './tradesService'
-import {
-  getAllTickersByPlatform,
-  fetchDatabaseTickers
-} from '@services/tickersService'
-import { fetchDatabaseBalances } from '@services/balanceService'
-import { fetchDatabaseCmc } from '@services/cmcService'
-import {
-  updateOrdersFromServer,
-  fetchDatabaseOrders
-} from '@services/ordersService'
-import { fetchDatabaseStrategies } from './strategyService'
+import { mapTrades } from './mapping'
+import { MappedStrategy, MappedTicker, MappedTrade, AssetMetrics } from 'src/models/dbTypes'
+import { TradesService } from './tradesService'
+import { TickersService } from '@services/tickersService'
+import { BalancesService } from '@services/balancesService'
+import { CmcService } from '@services/cmcService'
+import { OrdersService, } from '@services/ordersService'
+import { StrategyService } from './strategyService'
 import { getSymbolForPlatform } from '@utils/platformUtil'
 
 interface Difference {
@@ -56,16 +47,16 @@ async function processBalanceChanges(
 
   try {
     // Mise à jour des ordres depuis le serveur
-    await updateOrdersFromServer(platform)
+    await OrdersService.updateOrdersFromServer(platform)
 
     // Récupération des tickers sauvegardés pour la plateforme spécifiée
-    const tickers: Ticker[] = await getAllTickersByPlatform(platform)
+    const tickers: MappedTicker[] = await TickersService.getAllTickersByPlatform(platform)
 
     // Suppression des doublons dans le tableau des différences
     const uniqueDifferences: Difference[] =
       removeDuplicateDifferences(differences)
 
-    const newTrades: any[] = []
+    const newTrades: MappedTrade[] = []
 
     // Boucle sur les différences sans doublons
     for (const difference of uniqueDifferences) {
@@ -80,7 +71,7 @@ async function processBalanceChanges(
 
     // Sauvegarde des nouveaux trades détectés
     if (newTrades.length > 0) {
-      await saveTradesToDatabase(newTrades)
+      await TradesService.saveTradesToDatabase(newTrades)
     }
   } catch (error) {
     console.error(`Error handling balance differences for ${platform}:`, error)
@@ -118,7 +109,7 @@ async function processDifference(
   platform: string,
   tickers: Ticker[],
   quoteCurrencies: string[],
-  newTrades: any[]
+  newTrades: MappedTrade[]
 ): Promise<void> {
   for (const quote of quoteCurrencies) {
     const symbol = getSymbolForPlatform(platform, difference.base, quote)
@@ -131,11 +122,11 @@ async function processDifference(
 
     if (marketExists) {
       try {
-        const tradeList = await fetchLastTrades(platform, symbol)
+        const tradeList = await TradesService.fetchLastTrades(platform, symbol)
         const mappedTrades = mapTrades(platform, tradeList, {})
         newTrades.push(...mappedTrades)
-      } catch (error: any) {
-        console.error(`Error fetching trades for ${symbol}: ${error.message}`)
+      } catch (error) {
+        console.error(`Error fetching trades for ${symbol}: ${(error as Error).message}`)
       }
     } else {
       console.log(`Symbol not available: ${symbol}`)
@@ -167,15 +158,15 @@ function logDifferenceType(difference: Difference): void {
  * Calculates all metrics for assets.
  * @returns {Promise<any[]>} - Returns a promise that resolves to an array of calculated asset metrics.
  */
-async function calculateAllMetrics(): Promise<any[]> {
+async function calculateAllMetrics(): Promise<AssetMetrics[]> {
   const [dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances] =
     await Promise.all([
-      fetchDatabaseCmc(),
-      fetchDatabaseStrategies(),
-      fetchDatabaseTrades(),
-      fetchDatabaseOrders(),
-      fetchDatabaseTickers(),
-      fetchDatabaseBalances()
+      CmcService.fetchDatabaseCmc(),
+      StrategyService.fetchDatabaseStrategies(),
+      TradesService.fetchDatabaseTrades(),
+      OrdersService.fetchDatabaseOrders(),
+      TickersService.fetchDatabaseTickers(),
+      BalancesService.fetchDatabaseBalances()
     ])
   if (
     !dbCmc ||
@@ -190,7 +181,7 @@ async function calculateAllMetrics(): Promise<any[]> {
     )
     return []
   }
-  const allValues: any[] = []
+  const allValues: AssetMetrics[] = []
 
   for (const bal of dbBalances) {
     if (bal.balance !== undefined && bal.balance > 0) {
@@ -261,8 +252,7 @@ async function calculateAllMetrics(): Promise<any[]> {
         filteredStrategy,
         filteredTickers
       )
-
-      if (values && values.rank > 0 && values.currentPossession) {
+      if (values && typeof values.rank === 'number' && values.rank > 0 && values.currentPossession) {
         allValues.push(values)
       }
     }

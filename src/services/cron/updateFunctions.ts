@@ -7,8 +7,7 @@
 import { deleteAndReplaceAll } from '@services/mongodbService'
 
 import {
-  fetchCurrentMarkets,
-  saveDatabaseMarkets
+  MarketsService
 } from '@services/marketsService'
 import {
   processBalanceChanges,
@@ -16,14 +15,11 @@ import {
   calculateAllMetrics
 } from '@services/processorService'
 import {
-  fetchCurrentTickers,
-  saveDatabaseTickers
+  TickersService
 } from '@services/tickersService'
 import {
-  fetchCurrentBalancesByPlatform,
-  fetchDatabaseBalancesByPlatform,
-  saveDatabaseBalance
-} from '@services/balanceService'
+  BalancesService
+} from '@services/balancesService'
 
 /**
  * Updates the markets for a specified platform.
@@ -31,8 +27,8 @@ import {
  */
 async function updateMarketsForPlatform(platform: string): Promise<void> {
   try {
-    const currentMarkets = await fetchCurrentMarkets(platform, 3)
-    await saveDatabaseMarkets(currentMarkets, platform)
+    const currentMarkets = await MarketsService.fetchCurrentMarkets(platform, 3)
+    await MarketsService.saveDatabaseMarkets(currentMarkets, platform)
   } catch (error) {
     console.error(
       `Erreur lors de la mise à jour des marchés pour ${platform}:`,
@@ -47,8 +43,8 @@ async function updateMarketsForPlatform(platform: string): Promise<void> {
  */
 async function updateTickersForPlatform(platform: string): Promise<void> {
   try {
-    const currentTickers = await fetchCurrentTickers(platform, 3)
-    await saveDatabaseTickers(currentTickers, platform)
+    const currentTickers = await TickersService.fetchCurrentTickers(platform, 3)
+    await TickersService.saveDatabaseTickers(currentTickers, platform)
   } catch (error) {
     console.error(
       `Erreur lors de la mise à jour des tickers pour ${platform}:`,
@@ -65,8 +61,8 @@ async function updateTickersForPlatform(platform: string): Promise<void> {
 async function updateBalancesForPlatform(platform: string): Promise<void> {
   try {
     const [currentBalances, previousBalances] = await Promise.all([
-      fetchCurrentBalancesByPlatform(platform, 3),
-      fetchDatabaseBalancesByPlatform(platform, 3)
+      BalancesService.fetchCurrentBalancesByPlatform(platform, 3),
+      BalancesService.fetchDatabaseBalancesByPlatform(platform, 3)
     ])
 
     const differences = compareBalances(previousBalances, currentBalances)
@@ -76,7 +72,7 @@ async function updateBalancesForPlatform(platform: string): Promise<void> {
         differences
       )
       await Promise.all([
-        saveDatabaseBalance(currentBalances, platform),
+        BalancesService.saveDatabaseBalance(currentBalances, platform),
         processBalanceChanges(differences, platform)
       ])
     }

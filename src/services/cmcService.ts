@@ -1,14 +1,14 @@
 import { getData } from '@utils/dataUtil';
 import { saveLastUpdateToDatabase } from './lastUpdateService';
 import { deleteAllDataMDB, saveData } from './mongodbService';
-import { MappedCmc } from './mapping';
+import { MappedCmc } from 'src/models/dbTypes';
 
 interface FetchResponse {
   data: MappedCmc[];
   status: { total_count: number };
 }
 
-export default class CmcService {
+export class CmcService {
   private static readonly API_KEY = process.env.CMC_APIKEY as string;
   private static readonly limit = 5000;
   private static readonly baseStart = 1;
