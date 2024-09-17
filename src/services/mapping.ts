@@ -1,4 +1,4 @@
-import { Trade, Balances, Market, Order, Tickers } from 'ccxt'
+import { Trade, Market, Order, Tickers } from 'ccxt'
 import { getStableCoins, getTotalUSDT } from '@utils/mappingUtil'
 import { MappedBalance, MappedTrade, MappedOrder, MappedTicker, MappedMarket } from 'src/models/dbTypes'
 
@@ -6,7 +6,7 @@ import { MappedBalance, MappedTrade, MappedOrder, MappedTicker, MappedMarket } f
 interface RawBalanceBinance {
   asset: string;
   free: string;
-  lock: string;
+  locked: string;
 }
 
 interface RawBalanceKucoin {
@@ -31,119 +31,110 @@ interface RawBalanceGateio {
   locked: string;
 }
 
-type RawBalance =
-  | { platform: 'binance'; data: RawBalanceBinance }
-  | { platform: 'kucoin'; data: RawBalanceKucoin }
-  | { platform: 'htx'; data: [string, RawBalanceHtx] }
-  | { platform: 'okx'; data: RawBalanceOkx }
-  | { platform: 'gateio'; data: RawBalanceGateio };
+type RawBalance = RawBalanceBinance | RawBalanceKucoin | RawBalanceHtx | RawBalanceOkx | RawBalanceGateio;
 
 class Mapper {
+
+
   /**
-   * Maps common balance data across all platforms.
+   * Filtre les données de balance pour ne conserver que celles ayant un solde positif.
+   * @param {Object[]} data - Le tableau brut des balances.
+   * @returns {Object[]} Un tableau filtré avec les balances ayant un solde positif.
    */
-  private static mapBalanceCommon(
-    base: string,
-    balance: number,
-    available: number,
-    platform: string
-  ): MappedBalance {
-    return {
-      base,
-      balance: parseFloat(balance.toString()),
-      available: parseFloat(available.toString()),
-      platform
-    }
+  private filterPositiveBalances(data: RawBalance[]): RawBalance[] {
+    return data.filter((item) => {
+      const balance = parseFloat(
+        ('balance' in item && item.balance) ||
+        ('free' in item && item.free) ||
+        ('cashBal' in item && item.cashBal) ||
+        ('available' in item && item.available) ||
+        ('locked' in item && item.locked) ||
+        (Array.isArray(item) && item[1]?.total) ||
+        '0'
+      );
+      return balance > 0;
+    });
   }
 
   /**
-   * Maps balance data for a specific platform.
+   * Mapping commun des balances, utilisable par toutes les plateformes.
+   * @param {string} base - L'actif de base.
+   * @param {number} balance - Le solde total.
+   * @param {number} available - Le solde disponible.
+   * @param {string} platform - La plateforme.
+   * @returns {Object} Un objet avec les informations mappées.
    */
-  static mapBalance(platform: string, data: Balances): MappedBalance[] {
-    type BalanceItem = RawBalanceBinance | RawBalanceKucoin | RawBalanceOkx | RawBalanceGateio;
+  private mapBalanceCommon(base: string, balance: number, available: number, platform: string): MappedBalance {
+    return {
+      base,
+      balance: parseFloat(balance.toString()),  // Conversion en float pour assurer le type
+      available: parseFloat(available.toString()),
+      platform,
+    };
+  }
 
-    const mappings: Record<string, (item: BalanceItem) => MappedBalance> = {
-      binance: (item) => {
-        const binanceItem = item as RawBalanceBinance;
-        return this.mapBalanceCommon(
-          binanceItem.asset,
-          parseFloat(binanceItem.free) + parseFloat(binanceItem.lock),
-          parseFloat(binanceItem.free),
-          platform
-        );
-      },
-      kucoin: (item) => {
-        const kucoinItem = item as RawBalanceKucoin;
-        return this.mapBalanceCommon(
-          kucoinItem.currency,
-          parseFloat(kucoinItem.balance),
-          parseFloat(kucoinItem.available),
-          platform
-        );
-      },
-      /*htx: (item) => {
-        const [key, value] = item.data as [string, RawBalanceHtx];
-        if (item.platform !== 'htx') throw new Error('Invalid platform');
-        return this.mapBalanceCommon(
-          key,
-          parseFloat(value.total),
-          parseFloat(value.free),
-          platform
-        );
-      },*/
-      okx: (item) => {
-        const okxItem = item as RawBalanceOkx;
-        return this.mapBalanceCommon(
-          okxItem.ccy,
-          parseFloat(okxItem.cashBal),
-          parseFloat(okxItem.availBal),
-          platform
-        );
-      },
-      gateio: (item) => {
-        const gateioItem = item as RawBalanceGateio;
-        return this.mapBalanceCommon(
-          gateioItem.currency,
-          parseFloat(gateioItem.available) + parseFloat(gateioItem.locked),
-          parseFloat(gateioItem.available),
-          platform
-        );
-      }
+  // Fonctions de mapping pour chaque plateforme
+  private mapBinanceBalance(item: RawBalanceBinance, platform: string): MappedBalance {
+    return this.mapBalanceCommon(
+      item.asset,
+      parseFloat(item.free) + parseFloat(item.locked),
+      parseFloat(item.free),
+      platform
+    );
+  }
+
+  private mapKucoinBalance(item: RawBalanceKucoin, platform: string): MappedBalance {
+    return this.mapBalanceCommon(item.currency, parseFloat(item.balance), parseFloat(item.available), platform);
+  }
+
+  /*private mapHtxBalance(item: RawBalanceHtx, platform: string): MappedBalance {
+    return this.mapBalanceCommon(item.currency.toUpperCase(), parseFloat(item.total), parseFloat(item.free), platform);
+  }*/
+
+  private mapOkxBalance(item: RawBalanceOkx, platform: string): MappedBalance {
+    return this.mapBalanceCommon(item.ccy, parseFloat(item.cashBal), parseFloat(item.availBal), platform);
+  }
+
+  private mapGateioBalance(item: RawBalanceGateio, platform: string): MappedBalance {
+    return this.mapBalanceCommon(
+      item.currency,
+      parseFloat(item.available) + parseFloat(item.locked),
+      parseFloat(item.available),
+      platform
+    );
+  }
+
+  /**
+   * Méthode principale pour mapper les balances selon la plateforme.
+   * @param {string} platform - La plateforme d'échange.
+   * @param {Object} data - Les données brutes de balance.
+   * @returns {Object[]} Un tableau contenant les balances mappées.
+   */
+  public mapBalance(platform: string, data: RawBalance[] | Record<string, unknown>): MappedBalance[] {
+    const mappings: Record<string, (item: RawBalance, platform: string) => MappedBalance> = {
+      binance: (item, platform) => this.mapBinanceBalance(item as RawBalanceBinance, platform),
+      kucoin: (item, platform) => this.mapKucoinBalance(item as RawBalanceKucoin, platform),
+      //htx: (item, platform) => this.mapHtxBalance(item as RawBalanceHtx, platform),
+      okx: (item, platform) => this.mapOkxBalance(item as RawBalanceOkx, platform),
+      gateio: (item, platform) => this.mapGateioBalance(item as RawBalanceGateio, platform),
     };
 
-    const platformMapping = mappings[platform];
+    const platformMapping = mappings[platform as keyof typeof mappings];
     if (!platformMapping) {
       console.warn(`Platform ${platform} not supported.`);
       return [];
     }
 
-    let balanceData: BalanceItem[] = [];
-    if (Array.isArray(data.info?.balances)) {
-      balanceData = data.info.balances as BalanceItem[];
-    } else if (Array.isArray(data.info?.data)) {
-      balanceData = data.info.data as BalanceItem[];
-    } else if (typeof data === 'object') {
-      balanceData = Object.entries(data)
-        .filter(([key, value]) =>
-          !['info', 'free', 'used', 'total'].includes(key) &&
-          typeof value === 'object' && 'total' in value && (value as { total: number }).total > 0
-        )
-        .map(([key, value]) => ({ ...(value as { total: number }), currency: key } as BalanceItem));
-    }
+    const balanceData = Array.isArray(data)
+      ? data as RawBalance[]
+      : Object.entries(data).map(([key, value]) => ({ [key]: value } as RawBalance));
 
-    return balanceData
-      .filter((item: BalanceItem) => {
-        const balance = parseFloat(
-          'free' in item ? item.free :
-            'available' in item ? item.available :
-              'cashBal' in item ? item.cashBal :
-                'balance' in item ? item.balance :
-                  '0'
-        );
-        return balance > 0;
-      })
-      .map(platformMapping);
+    return this.filterPositiveBalances(balanceData).map(item => platformMapping(item, platform));
+
   }
+
+
+
 
 
   /**
