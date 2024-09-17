@@ -41,7 +41,7 @@ class Mapper {
    * @param {Object[]} data - Le tableau brut des balances.
    * @returns {Object[]} Un tableau filtré avec les balances ayant un solde positif.
    */
-  private filterPositiveBalances(data: RawBalance[]): RawBalance[] {
+  private static filterPositiveBalances(data: RawBalance[]): RawBalance[] {
     return data.filter((item) => {
       const balance = parseFloat(
         ('balance' in item && item.balance) ||
@@ -64,7 +64,7 @@ class Mapper {
    * @param {string} platform - La plateforme.
    * @returns {Object} Un objet avec les informations mappées.
    */
-  private mapBalanceCommon(base: string, balance: number, available: number, platform: string): MappedBalance {
+  private static mapBalanceCommon(base: string, balance: number, available: number, platform: string): MappedBalance {
     return {
       base,
       balance: parseFloat(balance.toString()),  // Conversion en float pour assurer le type
@@ -74,7 +74,7 @@ class Mapper {
   }
 
   // Fonctions de mapping pour chaque plateforme
-  private mapBinanceBalance(item: RawBalanceBinance, platform: string): MappedBalance {
+  private static mapBinanceBalance(item: RawBalanceBinance, platform: string): MappedBalance {
     return this.mapBalanceCommon(
       item.asset,
       parseFloat(item.free) + parseFloat(item.locked),
@@ -83,7 +83,7 @@ class Mapper {
     );
   }
 
-  private mapKucoinBalance(item: RawBalanceKucoin, platform: string): MappedBalance {
+  private static mapKucoinBalance(item: RawBalanceKucoin, platform: string): MappedBalance {
     return this.mapBalanceCommon(item.currency, parseFloat(item.balance), parseFloat(item.available), platform);
   }
 
@@ -91,11 +91,11 @@ class Mapper {
     return this.mapBalanceCommon(item.currency.toUpperCase(), parseFloat(item.total), parseFloat(item.free), platform);
   }*/
 
-  private mapOkxBalance(item: RawBalanceOkx, platform: string): MappedBalance {
+  private static mapOkxBalance(item: RawBalanceOkx, platform: string): MappedBalance {
     return this.mapBalanceCommon(item.ccy, parseFloat(item.cashBal), parseFloat(item.availBal), platform);
   }
 
-  private mapGateioBalance(item: RawBalanceGateio, platform: string): MappedBalance {
+  private static mapGateioBalance(item: RawBalanceGateio, platform: string): MappedBalance {
     return this.mapBalanceCommon(
       item.currency,
       parseFloat(item.available) + parseFloat(item.locked),
@@ -110,7 +110,7 @@ class Mapper {
    * @param {Object} data - Les données brutes de balance.
    * @returns {Object[]} Un tableau contenant les balances mappées.
    */
-  public mapBalance(platform: string, data: RawBalance[] | Record<string, unknown>): MappedBalance[] {
+  static mapBalance(platform: string, data: RawBalance[] | Record<string, unknown>): MappedBalance[] {
     const mappings: Record<string, (item: RawBalance, platform: string) => MappedBalance> = {
       binance: (item, platform) => this.mapBinanceBalance(item as RawBalanceBinance, platform),
       kucoin: (item, platform) => this.mapKucoinBalance(item as RawBalanceKucoin, platform),
@@ -248,7 +248,6 @@ class Mapper {
 }
 
 export const {
-  mapBalance,
   mapOrders,
   mapTickers,
   mapMarkets,
