@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import * as ordersService from '@services/ordersService'
+import { OrdersService } from '@services/ordersService'
 import { handleErrorResponse } from '@utils/errorUtil'
 import { getOrders } from '@controllers/ordersController'
 
@@ -25,9 +25,9 @@ describe('ordersController', () => {
   describe('getOrders', () => {
     it('devrait renvoyer les commandes avec un statut 200', async () => {
       const mockOrders = [{ id: 1 }, { id: 2 }]
-      ;(ordersService.fetchDatabaseOrders as jest.Mock).mockResolvedValue(
-        mockOrders
-      )
+        ; (OrdersService.fetchDatabaseOrders as jest.Mock).mockResolvedValue(
+          mockOrders
+        )
 
       await getOrders(mockRequest as Request, mockResponse as Response)
 
@@ -37,9 +37,9 @@ describe('ordersController', () => {
 
     it('devrait gérer les erreurs', async () => {
       const mockError = new Error('Erreur de test')
-      ;(ordersService.fetchDatabaseOrders as jest.Mock).mockRejectedValue(
-        mockError
-      )
+        ; (OrdersService.fetchDatabaseOrders as jest.Mock).mockRejectedValue(
+          mockError
+        )
 
       await getOrders(mockRequest as Request, mockResponse as Response)
 

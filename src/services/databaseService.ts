@@ -1,5 +1,5 @@
 import { deleteAndSaveData } from './mongodbService'
-import { saveLastUpdateToDatabase } from './lastUpdateService'
+import { LastUpdateService } from './lastUpdateService'
 import { MappedData } from 'src/models/dbTypes'
 
 class DatabaseService {
@@ -18,7 +18,7 @@ class DatabaseService {
   ): Promise<void> {
     try {
       await deleteAndSaveData(collectionName, data, platform)
-      await saveLastUpdateToDatabase(updateType, platform)
+      await LastUpdateService.saveLastUpdateToDatabase(updateType, platform)
       console.log(`Données sauvegardées dans la base de données`, {
         platform,
         collectionName

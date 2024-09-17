@@ -4,8 +4,8 @@ import {
   updateStrat,
   updateStrategyById
 } from '@controllers/strategyController'
-import * as strategyService from '@services/strategyService'
-import * as lastUpdateService from '@services/lastUpdateService'
+import { StrategyService } from '@services/strategyService'
+import { LastUpdateService } from '@services/lastUpdateService'
 import { handleErrorResponse } from '@utils/errorUtil'
 
 jest.mock('@services/strategyService')
@@ -34,9 +34,9 @@ describe('strategyController', () => {
   describe('getStrat', () => {
     it('devrait renvoyer les stratégies avec succès', async () => {
       const mockData = [{ id: 1, name: 'Stratégie 1' }]
-      ;(strategyService.fetchDatabaseStrategies as jest.Mock).mockResolvedValue(
-        mockData
-      )
+        ; (StrategyService.fetchDatabaseStrategies as jest.Mock).mockResolvedValue(
+          mockData
+        )
 
       await getStrat(mockRequest as Request, mockResponse as Response)
 
@@ -45,9 +45,9 @@ describe('strategyController', () => {
 
     it('devrait gérer les erreurs', async () => {
       const mockError = new Error('Erreur de test')
-      ;(strategyService.fetchDatabaseStrategies as jest.Mock).mockRejectedValue(
-        mockError
-      )
+        ; (StrategyService.fetchDatabaseStrategies as jest.Mock).mockRejectedValue(
+          mockError
+        )
 
       await getStrat(mockRequest as Request, mockResponse as Response)
 
@@ -64,22 +64,22 @@ describe('strategyController', () => {
       const mockStrat = { id: 1, name: 'Stratégie mise à jour' }
       mockRequest.body = mockStrat
       const mockData = { success: true }
-      ;(strategyService.updateStrategies as jest.Mock).mockResolvedValue(
-        mockData
-      )
+        ; (StrategyService.updateStrategies as jest.Mock).mockResolvedValue(
+          mockData
+        )
 
       await updateStrat(mockRequest as Request, mockResponse as Response)
 
-      expect(strategyService.updateStrategies).toHaveBeenCalledWith(mockStrat)
-      expect(lastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalled()
+      expect(StrategyService.updateStrategies).toHaveBeenCalledWith(mockStrat)
+      expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalled()
       expect(mockJson).toHaveBeenCalledWith(mockData)
     })
 
     it('devrait gérer les erreurs', async () => {
       const mockError = new Error('Erreur de mise à jour')
-      ;(strategyService.updateStrategies as jest.Mock).mockRejectedValue(
-        mockError
-      )
+        ; (StrategyService.updateStrategies as jest.Mock).mockRejectedValue(
+          mockError
+        )
 
       await updateStrat(mockRequest as Request, mockResponse as Response)
 
@@ -97,13 +97,13 @@ describe('strategyController', () => {
       mockRequest.params = { strategyId: mockStrategyId }
       mockRequest.body = mockUpdatedStrategy
       const mockResult = { success: true }
-      ;(strategyService.updateStrategyById as jest.Mock).mockResolvedValue(
-        mockResult
-      )
+        ; (StrategyService.updateStrategyById as jest.Mock).mockResolvedValue(
+          mockResult
+        )
 
       await updateStrategyById(mockRequest as Request, mockResponse as Response)
 
-      expect(strategyService.updateStrategyById).toHaveBeenCalledWith(
+      expect(StrategyService.updateStrategyById).toHaveBeenCalledWith(
         mockStrategyId,
         mockUpdatedStrategy
       )
@@ -113,9 +113,9 @@ describe('strategyController', () => {
     it('devrait gérer les erreurs', async () => {
       const mockError = new Error('Erreur de mise à jour')
       mockRequest.params = { strategyId: '1' } // Ajoutez cette ligne
-      ;(strategyService.updateStrategyById as jest.Mock).mockRejectedValue(
-        mockError
-      )
+        ; (StrategyService.updateStrategyById as jest.Mock).mockRejectedValue(
+          mockError
+        )
 
       await updateStrategyById(mockRequest as Request, mockResponse as Response)
 

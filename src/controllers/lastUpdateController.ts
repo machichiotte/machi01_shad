@@ -1,8 +1,7 @@
 // src/controllers/lastUpdateController.ts
 import { validateEnvVariables } from '@utils/controllerUtil'
 import {
-  fetchDatabaseLastUpdate,
-  saveLastUpdateToDatabase
+  LastUpdateService
 } from '@services/lastUpdateService'
 import { getDataMDB } from '@services/mongodbService'
 import { Request, Response } from 'express'
@@ -69,7 +68,7 @@ async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
  */
 async function getLastUpdate(req: Request, res: Response): Promise<void> {
   try {
-    const data = await fetchDatabaseLastUpdate()
+    const data = await LastUpdateService.fetchDatabaseLastUpdate()
     console.log(
       'Tous les enregistrements de dernière mise à jour récupérés de la base de données.',
       {
@@ -99,7 +98,7 @@ async function updateLastUpdateByType(
 ): Promise<void> {
   try {
     const { platform, type } = req.params
-    await saveLastUpdateToDatabase(type, platform)
+    await LastUpdateService.saveLastUpdateToDatabase(type, platform)
     const timestamp = new Date().toISOString()
     console.log('Enregistrement de dernière mise à jour mis à jour.', {
       platform,

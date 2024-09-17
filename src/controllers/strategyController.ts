@@ -1,11 +1,8 @@
 // src/controllers/strategyController.ts
 import { Request, Response } from 'express'
 import { handleErrorResponse } from '@utils/errorUtil'
-import * as lastUpdateService from '@services/lastUpdateService'
-
+import { LastUpdateService } from '@services/lastUpdateService'
 import { StrategyService } from '@services/strategyService'
-
-const strategyService = new StrategyService()
 
 /**
  * Récupère les stratégies de la base de données.
@@ -14,7 +11,7 @@ const strategyService = new StrategyService()
  */
 async function getStrat(req: Request, res: Response): Promise<void> {
   try {
-    const data = await strategyService.fetchDatabaseStrategies()
+    const data = await StrategyService.fetchDatabaseStrategies()
     res.json(data)
   } catch (error) {
     console.error(
@@ -34,8 +31,8 @@ async function getStrat(req: Request, res: Response): Promise<void> {
 async function updateStrat(req: Request, res: Response): Promise<void> {
   const strat = req.body
   try {
-    const data = await strategyService.updateStrategies(strat)
-    await lastUpdateService.saveLastUpdateToDatabase(
+    const data = await StrategyService.updateStrategies(strat)
+    await LastUpdateService.saveLastUpdateToDatabase(
       process.env.TYPE_STRATEGY as string,
       ''
     )
@@ -57,7 +54,7 @@ async function updateStrategyById(req: Request, res: Response): Promise<void> {
   const { strategyId } = req.params
   const updatedStrategy = req.body
   try {
-    const result = await strategyService.updateStrategyById(
+    const result = await StrategyService.updateStrategyById(
       strategyId,
       updatedStrategy
     )

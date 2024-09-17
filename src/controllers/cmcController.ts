@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { handleErrorResponse } from '@utils/errorUtil'
 import { errorLogger } from '@utils/loggerUtil'
 import { validateEnvVariables } from '@utils/controllerUtil'
-import CmcService from '@services/cmcService'
+import { CmcService } from '@services/cmcService'
 
 validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
 

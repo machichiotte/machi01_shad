@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import * as tickersService from '@services/tickersService'
+import { TickersService } from '@services/tickersService'
 import { handleErrorResponse } from '@utils/errorUtil'
 import {
   getAllTickers,
@@ -30,9 +30,9 @@ describe('Tickers Controller', () => {
   describe('getAllTickers', () => {
     it('devrait renvoyer tous les tickers', async () => {
       const mockData = [{ id: 1, name: 'BTC' }]
-      ;(tickersService.fetchDatabaseTickers as jest.Mock).mockResolvedValue(
-        mockData
-      )
+        ; (TickersService.fetchDatabaseTickers as jest.Mock).mockResolvedValue(
+          mockData
+        )
 
       await getAllTickers(mockRequest as Request, mockResponse as Response)
 
@@ -41,9 +41,9 @@ describe('Tickers Controller', () => {
 
     it('devrait gérer les erreurs', async () => {
       const mockError = new Error('Erreur de test')
-      ;(tickersService.fetchDatabaseTickers as jest.Mock).mockRejectedValue(
-        mockError
-      )
+        ; (TickersService.fetchDatabaseTickers as jest.Mock).mockRejectedValue(
+          mockError
+        )
 
       await getAllTickers(mockRequest as Request, mockResponse as Response)
 
@@ -58,9 +58,9 @@ describe('Tickers Controller', () => {
   describe('getAllTickersByPlatform', () => {
     it('devrait renvoyer les tickers pour une plateforme spécifique', async () => {
       const mockData = [{ id: 1, name: 'BTC', platform: 'binance' }]
-      ;(tickersService.getAllTickersByPlatform as jest.Mock).mockResolvedValue(
-        mockData
-      )
+        ; (TickersService.getAllTickersByPlatform as jest.Mock).mockResolvedValue(
+          mockData
+        )
 
       await getAllTickersByPlatform(
         mockRequest as Request,
@@ -80,9 +80,9 @@ describe('Tickers Controller', () => {
       const mockData = [
         { id: 1, name: 'BTC', platform: 'binance', symbol: 'BTCUSDT' }
       ]
-      ;(
-        tickersService.getAllTickersBySymbolFromPlatform as jest.Mock
-      ).mockResolvedValue(mockData)
+        ; (
+          TickersService.getAllTickersBySymbolFromPlatform as jest.Mock
+        ).mockResolvedValue(mockData)
 
       await getAllTickersBySymbolFromPlatform(
         mockRequest as Request,
@@ -101,9 +101,9 @@ describe('Tickers Controller', () => {
   describe('updateAllTickers', () => {
     it('devrait mettre à jour tous les tickers', async () => {
       const mockData = [{ id: 1, name: 'BTC', updated: true }]
-      ;(tickersService.updateAllTickers as jest.Mock).mockResolvedValue(
-        mockData
-      )
+        ; (TickersService.updateAllTickers as jest.Mock).mockResolvedValue(
+          mockData
+        )
 
       await updateAllTickers(mockRequest as Request, mockResponse as Response)
 

@@ -18,7 +18,7 @@ export class OrdersService {
    * @returns {Promise<MappedOrder[]>} A promise that resolves to an array of orders.
    */
   static async fetchDatabaseOrders(): Promise<MappedOrder[]> {
-    return await getData(COLLECTION_NAME)
+    return await getData(COLLECTION_NAME) as MappedOrder[]
   }
 
   /**

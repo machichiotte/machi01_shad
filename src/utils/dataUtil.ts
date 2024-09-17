@@ -2,7 +2,7 @@
 import { promises as fs } from 'fs'
 import { getMockDataPath } from './fileUtil'
 import { getAllDataMDB } from '@services/mongodbService'
-import { MappedData } from '@services/mapping'
+import { MappedData } from '@models/dbTypes'
 
 /**
  * Retrieves data from the specified collection.
@@ -39,7 +39,7 @@ async function getDataFromCollection(collectionName: string): Promise<MappedData
       // Fetch data from MongoDB
       const data = await getAllDataMDB(collectionName)
       // Return data, ensuring it's an array
-      return Array.isArray(data) ? data : []
+      return Array.isArray(data) ? data as MappedData[] : []
     }
   } catch (error) {
     console.log('🚀 ~ getDataFromCollection ~ error:', error)

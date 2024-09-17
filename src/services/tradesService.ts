@@ -2,7 +2,7 @@
 import { createPlatformInstance } from '@utils/platformUtil'
 import { getData } from '@utils/dataUtil'
 import { updateDataMDB, deleteAndSaveData, saveData } from './mongodbService'
-import { saveLastUpdateToDatabase } from './lastUpdateService'
+import { LastUpdateService } from './lastUpdateService'
 import { mapTrades } from './mapping'
 import { MappedTrade } from 'src/models/dbTypes'
 import { Trade } from 'ccxt'
@@ -47,7 +47,7 @@ export class TradesService {
     try {
       const mappedData = await this.fetchPlatformTrades(platform)
       await deleteAndSaveData(TRADES_COLLECTION, mappedData, platform)
-      await saveLastUpdateToDatabase(TRADES_TYPE, platform)
+      await LastUpdateService.saveLastUpdateToDatabase(TRADES_TYPE, platform)
       return { data: mappedData }
     } catch (error) {
       console.error(`Erreur lors de la mise à jour des trades pour ${platform}:`, error)

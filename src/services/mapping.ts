@@ -248,6 +248,7 @@ class Mapper {
 }
 
 export const {
+  mapBalance,
   mapOrders,
   mapTickers,
   mapMarkets,

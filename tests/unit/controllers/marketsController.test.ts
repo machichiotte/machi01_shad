@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { getMarkets } from '@controllers/marketsController'
-import { getSavedMarkets } from '@services/marketsService'
+import { MarketsService } from '@services/marketsService'
 import { handleErrorResponse } from '@utils/errorUtil'
 import { errorLogger } from '@utils/loggerUtil'
 
@@ -23,17 +23,17 @@ describe('getMarkets', () => {
 
   it('devrait renvoyer les données de marché sauvegardées', async () => {
     const mockData = [{ id: 1, name: 'Market 1' }]
-    ;(getSavedMarkets as jest.Mock).mockResolvedValue(mockData)
+      ; (MarketsService.getSavedMarkets as jest.Mock).mockResolvedValue(mockData)
 
     await getMarkets(mockRequest as Request, mockResponse as Response)
 
-    expect(getSavedMarkets).toHaveBeenCalled()
+    expect(MarketsService.getSavedMarkets).toHaveBeenCalled()
     expect(mockJson).toHaveBeenCalledWith(mockData)
   })
 
   it('devrait gérer les erreurs correctement', async () => {
     const mockError = new Error('Erreur test')
-    ;(getSavedMarkets as jest.Mock).mockRejectedValue(mockError)
+      ; (MarketsService.getSavedMarkets as jest.Mock).mockRejectedValue(mockError)
 
     await getMarkets(mockRequest as Request, mockResponse as Response)
 

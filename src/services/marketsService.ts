@@ -2,7 +2,7 @@
 import { getData } from '@utils/dataUtil';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { loadErrorPolicies, shouldRetry, ErrorPolicies } from '@utils/errorUtil';
-import { saveLastUpdateToDatabase } from './lastUpdateService';
+import { LastUpdateService } from './lastUpdateService';
 import { deleteAndSaveData } from './mongodbService';
 import { mapMarkets } from './mapping';
 import { DatabaseService } from './databaseService';
@@ -92,7 +92,7 @@ export class MarketsService {
     mappedData: MappedMarket[]
   ): Promise<MappedMarket[]> {
     await deleteAndSaveData(COLLECTION_NAME, mappedData, platform);
-    await saveLastUpdateToDatabase(COLLECTION_TYPE || '', platform);
+    await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE || '', platform);
     console.log(`Updated market data in database for ${platform}.`, {
       count: mappedData.length,
     });

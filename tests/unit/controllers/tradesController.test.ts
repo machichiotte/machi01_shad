@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import * as tradesService from '@services/tradesService'
+import { TradesService } from '@services/tradesService'
 import { handleErrorResponse } from '@utils/errorUtil'
 import {
   getTrades,
@@ -64,9 +64,9 @@ describe('TradesController', () => {
           totalUSDT: 4.2908001039
         }
       ]
-      ;(tradesService.fetchDatabaseTrades as jest.Mock).mockResolvedValue(
-        mockTrades
-      )
+        ; (TradesService.fetchDatabaseTrades as jest.Mock).mockResolvedValue(
+          mockTrades
+        )
 
       await getTrades(mockRequest as Request, mockResponse as Response)
 
@@ -75,9 +75,9 @@ describe('TradesController', () => {
 
     it('devrait gérer les erreurs', async () => {
       const mockError = new Error('Erreur de test')
-      ;(tradesService.fetchDatabaseTrades as jest.Mock).mockRejectedValue(
-        mockError
-      )
+        ; (TradesService.fetchDatabaseTrades as jest.Mock).mockRejectedValue(
+          mockError
+        )
 
       await getTrades(mockRequest as Request, mockResponse as Response)
 
@@ -110,13 +110,13 @@ describe('TradesController', () => {
       mockRequest.params = { tradeId: mockTradeId }
       mockRequest.body = mockUpdatedTrade
 
-      ;(tradesService.updateTradeById as jest.Mock).mockResolvedValue(
-        mockUpdatedTrade
-      )
+        ; (TradesService.updateTradeById as jest.Mock).mockResolvedValue(
+          mockUpdatedTrade
+        )
 
       await updateTradeById(mockRequest as Request, mockResponse as Response)
 
-      expect(tradesService.updateTradeById).toHaveBeenCalledWith(
+      expect(TradesService.updateTradeById).toHaveBeenCalledWith(
         mockTradeId,
         mockUpdatedTrade
       )
@@ -127,7 +127,7 @@ describe('TradesController', () => {
       const mockError = new Error('Erreur de mise à jour')
       mockRequest.params = { id: '123' }
       mockRequest.body = { status: 'completed' }
-      ;(tradesService.updateTradeById as jest.Mock).mockRejectedValue(mockError)
+        ; (TradesService.updateTradeById as jest.Mock).mockRejectedValue(mockError)
 
       await updateTradeById(mockRequest as Request, mockResponse as Response)
 
@@ -173,13 +173,13 @@ describe('TradesController', () => {
       ]
       mockRequest.body = { trades_data: mockTrades }
       const mockResult = { status: 200, message: 'Trades ajoutés avec succès' }
-      ;(tradesService.addTradesManually as jest.Mock).mockResolvedValue(
-        mockResult
-      )
+        ; (TradesService.addTradesManually as jest.Mock).mockResolvedValue(
+          mockResult
+        )
 
       await addTradesManually(mockRequest as Request, mockResponse as Response)
 
-      expect(tradesService.addTradesManually).toHaveBeenCalledWith(mockTrades)
+      expect(TradesService.addTradesManually).toHaveBeenCalledWith(mockTrades)
       expect(mockStatus).toHaveBeenCalledWith(mockResult.status)
       expect(mockJson).toHaveBeenCalledWith(mockResult)
     })
@@ -187,9 +187,9 @@ describe('TradesController', () => {
     it("devrait gérer les erreurs lors de l'ajout manuel", async () => {
       const mockError = new Error("Erreur d'ajout")
       mockRequest.body = [{ id: '1' }]
-      ;(tradesService.addTradesManually as jest.Mock).mockRejectedValue(
-        mockError
-      )
+        ; (TradesService.addTradesManually as jest.Mock).mockRejectedValue(
+          mockError
+        )
 
       await addTradesManually(mockRequest as Request, mockResponse as Response)
 
@@ -210,11 +210,11 @@ describe('TradesController', () => {
       }
 
       mockRequest.params = { platform: mockPlatform }
-      ;(tradesService.updateTrades as jest.Mock).mockResolvedValue(mockResult)
+        ; (TradesService.updateTrades as jest.Mock).mockResolvedValue(mockResult)
 
       await updateTrades(mockRequest as Request, mockResponse as Response)
 
-      expect(tradesService.updateTrades).toHaveBeenCalledWith(mockPlatform)
+      expect(TradesService.updateTrades).toHaveBeenCalledWith(mockPlatform)
       expect(mockStatus).toHaveBeenCalledWith(200)
       expect(mockJson).toHaveBeenCalledWith(mockResult)
     })
@@ -222,7 +222,7 @@ describe('TradesController', () => {
     it('devrait gérer les erreurs lors de la mise à jour multiple', async () => {
       const mockError = new Error('Erreur de mise à jour multiple')
       mockRequest.params = {}
-      ;(tradesService.updateTrades as jest.Mock).mockRejectedValue(mockError)
+        ; (TradesService.updateTrades as jest.Mock).mockRejectedValue(mockError)
 
       await updateTrades(mockRequest as Request, mockResponse as Response)
 
@@ -269,13 +269,13 @@ describe('TradesController', () => {
         }
       ]
       mockRequest.params = { platform: mockPlatform, symbol: mockSymbol }
-      ;(tradesService.fetchLastTrades as jest.Mock).mockResolvedValue(
-        mockTrades
-      )
+        ; (TradesService.fetchLastTrades as jest.Mock).mockResolvedValue(
+          mockTrades
+        )
 
       await fetchLastTrades(mockRequest as Request, mockResponse as Response)
 
-      expect(tradesService.fetchLastTrades).toHaveBeenCalledWith(
+      expect(TradesService.fetchLastTrades).toHaveBeenCalledWith(
         mockPlatform,
         mockSymbol
       )
@@ -285,7 +285,7 @@ describe('TradesController', () => {
     it('devrait gérer les erreurs lors de la récupération des derniers trades', async () => {
       const mockError = new Error('Erreur de récupération')
       mockRequest.params = { platform: 'binance', symbol: 'BTCUSDT' }
-      ;(tradesService.fetchLastTrades as jest.Mock).mockRejectedValue(mockError)
+        ; (TradesService.fetchLastTrades as jest.Mock).mockRejectedValue(mockError)
 
       await fetchLastTrades(mockRequest as Request, mockResponse as Response)
 
@@ -330,16 +330,16 @@ describe('TradesController', () => {
         }
       ]
       mockRequest.body = { newTrades: mockNewTrades }
-      ;(tradesService.saveTradesToDatabase as jest.Mock).mockResolvedValue(
-        undefined
-      )
+        ; (TradesService.saveTradesToDatabase as jest.Mock).mockResolvedValue(
+          undefined
+        )
 
       await saveTradesToDatabase(
         mockRequest as Request,
         mockResponse as Response
       )
 
-      expect(tradesService.saveTradesToDatabase).toHaveBeenCalledWith(
+      expect(TradesService.saveTradesToDatabase).toHaveBeenCalledWith(
         mockNewTrades
       )
       expect(mockStatus).toHaveBeenCalledWith(200)
@@ -351,9 +351,9 @@ describe('TradesController', () => {
     it('devrait gérer les erreurs lors de la sauvegarde des trades', async () => {
       const mockError = new Error('Erreur de sauvegarde')
       mockRequest.body = { newTrades: [{ id: '1' }] }
-      ;(tradesService.saveTradesToDatabase as jest.Mock).mockRejectedValue(
-        mockError
-      )
+        ; (TradesService.saveTradesToDatabase as jest.Mock).mockRejectedValue(
+          mockError
+        )
 
       await saveTradesToDatabase(
         mockRequest as Request,
@@ -401,16 +401,16 @@ describe('TradesController', () => {
         }
       ]
       mockRequest.body = { newTrades: mockNewTrades }
-      ;(tradesService.saveAllTradesToDatabase as jest.Mock).mockResolvedValue(
-        undefined
-      )
+        ; (TradesService.saveAllTradesToDatabase as jest.Mock).mockResolvedValue(
+          undefined
+        )
 
       await saveAllTradesToDatabase(
         mockRequest as Request,
         mockResponse as Response
       )
 
-      expect(tradesService.saveAllTradesToDatabase).toHaveBeenCalledWith(
+      expect(TradesService.saveAllTradesToDatabase).toHaveBeenCalledWith(
         mockNewTrades
       )
       expect(mockStatus).toHaveBeenCalledWith(200)
@@ -422,9 +422,9 @@ describe('TradesController', () => {
     it('devrait gérer les erreurs lors de la sauvegarde de tous les trades', async () => {
       const mockError = new Error('Erreur de sauvegarde')
       mockRequest.body = { newTrades: [{ id: '1' }] }
-      ;(tradesService.saveAllTradesToDatabase as jest.Mock).mockRejectedValue(
-        mockError
-      )
+        ; (TradesService.saveAllTradesToDatabase as jest.Mock).mockRejectedValue(
+          mockError
+        )
 
       await saveAllTradesToDatabase(
         mockRequest as Request,

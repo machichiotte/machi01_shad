@@ -2,7 +2,7 @@
 import { getData } from '@utils/dataUtil'
 import { createPlatformInstance, getPlatforms } from '@utils/platformUtil'
 import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil'
-import { saveLastUpdateToDatabase } from './lastUpdateService'
+import { LastUpdateService } from './lastUpdateService'
 import { deleteAndReplaceAll } from './mongodbService'
 import { DatabaseService } from './databaseService'
 import { mapTickers } from './mapping'
@@ -99,7 +99,7 @@ export class TickersService {
     }
 
     await deleteAndReplaceAll(collectionName, tickersData)
-    await saveLastUpdateToDatabase(collectionType, 'combined')
+    await LastUpdateService.saveLastUpdateToDatabase(collectionType, 'combined')
     return tickersData
   }
 

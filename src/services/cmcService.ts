@@ -1,5 +1,5 @@
 import { getData } from '@utils/dataUtil';
-import { saveLastUpdateToDatabase } from './lastUpdateService';
+import { LastUpdateService } from './lastUpdateService';
 import { deleteAllDataMDB, saveData } from './mongodbService';
 import { MappedCmc } from 'src/models/dbTypes';
 
@@ -75,7 +75,7 @@ export class CmcService {
     try {
       const deleteResult = await deleteAllDataMDB(collectionName);
       const saveResult = await saveData(collectionName, data);
-      await saveLastUpdateToDatabase(collectionType, '');
+      await LastUpdateService.saveLastUpdateToDatabase(collectionType, '');
       console.log('Données CMC mises à jour dans la base de données', { deleteResult, saveResult, totalCount: data.length });
 
       return { status: true, message: 'Données CMC mises à jour avec succès', data, deleteResult, saveResult, totalCount: data.length };

@@ -1,6 +1,6 @@
 // src/services/strategyService.ts
 import { getData } from '@utils/dataUtil'
-import { saveLastUpdateToDatabase } from './lastUpdateService'
+import { LastUpdateService } from './lastUpdateService'
 import { updateDataMDB, deleteAllDataMDB, saveData } from './mongodbService'
 import { MappedStrategy } from 'src/models/dbTypes'
 import { InsertManyResult, InsertOneResult } from 'mongodb'
@@ -39,7 +39,7 @@ export class StrategyService {
     const collectionName = process.env.MONGODB_COLLECTION_STRAT as string;
     await deleteAllDataMDB(collectionName);
     const data = await saveData(collectionName, strategies);
-    await saveLastUpdateToDatabase(process.env.TYPE_STRATEGY as string, '');
+    await LastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_STRATEGY as string, '');
     return data;
   }
 }

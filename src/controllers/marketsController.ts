@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { handleErrorResponse } from '../utils/errorUtil'
 import { errorLogger } from '../utils/loggerUtil'
 import { validateEnvVariables } from '../utils/controllerUtil'
-import { getSavedMarkets } from '../services/marketsService'
+import { MarketsService } from '../services/marketsService'
 
 validateEnvVariables(['MONGODB_COLLECTION_LOAD_MARKETS', 'TYPE_LOAD_MARKETS'])
 
@@ -13,7 +13,7 @@ validateEnvVariables(['MONGODB_COLLECTION_LOAD_MARKETS', 'TYPE_LOAD_MARKETS'])
  */
 async function getMarkets(req: Request, res: Response): Promise<void> {
   try {
-    const data = await getSavedMarkets()
+    const data = await MarketsService.getSavedMarkets()
     res.json(data)
   } catch (error) {
     errorLogger.error('Échec de la récupération des données de marché.', {

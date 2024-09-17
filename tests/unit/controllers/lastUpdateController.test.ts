@@ -6,8 +6,7 @@ import {
 } from '@controllers/lastUpdateController'
 import { getDataMDB } from '@services/mongodbService'
 import {
-  fetchDatabaseLastUpdate,
-  saveLastUpdateToDatabase
+  LastUpdateService
 } from '@services/lastUpdateService'
 
 jest.mock('@services/mongodbService')
@@ -30,9 +29,9 @@ describe('lastUpdateController', () => {
   describe('getUniqueLastUpdate', () => {
     it('devrait retourner la dernière mise à jour unique', async () => {
       mockRequest.params = { platform: 'test', type: 'testType' }
-      ;(getDataMDB as jest.Mock).mockResolvedValue([
-        { platform: 'test', type: 'testType', timestamp: '2023-01-01' }
-      ])
+        ; (getDataMDB as jest.Mock).mockResolvedValue([
+          { platform: 'test', type: 'testType', timestamp: '2023-01-01' }
+        ])
 
       await getUniqueLastUpdate(
         mockRequest as Request,
@@ -48,7 +47,7 @@ describe('lastUpdateController', () => {
 
     it("devrait retourner un horodatage nul si aucune mise à jour n'est trouvée", async () => {
       mockRequest.params = { platform: 'test', type: 'testType' }
-      ;(getDataMDB as jest.Mock).mockResolvedValue([])
+        ; (getDataMDB as jest.Mock).mockResolvedValue([])
 
       await getUniqueLastUpdate(
         mockRequest as Request,
@@ -69,7 +68,7 @@ describe('lastUpdateController', () => {
         { platform: 'test1', type: 'type1' },
         { platform: 'test2', type: 'type2' }
       ]
-      ;(fetchDatabaseLastUpdate as jest.Mock).mockResolvedValue(mockData)
+        ; (LastUpdateService.fetchDatabaseLastUpdate as jest.Mock).mockResolvedValue(mockData)
 
       await getLastUpdate(mockRequest as Request, mockResponse as Response)
 
@@ -85,18 +84,18 @@ describe('lastUpdateController', () => {
       const mockDate = new Date('2023-01-01T00:00:00.000Z')
       jest.spyOn(global, 'Date').mockImplementation(() => mockDate)
 
-      ;(saveLastUpdateToDatabase as jest.Mock).mockResolvedValue({
-        platform: 'test',
-        type: 'testType',
-        timestamp: mockDate.toISOString()
-      })
+        ; (LastUpdateService.saveLastUpdateToDatabase as jest.Mock).mockResolvedValue({
+          platform: 'test',
+          type: 'testType',
+          timestamp: mockDate.toISOString()
+        })
 
       await updateLastUpdateByType(
         mockRequest as Request,
         mockResponse as Response
       )
 
-      expect(saveLastUpdateToDatabase).toHaveBeenCalledWith('testType', 'test')
+      expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalledWith('testType', 'test')
       expect(mockJson).toHaveBeenCalledWith({
         platform: 'test',
         type: 'testType',
