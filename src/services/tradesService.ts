@@ -30,7 +30,7 @@ export class TradesService {
   }
 
   // Méthodes de mise à jour
-  static async updateTradeById(tradeId: string, updatedTrade: Partial<MappedTrade>): Promise<object> {
+  static async updateTradeById(tradeId: string, updatedTrade: Partial<MappedTrade>): Promise<boolean> {
     if (!tradeId) {
       throw new Error('L\'ID du trade est requis')
     }

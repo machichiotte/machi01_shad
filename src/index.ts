@@ -2,7 +2,6 @@
 import dotenv from 'dotenv'
 import {
   connectToMongoDB,
-  cleanCollectionTrades
 } from './services/mongodbService'
 import { startServer } from './server'
 import { initializeCronTasks } from './services/cron/cronTasks'
@@ -20,8 +19,6 @@ async function startApp(): Promise<void> {
     })
 
     await connectToMongoDB()
-
-    await cleanCollectionTrades()
 
     await handleMigrationSwaps()
 

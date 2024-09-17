@@ -2,6 +2,42 @@ import { Trade, Balances, Market, Order, Tickers } from 'ccxt'
 import { getStableCoins, getTotalUSDT } from '@utils/mappingUtil'
 import { MappedBalance, MappedTrade, MappedOrder, MappedTicker, MappedMarket } from 'src/models/dbTypes'
 
+
+interface RawBalanceBinance {
+  asset: string;
+  free: string;
+  lock: string;
+}
+
+interface RawBalanceKucoin {
+  currency: string;
+  balance: string;
+  available: string;
+}
+
+interface RawBalanceHtx {
+  [key: string]: { total: string; free: string };
+}
+
+interface RawBalanceOkx {
+  ccy: string;
+  cashBal: string;
+  availBal: string;
+}
+
+interface RawBalanceGateio {
+  currency: string;
+  available: string;
+  locked: string;
+}
+
+type RawBalance =
+  | { platform: 'binance'; data: RawBalanceBinance }
+  | { platform: 'kucoin'; data: RawBalanceKucoin }
+  | { platform: 'htx'; data: [string, RawBalanceHtx] }
+  | { platform: 'okx'; data: RawBalanceOkx }
+  | { platform: 'gateio'; data: RawBalanceGateio };
+
 class Mapper {
   /**
    * Maps common balance data across all platforms.
@@ -24,60 +60,91 @@ class Mapper {
    * Maps balance data for a specific platform.
    */
   static mapBalance(platform: string, data: Balances): MappedBalance[] {
-    const mappings: Record<string, (item: any) => MappedBalance> = {
-      binance: (item) =>
-        this.mapBalanceCommon(
-          item.asset,
-          parseFloat(item.free) + parseFloat(item.locked),
-          item.free,
-          platform
-        ),
-      kucoin: (item) =>
-        this.mapBalanceCommon(item.currency, item.balance, item.available, platform),
-      htx: ([key, value]) =>
-        this.mapBalanceCommon(key.toUpperCase(), value.total, value.free, platform),
-      okx: (item) =>
-        this.mapBalanceCommon(item.ccy, item.cashBal, item.availBal, platform),
-      gateio: (item) =>
-        this.mapBalanceCommon(
-          item.currency,
-          parseFloat(item.available) + parseFloat(item.locked),
-          item.available,
-          platform
-        )
-    }
+    type BalanceItem = RawBalanceBinance | RawBalanceKucoin | RawBalanceOkx | RawBalanceGateio;
 
-    const platformMapping = mappings[platform]
+    const mappings: Record<string, (item: BalanceItem) => MappedBalance> = {
+      binance: (item) => {
+        const binanceItem = item as RawBalanceBinance;
+        return this.mapBalanceCommon(
+          binanceItem.asset,
+          parseFloat(binanceItem.free) + parseFloat(binanceItem.lock),
+          parseFloat(binanceItem.free),
+          platform
+        );
+      },
+      kucoin: (item) => {
+        const kucoinItem = item as RawBalanceKucoin;
+        return this.mapBalanceCommon(
+          kucoinItem.currency,
+          parseFloat(kucoinItem.balance),
+          parseFloat(kucoinItem.available),
+          platform
+        );
+      },
+      /*htx: (item) => {
+        const [key, value] = item.data as [string, RawBalanceHtx];
+        if (item.platform !== 'htx') throw new Error('Invalid platform');
+        return this.mapBalanceCommon(
+          key,
+          parseFloat(value.total),
+          parseFloat(value.free),
+          platform
+        );
+      },*/
+      okx: (item) => {
+        const okxItem = item as RawBalanceOkx;
+        return this.mapBalanceCommon(
+          okxItem.ccy,
+          parseFloat(okxItem.cashBal),
+          parseFloat(okxItem.availBal),
+          platform
+        );
+      },
+      gateio: (item) => {
+        const gateioItem = item as RawBalanceGateio;
+        return this.mapBalanceCommon(
+          gateioItem.currency,
+          parseFloat(gateioItem.available) + parseFloat(gateioItem.locked),
+          parseFloat(gateioItem.available),
+          platform
+        );
+      }
+    };
+
+    const platformMapping = mappings[platform];
     if (!platformMapping) {
-      console.warn(`Platform ${platform} not supported.`)
-      return []
+      console.warn(`Platform ${platform} not supported.`);
+      return [];
     }
 
-    const balanceData = Array.isArray(
-      data.info?.balances || data.info?.data || data
-    )
-      ? data.info?.balances || data.info?.data || data
-      : Object.entries(data).filter(
-        ([key, value]) =>
+    let balanceData: BalanceItem[] = [];
+    if (Array.isArray(data.info?.balances)) {
+      balanceData = data.info.balances as BalanceItem[];
+    } else if (Array.isArray(data.info?.data)) {
+      balanceData = data.info.data as BalanceItem[];
+    } else if (typeof data === 'object') {
+      balanceData = Object.entries(data)
+        .filter(([key, value]) =>
           !['info', 'free', 'used', 'total'].includes(key) &&
-          (value as any).total > 0
-      )
+          typeof value === 'object' && 'total' in value && (value as { total: number }).total > 0
+        )
+        .map(([key, value]) => ({ ...(value as { total: number }), currency: key } as BalanceItem));
+    }
 
     return balanceData
-      .filter((item: any) => {
+      .filter((item: BalanceItem) => {
         const balance = parseFloat(
-          item.balance ||
-          item.free ||
-          item.cashBal ||
-          item.available ||
-          item.locked ||
-          item[1]?.total ||
-          '0'
-        )
-        return balance > 0
+          'free' in item ? item.free :
+            'available' in item ? item.available :
+              'cashBal' in item ? item.cashBal :
+                'balance' in item ? item.balance :
+                  '0'
+        );
+        return balance > 0;
       })
-      .map(platformMapping)
+      .map(platformMapping);
   }
+
 
   /**
    * Maps common trade data across all platforms.

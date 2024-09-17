@@ -14,7 +14,7 @@ async function registerUser(req: Request, res: Response): Promise<void> {
       console.log('Registration attempt with missing email or password.')
       res
         .status(400)
-        .json({ status: false, message: 'Missing email or password' })
+        .json({ message: 'Missing email or password' })
       return
     }
 
@@ -24,18 +24,18 @@ async function registerUser(req: Request, res: Response): Promise<void> {
       console.log('User registered successfully', { email })
       res
         .status(201)
-        .json({ status: true, message: 'User created successfully' })
+        .json({ message: 'User created successfully' })
       return
     }
 
     console.error('Error creating user', { email })
-    res.status(400).json({ status: false, message: 'Error creating user' })
+    res.status(400).json({ message: 'Error creating user' })
   } catch (error) {
     console.error('Registration failed', {
       error: (error as Error).message,
       email: req.body.email
     })
-    res.status(500).json({ status: false, message: 'Internal server error' })
+    res.status(500).json({ message: 'Internal server error' })
   }
 }
 

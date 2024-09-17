@@ -2,7 +2,7 @@
 import { getData } from '@utils/dataUtil'
 import { MappedTrade, MappedStrategy, SwapMigration } from 'src/models/dbTypes'
 import { StrategyService } from './strategyService'
-import { updateTradeById, fetchDatabaseTrades } from './tradesService'
+import { TradesService } from './tradesService'
 
 
 
@@ -12,7 +12,7 @@ import { updateTradeById, fetchDatabaseTrades } from './tradesService'
  */
 async function fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
   const collectionName = process.env.MONGODB_COLLECTION_SWAP as string
-  return await getData(collectionName as string) as SwapMigration[]
+  return await getData(collectionName) as SwapMigration[]
 }
 
 /**
@@ -41,10 +41,14 @@ async function updateTrade(
     swap: true
   }
 
-  await updateTradeById(trade._id, updatedTrade)
-  console.info(
-    `Trade swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`
-  )
+  if (trade._id) {
+    await TradesService.updateTradeById(trade._id, updatedTrade)
+    console.info(
+      `Trade swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`
+    )
+  } else {
+    console.error('Trade _id is undefined, cannot update trade')
+  }
 }
 
 /**
@@ -76,8 +80,8 @@ async function handleMigrationSwaps(): Promise<void> {
   try {
     const [swaps, trades, strategies] = await Promise.all([
       fetchDatabaseSwapMigration(),
-      fetchDatabaseTrades() as MappedTrade[],
-      StrategyService.fetchDatabaseStrategies() as MappedStrategy[]
+      TradesService.fetchDatabaseTrades() as Promise<MappedTrade[]>,
+      StrategyService.fetchDatabaseStrategies() as Promise<MappedStrategy[]>
     ])
 
     const now = new Date()

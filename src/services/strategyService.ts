@@ -3,7 +3,6 @@ import { getData } from '@utils/dataUtil'
 import { saveLastUpdateToDatabase } from './lastUpdateService'
 import { updateDataMDB, deleteAllDataMDB, saveData } from './mongodbService'
 import { MappedStrategy } from 'src/models/dbTypes'
-import { UpdateDataMDBParams } from './mongodbService'
 import { InsertManyResult, InsertOneResult } from 'mongodb'
 
 export class StrategyService {
@@ -17,7 +16,7 @@ export class StrategyService {
   /**
    * Met à jour une stratégie par son ID.
    */
-  static async updateStrategyById(strategyId: string | undefined, updatedStrategy: Partial<MappedStrategy>): Promise<UpdateDataMDBParams> {
+  static async updateStrategyById(strategyId: string | undefined, updatedStrategy: Partial<MappedStrategy>): Promise<boolean> {
     if (!strategyId) {
       throw new Error('L\'ID de la stratégie est requis');
     }

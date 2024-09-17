@@ -1,8 +1,8 @@
 // src/services/mongodbService.ts
 import dotenv from 'dotenv'
-import { MongoClient, ServerApiVersion, Db, InsertManyResult, InsertOneResult, WithId } from 'mongodb'
+import { MongoClient, ServerApiVersion, Db, InsertManyResult, InsertOneResult, Document } from 'mongodb'
 import { MappedData } from 'src/models/dbTypes'
-
+import { databaseOperations } from '@services/databaseOperationsService'
 dotenv.config()
 
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
@@ -60,101 +60,24 @@ async function getDB(): Promise<Db> {
   return db
 }
 
-
-/**
- * Retrieves a specific collection from the database.
- * @param {string} collectionName - The name of the collection to retrieve.
- * @returns {Promise<Collection>} The requested collection.
- *//*
-async function getCollection(collectionName: string): Promise<Collection> {
-const db = await getDB()
-return db.collection(collectionName)
-}*/
-
-/**
- * Cleans the 'collection_trades' by removing duplicates and updating records.
- * @returns {Promise<void>}
- */
-async function cleanCollectionTrades(): Promise<void> {
-  const collectionTrades = await getCollection('collection_trades')
-
-  const duplicates = await collectionTrades
-    .aggregate([
-      {
-        $match: {
-          $or: [{ date: { $exists: true } }, { timestamp: { $exists: true } }]
-        }
-      },
-      {
-        $group: {
-          _id: {
-            base: '$base',
-            quote: '$quote',
-            price: '$price',
-            amount: '$amount',
-            type: '$type',
-            timestamp: '$timestamp'
-          },
-          count: { $sum: 1 },
-          documents: { $push: '$$ROOT' }
-        }
-      },
-      {
-        $match: {
-          count: { $gt: 1 }
-        }
-      }
-    ])
-    .toArray()
-
-  await Promise.all(
-    duplicates.map(async (group: any) => {
-      const documentsToKeep = group.documents.filter(
-        (doc: any) => doc.timestamp && !doc.date
-      )
-
-      if (documentsToKeep.length > 0) {
-        const documentToKeep = documentsToKeep[0]
-
-        await Promise.all(
-          group.documents
-            .filter((doc: any) => doc._id !== documentToKeep._id)
-            .map(async (doc: any) => {
-              if (doc.totalUSDT && !documentToKeep.totalUSDT) {
-                await collectionTrades.updateOne(
-                  { _id: documentToKeep._id },
-                  { $set: { totalUSDT: doc.totalUSDT } }
-                )
-              }
-
-              await collectionTrades.deleteOne({ _id: doc._id })
-            })
-        )
-      }
-    })
-  )
-}
-
 /**
  * Retries a function n number of times before giving up
  */
-export async function retry<T extends (...arg0: any[]) => any>(
-  fn: T,
-  args: Parameters<T>,
+export async function retry<A extends unknown[], R>(
+  fn: (...args: A) => Promise<R>,
+  args: A,
   maxTry: number,
   retryCount = 1
-): Promise<Awaited<ReturnType<T>>> {
-  const currRetry = typeof retryCount === 'number' ? retryCount : 1;
+): Promise<R> {
   try {
-    const result = await fn(...args);
-    return result;
+    return await fn(...args);
   } catch (e) {
-    console.log(`Retry ${currRetry} failed.`);
-    if (currRetry > maxTry) {
+    console.log(`Retry ${retryCount} failed.`);
+    if (retryCount >= maxTry) {
       console.log(`All ${maxTry} retry attempts exhausted`);
       throw e;
     }
-    return retry(fn, args, maxTry, currRetry + 1);
+    return retry(fn, args, maxTry, retryCount + 1);
   }
 }
 
@@ -190,9 +113,9 @@ async function saveData(collectionName: string, data: object[] | object): Promis
   }
 
   if (Array.isArray(data)) {
-    return await retry(insertMany, [collectionName, data], 3)
+    return await retry(databaseOperations.insertMany, [collectionName, data], 3)
   } else {
-    return await retry(insertOne, [collectionName, data], 3)
+    return await retry(databaseOperations.insertOne, [collectionName, data], 3)
   }
 }
 
@@ -201,8 +124,8 @@ async function saveData(collectionName: string, data: object[] | object): Promis
  * @param {string} collectionName - The name of the collection to retrieve from.
  * @returns {Promise<any[]>} An array of documents from the collection.
  */
-async function getDataMDB(collectionName: string): Promise<WithId<Document>[]> {
-  return await retry(findArray, [collectionName], 3)
+async function getDataMDB(collectionName: string): Promise<Document[]> {
+  return await retry(databaseOperations.find, [collectionName, {}], 3)
 }
 
 /**
@@ -211,12 +134,12 @@ async function getDataMDB(collectionName: string): Promise<WithId<Document>[]> {
  * @param {Object} query - The query to find the document.
  * @returns {Promise<Object|null>} The found document or null if not found.
  */
-async function getOne(collectionName: string, query: object): Promise<WithId<Document>> {
-  return await retry(findOne, [collectionName, query], 3)
+async function getOne(collectionName: string, query: object): Promise<Document | null> {
+  return await retry(databaseOperations.findOne, [collectionName, query], 3)
 }
 
 interface CacheItem {
-  data: any[]
+  data: Document[]
   timestamp: number
 }
 
@@ -227,7 +150,7 @@ const cache: { [key: string]: CacheItem } = {}
  * @param {string} collectionName - The name of the collection to retrieve from.
  * @returns {Promise<any[]>} An array of documents from the collection.
  */
-async function getAllDataMDB(collectionName: string): Promise<any[]> {
+async function getAllDataMDB(collectionName: string): Promise<CacheItem[] | Document[]> {
   // Toujours retourner le cache si disponible
   if (cache[collectionName]) {
     console.log(`Using cached data for collection: ${collectionName}`);
@@ -241,9 +164,9 @@ async function getAllDataMDB(collectionName: string): Promise<any[]> {
   // Tenter de récupérer les données si le cache est expiré ou non existant
   try {
     console.log(`Fetching new data for collection: ${collectionName}`);
-    const result = await retry(findArray, [collectionName], 3);
+    const result = await retry(databaseOperations.find, [collectionName], 3);
     addToCache(collectionName, result);
-    return result;
+    return cache[collectionName].data;
   } catch (error) {
     console.error(`Failed to fetch data for collection: ${collectionName}`, error);
     // Retourner le cache existant même s'il est expiré, ou un tableau vide
@@ -252,7 +175,7 @@ async function getAllDataMDB(collectionName: string): Promise<any[]> {
 }
 
 
-function addToCache(collectionName: string, data: any): void {
+function addToCache(collectionName: string, data: Document[]): void {
   if (data.length > 0) {
     cache[collectionName] = {
       data,
@@ -270,8 +193,8 @@ function addToCache(collectionName: string, data: any): void {
  * @param {Object} update - The update to apply to the document.
  * @returns {Promise<UpdateDataMDBParams>} The result of the update operation.
  */
-async function updateDataMDB(collectionName: string, filter: object, update: object): Promise<UpdateDataMDBParams> {
-  return await retry(updateOne, [collectionName, filter, update, true], 3)
+async function updateDataMDB(collectionName: string, filter: object, update: object): Promise<boolean> {
+  return await retry(databaseOperations.updateOne, [collectionName, filter, update], 3)
 }
 
 /**
@@ -280,9 +203,8 @@ async function updateDataMDB(collectionName: string, filter: object, update: obj
  * @param {Object} filter - The filter to find the document to delete.
  * @returns {Promise<number>} The number of deleted documents.
  */
-async function deleteOneDataMDB(collectionName: string, filter: object): Promise<number> {
-  const deleteResult = await retry(deleteOne, [collectionName, filter], 3)
-  return deleteResult.deletedCount
+async function deleteOneDataMDB(collectionName: string, filter: object): Promise<boolean> {
+  return await retry(databaseOperations.deleteOne, [collectionName, filter], 3)
 }
 
 /**
@@ -292,8 +214,7 @@ async function deleteOneDataMDB(collectionName: string, filter: object): Promise
  * @returns {Promise<number>} The number of deleted documents.
  */
 async function deleteMultipleDataMDB(collectionName: string, filter: object): Promise<number> {
-  const deleteResult = await retry(deleteMany, [collectionName, filter], 3)
-  return deleteResult.deletedCount
+  return await retry(databaseOperations.deleteMany, [collectionName, filter], 3)
 }
 
 /**
@@ -302,8 +223,7 @@ async function deleteMultipleDataMDB(collectionName: string, filter: object): Pr
  * @returns {Promise<number>} The number of deleted documents.
  */
 async function deleteAllDataMDB(collectionName: string): Promise<number> {
-  const deleteResult = await retry(deleteMany, [collectionName, {}], 3)
-  return deleteResult.deletedCount
+  return await retry(databaseOperations.deleteMany, [collectionName, {}], 3)
 }
 
 const activeOrdersCollection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS
@@ -398,7 +318,6 @@ async function deleteAndReplaceAll(collectionName: string, mapData: MappedData[]
 
 export {
   connectToMongoDB,
-  cleanCollectionTrades,
   saveData,
   getDataMDB,
   getOne,

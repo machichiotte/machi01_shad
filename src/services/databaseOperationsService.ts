@@ -1,20 +1,19 @@
 // src/services/databaseOperationsService.ts
-import { Collection, Document, ObjectId, InsertManyResult, UpdateResult, AggregateOptions, AggregationCursor, FindOptions, BulkWriteResult } from 'mongodb';
+import { Collection, Document, InsertOneResult, InsertManyResult, UpdateResult, AggregateOptions, AnyBulkWriteOperation, FindOptions, BulkWriteResult } from 'mongodb';
 import { getDB } from '@services/mongodbService';
 
 interface DatabaseOperations {
-    insertOne: (collectionName: string, document: Document) => Promise<ObjectId>;
+    insertOne: (collectionName: string, document: Document) => Promise<InsertOneResult>;
     insertMany: (collectionName: string, documents: Document[]) => Promise<InsertManyResult>;
     updateOne: (collectionName: string, filter: Document, update: Document) => Promise<boolean>;
     updateMany: (collectionName: string, filter: Document, update: Document) => Promise<UpdateResult>;
     deleteOne: (collectionName: string, filter: Document) => Promise<boolean>;
     deleteMany: (collectionName: string, filter: Document) => Promise<number>;
-    find: (collectionName: string, filter: Document, options?: FindOptions) => Promise<Document[]>;
+    find: (collectionName: string, filter?: Document, options?: FindOptions) => Promise<Document[]>;
     findOne: (collectionName: string, filter: Document) => Promise<Document | null>;
     aggregate: (collectionName: string, pipeline: Document[], options?: AggregateOptions) => Promise<Document[]>;
     count: (collectionName: string, filter: Document) => Promise<number>;
-    distinct: (collectionName: string, field: string, filter: Document) => Promise<any[]>;
-    bulkWrite: (collectionName: string, operations: Document[]) => Promise<BulkWriteResult>;
+    bulkWrite: (collectionName: string, operations: AnyBulkWriteOperation<Document>[]) => Promise<BulkWriteResult>;
     createIndex: (collectionName: string, fieldOrSpec: string | Document, options?: Document) => Promise<string>;
     dropIndex: (collectionName: string, indexName: string) => Promise<void>;
     findOneAndUpdate: (collectionName: string, filter: Document, update: Document, options?: Document) => Promise<Document | null>;
@@ -27,10 +26,9 @@ const getCollection = async (collectionName: string): Promise<Collection> => {
 };
 
 export const databaseOperations: DatabaseOperations = {
-    insertOne: async (collectionName: string, document: Document): Promise<ObjectId> => {
+    insertOne: async (collectionName: string, document: Document): Promise<InsertOneResult> => {
         const collection = await getCollection(collectionName);
-        const result = await collection.insertOne(document);
-        return result.insertedId;
+        return await collection.insertOne(document);
     },
 
     insertMany: async (collectionName: string, documents: Document[]): Promise<InsertManyResult> => {
@@ -61,9 +59,9 @@ export const databaseOperations: DatabaseOperations = {
         return result.deletedCount;
     },
 
-    find: async (collectionName: string, filter: Document, options?: FindOptions): Promise<Document[]> => {
+    find: async (collectionName: string, filter?: Document, options?: FindOptions): Promise<Document[]> => {
         const collection = await getCollection(collectionName);
-        return collection.find(filter, options).toArray();
+        return collection.find(filter || {}, options).toArray();
     },
 
     findOne: async (collectionName: string, filter: Document): Promise<Document | null> => {
@@ -81,12 +79,7 @@ export const databaseOperations: DatabaseOperations = {
         return collection.countDocuments(filter);
     },
 
-    distinct: async (collectionName: string, field: string, filter: Document): Promise<any[]> => {
-        const collection = await getCollection(collectionName);
-        return collection.distinct(field, filter);
-    },
-
-    bulkWrite: async (collectionName: string, operations: Document[]): Promise<BulkWriteResult> => {
+    bulkWrite: async (collectionName: string, operations: AnyBulkWriteOperation<Document>[]): Promise<BulkWriteResult> => {
         const collection = await getCollection(collectionName);
         return collection.bulkWrite(operations);
     },
@@ -103,13 +96,13 @@ export const databaseOperations: DatabaseOperations = {
 
     findOneAndUpdate: async (collectionName: string, filter: Document, update: Document, options?: Document): Promise<Document | null> => {
         const collection = await getCollection(collectionName);
-        const result = await collection.findOneAndUpdate(filter, update, options);
-        return result.value;
+        const result = await collection.findOneAndUpdate(filter, update, options || {});
+        return result?.value;
     },
 
     findOneAndDelete: async (collectionName: string, filter: Document, options?: Document): Promise<Document | null> => {
         const collection = await getCollection(collectionName);
-        const result = await collection.findOneAndDelete(filter, options);
-        return result.value;
+        const result = await collection.findOneAndDelete(filter, options || {});
+        return result?.value;
     },
 };
