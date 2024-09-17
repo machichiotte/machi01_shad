@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { getCmc, updateCmc } from '@controllers/cmcController'
-import * as cmcService from '@services/cmcService'
+import { CmcService } from '@services/cmcService'
 import { handleErrorResponse } from '@utils/errorUtil'
 import { errorLogger } from '@utils/loggerUtil'
 
@@ -37,7 +37,7 @@ describe('CMC Controller', () => {
     describe('getCmc', () => {
         it('devrait récupérer les données CMC avec succès', async () => {
             const mockCmcData = [{ id: 1, name: 'Bitcoin' }]
-                ; (cmcService.fetchDatabaseCmc as jest.Mock).mockResolvedValue(mockCmcData)
+                ; (CmcService.fetchDatabaseCmc as jest.Mock).mockResolvedValue(mockCmcData)
 
             await getCmc(mockRequest as Request, mockResponse as Response)
 
@@ -50,7 +50,7 @@ describe('CMC Controller', () => {
 
         it('devrait gérer les erreurs correctement', async () => {
             const mockError = new Error('Erreur de test')
-                ; (cmcService.fetchDatabaseCmc as jest.Mock).mockRejectedValue(mockError)
+                ; (CmcService.fetchDatabaseCmc as jest.Mock).mockRejectedValue(mockError)
 
             await getCmc(mockRequest as Request, mockResponse as Response)
 
@@ -69,7 +69,7 @@ describe('CMC Controller', () => {
     describe('updateCmc', () => {
         it('devrait mettre à jour les données CMC avec succès', async () => {
             const mockUpdateResult = { updated: true, count: 100 }
-                ; (cmcService.updateCmcData as jest.Mock).mockResolvedValue(
+                ; (CmcService.updateCmcData as jest.Mock).mockResolvedValue(
                     mockUpdateResult
                 )
 
@@ -81,7 +81,7 @@ describe('CMC Controller', () => {
 
         it('devrait gérer les erreurs correctement', async () => {
             const mockError = new Error('Erreur de test')
-                ; (cmcService.updateCmcData as jest.Mock).mockRejectedValue(mockError)
+                ; (CmcService.updateCmcData as jest.Mock).mockRejectedValue(mockError)
 
             await updateCmc(mockRequest as Request, mockResponse as Response)
 

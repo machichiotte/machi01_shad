@@ -1,4 +1,4 @@
-import { MappedTrade } from "./mapping"
+import { MappedTrade } from "@models/dbTypes"
 
 /**
  * Converts input data to JSON format based on the detected model type.

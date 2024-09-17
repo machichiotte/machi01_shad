@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { getConvertedCsv } from '@controllers/converterController'
-import * as converterService from '@services/converterService'
+import * as ConverterService from '@services/converterService'
 import Papa from 'papaparse'
 
 jest.mock('@services/converterService')
@@ -42,13 +42,13 @@ describe('getConvertedCsv', () => {
       { name: 'Bob', age: 25 }
     ]
 
-    ;(Papa.parse as jest.Mock).mockImplementation((_, options) => {
-      options.complete({ data: mockParsedData })
-    })
+      ; (Papa.parse as jest.Mock).mockImplementation((_, options) => {
+        options.complete({ data: mockParsedData })
+      })
 
-    ;(converterService.convertToJSON as jest.Mock).mockResolvedValue(
-      mockJsonData
-    )
+      ; (ConverterService.convertToJSON as jest.Mock).mockResolvedValue(
+        mockJsonData
+      )
 
     await getConvertedCsv(mockRequest as Request, mockResponse as Response)
 
@@ -70,9 +70,9 @@ describe('getConvertedCsv', () => {
   it('devrait gérer les erreurs de parsing CSV', async () => {
     const mockError = new Error('Erreur de parsing')
 
-    ;(Papa.parse as jest.Mock).mockImplementation((_, options) => {
-      options.error(mockError)
-    })
+      ; (Papa.parse as jest.Mock).mockImplementation((_, options) => {
+        options.error(mockError)
+      })
 
     await getConvertedCsv(mockRequest as Request, mockResponse as Response)
 

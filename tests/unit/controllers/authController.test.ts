@@ -24,7 +24,6 @@ describe('Auth Controller', () => {
             await registerUser(mockRequest as Request, mockResponse as Response)
             expect(mockResponse.status).toHaveBeenCalledWith(400)
             expect(responseObject.json).toHaveBeenCalledWith({
-                status: false,
                 message: 'Missing email or password'
             })
         })
@@ -35,7 +34,6 @@ describe('Auth Controller', () => {
             await registerUser(mockRequest as Request, mockResponse as Response)
             expect(mockResponse.status).toHaveBeenCalledWith(201)
             expect(responseObject.json).toHaveBeenCalledWith({
-                status: true,
                 message: 'User created successfully'
             })
         })
