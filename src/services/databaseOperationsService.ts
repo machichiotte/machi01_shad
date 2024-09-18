@@ -38,13 +38,15 @@ export const databaseOperations: DatabaseOperations = {
 
     updateOne: async (collectionName: string, filter: Document, update: Document): Promise<boolean> => {
         const collection = await getCollection(collectionName);
-        const result = await collection.updateOne(filter, { $set: update });
+        const updateOperation = update.$set ? update : { $set: update };
+        const result = await collection.updateOne(filter, updateOperation);
         return result.modifiedCount > 0;
     },
 
     updateMany: async (collectionName: string, filter: Document, update: Document): Promise<UpdateResult> => {
         const collection = await getCollection(collectionName);
-        return await collection.updateMany(filter, { $set: update });
+        const updateOperation = update.$set ? update : { $set: update };
+        return await collection.updateMany(filter, updateOperation);
     },
 
     deleteOne: async (collectionName: string, filter: Document): Promise<boolean> => {

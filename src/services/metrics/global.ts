@@ -119,11 +119,13 @@ function calculateAssetMetrics(
   const currentPrice = getCurrentPrice(lastTickers, asset, platform)
   const cmcValues = getCmcValues(lastCmc, currentPrice)
   const totalSell = getTotalSell(asset, lastTrades)
+
   const { buyOrders, sellOrders } = filterOpenOrdersBySide(
     lastOpenOrders,
     platform,
     asset
   )
+
   const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(
     asset,
     lastTrades
@@ -144,7 +146,8 @@ function calculateAssetMetrics(
     return { ...baseMetrics, status: 'stable coin' }
   }
 
-  if (balance === 0 || strategy !== undefined) {
+  const strategyForPlatform = strategy?.strategies?.[platform];
+  if (balance === 0 || strategyForPlatform === undefined) {
     return {
       ...baseMetrics,
       averageEntryPrice,
@@ -176,8 +179,7 @@ function calculateAssetMetrics(
     recups.maxExposition,
     platform
   )
-
-  return {
+  const finalMetrics = {
     ...baseMetrics,
     ...recups,
     ...amountsAndPrices,
@@ -197,6 +199,9 @@ function calculateAssetMetrics(
       amountsAndPrices.priceTp1
     )
   }
+
+  //console.log(`Métriques finales calculées pour ${asset}:`, finalMetrics);
+  return finalMetrics;
 }
 
 /**

@@ -10,6 +10,9 @@ import { OrdersService, } from '@services/ordersService'
 import { StrategyService } from './strategyService'
 import { getSymbolForPlatform } from '@utils/platformUtil'
 
+const STABLECOINS: string[] = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'PAX', 'GUSD', 'HUSD', 'USDN'];
+const quoteCurrencies: string[] = ['USDT', 'BTC', 'ETH', 'USDC']
+
 interface Difference {
   base: string
   platform: string
@@ -29,6 +32,7 @@ interface Ticker {
   platform: string
 }
 
+
 /**
  * Processes detected balance differences between current and previous balances.
  * This function updates server orders, retrieves tickers, and processes trades for symbols
@@ -43,7 +47,6 @@ async function processBalanceChanges(
   differences: Difference[],
   platform: string
 ): Promise<void> {
-  const quoteCurrencies: string[] = ['USDT', 'BTC', 'ETH', 'USDC']
 
   try {
     // Mise à jour des ordres depuis le serveur
@@ -168,20 +171,23 @@ async function calculateAllMetrics(): Promise<AssetMetrics[]> {
       TickersService.fetchDatabaseTickers(),
       BalancesService.fetchDatabaseBalances()
     ])
-  if (
-    !dbCmc ||
-    !dbStrategies ||
-    !dbTrades ||
-    !dbOpenOrders ||
-    !dbTickers ||
-    !dbBalances
-  ) {
+  const invalidData = [];
+  if (!dbCmc) invalidData.push('CMC');
+  if (!dbStrategies) invalidData.push('Strategies');
+  if (!dbTrades) invalidData.push('Trades');
+  if (!dbOpenOrders) invalidData.push('Open Orders');
+  if (!dbTickers) invalidData.push('Tickers');
+  if (!dbBalances) invalidData.push('Balances');
+
+  if (invalidData.length > 0) {
     console.error(
-      'Error: One or more data retrieval functions returned invalid data.'
-    )
-    return []
+      `Error: The following data retrieval functions returned invalid data: ${invalidData.join(', ')}`
+    );
+    return [];
   }
   const allValues: AssetMetrics[] = []
+  const ignoredBalances: string[] = [];
+  const notAddedAssets: string[] = [];
 
   for (const bal of dbBalances) {
     if (bal.balance !== undefined && bal.balance > 0) {
@@ -189,22 +195,18 @@ async function calculateAllMetrics(): Promise<AssetMetrics[]> {
       const assetPlatform = bal.platform
 
       const filteredCmc = dbCmc.filter((cmc) => cmc.symbol === assetBase) || []
-
       const filteredTrades =
         dbTrades.filter((trade) => trade.base === assetBase) || []
       const filteredOpenOrders =
         dbOpenOrders.filter(
           (order) =>
-            order.symbol === assetBase + '/USDT' ||
-            order.symbol === assetBase + '/USDC' ||
-            order.symbol === assetBase + '/BTC'
+            quoteCurrencies.some(quote => order.symbol === `${assetBase}/${quote}`)
         ) || []
       const filteredStrategy =
         dbStrategies.find(
           (strategy) =>
             strategy.asset === assetBase && strategy.strategies[assetPlatform]
         ) || {} as MappedStrategy
-
       const filteredTickers =
         dbTickers.filter(
           (ticker) =>
@@ -213,7 +215,6 @@ async function calculateAllMetrics(): Promise<AssetMetrics[]> {
         ) || []
 
       let values
-      //TODO verifier quoi exactement on doit verifier pour filteredStrategy
       if (
         !filteredCmc.length &&
         !filteredTrades.length &&
@@ -221,7 +222,7 @@ async function calculateAllMetrics(): Promise<AssetMetrics[]> {
         !filteredTickers.length &&
         !filteredStrategy
       ) {
-        if (assetBase === 'USDT' || assetBase === 'USDC') {
+        if (STABLECOINS.includes(assetBase)) {
           values = calculateAssetMetrics(
             assetBase,
             assetPlatform,
@@ -237,7 +238,6 @@ async function calculateAllMetrics(): Promise<AssetMetrics[]> {
             filteredTickers
           )
         } else {
-          console.warn(`Skipping ${assetBase} due to insufficient data.`)
           continue
         }
       }
@@ -254,10 +254,16 @@ async function calculateAllMetrics(): Promise<AssetMetrics[]> {
       )
       if (values && typeof values.rank === 'number' && values.rank > 0 && values.currentPossession) {
         allValues.push(values)
+      } else {
+        notAddedAssets.push(`${assetBase}:${assetPlatform}`);
       }
+    } else {
+      ignoredBalances.push(`${bal.base}:${bal.platform}`);
     }
   }
 
+  //console.log(`Valeurs non ajoutées pour les actifs suivants car ne répondant pas aux critères: ${notAddedAssets.join(', ')}`);
+  //console.log(`Balances nulles ou non définies ignorées pour: ${ignoredBalances.join(', ')}`);
   return allValues
 }
 

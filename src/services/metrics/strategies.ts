@@ -106,7 +106,7 @@ function getDoneShad(
  */
 function getRatioShad(strat: string): number {
   const ratios: Record<string, number> = {
-    Shad: 2,
+    'Shad': 2,
     'Shad skip x2': 4,
     'Strategy 3': 8,
     'Strategy 4': 16
@@ -132,9 +132,7 @@ function calculateRecups(
 ) {
   const strat = myStrat.strategies[platform] || 'No strategy';
   const stratExpo = myStrat.maxExposure[platform] || MAX_EXPO;
-
   const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo || MAX_EXPO))
-
   const ratioShad = getRatioShad(strat)
   const recupShad = getRecupShad(totalBuy, totalSell, maxExposition)
   const recupTpX = getRecupTpX(strat, maxExposition, ratioShad)
@@ -145,6 +143,7 @@ function calculateRecups(
     recupShad,
     recupTpX
   )
+
   const recupTp1 = getRecupTp1(
     totalBuy,
     totalSell,
@@ -153,7 +152,7 @@ function calculateRecups(
     totalShad
   )
 
-  return {
+  const result = {
     strat,
     stratExpo,
     maxExposition,
@@ -162,7 +161,9 @@ function calculateRecups(
     recupShad,
     recupTp1,
     totalShad
-  }
+  };
+
+  return result;
 }
 
 /**

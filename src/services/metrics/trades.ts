@@ -1,5 +1,5 @@
 // src/services/metrics/trades.ts
-import { MappedTrade } from '@services/mapping'
+import { MappedTrade } from '@models/dbTypes'
 
 /**
  * Checks if a value is a positive number.

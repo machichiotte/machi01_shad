@@ -153,10 +153,26 @@ const cache: { [key: string]: CacheItem } = {}
 async function getAllDataMDB(collectionName: string): Promise<CacheItem[] | Document[]> {
   // Toujours retourner le cache si disponible
   if (cache[collectionName]) {
-    console.log(`Using cached data for collection: ${collectionName}`);
+    console.log(`We have a cache for collection: ${collectionName}`);
 
     // Si le cache est encore valide, le retourner
-    if (Date.now() - cache[collectionName].timestamp < 30000) {
+    const cacheExpirationTimes: { [key: string]: number } = {
+      'collection_active_orders': 60000,
+      'collection_cmc': 14400000,
+      'collection_tickers': 30000,
+      'collection_trades': 300000,
+      'collection_balance': 30000,
+      'collection_last_update': 30000,
+      'collection_load_markets': 86400000,
+      'collection_shad': 300000,
+      'collection_strat': 36000000,
+      'collection_swap': 86400000,
+      'collection_users': 0
+    };
+    const defaultExpirationTime = 0; // 30 secondes par défaut
+
+    if (Date.now() - cache[collectionName].timestamp < (cacheExpirationTimes[collectionName] || defaultExpirationTime)) {
+      console.log(`Using cached data for collection: ${collectionName}`);
       return cache[collectionName].data;
     }
   }
