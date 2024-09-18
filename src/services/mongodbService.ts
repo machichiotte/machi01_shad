@@ -253,6 +253,7 @@ const swapCollection = process.env.MONGODB_COLLECTION_SWAP
 const tradesCollection = process.env.MONGODB_COLLECTION_TRADES
 const tickersCollection = process.env.MONGODB_COLLECTION_TICKERS
 const usersCollection = process.env.MONGODB_COLLECTION_USERS
+const highestPricesCollection = process.env.MONGODB_COLLECTION_HIGHEST_PRICES
 /**
  * Connects to MongoDB and creates necessary collections.
  * @returns {Promise<void>}
@@ -273,7 +274,8 @@ async function connectToMongoDB(): Promise<void> {
       swapCollection,
       tradesCollection,
       tickersCollection,
-      usersCollection
+      usersCollection,
+      highestPricesCollection
     ]
 
     for (const collectionName of collectionsToCreate) {

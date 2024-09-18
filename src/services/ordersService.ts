@@ -13,6 +13,11 @@ const COLLECTION_TYPE = process.env.TYPE_ACTIVE_ORDERS as string
 
 export class OrdersService {
 
+  static async createOrUpdateStopLossOrder(platform: string, stopPrice: number, base: string, balance: number): Promise<void> {
+    console.log('createOrUpdateStopLossOrder')
+    return await this.createStopLossOrder(platform, base, balance, 'sell', 'limit', stopPrice)
+  }
+
   /**
    * Fetches orders from the database.
    * @returns {Promise<MappedOrder[]>} A promise that resolves to an array of orders.
@@ -142,20 +147,57 @@ export class OrdersService {
     this.createOrder(platform, asset, amount, orderType, 'limit', price)
   }
 
-  private static async executeOrder(platformInstance: Exchange, symbol: string, amount: number, orderType: 'buy' | 'sell', orderMode: 'market' | 'limit', price?: number): Promise<Order> {
+  private static async executeOrder(platformInstance: Exchange, symbol: string, amount: number, orderSide: 'buy' | 'sell', orderMode: 'market' | 'limit', price?: number, stopLossPrice?: number): Promise<Order> {
     if (orderMode === 'market') {
-      return orderType === 'buy'
+      return orderSide === 'buy'
         ? await platformInstance.createMarketBuyOrder(symbol, amount)
         : await platformInstance.createMarketSellOrder(symbol, amount)
     } else if (orderMode === 'limit') {
       if (price === undefined) {
         throw new Error('Le prix doit être spécifié pour les ordres limites.')
       }
-      return orderType === 'buy'
+      if (stopLossPrice) {
+        console.log('executeOrder stopLossPrice', stopLossPrice)
+        return await platformInstance.createStopOrder(symbol, 'limit', orderSide, amount / 2, price, stopLossPrice)
+      }
+      return orderSide === 'buy'
         ? await platformInstance.createLimitBuyOrder(symbol, amount, price)
         : await platformInstance.createLimitSellOrder(symbol, amount, price)
     }
     throw new Error('Mode d\'ordre non valide')
+  }
+
+  static async createStopLossOrder(
+    platform: string,
+    asset: string,
+    amount: number,
+    orderType: 'buy' | 'sell',
+    orderMode: 'market' | 'limit',
+    stopPrice?: number
+  ): Promise<void> {
+    console.log('createOrder', platform, asset, amount, orderType, orderMode, stopPrice)
+    try {
+      const platformInstance = createPlatformInstance(platform)
+      const symbol = getSymbolForPlatform(platform, asset)
+
+      if (stopPrice === undefined) {
+        throw new Error('Le prix doit être spécifié pour les ordres stop loss.')
+      }
+
+      const stopLossPrice = stopPrice - stopPrice * 0.001
+      await this.executeOrder(platformInstance, symbol, amount, orderType, orderMode, stopLossPrice, stopPrice)
+
+      console.log(`Ordre ${orderType} ${orderMode} créé pour ${platform}.`, {
+        symbol,
+        amount
+      })
+    } catch (error) {
+      console.error(
+        `Échec de la création de l'ordre ${orderType} ${orderMode} pour ${platform}:`,
+        error
+      )
+      throw error
+    }
   }
 
   static async createOrder(
@@ -166,6 +208,7 @@ export class OrdersService {
     orderMode: 'market' | 'limit',
     price?: number
   ): Promise<void> {
+    console.log('createOrder', platform, asset, amount, orderType, orderMode, price)
     try {
       const platformInstance = createPlatformInstance(platform)
       const symbol = getSymbolForPlatform(platform, asset)

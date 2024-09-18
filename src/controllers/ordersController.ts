@@ -97,7 +97,7 @@ async function createMarketOrder(
       amount,
       orderType
     )
-    res.status(200).json({ message: result, status: 200 })
+    res.status(200).json({ message: result })
   } catch (error) {
     handleErrorResponse(res, error as Error, `createMarketOrder (${orderType})`)
   }
@@ -124,7 +124,7 @@ async function createLimitOrder(
       orderType,
       price
     )
-    res.status(200).json({ message: result, status: 200 })
+    res.status(200).json({ message: result })
   } catch (error) {
     console.log(
       `🚀 ~ file: ordersController.ts:63 ~ createLimitOrder ~ error:`,
@@ -137,6 +137,18 @@ async function createLimitOrder(
         error: "Une erreur est survenue lors de la création de l'ordre limite"
       })
   }
+}
+
+/**
+ * Crée un ordre de vente au marché.
+ * @param {Request} req - L'objet de requête.
+ * @param {Response} res - L'objet de réponse.
+ */
+async function createLimitSellOrder(
+  req: Request,
+  res: Response
+): Promise<void> {
+  await createLimitOrder(req, res, 'sell')
 }
 
 /**
@@ -199,6 +211,7 @@ export {
   getOrders,
   updateOrders,
   deleteOrder,
+  createLimitSellOrder,
   createBunchLimitSellOrders,
   createBunchLimitBuyOrders,
   cancelAllOrders,

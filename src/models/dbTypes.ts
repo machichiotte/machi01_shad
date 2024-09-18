@@ -85,6 +85,12 @@ export interface ShadData {
     [key: string]: string | number | object
 }
 
+export interface HighestPrice {
+    asset: string
+    platform: string
+    highestPrice: number
+}
+
 export interface SwapMigration {
     oldAsset: string
     newAsset: string
@@ -125,4 +131,11 @@ export interface AssetMetrics {
     platform: string;
 }
 
-export type MappedData = AssetMetrics | MappedMarket | MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrategy | ShadData | SwapMigration;
+export interface HighestPrices {
+    _id?: string
+    base: string
+    platform: string
+    highestPrice: number
+}
+
+export type MappedData = HighestPrices | AssetMetrics | MappedMarket | MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrategy | ShadData | SwapMigration;

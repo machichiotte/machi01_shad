@@ -34,7 +34,6 @@ function handleErrorResponse(
       message: error.message
     })
   } else {
-    console.log('eleeeee')
     console.error(`Error in ${functionName}:`, error)
     res.status(500).json({ success: false, error })
   }
