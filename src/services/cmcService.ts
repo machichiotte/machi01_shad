@@ -53,15 +53,9 @@ export class CmcService {
    */
   public static async fetchDatabaseCmc(): Promise<MappedCmc[]> {
     const collectionName = process.env.MONGODB_COLLECTION_CMC as string;
-    try {
-      const data = await getData(collectionName);
-      console.log(`🚀 ~ fetchDatabaseCmc:`, { collectionName, count: data.length });
-      return data as MappedCmc[];
-    } catch (error) {
-      handleServiceError(error, 'fetchDatabaseCmc', 'Erreur lors de la récupération des données CMC de la base de données');
-      throw error;
-    }
+    return await getData(collectionName) as MappedCmc[];
   }
+
 
   /**
    * Updates the CMC data in the database.

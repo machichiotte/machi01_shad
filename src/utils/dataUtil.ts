@@ -6,22 +6,9 @@ import { MappedData } from '@models/dbTypes'
 import { handleServiceError } from './errorUtil'
 
 /**
- * Retrieves data from the specified collection.
- */
-async function getData(collectionName: string): Promise<MappedData[]> {
-  try {
-    const data = await getDataFromCollection(collectionName)
-    return data
-  } catch (error) {
-    handleServiceError(error, 'getData', `Failed to get data from collection`)
-    throw error
-  }
-}
-
-/**
  * Main function to get data from the collection
  */
-async function getDataFromCollection(collectionName: string): Promise<MappedData[]> {
+async function getData(collectionName: string): Promise<MappedData[]> {
   try {
     if (process.env.OFFLINE_MODE === 'true') {
       // Get the mock data file path for the given collection
@@ -36,10 +23,12 @@ async function getDataFromCollection(collectionName: string): Promise<MappedData
       // Fetch data from MongoDB
       const data = await getAllDataMDB(collectionName)
       // Return data, ensuring it's an array
+      console.log(`🚀 ~ getData:`, { collectionName, count: data.length });
+
       return Array.isArray(data) ? data as MappedData[] : []
     }
   } catch (error) {
-    handleServiceError(error, 'getDataFromCollection', `Failed to get data from collection`)
+    handleServiceError(error, 'getData', `Failed to get data from collection ${collectionName}`)
     throw error
   }
 }

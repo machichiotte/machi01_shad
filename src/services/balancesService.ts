@@ -8,12 +8,13 @@ import { DatabaseService } from './databaseService';
 import { mapBalance } from './mapping';
 import { MappedBalance } from 'src/models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
-
-import { processBalanceChanges, compareBalances, calculateAllMetrics } from '@services/processorService'
-import { deleteAndReplaceAll } from '@services/mongodbService'
+import { ProcessorService } from '@services/processorService'
 
 // Valide que les variables d'environnement nécessaires sont définies
 validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE']);
+
+const collectionName = process.env.MONGODB_COLLECTION_BALANCE as string;
+const collectionType = process.env.TYPE_BALANCE as string;
 
 // Définition de la classe BalancesService
 export class BalancesService {
@@ -21,7 +22,6 @@ export class BalancesService {
    * Récupère toutes les données de solde de la base de données.
    */
   static async fetchDatabaseBalances(): Promise<MappedBalance[]> {
-    const collectionName = process.env.MONGODB_COLLECTION_BALANCE as string;
     return await getData(collectionName) as MappedBalance[];
   }
 
@@ -71,11 +71,8 @@ export class BalancesService {
    * Enregistre les données de solde fournies dans la base de données.
    */
   static async saveDatabaseBalance(mappedData: MappedBalance[], platform: string): Promise<void> {
-    const collection = process.env.MONGODB_COLLECTION_BALANCE;
-    const updateType = process.env.TYPE_BALANCE;
-
-    if (collection && updateType) {
-      await DatabaseService.saveDataToDatabase(mappedData, collection, platform, updateType);
+    if (collectionName && collectionType) {
+      await DatabaseService.saveDataToDatabase(mappedData, collectionName, platform, collectionType);
     } else {
       throw new Error('Required environment variables are not set');
     }
@@ -101,21 +98,17 @@ export class BalancesService {
         this.fetchDatabaseBalancesByPlatform(platform, 3)
       ])
 
-      const differences = compareBalances(previousBalances, currentBalances)
+      const differences = ProcessorService.compareBalances(previousBalances, currentBalances)
       if (differences.length > 0) {
         console.log(
           `Différences de solde détectées pour ${platform}:`,
           differences
         )
         await Promise.all([
-          BalancesService.saveDatabaseBalance(currentBalances, platform),
-          processBalanceChanges(differences, platform)
+          this.saveDatabaseBalance(currentBalances, platform),
+          ProcessorService.processBalanceChanges(differences, platform)
         ])
       }
-
-      const collectionName = process.env.MONGODB_COLLECTION_SHAD as string
-      const metrics = await calculateAllMetrics()
-      await deleteAndReplaceAll(collectionName, metrics)
     } catch (error) {
       handleServiceError(error, 'updateBalancesForPlatform', `Erreur lors de la mise à jour des balances pour ${platform}`)
     }

@@ -57,17 +57,7 @@ export class MarketsService {
    * Retrieves the latest market data from the database.
    */
   static async getSavedMarkets(): Promise<MappedMarket[]> {
-    try {
-      const data = await getData(COLLECTION_NAME) as MappedMarket[];
-      console.log('Fetched saved market data from the database.', {
-        collectionName: COLLECTION_NAME,
-        count: data.length,
-      });
-      return data;
-    } catch (error) {
-      handleServiceError(error, 'getSavedMarkets', 'Failed to fetch saved market data.')
-      throw error;
-    }
+    return await getData(COLLECTION_NAME) as MappedMarket[];
   }
 
   /**
