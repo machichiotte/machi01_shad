@@ -28,8 +28,6 @@ export default class AuthService {
 
   /**
    * Crée un nouvel utilisateur dans la base de données avec un mot de passe haché.
-   * @param {User} userDetails - Les détails de l'utilisateur à sauvegarder.
-   * @returns {Promise<boolean>} - Une promesse qui se résout à true si la création de l'utilisateur a réussi, false sinon.
    */
   public static async createUserDBService(userDetails: User): Promise<boolean> {
     try {
@@ -55,8 +53,6 @@ export default class AuthService {
 
   /**
    * Trouve un utilisateur dans la base de données par son adresse e-mail.
-   * @param {string} email - L'adresse e-mail de l'utilisateur à trouver.
-   * @returns {Promise<User | null>} - Une promesse qui se résout à l'objet utilisateur s'il est trouvé, ou null s'il n'est pas trouvé ou en cas d'erreur.
    */
   public static async findUserByEmail(email: string): Promise<User | null> {
     try {
@@ -74,8 +70,6 @@ export default class AuthService {
 
   /**
    * Génère un jeton de session aléatoire sécurisé.
-   * @returns {Promise<string>} - Une promesse qui se résout au jeton de session généré.
-   * @throws {Error} - Lance une erreur si la génération du jeton échoue.
    */
   public static async generateSessionToken(): Promise<string> {
     try {

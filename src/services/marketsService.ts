@@ -14,9 +14,6 @@ const COLLECTION_TYPE = process.env.TYPE_LOAD_MARKETS as string
 export class MarketsService {
   /**
    * Fetches the current markets from the specified platform.
-   * @param {string} platform - Identifier for the platform.
-   * @param {number} [retries=3] - Number of retry attempts.
-   * @returns {Promise<MappedMarket[]>} - The fetched market data.
    */
   static async fetchCurrentMarkets(
     platform: string,
@@ -30,11 +27,7 @@ export class MarketsService {
   /**
    * Handles retry logic for fetching markets
    */
-  static async retryFetch(
-    platform: string,
-    retries: number,
-    errorPolicies: ErrorPolicies
-  ): Promise<MappedMarket[]> {
+  static async retryFetch(platform: string, retries: number, errorPolicies: ErrorPolicies): Promise<MappedMarket[]> {
     try {
       const platformInstance = createPlatformInstance(platform);
       const data = await platformInstance.fetchMarkets();

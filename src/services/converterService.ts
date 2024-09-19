@@ -2,8 +2,6 @@ import { MappedTrade } from "@models/dbTypes"
 
 /**
  * Converts input data to JSON format based on the detected model type.
- * @param {Array<any>} data - The input data to be converted.
- * @returns {Promise<Array<any>>} A promise that resolves to the converted JSON data.
  */
 async function convertToJSON(data: TradeModel[]): Promise<MappedTrade[]> {
   const modelType = detectModelType(data)
@@ -59,11 +57,8 @@ type ModelBinance = {
 // Define a union type for all possible models
 export type TradeModel = ModelHtx | ModelKucoin | ModelOkx | ModelBinance;
 
-
 /**
  * Detects the model type of the input data.
- * @param {TradeModel[]} data - The input data to analyze.
- * @returns {string} The detected model type.
  */
 function detectModelType(data: TradeModel[]): string {
   if (data.length === 0) {
@@ -109,10 +104,6 @@ function detectModelType(data: TradeModel[]): string {
 
 /**
  * Retrieves the total USDT value from an API based on the deal time, quote, and total.
- * @param {string} dealTime - The time of the deal.
- * @param {string} quote - The quote currency.
- * @param {number} total - The total amount.
- * @returns {Promise<number>} A promise that resolves to the total USDT value.
  */
 async function getTotalUSDTFromAPI(
   dealTime: string,
@@ -141,8 +132,6 @@ async function getTotalUSDTFromAPI(
 
 /**
  * Converts HTX model data to a standardized format.
- * @param {Array<any>} data - The HTX model data to convert.
- * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
 async function convertModelHTX(data: Array<ModelHtx>): Promise<MappedTrade[]> {
   console.log('🚀 ~ convertModelHTX ~ data:', data)
@@ -184,8 +173,6 @@ async function convertModelHTX(data: Array<ModelHtx>): Promise<MappedTrade[]> {
 
 /**
  * Converts Binance model data to a standardized format.
- * @param {Array<any>} data - The Binance model data to convert.
- * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
 async function convertModelBinance(data: Array<ModelBinance>): Promise<MappedTrade[]> {
   console.log('🚀 ~ convertModelBinance ~ data:', data)
@@ -245,8 +232,6 @@ async function convertModelBinance(data: Array<ModelBinance>): Promise<MappedTra
 
 /**
  * Converts KuCoin model data to a standardized format.
- * @param {Array<any>} data - The KuCoin model data to convert.
- * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
 async function convertModelKucoin(data: Array<ModelKucoin>): Promise<MappedTrade[]> {
   console.log('🚀 ~ convertModelKucoin ~ data:', data)
@@ -277,8 +262,6 @@ async function convertModelKucoin(data: Array<ModelKucoin>): Promise<MappedTrade
 
 /**
  * Converts OKX model data to a standardized format.
- * @param {Array<any>} data - The OKX model data to convert.
- * @returns {Promise<Array<any>>} A promise that resolves to the converted data.
  */
 async function convertModelOkx(data: Array<ModelOkx>): Promise<MappedTrade[]> {
   console.log('🚀 ~ convertModelOkx ~ data:', data)

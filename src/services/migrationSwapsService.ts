@@ -4,11 +4,8 @@ import { MappedTrade, MappedStrategy, SwapMigration } from 'src/models/dbTypes'
 import { StrategyService } from './strategyService'
 import { TradesService } from './tradesService'
 
-
-
 /**
  * Fetches swap migration data from the database.
- * @returns {Promise<SwapMigration[]>} A promise that resolves to an array of swap migration objects.
  */
 async function fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
   const collectionName = process.env.MONGODB_COLLECTION_SWAP as string
@@ -17,20 +14,8 @@ async function fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
 
 /**
  * Updates a trade with new asset information after a swap.
- * @param {Trade} trade - The trade object to update.
- * @param {string} oldAsset - The old asset symbol.
- * @param {string} newAsset - The new asset symbol.
- * @param {number} swapMultiplier - The multiplier to adjust the trade amount and price.
- * @param {string} platform - The platform where the trade occurred.
- * @returns {Promise<void>}
  */
-async function updateTrade(
-  trade: MappedTrade,
-  oldAsset: string,
-  newAsset: string,
-  swapMultiplier: number,
-  platform: string
-): Promise<void> {
+async function updateTrade(trade: MappedTrade, oldAsset: string, newAsset: string, swapMultiplier: number, platform: string): Promise<void> {
   const updatedTrade = {
     base: newAsset,
     pair: trade.pair.replace(oldAsset, newAsset),
@@ -53,16 +38,8 @@ async function updateTrade(
 
 /**
  * Updates a strategy with a new asset.
- * @param {Strategy} strategy - The strategy object to update.
- * @param {string} newAsset - The new asset symbol.
- * @param {string} platform - The platform where the strategy is applied.
- * @returns {Promise<void>}
  */
-async function updateStrategy(
-  strategy: MappedStrategy,
-  newAsset: string,
-  platform: string
-): Promise<void> {
+async function updateStrategy(strategy: MappedStrategy, newAsset: string, platform: string): Promise<void> {
   const updatedStrategy = { asset: newAsset }
   await StrategyService.updateStrategyById(strategy._id, updatedStrategy)
   console.info(
@@ -74,7 +51,6 @@ async function updateStrategy(
  * Handles the migration of swaps by updating trades and strategies.
  * This function fetches swap migration data, trades, and strategies from the database,
  * then processes each swap if the delisting date has passed.
- * @returns {Promise<void>}
  */
 async function handleMigrationSwaps(): Promise<void> {
   try {

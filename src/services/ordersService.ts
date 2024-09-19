@@ -14,13 +14,11 @@ const COLLECTION_TYPE = process.env.TYPE_ACTIVE_ORDERS as string
 export class OrdersService {
 
   static async createOrUpdateStopLossOrder(platform: string, stopPrice: number, base: string, balance: number): Promise<void> {
-    console.log('createOrUpdateStopLossOrder')
     return await this.createStopLossOrder(platform, base, balance, 'sell', 'limit', stopPrice)
   }
 
   /**
    * Fetches orders from the database.
-   * @returns {Promise<MappedOrder[]>} A promise that resolves to an array of orders.
    */
   static async fetchDatabaseOrders(): Promise<MappedOrder[]> {
     return await getData(COLLECTION_NAME) as MappedOrder[]
@@ -28,9 +26,6 @@ export class OrdersService {
 
   /**
    * Fetches and maps orders for a given platform.
-   * @param {string} platform - The platform to fetch orders for.
-   * @returns {Promise<MappedOrder[]>} A promise that resolves to an array of mapped orders.
-   * @throws {Error} If fetching or mapping fails.
    */
   static async fetchAndMapOrders(platform: string): Promise<MappedOrder[]> {
     try {
@@ -48,8 +43,6 @@ export class OrdersService {
 
   /**
    * Sauvegarde les données d'ordres fournies dans la base de données.
-   * @param {MappedOrder[]} mappedData - Les données de marché à sauvegarder.
-   * @param {string} platform - Identifiant de la plateforme.
    */
   static async saveMappedOrders(
     platform: string,
@@ -66,9 +59,6 @@ export class OrdersService {
 
   /**
    * Updates orders from the server for a given platform.
-   * @param {string} platform - The platform to update orders for.
-   * @returns {Promise<Order[]>} A promise that resolves to an array of updated orders.
-   * @throws {Error} If updating fails.
    */
   static async updateOrdersFromServer(
     platform: string
@@ -88,17 +78,8 @@ export class OrdersService {
 
   /**
    * Deletes an order for a given platform.
-   * @param {string} platform - The platform to delete the order from.
-   * @param {string} oId - The order ID to delete.
-   * @param {string} symbol - The symbol of the order.
-   * @returns {Promise<any>} A promise that resolves to the result of the deletion.
-   * @throws {Error} If deletion fails.
    */
-  static async deleteOrder(
-    platform: string,
-    oId: string,
-    symbol: string
-  ): Promise<void> {
+  static async deleteOrder(platform: string, oId: string, symbol: string): Promise<void> {
     try {
       const platformInstance = createPlatformInstance(platform)
       await platformInstance.cancelOrder(oId, symbol.replace('/', ''))
@@ -111,39 +92,15 @@ export class OrdersService {
 
   /**
    * Creates a market order for a given platform.
-   * @param {string} platform - The platform to create the order on.
-   * @param {string} asset - The asset to trade.
-   * @param {number} amount - The amount to trade.
-   * @param {string} orderType - The type of order ('buy' or 'sell').
-   * @returns {Promise<any>} A promise that resolves to the created order.
-   * @throws {Error} If order creation fails.
    */
-  static async createMarketOrder(
-    platform: string,
-    asset: string,
-    amount: number,
-    orderType: 'buy' | 'sell'
-  ): Promise<void> {
+  static async createMarketOrder(platform: string, asset: string, amount: number, orderType: 'buy' | 'sell'): Promise<void> {
     this.createOrder(platform, asset, amount, orderType, 'market')
   }
 
   /**
    * Creates a limit order for a given platform.
-   * @param {string} platform - The platform to create the order on.
-   * @param {string} asset - The asset to trade.
-   * @param {number} amount - The amount to trade.
-   * @param {number} price - The price for the limit order.
-   * @param {string} orderType - The type of order ('buy' or 'sell').
-   * @returns {Promise<any>} A promise that resolves to the created order.
-   * @throws {Error} If order creation fails.
    */
-  static async createLimitOrder(
-    platform: string,
-    asset: string,
-    amount: number,
-    orderType: 'buy' | 'sell',
-    price: number
-  ): Promise<void> {
+  static async createLimitOrder(platform: string, asset: string, amount: number, orderType: 'buy' | 'sell', price: number): Promise<void> {
     this.createOrder(platform, asset, amount, orderType, 'limit', price)
   }
 
@@ -157,7 +114,6 @@ export class OrdersService {
         throw new Error('Le prix doit être spécifié pour les ordres limites.')
       }
       if (stopLossPrice) {
-        console.log('executeOrder stopLossPrice', stopLossPrice)
         return await platformInstance.createStopOrder(symbol, 'limit', orderSide, amount / 2, price, stopLossPrice)
       }
       return orderSide === 'buy'
@@ -167,15 +123,7 @@ export class OrdersService {
     throw new Error('Mode d\'ordre non valide')
   }
 
-  static async createStopLossOrder(
-    platform: string,
-    asset: string,
-    amount: number,
-    orderType: 'buy' | 'sell',
-    orderMode: 'market' | 'limit',
-    stopPrice?: number
-  ): Promise<void> {
-    console.log('createOrder', platform, asset, amount, orderType, orderMode, stopPrice)
+  static async createStopLossOrder(platform: string, asset: string, amount: number, orderType: 'buy' | 'sell', orderMode: 'market' | 'limit', stopPrice?: number): Promise<void> {
     try {
       const platformInstance = createPlatformInstance(platform)
       const symbol = getSymbolForPlatform(platform, asset)
@@ -186,11 +134,6 @@ export class OrdersService {
 
       const stopLossPrice = stopPrice - stopPrice * 0.001
       await this.executeOrder(platformInstance, symbol, amount, orderType, orderMode, stopLossPrice, stopPrice)
-
-      console.log(`Ordre ${orderType} ${orderMode} créé pour ${platform}.`, {
-        symbol,
-        amount
-      })
     } catch (error) {
       console.error(
         `Échec de la création de l'ordre ${orderType} ${orderMode} pour ${platform}:`,
@@ -200,26 +143,14 @@ export class OrdersService {
     }
   }
 
-  static async createOrder(
-    platform: string,
-    asset: string,
-    amount: number,
-    orderType: 'buy' | 'sell',
-    orderMode: 'market' | 'limit',
-    price?: number
-  ): Promise<void> {
+  static async createOrder(platform: string, asset: string, amount: number, orderType: 'buy' | 'sell', orderMode: 'market' | 'limit', price?: number): Promise<void> {
     console.log('createOrder', platform, asset, amount, orderType, orderMode, price)
     try {
       const platformInstance = createPlatformInstance(platform)
       const symbol = getSymbolForPlatform(platform, asset)
 
-      const result = await this.executeOrder(platformInstance, symbol, amount, orderType, orderMode, price)
+      await this.executeOrder(platformInstance, symbol, amount, orderType, orderMode, price)
 
-      console.log(`Ordre ${orderType} ${orderMode} créé pour ${platform}.`, {
-        symbol,
-        amount,
-        price: result?.price
-      })
     } catch (error) {
       console.error(
         `Échec de la création de l'ordre ${orderType} ${orderMode} pour ${platform}:`,
@@ -231,10 +162,6 @@ export class OrdersService {
 
   /**
    * Cancels all orders for a given platform and asset.
-   * @param {string} platform - The platform to cancel orders on.
-   * @param {string} asset - The asset to cancel orders for.
-   * @returns {Promise<any>} A promise that resolves to the result of the cancellation.
-   * @throws {Error} If cancellation fails.
    */
   static async cancelAllOrders(platform: string, asset: string): Promise<{ message: string }> {
     try {
@@ -246,7 +173,7 @@ export class OrdersService {
         await platformInstance.cancelAllOrders(symbol)
       }
 
-      console.log(`Cancelled all ${symbol} orders for ${platform}.`)
+      //console.log(`Cancelled all ${symbol} orders for ${platform}.`)
       return { message: `Cancelled all ${symbol} orders for ${platform}.` }
     } catch (error) {
       console.error(`Failed to cancel all orders for ${platform}:`, error)
@@ -256,10 +183,6 @@ export class OrdersService {
 
   /**
    * Cancels all sell orders for a given platform and asset.
-   * @param {string} platform - The platform to cancel orders on.
-   * @param {string} asset - The asset to cancel orders for.
-   * @returns {Promise<any>} A promise that resolves to the result of the cancellation.
-   * @throws {Error} If cancellation fails.
    */
   static async cancelAllSellOrders(platform: string, asset: string): Promise<{ message: string }> {
     try {
@@ -286,9 +209,6 @@ export class OrdersService {
 
   /**
    * Cancels all orders for OKX platform.
-   * @param {PlatformInstance} platformInstance - The platform instance for OKX.
-   * @param {string} symbol - The symbol to cancel orders for.
-   * @returns {Promise<any>} A promise that resolves to the result of the cancellation.
    */
   static async cancelAllOrdersForOkx(platformInstance: Exchange, symbol: string): Promise<{ message: string }> {
     const orders = await platformInstance.fetchOpenOrders(symbol)
@@ -304,9 +224,6 @@ export class OrdersService {
 
   /**
    * Fetches open orders for a given platform.
-   * @param {string} platform - The platform to fetch orders from.
-   * @returns {Promise<Order[]>} A promise that resolves to an array of open orders.
-   * @throws {Error} If fetching fails.
    */
   static async fetchOpenOrdersByPlatform(platform: string): Promise<Order[]> {
     const platformInstance = createPlatformInstance(platform)
@@ -328,8 +245,6 @@ export class OrdersService {
 
   /**
    * Fetches open orders for Kucoin platform.
-   * @param {PlatformInstance} platformInstance - The platform instance for Kucoin.
-   * @returns {Promise<Order[]>} A promise that resolves to an array of open orders.
    */
   static async fetchOpenOrdersForKucoin(platformInstance: Exchange): Promise<Order[]> {
     const pageSize = 50
@@ -356,5 +271,4 @@ export class OrdersService {
 
     return data
   }
-
 }

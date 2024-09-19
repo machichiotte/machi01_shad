@@ -12,7 +12,6 @@ export class TickersService {
 
   /**
    * Fetches tickers data from the database.
-   * @returns {Promise<TickerData>} The tickers data.
    */
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS as string
@@ -21,15 +20,8 @@ export class TickersService {
 
   /**
    * Gets filtered tickers for a specific platform.
-   * @param {string} platform - The platform to get tickers for.
-   * @param {(ticker: MappedTicker) => boolean} [additionalFilter] - Optional additional filter.
-   * @returns {Promise<MappedTicker[]>} An array of tickers for the platform.
-   * @throws {Error} If the platform is not found or if no data is available.
    */
-  static async getFilteredTickers(
-    platform: string,
-    additionalFilter?: (ticker: MappedTicker) => boolean
-  ): Promise<MappedTicker[]> {
+  static async getFilteredTickers(platform: string, additionalFilter?: (ticker: MappedTicker) => boolean): Promise<MappedTicker[]> {
     const data = await this.fetchDatabaseTickers()
 
     if (!Array.isArray(data) || data.length === 0) {
@@ -56,27 +48,15 @@ export class TickersService {
 
   /**
    * Gets all tickers for a specific platform.
-   * @param {string} platform - The platform to get tickers for.
-   * @returns {Promise<MappedTicker[]>} An array of tickers for the platform.
-   * @throws {Error} If the platform is not found.
    */
-  static async getAllTickersByPlatform(
-    platform: string
-  ): Promise<MappedTicker[]> {
+  static async getAllTickersByPlatform(platform: string): Promise<MappedTicker[]> {
     return this.getFilteredTickers(platform)
   }
 
   /**
    * Gets all tickers for a specific symbol from a platform.
-   * @param {string} platform - The platform to get tickers from.
-   * @param {string} symbol - The symbol to get tickers for.
-   * @returns {Promise<MappedTicker[]>} An array of tickers for the symbol and platform.
-   * @throws {Error} If the platform or symbol is not found.
    */
-  static async getAllTickersBySymbolFromPlatform(
-    platform: string,
-    symbol: string
-  ): Promise<MappedTicker[]> {
+  static async getAllTickersBySymbolFromPlatform(platform: string, symbol: string): Promise<MappedTicker[]> {
     return this.getFilteredTickers(
       platform,
       (ticker: MappedTicker) => ticker.symbol === symbol
@@ -85,7 +65,6 @@ export class TickersService {
 
   /**
    * Updates all tickers for all platforms.
-   * @returns {Promise<TickerData>} The updated tickers data.
    */
   static async updateAllTickers(): Promise<MappedTicker[]> {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS as string
@@ -105,15 +84,8 @@ export class TickersService {
 
   /**
    * Fetches current tickers for a specific platform.
-   * @param {string} platform - The platform to fetch tickers for.
-   * @param {number} [retries=3] - The number of retry attempts.
-   * @returns {Promise<any[]>} The mapped tickers data.
-   * @throws {Error} If fetching fails after all retries.
    */
-  static async fetchCurrentTickers(
-    platform: string,
-    retries: number = 3
-  ): Promise<MappedTicker[]> {
+  static async fetchCurrentTickers(platform: string, retries: number = 3): Promise<MappedTicker[]> {
     const errorPolicies = await loadErrorPolicies()
 
     try {
@@ -138,13 +110,8 @@ export class TickersService {
 
   /**
    * Saves the provided tickers data to the database.
-   * @param {any[]} mappedData - The tickers data to be saved.
-   * @param {string} platform - Identifier of the platform.
    */
-  static async saveDatabaseTickers(
-    mappedData: MappedTicker[],
-    platform: string
-  ): Promise<void> {
+  static async saveDatabaseTickers(mappedData: MappedTicker[], platform: string): Promise<void> {
     const collectionName = process.env.MONGODB_COLLECTION_TICKERS
     const updateType = process.env.TYPE_TICKERS
 
@@ -155,5 +122,4 @@ export class TickersService {
       updateType as string
     )
   }
-
 }

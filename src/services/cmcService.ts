@@ -16,7 +16,6 @@ export class CmcService {
 
   /**
    * Fetches the latest CoinMarketCap data from the API.
-   * @returns {Promise<MappedCmc[]>} - A promise resolved with the fetched CoinMarketCap data.
    */
   public static async fetchCurrentCmc(): Promise<MappedCmc[]> {
     let start = this.baseStart;
@@ -51,7 +50,6 @@ export class CmcService {
 
   /**
    * Retrieves the latest CMC data from the database.
-   * @returns {Promise<MappedCmc[]>} - The latest CMC data from the database.
    */
   public static async fetchDatabaseCmc(): Promise<MappedCmc[]> {
     const collectionName = process.env.MONGODB_COLLECTION_CMC as string;
@@ -67,8 +65,6 @@ export class CmcService {
 
   /**
    * Updates the CMC data in the database.
-   * @param {MappedCmc[]} data - Array of CoinMarketCap data to update.
-   * @returns {Promise<Object>} - Result of the update operation.
    */
   public static async updateDatabaseCmcData(data: MappedCmc[]): Promise<object> {
     const collectionName = process.env.MONGODB_COLLECTION_CMC as string, collectionType = process.env.TYPE_CMC as string;
@@ -87,7 +83,6 @@ export class CmcService {
 
   /**
    * Updates CMC data by fetching the latest info from the API and saving it to the database.
-   * @returns {Promise<Object>} - Result of the update operation.
    */
   public static async updateCmcData(): Promise<object> {
     try {
@@ -100,4 +95,3 @@ export class CmcService {
     }
   }
 }
-

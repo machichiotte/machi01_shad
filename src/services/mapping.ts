@@ -6,9 +6,6 @@ class Mapper {
 
   /**
    * Méthode principale pour mapper les balances selon la plateforme.
-   * @param {string} platform - La plateforme d'échange.
-   * @param {Object} data - Les données brutes de balance.
-   * @returns {Object[]} Un tableau contenant les balances mappées.
    */
   static mapBalance(platform: string, balanceData: Balances): MappedBalance[] {
     // Vérification des données d'entrée

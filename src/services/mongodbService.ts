@@ -19,7 +19,6 @@ export interface UpdateDataMDBParams {
 
 /**
  * Establishes a connection to the MongoDB client.
- * @returns {Promise<MongoClient>} The MongoDB client instance.
  */
 async function getMongoClient(): Promise<MongoClient> {
   if (!mongoInstance) {
@@ -44,7 +43,6 @@ async function getMongoClient(): Promise<MongoClient> {
 
 /**
  * Retrieves the database instance.
- * @returns {Promise<Db>} The database instance.
  */
 async function getDB(): Promise<Db> {
   if (!db) {
@@ -83,13 +81,14 @@ export async function retry<A extends unknown[], R>(
 
 /**
  * Creates a collection if it doesn't already exist.
- * @param {string} collectionName - The name of the collection to create.
- * @returns {Promise<void>}
  */
 async function createCollectionIfNotExists(collectionName: string): Promise<void> {
   await retry(createCollection, [collectionName], 3)
 }
 
+/**
+ * Creates a collection.
+ */
 async function createCollection(collectionName: string): Promise<void> {
   const db = await getDB()
   const collections = await db
@@ -103,9 +102,6 @@ async function createCollection(collectionName: string): Promise<void> {
 
 /**
  * Saves data to a specified collection.
- * @param {Array|Object} data - The data to save.
- * @param {string} collectionName - The name of the collection to save to.
- * @returns {Promise<any>} The result of the save operation.
  */
 async function saveData(collectionName: string, data: object[] | object): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
   if (!Array.isArray(data) && typeof data !== 'object') {
@@ -121,8 +117,6 @@ async function saveData(collectionName: string, data: object[] | object): Promis
 
 /**
  * Retrieves all data from a specified collection.
- * @param {string} collectionName - The name of the collection to retrieve from.
- * @returns {Promise<any[]>} An array of documents from the collection.
  */
 async function getDataMDB(collectionName: string): Promise<Document[]> {
   return await retry(databaseOperations.find, [collectionName, {}], 3)
@@ -130,9 +124,6 @@ async function getDataMDB(collectionName: string): Promise<Document[]> {
 
 /**
  * Retrieves a single document from a specified collection based on a query.
- * @param {string} collectionName - The name of the collection to query.
- * @param {Object} query - The query to find the document.
- * @returns {Promise<Object|null>} The found document or null if not found.
  */
 async function getOne(collectionName: string, query: object): Promise<Document | null> {
   return await retry(databaseOperations.findOne, [collectionName, query], 3)
@@ -147,24 +138,20 @@ const cache: { [key: string]: CacheItem } = {}
 
 /**
  * Retrieves all data from a specified collection with caching.
- * @param {string} collectionName - The name of the collection to retrieve from.
- * @returns {Promise<any[]>} An array of documents from the collection.
  */
 async function getAllDataMDB(collectionName: string): Promise<CacheItem[] | Document[]> {
   // Toujours retourner le cache si disponible
   if (cache[collectionName]) {
-    console.log(`We have a cache for collection: ${collectionName}`);
-
     // Si le cache est encore valide, le retourner
     const cacheExpirationTimes: { [key: string]: number } = {
       'collection_active_orders': 60000,
       'collection_cmc': 14400000,
       'collection_tickers': 30000,
-      'collection_trades': 300000,
+      'collection_trades': 30000,
       'collection_balance': 30000,
       'collection_last_update': 30000,
       'collection_load_markets': 86400000,
-      'collection_shad': 300000,
+      'collection_shad': 60000,
       'collection_strat': 36000000,
       'collection_swap': 86400000,
       'collection_users': 0
@@ -172,7 +159,6 @@ async function getAllDataMDB(collectionName: string): Promise<CacheItem[] | Docu
     const defaultExpirationTime = 0; // 30 secondes par défaut
 
     if (Date.now() - cache[collectionName].timestamp < (cacheExpirationTimes[collectionName] || defaultExpirationTime)) {
-      console.log(`Using cached data for collection: ${collectionName}`);
       return cache[collectionName].data;
     }
   }
@@ -204,10 +190,6 @@ function addToCache(collectionName: string, data: Document[]): void {
 
 /**
  * Updates a document in a specified collection.
- * @param {string} collectionName - The name of the collection to update.
- * @param {Object} filter - The filter to find the document to update.
- * @param {Object} update - The update to apply to the document.
- * @returns {Promise<UpdateDataMDBParams>} The result of the update operation.
  */
 async function updateDataMDB(collectionName: string, filter: object, update: object): Promise<boolean> {
   return await retry(databaseOperations.updateOne, [collectionName, filter, update], 3)
@@ -215,9 +197,6 @@ async function updateDataMDB(collectionName: string, filter: object, update: obj
 
 /**
  * Deletes a single document from a specified collection.
- * @param {string} collectionName - The name of the collection to delete from.
- * @param {Object} filter - The filter to find the document to delete.
- * @returns {Promise<number>} The number of deleted documents.
  */
 async function deleteOneDataMDB(collectionName: string, filter: object): Promise<boolean> {
   return await retry(databaseOperations.deleteOne, [collectionName, filter], 3)
@@ -225,9 +204,6 @@ async function deleteOneDataMDB(collectionName: string, filter: object): Promise
 
 /**
  * Deletes multiple documents from a specified collection.
- * @param {string} collectionName - The name of the collection to delete from.
- * @param {Object} filter - The filter to find the documents to delete.
- * @returns {Promise<number>} The number of deleted documents.
  */
 async function deleteMultipleDataMDB(collectionName: string, filter: object): Promise<number> {
   return await retry(databaseOperations.deleteMany, [collectionName, filter], 3)
@@ -235,8 +211,6 @@ async function deleteMultipleDataMDB(collectionName: string, filter: object): Pr
 
 /**
  * Deletes all documents from a specified collection.
- * @param {string} collectionName - The name of the collection to clear.
- * @returns {Promise<number>} The number of deleted documents.
  */
 async function deleteAllDataMDB(collectionName: string): Promise<number> {
   return await retry(databaseOperations.deleteMany, [collectionName, {}], 3)
@@ -254,9 +228,9 @@ const tradesCollection = process.env.MONGODB_COLLECTION_TRADES
 const tickersCollection = process.env.MONGODB_COLLECTION_TICKERS
 const usersCollection = process.env.MONGODB_COLLECTION_USERS
 const highestPricesCollection = process.env.MONGODB_COLLECTION_HIGHEST_PRICES
+
 /**
  * Connects to MongoDB and creates necessary collections.
- * @returns {Promise<void>}
  */
 async function connectToMongoDB(): Promise<void> {
   try {
@@ -289,10 +263,6 @@ async function connectToMongoDB(): Promise<void> {
 
 /**
  * Updates a document in the database.
- * @param {string} collectionName - The name of the collection to update.
- * @param {Object} filter - The filter to find the document to update.
- * @param {Object} update - The update to apply to the document.
- * @returns {Promise<void>}
  */
 async function updateInDatabase(
   collectionName: string,
@@ -308,10 +278,6 @@ async function updateInDatabase(
 
 /**
  * Deletes existing data and saves new data for a specific platform.
- * @param {any[]} mapData - The new data to save.
- * @param {string} collection - The name of the collection to update.
- * @param {string} platform - The platform identifier.
- * @returns {Promise<void>}
  */
 async function deleteAndSaveData(collectionName: string, mapData: MappedData[], platform: string): Promise<void> {
   if (mapData && mapData.length > 0) {
@@ -323,9 +289,6 @@ async function deleteAndSaveData(collectionName: string, mapData: MappedData[], 
 
 /**
  * Deletes all existing data and saves a new object in a collection.
- * @param {Object} mapData - The new data object to save.
- * @param {string} collectionName - The name of the collection to update.
- * @returns {Promise<void>}
  */
 async function deleteAndReplaceAll(collectionName: string, mapData: MappedData[]): Promise<void> {
   if (mapData && mapData.length > 0) {
@@ -349,5 +312,3 @@ export {
   deleteAndReplaceAll,
   getDB
 }
-
-

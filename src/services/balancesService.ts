@@ -15,7 +15,6 @@ validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE']);
 export class BalancesService {
   /**
    * Récupère toutes les données de solde de la base de données.
-   * @returns {Promise<MappedBalance[]>} Une promesse qui se résout à un tableau de données de solde.
    */
   static async fetchDatabaseBalances(): Promise<MappedBalance[]> {
     const collectionName = process.env.MONGODB_COLLECTION_BALANCE as string;
@@ -24,10 +23,6 @@ export class BalancesService {
 
   /**
    * Récupère les données de solde de la base de données pour une plateforme spécifique.
-   * @param {string} platform - L'identifiant de la plateforme.
-   * @param {number} [retries=3] - Le nombre de tentatives de réessai.
-   * @returns {Promise<MappedBalance[]>} Une promesse qui se résout à un tableau de données de solde pour la plateforme spécifiée.
-   * @throws {Error} Si la récupération échoue après toutes les tentatives.
    */
   static async fetchDatabaseBalancesByPlatform(
     platform: string,
@@ -55,10 +50,6 @@ export class BalancesService {
 
   /**
    * Récupère les données de solde actuelles d'une plateforme spécifique.
-   * @param {string} platform - L'identifiant de la plateforme.
-   * @param {number} [retries=3] - Le nombre de tentatives de réessai.
-   * @returns {Promise<MappedBalance[]>} Une promesse qui se résout à un tableau de données de solde actuelles pour la plateforme spécifiée.
-   * @throws {Error} Si la récupération échoue après toutes les tentatives.
    */
   static async fetchCurrentBalancesByPlatform(
     platform: string,
@@ -85,9 +76,6 @@ export class BalancesService {
 
   /**
    * Enregistre les données de solde fournies dans la base de données.
-   * @param {MappedBalance[]} mappedData - Les données de solde à enregistrer.
-   * @param {string} platform - L'identifiant de la plateforme.
-   * @returns {Promise<void>}
    */
   static async saveDatabaseBalance(
     mappedData: MappedBalance[],
@@ -105,8 +93,6 @@ export class BalancesService {
 
   /**
    * Met à jour le solde pour une plateforme spécifique en récupérant les données actuelles et en les enregistrant dans la base de données.
-   * @param {string} platform - L'identifiant de la plateforme.
-   * @returns {Promise<MappedBalance[]>} Une promesse qui se résout aux données de solde mises à jour.
    */
   static async updateBalanceForPlatform(
     platform: string

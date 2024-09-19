@@ -38,15 +38,8 @@ interface Ticker {
  * This function updates server orders, retrieves tickers, and processes trades for symbols
  * corresponding to the detected differences. It also handles new symbols, balance differences,
  * and zero balances.
- *
- * @param {Difference[]} differences - Array of objects representing detected balance differences.
- * @param {string} platform - Name of the platform for which differences should be processed.
- * @returns {Promise<void>} - This function is asynchronous and returns a promise.
  */
-async function processBalanceChanges(
-  differences: Difference[],
-  platform: string
-): Promise<void> {
+async function processBalanceChanges(differences: Difference[], platform: string): Promise<void> {
 
   try {
     // Mise à jour des ordres depuis le serveur
@@ -84,8 +77,6 @@ async function processBalanceChanges(
 
 /**
  * Removes duplicates from balance differences.
- * @param {Difference[]} differences - Array of balance differences.
- * @returns {Difference[]} - Array of unique differences.
  */
 function removeDuplicateDifferences(differences: Difference[]): Difference[] {
   const uniqueMap = new Map<string, Difference>()
@@ -100,20 +91,8 @@ function removeDuplicateDifferences(differences: Difference[]): Difference[] {
 
 /**
  * Processes a specific difference, retrieves trades, and updates the list of new trades.
- * @param {Difference} difference - Object representing a balance difference.
- * @param {string} platform - Name of the platform.
- * @param {Ticker[]} tickers - Array of tickers for the platform.
- * @param {string[]} quoteCurrencies - List of quote currencies.
- * @param {any[]} newTrades - Array of newly detected trades.
- * @returns {Promise<void>}
  */
-async function processDifference(
-  difference: Difference,
-  platform: string,
-  tickers: Ticker[],
-  quoteCurrencies: string[],
-  newTrades: MappedTrade[]
-): Promise<void> {
+async function processDifference(difference: Difference, platform: string, tickers: Ticker[], quoteCurrencies: string[], newTrades: MappedTrade[]): Promise<void> {
   for (const quote of quoteCurrencies) {
     const symbol = getSymbolForPlatform(platform, difference.base, quote)
 
@@ -141,7 +120,6 @@ async function processDifference(
 
 /**
  * Logs information based on the type of detected difference.
- * @param {Difference} difference - Object representing a balance difference.
  */
 function logDifferenceType(difference: Difference): void {
   if (difference.newSymbol) {
@@ -159,7 +137,6 @@ function logDifferenceType(difference: Difference): void {
 
 /**
  * Calculates all metrics for assets.
- * @returns {Promise<any[]>} - Returns a promise that resolves to an array of calculated asset metrics.
  */
 async function calculateAllMetrics(): Promise<AssetMetrics[]> {
   const [dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances] =
@@ -171,6 +148,7 @@ async function calculateAllMetrics(): Promise<AssetMetrics[]> {
       TickersService.fetchDatabaseTickers(),
       BalancesService.fetchDatabaseBalances()
     ])
+
   const invalidData = [];
   if (!dbCmc) invalidData.push('CMC');
   if (!dbStrategies) invalidData.push('Strategies');
@@ -269,9 +247,6 @@ async function calculateAllMetrics(): Promise<AssetMetrics[]> {
 
 /**
  * Compares current balances with those from the previous database.
- * @param {Balance[]} lastBalances - Array of objects representing previous balances.
- * @param {Balance[]} currentBalances - Array of objects representing current balances.
- * @returns {Difference[]} - Returns an array of objects representing the differences found.
  */
 function compareBalances(
   lastBalances: Balance[],
@@ -351,11 +326,8 @@ const stablecoins: string[] = [
   'USDN'
 ] // Ajoutez d'autres stablecoins si nécessaire
 
-// Fonction pour supprimer les doublons basés sur 'base' et 'platform'
 /**
  * Removes duplicates and stablecoins from the differences array.
- * @param {Difference[]} differences - Array of difference objects.
- * @returns {Difference[]} - Array of unique differences, excluding stablecoins.
  */
 function removeDuplicatesAndStablecoins(
   differences: Difference[]

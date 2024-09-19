@@ -5,10 +5,6 @@ import { MappedData } from 'src/models/dbTypes'
 class DatabaseService {
   /**
    * Saves data to the database and updates the last update date.
-   * @param {Object[]} data - The data to be saved.
-   * @param {string} collectionName - The name of the MongoDB collection.
-   * @param {string} platform - The platform identifier.
-   * @param {string} updateType - The update type for lastUpdateService.
    */
   static async saveDataToDatabase(
     data: MappedData[],
@@ -16,6 +12,10 @@ class DatabaseService {
     platform: string,
     updateType: string
   ): Promise<void> {
+    console.log(`Sauvegarde des données dans la base de données`, {
+      platform,
+      collectionName
+    })
     try {
       await deleteAndSaveData(collectionName, data, platform)
       await LastUpdateService.saveLastUpdateToDatabase(updateType, platform)

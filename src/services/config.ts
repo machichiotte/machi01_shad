@@ -1,5 +1,4 @@
 // src/services/config.ts
-
 interface SmtpConfig {
   host: string
   port: number

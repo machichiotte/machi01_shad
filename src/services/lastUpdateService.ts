@@ -9,7 +9,6 @@ interface LastUpdateData {
 export class LastUpdateService {
   /**
    * Fetches the last update information from the database.
-   * @returns {Promise<LastUpdateData[]>} The last update data.
    */
   static async fetchDatabaseLastUpdate(): Promise<LastUpdateData[]> {
     const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE as string
@@ -18,9 +17,6 @@ export class LastUpdateService {
 
   /**
    * Saves the last update information to the database.
-   * @param {string} type - The type of update.
-   * @param {string} [platform] - The platform for the update (optional).
-   * @returns {Promise<void>}
    */
   static async saveLastUpdateToDatabase(
     type: string,
@@ -53,4 +49,3 @@ export class LastUpdateService {
     await updateInDatabase(collectionName as string, filter, update)
   }
 }
-
