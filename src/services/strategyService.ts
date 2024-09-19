@@ -4,6 +4,7 @@ import { LastUpdateService } from './lastUpdateService'
 import { updateDataMDB, deleteAllDataMDB, saveData } from './mongodbService'
 import { MappedStrategy } from 'src/models/dbTypes'
 import { InsertManyResult, InsertOneResult } from 'mongodb'
+import { handleServiceError } from '@utils/errorUtil'
 
 export class StrategyService {
   /**
@@ -27,7 +28,7 @@ export class StrategyService {
         { $set: updatedStrategy }
       );
     } catch (error) {
-      console.error(`Erreur lors de la mise à jour de la stratégie avec l'ID ${strategyId}:`, error);
+      handleServiceError(error, 'updateStrategyById', `Error updating strategy with id ${strategyId}`)
       throw error;
     }
   }

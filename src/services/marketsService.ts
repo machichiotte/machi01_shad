@@ -7,6 +7,7 @@ import { deleteAndSaveData } from './mongodbService';
 import { mapMarkets } from './mapping';
 import { DatabaseService } from './databaseService';
 import { MappedMarket } from 'src/models/dbTypes';
+import { handleServiceError } from '@utils/errorUtil';
 
 const COLLECTION_NAME = process.env.MONGODB_COLLECTION_LOAD_MARKETS as string
 const COLLECTION_TYPE = process.env.TYPE_LOAD_MARKETS as string
@@ -15,10 +16,7 @@ export class MarketsService {
   /**
    * Fetches the current markets from the specified platform.
    */
-  static async fetchCurrentMarkets(
-    platform: string,
-    retries: number = 3
-  ): Promise<MappedMarket[]> {
+  static async fetchCurrentMarkets(platform: string, retries: number = 3): Promise<MappedMarket[]> {
     const errorPolicies = await loadErrorPolicies();
 
     return this.retryFetch(platform, retries, errorPolicies);
@@ -39,10 +37,7 @@ export class MarketsService {
         return this.retryFetch(platform, retries - 1, errorPolicies);
       }
 
-      console.error('Failed to fetch current markets from platform', {
-        platform,
-        error: error instanceof Error ? error.message : String(error),
-      });
+      handleServiceError(error, 'retryFetch', 'Failed to fetch markets')
       throw error;
     }
   }
@@ -70,9 +65,7 @@ export class MarketsService {
       });
       return data;
     } catch (error) {
-      console.error('Failed to fetch saved market data.', {
-        error: error instanceof Error ? error.message : String(error),
-      });
+      handleServiceError(error, 'getSavedMarkets', 'Failed to fetch saved market data.')
       throw error;
     }
   }
@@ -80,15 +73,10 @@ export class MarketsService {
   /**
    * Updates the market data in the database for a specific platform.
    */
-  static async updateMarketDataInDatabase(
-    platform: string,
-    mappedData: MappedMarket[]
-  ): Promise<MappedMarket[]> {
+  static async updateMarketDataInDatabase(platform: string, mappedData: MappedMarket[]): Promise<MappedMarket[]> {
     await deleteAndSaveData(COLLECTION_NAME, mappedData, platform);
     await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE || '', platform);
-    console.log(`Updated market data in database for ${platform}.`, {
-      count: mappedData.length,
-    });
+    console.log(`Market data for ${platform} updated in the database. Total records: ${mappedData.length}.`);
     return mappedData;
   }
 }

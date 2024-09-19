@@ -41,6 +41,19 @@ function handleControllerError(res: Response, error: unknown, functionName: stri
   }
 }
 
+function handleServiceError(error: unknown, functionName: string, message?: string): void {
+  if (error instanceof AuthenticationError) {
+    console.error(`Authentication error in ${functionName} (${message}):`, error.message)
+
+  } else if (error instanceof Error) {
+    console.error(`Error in ${functionName} (${message}):`, error)
+
+  } else {
+    console.error(`Unknown error in ${functionName} (${message}):`, error)
+
+  }
+}
+
 /*
 * Charger les politiques d'erreurs depuis le fichier JSON
 */
@@ -64,4 +77,4 @@ function shouldRetry(platform: string, error: Error, errorPolicies: ErrorPolicie
   return true // Par défaut, retenter si la politique n'est pas définie
 }
 
-export { handleControllerError as handleControllerError, loadErrorPolicies, shouldRetry }
+export { handleControllerError, handleServiceError, loadErrorPolicies, shouldRetry }

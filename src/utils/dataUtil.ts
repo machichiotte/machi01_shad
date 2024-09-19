@@ -3,6 +3,7 @@ import { promises as fs } from 'fs'
 import { getMockDataPath } from './fileUtil'
 import { getAllDataMDB } from '@services/mongodbService'
 import { MappedData } from '@models/dbTypes'
+import { handleServiceError } from './errorUtil'
 
 /**
  * Retrieves data from the specified collection.
@@ -12,8 +13,8 @@ async function getData(collectionName: string): Promise<MappedData[]> {
     const data = await getDataFromCollection(collectionName)
     return data
   } catch (error) {
-    console.log('🚀 ~ getData ~ error:', error)
-    throw new Error('Failed to get data from collection')
+    handleServiceError(error, 'getData', `Failed to get data from collection`)
+    throw error
   }
 }
 
@@ -38,8 +39,8 @@ async function getDataFromCollection(collectionName: string): Promise<MappedData
       return Array.isArray(data) ? data as MappedData[] : []
     }
   } catch (error) {
-    console.log('🚀 ~ getDataFromCollection ~ error:', error)
-    return []
+    handleServiceError(error, 'getDataFromCollection', `Failed to get data from collection`)
+    throw error
   }
 }
 

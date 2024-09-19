@@ -7,6 +7,7 @@ import { DatabaseService } from './databaseService'
 import { mapOrders } from './mapping'
 import { Order, Exchange } from 'ccxt'
 import { MappedOrder } from 'src/models/dbTypes'
+import { handleServiceError } from '@utils/errorUtil'
 
 const COLLECTION_NAME = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS as string
 const COLLECTION_TYPE = process.env.TYPE_ACTIVE_ORDERS as string
@@ -36,18 +37,15 @@ export class OrdersService {
       })
       return mappedData
     } catch (error) {
-      console.error(`Failed to fetch and map orders for ${platform}:`, error)
-      throw new Error(`Erreur lors de la récupération et du mapping des ordres pour ${platform}: ${(error as Error).message}`)
+      handleServiceError(error, 'fetchAndMapOrders', `Error fetching and mapping orders for ${platform}`)
+      throw error
     }
   }
 
   /**
    * Sauvegarde les données d'ordres fournies dans la base de données.
    */
-  static async saveMappedOrders(
-    platform: string,
-    mappedData: MappedOrder[]
-  ): Promise<void> {
+  static async saveMappedOrders(platform: string, mappedData: MappedOrder[]): Promise<void> {
     if (COLLECTION_NAME && COLLECTION_TYPE) {
       await DatabaseService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE)
     } else {
@@ -60,9 +58,7 @@ export class OrdersService {
   /**
    * Updates orders from the server for a given platform.
    */
-  static async updateOrdersFromServer(
-    platform: string
-  ): Promise<MappedOrder[]> {
+  static async updateOrdersFromServer(platform: string): Promise<MappedOrder[]> {
     try {
       const mappedData = await this.fetchAndMapOrders(platform)
       await this.saveMappedOrders(platform, mappedData)
@@ -71,7 +67,7 @@ export class OrdersService {
       })
       return mappedData
     } catch (error) {
-      console.error(`Failed to update orders from server for ${platform}.`, error)
+      handleServiceError(error, 'updateOrdersFromServer', `Error updating orders from server for ${platform}`)
       throw error
     }
   }
@@ -85,7 +81,7 @@ export class OrdersService {
       await platformInstance.cancelOrder(oId, symbol.replace('/', ''))
       console.log(`Deleted order ${oId} for ${platform}.`, { symbol })
     } catch (error) {
-      console.error(`Failed to delete order for ${platform}:`, error)
+      handleServiceError(error, 'deleteOrder', `Error deleting ${symbol}order with id ${oId} for ${platform}`)
       throw error
     }
   }
@@ -135,10 +131,7 @@ export class OrdersService {
       const stopLossPrice = stopPrice - stopPrice * 0.001
       await this.executeOrder(platformInstance, symbol, amount, orderType, orderMode, stopLossPrice, stopPrice)
     } catch (error) {
-      console.error(
-        `Échec de la création de l'ordre ${orderType} ${orderMode} pour ${platform}:`,
-        error
-      )
+      handleServiceError(error, 'createStopLossOrder', `Error creating stop loss order for ${platform}`)
       throw error
     }
   }
@@ -152,10 +145,7 @@ export class OrdersService {
       await this.executeOrder(platformInstance, symbol, amount, orderType, orderMode, price)
 
     } catch (error) {
-      console.error(
-        `Échec de la création de l'ordre ${orderType} ${orderMode} pour ${platform}:`,
-        error
-      )
+      handleServiceError(error, 'createOrder', `Error creating order for ${platform}`)
       throw error
     }
   }
@@ -176,7 +166,7 @@ export class OrdersService {
       //console.log(`Cancelled all ${symbol} orders for ${platform}.`)
       return { message: `Cancelled all ${symbol} orders for ${platform}.` }
     } catch (error) {
-      console.error(`Failed to cancel all orders for ${platform}:`, error)
+      handleServiceError(error, 'cancelAllOrders', `Error canceling all orders for ${platform}`)
       throw error
     }
   }
@@ -202,7 +192,7 @@ export class OrdersService {
       console.log(`Cancelled all sell orders for ${platform}.`, { symbol })
       return { message: 'All sell orders canceled successfully' }
     } catch (error) {
-      console.error(`Failed to cancel all sell orders for ${platform}:`, error)
+      handleServiceError(error, 'cancelAllSellOrders', `Error canceling all sell orders for ${platform}`)
       throw error
     }
   }
@@ -238,7 +228,7 @@ export class OrdersService {
         return await platformInstance.fetchOpenOrders()
       }
     } catch (error) {
-      console.error(`Failed to fetch open orders for ${platform}.`, error)
+      handleServiceError(error, 'fetchOpenOrdersByPlatform', `Error fetching open orders for ${platform}`)
       throw error
     }
   }

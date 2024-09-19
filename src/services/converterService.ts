@@ -110,10 +110,6 @@ async function getTotalUSDTFromAPI(
   quote: string,
   total: number
 ): Promise<number> {
-  console.log('🚀 ~ getTotalUSDTFromAPI ~ total:', total)
-  console.log('🚀 ~ getTotalUSDTFromAPI ~ quote:', quote)
-  console.log('🚀 ~ getTotalUSDTFromAPI ~ dealTime:', dealTime)
-
   if (quote && !['USDT', 'BUSD', 'USDC'].includes(quote.toUpperCase())) {
     /*try {
         const response = await axios.get('URL_DE_L_API', {

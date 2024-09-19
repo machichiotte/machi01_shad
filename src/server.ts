@@ -15,7 +15,6 @@ import cmcRoutes from '@routes/cmcRoutes'
 import strategyRoutes from '@routes/strategyRoutes'
 import ordersRoutes from '@routes/ordersRoutes'
 import marketsRoutes from '@routes/marketsRoutes'
-import pricesRoutes from '@routes/pricesRoutes'
 import tradesRoutes from '@routes/tradesRoutes'
 import tickersRoutes from '@routes/tickersRoutes'
 import lastUpdateRoutes from '@routes/lastUpdateRoutes'
@@ -44,7 +43,6 @@ const routes: Routes = {
   strategy: strategyRoutes,
   orders: ordersRoutes,
   market: marketsRoutes,
-  prices: pricesRoutes,
   trades: tradesRoutes,
   tickers: tickersRoutes,
   lastUpdate: lastUpdateRoutes,

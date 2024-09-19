@@ -3,6 +3,8 @@ import dotenv from 'dotenv'
 import { MongoClient, ServerApiVersion, Db, InsertManyResult, InsertOneResult, Document } from 'mongodb'
 import { MappedData } from 'src/models/dbTypes'
 import { databaseOperations } from '@services/databaseOperationsService'
+import { handleServiceError } from '@utils/errorUtil'
+
 dotenv.config()
 
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
@@ -34,7 +36,7 @@ async function getMongoClient(): Promise<MongoClient> {
       await mongoInstance.connect()
       console.log('Successfully connected to MongoDB')
     } catch (error) {
-      console.log('Error connecting to MongoDB:', error)
+      handleServiceError(error, 'getMongoClient', 'Error connecting to MongoDB')
       throw error
     }
   }
@@ -51,7 +53,7 @@ async function getDB(): Promise<Db> {
       db = client.db(process.env.MONGODB_DATABASE)
       console.log('Database selected:', process.env.MONGODB_DATABASE)
     } catch (error) {
-      console.log(`Error, no database selected:`, error)
+      handleServiceError(error, 'getDB', 'Error getting database')
       throw error
     }
   }
@@ -69,11 +71,11 @@ export async function retry<A extends unknown[], R>(
 ): Promise<R> {
   try {
     return await fn(...args);
-  } catch (e) {
-    console.log(`Retry ${retryCount} failed.`);
+  } catch (error) {
+    handleServiceError(error, 'retry', `Error retrying function ${fn.name}`)
     if (retryCount >= maxTry) {
-      console.log(`All ${maxTry} retry attempts exhausted`);
-      throw e;
+      handleServiceError(error, 'retry', `All ${maxTry} retry attempts exhausted`)
+      throw error;
     }
     return retry(fn, args, maxTry, retryCount + 1);
   }
@@ -90,13 +92,17 @@ async function createCollectionIfNotExists(collectionName: string): Promise<void
  * Creates a collection.
  */
 async function createCollection(collectionName: string): Promise<void> {
-  const db = await getDB()
-  const collections = await db
-    .listCollections({ name: collectionName })
-    .toArray()
-  if (collections.length === 0) {
-    await db.createCollection(collectionName)
-    console.log(`Collection ${collectionName} created.`)
+  try {
+    const db = await getDB()
+    const collections = await db
+      .listCollections({ name: collectionName })
+      .toArray()
+    if (collections.length === 0) {
+      await db.createCollection(collectionName)
+      console.log(`Collection ${collectionName} created.`)
+    }
+  } catch (error) {
+    handleServiceError(error, 'createCollection', `Error creating collection ${collectionName}`)
   }
 }
 
@@ -104,14 +110,19 @@ async function createCollection(collectionName: string): Promise<void> {
  * Saves data to a specified collection.
  */
 async function saveData(collectionName: string, data: object[] | object): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
-  if (!Array.isArray(data) && typeof data !== 'object') {
-    throw new TypeError('Data must be an array or an object')
-  }
+  try {
+    if (!Array.isArray(data) && typeof data !== 'object') {
+      throw new TypeError('Data must be an array or an object')
+    }
 
-  if (Array.isArray(data)) {
-    return await retry(databaseOperations.insertMany, [collectionName, data], 3)
-  } else {
-    return await retry(databaseOperations.insertOne, [collectionName, data], 3)
+    if (Array.isArray(data)) {
+      return await retry(databaseOperations.insertMany, [collectionName, data], 3)
+    } else {
+      return await retry(databaseOperations.insertOne, [collectionName, data], 3)
+    }
+  } catch (error) {
+    handleServiceError(error, 'saveData', `Error saving data in ${collectionName}`)
+    throw error
   }
 }
 
@@ -170,19 +181,22 @@ async function getAllDataMDB(collectionName: string): Promise<CacheItem[] | Docu
     addToCache(collectionName, result);
     return cache[collectionName].data;
   } catch (error) {
-    console.error(`Failed to fetch data for collection: ${collectionName}`, error);
-    // Retourner le cache existant même s'il est expiré, ou un tableau vide
+    handleServiceError(error, 'getAllDataMDB', `Error fetching data from ${collectionName}`)
     return cache[collectionName]?.data || [];
   }
 }
 
 
 function addToCache(collectionName: string, data: Document[]): void {
-  if (data.length > 0) {
-    cache[collectionName] = {
-      data,
-      timestamp: Date.now()
+  try {
+    if (data.length > 0) {
+      cache[collectionName] = {
+        data,
+        timestamp: Date.now()
+      }
     }
+  } catch (error) {
+    handleServiceError(error, 'addToCache', `Error adding to cache in ${collectionName}`)
   }
 }
 
@@ -256,7 +270,7 @@ async function connectToMongoDB(): Promise<void> {
       await createCollectionIfNotExists(collectionName as string)
     }
   } catch (error) {
-    console.error('🚀 ~ connectToMongoDB ~ error:', error)
+    handleServiceError(error, 'connectToMongoDB', 'Error connecting to MongoDB')
     throw error
   }
 }
@@ -264,15 +278,11 @@ async function connectToMongoDB(): Promise<void> {
 /**
  * Updates a document in the database.
  */
-async function updateInDatabase(
-  collectionName: string,
-  filter: object,
-  update: object
-): Promise<void> {
+async function updateInDatabase(collectionName: string, filter: object, update: object): Promise<void> {
   try {
     await updateDataMDB(collectionName, filter, update)
   } catch (error) {
-    console.error(error)
+    handleServiceError(error, 'updateInDatabase', `Error updating data in ${collectionName}`)
   }
 }
 
@@ -280,10 +290,14 @@ async function updateInDatabase(
  * Deletes existing data and saves new data for a specific platform.
  */
 async function deleteAndSaveData(collectionName: string, mapData: MappedData[], platform: string): Promise<void> {
-  if (mapData && mapData.length > 0) {
-    const deleteParam = { platform }
-    await deleteMultipleDataMDB(collectionName, deleteParam)
-    await saveData(collectionName, mapData)
+  try {
+    if (mapData && mapData.length > 0) {
+      const deleteParam = { platform }
+      await deleteMultipleDataMDB(collectionName, deleteParam)
+      await saveData(collectionName, mapData)
+    }
+  } catch (error) {
+    handleServiceError(error, 'deleteAndSaveData', `Error deleting and saving data in ${collectionName}`)
   }
 }
 
@@ -291,9 +305,13 @@ async function deleteAndSaveData(collectionName: string, mapData: MappedData[], 
  * Deletes all existing data and saves a new object in a collection.
  */
 async function deleteAndReplaceAll(collectionName: string, mapData: MappedData[]): Promise<void> {
-  if (mapData && mapData.length > 0) {
-    await deleteAllDataMDB(collectionName)
-    await saveData(collectionName, mapData)
+  try {
+    if (mapData && mapData.length > 0) {
+      await deleteAllDataMDB(collectionName)
+      await saveData(collectionName, mapData)
+    }
+  } catch (error) {
+    handleServiceError(error, 'deleteAndReplaceAll', `Error deleting and replacing all data in ${collectionName}`)
   }
 }
 

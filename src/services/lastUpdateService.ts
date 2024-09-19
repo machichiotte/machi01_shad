@@ -18,10 +18,7 @@ export class LastUpdateService {
   /**
    * Saves the last update information to the database.
    */
-  static async saveLastUpdateToDatabase(
-    type: string,
-    platform?: string
-  ): Promise<void> {
+  static async saveLastUpdateToDatabase(type: string, platform?: string): Promise<void> {
     const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE
     // Récupérer les données actuelles dans la collection
     const data: LastUpdateData = (await this.fetchDatabaseLastUpdate())[0] || {}

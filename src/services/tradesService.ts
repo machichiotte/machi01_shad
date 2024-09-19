@@ -7,6 +7,7 @@ import { mapTrades } from './mapping'
 import { MappedTrade } from 'src/models/dbTypes'
 import { Trade } from 'ccxt'
 import { InsertOneResult, InsertManyResult } from 'mongodb'
+import { handleServiceError } from '@utils/errorUtil'
 import Exchange from 'ccxt/js/src/abstract/kucoin'
 
 const TRADES_COLLECTION = process.env.MONGODB_COLLECTION_TRADES as string
@@ -24,7 +25,7 @@ export class TradesService {
       const platformInstance = createPlatformInstance(platform)
       return await platformInstance.fetchMyTrades(symbol)
     } catch (error) {
-      console.error(`Erreur lors de la récupération des derniers trades pour ${platform}:`, error)
+      handleServiceError(error, 'fetchLastTrades', `Error fetching last trades for ${platform}`)
       throw error
     }
   }
@@ -38,7 +39,7 @@ export class TradesService {
     try {
       return await updateDataMDB(TRADES_COLLECTION, { _id: tradeId }, { $set: updatedTrade })
     } catch (error) {
-      console.error('Erreur lors de la mise à jour du trade:', error)
+      handleServiceError(error, 'updateTradeById', `Error updating trade with id ${tradeId}`)
       throw error
     }
   }
@@ -50,7 +51,7 @@ export class TradesService {
       await LastUpdateService.saveLastUpdateToDatabase(TRADES_TYPE, platform)
       return { data: mappedData }
     } catch (error) {
-      console.error(`Erreur lors de la mise à jour des trades pour ${platform}:`, error)
+      handleServiceError(error, 'updateTrades', `Error updating trades for ${platform}`)
       throw error
     }
   }
@@ -61,7 +62,7 @@ export class TradesService {
       const savedTrade = await saveData(TRADES_COLLECTION, tradesData)
       return { data: savedTrade }
     } catch (error) {
-      console.error('Erreur lors de l\'ajout manuel des trades:', error)
+      handleServiceError(error, 'addTradesManually', 'Error adding trades manually')
       throw error
     }
   }
@@ -139,7 +140,7 @@ export class TradesService {
         await saveData(collection, tradesToInsert)
       }
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde des trades:', error)
+      handleServiceError(error, 'saveTrades', `Error saving trades to ${collection}`)
       throw error
     }
   }

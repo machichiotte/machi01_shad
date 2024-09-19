@@ -1,6 +1,6 @@
 // src/utils/platformUtil.ts
 import * as ccxt from 'ccxt'
-import { AuthenticationError } from 'ccxt'
+import { handleServiceError } from './errorUtil'
 
 const PLATFORMS: string[] = ['binance', 'kucoin']
 
@@ -42,17 +42,8 @@ function createPlatformInstance(platform: string): ccxt.Exchange {
 
     return new exchangeClass(platformParams)
   } catch (error) {
-    if (error instanceof AuthenticationError) {
-      // Handle authentication errors specifically
-      throw new AuthenticationError(
-        `Authentication error for ${platform}: ${error.message}`
-      )
-    } else {
-      // Handle other errors
-      throw new Error(
-        `Error creating platform instance for ${platform}: ${(error as Error).message}`
-      )
-    }
+    handleServiceError(error, 'createPlatformInstance', `Error creating platform instance for ${platform}`)
+    throw error
   }
 }
 

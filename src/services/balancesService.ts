@@ -7,6 +7,7 @@ import { validateEnvVariables } from '@utils/controllerUtil';
 import { DatabaseService } from './databaseService';
 import { mapBalance } from './mapping';
 import { MappedBalance } from 'src/models/dbTypes';
+import { handleServiceError } from '@utils/errorUtil';
 
 // Valide que les variables d'environnement nécessaires sont définies
 validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE']);
@@ -24,10 +25,7 @@ export class BalancesService {
   /**
    * Récupère les données de solde de la base de données pour une plateforme spécifique.
    */
-  static async fetchDatabaseBalancesByPlatform(
-    platform: string,
-    retries: number = 3
-  ): Promise<MappedBalance[]> {
+  static async fetchDatabaseBalancesByPlatform(platform: string, retries: number = 3): Promise<MappedBalance[]> {
     try {
       const data = await this.fetchDatabaseBalances();
       return data.filter((item: MappedBalance) => item.platform === platform);
@@ -40,10 +38,8 @@ export class BalancesService {
         await new Promise((resolve) => setTimeout(resolve, delay));
         return this.fetchDatabaseBalancesByPlatform(platform, retries - 1);
       }
-      console.error('Failed to fetch current balance from platform', {
-        platform,
-        error: (error as Error).message
-      });
+
+      handleServiceError(error, 'fetchDatabaseBalancesByPlatform', `Erreur lors de la récupération des données de solde de la base de données sur ${platform}`);
       throw error;
     }
   }
@@ -51,10 +47,7 @@ export class BalancesService {
   /**
    * Récupère les données de solde actuelles d'une plateforme spécifique.
    */
-  static async fetchCurrentBalancesByPlatform(
-    platform: string,
-    retries: number = 3
-  ): Promise<MappedBalance[]> {
+  static async fetchCurrentBalancesByPlatform(platform: string, retries: number = 3): Promise<MappedBalance[]> {
     const errorPolicies = await loadErrorPolicies();
     try {
       const platformInstance = createPlatformInstance(platform);
@@ -66,10 +59,7 @@ export class BalancesService {
         await new Promise((resolve) => setTimeout(resolve, delay));
         return this.fetchCurrentBalancesByPlatform(platform, retries - 1);
       }
-      console.error('Failed to fetch current balance from platform', {
-        platform,
-        error: (error as Error).message
-      });
+      handleServiceError(error, 'fetchCurrentBalancesByPlatform', `Erreur lors de la récupération des données de solde actuelles de ${platform}`);
       throw error;
     }
   }
@@ -77,10 +67,7 @@ export class BalancesService {
   /**
    * Enregistre les données de solde fournies dans la base de données.
    */
-  static async saveDatabaseBalance(
-    mappedData: MappedBalance[],
-    platform: string
-  ): Promise<void> {
+  static async saveDatabaseBalance(mappedData: MappedBalance[], platform: string): Promise<void> {
     const collection = process.env.MONGODB_COLLECTION_BALANCE;
     const updateType = process.env.TYPE_BALANCE;
 
@@ -94,9 +81,7 @@ export class BalancesService {
   /**
    * Met à jour le solde pour une plateforme spécifique en récupérant les données actuelles et en les enregistrant dans la base de données.
    */
-  static async updateBalanceForPlatform(
-    platform: string
-  ): Promise<MappedBalance[]> {
+  static async updateBalanceForPlatform(platform: string): Promise<MappedBalance[]> {
     const data = await this.fetchCurrentBalancesByPlatform(platform);
     await this.saveDatabaseBalance(data, platform);
     return data;

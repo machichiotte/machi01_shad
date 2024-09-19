@@ -2,7 +2,7 @@ import { getData } from '@utils/dataUtil';
 import { LastUpdateService } from './lastUpdateService';
 import { deleteAllDataMDB, saveData } from './mongodbService';
 import { MappedCmc } from 'src/models/dbTypes';
-
+import { handleServiceError } from '@utils/errorUtil';
 interface FetchResponse {
   data: MappedCmc[];
   status: { total_count: number };
@@ -41,7 +41,7 @@ export class CmcService {
         if (status.total_count <= start) break;
       }
     } catch (error) {
-      console.error(`Erreur dans fetchCmcData: ${(error as Error).message}`);
+      handleServiceError(error, 'fetchCmcData', 'Erreur lors de la récupération des données CMC');
       throw error;
     }
 
@@ -58,7 +58,7 @@ export class CmcService {
       console.log(`🚀 ~ fetchDatabaseCmc:`, { collectionName, count: data.length });
       return data as MappedCmc[];
     } catch (error) {
-      console.error(`Erreur dans fetchDatabaseCmc: ${(error as Error).message}`, { error });
+      handleServiceError(error, 'fetchDatabaseCmc', 'Erreur lors de la récupération des données CMC de la base de données');
       throw error;
     }
   }
@@ -76,7 +76,7 @@ export class CmcService {
 
       return { status: true, message: 'Données CMC mises à jour avec succès', data, deleteResult, saveResult, totalCount: data.length };
     } catch (error) {
-      console.error(`Erreur dans updateDatabaseCmcData: ${(error as Error).message}`, { error });
+      handleServiceError(error, 'updateDatabaseCmcData', 'Erreur lors de la mise à jour des données CMC dans la base de données');
       throw error;
     }
   }
@@ -90,7 +90,7 @@ export class CmcService {
       console.log('Dernières données CMC récupérées', { count: data.length });
       return await this.updateDatabaseCmcData(data);
     } catch (error) {
-      console.error(`Erreur dans updateCmcData: ${(error as Error).message}`, { error });
+      handleServiceError(error, 'updateCmcData', 'Erreur lors de la mise à jour des données CMC');
       throw error;
     }
   }

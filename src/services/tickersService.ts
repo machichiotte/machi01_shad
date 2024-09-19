@@ -7,7 +7,7 @@ import { deleteAndReplaceAll } from './mongodbService'
 import { DatabaseService } from './databaseService'
 import { mapTickers } from './mapping'
 import { MappedTicker } from 'src/models/dbTypes'
-
+import { handleServiceError } from '@utils/errorUtil'
 export class TickersService {
 
   /**
@@ -93,8 +93,7 @@ export class TickersService {
       const data = await platformInstance.fetchTickers()
       return mapTickers(platform, data)
     } catch (error) {
-      console.log(`Error while fetching tickers for ${platform}:`, error as Error)
-
+      handleServiceError(error, 'fetchCurrentTickers', `Error fetching tickers for ${platform}`)
       if (retries > 0 && shouldRetry(platform, error as Error, errorPolicies)) {
         const delay = Math.pow(2, 3 - retries) * 1000
         console.log(`Retrying fetchCurrentTickers... (${3 - retries + 1}/3)`, {

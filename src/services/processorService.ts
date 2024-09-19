@@ -9,6 +9,7 @@ import { CmcService } from '@services/cmcService'
 import { OrdersService, } from '@services/ordersService'
 import { StrategyService } from './strategyService'
 import { getSymbolForPlatform } from '@utils/platformUtil'
+import { handleServiceError } from '@utils/errorUtil'
 
 const STABLECOINS: string[] = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'PAX', 'GUSD', 'HUSD', 'USDN'];
 const quoteCurrencies: string[] = ['USDT', 'BTC', 'ETH', 'USDC']
@@ -70,7 +71,7 @@ async function processBalanceChanges(differences: Difference[], platform: string
       await TradesService.saveTradesToDatabase(newTrades)
     }
   } catch (error) {
-    console.error(`Error handling balance differences for ${platform}:`, error)
+    handleServiceError(error, 'processBalanceChanges', `Error processing balance changes for ${platform}`)
     throw error
   }
 }
@@ -108,7 +109,7 @@ async function processDifference(difference: Difference, platform: string, ticke
         const mappedTrades = mapTrades(platform, tradeList, {})
         newTrades.push(...mappedTrades)
       } catch (error) {
-        console.error(`Error fetching trades for ${symbol}: ${(error as Error).message}`)
+        handleServiceError(error, 'fetchLastTrades', `Error fetching trades for ${symbol}`)
       }
     } else {
       console.log(`Symbol not available: ${symbol}`)

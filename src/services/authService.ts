@@ -3,6 +3,7 @@
 import bcrypt from 'bcrypt'; // Pour le hachage des mots de passe
 import crypto from 'crypto'; // Utilisation du module crypto intégré
 import { saveData, getOne } from './mongodbService';
+import { handleServiceError } from '@utils/errorUtil';
 
 // Interface pour représenter un utilisateur
 interface User {
@@ -46,7 +47,7 @@ export default class AuthService {
       );
       return true;
     } catch (error) {
-      console.log('🚀 ~ createUserDBService ~ error:', error);
+      handleServiceError(error, 'createUserDBService', 'Erreur lors de la création de l\'utilisateur');
       return false;
     }
   }
@@ -63,7 +64,7 @@ export default class AuthService {
       const user = await getOne(collection, { email }); // Filtrer par e-mail
       return user as User | null; // Retourne l'objet utilisateur trouvé ou null s'il n'est pas trouvé
     } catch (error) {
-      console.log('🚀 ~ findUserByEmail ~ error:', error);
+      handleServiceError(error, 'findUserByEmail', 'Erreur lors de la recherche de l\'utilisateur');
       return null; // Indique une erreur ou que l'utilisateur n'a pas été trouvé
     }
   }
@@ -78,9 +79,7 @@ export default class AuthService {
       console.log('Jeton de session généré avec succès.');
       return token;
     } catch (error) {
-      console.error('Échec de la génération du jeton de session', {
-        error: (error as Error).message
-      });
+      handleServiceError(error, 'generateSessionToken', 'Échec de la génération du jeton de session');
       throw new Error('Échec de la génération du jeton de session');
     }
   }
