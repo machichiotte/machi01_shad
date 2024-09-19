@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { OrdersService } from '../services/ordersService'
+import { OrdersService } from '@services/ordersService'
 import { handleControllerError } from '@utils/errorUtil'
 import { validateEnvVariables } from '@utils/controllerUtil'
 

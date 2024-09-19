@@ -16,9 +16,6 @@ interface User {
 export default class AuthService {
   /**
    * Compare un mot de passe en texte clair avec un mot de passe haché.
-   * @param {string} password - Le mot de passe en texte clair à comparer.
-   * @param {string} hashedPassword - Le mot de passe haché à comparer.
-   * @returns {Promise<boolean>} - Une promesse qui se résout à true si les mots de passe correspondent, false sinon.
    */
   public static async isPasswordMatch(
     password: string,

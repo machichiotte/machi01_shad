@@ -3,6 +3,7 @@ import { LastUpdateService } from './lastUpdateService';
 import { deleteAllDataMDB, saveData } from './mongodbService';
 import { MappedCmc } from 'src/models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
+
 interface FetchResponse {
   data: MappedCmc[];
   status: { total_count: number };

@@ -1,6 +1,6 @@
 // src/utils/processorUtil.ts
-import { Difference } from 'src/models/processorTypes'
-import { STABLECOINS } from 'src/constants'
+import { Difference } from '@models/processorTypes'
+import { STABLECOINS } from '@src/constants'
 import { MappedCmc, MappedStrategy, MappedTrade, MappedOrder, MappedTicker, MappedBalance, AssetMetrics } from 'src/models/dbTypes'
 
 /**

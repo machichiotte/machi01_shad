@@ -12,8 +12,8 @@ import { getSymbolForPlatform } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 import { removeDuplicateDifferences, logDifferenceType, areAllDataValid, isValidAssetMetrics, removeDuplicatesAndStablecoins } from '@utils/processorUtil'
 
-import { Difference, Balance, Ticker } from 'src/models/processorTypes'
-import { STABLECOINS, QUOTE_CURRENCIES } from 'src/constants'
+import { Difference, Balance, Ticker } from '@models/processorTypes'
+import { STABLECOINS, QUOTE_CURRENCIES } from '@src/constants'
 
 export class ProcessorService {
   /**

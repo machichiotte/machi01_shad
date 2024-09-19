@@ -1,6 +1,6 @@
 // src/services/cron/taskExecutor.ts
 import { sendMail } from './sendMail'
-import config from '../config'
+import config from '@services/config'
 import { getPlatforms } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 

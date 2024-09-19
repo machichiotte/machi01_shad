@@ -6,8 +6,7 @@ import { getTotalAmountAndBuy, getTotalSell } from './trades'
 import { MappedBalance, MappedOrder, MappedTrade, MappedTicker, MappedCmc, MappedStrategy } from '@models/dbTypes'
 import { AssetMetrics } from '@models/dbTypes'
 // Define stable coins
-//todo changer pour objet
-const stableCoins: string[] = ['USDT', 'USDC', 'DAI', 'BUSD', 'TUSD']
+import { STABLECOINS } from '@src/constants'
 
 /**
  * Default metrics object with initial values set to "N/A".
@@ -93,7 +92,7 @@ function calculateAssetMetrics(asset: string, platform: string, assetBalance: Ma
     platform
   }
 
-  if (stableCoins.includes(asset)) {
+  if (STABLECOINS.includes(asset)) {
     return { ...baseMetrics, status: 'stable coin' }
   }
 

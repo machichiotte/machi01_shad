@@ -1,4 +1,5 @@
 import { MappedTrade } from "@models/dbTypes"
+import { STABLECOINS } from "@src/constants"
 
 /**
  * Converts input data to JSON format based on the detected model type.
@@ -110,7 +111,7 @@ async function getTotalUSDTFromAPI(
   quote: string,
   total: number
 ): Promise<number> {
-  if (quote && !['USDT', 'BUSD', 'USDC'].includes(quote.toUpperCase())) {
+  if (quote && !STABLECOINS.includes(quote.toUpperCase())) {
     /*try {
         const response = await axios.get('URL_DE_L_API', {
           params: { date: dealTime, quote },

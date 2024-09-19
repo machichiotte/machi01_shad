@@ -1,5 +1,6 @@
 import { Trade, Market, Order, Tickers } from 'ccxt'
-import { getStableCoins, getTotalUSDT } from '@utils/mappingUtil'
+import { STABLECOINS } from '@src/constants'
+import { getTotalUSDT } from '@utils/mappingUtil'
 import { MappedBalance, MappedTrade, MappedOrder, MappedTicker, MappedMarket } from 'src/models/dbTypes'
 import { Balance, Balances } from 'ccxt'
 class Mapper {
@@ -135,7 +136,7 @@ class Mapper {
   static mapMarkets(platform: string, data: Market[]): MappedMarket[] {
     return Object.values(data)
       .filter((item): item is Market =>
-        getStableCoins().some((coin) => item?.quote === coin)
+        STABLECOINS.some((coin) => item?.quote === coin)
       )
       .map((item) => ({
         symbol: item?.id ?? '',
