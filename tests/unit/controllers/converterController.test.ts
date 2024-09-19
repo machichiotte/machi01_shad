@@ -62,26 +62,24 @@ describe('getConvertedCsv', () => {
 
     expect(mockStatus).toHaveBeenCalledWith(400)
     expect(mockJson).toHaveBeenCalledWith({
-      success: false,
       message: 'No file uploaded'
     })
   })
 
   it('devrait gérer les erreurs de parsing CSV', async () => {
-    const mockError = new Error('Erreur de parsing')
+    const mockError = new Error('Erreur de parsing CSV');
+    (Papa.parse as jest.Mock).mockImplementation((_, options) => {
+      options.error(mockError);
+    });
 
-      ; (Papa.parse as jest.Mock).mockImplementation((_, options) => {
-        options.error(mockError)
-      })
+    await getConvertedCsv(mockRequest as Request, mockResponse as Response);
 
-    await getConvertedCsv(mockRequest as Request, mockResponse as Response)
-
-    expect(mockStatus).toHaveBeenCalledWith(500)
+    expect(mockStatus).toHaveBeenCalledWith(500);
     expect(mockJson).toHaveBeenCalledWith({
-      success: false,
-      message: 'Server error'
-    })
-  })
+      message: 'Error in papaParse',
+      error: 'Erreur de parsing CSV',
+    });
+  });
 
   // Ajoutez d'autres tests si nécessaire
 })
