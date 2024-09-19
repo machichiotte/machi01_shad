@@ -121,4 +121,16 @@ export class TickersService {
       updateType as string
     )
   }
+
+  /**
+ * Updates the tickers for a specified platform.
+ */
+  static async updateTickersForPlatform(platform: string): Promise<void> {
+    try {
+      const currentTickers = await this.fetchCurrentTickers(platform, 3)
+      await this.saveDatabaseTickers(currentTickers, platform)
+    } catch (error) {
+      handleServiceError(error, 'updateTickersForPlatform', `Erreur lors de la mise à jour des tickers pour ${platform}`)
+    }
+  }
 }

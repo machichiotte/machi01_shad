@@ -1,31 +1,24 @@
 // src/services/cron/taskExecutor.ts
 import { sendMail } from './sendMail'
 import config from '../config'
-import { errorLogger } from '@utils/loggerUtil'
 import { getPlatforms } from '@utils/platformUtil'
+import { handleServiceError } from '@utils/errorUtil'
 
-import { updateMarketsForPlatform, updateTickersForPlatform, updateBalancesForPlatform } from './updateFunctions'
+import { MarketsService } from '@services/marketsService'
+import { TickersService } from '@services/tickersService'
+import { BalancesService } from '@services/balancesService'
 
 /**
  * Executes a cron task with retry mechanism and error handling
  */
-async function executeCronTask(
-  task: () => Promise<void>,
-  isCritical: boolean = false,
-  retries: number = 3
-): Promise<void> {
+async function executeCronTask(task: () => Promise<void>, isCritical: boolean = false, retries: number = 3): Promise<void> {
   let attempts = 0
   while (attempts < retries) {
     try {
       await task()
       return
     } catch (error) {
-      console.error(`Task execution failed: ${(error as Error).message}`, {
-        error
-      })
-      errorLogger.error(`Task execution failed: ${(error as Error).message}`, {
-        error
-      })
+      handleServiceError(error, 'executeCronTask', `Task execution failed`)
       if (isCritical) {
         if (attempts < retries - 1) {
           await new Promise((res) => setTimeout(res, 5000 * (attempts + 1)))
@@ -63,19 +56,19 @@ async function executeForPlatforms(
  * Cron function for updating tickers across all platforms
  */
 export async function cronTickers(): Promise<void> {
-  await executeForPlatforms('updateTickers', updateTickersForPlatform)
+  await executeForPlatforms('updateTickers', TickersService.updateTickersForPlatform)
 }
 
 /**
  * Cron function for updating markets across all platforms
  */
 export async function cronMarkets(): Promise<void> {
-  await executeForPlatforms('updateMarkets', updateMarketsForPlatform)
+  await executeForPlatforms('updateMarkets', MarketsService.updateMarketsForPlatform)
 }
 
 /**
  * Cron function for updating balances across all platforms
  */
 export async function cronBalances(): Promise<void> {
-  await executeForPlatforms('updateBalances', updateBalancesForPlatform)
+  await executeForPlatforms('updateBalances', BalancesService.updateBalancesForPlatform)
 }

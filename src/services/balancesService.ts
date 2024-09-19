@@ -9,6 +9,9 @@ import { mapBalance } from './mapping';
 import { MappedBalance } from 'src/models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 
+import { processBalanceChanges, compareBalances, calculateAllMetrics } from '@services/processorService'
+import { deleteAndReplaceAll } from '@services/mongodbService'
+
 // Valide que les variables d'environnement nécessaires sont définies
 validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE']);
 
@@ -85,5 +88,36 @@ export class BalancesService {
     const data = await this.fetchCurrentBalancesByPlatform(platform);
     await this.saveDatabaseBalance(data, platform);
     return data;
+  }
+
+  /**
+ * Updates the balances for a specified platform, compares with previous balances,
+ * and processes any changes. Also calculates and saves metrics.
+ */
+  static async updateBalancesForPlatform(platform: string): Promise<void> {
+    try {
+      const [currentBalances, previousBalances] = await Promise.all([
+        this.fetchCurrentBalancesByPlatform(platform, 3),
+        this.fetchDatabaseBalancesByPlatform(platform, 3)
+      ])
+
+      const differences = compareBalances(previousBalances, currentBalances)
+      if (differences.length > 0) {
+        console.log(
+          `Différences de solde détectées pour ${platform}:`,
+          differences
+        )
+        await Promise.all([
+          BalancesService.saveDatabaseBalance(currentBalances, platform),
+          processBalanceChanges(differences, platform)
+        ])
+      }
+
+      const collectionName = process.env.MONGODB_COLLECTION_SHAD as string
+      const metrics = await calculateAllMetrics()
+      await deleteAndReplaceAll(collectionName, metrics)
+    } catch (error) {
+      handleServiceError(error, 'updateBalancesForPlatform', `Erreur lors de la mise à jour des balances pour ${platform}`)
+    }
   }
 }

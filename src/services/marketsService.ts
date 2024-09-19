@@ -79,4 +79,16 @@ export class MarketsService {
     console.log(`Market data for ${platform} updated in the database. Total records: ${mappedData.length}.`);
     return mappedData;
   }
+
+  /**
+ * Updates the markets for a specified platform.
+ */
+  static async updateMarketsForPlatform(platform: string): Promise<void> {
+    try {
+      const currentMarkets = await this.fetchCurrentMarkets(platform, 3)
+      await this.saveDatabaseMarkets(currentMarkets, platform)
+    } catch (error) {
+      handleServiceError(error, 'updateMarketsForPlatform', `Erreur lors de la mise à jour des marchés pour ${platform}`)
+    }
+  }
 }
