@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { OrdersService } from '@services/ordersService'
-import { handleErrorResponse } from '@utils/errorUtil'
+import { handleControllerError } from '@utils/errorUtil'
 import { getOrders } from '@controllers/ordersController'
 
 jest.mock('@services/ordersService')
@@ -43,7 +43,7 @@ describe('ordersController', () => {
 
       await getOrders(mockRequest as Request, mockResponse as Response)
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'getOrders'

@@ -6,7 +6,7 @@ import {
 import { getDataMDB } from '@services/mongodbService'
 import { Request, Response } from 'express'
 
-import { handleErrorResponse } from '@utils/errorUtil'
+import { handleControllerError } from '@utils/errorUtil'
 
 validateEnvVariables(['MONGODB_COLLECTION_LAST_UPDATE'])
 
@@ -79,7 +79,7 @@ async function getLastUpdate(req: Request, res: Response): Promise<void> {
         error: error instanceof Error ? error.message : 'Erreur inconnue'
       }
     )
-    handleErrorResponse(res, error as Error, 'getLastUpdate')
+    handleControllerError(res, error as Error, 'getLastUpdate')
   }
 }
 

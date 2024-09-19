@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { getShad } from '@controllers/shadController'
 import { ShadService } from '@services/shadService'
-import { handleErrorResponse } from '@utils/errorUtil'
+import { handleControllerError } from '@utils/errorUtil'
 
 jest.mock('@services/shadService')
 jest.mock('@utils/errorUtil')
@@ -43,7 +43,7 @@ describe('getShad', () => {
     await getShad(mockRequest as Request, mockResponse as Response)
 
     expect(ShadService.fetchShadInDatabase).toHaveBeenCalled()
-    expect(handleErrorResponse).toHaveBeenCalledWith(
+    expect(handleControllerError).toHaveBeenCalledWith(
       mockResponse,
       mockError,
       'getShad'

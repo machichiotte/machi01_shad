@@ -19,22 +19,25 @@ export interface ErrorPolicies {
 /*
 * Gestion des erreurs de réponse
 */
-function handleErrorResponse(res: Response, error: Error, functionName: string): void {
+function handleControllerError(res: Response, error: unknown, functionName: string): void {
   if (error instanceof AuthenticationError) {
-    console.log(
-      `🚀 ~ file: errorUtil.ts:8 ~ handleErrorResponse ~ error:`,
-      error
-    )
-
     console.error(`Authentication error in ${functionName}:`, error.message)
     res.status(401).json({
-      success: false,
-      error: `Authentication error in ${functionName}`,
-      message: error.message
+      message: `Authentication error in ${functionName}`,
+      error: error.message
+    })
+  } else if (error instanceof Error) {
+    console.error(`Error in ${functionName}:`, error)
+    res.status(500).json({
+      message: `Error in ${functionName}`,
+      error: error.message
     })
   } else {
-    console.error(`Error in ${functionName}:`, error)
-    res.status(500).json({ success: false, error })
+    console.error(`Unknown error in ${functionName}:`, error)
+    res.status(500).json({
+      message: `Unknown error in ${functionName}`,
+      error: error
+    })
   }
 }
 
@@ -61,4 +64,4 @@ function shouldRetry(platform: string, error: Error, errorPolicies: ErrorPolicie
   return true // Par défaut, retenter si la politique n'est pas définie
 }
 
-export { handleErrorResponse, loadErrorPolicies, shouldRetry }
+export { handleControllerError as handleControllerError, loadErrorPolicies, shouldRetry }

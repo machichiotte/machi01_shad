@@ -6,7 +6,7 @@ import {
 } from '@controllers/strategyController'
 import { StrategyService } from '@services/strategyService'
 import { LastUpdateService } from '@services/lastUpdateService'
-import { handleErrorResponse } from '@utils/errorUtil'
+import { handleControllerError } from '@utils/errorUtil'
 
 jest.mock('@services/strategyService')
 jest.mock('@services/lastUpdateService')
@@ -51,7 +51,7 @@ describe('strategyController', () => {
 
       await getStrat(mockRequest as Request, mockResponse as Response)
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'getStrat'
@@ -119,7 +119,7 @@ describe('strategyController', () => {
 
       await updateStrategyById(mockRequest as Request, mockResponse as Response)
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'updateStrategyById'

@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
 import { getMarkets } from '@controllers/marketsController'
 import { MarketsService } from '@services/marketsService'
-import { handleErrorResponse } from '@utils/errorUtil'
-import { errorLogger } from '@utils/loggerUtil'
+import { handleControllerError } from '@utils/errorUtil'
 
 jest.mock('@services/marketsService')
 jest.mock('@utils/errorUtil')
@@ -37,11 +36,7 @@ describe('getMarkets', () => {
 
     await getMarkets(mockRequest as Request, mockResponse as Response)
 
-    expect(errorLogger.error).toHaveBeenCalledWith(
-      'Échec de la récupération des données de marché.',
-      { error: mockError.message }
-    )
-    expect(handleErrorResponse).toHaveBeenCalledWith(
+    expect(handleControllerError).toHaveBeenCalledWith(
       mockResponse,
       mockError,
       'getMarkets'

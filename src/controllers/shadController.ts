@@ -1,6 +1,6 @@
 // src/controllers/shadController.ts
 import { Request, Response } from 'express'
-import { handleErrorResponse } from '../utils/errorUtil'
+import { handleControllerError } from '../utils/errorUtil'
 import { validateEnvVariables } from '../utils/controllerUtil'
 import { ShadService } from '../services/shadService'
 import { TrailingStopService } from '../services/trailingStopService'
@@ -18,10 +18,10 @@ async function getShad(req: Request, res: Response): Promise<void> {
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error(`Erreur dans getShad: ${error.message}`, { error })
-      handleErrorResponse(res, error, 'getShad')
+      handleControllerError(res, error, 'getShad')
     } else {
       console.error('Erreur inconnue dans getShad')
-      handleErrorResponse(res, new Error('Erreur inconnue'), 'getShad')
+      handleControllerError(res, new Error('Erreur inconnue'), 'getShad')
     }
   }
 }
@@ -40,7 +40,7 @@ async function handleTrailingStopHedge(req: Request, res: Response): Promise<voi
     console.log(`Mise à jour des ordres de trailing stop terminée`, { count: updatedOrders.length });
     res.status(200).json({ updatedOrders });
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'handleTrailingStopHedge');
+    handleControllerError(res, error as Error, 'handleTrailingStopHedge');
   }
 }
 

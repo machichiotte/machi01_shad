@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
-import { handleErrorResponse } from '../utils/errorUtil'
-import { errorLogger } from '../utils/loggerUtil'
+import { handleControllerError } from '../utils/errorUtil'
 import { validateEnvVariables } from '../utils/controllerUtil'
 import { MarketsService } from '../services/marketsService'
 
@@ -14,10 +13,7 @@ async function getMarkets(req: Request, res: Response): Promise<void> {
     const data = await MarketsService.getSavedMarkets()
     res.json(data)
   } catch (error) {
-    errorLogger.error('Échec de la récupération des données de marché.', {
-      error: (error as Error).message
-    })
-    handleErrorResponse(res, error as Error, 'getMarkets')
+    handleControllerError(res, error as Error, 'getMarkets')
   }
 }
 

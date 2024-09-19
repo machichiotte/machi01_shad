@@ -1,6 +1,6 @@
 // src/controllers/strategyController.ts
 import { Request, Response } from 'express'
-import { handleErrorResponse } from '@utils/errorUtil'
+import { handleControllerError } from '@utils/errorUtil'
 import { LastUpdateService } from '@services/lastUpdateService'
 import { StrategyService } from '@services/strategyService'
 
@@ -17,7 +17,7 @@ async function getStrat(req: Request, res: Response): Promise<void> {
       error
     )
     //console.error("Échec de la récupération des stratégies", { error: (error as Error).message });
-    handleErrorResponse(res, error as Error, 'getStrat')
+    handleControllerError(res, error as Error, 'getStrat')
   }
 }
 
@@ -54,7 +54,7 @@ async function updateStrategyById(req: Request, res: Response): Promise<void> {
     )
     res.json(result)
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'updateStrategyById')
+    handleControllerError(res, error as Error, 'updateStrategyById')
   }
 }
 

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { OrdersService } from '../services/ordersService'
-import { handleErrorResponse } from '@utils/errorUtil'
+import { handleControllerError } from '@utils/errorUtil'
 import { validateEnvVariables } from '@utils/controllerUtil'
 
 validateEnvVariables(['MONGODB_COLLECTION_ACTIVE_ORDERS', 'TYPE_ACTIVE_ORDERS'])
@@ -14,7 +14,7 @@ async function getOrders(req: Request, res: Response): Promise<void> {
     const orders = await OrdersService.fetchDatabaseOrders()
     res.status(200).json(orders)
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'getOrders')
+    handleControllerError(res, error as Error, 'getOrders')
   }
 }
 
@@ -27,7 +27,7 @@ async function updateOrders(req: Request, res: Response): Promise<void> {
     const mappedData = await OrdersService.updateOrdersFromServer(platform)
     res.status(200).json(mappedData)
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'updateOrders')
+    handleControllerError(res, error as Error, 'updateOrders')
   }
 }
 
@@ -40,7 +40,7 @@ async function deleteOrder(req: Request, res: Response): Promise<void> {
     await OrdersService.deleteOrder(platform, oId, symbol)
     res.status(200)
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'deleteOrder')
+    handleControllerError(res, error as Error, 'deleteOrder')
   }
 }
 
@@ -72,7 +72,7 @@ async function createMarketOrder(req: Request, res: Response, orderType: 'buy' |
     )
     res.status(200).json({ message: result })
   } catch (error) {
-    handleErrorResponse(res, error as Error, `createMarketOrder (${orderType})`)
+    handleControllerError(res, error as Error, `createMarketOrder (${orderType})`)
   }
 }
 
@@ -95,7 +95,7 @@ async function createLimitOrder(req: Request, res: Response, orderType: 'buy' | 
       `🚀 ~ file: ordersController.ts:63 ~ createLimitOrder ~ error:`,
       error
     )
-    handleErrorResponse(res, error as Error, `createLimitOrder (${orderType})`)
+    handleControllerError(res, error as Error, `createLimitOrder (${orderType})`)
     res
       .status(500)
       .json({
@@ -134,7 +134,7 @@ async function cancelAllOrders(req: Request, res: Response): Promise<void> {
     const result = await OrdersService.cancelAllOrders(platform, asset)
     res.status(200).json({ message: result.message })
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'cancelAllOrders')
+    handleControllerError(res, error as Error, 'cancelAllOrders')
   }
 }
 
@@ -147,7 +147,7 @@ async function cancelAllSellOrders(req: Request, res: Response): Promise<void> {
     const result = await OrdersService.cancelAllSellOrders(platform, asset)
     res.status(200).json({ message: result.message })
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'cancelAllSellOrders')
+    handleControllerError(res, error as Error, 'cancelAllSellOrders')
   }
 }
 

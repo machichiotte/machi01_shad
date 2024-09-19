@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
 import { getCmc, updateCmc } from '@controllers/cmcController'
 import { CmcService } from '@services/cmcService'
-import { handleErrorResponse } from '@utils/errorUtil'
-import { errorLogger } from '@utils/loggerUtil'
+import { handleControllerError } from '@utils/errorUtil'
 
 jest.mock('@services/cmcService')
 jest.mock('@utils/errorUtil')
@@ -54,11 +53,7 @@ describe('CMC Controller', () => {
 
             await getCmc(mockRequest as Request, mockResponse as Response)
 
-            expect(errorLogger.error).toHaveBeenCalledWith(
-                `Erreur dans getCmc: ${mockError.message}`,
-                { error: mockError }
-            )
-            expect(handleErrorResponse).toHaveBeenCalledWith(
+            expect(handleControllerError).toHaveBeenCalledWith(
                 mockResponse,
                 mockError,
                 'getCmc'
@@ -85,11 +80,7 @@ describe('CMC Controller', () => {
 
             await updateCmc(mockRequest as Request, mockResponse as Response)
 
-            expect(errorLogger.error).toHaveBeenCalledWith(
-                `Erreur dans updateCmc: ${mockError.message}`,
-                { error: mockError }
-            )
-            expect(handleErrorResponse).toHaveBeenCalledWith(
+            expect(handleControllerError).toHaveBeenCalledWith(
                 mockResponse,
                 mockError,
                 'updateCmc'

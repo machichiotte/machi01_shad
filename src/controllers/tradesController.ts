@@ -1,7 +1,7 @@
 // src/controllers/tradesController.ts
 import { Request, Response } from 'express'
 import { TradesService } from '@services/tradesService'
-import { handleErrorResponse } from '@utils/errorUtil'
+import { handleControllerError } from '@utils/errorUtil'
 
 /**
  * Récupère tous les trades de la base de données.
@@ -11,7 +11,7 @@ async function getTrades(req: Request, res: Response): Promise<void> {
     const trades = await TradesService.fetchDatabaseTrades()
     res.status(200).json(trades)
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'getTrades')
+    handleControllerError(res, error as Error, 'getTrades')
   }
 }
 
@@ -25,7 +25,7 @@ async function updateTradeById(req: Request, res: Response): Promise<void> {
     const result = await TradesService.updateTradeById(tradeId, updatedTrade)
     res.status(200).json(result)
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'updateTradeById')
+    handleControllerError(res, error as Error, 'updateTradeById')
   }
 }
 
@@ -38,7 +38,7 @@ async function addTradesManually(req: Request, res: Response): Promise<void> {
     const result = await TradesService.addTradesManually(tradesData)
     res.status(200).json(result)
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'addTradesManually')
+    handleControllerError(res, error as Error, 'addTradesManually')
   }
 }
 
@@ -51,7 +51,7 @@ async function updateTrades(req: Request, res: Response): Promise<void> {
     const result = await TradesService.updateTrades(platform)
     res.status(200).json(result)
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'updateTrades')
+    handleControllerError(res, error as Error, 'updateTrades')
   }
 }
 
@@ -64,7 +64,7 @@ async function fetchLastTrades(req: Request, res: Response): Promise<void> {
     const trades = await TradesService.fetchLastTrades(platform, symbol)
     res.status(200).json(trades)
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'fetchLastTrades')
+    handleControllerError(res, error as Error, 'fetchLastTrades')
   }
 }
 
@@ -80,7 +80,7 @@ async function saveTradesToDatabase(
     await TradesService.saveTradesToDatabase(newTrades)
     res.status(200).json({ message: 'Trades sauvegardés avec succès' })
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'saveTradesToDatabase')
+    handleControllerError(res, error as Error, 'saveTradesToDatabase')
   }
 }
 
@@ -96,7 +96,7 @@ async function saveAllTradesToDatabase(
     await TradesService.saveAllTradesToDatabase(newTrades)
     res.status(200).json({ message: 'Tous les trades sauvegardés avec succès' })
   } catch (error) {
-    handleErrorResponse(res, error as Error, 'saveAllTradesToDatabase')
+    handleControllerError(res, error as Error, 'saveAllTradesToDatabase')
   }
 }
 

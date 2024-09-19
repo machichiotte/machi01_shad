@@ -1,7 +1,6 @@
 // src/controllers/cmcController.ts
 import { Request, Response } from 'express'
-import { handleErrorResponse } from '@utils/errorUtil'
-import { errorLogger } from '@utils/loggerUtil'
+import { handleControllerError } from '@utils/errorUtil'
 import { validateEnvVariables } from '@utils/controllerUtil'
 import { CmcService } from '@services/cmcService'
 
@@ -19,8 +18,7 @@ async function getCmc(req: Request, res: Response): Promise<void> {
     })
     res.json(data)
   } catch (error) {
-    errorLogger.error(`Erreur dans getCmc: ${(error as Error).message}`, { error })
-    handleErrorResponse(res, error as Error, 'getCmc')
+    handleControllerError(res, error as Error, 'getCmc')
   }
 }
 
@@ -32,8 +30,7 @@ async function updateCmc(req: Request, res: Response): Promise<void> {
     const result = await CmcService.updateCmcData()
     res.status(200).json(result)
   } catch (error) {
-    errorLogger.error(`Erreur dans updateCmc: ${(error as Error).message}`, { error })
-    handleErrorResponse(res, error as Error, 'updateCmc')
+    handleControllerError(res, error as Error, 'updateCmc')
   }
 }
 

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { TickersService } from '@services/tickersService'
-import { handleErrorResponse } from '@utils/errorUtil'
+import { handleControllerError } from '@utils/errorUtil'
 import {
   getAllTickers,
   getAllTickersByPlatform,
@@ -47,7 +47,7 @@ describe('Tickers Controller', () => {
 
       await getAllTickers(mockRequest as Request, mockResponse as Response)
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'getAllTickers'

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { TradesService } from '@services/tradesService'
-import { handleErrorResponse } from '@utils/errorUtil'
+import { handleControllerError } from '@utils/errorUtil'
 import {
   getTrades,
   updateTradeById,
@@ -81,7 +81,7 @@ describe('TradesController', () => {
 
       await getTrades(mockRequest as Request, mockResponse as Response)
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'getTrades'
@@ -131,7 +131,7 @@ describe('TradesController', () => {
 
       await updateTradeById(mockRequest as Request, mockResponse as Response)
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'updateTradeById'
@@ -193,7 +193,7 @@ describe('TradesController', () => {
 
       await addTradesManually(mockRequest as Request, mockResponse as Response)
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'addTradesManually'
@@ -226,7 +226,7 @@ describe('TradesController', () => {
 
       await updateTrades(mockRequest as Request, mockResponse as Response)
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'updateTrades'
@@ -289,7 +289,7 @@ describe('TradesController', () => {
 
       await fetchLastTrades(mockRequest as Request, mockResponse as Response)
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'fetchLastTrades'
@@ -360,7 +360,7 @@ describe('TradesController', () => {
         mockResponse as Response
       )
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'saveTradesToDatabase'
@@ -431,7 +431,7 @@ describe('TradesController', () => {
         mockResponse as Response
       )
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'saveAllTradesToDatabase'

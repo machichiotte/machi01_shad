@@ -4,7 +4,7 @@ import {
   updateCurrentBalance
 } from '@controllers/balanceController'
 import { BalancesService } from '@services/balancesService'
-import { handleErrorResponse } from '@utils/errorUtil'
+import { handleControllerError } from '@utils/errorUtil'
 
 jest.mock('@services/balancesService')
 jest.mock('@utils/errorUtil')
@@ -43,7 +43,7 @@ describe('Balance Controller', () => {
 
       await getBalances(mockRequest as Request, mockResponse as Response)
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'getBalances'
@@ -84,7 +84,7 @@ describe('Balance Controller', () => {
         mockResponse as Response
       )
 
-      expect(handleErrorResponse).toHaveBeenCalledWith(
+      expect(handleControllerError).toHaveBeenCalledWith(
         mockResponse,
         mockError,
         'updateCurrentBalance'
