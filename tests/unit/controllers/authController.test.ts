@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { registerUser, loginUser } from '@controllers/authController'
-import AuthService from '@services/authService'
+import { AuthService } from '@services/authService'
 
 jest.mock('@services/authService')
 
