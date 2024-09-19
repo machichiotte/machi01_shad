@@ -1,7 +1,7 @@
 // src/services/cron/sendMail.ts
 import nodemailer, { Transporter, SentMessageInfo } from 'nodemailer'
 import config from '../config'
-import { errorLogger } from '@utils/loggerUtil'
+import { handleServiceError } from '@utils/errorUtil'
 
 const transporter: Transporter = nodemailer.createTransport(config.smtp)
 
@@ -23,11 +23,7 @@ async function sendMail(options: EmailOptions): Promise<SentMessageInfo> {
     console.log(`Email sent: ${info.response}`)
     return info
   } catch (error) {
-    if (error instanceof Error) {
-      errorLogger.error(`Error sending email: ${error.message}`, { error })
-    } else {
-      errorLogger.error(`Error sending email: Unknown error`, { error })
-    }
+    handleServiceError(error, 'sendMail', `Error sending email`)
     throw error
   }
 }

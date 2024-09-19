@@ -1,7 +1,7 @@
 // src/services/cron/cronTasks.ts
 import cron from 'node-cron'
 import config from '../config'
-import { errorLogger } from '@utils/loggerUtil'
+import { handleServiceError } from '@utils/errorUtil'
 
 import { cronTickers, cronMarkets, cronBalances } from './taskExecutor'
 
@@ -47,7 +47,7 @@ async function initializeCronTasks(): Promise<void> {
 
     console.log('All Cron tasks have been successfully initialized.')
   } catch (error) {
-    errorLogger.error('Error during Cron tasks initialization', { error })
+    handleServiceError(error, 'initializeCronTasks', `Error initializing Cron tasks`)
     throw error
   }
 }
