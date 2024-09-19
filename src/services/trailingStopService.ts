@@ -27,27 +27,25 @@ export class TrailingStopService {
         binance: { orders: 50, period: 10000 }
     };
 
-    static async handleTrailingStopHedgeAssets(simplifiedSelectedAssets: Asset[]): Promise<UpdatedOrder[]> {
+    static async handleTrailingStopHedge(
+        simplifiedSelectedAssets?: Asset[]
+    ): Promise<UpdatedOrder[]> {
+        // Récupérer les balances de la base de données et les plus hauts prix en parallèle
         const [balanceFromDb, highestPrices] = await Promise.all([
             BalancesService.fetchDatabaseBalances(),
             ShadService.getHighestPrices()
         ]);
 
-        const balanceFromDbFiltered = this.filterBalances(balanceFromDb, simplifiedSelectedAssets);
+        // Si les actifs sélectionnés sont fournis, filtrer les balances
+        const balanceFromDbFiltered = simplifiedSelectedAssets
+            ? this.filterBalances(balanceFromDb, simplifiedSelectedAssets)
+            : balanceFromDb;
+
+        // Grouper les balances par plateforme
         const symbolsAndBalanceByPlatform = this.groupBalancesByPlatform(balanceFromDbFiltered);
 
-        return this.processTrailingStops(symbolsAndBalanceByPlatform, highestPrices);
-    }
-
-    static async handleTrailingStopHedge(): Promise<UpdatedOrder[]> {
-        const [balanceFromDb, highestPrices] = await Promise.all([
-            BalancesService.fetchDatabaseBalances(),
-            ShadService.getHighestPrices()
-        ]);
-
-        const symbolsAndBalanceByPlatform = this.groupBalancesByPlatform(balanceFromDb);
-
-        return this.processTrailingStops(symbolsAndBalanceByPlatform, highestPrices, true);
+        // Processus de trailing stop
+        return this.processTrailingStops(symbolsAndBalanceByPlatform, highestPrices, !simplifiedSelectedAssets);
     }
 
     private static filterBalances(balances: MappedBalance[], selectedAssets: Asset[]): MappedBalance[] {

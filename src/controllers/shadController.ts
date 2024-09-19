@@ -26,38 +26,22 @@ async function getShad(req: Request, res: Response): Promise<void> {
   }
 }
 
-async function handleTrailingStopHedgeAssets(req: Request, res: Response): Promise<void> {
-  try {
-    const simplifiedSelectedAssets = JSON.parse(req.params.simplifiedSelectedAssets as string) as Array<{ base: string, platform: string }>;
-    const updatedOrders = await TrailingStopService.handleTrailingStopHedgeAssets(simplifiedSelectedAssets);
-    console.log(`Mise à jour des ordres de trailing stop terminée`, { count: updatedOrders.length });
-    res.status(200).json({ updatedOrders });
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error(`Erreur dans handleTrailingStopHedgeAssets: ${error.message}`, { error });
-      handleErrorResponse(res, error, 'handleTrailingStopHedgeAssets');
-    } else {
-      console.error('Erreur inconnue dans handleTrailingStopHedgeAssets');
-      handleErrorResponse(res, new Error('Erreur inconnue'), 'handleTrailingStopHedgeAssets');
-    }
-  }
-}
-
 async function handleTrailingStopHedge(req: Request, res: Response): Promise<void> {
-  console.log('handleTrailingStopHedge');
   try {
-    const updatedOrders = await TrailingStopService.handleTrailingStopHedge();
+    // Vérifie si des actifs sélectionnés sont fournis dans les paramètres, sinon les définit comme undefined
+    const simplifiedSelectedAssets = req.params.simplifiedSelectedAssets
+      ? JSON.parse(req.params.simplifiedSelectedAssets as string) as Array<{ base: string, platform: string }>
+      : undefined;
+
+    // Appelle le service avec ou sans les actifs sélectionnés
+    const updatedOrders = await TrailingStopService.handleTrailingStopHedge(simplifiedSelectedAssets);
+
+    // Log et réponse HTTP
     console.log(`Mise à jour des ordres de trailing stop terminée`, { count: updatedOrders.length });
     res.status(200).json({ updatedOrders });
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error(`Erreur dans handleTrailingStopHedge: ${error.message}`, { error });
-      handleErrorResponse(res, error, 'handleTrailingStopHedge');
-    } else {
-      console.error('Erreur inconnue dans handleTrailingStopHedge');
-      handleErrorResponse(res, new Error('Erreur inconnue'), 'handleTrailingStopHedge');
-    }
+  } catch (error) {
+    handleErrorResponse(res, error as Error, 'handleTrailingStopHedge');
   }
 }
 
-export { getShad, handleTrailingStopHedge, handleTrailingStopHedgeAssets }
+export { getShad, handleTrailingStopHedge }
