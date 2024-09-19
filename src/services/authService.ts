@@ -13,7 +13,7 @@ interface User {
 }
 
 // Définition de la classe AuthService
-export default class AuthService {
+export class AuthService {
   /**
    * Compare un mot de passe en texte clair avec un mot de passe haché.
    */

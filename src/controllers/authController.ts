@@ -1,6 +1,6 @@
 // src/controllers/authController.ts
 import { Request, Response } from 'express'
-import AuthService from '@services/authService'
+import { AuthService } from '@services/authService'
 import { handleControllerError } from '@utils/errorUtil'
 
 /**
