@@ -4,6 +4,9 @@ import { deleteAllDataMDB, saveData } from './mongodbService';
 import { MappedCmc } from 'src/models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 
+const COLLECTION_NAME = process.env.MONGODB_COLLECTION_CMC as string;
+const COLLECTION_TYPE = process.env.TYPE_CMC as string;
+
 interface FetchResponse {
   data: MappedCmc[];
   status: { total_count: number };
@@ -53,8 +56,7 @@ export class CmcService {
    * Retrieves the latest CMC data from the database.
    */
   public static async fetchDatabaseCmc(): Promise<MappedCmc[]> {
-    const collectionName = process.env.MONGODB_COLLECTION_CMC as string;
-    return await getData(collectionName) as MappedCmc[];
+    return await getData(COLLECTION_NAME) as MappedCmc[];
   }
 
 
@@ -62,11 +64,10 @@ export class CmcService {
    * Updates the CMC data in the database.
    */
   public static async updateDatabaseCmcData(data: MappedCmc[]): Promise<object> {
-    const collectionName = process.env.MONGODB_COLLECTION_CMC as string, collectionType = process.env.TYPE_CMC as string;
     try {
-      const deleteResult = await deleteAllDataMDB(collectionName);
-      const saveResult = await saveData(collectionName, data);
-      await LastUpdateService.saveLastUpdateToDatabase(collectionType, '');
+      const deleteResult = await deleteAllDataMDB(COLLECTION_NAME);
+      const saveResult = await saveData(COLLECTION_NAME, data);
+      await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE, '');
       console.log('Données CMC mises à jour dans la base de données', { deleteResult, saveResult, totalCount: data.length });
 
       return { status: true, message: 'Données CMC mises à jour avec succès', data, deleteResult, saveResult, totalCount: data.length };

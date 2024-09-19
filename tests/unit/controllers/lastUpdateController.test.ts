@@ -68,11 +68,16 @@ describe('lastUpdateController', () => {
         { platform: 'test1', type: 'type1' },
         { platform: 'test2', type: 'type2' }
       ]
+
         ; (LastUpdateService.fetchDatabaseLastUpdate as jest.Mock).mockResolvedValue(mockData)
 
       await getLastUpdate(mockRequest as Request, mockResponse as Response)
 
-      expect(mockJson).toHaveBeenCalledWith(mockData)
+      expect(mockJson).toHaveBeenCalledWith({
+
+        message: 'Dernières mises à jour récupérées',
+        data: mockData
+      })
     })
   })
 
@@ -97,9 +102,12 @@ describe('lastUpdateController', () => {
 
       expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalledWith('testType', 'test')
       expect(mockJson).toHaveBeenCalledWith({
-        platform: 'test',
-        type: 'testType',
-        timestamp: mockDate.toISOString()
+        message: "Dernière mise à jour mise à jour",
+        data: {
+          platform: 'test',
+          type: 'testType',
+          timestamp: mockDate.toISOString()
+        }
       })
 
       // Restaurer l'implémentation originale de Date

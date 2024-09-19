@@ -1,56 +1,119 @@
 import { Request, Response } from 'express'
-import { getShad } from '@controllers/shadController'
+import { getShad, handleTrailingStopHedge } from '@controllers/shadController'
 import { ShadService } from '@services/shadService'
+import { TrailingStopService } from '@services/trailingStopService';
 import { handleControllerError } from '@utils/errorUtil'
 
+// Mock des dépendances
 jest.mock('@services/shadService')
 jest.mock('@utils/errorUtil')
+jest.mock('@services/trailingStopService');
 
-describe('getShad', () => {
-  let mockRequest: Partial<Request>
-  let mockResponse: Partial<Response>
-  let mockJson: jest.Mock
-  let consoleErrorSpy: jest.SpyInstance
+describe('shadController', () => {
+  describe('getShad', () => {
+    let mockRequest: Partial<Request>
+    let mockResponse: Partial<Response>
+    let consoleErrorSpy: jest.SpyInstance
 
-  beforeEach(() => {
-    mockRequest = {}
-    mockJson = jest.fn()
-    mockResponse = {
-      json: mockJson
-    }
-    jest.clearAllMocks()
-    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+    beforeEach(() => {
+      mockRequest = {}
+      mockResponse = {
+        json: jest.fn().mockReturnThis(),
+        status: jest.fn().mockReturnThis()
+      }
+      jest.clearAllMocks()
+      consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+    })
+
+    afterEach(() => {
+      consoleErrorSpy.mockRestore()
+    })
+
+    it('devrait renvoyer les données Shad avec succès', async () => {
+      const mockData = [{ id: 1, name: 'Test' }]
+        ; (ShadService.fetchShadInDatabase as jest.Mock).mockResolvedValue(mockData)
+
+      await getShad(mockRequest as Request, mockResponse as Response)
+
+      expect(ShadService.fetchShadInDatabase).toHaveBeenCalled()
+      expect(mockResponse.status).toHaveBeenCalledWith(200)
+      expect(mockResponse.json).toHaveBeenCalledWith({ message: 'Données Shad récupérées', data: mockData })
+    })
+
+    it('devrait gérer les erreurs correctement', async () => {
+      const mockError = new Error('Erreur de test')
+        ; (ShadService.fetchShadInDatabase as jest.Mock).mockRejectedValue(mockError)
+
+      await getShad(mockRequest as Request, mockResponse as Response)
+
+      expect(ShadService.fetchShadInDatabase).toHaveBeenCalled()
+      expect(handleControllerError).toHaveBeenCalledWith(
+        mockResponse,
+        mockError,
+        'getShad'
+      )
+    })
   })
 
-  afterEach(() => {
-    consoleErrorSpy.mockRestore()
-  })
+  describe('handleTrailingStopHedge', () => {
+    let mockRequest: Partial<Request>;
+    let mockResponse: Partial<Response>;
+    let mockJson: jest.Mock;
 
-  it('devrait renvoyer les données Shad avec succès', async () => {
-    const mockData = [{ id: 1, name: 'Test' }]
-      ; (ShadService.fetchShadInDatabase as jest.Mock).mockResolvedValue(mockData)
+    beforeEach(() => {
+      mockJson = jest.fn();
+      mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: mockJson,
+      };
+    });
 
-    await getShad(mockRequest as Request, mockResponse as Response)
+    it('devrait gérer les actifs sélectionnés correctement', async () => {
+      const mockSelectedAssets = [{ base: 'BTC', platform: 'binance' }];
+      mockRequest = {
+        params: {
+          simplifiedSelectedAssets: JSON.stringify(mockSelectedAssets),
+        },
+      };
 
-    expect(ShadService.fetchShadInDatabase).toHaveBeenCalled()
-    expect(mockJson).toHaveBeenCalledWith(mockData)
-  })
+      const mockData = { success: true };
+      (TrailingStopService.handleTrailingStopHedge as jest.Mock).mockResolvedValue(mockData);
 
-  it('devrait gérer les erreurs correctement', async () => {
-    const mockError = new Error('Erreur de test')
-      ; (ShadService.fetchShadInDatabase as jest.Mock).mockRejectedValue(mockError)
+      await handleTrailingStopHedge(mockRequest as Request, mockResponse as Response);
 
-    await getShad(mockRequest as Request, mockResponse as Response)
+      expect(TrailingStopService.handleTrailingStopHedge).toHaveBeenCalledWith(mockSelectedAssets);
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockJson).toHaveBeenCalledWith({
+        message: 'Mise à jour des ordres de trailing stop terminée',
+        data: mockData,
+      });
+    });
 
-    expect(ShadService.fetchShadInDatabase).toHaveBeenCalled()
-    expect(handleControllerError).toHaveBeenCalledWith(
-      mockResponse,
-      mockError,
-      'getShad'
-    )
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'Erreur dans getShad: Erreur de test',
-      { error: mockError }
-    )
-  })
-})
+    it('devrait gérer le cas où aucun actif sélectionné n\'est fourni', async () => {
+      mockRequest = { params: {} };
+
+      const mockData = { success: true };
+      (TrailingStopService.handleTrailingStopHedge as jest.Mock).mockResolvedValue(mockData);
+
+      await handleTrailingStopHedge(mockRequest as Request, mockResponse as Response);
+
+      expect(TrailingStopService.handleTrailingStopHedge).toHaveBeenCalledWith(undefined);
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockJson).toHaveBeenCalledWith({
+        message: 'Mise à jour des ordres de trailing stop terminée',
+        data: mockData,
+      });
+    });
+
+    it('devrait gérer les erreurs correctement', async () => {
+      mockRequest = { params: {} };
+
+      const mockError = new Error('Erreur test');
+      (TrailingStopService.handleTrailingStopHedge as jest.Mock).mockRejectedValue(mockError);
+
+      await handleTrailingStopHedge(mockRequest as Request, mockResponse as Response);
+
+      expect(handleControllerError).toHaveBeenCalledWith(mockResponse, mockError, 'handleTrailingStopHedge');
+    });
+  });
+});

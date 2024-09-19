@@ -36,7 +36,7 @@ async function addTradesManually(req: Request, res: Response): Promise<void> {
   const tradesData = req.body.trades_data
   try {
     const data = await TradesService.addTradesManually(tradesData)
-    res.status(200).json({ message: 'Trades ajoutés', result: data })
+    res.status(200).json({ message: 'Trades ajoutés', data })
   } catch (error) {
     handleControllerError(res, error, 'addTradesManually')
   }

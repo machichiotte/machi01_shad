@@ -32,7 +32,10 @@ describe('Balance Controller', () => {
 
       await getBalances(mockRequest as Request, mockResponse as Response)
 
-      expect(responseObject.json).toHaveBeenCalledWith(mockBalances)
+      expect(responseObject.json).toHaveBeenCalledWith({
+        data: mockBalances,
+        message: 'Le solde en base de données a été récupéré avec succès.'
+      })
     })
 
     it('devrait gérer les erreurs correctement', async () => {
@@ -66,7 +69,6 @@ describe('Balance Controller', () => {
 
       expect(mockResponse.status).toHaveBeenCalledWith(200)
       expect(responseObject.json).toHaveBeenCalledWith({
-        status: true,
         message: 'Le solde actuel a été mis à jour avec succès.',
         data: mockUpdatedBalance
       })

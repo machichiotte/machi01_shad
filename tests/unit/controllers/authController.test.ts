@@ -47,7 +47,6 @@ describe('Auth Controller', () => {
             await loginUser(mockRequest as Request, mockResponse as Response)
             expect(mockResponse.status).toHaveBeenCalledWith(400)
             expect(responseObject.json).toHaveBeenCalledWith({
-                status: false,
                 message: 'Missing email or password'
             })
         })
@@ -66,10 +65,12 @@ describe('Auth Controller', () => {
             expect(mockResponse.status).toHaveBeenCalledWith(200)
             expect(responseObject.json).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    status: true,
                     message: 'Login successful',
-                    userId: 'userId',
-                    token: 'token123'
+                    data: {
+                        userId: 'userId',
+                        token: 'token123',
+                        expiresIn: expect.any(Number)
+                    }
                 })
             )
         })

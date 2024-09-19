@@ -10,24 +10,27 @@ jest.mock('@utils/loggerUtil')
 describe('getMarkets', () => {
   let mockRequest: Partial<Request>
   let mockResponse: Partial<Response>
-  let mockJson: jest.Mock
 
   beforeEach(() => {
     mockRequest = {}
-    mockJson = jest.fn()
     mockResponse = {
-      json: mockJson
+      json: jest.fn().mockReturnThis(),
+      status: jest.fn().mockReturnThis()
     }
   })
 
   it('devrait renvoyer les données de marché sauvegardées', async () => {
-    const mockData = [{ id: 1, name: 'Market 1' }]
-      ; (MarketsService.getSavedMarkets as jest.Mock).mockResolvedValue(mockData)
+    const mockData = [{ id: 1, name: 'Market 1' }];
+    (MarketsService.getSavedMarkets as jest.Mock).mockResolvedValue(mockData)
 
     await getMarkets(mockRequest as Request, mockResponse as Response)
 
     expect(MarketsService.getSavedMarkets).toHaveBeenCalled()
-    expect(mockJson).toHaveBeenCalledWith(mockData)
+    expect(mockResponse.status).toHaveBeenCalledWith(200)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      message: 'Données de marché récupérées',
+      data: mockData
+    })
   })
 
   it('devrait gérer les erreurs correctement', async () => {

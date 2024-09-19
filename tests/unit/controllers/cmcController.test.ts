@@ -35,7 +35,10 @@ describe('CMC Controller', () => {
 
     describe('getCmc', () => {
         it('devrait récupérer les données CMC avec succès', async () => {
-            const mockCmcData = [{ id: 1, name: 'Bitcoin' }]
+            const mockCmcData = {
+                data: [{ id: 1, name: 'Bitcoin' }],
+                message: 'Données CMC récupérées avec succès'
+            }
                 ; (CmcService.fetchDatabaseCmc as jest.Mock).mockResolvedValue(mockCmcData)
 
             await getCmc(mockRequest as Request, mockResponse as Response)
@@ -64,6 +67,7 @@ describe('CMC Controller', () => {
     describe('updateCmc', () => {
         it('devrait mettre à jour les données CMC avec succès', async () => {
             const mockUpdateResult = { updated: true, count: 100 }
+
                 ; (CmcService.updateCmcData as jest.Mock).mockResolvedValue(
                     mockUpdateResult
                 )
@@ -71,7 +75,10 @@ describe('CMC Controller', () => {
             await updateCmc(mockRequest as Request, mockResponse as Response)
 
             expect(mockResponse.status).toHaveBeenCalledWith(200)
-            expect(responseObject.json).toHaveBeenCalledWith(mockUpdateResult)
+            expect(responseObject.json).toHaveBeenCalledWith({
+                data: mockUpdateResult,
+                message: "Données CMC mises à jour avec succès"
+            })
         })
 
         it('devrait gérer les erreurs correctement', async () => {

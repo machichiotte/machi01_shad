@@ -52,7 +52,7 @@ describe('getConvertedCsv', () => {
 
     await getConvertedCsv(mockRequest as Request, mockResponse as Response)
 
-    expect(mockJson).toHaveBeenCalledWith({ success: true, data: mockJsonData })
+    expect(mockJson).toHaveBeenCalledWith({ message: 'CSV converted to JSON', data: mockJsonData })
   })
 
   it("devrait renvoyer une erreur 400 si aucun fichier n'est téléchargé", async () => {

@@ -40,7 +40,9 @@ describe('strategyController', () => {
 
       await getStrat(mockRequest as Request, mockResponse as Response)
 
-      expect(mockJson).toHaveBeenCalledWith(mockData)
+      expect(mockJson).toHaveBeenCalledWith(
+        { message: 'Stratégies récupérées', data: mockData }
+      )
     })
 
     it('devrait gérer les erreurs', async () => {
@@ -72,7 +74,7 @@ describe('strategyController', () => {
 
       expect(StrategyService.updateStrategies).toHaveBeenCalledWith(mockStrat)
       expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalled()
-      expect(mockJson).toHaveBeenCalledWith(mockData)
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Stratégies mises à jour', data: mockData })
     })
 
     it('devrait gérer les erreurs', async () => {
@@ -83,10 +85,11 @@ describe('strategyController', () => {
 
       await updateStrat(mockRequest as Request, mockResponse as Response)
 
-      expect(mockStatus).toHaveBeenCalledWith(500)
-      expect(mockSend).toHaveBeenCalledWith({
-        error: 'Error: Erreur de mise à jour'
-      })
+      expect(handleControllerError).toHaveBeenCalledWith(
+        mockResponse,
+        mockError,
+        'updateStrat'
+      )
     })
   })
 

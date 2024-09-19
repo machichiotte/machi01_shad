@@ -11,7 +11,7 @@ validateEnvVariables(['MONGODB_COLLECTION_ACTIVE_ORDERS', 'TYPE_ACTIVE_ORDERS'])
 async function getOrders(req: Request, res: Response): Promise<void> {
   try {
     const data = await OrdersService.fetchDatabaseOrders()
-    res.status(200).json({ message: 'Commandes récupérées', data })
+    res.status(200).json({ message: 'Ordres récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'getOrders')
   }
@@ -37,7 +37,7 @@ async function deleteOrder(req: Request, res: Response): Promise<void> {
   const { platform, oId, symbol } = req.body
   try {
     await OrdersService.deleteOrder(platform, oId, symbol)
-    res.status(200).json({ message: 'Commande supprimée' })
+    res.status(200).json({ message: 'Ordre supprimé' })
   } catch (error) {
     handleControllerError(res, error, 'deleteOrder')
   }

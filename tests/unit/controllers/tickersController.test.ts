@@ -36,7 +36,7 @@ describe('Tickers Controller', () => {
 
       await getAllTickers(mockRequest as Request, mockResponse as Response)
 
-      expect(mockJson).toHaveBeenCalledWith(mockData)
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Tickers récupérés', data: mockData })
     })
 
     it('devrait gérer les erreurs', async () => {
@@ -125,7 +125,7 @@ describe('Tickers Controller', () => {
       await updateAllTickers(mockRequest as Request, mockResponse as Response)
 
       expect(mockStatus).toHaveBeenCalledWith(200)
-      expect(mockJson).toHaveBeenCalledWith(mockData)
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Tickers mis à jour', data: mockData })
     })
 
     // ... Ajoutez un test d'erreur

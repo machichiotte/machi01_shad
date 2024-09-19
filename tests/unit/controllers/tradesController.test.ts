@@ -70,7 +70,7 @@ describe('TradesController', () => {
 
       await getTrades(mockRequest as Request, mockResponse as Response)
 
-      expect(mockJson).toHaveBeenCalledWith(mockTrades)
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Trades récupérés', data: mockTrades })
     })
 
     it('devrait gérer les erreurs', async () => {
@@ -120,7 +120,7 @@ describe('TradesController', () => {
         mockTradeId,
         mockUpdatedTrade
       )
-      expect(mockJson).toHaveBeenCalledWith(mockUpdatedTrade)
+      expect(mockJson).toHaveBeenCalledWith({ message: `Trade ${mockTradeId} mis à jour`, data: mockUpdatedTrade })
     })
 
     it('devrait gérer les erreurs lors de la mise à jour', async () => {
@@ -181,7 +181,7 @@ describe('TradesController', () => {
 
       expect(TradesService.addTradesManually).toHaveBeenCalledWith(mockTrades)
       expect(mockStatus).toHaveBeenCalledWith(mockResult.status)
-      expect(mockJson).toHaveBeenCalledWith(mockResult)
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Trades ajoutés', data: mockResult })
     })
 
     it("devrait gérer les erreurs lors de l'ajout manuel", async () => {
@@ -216,7 +216,7 @@ describe('TradesController', () => {
 
       expect(TradesService.updateTrades).toHaveBeenCalledWith(mockPlatform)
       expect(mockStatus).toHaveBeenCalledWith(200)
-      expect(mockJson).toHaveBeenCalledWith(mockResult)
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Trades mis à jour', data: mockResult })
     })
 
     it('devrait gérer les erreurs lors de la mise à jour multiple', async () => {
@@ -279,7 +279,7 @@ describe('TradesController', () => {
         mockPlatform,
         mockSymbol
       )
-      expect(mockJson).toHaveBeenCalledWith(mockTrades)
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Derniers trades récupérés', data: mockTrades })
     })
 
     it('devrait gérer les erreurs lors de la récupération des derniers trades', async () => {
