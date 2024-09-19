@@ -12,13 +12,12 @@ validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
 async function getCmc(req: Request, res: Response): Promise<void> {
   try {
     const data = await CmcService.fetchDatabaseCmc()
-    console.log('Données CMC récupérées', {
-      collectionName: process.env.MONGODB_COLLECTION_CMC,
-      count: data.length
+    res.status(200).json({
+      message: 'Données CMC récupérées avec succès',
+      data
     })
-    res.json(data)
   } catch (error) {
-    handleControllerError(res, error as Error, 'getCmc')
+    handleControllerError(res, error, 'getCmc')
   }
 }
 
@@ -27,10 +26,13 @@ async function getCmc(req: Request, res: Response): Promise<void> {
  */
 async function updateCmc(req: Request, res: Response): Promise<void> {
   try {
-    const result = await CmcService.updateCmcData()
-    res.status(200).json(result)
+    const data = await CmcService.updateCmcData()
+    res.status(200).json({
+      message: 'Données CMC mises à jour avec succès',
+      data,
+    })
   } catch (error) {
-    handleControllerError(res, error as Error, 'updateCmc')
+    handleControllerError(res, error, 'updateCmc')
   }
 }
 

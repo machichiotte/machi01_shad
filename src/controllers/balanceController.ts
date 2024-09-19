@@ -10,9 +10,12 @@ import { BalancesService } from '@services/balancesService'
 async function getBalances(req: Request, res: Response): Promise<void> {
   try {
     const data = await BalancesService.fetchDatabaseBalances()
-    res.json(data)
+    res.status(200).json({
+      message: 'Le solde en base de données a été récupéré avec succès.',
+      data: data
+    })
   } catch (error) {
-    handleControllerError(res, error as Error, 'getBalances')
+    handleControllerError(res, error, 'getBalances')
   }
 }
 
@@ -28,7 +31,7 @@ async function updateCurrentBalance(req: Request, res: Response): Promise<void> 
       data: data
     })
   } catch (error) {
-    handleControllerError(res, error as Error, 'updateCurrentBalance')
+    handleControllerError(res, error, 'updateCurrentBalance')
   }
 }
 

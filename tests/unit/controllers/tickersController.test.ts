@@ -58,21 +58,30 @@ describe('Tickers Controller', () => {
   describe('getAllTickersByPlatform', () => {
     it('devrait renvoyer les tickers pour une plateforme spécifique', async () => {
       const mockData = [{ id: 1, name: 'BTC', platform: 'binance' }]
-        ; (TickersService.getAllTickersByPlatform as jest.Mock).mockResolvedValue(
-          mockData
-        )
+        ; (TickersService.getAllTickersByPlatform as jest.Mock).mockResolvedValue(mockData)
 
-      await getAllTickersByPlatform(
-        mockRequest as Request,
-        mockResponse as Response,
-        'binance'
-      )
+      const mockRequest = {
+        params: { platform: 'binance' }
+      } as unknown as Request
+
+      await getAllTickersByPlatform(mockRequest, mockResponse as Response)
 
       expect(mockStatus).toHaveBeenCalledWith(200)
-      expect(mockJson).toHaveBeenCalledWith(mockData)
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Tickers récupérés', data: mockData })
     })
 
-    // ... Ajoutez un test d'erreur similaire à celui de getAllTickers
+    it('devrait gérer les erreurs correctement', async () => {
+      const mockError = new Error('Erreur de test')
+        ; (TickersService.getAllTickersByPlatform as jest.Mock).mockRejectedValue(mockError)
+
+      const mockRequest = {
+        params: { platform: 'binance' }
+      } as unknown as Request
+
+      await getAllTickersByPlatform(mockRequest, mockResponse as Response)
+
+      expect(handleControllerError).toHaveBeenCalledWith(mockResponse, mockError, 'getAllTickersByPlatform')
+    })
   })
 
   describe('getAllTickersBySymbolFromPlatform', () => {
@@ -80,22 +89,30 @@ describe('Tickers Controller', () => {
       const mockData = [
         { id: 1, name: 'BTC', platform: 'binance', symbol: 'BTCUSDT' }
       ]
-        ; (
-          TickersService.getAllTickersBySymbolFromPlatform as jest.Mock
-        ).mockResolvedValue(mockData)
+        ; (TickersService.getAllTickersBySymbolFromPlatform as jest.Mock).mockResolvedValue(mockData)
 
-      await getAllTickersBySymbolFromPlatform(
-        mockRequest as Request,
-        mockResponse as Response,
-        'binance',
-        'BTCUSDT'
-      )
+      const mockRequest = {
+        params: { platform: 'binance', symbol: 'BTCUSDT' }
+      } as unknown as Request
+
+      await getAllTickersBySymbolFromPlatform(mockRequest, mockResponse as Response)
 
       expect(mockStatus).toHaveBeenCalledWith(200)
-      expect(mockJson).toHaveBeenCalledWith(mockData)
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Tickers récupérés', data: mockData })
     })
 
-    // ... Ajoutez un test d'erreur
+    it('devrait gérer les erreurs correctement', async () => {
+      const mockError = new Error('Erreur de test')
+        ; (TickersService.getAllTickersBySymbolFromPlatform as jest.Mock).mockRejectedValue(mockError)
+
+      const mockRequest = {
+        params: { platform: 'binance', symbol: 'BTCUSDT' }
+      } as unknown as Request
+
+      await getAllTickersBySymbolFromPlatform(mockRequest, mockResponse as Response)
+
+      expect(handleControllerError).toHaveBeenCalledWith(mockResponse, mockError, 'getAllTickersBySymbolFromPlatform')
+    })
   })
 
   describe('updateAllTickers', () => {

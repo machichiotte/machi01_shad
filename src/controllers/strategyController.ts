@@ -10,14 +10,9 @@ import { StrategyService } from '@services/strategyService'
 async function getStrat(req: Request, res: Response): Promise<void> {
   try {
     const data = await StrategyService.fetchDatabaseStrategies()
-    res.json(data)
+    res.status(200).json({ message: 'Stratégies récupérées', data })
   } catch (error) {
-    console.error(
-      `🚀 ~ file: strategyController.ts:23 ~ getStrat ~ error:`,
-      error
-    )
-    //console.error("Échec de la récupération des stratégies", { error: (error as Error).message });
-    handleControllerError(res, error as Error, 'getStrat')
+    handleControllerError(res, error, 'getStrat')
   }
 }
 
@@ -32,12 +27,9 @@ async function updateStrat(req: Request, res: Response): Promise<void> {
       process.env.TYPE_STRATEGY as string,
       ''
     )
-    res.json(data)
+    res.status(200).json({ message: 'Stratégies mises à jour', data })
   } catch (error) {
-    console.log('🚀 ~ updateStrat ~ err:', error)
-    res
-      .status(500)
-      .send({ error: `${(error as Error).name}: ${(error as Error).message}` })
+    handleControllerError(res, error, 'updateStrat')
   }
 }
 
@@ -54,7 +46,7 @@ async function updateStrategyById(req: Request, res: Response): Promise<void> {
     )
     res.json(result)
   } catch (error) {
-    handleControllerError(res, error as Error, 'updateStrategyById')
+    handleControllerError(res, error, 'updateStrategyById')
   }
 }
 

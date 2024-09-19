@@ -2,6 +2,7 @@
 import Papa from 'papaparse'
 import { Request, Response } from 'express'
 import { convertToJSON, TradeModel } from '@services/converterService'
+import { handleControllerError } from '@utils/errorUtil'
 
 /**
  * Convert a CSV file to JSON format.
@@ -10,7 +11,7 @@ async function getConvertedCsv(req: Request, res: Response): Promise<void> {
   try {
     // Ensure the file is defined and of the correct type
     if (!req.file) {
-      res.status(400).json({ success: false, message: 'No file uploaded' })
+      res.status(400).json({ message: 'No file uploaded' })
       return
     }
 
@@ -25,20 +26,18 @@ async function getConvertedCsv(req: Request, res: Response): Promise<void> {
       header: true,
       complete: async (result: Papa.ParseResult<object>) => {
         // Use a service to convert parsed data to JSON if necessary
-        const jsonData =
+        const data =
           result.data.length > 0
             ? await convertToJSON(result.data as TradeModel[])
             : []
-        res.json({ success: true, data: jsonData })
+        res.status(200).json({ message: 'CSV converted to JSON', data })
       },
       error: (error: Papa.ParseError) => {
-        console.error('🚀 ~ Papa.parse ~ error:', error)
-        res.status(500).json({ success: false, message: 'Server error' })
+        handleControllerError(res, error, 'papaParse')
       }
     } as Papa.ParseConfig<unknown[]>)
   } catch (error) {
-    console.error('🚀 ~ getConvertedCsv ~ error:', error)
-    res.status(500).json({ success: false, message: 'Internal Server Error' })
+    handleControllerError(res, error, 'getConvertedCsv')
   }
 }
 

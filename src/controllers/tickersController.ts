@@ -9,35 +9,35 @@ import { TickersService } from '@services/tickersService'
 async function getAllTickers(req: Request, res: Response): Promise<void> {
   try {
     const data = await TickersService.fetchDatabaseTickers()
-    res.json(data)
+    res.status(200).json({ message: 'Tickers récupérés', data })
   } catch (error) {
-    handleControllerError(res, error as Error, 'getAllTickers')
+    handleControllerError(res, error, 'getAllTickers')
   }
 }
 
 /**
  * Récupère tous les tickers pour une plateforme spécifique.
  */
-async function getAllTickersByPlatform(req: Request, res: Response, platform: string): Promise<void> {
+async function getAllTickersByPlatform(req: Request, res: Response): Promise<void> {
+  const { platform } = req.params
   try {
-    const platformTickersData =
-      await TickersService.getAllTickersByPlatform(platform)
-    res.status(200).json(platformTickersData)
+    const data = await TickersService.getAllTickersByPlatform(platform)
+    res.status(200).json({ message: 'Tickers récupérés', data })
   } catch (error) {
-    handleControllerError(res, error as Error, 'getAllTickersByPlatform')
+    handleControllerError(res, error, 'getAllTickersByPlatform')
   }
 }
 
 /**
  * Récupère tous les tickers pour un symbole spécifique d'une plateforme spécifique.
  */
-async function getAllTickersBySymbolFromPlatform(req: Request, res: Response, platform: string, symbol: string): Promise<void> {
+async function getAllTickersBySymbolFromPlatform(req: Request, res: Response): Promise<void> {
+  const { platform, symbol } = req.params
   try {
-    const filteredTickersData =
-      await TickersService.getAllTickersBySymbolFromPlatform(platform, symbol)
-    res.status(200).json(filteredTickersData)
+    const data = await TickersService.getAllTickersBySymbolFromPlatform(platform, symbol)
+    res.status(200).json({ message: 'Tickers récupérés', data })
   } catch (error) {
-    handleControllerError(res, error as Error, 'getAllTickersBySymbolFromPlatform')
+    handleControllerError(res, error, 'getAllTickersBySymbolFromPlatform')
   }
 }
 
@@ -46,10 +46,10 @@ async function getAllTickersBySymbolFromPlatform(req: Request, res: Response, pl
  */
 async function updateAllTickers(req: Request, res: Response): Promise<void> {
   try {
-    const tickersData = await TickersService.updateAllTickers()
-    res.status(200).json(tickersData)
+    const data = await TickersService.updateAllTickers()
+    res.status(200).json({ message: 'Tickers mis à jour', data })
   } catch (error) {
-    handleControllerError(res, error as Error, 'updateAllTickers')
+    handleControllerError(res, error, 'updateAllTickers')
   }
 }
 

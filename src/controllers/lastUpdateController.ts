@@ -65,21 +65,9 @@ async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
 async function getLastUpdate(req: Request, res: Response): Promise<void> {
   try {
     const data = await LastUpdateService.fetchDatabaseLastUpdate()
-    console.log(
-      'Tous les enregistrements de dernière mise à jour récupérés de la base de données.',
-      {
-        count: data.length
-      }
-    )
-    res.json(data)
+    res.status(200).json({ message: 'Dernières mises à jour récupérées', data })
   } catch (error) {
-    console.error(
-      'Échec de la récupération de toutes les dernières mises à jour.',
-      {
-        error: error instanceof Error ? error.message : 'Erreur inconnue'
-      }
-    )
-    handleControllerError(res, error as Error, 'getLastUpdate')
+    handleControllerError(res, error, 'getLastUpdate')
   }
 }
 
@@ -91,22 +79,9 @@ async function updateLastUpdateByType(req: Request, res: Response): Promise<void
     const { platform, type } = req.params
     await LastUpdateService.saveLastUpdateToDatabase(type, platform)
     const timestamp = new Date().toISOString()
-    console.log('Enregistrement de dernière mise à jour mis à jour.', {
-      platform,
-      type,
-      timestamp
-    })
-    res.json({ platform, type, timestamp })
+    res.status(200).json({ message: 'Dernière mise à jour mise à jour', data: { platform, type, timestamp } })
   } catch (error) {
-    console.error(
-      'Échec de la mise à jour de la dernière mise à jour par type.',
-      {
-        error: error instanceof Error ? error.message : 'Erreur inconnue',
-        platform: req.params.platform,
-        type: req.params.type
-      }
-    )
-    res.status(500).json({ error: 'Erreur interne du serveur' })
+    handleControllerError(res, error, 'updateLastUpdateByType')
   }
 }
 

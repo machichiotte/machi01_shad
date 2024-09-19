@@ -13,16 +13,9 @@ validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
 async function getShad(req: Request, res: Response): Promise<void> {
   try {
     const data = await ShadService.fetchShadInDatabase()
-    console.log('Données Shad récupérées', { count: data.length })
-    res.json(data)
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error(`Erreur dans getShad: ${error.message}`, { error })
-      handleControllerError(res, error, 'getShad')
-    } else {
-      console.error('Erreur inconnue dans getShad')
-      handleControllerError(res, new Error('Erreur inconnue'), 'getShad')
-    }
+    res.status(200).json({ message: 'Données Shad récupérées', data })
+  } catch (error) {
+    handleControllerError(res, error, 'getShad')
   }
 }
 
@@ -33,14 +26,10 @@ async function handleTrailingStopHedge(req: Request, res: Response): Promise<voi
       ? JSON.parse(req.params.simplifiedSelectedAssets as string) as Array<{ base: string, platform: string }>
       : undefined;
 
-    // Appelle le service avec ou sans les actifs sélectionnés
-    const updatedOrders = await TrailingStopService.handleTrailingStopHedge(simplifiedSelectedAssets);
-
-    // Log et réponse HTTP
-    console.log(`Mise à jour des ordres de trailing stop terminée`, { count: updatedOrders.length });
-    res.status(200).json({ updatedOrders });
+    const data = await TrailingStopService.handleTrailingStopHedge(simplifiedSelectedAssets);
+    res.status(200).json({ message: 'Mise à jour des ordres de trailing stop terminée', data });
   } catch (error) {
-    handleControllerError(res, error as Error, 'handleTrailingStopHedge');
+    handleControllerError(res, error, 'handleTrailingStopHedge');
   }
 }
 
