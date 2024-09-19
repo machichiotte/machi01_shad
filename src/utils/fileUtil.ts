@@ -3,8 +3,6 @@ import path from 'path'
 
 /**
  * Get the path to the mock data file for a given collection.
- * @param {string} collection - The name of the collection.
- * @returns {string} The full path to the mock data file.
  */
 function getMockDataPath(collection: string): string {
   // Add logic to return the specific mock name based on the collection

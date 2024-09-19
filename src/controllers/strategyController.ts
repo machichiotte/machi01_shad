@@ -6,8 +6,6 @@ import { StrategyService } from '@services/strategyService'
 
 /**
  * Récupère les stratégies de la base de données.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
  */
 async function getStrat(req: Request, res: Response): Promise<void> {
   try {
@@ -25,8 +23,6 @@ async function getStrat(req: Request, res: Response): Promise<void> {
 
 /**
  * Met à jour les stratégies dans la base de données.
- * @param {Request} req - L'objet de requête contenant les données de stratégie dans le corps.
- * @param {Response} res - L'objet de réponse.
  */
 async function updateStrat(req: Request, res: Response): Promise<void> {
   const strat = req.body
@@ -47,8 +43,6 @@ async function updateStrat(req: Request, res: Response): Promise<void> {
 
 /**
  * Met à jour une stratégie spécifique par son ID.
- * @param {Request} req - L'objet de requête contenant l'ID de stratégie dans les paramètres et les données de stratégie mises à jour dans le corps.
- * @param {Response} res - L'objet de réponse.
  */
 async function updateStrategyById(req: Request, res: Response): Promise<void> {
   const { strategyId } = req.params

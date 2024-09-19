@@ -4,8 +4,6 @@ import AuthService from '@services/authService'
 
 /**
  * Registers a new user.
- * @param {Request} req - The HTTP request object
- * @param {Response} res - The HTTP response object
  */
 async function registerUser(req: Request, res: Response): Promise<void> {
   try {
@@ -41,8 +39,6 @@ async function registerUser(req: Request, res: Response): Promise<void> {
 
 /**
  * Authenticates a user and generates a session token.
- * @param {Request} req - The HTTP request object
- * @param {Response} res - The HTTP response object
  */
 async function loginUser(req: Request, res: Response): Promise<void> {
   try {

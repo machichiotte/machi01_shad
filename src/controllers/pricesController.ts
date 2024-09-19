@@ -4,15 +4,8 @@ import { getData } from '../utils/dataUtil'
 
 /**
  * Récupère les données de prix à partir d'une collection MongoDB spécifiée.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
- * @param {string} collectionName - Le nom de la variable d'environnement contenant le nom de la collection MongoDB.
  */
-async function getPrice(
-  req: Request,
-  res: Response,
-  collectionName: string
-): Promise<void> {
+async function getPrice(req: Request, res: Response, collectionName: string): Promise<void> {
   const collection = process.env[collectionName]
   if (collection) {
     await getData(collection)
@@ -25,8 +18,6 @@ async function getPrice(
 
 /**
  * Récupère le prix du Bitcoin.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
  */
 async function getPriceBtc(req: Request, res: Response): Promise<void> {
   await getPrice(req, res, 'MONGODB_COLLECTION_PRICE_BTC')
@@ -34,8 +25,6 @@ async function getPriceBtc(req: Request, res: Response): Promise<void> {
 
 /**
  * Récupère le prix de l'Ethereum.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
  */
 async function getPriceEth(req: Request, res: Response): Promise<void> {
   await getPrice(req, res, 'MONGODB_COLLECTION_PRICE_ETH')

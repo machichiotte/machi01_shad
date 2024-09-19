@@ -1,5 +1,4 @@
 // src/services/metrics/strategies.ts
-
 import { MappedStrategy } from "@models/dbTypes"
 
 /**
@@ -10,10 +9,6 @@ const MAX_EXPO = 10000
 
 /**
  * Calculates the recovery amount for SHAD strategy
- * @param {number} totalBuy - Total buy amount
- * @param {number} totalSell - Total sell amount
- * @param {number} maxExposition - Maximum exposure allowed
- * @returns {number} Recovery amount for SHAD
  */
 function getRecupShad(totalBuy: number, totalSell: number, maxExposition: number): number {
   if (totalSell > 0) {
@@ -28,12 +23,6 @@ function getRecupShad(totalBuy: number, totalSell: number, maxExposition: number
 
 /**
  * Calculates the recovery amount for TP1 (Take Profit 1)
- * @param {number} totalBuy - Total buy amount
- * @param {number} totalSell - Total sell amount
- * @param {number} maxExposition - Maximum exposure allowed
- * @param {number} recupTpX - Recovery amount for TPX
- * @param {number} totalShad - Total SHAD amount
- * @returns {number} Recovery amount for TP1
  */
 function getRecupTp1(totalBuy: number, totalSell: number, maxExposition: number, recupTpX: number, totalShad: number): number {
   let valueToRecup = 0
@@ -61,10 +50,6 @@ function getRecupTp1(totalBuy: number, totalSell: number, maxExposition: number,
 
 /**
  * Calculates the recovery amount for TPX (Take Profit X)
- * @param {string} assetStrat - Asset strategy
- * @param {number} maxExposition - Maximum exposure allowed
- * @param {number} ratioShad - SHAD ratio
- * @returns {number} Recovery amount for TPX
  */
 function getRecupTpX(assetStrat: string, maxExposition: number, ratioShad: number): number {
   const result = (maxExposition * ratioShad * 0.5).toFixed(2)
@@ -73,20 +58,8 @@ function getRecupTpX(assetStrat: string, maxExposition: number, ratioShad: numbe
 
 /**
  * Calculates the number of completed SHAD cycles
- * @param {number} totalBuy - Total buy amount
- * @param {number} totalSell - Total sell amount
- * @param {number} maxExposition - Maximum exposure allowed
- * @param {number} recupShad - Recovery amount for SHAD
- * @param {number} recupTpX - Recovery amount for TPX
- * @returns {number} Number of completed SHAD cycles
  */
-function getDoneShad(
-  totalBuy: number,
-  totalSell: number,
-  maxExposition: number,
-  recupShad: number,
-  recupTpX: number
-): number {
+function getDoneShad(totalBuy: number, totalSell: number, maxExposition: number, recupShad: number, recupTpX: number): number {
   if (
     maxExposition < (1 - ERROR_ALLOWED) * totalBuy &&
     totalSell < (1 - ERROR_ALLOWED) * (totalBuy - maxExposition)
@@ -101,8 +74,6 @@ function getDoneShad(
 
 /**
  * Gets the SHAD ratio for a given strategy
- * @param {string} strat - Strategy name
- * @returns {number} SHAD ratio
  */
 function getRatioShad(strat: string): number {
   const ratios: Record<string, number> = {
@@ -116,20 +87,8 @@ function getRatioShad(strat: string): number {
 
 /**
  * Calculates various recovery amounts and strategy parameters
- * @param {string} asset - Asset symbol
- * @param {string} platform - Platform identifier
- * @param {number} totalBuy - Total buy amount
- * @param {number} totalSell - Total sell amount
- * @param {Strats} strat - Saved strategies
- * @returns {Object} Calculated recovery amounts and strategy parameters
  */
-function calculateRecups(
-  asset: string,
-  platform: string,
-  totalBuy: number,
-  totalSell: number,
-  myStrat: MappedStrategy
-) {
+function calculateRecups(asset: string, platform: string, totalBuy: number, totalSell: number, myStrat: MappedStrategy) {
   const strat = myStrat.strategies[platform] || 'No strategy';
   const stratExpo = myStrat.maxExposure[platform] || MAX_EXPO;
   const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo || MAX_EXPO))
@@ -168,16 +127,8 @@ function calculateRecups(
 
 /**
  * Calculates amount and price for SHAD strategy
- * @param {number} parsedRecup - Parsed recovery amount
- * @param {number} parsedBalance - Parsed balance
- * @param {number} factor - Factor for calculation
- * @returns {Object} Calculated amount and price
  */
-function calculateAmountAndPriceForShad(
-  parsedRecup: number,
-  parsedBalance: number,
-  factor: number
-): { amount: number; price: number } {
+function calculateAmountAndPriceForShad(parsedRecup: number, parsedBalance: number, factor: number): { amount: number; price: number } {
   const amount = factor * parsedBalance
   const price = parsedRecup / amount
 
@@ -186,8 +137,6 @@ function calculateAmountAndPriceForShad(
 
 /**
  * Retrieve the platform fee percentage based on the platform name
- * @param {string} platform - The name of the trading platform
- * @returns {number} The fee percentage for the given platform
  */
 function getPlatformFee(platform: string): number {
   const fees: Record<string, number> = {
@@ -210,24 +159,8 @@ interface AmountsAndPrices {
 
 /**
  * Calculates amounts and prices for SHAD strategy
- * @param {number} recupTp1 - Recovery amount for TP1
- * @param {number} balance - Current balance
- * @param {number} totalShad - Total SHAD amount
- * @param {number} recupTpX - Recovery amount for TPX
- * @param {number} averageEntryPrice - Average entry price
- * @param {number} maxExposition - Maximum exposure allowed
- * @param {string} platform - Platform identifier
- * @returns {AmountsAndPrices} Calculated amounts and prices for SHAD strategy
  */
-function calculateAmountsAndPricesForShad(
-  recupTp1: number,
-  balance: number,
-  totalShad: number,
-  recupTpX: number,
-  averageEntryPrice: number,
-  maxExposition: number,
-  platform: string
-): AmountsAndPrices {
+function calculateAmountsAndPricesForShad(recupTp1: number, balance: number, totalShad: number, recupTpX: number, averageEntryPrice: number, maxExposition: number, platform: string): AmountsAndPrices {
   const FACTOR_SELL_SHAD = 0.5
   const parsedValues = {
     recupTp1,

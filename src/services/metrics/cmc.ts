@@ -1,5 +1,4 @@
 // src/services/metrics/cmc.ts
-
 interface CmcData {
   cmc_rank?: string
   quote?: {
@@ -28,9 +27,6 @@ interface CmcValues {
 
 /**
  * Retrieves CoinMarketCap values for a given object.
- *
- * @param {CmcData} cmc - The CoinMarketCap data object.
- * @returns {CmcValues} - An object containing information about the cryptocurrency.
  */
 //function getCmcValues(cmc: CmcData[],currentPrice : number): CmcValues {
 function getCmcValues(cmc: CmcData[], currentPrice: number | undefined): CmcValues {
@@ -74,9 +70,6 @@ function getCmcValues(cmc: CmcData[], currentPrice: number | undefined): CmcValu
 
 /**
  * Generates the URL for the cryptocurrency icon based on its CoinMarketCap ID.
- *
- * @param {string|number} id - The CoinMarketCap ID of the cryptocurrency.
- * @returns {string} - The URL of the cryptocurrency icon.
  */
 function getIconUrl(id: string | number): string {
   return `https://s2.coinmarketcap.com/static/img/coins/64x64/${parseInt(

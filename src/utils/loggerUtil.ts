@@ -1,9 +1,3 @@
-/**
- * Ce module fournit des fonctions utilitaires pour la journalisation en utilisant Winston.
- * Il configure deux journaux : un pour les messages d'erreur et un pour les messages d'information.
- * Les journaux sont écrits dans des fichiers séparés comme spécifié dans la configuration.
- */
-
 // src/utils/loggerUtil.ts
 import winston from 'winston'
 import config from '@services/config'

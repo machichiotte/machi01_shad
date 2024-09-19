@@ -6,9 +6,6 @@ const THRESHOLD = 0.01 // 1% threshold
 
 /**
  * Calcule la possession actuelle en fonction du prix actuel et du solde.
- * @param {number} currentPrice - Le prix actuel.
- * @param {number} balance - Le solde.
- * @returns {number} La possession actuelle arrondie à deux décimales.
  */
 function getCurrentPossession(
   currentPrice: number | undefined,
@@ -20,9 +17,6 @@ function getCurrentPossession(
 
 /**
  * Calcule la différence en pourcentage entre deux valeurs.
- * @param {number|string} newValue - La nouvelle valeur.
- * @param {number|string} oldValue - L'ancienne valeur.
- * @returns {number|string} La différence en pourcentage ou "N/A" si invalide.
  */
 function getPercentageDifference(
   newValue: number | undefined,
@@ -37,11 +31,6 @@ function getPercentageDifference(
 
 /**
  * Calcule le profit en fonction des achats totaux, des ventes totales, du prix actuel et du solde.
- * @param {number} totalBuy - Le total des achats.
- * @param {number} totalSell - Le total des ventes.
- * @param {number} currentPrice - Le prix actuel.
- * @param {number} balance - Le solde.
- * @returns {number} Le profit calculé ou NaN si les entrées sont invalides.
  */
 function getProfit(
   totalBuy: number | undefined,
@@ -57,9 +46,6 @@ function getProfit(
 
 /**
  * Récupère le solde pour un symbole donné à partir d'un objet de solde.
- * @param {string} base - Le symbole de base.
- * @param {MappedBalance} balanceObj - L'objet contenant les informations de solde.
- * @returns {number} Le solde pour le symbole donné ou 0 si invalide.
  */
 function getBalanceBySymbol(base: string, balanceObj: MappedBalance): number {
   if (typeof balanceObj !== 'object' || balanceObj === null) {
@@ -83,9 +69,6 @@ function getBalanceBySymbol(base: string, balanceObj: MappedBalance): number {
 
 /**
  * Détermine le statut des ordres de vente ouverts par rapport aux valeurs TP.
- * @param {Array} openSellOrders - Les ordres de vente ouverts.
- * @param {...number} tpValues - Les valeurs TP.
- * @returns {Array} Un tableau de résultats indiquant le statut de chaque ordre.
  */
 function getStatus(
   openSellOrders: Array<{ amount: number; price: number }>,
@@ -111,9 +94,6 @@ function getStatus(
 
 /**
  * Calcule le pourcentage de progression entre deux valeurs.
- * @param {number} newValue - La nouvelle valeur.
- * @param {number} oldValue - L'ancienne valeur.
- * @returns {number} Le pourcentage de progression ou undefined si invalide.
  */
 function getPercentageToNextTp(
   newValue: number | undefined,

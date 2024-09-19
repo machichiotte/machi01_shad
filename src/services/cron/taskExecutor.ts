@@ -1,26 +1,13 @@
-/**
- * Task Executor for Cron Jobs
- *
- * This module contains functions for executing cron tasks across different platforms.
- * It handles task execution, error logging, and critical error notifications.
- */
-
+// src/services/cron/taskExecutor.ts
 import { sendMail } from './sendMail'
 import config from '../config'
 import { errorLogger } from '@utils/loggerUtil'
 import { getPlatforms } from '@utils/platformUtil'
 
-import {
-  updateMarketsForPlatform,
-  updateTickersForPlatform,
-  updateBalancesForPlatform
-} from './updateFunctions'
+import { updateMarketsForPlatform, updateTickersForPlatform, updateBalancesForPlatform } from './updateFunctions'
 
 /**
  * Executes a cron task with retry mechanism and error handling
- * @param task - The task to be executed
- * @param isCritical - Whether the task is critical
- * @param retries - Number of retry attempts
  */
 async function executeCronTask(
   task: () => Promise<void>,
@@ -58,8 +45,6 @@ async function executeCronTask(
 
 /**
  * Executes a given task function for all platforms
- * @param taskName - Name of the task
- * @param taskFunction - Function to be executed for each platform
  */
 async function executeForPlatforms(
   taskName: string,

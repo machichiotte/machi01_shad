@@ -6,8 +6,6 @@ import { BalancesService } from '@services/balancesService'
 
 /**
  * Récupère le dernier solde enregistré dans la base de données.
- * @param {Request} req - Objet de requête HTTP.
- * @param {Response} res - Objet de réponse HTTP.
  */
 async function getBalances(req: Request, res: Response): Promise<void> {
   try {
@@ -20,8 +18,6 @@ async function getBalances(req: Request, res: Response): Promise<void> {
 
 /**
  * Met à jour le solde actuel en le récupérant depuis une plateforme et en l'enregistrant dans la base de données.
- * @param {Request} req - Objet de requête HTTP contenant l'identifiant de la plateforme.
- * @param {Response} res - Objet de réponse HTTP.
  */
 async function updateCurrentBalance(
   req: Request,

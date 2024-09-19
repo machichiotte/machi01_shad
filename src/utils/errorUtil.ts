@@ -16,11 +16,10 @@ export interface ErrorPolicies {
   [platform: string]: PlatformErrorPolicies
 }
 
-function handleErrorResponse(
-  res: Response,
-  error: Error,
-  functionName: string
-): void {
+/*
+* Gestion des erreurs de réponse
+*/
+function handleErrorResponse(res: Response, error: Error, functionName: string): void {
   if (error instanceof AuthenticationError) {
     console.log(
       `🚀 ~ file: errorUtil.ts:8 ~ handleErrorResponse ~ error:`,
@@ -39,19 +38,19 @@ function handleErrorResponse(
   }
 }
 
-// Charger les politiques d'erreurs depuis le fichier JSON
+/*
+* Charger les politiques d'erreurs depuis le fichier JSON
+*/
 async function loadErrorPolicies(): Promise<ErrorPolicies> {
   const filePath = path.resolve(__dirname, '../config/errorPolicies.json')
   const data = await fs.readFile(filePath, 'utf8')
   return JSON.parse(data)
 }
 
-// Détermine si une erreur justifie une nouvelle tentative
-function shouldRetry(
-  platform: string,
-  error: Error,
-  errorPolicies: ErrorPolicies
-): boolean {
+/*
+* Détermine si une erreur justifie une nouvelle tentative
+*/
+function shouldRetry(platform: string, error: Error, errorPolicies: ErrorPolicies): boolean {
   const platformPolicies = errorPolicies[platform]
   if (platformPolicies) {
     const policy = platformPolicies[error.name]

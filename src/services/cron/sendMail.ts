@@ -16,9 +16,6 @@ interface EmailOptions {
 
 /**
  * Sends an email using the configured SMTP transporter.
- * @param {EmailOptions} options - The email options (to, from, subject, text, html, etc.)
- * @returns {Promise<SentMessageInfo>} A promise that resolves with the info object from nodemailer
- * @throws {Error} If there's an error sending the email
  */
 async function sendMail(options: EmailOptions): Promise<SentMessageInfo> {
   try {

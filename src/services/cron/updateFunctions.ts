@@ -1,29 +1,12 @@
 // src/services/cron/updateFunctions.ts
-
-/**
- * This module contains functions for updating markets, tickers, and balances for a given platform.
- * It uses various services to fetch, compare, and save data to the database.
- */
 import { deleteAndReplaceAll } from '@services/mongodbService'
-
-import {
-  MarketsService
-} from '@services/marketsService'
-import {
-  processBalanceChanges,
-  compareBalances,
-  calculateAllMetrics
-} from '@services/processorService'
-import {
-  TickersService
-} from '@services/tickersService'
-import {
-  BalancesService
-} from '@services/balancesService'
+import { MarketsService } from '@services/marketsService'
+import { processBalanceChanges, compareBalances, calculateAllMetrics } from '@services/processorService'
+import { TickersService } from '@services/tickersService'
+import { BalancesService } from '@services/balancesService'
 
 /**
  * Updates the markets for a specified platform.
- * @param {string} platform - The platform to update markets for.
  */
 async function updateMarketsForPlatform(platform: string): Promise<void> {
   try {
@@ -39,7 +22,6 @@ async function updateMarketsForPlatform(platform: string): Promise<void> {
 
 /**
  * Updates the tickers for a specified platform.
- * @param {string} platform - The platform to update tickers for.
  */
 async function updateTickersForPlatform(platform: string): Promise<void> {
   try {
@@ -56,7 +38,6 @@ async function updateTickersForPlatform(platform: string): Promise<void> {
 /**
  * Updates the balances for a specified platform, compares with previous balances,
  * and processes any changes. Also calculates and saves metrics.
- * @param {string} platform - The platform to update balances for.
  */
 async function updateBalancesForPlatform(platform: string): Promise<void> {
   try {

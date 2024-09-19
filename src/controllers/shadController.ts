@@ -9,8 +9,6 @@ validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
 
 /**
  * Récupère les dernières données CoinMarketCap de la base de données.
- * @param {Request} req - Objet de requête HTTP.
- * @param {Response} res - Objet de réponse HTTP.
  */
 async function getShad(req: Request, res: Response): Promise<void> {
   try {

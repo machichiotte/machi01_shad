@@ -8,8 +8,6 @@ validateEnvVariables(['MONGODB_COLLECTION_LOAD_MARKETS', 'TYPE_LOAD_MARKETS'])
 
 /**
  * Récupère les données de marché sauvegardées.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
  */
 async function getMarkets(req: Request, res: Response): Promise<void> {
   try {

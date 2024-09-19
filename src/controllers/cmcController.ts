@@ -9,8 +9,6 @@ validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
 
 /**
  * Récupère les dernières données CoinMarketCap de la base de données.
- * @param {Request} req - Objet de requête HTTP.
- * @param {Response} res - Objet de réponse HTTP.
  */
 async function getCmc(req: Request, res: Response): Promise<void> {
   try {
@@ -28,8 +26,6 @@ async function getCmc(req: Request, res: Response): Promise<void> {
 
 /**
  * Met à jour les données CoinMarketCap en récupérant les dernières informations de l'API CoinMarketCap et en les sauvegardant dans la base de données.
- * @param {Request} req - Objet de requête HTTP.
- * @param {Response} res - Objet de réponse HTTP.
  */
 async function updateCmc(req: Request, res: Response): Promise<void> {
   try {

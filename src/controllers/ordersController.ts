@@ -8,9 +8,6 @@ validateEnvVariables(['MONGODB_COLLECTION_ACTIVE_ORDERS', 'TYPE_ACTIVE_ORDERS'])
 //TODO se mettre daccord sur la forme des retours, que ce soit avec json ou autre
 /**
  * Récupère toutes les commandes de la base de données.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
- * @returns {Promise<Response>} Réponse JSON avec les commandes ou une erreur.
  */
 async function getOrders(req: Request, res: Response): Promise<void> {
   try {
@@ -23,9 +20,6 @@ async function getOrders(req: Request, res: Response): Promise<void> {
 
 /**
  * Met à jour les commandes depuis le serveur pour une plateforme spécifique.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
- * @returns {Promise<Response>} Réponse JSON avec les données mappées ou une erreur.
  */
 async function updateOrders(req: Request, res: Response): Promise<void> {
   const { platform } = req.params
@@ -39,9 +33,6 @@ async function updateOrders(req: Request, res: Response): Promise<void> {
 
 /**
  * Supprime une commande spécifique.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
- * @returns {Promise<Response>} Réponse JSON avec le résultat de la suppression ou une erreur.
  */
 async function deleteOrder(req: Request, res: Response): Promise<void> {
   const { platform, oId, symbol } = req.body
@@ -55,40 +46,22 @@ async function deleteOrder(req: Request, res: Response): Promise<void> {
 
 /**
  * Crée un ordre d'achat au marché.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
  */
-async function createMarketBuyOrder(
-  req: Request,
-  res: Response
-): Promise<void> {
+async function createMarketBuyOrder(req: Request, res: Response): Promise<void> {
   await createMarketOrder(req, res, 'buy')
 }
 
 /**
  * Crée un ordre de vente au marché.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
  */
-async function createMarketSellOrder(
-  req: Request,
-  res: Response
-): Promise<void> {
+async function createMarketSellOrder(req: Request, res: Response): Promise<void> {
   await createMarketOrder(req, res, 'sell')
 }
 
 /**
  * Crée un ordre au marché (achat ou vente).
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
- * @param {string} orderType - Le type d'ordre ("buy" ou "sell").
- * @returns {Promise<Response>} Réponse JSON avec le résultat de la création de l'ordre ou une erreur.
  */
-async function createMarketOrder(
-  req: Request,
-  res: Response,
-  orderType: 'buy' | 'sell'
-): Promise<void> {
+async function createMarketOrder(req: Request, res: Response, orderType: 'buy' | 'sell'): Promise<void> {
   const { platform, asset, amount } = req.body
   try {
     const result = await OrdersService.createMarketOrder(
@@ -105,16 +78,8 @@ async function createMarketOrder(
 
 /**
  * Crée un ordre limite (achat ou vente).
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
- * @param {string} orderType - Le type d'ordre ("buy" ou "sell").
- * @returns {Promise<Response>} Réponse JSON avec le résultat de la création de l'ordre ou une erreur.
  */
-async function createLimitOrder(
-  req: Request,
-  res: Response,
-  orderType: 'buy' | 'sell'
-): Promise<void> {
+async function createLimitOrder(req: Request, res: Response, orderType: 'buy' | 'sell'): Promise<void> {
   const { platform, price, amount, asset } = req.body
   try {
     const result = await OrdersService.createLimitOrder(
@@ -141,45 +106,27 @@ async function createLimitOrder(
 
 /**
  * Crée un ordre de vente au marché.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
  */
-async function createLimitSellOrder(
-  req: Request,
-  res: Response
-): Promise<void> {
+async function createLimitSellOrder(req: Request, res: Response): Promise<void> {
   await createLimitOrder(req, res, 'sell')
 }
 
 /**
  * Crée un groupe d'ordres de vente limite.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
  */
-async function createBunchLimitSellOrders(
-  req: Request,
-  res: Response
-): Promise<void> {
+async function createBunchLimitSellOrders(req: Request, res: Response): Promise<void> {
   await createLimitOrder(req, res, 'sell')
 }
 
 /**
  * Crée un groupe d'ordres d'achat limite.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
  */
-async function createBunchLimitBuyOrders(
-  req: Request,
-  res: Response
-): Promise<void> {
+async function createBunchLimitBuyOrders(req: Request, res: Response): Promise<void> {
   await createLimitOrder(req, res, 'buy')
 }
 
 /**
  * Annule tous les ordres pour une plateforme et un actif spécifiques.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
- * @returns {Promise<Response>} Réponse JSON avec le résultat de l'annulation ou une erreur.
  */
 async function cancelAllOrders(req: Request, res: Response): Promise<void> {
   const { platform, asset } = req.body
@@ -193,9 +140,6 @@ async function cancelAllOrders(req: Request, res: Response): Promise<void> {
 
 /**
  * Annule tous les ordres de vente pour une plateforme et un actif spécifiques.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
- * @returns {Promise<Response>} Réponse JSON avec le résultat de l'annulation ou une erreur.
  */
 async function cancelAllSellOrders(req: Request, res: Response): Promise<void> {
   const { platform, asset } = req.body

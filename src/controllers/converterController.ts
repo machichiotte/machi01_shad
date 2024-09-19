@@ -5,8 +5,6 @@ import { convertToJSON, TradeModel } from '@services/converterService'
 
 /**
  * Convert a CSV file to JSON format.
- * @param {Request} req - The HTTP request object containing the CSV file.
- * @param {Response} res - The HTTP response object.
  */
 async function getConvertedCsv(req: Request, res: Response): Promise<void> {
   try {

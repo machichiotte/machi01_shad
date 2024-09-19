@@ -12,8 +12,6 @@ validateEnvVariables(['MONGODB_COLLECTION_LAST_UPDATE'])
 
 /**
  * Récupère l'enregistrement de dernière mise à jour unique pour une plateforme et un type donnés.
- * @param {Request} req - Objet de requête HTTP.
- * @param {Response} res - Objet de réponse HTTP.
  */
 async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
   try {
@@ -63,8 +61,6 @@ async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
 
 /**
  * Récupère tous les enregistrements de dernière mise à jour de la base de données.
- * @param {Request} req - Objet de requête HTTP.
- * @param {Response} res - Objet de réponse HTTP.
  */
 async function getLastUpdate(req: Request, res: Response): Promise<void> {
   try {
@@ -89,13 +85,8 @@ async function getLastUpdate(req: Request, res: Response): Promise<void> {
 
 /**
  * Met à jour l'enregistrement de dernière mise à jour pour un type et une plateforme spécifiques.
- * @param {Request} req - Objet de requête HTTP.
- * @param {Response} res - Objet de réponse HTTP.
  */
-async function updateLastUpdateByType(
-  req: Request,
-  res: Response
-): Promise<void> {
+async function updateLastUpdateByType(req: Request, res: Response): Promise<void> {
   try {
     const { platform, type } = req.params
     await LastUpdateService.saveLastUpdateToDatabase(type, platform)

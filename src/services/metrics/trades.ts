@@ -3,17 +3,12 @@ import { MappedTrade } from '@models/dbTypes'
 
 /**
  * Checks if a value is a positive number.
- * @param {unknown} value - The value to check.
- * @returns {boolean} - True if the value is a positive number, false otherwise.
  */
 const isPositiveNumber = (value: unknown): boolean =>
   typeof value === 'number' && !isNaN(value) && value > 0
 
 /**
  * Converts a fee to its equivalent in the quote currency.
- * @param {number} fee - The fee amount.
- * @param {number} price - The price of the asset.
- * @returns {number} - The fee converted to quote currency, or 0 if inputs are invalid.
  */
 const convertFeeToQuote = (fee: number, price: number): number =>
   isPositiveNumber(fee) && isPositiveNumber(price) ? fee * price : 0
@@ -37,9 +32,6 @@ interface TotalAmountAndBuy {
 
 /**
  * Calculate the total amount, total buy value, and average entry price from trades.
- * @param {string} symbol - The trading symbol to filter trades by.
- * @param {MappedTrade[]} trades - The array of trade objects.
- * @returns {TotalAmountAndBuy} - An object containing total amount and total buy value.
  */
 function getTotalAmountAndBuy(symbol: string, trades: MappedTrade[]): TotalAmountAndBuy {
   const filteredTrades = trades.filter(
@@ -70,9 +62,6 @@ function getTotalAmountAndBuy(symbol: string, trades: MappedTrade[]): TotalAmoun
 
 /**
  * Calculate the total sell value for a given symbol, adjusting for fees.
- * @param {string} symbol - The trading symbol to filter trades by.
- * @param {MappedTrade[]} trades - The array of trade objects.
- * @returns {number} - The total sell value after adjusting for fees.
  */
 function getTotalSell(symbol: string, trades: MappedTrade[]): number {
   return trades
@@ -92,9 +81,6 @@ function getTotalSell(symbol: string, trades: MappedTrade[]): number {
 
 /**
  * Retrieves the trade history for a specific symbol.
- * @param {string} symbol - The trading symbol to filter trades by.
- * @param {Trade[]} trades - The array of all trade objects.
- * @returns {Trade[]} - An array of trade objects for the specified symbol.
  */
 function getTradesHistory(symbol: string, trades: Trade[]): Trade[] {
   return trades.filter((trade) => trade.base === symbol)

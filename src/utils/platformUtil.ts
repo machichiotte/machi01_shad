@@ -6,10 +6,6 @@ const PLATFORMS: string[] = ['binance', 'kucoin']
 
 /**
  * Utility function to create an exchange instance
- * @param {string} platform - The name of the trading platform
- * @returns {ccxt.Exchange} - An instance of the specified exchange
- * @throws {Error} If API key or secret is missing, or if the platform is unsupported
- * @throws {AuthenticationError} If there's an authentication error with the platform
  */
 function createPlatformInstance(platform: string): ccxt.Exchange {
   const apiKey = process.env[`${platform.toUpperCase()}_API_KEY`]
@@ -62,11 +58,6 @@ function createPlatformInstance(platform: string): ccxt.Exchange {
 
 /**
  * Get the symbol format for a specific platform
- * @param {string} platform - The name of the trading platform
- * @param {string} base - The base currency
- * @param {string} [quote="USDT"] - The quote currency, defaults to USDT
- * @returns {string} - The formatted symbol for the specified platform
- * @throws {Error} If the platform is unsupported
  */
 function getSymbolForPlatform(
   platform: string,
@@ -100,7 +91,6 @@ function getSymbolForPlatform(
 
 /**
  * Get the list of supported platforms
- * @returns {string[]} - An array of supported platform names
  */
 function getPlatforms(): string[] {
   return PLATFORMS

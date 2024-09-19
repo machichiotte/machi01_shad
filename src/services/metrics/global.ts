@@ -1,33 +1,12 @@
 // src/services/metrics/global.ts
-
-/**
- * This module contains functions for calculating global metrics for assets.
- * It includes utility functions for retrieving balances, prices, and other
- * financial data, as well as the main function for calculating asset metrics.
- */
-
 import { calculateRecups, calculateAmountsAndPricesForShad } from './strategies'
 import { getCmcValues } from './cmc'
-import {
-  getBalanceBySymbol,
-  getProfit,
-  getCurrentPossession,
-  getPercentageDifference,
-  getStatus,
-  getPercentageToNextTp
-} from './utils'
+import { getBalanceBySymbol, getProfit, getCurrentPossession, getPercentageDifference, getStatus, getPercentageToNextTp } from './utils'
 import { getTotalAmountAndBuy, getTotalSell } from './trades'
-import {
-  MappedBalance,
-  MappedOrder,
-  MappedTrade,
-  MappedTicker,
-  MappedCmc,
-  MappedStrategy
-} from '@models/dbTypes'
-
+import { MappedBalance, MappedOrder, MappedTrade, MappedTicker, MappedCmc, MappedStrategy } from '@models/dbTypes'
 import { AssetMetrics } from '@models/dbTypes'
 // Define stable coins
+//todo changer pour objet
 const stableCoins: string[] = ['USDT', 'USDC', 'DAI', 'BUSD', 'TUSD']
 
 /**
@@ -68,17 +47,8 @@ const DEFAULT_METRICS: AssetMetrics = {
 
 /**
  * Retrieves the current price of an asset from the last tickers.
- *
- * @param {Ticker[]} lastTickers - Array of recent ticker data.
- * @param {string} base - The base asset symbol.
- * @param {string} platform - The platform identifier.
- * @returns {string|number} - The current price or "N/A" if not found.
  */
-function getCurrentPrice(
-  lastTickers: MappedTicker[],
-  base: string,
-  platform: string
-): number | undefined {
+function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: string): number | undefined {
   if (!Array.isArray(lastTickers) || !base || !platform) {
     console.warn('Paramètres invalides pour getCurrentPrice')
     return -1
@@ -94,27 +64,8 @@ function getCurrentPrice(
 
 /**
  * Calculates various metrics for a given asset.
- *
- * @param {string} asset - The asset symbol.
- * @param {string} platform - The platform identifier.
- * @param {MappedBalance[]} lastBalances - Recent balance data.
- * @param {MappedCmc[]} lastCmc - Recent CoinMarketCap data.
- * @param {MappedTrade[]} lastTrades - Recent trade data.
- * @param {MappedOrder[]} lastOpenOrders - Recent open orders data.
- * @param {MappedStrategy} strategy - Recent strategy data.
- * @param {Ticker[]} lastTickers - Recent ticker data.
- * @returns {AssetMetrics} - An object containing calculated metrics for the asset.
- */
-function calculateAssetMetrics(
-  asset: string,
-  platform: string,
-  assetBalance: MappedBalance,
-  lastCmc: MappedCmc[],
-  lastTrades: MappedTrade[],
-  lastOpenOrders: MappedOrder[],
-  strategy: MappedStrategy,
-  lastTickers: MappedTicker[]
-): AssetMetrics {
+- */
+function calculateAssetMetrics(asset: string, platform: string, assetBalance: MappedBalance, lastCmc: MappedCmc[], lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: MappedStrategy, lastTickers: MappedTicker[]): AssetMetrics {
   const balance = getBalanceBySymbol(asset, assetBalance)
   const currentPrice = getCurrentPrice(lastTickers, asset, platform)
   const cmcValues = getCmcValues(lastCmc, currentPrice)
@@ -163,13 +114,7 @@ function calculateAssetMetrics(
     }
   }
 
-  const recups = calculateRecups(
-    asset,
-    platform,
-    totalBuy,
-    totalSell,
-    strategy
-  )
+  const recups = calculateRecups(asset, platform, totalBuy, totalSell, strategy)
   const amountsAndPrices = calculateAmountsAndPricesForShad(
     recups.recupTp1,
     balance,
@@ -206,17 +151,8 @@ function calculateAssetMetrics(
 
 /**
  * Filters open orders by type (buy/sell) and platform.
- *
- * @param {Order[]} orders - List of open orders.
- * @param {string} platform - The platform identifier.
- * @param {string} base - The asset symbol.
- * @returns {OrdersBySide} - Objects containing lists of buy and sell orders.
  */
-function filterOpenOrdersBySide(
-  orders: MappedOrder[],
-  platform: string,
-  base: string
-): { buyOrders: MappedOrder[], sellOrders: MappedOrder[] } {
+function filterOpenOrdersBySide(orders: MappedOrder[], platform: string, base: string): { buyOrders: MappedOrder[], sellOrders: MappedOrder[] } {
   return orders.reduce(
     (acc: { buyOrders: MappedOrder[], sellOrders: MappedOrder[] }, order: MappedOrder) => {
       if (order.platform === platform && order.symbol.split('/')[0] === base) {

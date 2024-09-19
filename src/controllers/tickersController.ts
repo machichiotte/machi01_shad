@@ -5,8 +5,6 @@ import { TickersService } from '@services/tickersService'
 
 /**
  * Récupère tous les tickers de la base de données.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
  */
 async function getAllTickers(req: Request, res: Response): Promise<void> {
   try {
@@ -19,15 +17,8 @@ async function getAllTickers(req: Request, res: Response): Promise<void> {
 
 /**
  * Récupère tous les tickers pour une plateforme spécifique.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
- * @param {string} platform - La plateforme pour laquelle récupérer les tickers.
  */
-async function getAllTickersByPlatform(
-  req: Request,
-  res: Response,
-  platform: string
-): Promise<void> {
+async function getAllTickersByPlatform(req: Request, res: Response, platform: string): Promise<void> {
   try {
     const platformTickersData =
       await TickersService.getAllTickersByPlatform(platform)
@@ -39,17 +30,8 @@ async function getAllTickersByPlatform(
 
 /**
  * Récupère tous les tickers pour un symbole spécifique d'une plateforme spécifique.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
- * @param {string} platform - La plateforme à partir de laquelle récupérer les tickers.
- * @param {string} symbol - Le symbole pour filtrer les tickers.
  */
-async function getAllTickersBySymbolFromPlatform(
-  req: Request,
-  res: Response,
-  platform: string,
-  symbol: string
-): Promise<void> {
+async function getAllTickersBySymbolFromPlatform(req: Request, res: Response, platform: string, symbol: string): Promise<void> {
   try {
     const filteredTickersData =
       await TickersService.getAllTickersBySymbolFromPlatform(platform, symbol)
@@ -61,8 +43,6 @@ async function getAllTickersBySymbolFromPlatform(
 
 /**
  * Met à jour tous les tickers dans la base de données.
- * @param {Request} req - L'objet de requête.
- * @param {Response} res - L'objet de réponse.
  */
 async function updateAllTickers(req: Request, res: Response): Promise<void> {
   try {

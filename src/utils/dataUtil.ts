@@ -6,8 +6,6 @@ import { MappedData } from '@models/dbTypes'
 
 /**
  * Retrieves data from the specified collection.
- * @param {string} collectionName - The MongoDB collection name.
- * @returns {Promise<MappedData[]>} - The retrieved data.
  */
 async function getData(collectionName: string): Promise<MappedData[]> {
   try {
@@ -21,8 +19,6 @@ async function getData(collectionName: string): Promise<MappedData[]> {
 
 /**
  * Main function to get data from the collection
- * @param {string} collectionName - The name of the collection to retrieve data from
- * @returns {Promise<MappedData[]>} - The retrieved data as an array of objects
  */
 async function getDataFromCollection(collectionName: string): Promise<MappedData[]> {
   try {
