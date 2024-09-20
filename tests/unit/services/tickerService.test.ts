@@ -1,10 +1,9 @@
 import { TickerService } from '@services/tickerService';
-import { getData } from '@services/mongodb';
 import { createPlatformInstance, getPlatforms } from '@utils/platformUtil';
 import { loadErrorPolicies, shouldRetry, } from '@utils/errorUtil';
 import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
-import { mapTickers } from '@services/mapping';
+import { MappingService } from '@services/mapping';
 import { MappedTicker } from '@models/dbTypes';
 
 jest.mock('@services/mongodb');
@@ -26,11 +25,11 @@ describe('TickerService', () => {
         { symbol: 'BTC/USDT', last: 50000, platform: 'binance' },
         { symbol: 'ETH/USDT', last: 3000, platform: 'binance' },
       ];
-      (getData as jest.Mock).mockResolvedValue(mockTickers);
+      (MongodbService.getData as jest.Mock).mockResolvedValue(mockTickers);
 
       const result = await TickerService.fetchDatabaseTickers();
 
-      expect(getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_TICKERS);
+      expect(MongodbService.getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_TICKERS);
       expect(result).toEqual(mockTickers);
     });
   });
@@ -70,7 +69,7 @@ describe('TickerService', () => {
       (createPlatformInstance as jest.Mock).mockReturnValue(mockInstance);
 
       const mockMappedTickers: Partial<MappedTicker>[] = [{ symbol: 'BTC/USDT', last: 50000, platform: 'binance' }];
-      (mapTickers as jest.Mock).mockReturnValue(mockMappedTickers as MappedTicker[]);
+      (MappingService.mapTickers as jest.Mock).mockReturnValue(mockMappedTickers as MappedTicker[]);
 
       await TickerService.updateAllTickers();
 
@@ -87,7 +86,7 @@ describe('TickerService', () => {
       (createPlatformInstance as jest.Mock).mockReturnValue(mockInstance);
 
       const mockMappedTickers: Partial<MappedTicker>[] = [{ symbol: 'BTC/USDT', last: 50000, platform: 'binance' }];
-      (mapTickers as jest.Mock).mockReturnValue(mockMappedTickers);
+      (MappingService.mapTickers as jest.Mock).mockReturnValue(mockMappedTickers);
 
       const result = await TickerService.fetchCurrentTickers('binance');
 

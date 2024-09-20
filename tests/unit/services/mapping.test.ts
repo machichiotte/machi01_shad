@@ -1,7 +1,7 @@
 import { Trade, Market, Order, Tickers } from 'ccxt'
 import { getTotalUSDT } from '@utils/mappingUtil'
 import { Balances, Ticker } from 'ccxt'
-import { mapBalance, mapOrders, mapTickers, mapMarkets, mapTrades } from '@services/mapping'
+import { MappingService } from '@services/mapping'
 
 jest.mock('@utils/mappingUtil')
 
@@ -13,7 +13,7 @@ describe('Mapper', () => {
         ETH: { free: 2, used: 1, total: 3 },
         USDT: { free: 1000, used: 0, total: 1000 }
       }
-      const result = mapBalance('binance', mockBalanceData as Balances)
+      const result = MappingService.mapBalance('binance', mockBalanceData as Balances)
       expect(result).toEqual([
         { base: 'BTC', balance: 1, available: 1, platform: 'binance' },
         { base: 'ETH', balance: 3, available: 2, platform: 'binance' },
@@ -22,7 +22,7 @@ describe('Mapper', () => {
     })
 
     it('devrait retourner un tableau vide pour des données invalides', () => {
-      const result = mapBalance('binance', null as unknown as Balances)
+      const result = MappingService.mapBalance('binance', null as unknown as Balances)
       expect(result).toEqual([])
     })
   })
@@ -42,7 +42,7 @@ describe('Mapper', () => {
         fee: { cost: 10, currency: 'USDT' },
       }
         ; (getTotalUSDT as jest.Mock).mockReturnValue(50000)
-      const result = mapTrades('binance', [mockTrade as Trade])
+      const result = MappingService.mapTrades('binance', [mockTrade as Trade])
       expect(result).toEqual([{
         amount: 1,
         base: 'BTC',
@@ -71,7 +71,7 @@ describe('Mapper', () => {
         amount: 1,
         price: 50000
       }
-      const result = mapOrders('binance', [mockOrder as Order])
+      const result = MappingService.mapOrders('binance', [mockOrder as Order])
       expect(result).toEqual([{
         oId: '123',
         cId: '456',
@@ -94,7 +94,7 @@ describe('Mapper', () => {
           last: 50000
         }
       }
-      const result = mapTickers('binance', mockTickers as Tickers)
+      const result = MappingService.mapTickers('binance', mockTickers as Tickers)
       expect(result).toEqual([{
         symbol: 'BTC/USDT',
         timestamp: 1625097600000,
@@ -119,7 +119,7 @@ describe('Mapper', () => {
         },
         precision: { amount: 8, price: 2 }
       }
-      const result = mapMarkets('binance', [mockMarket as Market])
+      const result = MappingService.mapMarkets('binance', [mockMarket as Market])
       expect(result).toEqual([{
         symbol: 'BTC/USDT',
         base: 'BTC',

@@ -6,8 +6,6 @@ import { LastUpdateService } from '@services/lastUpdateService';
 import { MappedTrade } from '@models/dbTypes';
 import { Trade } from 'ccxt';
 
-import { getData } from '@services/mongodb';
-
 jest.mock('@utils/platformUtil');
 jest.mock('@utils/errorUtil');
 jest.mock('@services/mongodbService');
@@ -22,11 +20,11 @@ describe('TradeService', () => {
   describe('fetchDatabaseTrades', () => {
     it('should fetch trades from the database', async () => {
       const mockTrades: Partial<MappedTrade>[] = [{ _id: '1', base: 'BTC', amount: 1, price: 50000, type: 'buy', timestamp: 1234567890 }];
-      (getData as jest.Mock).mockResolvedValue(mockTrades);
+      (MongodbService.getData as jest.Mock).mockResolvedValue(mockTrades);
 
       const result = await TradeService.fetchDatabaseTrades();
 
-      expect(getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_TRADES);
+      expect(MongodbService.getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_TRADES);
       expect(result).toEqual(mockTrades);
     });
   });

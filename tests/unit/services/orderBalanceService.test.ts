@@ -2,7 +2,7 @@ import { OrderBalanceService } from '@services/orderBalanceService'
 import { DatabaseService } from '@services/databaseService'
 import * as platformUtil from '@utils/platformUtil'
 import { MongodbService } from '@services/mongodbService'
-import { mapOrders, Mapper } from '@services/mapping'
+import { MappingService.} from '@services/mapping'
 import * as errorUtil from '@utils/errorUtil'
 import { MappedOrder } from '@models/dbTypes'
 import { Order, Exchange } from 'ccxt'
@@ -41,12 +41,12 @@ describe('OrderBalanceService', () => {
       const mockMappedOrders: Partial<MappedOrder>[] = [{ _id: '1', symbol: 'BTC/USDT', platform: 'binance' }]
 
       jest.spyOn(OrderBalanceService, 'fetchOpenOrdersByPlatform').mockResolvedValue(mockOrders as Order[])
-      jest.spyOn(mappingService, 'mapOrders').mockReturnValue(mockMappedOrders as MappedOrder[])
+      jest.spyOn(MappingService, 'mapOrders').mockReturnValue(mockMappedOrders as MappedOrder[])
 
       const result = await OrderBalanceService.fetchAndMapOrders(platform)
 
       expect(OrderBalanceService.fetchOpenOrdersByPlatform).toHaveBeenCalledWith(platform)
-      expect(Mapper.mapOrders).toHaveBeenCalledWith(platform, mockOrders)
+      expect(MappingService.mapOrders).toHaveBeenCalledWith(platform, mockOrders)
       expect(result).toEqual(mockMappedOrders)
     })
 

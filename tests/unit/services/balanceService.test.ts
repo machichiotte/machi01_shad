@@ -3,7 +3,7 @@ import { MongodbService } from '@services/mongodbService';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { loadErrorPolicies, shouldRetry, handleServiceError } from '@utils/errorUtil';
 import { DatabaseService } from '@services/databaseService';
-import { mapBalance } from '@services/mapping';
+import { MappingService } from '@services/mapping';
 import { ProcessorService } from '@services/processorService';
 import { MappedBalance } from '@models/dbTypes';
 
@@ -61,14 +61,14 @@ describe('balanceService', () => {
     it('should fetch and map current balances', async () => {
       const mockPlatformInstance = { fetchBalance: jest.fn().mockResolvedValue({ BTC: { free: 1 } }) };
       (createPlatformInstance as jest.Mock).mockReturnValue(mockPlatformInstance);
-      (mapBalance as jest.Mock).mockReturnValue([{ base: 'BTC', balance: 1 }]);
+      (MappingService.mapBalance as jest.Mock).mockReturnValue([{ base: 'BTC', balance: 1 }]);
 
       const result = await BalanceService.fetchCurrentBalancesByPlatform('test');
 
       expect(result).toEqual([{ base: 'BTC', balance: 1 }]);
       expect(createPlatformInstance).toHaveBeenCalledWith('test');
       expect(mockPlatformInstance.fetchBalance).toHaveBeenCalled();
-      expect(mapBalance).toHaveBeenCalledWith('test', { BTC: { free: 1 } });
+      expect(MappingService.mapBalance).toHaveBeenCalledWith('test', { BTC: { free: 1 } });
     });
   });
 

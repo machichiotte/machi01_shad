@@ -2,7 +2,7 @@ import { MarketService } from '@services/marketService';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
-import { mapMarkets } from '@services/mapping';
+import { MappingService } from '@services/mapping';
 import { MappedMarket } from '@models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 
@@ -25,13 +25,13 @@ describe('MarketService', () => {
         fetchMarkets: jest.fn().mockResolvedValue([{ id: 'BTC/USDT' }])
       };
       (createPlatformInstance as jest.Mock).mockReturnValue(mockPlatformInstance);
-      (mapMarkets as jest.Mock).mockReturnValue([{ symbol: 'BTC/USDT', platform: 'binance' }]);
+      (MappingService.mapMarkets as jest.Mock).mockReturnValue([{ symbol: 'BTC/USDT', platform: 'binance' }]);
 
       const result = await MarketService.fetchCurrentMarkets('binance');
 
       expect(createPlatformInstance).toHaveBeenCalledWith('binance');
       expect(mockPlatformInstance.fetchMarkets).toHaveBeenCalled();
-      expect(mapMarkets).toHaveBeenCalledWith('binance', [{ id: 'BTC/USDT' }]);
+      expect(MappingService.mapMarkets).toHaveBeenCalledWith('binance', [{ id: 'BTC/USDT' }]);
       expect(result).toEqual([{ symbol: 'BTC/USDT', platform: 'binance' }]);
     });
   });
