@@ -5,7 +5,6 @@ import { MappedStrategy } from '@models/dbTypes';
 import { InsertManyResult } from 'mongodb';
 import { handleServiceError } from '@utils/errorUtil';
 
-jest.mock('@services/mongodb');
 jest.mock('@services/lastUpdateService');
 jest.mock('@services/mongodbService');
 jest.mock('@utils/errorUtil');

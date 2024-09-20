@@ -6,7 +6,6 @@ import { MongodbService } from '@services/mongodbService';
 import { MappingService } from '@services/mapping';
 import { MappedTicker } from '@models/dbTypes';
 
-jest.mock('@services/mongodb');
 jest.mock('@utils/platformUtil');
 jest.mock('@utils/errorUtil');
 jest.mock('@services/lastUpdateService');

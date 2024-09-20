@@ -4,7 +4,6 @@ import { MongodbService } from '@services/mongodbService';
 import { handleServiceError } from '@utils/errorUtil';
 import { MappedCmc } from '@models/dbTypes';
 
-jest.mock('@services/mongodb');
 jest.mock('@services/lastUpdateService');
 jest.mock('@services/mongodbService');
 jest.mock('@utils/errorUtil');

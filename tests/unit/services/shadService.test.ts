@@ -3,7 +3,7 @@ import { MongodbService } from '@services/mongodbService';
 import { databaseOperations } from '@services/databaseOperationsService';
 import { ShadData, HighestPrices } from '@models/dbTypes';
 
-jest.mock('@services/mongodb');
+jest.mock('@services/mongodbService');
 jest.mock('@services/databaseOperationsService');
 
 describe('ShadService', () => {

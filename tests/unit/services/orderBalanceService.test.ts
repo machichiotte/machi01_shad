@@ -8,7 +8,7 @@ import { MappedOrder } from '@models/dbTypes'
 import { Order, Exchange } from 'ccxt'
 
 jest.mock('@utils/platformUtil')
-jest.mock('@services/mongodb')
+jest.mock('@services/mongodbService')
 jest.mock('@services/databaseService')
 jest.mock('@services/mapping')
 jest.mock('@utils/errorUtil')

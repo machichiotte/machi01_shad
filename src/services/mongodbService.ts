@@ -75,7 +75,7 @@ export class MongodbService {
    */
   static async getDB(): Promise<Db> {
     if (!db) {
-      const client = await this.getMongoClient()
+      const client = await MongodbService.getMongoClient()
       try {
         db = client.db(process.env.MONGODB_DATABASE)
         console.log('Database selected:', process.env.MONGODB_DATABASE)
@@ -92,7 +92,7 @@ export class MongodbService {
    * Creates a collection if it doesn't already exist.
    */
   static async createCollectionIfNotExists(collectionName: string): Promise<void> {
-    await retry(this.createCollection, [collectionName], 3)
+    await retry(MongodbService.createCollection, [collectionName], 3)
   }
 
   /**
@@ -100,7 +100,7 @@ export class MongodbService {
    */
   static async createCollection(collectionName: string): Promise<void> {
     try {
-      const db = await this.getDB()
+      const db = await MongodbService.getDB()
       const collections = await db
         .listCollections({ name: collectionName })
         .toArray()
@@ -156,7 +156,7 @@ export class MongodbService {
    */
   static async getAllDataMDB(collectionName: string): Promise<CacheItem[] | Document[]> {
     // Toujours retourner le cache si disponible
-    if (this.cache[collectionName]) {
+    if (MongodbService.cache[collectionName]) {
       // Si le cache est encore valide, le retourner
       const cacheExpirationTimes: { [key: string]: number } = {
         'collection_active_orders': 60000,
@@ -173,8 +173,8 @@ export class MongodbService {
       };
       const defaultExpirationTime = 0; // 30 secondes par défaut
 
-      if (Date.now() - this.cache[collectionName].timestamp < (cacheExpirationTimes[collectionName] || defaultExpirationTime)) {
-        return this.cache[collectionName].data;
+      if (Date.now() - MongodbService.cache[collectionName].timestamp < (cacheExpirationTimes[collectionName] || defaultExpirationTime)) {
+        return MongodbService.cache[collectionName].data;
       }
     }
 
@@ -182,11 +182,11 @@ export class MongodbService {
     try {
       console.log(`Fetching new data for collection: ${collectionName}`);
       const result = await retry(databaseOperations.find, [collectionName], 3);
-      this.addToCache(collectionName, result);
-      return this.cache[collectionName].data;
+      MongodbService.addToCache(collectionName, result);
+      return MongodbService.cache[collectionName].data;
     } catch (error) {
       handleServiceError(error, 'getAllDataMDB', `Error fetching data from ${collectionName}`)
-      return this.cache[collectionName]?.data || [];
+      return MongodbService.cache[collectionName]?.data || [];
     }
   }
 
@@ -194,7 +194,7 @@ export class MongodbService {
   static addToCache(collectionName: string, data: Document[]): void {
     try {
       if (data.length > 0) {
-        this.cache[collectionName] = {
+        MongodbService.cache[collectionName] = {
           data,
           timestamp: Date.now()
         }
@@ -252,26 +252,26 @@ export class MongodbService {
    */
   static async connectToMongoDB(): Promise<void> {
     try {
-      await this.getDB()
+      await MongodbService.getDB()
       console.log('Connected to MongoDB!')
 
       const collectionsToCreate = [
-        this.activeOrdersCollection,
-        this.balanceCollection,
-        this.cmcCollection,
-        this.lastUpdateCollection,
-        this.loadMarketsCollection,
-        this.shadCollection,
-        this.stratCollection,
-        this.swapCollection,
-        this.tradesCollection,
-        this.tickersCollection,
-        this.usersCollection,
-        this.highestPricesCollection
+        MongodbService.activeOrdersCollection,
+        MongodbService.balanceCollection,
+        MongodbService.cmcCollection,
+        MongodbService.lastUpdateCollection,
+        MongodbService.loadMarketsCollection,
+        MongodbService.shadCollection,
+        MongodbService.stratCollection,
+        MongodbService.swapCollection,
+        MongodbService.tradesCollection,
+        MongodbService.tickersCollection,
+        MongodbService.usersCollection,
+        MongodbService.highestPricesCollection
       ]
 
       for (const collectionName of collectionsToCreate) {
-        await this.createCollectionIfNotExists(collectionName as string)
+        await MongodbService.createCollectionIfNotExists(collectionName as string)
       }
     } catch (error) {
       handleServiceError(error, 'connectToMongoDB', 'Error connecting to MongoDB')
@@ -284,7 +284,7 @@ export class MongodbService {
    */
   static async updateInDatabase(collectionName: string, filter: object, update: object): Promise<void> {
     try {
-      await this.updateDataMDB(collectionName, filter, update)
+      await MongodbService.updateDataMDB(collectionName, filter, update)
     } catch (error) {
       handleServiceError(error, 'updateInDatabase', `Error updating data in ${collectionName}`)
     }
@@ -297,8 +297,8 @@ export class MongodbService {
     try {
       if (mapData && mapData.length > 0) {
         const deleteParam = { platform }
-        await this.deleteMultipleDataMDB(collectionName, deleteParam)
-        await this.saveData(collectionName, mapData)
+        await MongodbService.deleteMultipleDataMDB(collectionName, deleteParam)
+        await MongodbService.saveData(collectionName, mapData)
       }
     } catch (error) {
       handleServiceError(error, 'deleteAndSaveData', `Error deleting and saving data in ${collectionName}`)
@@ -311,8 +311,8 @@ export class MongodbService {
   static async deleteAndReplaceAll(collectionName: string, mapData: MappedData[]): Promise<void> {
     try {
       if (mapData && mapData.length > 0) {
-        await this.deleteAllDataMDB(collectionName)
-        await this.saveData(collectionName, mapData)
+        await MongodbService.deleteAllDataMDB(collectionName)
+        await MongodbService.saveData(collectionName, mapData)
       }
     } catch (error) {
       handleServiceError(error, 'deleteAndReplaceAll', `Error deleting and replacing all data in ${collectionName}`)

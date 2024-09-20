@@ -1,10 +1,8 @@
 // src/index.ts
 import dotenv from 'dotenv'
-import {
-  connectToMongoDB,
-} from './services/mongodbService'
-import { startServer } from './server'
-import { initializeCronTasks } from './services/cron/cronTasks'
+import { MongodbService } from '@services/mongodbService'
+import { startServer } from '@src/server'
+import { initializeCronTasks } from '@services/cron/cronTasks'
 
 import { cronBalances } from './services/cron/taskExecutor'
 import { handleMigrationSwaps } from './services/migrationSwapService'
@@ -18,7 +16,7 @@ async function startApp(): Promise<void> {
       process.exit(1)
     })
 
-    await connectToMongoDB()
+    await MongodbService.connectToMongoDB()
 
     await handleMigrationSwaps()
 

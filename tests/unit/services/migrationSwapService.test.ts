@@ -5,7 +5,7 @@ import { StrategyService } from '@services/strategyService';
 import { TradeService } from '@services/tradeService';
 import { handleServiceError } from '@utils/errorUtil';
 
-jest.mock('@services/mongodb');
+jest.mock('@services/mongodbService');
 jest.mock('@services/strategyService');
 jest.mock('@services/tradeService');
 jest.mock('@utils/errorUtil');

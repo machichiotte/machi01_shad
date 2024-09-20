@@ -6,7 +6,6 @@ import { MappingService } from '@services/mapping';
 import { MappedMarket } from '@models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 
-jest.mock('@services/mongodb');
 jest.mock('@utils/platformUtil');
 jest.mock('@services/lastUpdateService');
 jest.mock('@services/mongodbService');

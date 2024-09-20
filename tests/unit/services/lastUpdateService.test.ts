@@ -1,7 +1,6 @@
 import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
 
-jest.mock('@services/mongodb');
 jest.mock('@services/mongodbService');
 
 describe('LastUpdateService', () => {

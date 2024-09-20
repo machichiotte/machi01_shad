@@ -7,7 +7,7 @@ import { MappingService } from '@services/mapping';
 import { ProcessorService } from '@services/processorService';
 import { MappedBalance } from '@models/dbTypes';
 
-jest.mock('@services/mongodb');
+jest.mock('@services/mongodbService');
 jest.mock('@utils/platformUtil');
 jest.mock('@utils/errorUtil');
 jest.mock('@utils/controllerUtil');
