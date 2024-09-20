@@ -4,8 +4,8 @@ import { getData } from '@utils/dataUtil';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil';
 import { validateEnvVariables } from '@utils/controllerUtil';
-import { DatabaseService } from './databaseService';
-import { mapBalance } from './mapping';
+import { DatabaseService } from '@services/databaseService';
+import { mapBalance } from '@services/mapping';
 import { MappedBalance } from 'src/models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 import { ProcessorService } from '@services/processorService'
