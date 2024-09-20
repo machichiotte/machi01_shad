@@ -9,7 +9,7 @@ jest.mock('crypto');
 jest.mock('@services/mongodbService');
 jest.mock('@utils/errorUtil');
 
-describe('AuthService', () => {
+describe('authService', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
