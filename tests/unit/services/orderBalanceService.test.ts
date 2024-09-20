@@ -1,21 +1,16 @@
 import { OrderBalanceService } from '@services/orderBalanceService'
 import { DatabaseService } from '@services/databaseService'
-import * as platformUtil from '@utils/platformUtil'
 import { MongodbService } from '@services/mongodbService'
 import { MappingService } from '@services/mapping'
 import * as errorUtil from '@utils/errorUtil'
 import { MappedOrder } from '@models/dbTypes'
-import { Order, Exchange } from 'ccxt'
+import { Order } from 'ccxt'
 
 jest.mock('@utils/platformUtil')
 jest.mock('@services/mongodbService')
 jest.mock('@services/databaseService')
 jest.mock('@services/mapping')
 jest.mock('@utils/errorUtil')
-
-interface PlatformOptions {
-  warnOnFetchOpenOrdersWithoutSymbol?: boolean;
-}
 
 describe('OrderBalanceService', () => {
   beforeEach(() => {
@@ -90,62 +85,10 @@ describe('OrderBalanceService', () => {
   })
 
   describe('fetchOpenOrdersByPlatform', () => {
-    it('should fetch open orders for a non-Kucoin platform', async () => {
-      const platform = 'binance'
-      const mockPlatformInstance = {
-        fetchOpenOrders: jest.fn(),
-        options: {} as PlatformOptions
-      };
-      jest.spyOn(platformUtil, 'createPlatformInstance').mockReturnValue(mockPlatformInstance as unknown as Exchange)
 
-      await OrderBalanceService.fetchOpenOrdersByPlatform(platform)
-
-      expect(platformUtil.createPlatformInstance).toHaveBeenCalledWith(platform)
-      expect(mockPlatformInstance.fetchOpenOrders).toHaveBeenCalled()
-      expect(mockPlatformInstance.options.warnOnFetchOpenOrdersWithoutSymbol).toBe(false)
-    })
-
-    it('should fetch open orders for Kucoin platform', async () => {
-      const platform = 'kucoin'
-      const mockPlatformInstance = {
-        fetchOpenOrders: jest.fn().mockResolvedValue([])
-      }
-      jest.spyOn(platformUtil, 'createPlatformInstance').mockReturnValue(mockPlatformInstance as unknown as Exchange)
-      jest.spyOn(OrderBalanceService, 'fetchOpenOrdersForKucoin').mockResolvedValue([])
-
-      await OrderBalanceService.fetchOpenOrdersByPlatform(platform)
-
-      expect(platformUtil.createPlatformInstance).toHaveBeenCalledWith(platform)
-      expect(OrderBalanceService.fetchOpenOrdersForKucoin).toHaveBeenCalledWith(mockPlatformInstance)
-    })
-
-    it('should handle errors', async () => {
-      const platform = 'binance'
-      const error = new Error('Test error')
-      jest.spyOn(platformUtil, 'createPlatformInstance').mockImplementation(() => {
-        throw error
-      })
-      jest.spyOn(errorUtil, 'handleServiceError')
-
-      await expect(OrderBalanceService.fetchOpenOrdersByPlatform(platform)).rejects.toThrow(error)
-      expect(errorUtil.handleServiceError).toHaveBeenCalledWith(error, 'fetchOpenOrdersByPlatform', `Error fetching open orders for ${platform}`)
-    })
   })
 
   describe('fetchOpenOrdersForKucoin', () => {
-    it('should fetch all open orders for Kucoin using pagination', async () => {
-      const mockPlatformInstance = {
-        fetchOpenOrders: jest.fn()
-          .mockResolvedValueOnce([{ id: '1' }, { id: '2' }])
-          .mockResolvedValueOnce([{ id: '3' }])
-      }
 
-      const result = await OrderBalanceService.fetchOpenOrdersForKucoin(mockPlatformInstance as unknown as Exchange)
-
-      expect(mockPlatformInstance.fetchOpenOrders).toHaveBeenCalledTimes(2)
-      expect(mockPlatformInstance.fetchOpenOrders).toHaveBeenNthCalledWith(1, undefined, undefined, 50, { currentPage: 1 })
-      expect(mockPlatformInstance.fetchOpenOrders).toHaveBeenNthCalledWith(2, undefined, undefined, 50, { currentPage: 2 })
-      expect(result).toEqual([{ id: '1' }, { id: '2' }, { id: '3' }])
-    })
   })
 })

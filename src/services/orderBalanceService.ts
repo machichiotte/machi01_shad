@@ -66,7 +66,7 @@ export class OrderBalanceService {
       }
 
       if (platform === 'kucoin') {
-        return await this.fetchOpenOrdersForKucoin(platformInstance)
+        return await this.fetchOpenOrdersByPage(platformInstance)
       } else {
         return await platformInstance.fetchOpenOrders()
       }
@@ -79,10 +79,10 @@ export class OrderBalanceService {
   /**
    * Fetches open orders for Kucoin platform.
    */
-  static async fetchOpenOrdersForKucoin(platformInstance: Exchange): Promise<Order[]> {
-    const pageSize = 50
+  static async fetchOpenOrdersByPage(platformInstance: Exchange): Promise<Order[]> {
+    const pageSize = 100
     let currentPage = 1
-    let data: Order[] = []
+    let allOrders: Order[] = []
 
     while (true) {
       const limit = pageSize
@@ -93,7 +93,7 @@ export class OrderBalanceService {
         limit,
         params
       )
-      data = data.concat(orders)
+      allOrders = allOrders.concat(orders)
 
       if (orders.length < pageSize) {
         break
@@ -102,6 +102,6 @@ export class OrderBalanceService {
       currentPage++
     }
 
-    return data
+    return allOrders
   }
 }
