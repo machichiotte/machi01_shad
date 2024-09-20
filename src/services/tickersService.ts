@@ -8,14 +8,17 @@ import { DatabaseService } from './databaseService'
 import { mapTickers } from './mapping'
 import { MappedTicker } from 'src/models/dbTypes'
 import { handleServiceError } from '@utils/errorUtil'
+
+const COLLECTION_NAME = process.env.MONGODB_COLLECTION_TICKERS as string
+const COLLECTION_TYPE = process.env.TYPE_TICKERS as string
+
 export class TickersService {
 
   /**
    * Fetches tickers data from the database.
    */
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {
-    const collectionName = process.env.MONGODB_COLLECTION_TICKERS as string
-    return await getData(collectionName) as MappedTicker[]
+    return await getData(COLLECTION_NAME) as MappedTicker[]
   }
 
   /**
@@ -67,8 +70,6 @@ export class TickersService {
    * Updates all tickers for all platforms.
    */
   static async updateAllTickers(): Promise<MappedTicker[]> {
-    const collectionName = process.env.MONGODB_COLLECTION_TICKERS as string
-    const collectionType = process.env.TYPE_TICKERS as string
     const tickersData: MappedTicker[] = []
     const platforms = getPlatforms()
     for (const platform of platforms) {
@@ -77,8 +78,8 @@ export class TickersService {
       tickersData.push(...mapTickers(platform, data))
     }
 
-    await deleteAndReplaceAll(collectionName, tickersData)
-    await LastUpdateService.saveLastUpdateToDatabase(collectionType, 'combined')
+    await deleteAndReplaceAll(COLLECTION_NAME, tickersData)
+    await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE, 'combined')
     return tickersData
   }
 
@@ -111,14 +112,11 @@ export class TickersService {
    * Saves the provided tickers data to the database.
    */
   static async saveDatabaseTickers(mappedData: MappedTicker[], platform: string): Promise<void> {
-    const collectionName = process.env.MONGODB_COLLECTION_TICKERS
-    const updateType = process.env.TYPE_TICKERS
-
     await DatabaseService.saveDataToDatabase(
       mappedData,
-      collectionName as string,
+      COLLECTION_NAME,
       platform,
-      updateType as string
+      COLLECTION_TYPE
     )
   }
 
@@ -127,8 +125,8 @@ export class TickersService {
  */
   static async updateTickersForPlatform(platform: string): Promise<void> {
     try {
-      const currentTickers = await this.fetchCurrentTickers(platform, 3)
-      await this.saveDatabaseTickers(currentTickers, platform)
+      const currentTickers = await TickersService.fetchCurrentTickers(platform, 3)
+      await TickersService.saveDatabaseTickers(currentTickers, platform)
     } catch (error) {
       handleServiceError(error, 'updateTickersForPlatform', `Erreur lors de la mise à jour des tickers pour ${platform}`)
     }

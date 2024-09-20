@@ -64,10 +64,10 @@ function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: st
 /**
  * Calculates various metrics for a given asset.
 - */
-function calculateAssetMetrics(asset: string, platform: string, assetBalance: MappedBalance, lastCmc: MappedCmc[], lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: MappedStrategy, lastTickers: MappedTicker[]): AssetMetrics {
+function calculateAssetMetrics(asset: string, platform: string, assetBalance: MappedBalance, closestCmc: MappedCmc | null, lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: MappedStrategy, lastTickers: MappedTicker[]): AssetMetrics {
   const balance = getBalanceBySymbol(asset, assetBalance)
   const currentPrice = getCurrentPrice(lastTickers, asset, platform)
-  const cmcValues = getCmcValues(lastCmc, currentPrice)
+  const cmcValues = closestCmc ? getCmcValues(closestCmc, currentPrice) : { cmc_rank: 'N/A', price: 'N/A' }
   const totalSell = getTotalSell(asset, lastTrades)
 
   const { buyOrders, sellOrders } = filterOpenOrdersBySide(

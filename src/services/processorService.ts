@@ -178,35 +178,42 @@ export class ProcessorService {
     const assetBase = bal.base
     const assetPlatform = bal.platform
 
-    const filteredCmc = dbCmc.filter((cmc) => cmc.symbol === assetBase)
-    const filteredTrades = dbTrades.filter((trade) => trade.base === assetBase)
-    const filteredOpenOrders = dbOpenOrders.filter((order) =>
+    const cmcMatches = dbCmc.filter((cmc) => cmc.symbol === assetBase);
+    const closestCmc = cmcMatches.length > 0
+      ? cmcMatches.reduce((prev, current) =>
+        Math.abs(current.quote?.USD?.price - bal.balance) < Math.abs(prev.quote?.USD?.price - bal.balance)
+          ? current
+          : prev
+      )
+      : null;
+    const assetTrades = dbTrades.filter((trade) => trade.base === assetBase)
+    const assetOrders = dbOpenOrders.filter((order) =>
       QUOTE_CURRENCIES.some(quote => order.symbol === `${assetBase}/${quote}`)
     )
-    const filteredStrategy = dbStrategies.find(
+    const assetStrategy = dbStrategies.find(
       (strategy) => strategy.asset === assetBase && strategy.strategies[assetPlatform]
     ) || { asset: '', strategies: {}, maxExposure: {} } as MappedStrategy
-    const filteredTickers = dbTickers.filter(
+    const assetTicker = dbTickers.filter(
       (ticker) => ticker.symbol.startsWith(`${assetBase}/`) && ticker.platform === assetPlatform
     )
 
     if (
-      !filteredCmc.length &&
-      !filteredTrades.length &&
-      !filteredOpenOrders.length &&
-      !filteredTickers.length &&
-      !filteredStrategy
+      closestCmc === null ||
+      !assetTrades.length &&
+      !assetOrders.length &&
+      !assetTicker.length &&
+      !assetStrategy
     ) {
       if (STABLECOINS.includes(assetBase)) {
         return calculateAssetMetrics(
           assetBase,
           assetPlatform,
           bal,
-          [],
+          closestCmc,
           [],
           [],
           { asset: '', strategies: {}, maxExposure: {} },
-          filteredTickers
+          assetTicker
         )
       } else {
         return null
@@ -217,11 +224,11 @@ export class ProcessorService {
       assetBase,
       assetPlatform,
       bal,
-      filteredCmc,
-      filteredTrades,
-      filteredOpenOrders,
-      filteredStrategy,
-      filteredTickers
+      closestCmc,
+      assetTrades,
+      assetOrders,
+      assetStrategy,
+      assetTicker
     )
   }
 
@@ -246,8 +253,6 @@ export class ProcessorService {
         } catch (error) {
           handleServiceError(error, 'fetchLastTrades', `Error fetching trades for ${symbol}`)
         }
-      } else {
-        console.log(`Symbol not available: ${symbol}`)
       }
     }
 

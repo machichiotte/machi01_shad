@@ -11,20 +11,12 @@ import { handleServiceError } from './errorUtil'
 async function getData(collectionName: string): Promise<MappedData[]> {
   try {
     if (process.env.OFFLINE_MODE === 'true') {
-      // Get the mock data file path for the given collection
       const mockDataPath = getMockDataPath(collectionName)
-
-      // Read the mock data from the file
       const jsonData = await fs.readFile(mockDataPath, 'utf8')
-
-      // Return parsed JSON data
       return JSON.parse(jsonData)
     } else {
-      // Fetch data from MongoDB
       const data = await getAllDataMDB(collectionName)
-      // Return data, ensuring it's an array
-      console.log(`🚀 ~ getData:`, { collectionName, count: data.length });
-
+      console.log(`${data.length} éléments récupérés depuis ${collectionName}`);
       return Array.isArray(data) ? data as MappedData[] : []
     }
   } catch (error) {

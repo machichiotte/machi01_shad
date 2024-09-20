@@ -33,13 +33,9 @@ class Mapper {
   /**
    * Maps common trade data across all platforms.
    */
-  private static mapTradeCommon(
-    item: Trade,
-    platform: string,
-    conversionRates: Record<string, number> = {}
-  ): Omit<MappedTrade, '_id'> {
+  private static mapTradeCommon(item: Trade, platform: string, conversionRates: Record<string, number> = {}): Omit<MappedTrade, '_id'> {
     console.log('Début de mapTradeCommon pour la plateforme:', platform);
-    console.log('Item reçu:', JSON.stringify(item));
+    //console.log('Item reçu:', JSON.stringify(item));
 
     if (!item) {
       console.error('Item est undefined');
@@ -47,20 +43,17 @@ class Mapper {
     }
 
     const [baseAsset, quoteAsset] = item.symbol?.toUpperCase().split('/') || []
-    console.log('Base asset:', baseAsset, 'Quote asset:', quoteAsset);
 
     const totalUSDT = getTotalUSDT(
       item.symbol?.toUpperCase() || '',
       item.cost || 0,
       conversionRates
     )
-    console.log('Total USDT calculé:', totalUSDT);
 
     const feeCost = item.fee ? parseFloat(item.fee.cost?.toString() || '0') : 0
     const feeCurrency = item.fee
       ? item.fee.currency?.toUpperCase() || 'N/A'
       : 'N/A'
-    console.log('Frais:', feeCost, 'Devise des frais:', feeCurrency);
 
     const mappedTrade = {
       base: baseAsset,
@@ -91,10 +84,10 @@ class Mapper {
   ): Omit<MappedTrade, '_id'>[] {
     return data
       .map((item) => {
-        const commonData = this.mapTradeCommon(item, platform, conversionRates)
+        const commonData = Mapper.mapTradeCommon(item, platform, conversionRates)
         if (platform === 'okx' && item.info?.data?.[0]?.details) {
           return item.info.data[0].details.map((item: Trade) =>
-            this.mapTradeCommon(item, 'okx', conversionRates)
+            Mapper.mapTradeCommon(item, 'okx', conversionRates)
           )
         }
         return commonData

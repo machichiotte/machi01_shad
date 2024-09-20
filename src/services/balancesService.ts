@@ -13,8 +13,8 @@ import { ProcessorService } from '@services/processorService'
 // Valide que les variables d'environnement nécessaires sont définies
 validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE']);
 
-const collectionName = process.env.MONGODB_COLLECTION_BALANCE as string;
-const collectionType = process.env.TYPE_BALANCE as string;
+const COLLECTION_NAME = process.env.MONGODB_COLLECTION_BALANCE as string;
+const COLLECTION_TYPE = process.env.TYPE_BALANCE as string;
 
 // Définition de la classe BalancesService
 export class BalancesService {
@@ -22,7 +22,7 @@ export class BalancesService {
    * Récupère toutes les données de solde de la base de données.
    */
   static async fetchDatabaseBalances(): Promise<MappedBalance[]> {
-    return await getData(collectionName) as MappedBalance[];
+    return await getData(COLLECTION_NAME) as MappedBalance[];
   }
 
   /**
@@ -71,8 +71,8 @@ export class BalancesService {
    * Enregistre les données de solde fournies dans la base de données.
    */
   static async saveDatabaseBalance(mappedData: MappedBalance[], platform: string): Promise<void> {
-    if (collectionName && collectionType) {
-      await DatabaseService.saveDataToDatabase(mappedData, collectionName, platform, collectionType);
+    if (COLLECTION_NAME && COLLECTION_TYPE) {
+      await DatabaseService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE);
     } else {
       throw new Error('Required environment variables are not set');
     }
@@ -94,8 +94,8 @@ export class BalancesService {
   static async updateBalancesForPlatform(platform: string): Promise<void> {
     try {
       const [currentBalances, previousBalances] = await Promise.all([
-        this.fetchCurrentBalancesByPlatform(platform, 3),
-        this.fetchDatabaseBalancesByPlatform(platform, 3)
+        BalancesService.fetchCurrentBalancesByPlatform(platform, 3),
+        BalancesService.fetchDatabaseBalancesByPlatform(platform, 3)
       ])
 
       const differences = ProcessorService.compareBalances(previousBalances, currentBalances)
@@ -105,7 +105,7 @@ export class BalancesService {
           differences
         )
         await Promise.all([
-          this.saveDatabaseBalance(currentBalances, platform),
+          BalancesService.saveDatabaseBalance(currentBalances, platform),
           ProcessorService.processBalanceChanges(differences, platform)
         ])
       }

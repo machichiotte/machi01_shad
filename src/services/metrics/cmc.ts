@@ -1,18 +1,5 @@
 // src/services/metrics/cmc.ts
-interface CmcData {
-  cmc_rank?: string
-  quote?: {
-    USD?: {
-      price?: number
-      percent_change_24h?: number
-      percent_change_7d?: number
-      percent_change_30d?: number
-      percent_change_60d?: number
-      percent_change_90d?: number
-    }
-  }
-  id?: string | number
-}
+import { MappedCmc } from "@models/dbTypes"
 
 interface CmcValues {
   rank: number
@@ -29,7 +16,7 @@ interface CmcValues {
  * Retrieves CoinMarketCap values for a given object.
  */
 //function getCmcValues(cmc: CmcData[],currentPrice : number): CmcValues {
-function getCmcValues(cmc: CmcData[], currentPrice: number | undefined): CmcValues {
+function getCmcValues(cmc: MappedCmc, currentPrice: number | undefined): CmcValues {
   if (!Array.isArray(cmc) || cmc.length === 0 || currentPrice === undefined) {
     return {
       rank: 0,
