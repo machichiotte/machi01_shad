@@ -2,7 +2,7 @@
 import express from 'express'
 import multer from 'multer'
 import { getConvertedCsv } from '@controllers/converterController'
-import { fileUploadMiddleware } from '../middlewares/fileUploadMiddleware'
+import { fileUploadMiddleware } from '@src/middlewares/fileUploadMiddleware'
 
 const router = express.Router()
 const upload = multer({ storage: multer.memoryStorage() })
