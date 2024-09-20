@@ -1,4 +1,4 @@
-// src/services/BalancesService.ts
+// src/services/balanceService.ts
 
 import { getData } from '@utils/dataUtil';
 import { createPlatformInstance } from '@utils/platformUtil';
@@ -17,7 +17,7 @@ const COLLECTION_NAME = process.env.MONGODB_COLLECTION_BALANCE as string;
 const COLLECTION_TYPE = process.env.TYPE_BALANCE as string;
 
 // Définition de la classe BalancesService
-export class BalancesService {
+export class BalanceService {
   /**
    * Récupère toutes les données de solde de la base de données.
    */
@@ -94,8 +94,8 @@ export class BalancesService {
   static async updateBalancesForPlatform(platform: string): Promise<void> {
     try {
       const [currentBalances, previousBalances] = await Promise.all([
-        BalancesService.fetchCurrentBalancesByPlatform(platform, 3),
-        BalancesService.fetchDatabaseBalancesByPlatform(platform, 3)
+        BalanceService.fetchCurrentBalancesByPlatform(platform, 3),
+        BalanceService.fetchDatabaseBalancesByPlatform(platform, 3)
       ])
 
       const differences = ProcessorService.compareBalances(previousBalances, currentBalances)
@@ -105,7 +105,7 @@ export class BalancesService {
           differences
         )
         await Promise.all([
-          BalancesService.saveDatabaseBalance(currentBalances, platform),
+          BalanceService.saveDatabaseBalance(currentBalances, platform),
           ProcessorService.processBalanceChanges(differences, platform)
         ])
       }

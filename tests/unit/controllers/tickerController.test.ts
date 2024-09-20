@@ -1,17 +1,17 @@
 import { Request, Response } from 'express'
-import { TickersService } from '@services/tickersService'
+import { TickerService } from '@src/services/tickerService'
 import { handleControllerError } from '@utils/errorUtil'
 import {
   getAllTickers,
   getAllTickersByPlatform,
   getAllTickersBySymbolFromPlatform,
   updateAllTickers
-} from '@controllers/tickersController'
+} from '@src/controllers/tickerController'
 
-jest.mock('@services/tickersService')
+jest.mock('@services/tickerService')
 jest.mock('@utils/errorUtil')
 
-describe('Tickers Controller', () => {
+describe('tickerController', () => {
   let mockRequest: Partial<Request>
   let mockResponse: Partial<Response>
   let mockJson: jest.Mock
@@ -30,7 +30,7 @@ describe('Tickers Controller', () => {
   describe('getAllTickers', () => {
     it('devrait renvoyer tous les tickers', async () => {
       const mockData = [{ id: 1, name: 'BTC' }]
-        ; (TickersService.fetchDatabaseTickers as jest.Mock).mockResolvedValue(
+        ; (TickerService.fetchDatabaseTickers as jest.Mock).mockResolvedValue(
           mockData
         )
 
@@ -41,7 +41,7 @@ describe('Tickers Controller', () => {
 
     it('devrait gérer les erreurs', async () => {
       const mockError = new Error('Erreur de test')
-        ; (TickersService.fetchDatabaseTickers as jest.Mock).mockRejectedValue(
+        ; (TickerService.fetchDatabaseTickers as jest.Mock).mockRejectedValue(
           mockError
         )
 
@@ -58,7 +58,7 @@ describe('Tickers Controller', () => {
   describe('getAllTickersByPlatform', () => {
     it('devrait renvoyer les tickers pour une plateforme spécifique', async () => {
       const mockData = [{ id: 1, name: 'BTC', platform: 'binance' }]
-        ; (TickersService.getAllTickersByPlatform as jest.Mock).mockResolvedValue(mockData)
+        ; (TickerService.getAllTickersByPlatform as jest.Mock).mockResolvedValue(mockData)
 
       const mockRequest = {
         params: { platform: 'binance' }
@@ -72,7 +72,7 @@ describe('Tickers Controller', () => {
 
     it('devrait gérer les erreurs correctement', async () => {
       const mockError = new Error('Erreur de test')
-        ; (TickersService.getAllTickersByPlatform as jest.Mock).mockRejectedValue(mockError)
+        ; (TickerService.getAllTickersByPlatform as jest.Mock).mockRejectedValue(mockError)
 
       const mockRequest = {
         params: { platform: 'binance' }
@@ -89,7 +89,7 @@ describe('Tickers Controller', () => {
       const mockData = [
         { id: 1, name: 'BTC', platform: 'binance', symbol: 'BTCUSDT' }
       ]
-        ; (TickersService.getAllTickersBySymbolFromPlatform as jest.Mock).mockResolvedValue(mockData)
+        ; (TickerService.getAllTickersBySymbolFromPlatform as jest.Mock).mockResolvedValue(mockData)
 
       const mockRequest = {
         params: { platform: 'binance', symbol: 'BTCUSDT' }
@@ -103,7 +103,7 @@ describe('Tickers Controller', () => {
 
     it('devrait gérer les erreurs correctement', async () => {
       const mockError = new Error('Erreur de test')
-        ; (TickersService.getAllTickersBySymbolFromPlatform as jest.Mock).mockRejectedValue(mockError)
+        ; (TickerService.getAllTickersBySymbolFromPlatform as jest.Mock).mockRejectedValue(mockError)
 
       const mockRequest = {
         params: { platform: 'binance', symbol: 'BTCUSDT' }
@@ -118,7 +118,7 @@ describe('Tickers Controller', () => {
   describe('updateAllTickers', () => {
     it('devrait mettre à jour tous les tickers', async () => {
       const mockData = [{ id: 1, name: 'BTC', updated: true }]
-        ; (TickersService.updateAllTickers as jest.Mock).mockResolvedValue(
+        ; (TickerService.updateAllTickers as jest.Mock).mockResolvedValue(
           mockData
         )
 

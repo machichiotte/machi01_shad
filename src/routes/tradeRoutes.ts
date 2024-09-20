@@ -1,10 +1,10 @@
-// src/routes/tradesRoutes.ts
+// src/routes/tradeRoutes.ts
 import express from 'express'
 import {
   getTrades,
   addTradesManually,
   updateTrades
-} from '@controllers/tradesController'
+} from '@src/controllers/tradeController'
 
 const router = express.Router()
 

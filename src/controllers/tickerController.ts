@@ -1,14 +1,14 @@
-// src/controllers/tickersController.ts
+// src/controllers/tickerController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { TickersService } from '@services/tickersService'
+import { TickerService } from '@src/services/tickerService'
 
 /**
  * Récupère tous les tickers de la base de données.
  */
 async function getAllTickers(req: Request, res: Response): Promise<void> {
   try {
-    const data = await TickersService.fetchDatabaseTickers()
+    const data = await TickerService.fetchDatabaseTickers()
     res.status(200).json({ message: 'Tickers récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'getAllTickers')
@@ -21,7 +21,7 @@ async function getAllTickers(req: Request, res: Response): Promise<void> {
 async function getAllTickersByPlatform(req: Request, res: Response): Promise<void> {
   const { platform } = req.params
   try {
-    const data = await TickersService.getAllTickersByPlatform(platform)
+    const data = await TickerService.getAllTickersByPlatform(platform)
     res.status(200).json({ message: 'Tickers récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'getAllTickersByPlatform')
@@ -34,7 +34,7 @@ async function getAllTickersByPlatform(req: Request, res: Response): Promise<voi
 async function getAllTickersBySymbolFromPlatform(req: Request, res: Response): Promise<void> {
   const { platform, symbol } = req.params
   try {
-    const data = await TickersService.getAllTickersBySymbolFromPlatform(platform, symbol)
+    const data = await TickerService.getAllTickersBySymbolFromPlatform(platform, symbol)
     res.status(200).json({ message: 'Tickers récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'getAllTickersBySymbolFromPlatform')
@@ -46,7 +46,7 @@ async function getAllTickersBySymbolFromPlatform(req: Request, res: Response): P
  */
 async function updateAllTickers(req: Request, res: Response): Promise<void> {
   try {
-    const data = await TickersService.updateAllTickers()
+    const data = await TickerService.updateAllTickers()
     res.status(200).json({ message: 'Tickers mis à jour', data })
   } catch (error) {
     handleControllerError(res, error, 'updateAllTickers')

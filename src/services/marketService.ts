@@ -1,4 +1,4 @@
-// src/services/marketsService.ts
+// src/services/marketService.ts
 import { getData } from '@utils/dataUtil';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { LastUpdateService } from './lastUpdateService';
@@ -11,7 +11,7 @@ import { handleServiceError } from '@utils/errorUtil';
 const COLLECTION_NAME = process.env.MONGODB_COLLECTION_LOAD_MARKETS as string
 const COLLECTION_TYPE = process.env.TYPE_LOAD_MARKETS as string
 
-export class MarketsService {
+export class MarketService {
   /**
    * Fetches the current markets from the specified platform.
    */

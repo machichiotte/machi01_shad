@@ -1,8 +1,8 @@
-// src/services/migrationSwapsService.ts
+// src/services/migrationSwapService.ts
 import { getData } from '@utils/dataUtil';
 import { MappedTrade, MappedStrategy, SwapMigration } from 'src/models/dbTypes';
 import { StrategyService } from './strategyService';
-import { TradesService } from './tradesService';
+import { TradeService } from './tradeService';
 import { handleServiceError } from '@utils/errorUtil';
 
 async function fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
@@ -21,7 +21,7 @@ async function updateTrade(trade: MappedTrade, oldAsset: string, newAsset: strin
   };
 
   if (trade._id) {
-    await TradesService.updateTradeById(trade._id, updatedTrade);
+    await TradeService.updateTradeById(trade._id, updatedTrade);
     console.info(`Trade swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`);
   } else {
     console.error('Trade _id is undefined, cannot update trade');
@@ -38,7 +38,7 @@ async function handleMigrationSwaps(): Promise<void> {
   try {
     const [swaps, trades, strategies] = await Promise.all([
       fetchDatabaseSwapMigration(),
-      TradesService.fetchDatabaseTrades() as Promise<MappedTrade[]>,
+      TradeService.fetchDatabaseTrades() as Promise<MappedTrade[]>,
       StrategyService.fetchDatabaseStrategies() as Promise<MappedStrategy[]>
     ]);
 

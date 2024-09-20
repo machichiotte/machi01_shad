@@ -94,12 +94,12 @@ export class OrderMarketService {
     /**
     * Cancels all orders for a given platform and asset.
     */
-    static async cancelAllOrders(platform: string, asset: string): Promise<{ message: string }> {
+    static async cancelAllOrdersByBunch(platform: string, asset: string): Promise<{ message: string }> {
         try {
             const platformInstance = createPlatformInstance(platform)
             const symbol = getSymbolForPlatform(platform, asset)
             if (platform === 'okx') {
-                await this.cancelAllOrdersForOkx(platformInstance, symbol)
+                await this.cancelAllOrdersNoBunch(platformInstance, symbol)
             } else {
                 await platformInstance.cancelAllOrders(symbol)
             }
@@ -138,18 +138,23 @@ export class OrderMarketService {
         }
     }
 
-    /**
-    * Cancels all orders for OKX platform.
-    */
-    static async cancelAllOrdersForOkx(platformInstance: Exchange, symbol: string): Promise<{ message: string }> {
+    static async cancelAllOrdersNoBunch(platformInstance: Exchange, symbol: string, orderSide?: 'buy' | 'sell'): Promise<{ message: string }> {
+        // Récupère tous les ordres ouverts pour le symbole donné
         const orders = await platformInstance.fetchOpenOrders(symbol)
-        const orderIds = orders.map((order) => order.id)
 
+        // Si un côté (buy ou sell) est spécifié, filtre les ordres par côté
+        const filteredOrders = orderSide ? orders.filter(order => order.side === orderSide) : orders
+
+        // Extrait les identifiants des ordres filtrés
+        const orderIds = filteredOrders.map(order => order.id)
+
+        // Si aucun ordre n'est ouvert (après filtrage), retourne un message approprié
         if (orderIds.length === 0) {
-            return { message: 'Aucun ordre ouvert pour ce symbole' }
+            return { message: `Aucun ordre ouvert pour ce symbole${orderSide ? ` avec côté ${orderSide}` : ''}` }
         } else {
+            // Annule tous les ordres filtrés
             await Promise.all(orderIds.map(id => platformInstance.cancelOrder(id, symbol)))
-            return { message: `${orderIds.length} ordres annulés avec succès` }
+            return { message: `${orderIds.length} ordres${orderSide ? ` ${orderSide}` : ''} annulés avec succès` }
         }
     }
 

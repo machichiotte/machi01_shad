@@ -1,7 +1,8 @@
+// src/controllers/marketController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { validateEnvVariables } from '@utils/controllerUtil'
-import { MarketsService } from '@services/marketsService'
+import { MarketService } from '@services/marketService'
 
 validateEnvVariables(['MONGODB_COLLECTION_LOAD_MARKETS', 'TYPE_LOAD_MARKETS'])
 
@@ -10,7 +11,7 @@ validateEnvVariables(['MONGODB_COLLECTION_LOAD_MARKETS', 'TYPE_LOAD_MARKETS'])
  */
 async function getMarkets(req: Request, res: Response): Promise<void> {
   try {
-    const data = await MarketsService.getSavedMarkets()
+    const data = await MarketService.getSavedMarkets()
     res.status(200).json({
       message: 'Données de marché récupérées',
       data

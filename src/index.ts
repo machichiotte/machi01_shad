@@ -7,7 +7,7 @@ import { startServer } from './server'
 import { initializeCronTasks } from './services/cron/cronTasks'
 
 import { cronBalances } from './services/cron/taskExecutor'
-import { handleMigrationSwaps } from './services/migrationSwapsService'
+import { handleMigrationSwaps } from './services/migrationSwapService'
 
 dotenv.config()
 

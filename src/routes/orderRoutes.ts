@@ -1,27 +1,33 @@
-// src/routes/ordersRoutes.ts
+// src/routes/orderRoutes.ts
 import express from 'express'
 import {
   getOrders,
   updateOrders,
+} from '@controllers/orderBalanceController'
+
+import {
   deleteOrder,
   createMarketBuyOrder,
   createMarketSellOrder,
-  createBunchLimitBuyOrders,
-  createBunchLimitSellOrders,
+  createLimitBuyOrder,
+  createLimitSellOrder,
   cancelAllOrders,
-  cancelAllSellOrders
-} from '@controllers/ordersController'
+  cancelAllSellOrders,
+  cancelAllBuyOrders
+} from '@controllers/orderMarketController'
 
 const router = express.Router()
 
 router.get('/get', getOrders)
 router.get('/update/:platform', updateOrders)
+
 router.post('/cancel', deleteOrder)
 router.post('/market-buy-order', createMarketBuyOrder)
 router.post('/market-sell-order', createMarketSellOrder)
-router.post('/bunch-limit-sell-orders', createBunchLimitSellOrders)
-router.post('/bunch-limit-buy-orders', createBunchLimitBuyOrders)
+router.post('/limit-sell-order', createLimitSellOrder)
+router.post('/limit-buy-order', createLimitBuyOrder)
 router.post('/cancel/all', cancelAllOrders)
 router.post('/cancel/all/sell', cancelAllSellOrders)
+router.post('/cancel/all/buy', cancelAllBuyOrders)
 
 export default router

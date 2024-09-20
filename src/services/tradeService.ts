@@ -14,7 +14,7 @@ const TRADES_COLLECTION = process.env.MONGODB_COLLECTION_TRADES as string
 const TRADES_COLLECTION_2 = process.env.MONGODB_COLLECTION_TRADES2 as string
 const TRADES_TYPE = process.env.TYPE_TRADES as string
 
-export class TradesService {
+export class TradeService {
   // Méthodes de récupération
   static async fetchDatabaseTrades(): Promise<MappedTrade[]> {
     return await getData(TRADES_COLLECTION) as MappedTrade[]

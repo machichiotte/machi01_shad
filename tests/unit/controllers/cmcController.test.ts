@@ -7,7 +7,7 @@ jest.mock('@services/cmcService')
 jest.mock('@utils/errorUtil')
 jest.mock('@utils/loggerUtil')
 
-describe('CMC Controller', () => {
+describe('cmcController', () => {
     let mockRequest: Partial<Request>
     let mockResponse: Partial<Response>
     let responseObject: { json: jest.Mock; status: jest.Mock }

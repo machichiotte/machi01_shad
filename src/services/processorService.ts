@@ -2,11 +2,11 @@
 import { calculateAssetMetrics } from './metrics/global'
 import { mapTrades } from './mapping'
 import { MappedStrategy, MappedTicker, MappedTrade, AssetMetrics, MappedCmc, MappedOrder, MappedBalance } from 'src/models/dbTypes'
-import { TradesService } from './tradesService'
-import { TickersService } from '@services/tickersService'
-import { BalancesService } from '@services/balancesService'
+import { TradeService } from './tradeService'
+import { TickerService } from '@src/services/tickerService'
+import { BalanceService } from '@src/services/balanceService'
 import { CmcService } from '@services/cmcService'
-import { OrdersService, } from '@services/ordersService'
+import { OrderBalanceService, } from '@services/orderBalanceService'
 import { StrategyService } from './strategyService'
 import { getSymbolForPlatform } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
@@ -25,10 +25,10 @@ export class ProcessorService {
   static async processBalanceChanges(differences: Difference[], platform: string): Promise<void> {
     try {
       // Mise à jour des ordres depuis le serveur
-      await OrdersService.updateOrdersFromServer(platform)
+      await OrderBalanceService.updateOrdersFromServer(platform)
 
       // Récupération des tickers sauvegardés pour la plateforme spécifiée
-      const tickers: MappedTicker[] = await TickersService.getAllTickersByPlatform(platform)
+      const tickers: MappedTicker[] = await TickerService.getAllTickersByPlatform(platform)
 
       // Suppression des doublons dans le tableau des différences
       const uniqueDifferences: Difference[] =
@@ -49,7 +49,7 @@ export class ProcessorService {
 
       // Sauvegarde des nouveaux trades détectés
       if (newTrades.length > 0) {
-        await TradesService.saveTradesToDatabase(newTrades)
+        await TradeService.saveTradesToDatabase(newTrades)
       }
     } catch (error) {
       handleServiceError(error, 'processBalanceChanges', `Error processing balance changes for ${platform}`)
@@ -157,10 +157,10 @@ export class ProcessorService {
     return await Promise.all([
       CmcService.fetchDatabaseCmc(),
       StrategyService.fetchDatabaseStrategies(),
-      TradesService.fetchDatabaseTrades(),
-      OrdersService.fetchDatabaseOrders(),
-      TickersService.fetchDatabaseTickers(),
-      BalancesService.fetchDatabaseBalances()
+      TradeService.fetchDatabaseTrades(),
+      OrderBalanceService.fetchDatabaseOrders(),
+      TickerService.fetchDatabaseTickers(),
+      BalanceService.fetchDatabaseBalances()
     ])
   }
 
@@ -247,7 +247,7 @@ export class ProcessorService {
 
       if (marketExists) {
         try {
-          const tradeList = await TradesService.fetchLastTrades(platform, symbol)
+          const tradeList = await TradeService.fetchLastTrades(platform, symbol)
           const mappedTrades = mapTrades(platform, tradeList, {})
           newTrades.push(...mappedTrades)
         } catch (error) {

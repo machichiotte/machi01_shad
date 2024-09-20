@@ -4,9 +4,9 @@ import config from '@services/config'
 import { getPlatforms } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 
-import { MarketsService } from '@services/marketsService'
-import { TickersService } from '@services/tickersService'
-import { BalancesService } from '@services/balancesService'
+import { MarketService } from '@services/marketService'
+import { TickerService } from '@src/services/tickerService'
+import { BalanceService } from '@src/services/balanceService'
 
 /**
  * Executes a cron task with retry mechanism and error handling
@@ -56,19 +56,19 @@ async function executeForPlatforms(
  * Cron function for updating tickers across all platforms
  */
 export async function cronTickers(): Promise<void> {
-  await executeForPlatforms('updateTickers', TickersService.updateTickersForPlatform)
+  await executeForPlatforms('updateTickers', TickerService.updateTickersForPlatform)
 }
 
 /**
  * Cron function for updating markets across all platforms
  */
 export async function cronMarkets(): Promise<void> {
-  await executeForPlatforms('updateMarkets', MarketsService.updateMarketsForPlatform)
+  await executeForPlatforms('updateMarkets', MarketService.updateMarketsForPlatform)
 }
 
 /**
  * Cron function for updating balances across all platforms
  */
 export async function cronBalances(): Promise<void> {
-  await executeForPlatforms('updateBalances', BalancesService.updateBalancesForPlatform)
+  await executeForPlatforms('updateBalances', BalanceService.updateBalancesForPlatform)
 }

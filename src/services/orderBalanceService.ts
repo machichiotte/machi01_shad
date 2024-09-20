@@ -1,3 +1,4 @@
+// src/services/orderBalanceService.ts
 import {
   createPlatformInstance,
 } from '@utils/platformUtil'
@@ -11,7 +12,7 @@ import { handleServiceError } from '@utils/errorUtil'
 const COLLECTION_NAME = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS as string
 const COLLECTION_TYPE = process.env.TYPE_ACTIVE_ORDERS as string
 
-export class OrdersService {
+export class OrderBalanceService {
 
   /**
    * Fetches orders from the database.

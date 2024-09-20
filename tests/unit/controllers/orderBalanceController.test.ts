@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
-import { getOrders } from '@controllers/ordersController'
-import { OrdersService } from '@services/ordersService'
+import { getOrders } from '@controllers/orderBalanceController'
+import { OrderBalanceService } from '@services/orderBalanceService'
 import { handleControllerError } from '@utils/errorUtil'
 
-jest.mock('@services/ordersService')
+jest.mock('@services/orderBalanceService')
 jest.mock('@utils/errorUtil')
 
-describe('ordersController', () => {
+describe('orderBalanceController', () => {
   let mockRequest: Partial<Request>
   let mockResponse: Partial<Response>
 
@@ -21,7 +21,7 @@ describe('ordersController', () => {
   describe('getOrders', () => {
     it('devrait renvoyer les commandes avec un statut 200', async () => {
       const mockOrders = [{ id: 1 }, { id: 2 }];
-      (OrdersService.fetchDatabaseOrders as jest.Mock).mockResolvedValue(
+      (OrderBalanceService.fetchDatabaseOrders as jest.Mock).mockResolvedValue(
         mockOrders
       )
 
@@ -36,7 +36,7 @@ describe('ordersController', () => {
 
     it('devrait gérer les erreurs', async () => {
       const mockError = new Error('Erreur de test')
-        ; (OrdersService.fetchDatabaseOrders as jest.Mock).mockRejectedValue(
+        ; (OrderBalanceService.fetchDatabaseOrders as jest.Mock).mockRejectedValue(
           mockError
         )
 

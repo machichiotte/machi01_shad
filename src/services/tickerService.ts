@@ -1,4 +1,4 @@
-// src/services/tickersService.ts
+// src/services/tickerService.ts
 import { getData } from '@utils/dataUtil'
 import { createPlatformInstance, getPlatforms } from '@utils/platformUtil'
 import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil'
@@ -12,7 +12,7 @@ import { handleServiceError } from '@utils/errorUtil'
 const COLLECTION_NAME = process.env.MONGODB_COLLECTION_TICKERS as string
 const COLLECTION_TYPE = process.env.TYPE_TICKERS as string
 
-export class TickersService {
+export class TickerService {
 
   /**
    * Fetches tickers data from the database.
@@ -125,8 +125,8 @@ export class TickersService {
  */
   static async updateTickersForPlatform(platform: string): Promise<void> {
     try {
-      const currentTickers = await TickersService.fetchCurrentTickers(platform, 3)
-      await TickersService.saveDatabaseTickers(currentTickers, platform)
+      const currentTickers = await TickerService.fetchCurrentTickers(platform, 3)
+      await TickerService.saveDatabaseTickers(currentTickers, platform)
     } catch (error) {
       handleServiceError(error, 'updateTickersForPlatform', `Erreur lors de la mise à jour des tickers pour ${platform}`)
     }

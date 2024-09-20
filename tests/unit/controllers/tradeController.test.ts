@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { TradesService } from '@services/tradesService'
+import { TradeService } from '@src/services/tradeService'
 import { handleControllerError } from '@utils/errorUtil'
 import {
   getTrades,
@@ -9,12 +9,12 @@ import {
   fetchLastTrades,
   saveTradesToDatabase,
   saveAllTradesToDatabase
-} from '@controllers/tradesController'
+} from '@src/controllers/tradeController'
 
-jest.mock('@services/tradesService')
+jest.mock('@services/tradeService')
 jest.mock('@utils/errorUtil')
 
-describe('TradesController', () => {
+describe('tradeController', () => {
   let mockRequest: Partial<Request>
   let mockResponse: Partial<Response>
   let mockJson: jest.Mock
@@ -64,7 +64,7 @@ describe('TradesController', () => {
           totalUSDT: 4.2908001039
         }
       ]
-        ; (TradesService.fetchDatabaseTrades as jest.Mock).mockResolvedValue(
+        ; (TradeService.fetchDatabaseTrades as jest.Mock).mockResolvedValue(
           mockTrades
         )
 
@@ -75,7 +75,7 @@ describe('TradesController', () => {
 
     it('devrait gérer les erreurs', async () => {
       const mockError = new Error('Erreur de test')
-        ; (TradesService.fetchDatabaseTrades as jest.Mock).mockRejectedValue(
+        ; (TradeService.fetchDatabaseTrades as jest.Mock).mockRejectedValue(
           mockError
         )
 
@@ -110,13 +110,13 @@ describe('TradesController', () => {
       mockRequest.params = { tradeId: mockTradeId }
       mockRequest.body = mockUpdatedTrade
 
-        ; (TradesService.updateTradeById as jest.Mock).mockResolvedValue(
+        ; (TradeService.updateTradeById as jest.Mock).mockResolvedValue(
           mockUpdatedTrade
         )
 
       await updateTradeById(mockRequest as Request, mockResponse as Response)
 
-      expect(TradesService.updateTradeById).toHaveBeenCalledWith(
+      expect(TradeService.updateTradeById).toHaveBeenCalledWith(
         mockTradeId,
         mockUpdatedTrade
       )
@@ -127,7 +127,7 @@ describe('TradesController', () => {
       const mockError = new Error('Erreur de mise à jour')
       mockRequest.params = { id: '123' }
       mockRequest.body = { status: 'completed' }
-        ; (TradesService.updateTradeById as jest.Mock).mockRejectedValue(mockError)
+        ; (TradeService.updateTradeById as jest.Mock).mockRejectedValue(mockError)
 
       await updateTradeById(mockRequest as Request, mockResponse as Response)
 
@@ -173,13 +173,13 @@ describe('TradesController', () => {
       ]
       mockRequest.body = { trades_data: mockTrades }
       const mockResult = { status: 200, message: 'Trades ajoutés avec succès' }
-        ; (TradesService.addTradesManually as jest.Mock).mockResolvedValue(
+        ; (TradeService.addTradesManually as jest.Mock).mockResolvedValue(
           mockResult
         )
 
       await addTradesManually(mockRequest as Request, mockResponse as Response)
 
-      expect(TradesService.addTradesManually).toHaveBeenCalledWith(mockTrades)
+      expect(TradeService.addTradesManually).toHaveBeenCalledWith(mockTrades)
       expect(mockStatus).toHaveBeenCalledWith(mockResult.status)
       expect(mockJson).toHaveBeenCalledWith({ message: 'Trades ajoutés', data: mockResult })
     })
@@ -187,7 +187,7 @@ describe('TradesController', () => {
     it("devrait gérer les erreurs lors de l'ajout manuel", async () => {
       const mockError = new Error("Erreur d'ajout")
       mockRequest.body = [{ id: '1' }]
-        ; (TradesService.addTradesManually as jest.Mock).mockRejectedValue(
+        ; (TradeService.addTradesManually as jest.Mock).mockRejectedValue(
           mockError
         )
 
@@ -210,11 +210,11 @@ describe('TradesController', () => {
       }
 
       mockRequest.params = { platform: mockPlatform }
-        ; (TradesService.updateTrades as jest.Mock).mockResolvedValue(mockResult)
+        ; (TradeService.updateTrades as jest.Mock).mockResolvedValue(mockResult)
 
       await updateTrades(mockRequest as Request, mockResponse as Response)
 
-      expect(TradesService.updateTrades).toHaveBeenCalledWith(mockPlatform)
+      expect(TradeService.updateTrades).toHaveBeenCalledWith(mockPlatform)
       expect(mockStatus).toHaveBeenCalledWith(200)
       expect(mockJson).toHaveBeenCalledWith({ message: 'Trades mis à jour', data: mockResult })
     })
@@ -222,7 +222,7 @@ describe('TradesController', () => {
     it('devrait gérer les erreurs lors de la mise à jour multiple', async () => {
       const mockError = new Error('Erreur de mise à jour multiple')
       mockRequest.params = {}
-        ; (TradesService.updateTrades as jest.Mock).mockRejectedValue(mockError)
+        ; (TradeService.updateTrades as jest.Mock).mockRejectedValue(mockError)
 
       await updateTrades(mockRequest as Request, mockResponse as Response)
 
@@ -269,13 +269,13 @@ describe('TradesController', () => {
         }
       ]
       mockRequest.params = { platform: mockPlatform, symbol: mockSymbol }
-        ; (TradesService.fetchLastTrades as jest.Mock).mockResolvedValue(
+        ; (TradeService.fetchLastTrades as jest.Mock).mockResolvedValue(
           mockTrades
         )
 
       await fetchLastTrades(mockRequest as Request, mockResponse as Response)
 
-      expect(TradesService.fetchLastTrades).toHaveBeenCalledWith(
+      expect(TradeService.fetchLastTrades).toHaveBeenCalledWith(
         mockPlatform,
         mockSymbol
       )
@@ -285,7 +285,7 @@ describe('TradesController', () => {
     it('devrait gérer les erreurs lors de la récupération des derniers trades', async () => {
       const mockError = new Error('Erreur de récupération')
       mockRequest.params = { platform: 'binance', symbol: 'BTCUSDT' }
-        ; (TradesService.fetchLastTrades as jest.Mock).mockRejectedValue(mockError)
+        ; (TradeService.fetchLastTrades as jest.Mock).mockRejectedValue(mockError)
 
       await fetchLastTrades(mockRequest as Request, mockResponse as Response)
 
@@ -330,7 +330,7 @@ describe('TradesController', () => {
         }
       ]
       mockRequest.body = { newTrades: mockNewTrades }
-        ; (TradesService.saveTradesToDatabase as jest.Mock).mockResolvedValue(
+        ; (TradeService.saveTradesToDatabase as jest.Mock).mockResolvedValue(
           undefined
         )
 
@@ -339,7 +339,7 @@ describe('TradesController', () => {
         mockResponse as Response
       )
 
-      expect(TradesService.saveTradesToDatabase).toHaveBeenCalledWith(
+      expect(TradeService.saveTradesToDatabase).toHaveBeenCalledWith(
         mockNewTrades
       )
       expect(mockStatus).toHaveBeenCalledWith(200)
@@ -351,7 +351,7 @@ describe('TradesController', () => {
     it('devrait gérer les erreurs lors de la sauvegarde des trades', async () => {
       const mockError = new Error('Erreur de sauvegarde')
       mockRequest.body = { newTrades: [{ id: '1' }] }
-        ; (TradesService.saveTradesToDatabase as jest.Mock).mockRejectedValue(
+        ; (TradeService.saveTradesToDatabase as jest.Mock).mockRejectedValue(
           mockError
         )
 
@@ -401,7 +401,7 @@ describe('TradesController', () => {
         }
       ]
       mockRequest.body = { newTrades: mockNewTrades }
-        ; (TradesService.saveAllTradesToDatabase as jest.Mock).mockResolvedValue(
+        ; (TradeService.saveAllTradesToDatabase as jest.Mock).mockResolvedValue(
           undefined
         )
 
@@ -410,7 +410,7 @@ describe('TradesController', () => {
         mockResponse as Response
       )
 
-      expect(TradesService.saveAllTradesToDatabase).toHaveBeenCalledWith(
+      expect(TradeService.saveAllTradesToDatabase).toHaveBeenCalledWith(
         mockNewTrades
       )
       expect(mockStatus).toHaveBeenCalledWith(200)
@@ -422,7 +422,7 @@ describe('TradesController', () => {
     it('devrait gérer les erreurs lors de la sauvegarde de tous les trades', async () => {
       const mockError = new Error('Erreur de sauvegarde')
       mockRequest.body = { newTrades: [{ id: '1' }] }
-        ; (TradesService.saveAllTradesToDatabase as jest.Mock).mockRejectedValue(
+        ; (TradeService.saveAllTradesToDatabase as jest.Mock).mockRejectedValue(
           mockError
         )
 
