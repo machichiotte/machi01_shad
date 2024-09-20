@@ -2,7 +2,7 @@
 
 import bcrypt from 'bcrypt'; // Pour le hachage des mots de passe
 import crypto from 'crypto'; // Utilisation du module crypto intégré
-import { saveData, getOne } from '@services/mongodbService';
+import { MongodbService } from '@services/mongodbService';
 import { handleServiceError } from '@utils/errorUtil';
 
 // Interface pour représenter un utilisateur
@@ -36,7 +36,7 @@ export class AuthService {
       if (!collection) {
         throw new Error("La collection MongoDB n'est pas définie");
       }
-      const result = await saveData(collection, newUser);
+      const result = await MongodbService.saveData(collection, newUser);
 
       console.log(
         '🚀 ~ createUserDBService ~ result:',
@@ -58,7 +58,7 @@ export class AuthService {
       if (!collection) {
         throw new Error("La collection MongoDB n'est pas définie");
       }
-      const user = await getOne(collection, { email }); // Filtrer par e-mail
+      const user = await MongodbService.getOne(collection, { email }); // Filtrer par e-mail
       return user as User | null; // Retourne l'objet utilisateur trouvé ou null s'il n'est pas trouvé
     } catch (error) {
       handleServiceError(error, 'findUserByEmail', 'Erreur lors de la recherche de l\'utilisateur');

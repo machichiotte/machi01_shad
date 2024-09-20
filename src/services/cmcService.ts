@@ -1,6 +1,6 @@
 import { getData } from '@utils/dataUtil';
 import { LastUpdateService } from '@services/lastUpdateService';
-import { deleteAllDataMDB, saveData } from '@services/mongodbService';
+import { MongodbService } from '@services/mongodbService';
 import { MappedCmc } from 'src/models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 
@@ -65,8 +65,8 @@ export class CmcService {
    */
   public static async updateDatabaseCmcData(data: MappedCmc[]): Promise<object> {
     try {
-      const deleteResult = await deleteAllDataMDB(COLLECTION_NAME);
-      const saveResult = await saveData(COLLECTION_NAME, data);
+      const deleteResult = await MongodbService.deleteAllDataMDB(COLLECTION_NAME);
+      const saveResult = await MongodbService.saveData(COLLECTION_NAME, data);
       await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE, '');
       console.log('Données CMC mises à jour dans la base de données', { deleteResult, saveResult, totalCount: data.length });
 

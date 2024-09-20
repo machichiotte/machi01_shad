@@ -1,6 +1,6 @@
 // src/services/lastUpdateService.ts
 import { getData } from '@utils/dataUtil'
-import { updateInDatabase } from '@services/mongodbService'
+import { MongodbService } from '@services/mongodbService'
 
 interface LastUpdateData {
   [key: string]: number | { [key: string]: number }
@@ -43,6 +43,6 @@ export class LastUpdateService {
     const filter = {}
     const update = { $set: data }
 
-    await updateInDatabase(collectionName as string, filter, update)
+    await MongodbService.updateInDatabase(collectionName as string, filter, update)
   }
 }

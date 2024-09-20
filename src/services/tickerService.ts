@@ -3,7 +3,7 @@ import { getData } from '@utils/dataUtil'
 import { createPlatformInstance, getPlatforms } from '@utils/platformUtil'
 import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil'
 import { LastUpdateService } from '@services/lastUpdateService'
-import { deleteAndReplaceAll } from '@services/mongodbService'
+import { MongodbService } from '@services/mongodbService'
 import { DatabaseService } from '@services/databaseService'
 import { mapTickers } from '@services/mapping'
 import { MappedTicker } from '@models/dbTypes'
@@ -78,7 +78,7 @@ export class TickerService {
       tickersData.push(...mapTickers(platform, data))
     }
 
-    await deleteAndReplaceAll(COLLECTION_NAME, tickersData)
+    await MongodbService.deleteAndReplaceAll(COLLECTION_NAME, tickersData)
     await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE, 'combined')
     return tickersData
   }

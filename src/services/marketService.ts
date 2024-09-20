@@ -2,9 +2,8 @@
 import { getData } from '@utils/dataUtil';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { LastUpdateService } from '@services/lastUpdateService';
-import { deleteAndSaveData } from '@services/mongodbService';
+import { MongodbService } from '@services/mongodbService';
 import { mapMarkets } from '@services/mapping';
-import { DatabaseService } from '@services/databaseService';
 import { MappedMarket } from '@models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 
@@ -27,22 +26,11 @@ export class MarketService {
   static async updateMarketsForPlatform(platform: string): Promise<void> {
     try {
       const currentMarkets = await this.fetchCurrentMarkets(platform)
-      await deleteAndSaveData(COLLECTION_NAME, currentMarkets, platform);
+      await MongodbService.deleteAndSaveData(COLLECTION_NAME, currentMarkets, platform);
       await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE || '', platform);
       console.log(`Market data for ${platform} updated in the database. Total records: ${currentMarkets.length}.`);
     } catch (error) {
       handleServiceError(error, 'updateMarketsForPlatform', `Erreur lors de la mise à jour des marchés pour ${platform}`)
-    }
-  }
-
-  /**
-   * Saves the provided market data to the database.
-   */
-  static async saveMarketsInDatabase(mappedData: MappedMarket[], platform: string): Promise<void> {
-    if (COLLECTION_NAME && COLLECTION_TYPE) {
-      await DatabaseService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE);
-    } else {
-      throw new Error('Missing environment variables for collection or update type');
     }
   }
 

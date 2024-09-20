@@ -1,7 +1,7 @@
 // src/services/strategyService.ts
 import { getData } from '@utils/dataUtil'
 import { LastUpdateService } from '@services/lastUpdateService'
-import { updateDataMDB, deleteAllDataMDB, saveData } from '@services/mongodbService'
+import { MongodbService } from '@services/mongodbService'
 import { MappedStrategy } from '@models/dbTypes'
 import { InsertManyResult, InsertOneResult } from 'mongodb'
 import { handleServiceError } from '@utils/errorUtil'
@@ -22,7 +22,7 @@ export class StrategyService {
       throw new Error('L\'ID de la stratégie est requis');
     }
     try {
-      return await updateDataMDB(
+      return await MongodbService.updateDataMDB(
         process.env.MONGODB_COLLECTION_STRAT as string,
         { _id: strategyId },
         { $set: updatedStrategy }
@@ -38,8 +38,8 @@ export class StrategyService {
    */
   static async updateStrategies(strategies: MappedStrategy[]): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
     const collectionName = process.env.MONGODB_COLLECTION_STRAT as string;
-    await deleteAllDataMDB(collectionName);
-    const data = await saveData(collectionName, strategies);
+    await MongodbService.deleteAllDataMDB(collectionName);
+    const data = await MongodbService.saveData(collectionName, strategies);
     await LastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_STRATEGY as string, '');
     return data;
   }

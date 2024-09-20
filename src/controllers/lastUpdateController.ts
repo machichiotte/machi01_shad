@@ -3,7 +3,7 @@ import { validateEnvVariables } from '@utils/controllerUtil'
 import {
   LastUpdateService
 } from '@services/lastUpdateService'
-import { getDataMDB } from '@services/mongodbService'
+import { MongodbService } from '@services/mongodbService'
 import { Request, Response } from 'express'
 
 import { handleControllerError } from '@utils/errorUtil'
@@ -25,7 +25,7 @@ async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
     // check si besoin de filter
     //const filter = { platform, type }
 
-    const lastUpdateData = await getDataMDB(collectionName)
+    const lastUpdateData = await MongodbService.getDataMDB(collectionName)
 
     if (lastUpdateData.length > 0) {
       console.log(

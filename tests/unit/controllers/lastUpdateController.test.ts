@@ -4,7 +4,7 @@ import {
   getLastUpdate,
   updateLastUpdateByType
 } from '@controllers/lastUpdateController'
-import { getDataMDB } from '@services/mongodbService'
+import { MongodbService } from '@services/mongodbService'
 import {
   LastUpdateService
 } from '@services/lastUpdateService'
@@ -29,7 +29,7 @@ describe('lastUpdateController', () => {
   describe('getUniqueLastUpdate', () => {
     it('devrait retourner la dernière mise à jour unique', async () => {
       mockRequest.params = { platform: 'test', type: 'testType' }
-        ; (getDataMDB as jest.Mock).mockResolvedValue([
+        ; (MongodbService.getDataMDB as jest.Mock).mockResolvedValue([
           { platform: 'test', type: 'testType', timestamp: '2023-01-01' }
         ])
 
@@ -47,7 +47,7 @@ describe('lastUpdateController', () => {
 
     it("devrait retourner un horodatage nul si aucune mise à jour n'est trouvée", async () => {
       mockRequest.params = { platform: 'test', type: 'testType' }
-        ; (getDataMDB as jest.Mock).mockResolvedValue([])
+        ; (MongodbService.getDataMDB as jest.Mock).mockResolvedValue([])
 
       await getUniqueLastUpdate(
         mockRequest as Request,

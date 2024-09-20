@@ -2,7 +2,7 @@
 import { createPlatformInstance } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 import { getData } from '@utils/dataUtil'
-import { updateDataMDB, deleteAndSaveData, saveData } from '@services/mongodbService'
+import { MongodbService } from '@services/mongodbService'
 import { LastUpdateService } from '@services/lastUpdateService'
 import { mapTrades } from '@services/mapping'
 import { MappedTrade } from '@models/dbTypes'
@@ -38,7 +38,7 @@ export class TradeService {
     }
 
     try {
-      return await updateDataMDB(TRADES_COLLECTION, { _id: tradeId }, { $set: updatedTrade })
+      return await MongodbService.updateDataMDB(TRADES_COLLECTION, { _id: tradeId }, { $set: updatedTrade })
     } catch (error) {
       handleServiceError(error, 'updateTradeById', `Error updating trade with id ${tradeId}`)
       throw error
@@ -48,7 +48,7 @@ export class TradeService {
   static async updateTrades(platform: string): Promise<{ data: MappedTrade[] }> {
     try {
       const mappedData = await this.fetchPlatformTrades(platform)
-      await deleteAndSaveData(TRADES_COLLECTION, mappedData, platform)
+      await MongodbService.deleteAndSaveData(TRADES_COLLECTION, mappedData, platform)
       await LastUpdateService.saveLastUpdateToDatabase(TRADES_TYPE, platform)
       return { data: mappedData }
     } catch (error) {
@@ -60,7 +60,7 @@ export class TradeService {
   // Méthodes d'ajout
   static async addTradesManually(tradesData: MappedTrade | MappedTrade[]): Promise<{ data: InsertOneResult<Document> | InsertManyResult<Document> }> {
     try {
-      const savedTrade = await saveData(TRADES_COLLECTION, tradesData)
+      const savedTrade = await MongodbService.saveData(TRADES_COLLECTION, tradesData)
       return { data: savedTrade }
     } catch (error) {
       handleServiceError(error, 'addTradesManually', 'Error adding trades manually')
@@ -138,7 +138,7 @@ export class TradeService {
       }
 
       if (tradesToInsert.length > 0) {
-        await saveData(collection, tradesToInsert)
+        await MongodbService.saveData(collection, tradesToInsert)
       }
     } catch (error) {
       handleServiceError(error, 'saveTrades', `Error saving trades to ${collection}`)

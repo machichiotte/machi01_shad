@@ -39,25 +39,12 @@ export class OrderBalanceService {
   }
 
   /**
-   * Sauvegarde les données d'ordres fournies dans la base de données.
-   */
-  static async saveMappedOrders(platform: string, mappedData: MappedOrder[]): Promise<void> {
-    if (COLLECTION_NAME && COLLECTION_TYPE) {
-      await DatabaseService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE)
-    } else {
-      throw new Error(
-        'Missing environment variables for collection or update type'
-      )
-    }
-  }
-
-  /**
    * Updates orders from the server for a given platform.
    */
   static async updateOrdersFromServer(platform: string): Promise<MappedOrder[]> {
     try {
       const mappedData = await this.fetchAndMapOrders(platform)
-      await this.saveMappedOrders(platform, mappedData)
+      await DatabaseService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE)
       console.log(`Updated orders from server for ${platform}.`, {
         count: mappedData.length
       })
