@@ -4,7 +4,7 @@ import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil'
 import { LastUpdateService } from '@services/lastUpdateService'
 import { MongodbService } from '@services/mongodbService'
 import { DatabaseService } from '@services/databaseService'
-import { MappingService } from '@services/mapping'
+import { MappingService } from '@services/mappingService'
 import { MappedTicker } from '@models/dbTypes'
 import { handleServiceError } from '@utils/errorUtil'
 

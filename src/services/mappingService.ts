@@ -1,3 +1,4 @@
+// src/services/mappingService.ts
 import { Trade, Market, Order, Tickers } from 'ccxt'
 import { STABLECOINS } from '@src/constants'
 import { getTotalUSDT } from '@utils/mappingUtil'

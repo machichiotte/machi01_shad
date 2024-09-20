@@ -1,7 +1,7 @@
 import { Trade, Market, Order, Tickers } from 'ccxt'
 import { getTotalUSDT } from '@utils/mappingUtil'
 import { Balances, Ticker } from 'ccxt'
-import { MappingService } from '@services/mapping'
+import { MappingService } from '@services/mappingService'
 
 jest.mock('@utils/mappingUtil')
 

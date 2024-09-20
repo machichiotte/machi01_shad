@@ -2,14 +2,14 @@ import { MarketService } from '@services/marketService';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
-import { MappingService } from '@services/mapping';
+import { MappingService } from '@services/mappingService';
 import { MappedMarket } from '@models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 
 jest.mock('@utils/platformUtil');
 jest.mock('@services/lastUpdateService');
 jest.mock('@services/mongodbService');
-jest.mock('@services/mapping');
+jest.mock('@services/mappingService');
 jest.mock('@services/databaseService');
 jest.mock('@utils/errorUtil');
 

@@ -2,7 +2,7 @@
 import { createPlatformInstance } from '@utils/platformUtil';
 import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
-import { MappingService } from '@services/mapping';
+import { MappingService } from '@services/mappingService';
 import { MappedMarket } from '@models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 

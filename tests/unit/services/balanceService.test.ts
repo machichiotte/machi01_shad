@@ -3,7 +3,7 @@ import { MongodbService } from '@services/mongodbService';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { loadErrorPolicies, shouldRetry, handleServiceError } from '@utils/errorUtil';
 import { DatabaseService } from '@services/databaseService';
-import { MappingService } from '@services/mapping';
+import { MappingService } from '@services/mappingService';
 import { ProcessorService } from '@services/processorService';
 import { MappedBalance } from '@models/dbTypes';
 
@@ -12,7 +12,7 @@ jest.mock('@utils/platformUtil');
 jest.mock('@utils/errorUtil');
 jest.mock('@utils/controllerUtil');
 jest.mock('@services/databaseService');
-jest.mock('@services/mapping');
+jest.mock('@services/mappingService');
 jest.mock('@services/processorService');
 
 describe('balanceService', () => {

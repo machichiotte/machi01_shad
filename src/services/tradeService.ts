@@ -3,7 +3,7 @@ import { createPlatformInstance } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 import { MongodbService } from '@services/mongodbService'
 import { LastUpdateService } from '@services/lastUpdateService'
-import { MappingService } from '@services/mapping'
+import { MappingService } from '@services/mappingService'
 import { MappedTrade } from '@models/dbTypes'
 
 import { InsertOneResult, InsertManyResult } from 'mongodb'

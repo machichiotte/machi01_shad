@@ -1,7 +1,7 @@
 import { OrderBalanceService } from '@services/orderBalanceService'
 import { DatabaseService } from '@services/databaseService'
 import { MongodbService } from '@services/mongodbService'
-import { MappingService } from '@services/mapping'
+import { MappingService } from '@services/mappingService'
 import * as errorUtil from '@utils/errorUtil'
 import { MappedOrder } from '@models/dbTypes'
 import { Order } from 'ccxt'
@@ -9,7 +9,7 @@ import { Order } from 'ccxt'
 jest.mock('@utils/platformUtil')
 jest.mock('@services/mongodbService')
 jest.mock('@services/databaseService')
-jest.mock('@services/mapping')
+jest.mock('@services/mappingService')
 jest.mock('@utils/errorUtil')
 
 describe('OrderBalanceService', () => {

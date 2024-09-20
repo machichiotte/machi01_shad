@@ -5,7 +5,7 @@ import { createPlatformInstance } from '@utils/platformUtil';
 import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil';
 import { validateEnvVariables } from '@utils/controllerUtil';
 import { DatabaseService } from '@services/databaseService';
-import { MappingService } from '@services/mapping';
+import { MappingService } from '@services/mappingService';
 import { MappedBalance } from 'src/models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 import { ProcessorService } from '@services/processorService'

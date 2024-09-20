@@ -1,6 +1,6 @@
 // src/services/cron/processorService.ts
 import { calculateAssetMetrics } from '@services/metrics/global'
-import { MappingService } from '@services/mapping'
+import { MappingService } from '@services/mappingService'
 import { MappedStrategy, MappedTicker, MappedTrade, AssetMetrics, MappedCmc, MappedOrder, MappedBalance } from '@models/dbTypes'
 import { TradeService } from '@services/tradeService'
 import { TickerService } from '@services/tickerService'

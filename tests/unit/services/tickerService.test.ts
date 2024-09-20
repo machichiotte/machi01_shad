@@ -3,7 +3,7 @@ import { createPlatformInstance, getPlatforms } from '@utils/platformUtil';
 import { loadErrorPolicies, shouldRetry, } from '@utils/errorUtil';
 import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
-import { MappingService } from '@services/mapping';
+import { MappingService } from '@services/mappingService';
 import { MappedTicker } from '@models/dbTypes';
 
 jest.mock('@utils/platformUtil');
@@ -11,7 +11,7 @@ jest.mock('@utils/errorUtil');
 jest.mock('@services/lastUpdateService');
 jest.mock('@services/mongodbService');
 jest.mock('@services/databaseService');
-jest.mock('@services/mapping');
+jest.mock('@services/mappingService');
 
 describe('TickerService', () => {
   beforeEach(() => {

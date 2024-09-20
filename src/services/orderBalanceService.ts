@@ -4,7 +4,7 @@ import {
 } from '@utils/platformUtil'
 import { MongodbService } from '@services/mongodbService'
 import { DatabaseService } from '@services/databaseService'
-import { MappingService } from '@services/mapping'
+import { MappingService } from '@services/mappingService'
 import { Order, Exchange } from 'ccxt'
 import { MappedOrder } from '@models/dbTypes'
 import { handleServiceError } from '@utils/errorUtil'
@@ -76,9 +76,6 @@ export class OrderBalanceService {
     }
   }
 
-  /**
-   * Fetches open orders for Kucoin platform.
-   */
   static async fetchOpenOrdersByPage(platformInstance: Exchange): Promise<Order[]> {
     const pageSize = 100
     let currentPage = 1
