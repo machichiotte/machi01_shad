@@ -1,7 +1,7 @@
 import { BalancesService } from './balancesService';
 import { ShadService } from './shadService';
 import { TickersService } from './tickersService';
-import { OrdersService } from './ordersService';
+import { OrderMarketService } from '@services/orderMarketService';
 import { MappedBalance } from '@models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil'
 
@@ -149,8 +149,8 @@ export class TrailingStopService {
         try {
             if (!highestPrice && currentPrice) {
                 const stopPrice = currentPrice * (1 - this.PERCENTAGE_TO_LOSE);
-                await OrdersService.cancelAllOrders(platform, base);
-                await OrdersService.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
+                await OrderMarketService.cancelAllOrders(platform, base);
+                await OrderMarketService.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
                 await ShadService.updateHighestPrice(platform, base, currentPrice);
                 console.log(`Ordre de trailing stop créé pour ${base}`);
                 return { base, platform };
@@ -163,8 +163,8 @@ export class TrailingStopService {
         try {
             if (highestPrice && currentPrice && currentPrice > highestPrice) {
                 const stopLossPrice = Math.max(highestPrice, currentPrice) * (1 - this.PERCENTAGE_TO_LOSE);
-                await OrdersService.cancelAllOrders(platform, base);
-                await OrdersService.createOrUpdateStopLossOrder(platform, stopLossPrice, base, balance);
+                await OrderMarketService.cancelAllOrders(platform, base);
+                await OrderMarketService.createOrUpdateStopLossOrder(platform, stopLossPrice, base, balance);
                 await ShadService.updateHighestPrice(platform, base, currentPrice);
                 console.log(`Ordre de trailing stop mis à jour pour ${base}`);
                 return { base, platform };

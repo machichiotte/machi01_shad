@@ -15,7 +15,7 @@ interface CmcValues {
 /**
  * Retrieves CoinMarketCap values for a given object.
  */
-//function getCmcValues(cmc: CmcData[],currentPrice : number): CmcValues {
+//function getCmcValues(cmc: MappedCmc[],currentPrice : number): CmcValues {
 function getCmcValues(cmc: MappedCmc, currentPrice: number | undefined): CmcValues {
   if (!Array.isArray(cmc) || cmc.length === 0 || currentPrice === undefined) {
     return {
@@ -30,28 +30,19 @@ function getCmcValues(cmc: MappedCmc, currentPrice: number | undefined): CmcValu
     }
   }
 
-  // Trouver le CMC avec le prix le plus proche du prix actuel
-  const cmcData = cmc.reduce((closest, current) => {
-    const closestPrice = closest.quote?.USD?.price || 0;
-    const closestDiff = Math.abs(closestPrice - currentPrice);
-    const currentDiff = Math.abs(currentPrice - currentPrice);
-    return currentDiff < closestDiff ? current : closest;
-  });
-
   const getPercentChange = (value: number | undefined): number | 'N/A' =>
     value !== undefined ? value / 100 : 'N/A'
-
   return {
-    rank: parseInt(cmcData.cmc_rank || '0') || 0,
-    currentCmcPrice: cmcData.quote?.USD?.price
-      ? parseFloat(cmcData.quote.USD.price.toFixed(7))
+    rank: parseInt(cmc.cmc_rank?.toString() || '0'),
+    currentCmcPrice: cmc.quote?.USD?.price
+      ? parseFloat(cmc.quote.USD.price.toFixed(7))
       : 'N/A',
-    iconUrl: cmcData.id ? getIconUrl(cmcData.id) : '',
-    cryptoPercentChange24h: getPercentChange(cmcData.quote?.USD?.percent_change_24h),
-    cryptoPercentChange7d: getPercentChange(cmcData.quote?.USD?.percent_change_7d),
-    cryptoPercentChange30d: getPercentChange(cmcData.quote?.USD?.percent_change_30d),
-    cryptoPercentChange60d: getPercentChange(cmcData.quote?.USD?.percent_change_60d),
-    cryptoPercentChange90d: getPercentChange(cmcData.quote?.USD?.percent_change_90d)
+    iconUrl: cmc.id ? getIconUrl(cmc.id) : '',
+    cryptoPercentChange24h: getPercentChange(cmc.quote?.USD?.percent_change_24h),
+    cryptoPercentChange7d: getPercentChange(cmc.quote?.USD?.percent_change_7d),
+    cryptoPercentChange30d: getPercentChange(cmc.quote?.USD?.percent_change_30d),
+    cryptoPercentChange60d: getPercentChange(cmc.quote?.USD?.percent_change_60d),
+    cryptoPercentChange90d: getPercentChange(cmc.quote?.USD?.percent_change_90d)
   }
 }
 
