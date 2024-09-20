@@ -1,4 +1,3 @@
-import { getData } from '@utils/dataUtil';
 import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
 import { MappedCmc } from 'src/models/dbTypes';
@@ -56,7 +55,7 @@ export class CmcService {
    * Retrieves the latest CMC data from the database.
    */
   public static async fetchDatabaseCmc(): Promise<MappedCmc[]> {
-    return await getData(COLLECTION_NAME) as MappedCmc[];
+    return await MongodbService.getData(COLLECTION_NAME) as MappedCmc[];
   }
 
 

@@ -1,5 +1,5 @@
 // src/services/shadService.ts
-import { getData } from '@utils/dataUtil'
+import { MongodbService } from '@services/mongodbService'
 import { ShadData, HighestPrices } from '@models/dbTypes'
 import { databaseOperations } from '@services/databaseOperationsService'
 
@@ -11,12 +11,12 @@ export class ShadService {
    */
   static async fetchShadInDatabase(): Promise<ShadData[]> {
     const collectionName = process.env.MONGODB_COLLECTION_SHAD as string
-    return await getData(collectionName) as ShadData[]
+    return await MongodbService.getData(collectionName) as ShadData[]
   }
 
   static async getHighestPrices(): Promise<HighestPrices[]> {
     const collectionName = process.env.MONGODB_COLLECTION_HIGHEST_PRICES as string
-    return await getData(collectionName) as HighestPrices[]
+    return await MongodbService.getData(collectionName) as HighestPrices[]
   }
 
   static async updateHighestPrice(platform: string, base: string, price: number): Promise<void> {

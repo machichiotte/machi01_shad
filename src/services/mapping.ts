@@ -4,7 +4,7 @@ import { getTotalUSDT } from '@utils/mappingUtil'
 import { MappedBalance, MappedTrade, MappedOrder, MappedTicker, MappedMarket } from '@models/dbTypes'
 import { Balance, Balances } from 'ccxt'
 
-class Mapper {
+export class MappingService {
   /**
    * Méthode principale pour mapper les balances selon la plateforme.
    */
@@ -85,10 +85,10 @@ class Mapper {
   ): Omit<MappedTrade, '_id'>[] {
     return data
       .map((item) => {
-        const commonData = Mapper.mapTradeCommon(item, platform, conversionRates)
+        const commonData = MappingService.mapTradeCommon(item, platform, conversionRates)
         if (platform === 'okx' && item.info?.data?.[0]?.details) {
           return item.info.data[0].details.map((item: Trade) =>
-            Mapper.mapTradeCommon(item, 'okx', conversionRates)
+            MappingService.mapTradeCommon(item, 'okx', conversionRates)
           )
         }
         return commonData
@@ -148,11 +148,3 @@ class Mapper {
       }))
   }
 }
-
-export const {
-  mapBalance,
-  mapOrders,
-  mapTickers,
-  mapMarkets,
-  mapTrades,
-} = Mapper;

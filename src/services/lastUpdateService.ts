@@ -1,5 +1,4 @@
 // src/services/lastUpdateService.ts
-import { getData } from '@utils/dataUtil'
 import { MongodbService } from '@services/mongodbService'
 
 interface LastUpdateData {
@@ -12,7 +11,7 @@ export class LastUpdateService {
    */
   static async fetchDatabaseLastUpdate(): Promise<LastUpdateData[]> {
     const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE as string
-    return await getData(collectionName) as LastUpdateData[]
+    return await MongodbService.getData(collectionName) as LastUpdateData[]
   }
 
   /**

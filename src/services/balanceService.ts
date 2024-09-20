@@ -1,11 +1,11 @@
 // src/services/balanceService.ts
 
-import { getData } from '@utils/dataUtil';
+import { MongodbService } from '@services/mongodbService';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil';
 import { validateEnvVariables } from '@utils/controllerUtil';
 import { DatabaseService } from '@services/databaseService';
-import { mapBalance } from '@services/mapping';
+import { MappingService } from '@services/mapping';
 import { MappedBalance } from 'src/models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 import { ProcessorService } from '@services/processorService'
@@ -22,7 +22,7 @@ export class BalanceService {
    * Récupère toutes les données de solde de la base de données.
    */
   static async fetchDatabaseBalances(): Promise<MappedBalance[]> {
-    return await getData(COLLECTION_NAME) as MappedBalance[];
+    return await MongodbService.getData(COLLECTION_NAME) as MappedBalance[];
   }
 
   /**
@@ -55,7 +55,7 @@ export class BalanceService {
     try {
       const platformInstance = createPlatformInstance(platform);
       const data = await platformInstance.fetchBalance();
-      return mapBalance(platform, data);
+      return MappingService.mapBalance(platform, data);
     } catch (error) {
       if (retries > 0 && shouldRetry(platform, error as Error, errorPolicies)) {
         const delay = Math.pow(2, 3 - retries) * 1000;

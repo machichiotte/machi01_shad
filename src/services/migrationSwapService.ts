@@ -1,13 +1,13 @@
 // src/services/migrationSwapService.ts
-import { getData } from '@utils/dataUtil';
 import { MappedTrade, MappedStrategy, SwapMigration } from '@models/dbTypes';
 import { StrategyService } from '@services/strategyService';
 import { TradeService } from '@services/tradeService';
 import { handleServiceError } from '@utils/errorUtil';
+import { MongodbService } from '@services/mongodbService'
 
 async function fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
   const collectionName = process.env.MONGODB_COLLECTION_SWAP as string;
-  return await getData(collectionName) as SwapMigration[];
+  return await MongodbService.getData(collectionName) as SwapMigration[];
 }
 
 async function updateTrade(trade: MappedTrade, oldAsset: string, newAsset: string, swapMultiplier: number, platform: string): Promise<void> {

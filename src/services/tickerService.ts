@@ -1,11 +1,10 @@
 // src/services/tickerService.ts
-import { getData } from '@utils/dataUtil'
 import { createPlatformInstance, getPlatforms } from '@utils/platformUtil'
 import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil'
 import { LastUpdateService } from '@services/lastUpdateService'
 import { MongodbService } from '@services/mongodbService'
 import { DatabaseService } from '@services/databaseService'
-import { mapTickers } from '@services/mapping'
+import { MappingService } from '@services/mapping'
 import { MappedTicker } from '@models/dbTypes'
 import { handleServiceError } from '@utils/errorUtil'
 
@@ -18,7 +17,7 @@ export class TickerService {
    * Fetches tickers data from the database.
    */
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {
-    return await getData(COLLECTION_NAME) as MappedTicker[]
+    return await MongodbService.getData(COLLECTION_NAME) as MappedTicker[]
   }
 
   /**
@@ -75,7 +74,7 @@ export class TickerService {
     for (const platform of platforms) {
       const platformInstance = createPlatformInstance(platform)
       const data = await platformInstance.fetchTickers()
-      tickersData.push(...mapTickers(platform, data))
+      tickersData.push(...MappingService.mapTickers(platform, data))
     }
 
     await MongodbService.deleteAndReplaceAll(COLLECTION_NAME, tickersData)
@@ -92,7 +91,7 @@ export class TickerService {
     try {
       const platformInstance = createPlatformInstance(platform)
       const data = await platformInstance.fetchTickers()
-      return mapTickers(platform, data)
+      return MappingService.mapTickers(platform, data)
     } catch (error) {
       handleServiceError(error, 'fetchCurrentTickers', `Error fetching tickers for ${platform}`)
       if (retries > 0 && shouldRetry(platform, error as Error, errorPolicies)) {

@@ -2,9 +2,9 @@
 import {
   createPlatformInstance,
 } from '@utils/platformUtil'
-import { getData } from '@utils/dataUtil'
+import { MongodbService } from '@services/mongodbService'
 import { DatabaseService } from '@services/databaseService'
-import { mapOrders } from '@services/mapping'
+import { MappingService } from '@services/mapping'
 import { Order, Exchange } from 'ccxt'
 import { MappedOrder } from '@models/dbTypes'
 import { handleServiceError } from '@utils/errorUtil'
@@ -18,7 +18,7 @@ export class OrderBalanceService {
    * Fetches orders from the database.
    */
   static async fetchDatabaseOrders(): Promise<MappedOrder[]> {
-    return await getData(COLLECTION_NAME) as MappedOrder[]
+    return await MongodbService.getData(COLLECTION_NAME) as MappedOrder[]
   }
 
   /**
@@ -27,7 +27,7 @@ export class OrderBalanceService {
   static async fetchAndMapOrders(platform: string): Promise<MappedOrder[]> {
     try {
       const data = await this.fetchOpenOrdersByPlatform(platform)
-      const mappedData = mapOrders(platform, data)
+      const mappedData = MappingService.mapOrders(platform, data)
       console.log(`Fetched and mapped orders for ${platform}:`, {
         count: mappedData.length
       })

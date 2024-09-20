@@ -1,6 +1,6 @@
 // src/services/cron/processorService.ts
 import { calculateAssetMetrics } from '@services/metrics/global'
-import { mapTrades } from '@services/mapping'
+import { MappingService } from '@services/mapping'
 import { MappedStrategy, MappedTicker, MappedTrade, AssetMetrics, MappedCmc, MappedOrder, MappedBalance } from '@models/dbTypes'
 import { TradeService } from '@services/tradeService'
 import { TickerService } from '@services/tickerService'
@@ -248,7 +248,7 @@ export class ProcessorService {
       if (marketExists) {
         try {
           const tradeList = await TradeService.fetchLastTrades(platform, symbol)
-          const mappedTrades = mapTrades(platform, tradeList, {})
+          const mappedTrades = MappingService.mapTrades(platform, tradeList, {})
           newTrades.push(...mappedTrades)
         } catch (error) {
           handleServiceError(error, 'fetchLastTrades', `Error fetching trades for ${symbol}`)

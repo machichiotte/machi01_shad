@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { AuthService } from '@services/authService';
-import { saveData, getOne } from '@services/mongodbService';
+import { MongodbService } from '@services/mongodbService';
 import { handleServiceError } from '@utils/errorUtil';
 
 jest.mock('bcrypt');
@@ -27,14 +27,14 @@ describe('authService', () => {
     it('devrait créer un nouvel utilisateur avec succès', async () => {
       const userDetails = { email: 'test@example.com', password: 'password' };
       (bcrypt.hash as jest.Mock).mockResolvedValue('hashedPassword');
-      (saveData as jest.Mock).mockResolvedValue({ insertedId: 'someId' });
+      (MongodbService.saveData as jest.Mock).mockResolvedValue({ insertedId: 'someId' });
       process.env.MONGODB_COLLECTION_USERS = 'users';
 
       const result = await AuthService.createUserDBService(userDetails);
 
       expect(result).toBe(true);
       expect(bcrypt.hash).toHaveBeenCalledWith('password', 10);
-      expect(saveData).toHaveBeenCalledWith('users', expect.objectContaining({
+      expect(MongodbService.saveData).toHaveBeenCalledWith('users', expect.objectContaining({
         email: 'test@example.com',
         password: 'hashedPassword'
       }));
@@ -54,17 +54,17 @@ describe('authService', () => {
   describe('findUserByEmail', () => {
     it('devrait trouver un utilisateur par email', async () => {
       const mockUser = { email: 'test@example.com', password: 'hashedPassword' };
-      (getOne as jest.Mock).mockResolvedValue(mockUser);
+      (MongodbService.getOne as jest.Mock).mockResolvedValue(mockUser);
       process.env.MONGODB_COLLECTION_USERS = 'users';
 
       const result = await AuthService.findUserByEmail('test@example.com');
 
       expect(result).toEqual(mockUser);
-      expect(getOne).toHaveBeenCalledWith('users', { email: 'test@example.com' });
+      expect(MongodbService.getOne).toHaveBeenCalledWith('users', { email: 'test@example.com' });
     });
 
     it('devrait retourner null si l\'utilisateur n\'est pas trouvé', async () => {
-      (getOne as jest.Mock).mockResolvedValue(null);
+      (MongodbService.getOne as jest.Mock).mockResolvedValue(null);
       process.env.MONGODB_COLLECTION_USERS = 'users';
 
       const result = await AuthService.findUserByEmail('nonexistent@example.com');

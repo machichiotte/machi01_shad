@@ -5,6 +5,7 @@ import { MappedData } from '@models/dbTypes'
 import { databaseOperations } from '@services/databaseOperationsService'
 import { handleServiceError } from '@utils/errorUtil'
 import { retry } from '@utils/retryUtil'
+import { getMockedData } from '@src/utils/mockUtil'
 
 dotenv.config()
 
@@ -26,6 +27,24 @@ interface CacheItem {
 }
 
 export class MongodbService {
+
+  /**
+ * Main function to get data from the collection
+ */
+  static async getData(collectionName: string): Promise<MappedData[]> {
+    try {
+      if (process.env.OFFLINE_MODE === 'true') {
+        return getMockedData(collectionName)
+      } else {
+        const data = await MongodbService.getAllDataMDB(collectionName)
+        console.log(`${data.length} éléments récupérés depuis ${collectionName}`);
+        return Array.isArray(data) ? data as MappedData[] : []
+      }
+    } catch (error) {
+      handleServiceError(error, 'getData', `Failed to get data from collection ${collectionName}`)
+      throw error
+    }
+  }
 
   /**
    * Establishes a connection to the MongoDB client.

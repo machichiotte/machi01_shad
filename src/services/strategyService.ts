@@ -1,5 +1,4 @@
 // src/services/strategyService.ts
-import { getData } from '@utils/dataUtil'
 import { LastUpdateService } from '@services/lastUpdateService'
 import { MongodbService } from '@services/mongodbService'
 import { MappedStrategy } from '@models/dbTypes'
@@ -11,7 +10,7 @@ export class StrategyService {
    * Récupère les stratégies de la base de données.
    */
   static async fetchDatabaseStrategies(): Promise<MappedStrategy[]> {
-    return await getData(process.env.MONGODB_COLLECTION_STRAT as string) as MappedStrategy[];
+    return await MongodbService.getData(process.env.MONGODB_COLLECTION_STRAT as string) as MappedStrategy[];
   }
 
   /**

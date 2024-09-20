@@ -1,10 +1,9 @@
 // src/services/tradeService.ts
 import { createPlatformInstance } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
-import { getData } from '@utils/dataUtil'
 import { MongodbService } from '@services/mongodbService'
 import { LastUpdateService } from '@services/lastUpdateService'
-import { mapTrades } from '@services/mapping'
+import { MappingService } from '@services/mapping'
 import { MappedTrade } from '@models/dbTypes'
 
 import { InsertOneResult, InsertManyResult } from 'mongodb'
@@ -18,7 +17,7 @@ const TRADES_TYPE = process.env.TYPE_TRADES as string
 export class TradeService {
   // Méthodes de récupération
   static async fetchDatabaseTrades(): Promise<MappedTrade[]> {
-    return await getData(TRADES_COLLECTION) as MappedTrade[]
+    return await MongodbService.getData(TRADES_COLLECTION) as MappedTrade[]
   }
 
   static async fetchLastTrades(platform: string, symbol: string): Promise<Trade[]> {
@@ -92,7 +91,7 @@ export class TradeService {
         throw new Error(`Plateforme non supportée: ${platform}`)
     }
 
-    return mapTrades(platform, trades)
+    return MappingService.mapTrades(platform, trades)
   }
 
   private static async fetchKucoinTrades(platformInstance: Exchange): Promise<Trade[]> {

@@ -1,9 +1,8 @@
 // src/services/marketService.ts
-import { getData } from '@utils/dataUtil';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
-import { mapMarkets } from '@services/mapping';
+import { MappingService } from '@services/mapping';
 import { MappedMarket } from '@models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 
@@ -17,7 +16,7 @@ export class MarketService {
   static async fetchCurrentMarkets(platform: string): Promise<MappedMarket[]> {
     const platformInstance = createPlatformInstance(platform);
     const data = await platformInstance.fetchMarkets();
-    return mapMarkets(platform, data);
+    return MappingService.mapMarkets(platform, data);
   }
 
   /**
@@ -38,7 +37,7 @@ export class MarketService {
    * Retrieves the latest market data from the database.
    */
   static async getSavedMarkets(): Promise<MappedMarket[]> {
-    return await getData(COLLECTION_NAME) as MappedMarket[];
+    return await MongodbService.getData(COLLECTION_NAME) as MappedMarket[];
   }
 
 }

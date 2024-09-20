@@ -1,5 +1,5 @@
 import { BalanceService } from '@services/balanceService';
-import { getData } from '@utils/dataUtil';
+import { MongodbService } from '@services/mongodbService';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { loadErrorPolicies, shouldRetry, handleServiceError } from '@utils/errorUtil';
 import { DatabaseService } from '@services/databaseService';
@@ -7,7 +7,7 @@ import { mapBalance } from '@services/mapping';
 import { ProcessorService } from '@services/processorService';
 import { MappedBalance } from '@models/dbTypes';
 
-jest.mock('@utils/dataUtil');
+jest.mock('@services/mongodb');
 jest.mock('@utils/platformUtil');
 jest.mock('@utils/errorUtil');
 jest.mock('@utils/controllerUtil');
@@ -23,12 +23,12 @@ describe('balanceService', () => {
   describe('fetchDatabaseBalances', () => {
     it('should return mapped balances from database', async () => {
       const mockBalances = [{ platform: 'test', base: 'BTC', balance: 1 }];
-      (getData as jest.Mock).mockResolvedValue(mockBalances);
+      (MongodbService.getData as jest.Mock).mockResolvedValue(mockBalances);
 
       const result = await BalanceService.fetchDatabaseBalances();
 
       expect(result).toEqual(mockBalances);
-      expect(getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_BALANCE);
+      expect(MongodbService.getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_BALANCE);
     });
   });
 
@@ -38,7 +38,7 @@ describe('balanceService', () => {
         { platform: 'test1', base: 'BTC', balance: 1 },
         { platform: 'test2', base: 'ETH', balance: 2 }
       ];
-      (getData as jest.Mock).mockResolvedValue(mockBalances);
+      (MongodbService.getData as jest.Mock).mockResolvedValue(mockBalances);
 
       const result = await BalanceService.fetchDatabaseBalancesByPlatform('test1');
 
@@ -46,14 +46,14 @@ describe('balanceService', () => {
     });
 
     it('should retry on error if shouldRetry returns true', async () => {
-      (getData as jest.Mock).mockRejectedValueOnce(new Error('Test error'));
-      (getData as jest.Mock).mockResolvedValueOnce([{ platform: 'test', base: 'BTC', balance: 1 }]);
+      (MongodbService.getData as jest.Mock).mockRejectedValueOnce(new Error('Test error'));
+      (MongodbService.getData as jest.Mock).mockResolvedValueOnce([{ platform: 'test', base: 'BTC', balance: 1 }]);
       (shouldRetry as jest.Mock).mockReturnValueOnce(true);
       (loadErrorPolicies as jest.Mock).mockResolvedValue({});
 
       await BalanceService.fetchDatabaseBalancesByPlatform('test');
 
-      expect(getData).toHaveBeenCalledTimes(2);
+      expect(MongodbService.getData).toHaveBeenCalledTimes(2);
     });
   });
 
