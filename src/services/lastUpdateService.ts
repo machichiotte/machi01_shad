@@ -5,26 +5,22 @@ interface LastUpdateData {
   [key: string]: number | { [key: string]: number }
 }
 
+const COLLECTION_NAME = process.env.MONGODB_COLLECTION_LAST_UPDATE as string
+
 export class LastUpdateService {
   /**
    * Fetches the last update information from the database.
    */
   static async fetchDatabaseLastUpdate(): Promise<LastUpdateData[]> {
-    const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE as string
-    return await MongodbService.getData(collectionName) as LastUpdateData[]
+    return await MongodbService.getData(COLLECTION_NAME) as LastUpdateData[]
   }
 
   /**
    * Saves the last update information to the database.
    */
   static async saveLastUpdateToDatabase(type: string, platform?: string): Promise<void> {
-    const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE
-    // Récupérer les données actuelles dans la collection
     const data: LastUpdateData = (await this.fetchDatabaseLastUpdate())[0] || {}
-    console.log(
-      `saveLastUpdateToDatabase data: ${type} ${platform} ${JSON.stringify(data)}`
-    )
-    // Mettre à jour les données avec le nouveau timestamp
+    console.log(`saveLastUpdateToDatabase Type: ${type} | Platform: ${platform} | Size: ${Array.isArray(data) ? data.length : Object.keys(data).length} | Data: ${JSON.stringify(data)}`)
     if (!platform) {
       data[type] = Date.now()
     } else {
@@ -42,6 +38,6 @@ export class LastUpdateService {
     const filter = {}
     const update = { $set: data }
 
-    await MongodbService.updateInDatabase(collectionName as string, filter, update)
+    await MongodbService.updateInDatabase(COLLECTION_NAME, filter, update)
   }
 }

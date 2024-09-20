@@ -3,10 +3,10 @@ import { MongodbService } from '@services/mongodbService';
 
 jest.mock('@services/mongodbService');
 
-describe('LastUpdateService', () => {
+describe('lastUpdateService', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    process.env.MONGODB_COLLECTION_LAST_UPDATE = 'lastUpdate';
+    process.env.MONGODB_COLLECTION_LAST_UPDATE = 'collection_last_update';
   });
 
   afterEach(() => {
@@ -20,7 +20,7 @@ describe('LastUpdateService', () => {
 
       const result = await LastUpdateService.fetchDatabaseLastUpdate();
 
-      expect(MongodbService.getData).toHaveBeenCalledWith('lastUpdate');
+      expect(MongodbService.getData).toHaveBeenCalledWith('collection_last_update');
       expect(result).toEqual(mockData);
     });
   });
@@ -34,7 +34,7 @@ describe('LastUpdateService', () => {
       await LastUpdateService.saveLastUpdateToDatabase('type2');
 
       expect(MongodbService.updateInDatabase).toHaveBeenCalledWith(
-        'lastUpdate',
+        'collection_last_update',
         {},
         { $set: { type1: 123456789, type2: 987654321 } }
       );
@@ -48,7 +48,7 @@ describe('LastUpdateService', () => {
       await LastUpdateService.saveLastUpdateToDatabase('type1', 'platform2');
 
       expect(MongodbService.updateInDatabase).toHaveBeenCalledWith(
-        'lastUpdate',
+        'collection_last_update',
         {},
         { $set: { type1: { platform1: 123456789, platform2: 987654321 } } }
       );
@@ -61,7 +61,7 @@ describe('LastUpdateService', () => {
       await LastUpdateService.saveLastUpdateToDatabase('type1', 'platform1');
 
       expect(MongodbService.updateInDatabase).toHaveBeenCalledWith(
-        'lastUpdate',
+        'collection_last_update',
         {},
         { $set: { type1: { platform1: 987654321 } } }
       );
