@@ -1,8 +1,8 @@
 // src/services/migrationSwapService.ts
 import { getData } from '@utils/dataUtil';
-import { MappedTrade, MappedStrategy, SwapMigration } from 'src/models/dbTypes';
-import { StrategyService } from './strategyService';
-import { TradeService } from './tradeService';
+import { MappedTrade, MappedStrategy, SwapMigration } from '@models/dbTypes';
+import { StrategyService } from '@services/strategyService';
+import { TradeService } from '@services/tradeService';
 import { handleServiceError } from '@utils/errorUtil';
 
 async function fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {

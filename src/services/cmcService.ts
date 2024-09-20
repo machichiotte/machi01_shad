@@ -1,6 +1,6 @@
 import { getData } from '@utils/dataUtil';
-import { LastUpdateService } from './lastUpdateService';
-import { deleteAllDataMDB, saveData } from './mongodbService';
+import { LastUpdateService } from '@services/lastUpdateService';
+import { deleteAllDataMDB, saveData } from '@services/mongodbService';
 import { MappedCmc } from 'src/models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 

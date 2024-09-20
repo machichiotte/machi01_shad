@@ -1,8 +1,9 @@
 import { BalanceService } from '@src/services/balanceService';
-import { ShadService } from './shadService';
-import { TickerService } from './tickerService';
+import { ShadService } from '@services/shadService';
+import { TickerService } from '@services/tickerService';
 import { OrderMarketService } from '@services/orderMarketService';
 import { MappedBalance } from '@models/dbTypes';
+
 import { handleServiceError } from '@utils/errorUtil'
 
 interface Asset {

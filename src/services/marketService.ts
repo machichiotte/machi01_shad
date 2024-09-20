@@ -1,11 +1,11 @@
 // src/services/marketService.ts
 import { getData } from '@utils/dataUtil';
 import { createPlatformInstance } from '@utils/platformUtil';
-import { LastUpdateService } from './lastUpdateService';
-import { deleteAndSaveData } from './mongodbService';
-import { mapMarkets } from './mapping';
-import { DatabaseService } from './databaseService';
-import { MappedMarket } from 'src/models/dbTypes';
+import { LastUpdateService } from '@services/lastUpdateService';
+import { deleteAndSaveData } from '@services/mongodbService';
+import { mapMarkets } from '@services/mapping';
+import { DatabaseService } from '@services/databaseService';
+import { MappedMarket } from '@models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 
 const COLLECTION_NAME = process.env.MONGODB_COLLECTION_LOAD_MARKETS as string

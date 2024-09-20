@@ -1,13 +1,14 @@
 // src/services/tradeService.ts
 import { createPlatformInstance } from '@utils/platformUtil'
-import { getData } from '@utils/dataUtil'
-import { updateDataMDB, deleteAndSaveData, saveData } from './mongodbService'
-import { LastUpdateService } from './lastUpdateService'
-import { mapTrades } from './mapping'
-import { MappedTrade } from 'src/models/dbTypes'
-import { Trade } from 'ccxt'
-import { InsertOneResult, InsertManyResult } from 'mongodb'
 import { handleServiceError } from '@utils/errorUtil'
+import { getData } from '@utils/dataUtil'
+import { updateDataMDB, deleteAndSaveData, saveData } from '@services/mongodbService'
+import { LastUpdateService } from '@services/lastUpdateService'
+import { mapTrades } from '@services/mapping'
+import { MappedTrade } from '@models/dbTypes'
+
+import { InsertOneResult, InsertManyResult } from 'mongodb'
+import { Trade } from 'ccxt'
 import Exchange from 'ccxt/js/src/abstract/kucoin'
 
 const TRADES_COLLECTION = process.env.MONGODB_COLLECTION_TRADES as string

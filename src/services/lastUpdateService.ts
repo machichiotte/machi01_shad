@@ -1,6 +1,6 @@
 // src/services/lastUpdateService.ts
 import { getData } from '@utils/dataUtil'
-import { updateInDatabase } from './mongodbService'
+import { updateInDatabase } from '@services/mongodbService'
 
 interface LastUpdateData {
   [key: string]: number | { [key: string]: number }

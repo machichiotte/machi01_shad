@@ -1,5 +1,5 @@
-import { deleteAndSaveData } from './mongodbService'
-import { LastUpdateService } from './lastUpdateService'
+import { deleteAndSaveData } from '@services/mongodbService'
+import { LastUpdateService } from '@services/lastUpdateService'
 import { MappedData } from 'src/models/dbTypes'
 import { handleServiceError } from '@utils/errorUtil';
 class DatabaseService {

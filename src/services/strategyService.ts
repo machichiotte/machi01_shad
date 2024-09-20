@@ -1,8 +1,8 @@
 // src/services/strategyService.ts
 import { getData } from '@utils/dataUtil'
-import { LastUpdateService } from './lastUpdateService'
-import { updateDataMDB, deleteAllDataMDB, saveData } from './mongodbService'
-import { MappedStrategy } from 'src/models/dbTypes'
+import { LastUpdateService } from '@services/lastUpdateService'
+import { updateDataMDB, deleteAllDataMDB, saveData } from '@services/mongodbService'
+import { MappedStrategy } from '@models/dbTypes'
 import { InsertManyResult, InsertOneResult } from 'mongodb'
 import { handleServiceError } from '@utils/errorUtil'
 

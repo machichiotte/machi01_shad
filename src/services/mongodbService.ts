@@ -1,7 +1,7 @@
 // src/services/mongodbService.ts
 import dotenv from 'dotenv'
 import { MongoClient, ServerApiVersion, Db, InsertManyResult, InsertOneResult, Document } from 'mongodb'
-import { MappedData } from 'src/models/dbTypes'
+import { MappedData } from '@models/dbTypes'
 import { databaseOperations } from '@services/databaseOperationsService'
 import { handleServiceError } from '@utils/errorUtil'
 

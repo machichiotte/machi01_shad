@@ -2,7 +2,7 @@
 
 import bcrypt from 'bcrypt'; // Pour le hachage des mots de passe
 import crypto from 'crypto'; // Utilisation du module crypto intégré
-import { saveData, getOne } from '@services/mongodbService';
+import { saveData, getOne } from './mongodbService';
 import { handleServiceError } from '@utils/errorUtil';
 
 // Interface pour représenter un utilisateur

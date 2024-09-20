@@ -3,10 +3,10 @@ import {
   createPlatformInstance,
 } from '@utils/platformUtil'
 import { getData } from '@utils/dataUtil'
-import { DatabaseService } from './databaseService'
-import { mapOrders } from './mapping'
+import { DatabaseService } from '@services/databaseService'
+import { mapOrders } from '@services/mapping'
 import { Order, Exchange } from 'ccxt'
-import { MappedOrder } from 'src/models/dbTypes'
+import { MappedOrder } from '@models/dbTypes'
 import { handleServiceError } from '@utils/errorUtil'
 
 const COLLECTION_NAME = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS as string

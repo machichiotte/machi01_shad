@@ -2,11 +2,11 @@
 import { getData } from '@utils/dataUtil'
 import { createPlatformInstance, getPlatforms } from '@utils/platformUtil'
 import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil'
-import { LastUpdateService } from './lastUpdateService'
-import { deleteAndReplaceAll } from './mongodbService'
-import { DatabaseService } from './databaseService'
-import { mapTickers } from './mapping'
-import { MappedTicker } from 'src/models/dbTypes'
+import { LastUpdateService } from '@services/lastUpdateService'
+import { deleteAndReplaceAll } from '@services/mongodbService'
+import { DatabaseService } from '@services/databaseService'
+import { mapTickers } from '@services/mapping'
+import { MappedTicker } from '@models/dbTypes'
 import { handleServiceError } from '@utils/errorUtil'
 
 const COLLECTION_NAME = process.env.MONGODB_COLLECTION_TICKERS as string

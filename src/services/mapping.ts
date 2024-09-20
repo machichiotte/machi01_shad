@@ -1,10 +1,10 @@
 import { Trade, Market, Order, Tickers } from 'ccxt'
 import { STABLECOINS } from '@src/constants'
 import { getTotalUSDT } from '@utils/mappingUtil'
-import { MappedBalance, MappedTrade, MappedOrder, MappedTicker, MappedMarket } from 'src/models/dbTypes'
+import { MappedBalance, MappedTrade, MappedOrder, MappedTicker, MappedMarket } from '@models/dbTypes'
 import { Balance, Balances } from 'ccxt'
-class Mapper {
 
+class Mapper {
   /**
    * Méthode principale pour mapper les balances selon la plateforme.
    */
@@ -17,7 +17,8 @@ class Mapper {
 
     const balances = Object.entries(balanceData)
       .filter((entry): entry is [string, Balance] => {
-        const [_, data] = entry;
+        const [, data] = entry;
+
         return typeof data === 'object' && data !== null &&
           'free' in data && 'total' in data && typeof data.total === 'number' && data.total > 0;
       })

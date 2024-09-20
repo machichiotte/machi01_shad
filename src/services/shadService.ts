@@ -1,7 +1,7 @@
 // src/services/shadService.ts
 import { getData } from '@utils/dataUtil'
-import { ShadData, HighestPrices } from 'src/models/dbTypes'
-import { databaseOperations } from './databaseOperationsService'
+import { ShadData, HighestPrices } from '@models/dbTypes'
+import { databaseOperations } from '@services/databaseOperationsService'
 
 export class ShadService {
   /**
