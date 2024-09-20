@@ -1,83 +1,96 @@
-// src/services/authService.ts
-
-import bcrypt from 'bcrypt'; // Pour le hachage des mots de passe
-import crypto from 'crypto'; // Utilisation du module crypto intégré
-import { saveData, getOne } from './mongodbService';
+import bcrypt from 'bcrypt';
+import crypto from 'crypto';
+import { AuthService } from '@services/authService';
+import { saveData, getOne } from '@services/mongodbService';
 import { handleServiceError } from '@utils/errorUtil';
 
-// Interface pour représenter un utilisateur
-interface User {
-  email: string;
-  password: string;
-  [key: string]: string | number | boolean | undefined;
-}
+jest.mock('bcrypt');
+jest.mock('crypto');
+jest.mock('@services/mongodbService');
+jest.mock('@utils/errorUtil');
 
-// Définition de la classe AuthService
-export class AuthService {
-  /**
-   * Compare un mot de passe en texte clair avec un mot de passe haché.
-   */
-  public static async isPasswordMatch(
-    password: string,
-    hashedPassword: string
-  ): Promise<boolean> {
-    return await bcrypt.compare(password, hashedPassword);
-  }
+describe('AuthService', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-  /**
-   * Crée un nouvel utilisateur dans la base de données avec un mot de passe haché.
-   */
-  public static async createUserDBService(userDetails: User): Promise<boolean> {
-    try {
-      const hashedPassword = await bcrypt.hash(userDetails.password, 10); // Ajustez les tours de sel selon les besoins
-      const newUser = { ...userDetails, password: hashedPassword }; // Opérateur de propagation
+  describe('isPasswordMatch', () => {
+    it('devrait comparer correctement le mot de passe', async () => {
+      (bcrypt.compare as jest.Mock).mockResolvedValue(true);
+      const result = await AuthService.isPasswordMatch('password', 'hashedPassword');
+      expect(result).toBe(true);
+      expect(bcrypt.compare).toHaveBeenCalledWith('password', 'hashedPassword');
+    });
+  });
 
-      const collection = process.env.MONGODB_COLLECTION_USERS;
-      if (!collection) {
-        throw new Error("La collection MongoDB n'est pas définie");
-      }
-      const result = await saveData(collection, newUser);
+  describe('createUserDBService', () => {
+    it('devrait créer un nouvel utilisateur avec succès', async () => {
+      const userDetails = { email: 'test@example.com', password: 'password' };
+      (bcrypt.hash as jest.Mock).mockResolvedValue('hashedPassword');
+      (saveData as jest.Mock).mockResolvedValue({ insertedId: 'someId' });
+      process.env.MONGODB_COLLECTION_USERS = 'users';
 
-      console.log(
-        '🚀 ~ createUserDBService ~ result:',
-        result
-      );
-      return true;
-    } catch (error) {
-      handleServiceError(error, 'createUserDBService', 'Erreur lors de la création de l\'utilisateur');
-      return false;
-    }
-  }
+      const result = await AuthService.createUserDBService(userDetails);
 
-  /**
-   * Trouve un utilisateur dans la base de données par son adresse e-mail.
-   */
-  public static async findUserByEmail(email: string): Promise<User | null> {
-    try {
-      const collection = process.env.MONGODB_COLLECTION_USERS;
-      if (!collection) {
-        throw new Error("La collection MongoDB n'est pas définie");
-      }
-      const user = await getOne(collection, { email }); // Filtrer par e-mail
-      return user as User | null; // Retourne l'objet utilisateur trouvé ou null s'il n'est pas trouvé
-    } catch (error) {
-      handleServiceError(error, 'findUserByEmail', 'Erreur lors de la recherche de l\'utilisateur');
-      return null; // Indique une erreur ou que l'utilisateur n'a pas été trouvé
-    }
-  }
+      expect(result).toBe(true);
+      expect(bcrypt.hash).toHaveBeenCalledWith('password', 10);
+      expect(saveData).toHaveBeenCalledWith('users', expect.objectContaining({
+        email: 'test@example.com',
+        password: 'hashedPassword'
+      }));
+    });
 
-  /**
-   * Génère un jeton de session aléatoire sécurisé.
-   */
-  public static async generateSessionToken(): Promise<string> {
-    try {
-      const randomBytes = crypto.randomBytes(32); // Simplifié sans callback
-      const token = randomBytes.toString('base64url');
-      console.log('Jeton de session généré avec succès.');
-      return token;
-    } catch (error) {
-      handleServiceError(error, 'generateSessionToken', 'Échec de la génération du jeton de session');
-      throw new Error('Échec de la génération du jeton de session');
-    }
-  }
-}
+    it('devrait gérer les erreurs correctement', async () => {
+      const userDetails = { email: 'test@example.com', password: 'password' };
+      (bcrypt.hash as jest.Mock).mockRejectedValue(new Error('Hash error'));
+
+      const result = await AuthService.createUserDBService(userDetails);
+
+      expect(result).toBe(false);
+      expect(handleServiceError).toHaveBeenCalled();
+    });
+  });
+
+  describe('findUserByEmail', () => {
+    it('devrait trouver un utilisateur par email', async () => {
+      const mockUser = { email: 'test@example.com', password: 'hashedPassword' };
+      (getOne as jest.Mock).mockResolvedValue(mockUser);
+      process.env.MONGODB_COLLECTION_USERS = 'users';
+
+      const result = await AuthService.findUserByEmail('test@example.com');
+
+      expect(result).toEqual(mockUser);
+      expect(getOne).toHaveBeenCalledWith('users', { email: 'test@example.com' });
+    });
+
+    it('devrait retourner null si l\'utilisateur n\'est pas trouvé', async () => {
+      (getOne as jest.Mock).mockResolvedValue(null);
+      process.env.MONGODB_COLLECTION_USERS = 'users';
+
+      const result = await AuthService.findUserByEmail('nonexistent@example.com');
+
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('generateSessionToken', () => {
+    it('devrait générer un jeton de session valide', async () => {
+      const mockRandomBytes = Buffer.from('randomBytes');
+      (crypto.randomBytes as jest.Mock).mockReturnValue(mockRandomBytes);
+
+      const result = await AuthService.generateSessionToken();
+
+      expect(result).toBe(mockRandomBytes.toString('base64url'));
+      expect(crypto.randomBytes).toHaveBeenCalledWith(32);
+    });
+
+    it('devrait gérer les erreurs lors de la génération du jeton', async () => {
+      (crypto.randomBytes as jest.Mock).mockImplementation(() => {
+        throw new Error('Random bytes generation failed');
+      });
+
+      await expect(AuthService.generateSessionToken()).rejects.toThrow('Échec de la génération du jeton de session');
+      expect(handleServiceError).toHaveBeenCalled();
+    });
+  });
+});
