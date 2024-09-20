@@ -6,7 +6,7 @@ import { handleControllerError } from '@utils/errorUtil';
 jest.mock('@services/orderMarketService');
 jest.mock('@utils/errorUtil');
 
-describe('OrderMarketController', () => {
+describe('orderMarketController', () => {
     let mockRequest: Partial<Request>;
     let mockResponse: Partial<Response>;
     let mockJson: jest.Mock;
