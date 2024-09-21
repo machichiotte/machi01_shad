@@ -1,10 +1,8 @@
 // src/controllers/cmcController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { validateEnvVariables } from '@utils/controllerUtil'
 import { CmcService } from '@services/cmcService'
 
-validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
 
 /**
  * Récupère les dernières données CoinMarketCap de la base de données.

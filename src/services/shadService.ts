@@ -2,6 +2,7 @@
 import { MongodbService } from '@services/mongodbService'
 import { ShadData, HighestPrices } from '@models/dbTypes'
 import { databaseOperations } from '@services/databaseOperationsService'
+import config from '@config/index'
 
 export class ShadService {
   /**
@@ -10,17 +11,17 @@ export class ShadService {
    * The collection name is specified in the environment variable MONGODB_COLLECTION_SHAD.
    */
   static async fetchShadInDatabase(): Promise<ShadData[]> {
-    const collectionName = process.env.MONGODB_COLLECTION_SHAD as string
+    const collectionName = config?.collection?.shad
     return await MongodbService.getData(collectionName) as ShadData[]
   }
 
   static async getHighestPrices(): Promise<HighestPrices[]> {
-    const collectionName = process.env.MONGODB_COLLECTION_HIGHEST_PRICES as string
+    const collectionName = config?.collection?.highestPrices
     return await MongodbService.getData(collectionName) as HighestPrices[]
   }
 
   static async updateHighestPrice(platform: string, base: string, price: number): Promise<void> {
-    const collectionName = process.env.MONGODB_COLLECTION_HIGHEST_PRICES as string
+    const collectionName = config?.collection?.highestPrices as string
     //ici le update ne fonctionne pas si il ny a pas dobjet avec la base et la platform 
     await databaseOperations.updateOneUpsert(collectionName, { base, platform },
       {

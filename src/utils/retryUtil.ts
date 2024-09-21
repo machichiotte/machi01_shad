@@ -6,17 +6,25 @@ import { handleServiceError } from '@utils/errorUtil'
 export async function retry<A extends unknown[], R>(
     fn: (...args: A) => Promise<R>,
     args: A,
-    maxTry: number,
-    retryCount = 1
+    retries: number = 3,
+    delay: number = 1000
 ): Promise<R> {
-    try {
-        return await fn(...args);
-    } catch (error) {
-        handleServiceError(error, 'retry', `Error retrying function ${fn.name}`)
-        if (retryCount >= maxTry) {
-            handleServiceError(error, 'retry', `All ${maxTry} retry attempts exhausted`)
-            throw error;
+    let attempt = 0;
+    while (attempt < retries) {
+
+        try {
+            return await fn(...args);
+        } catch (error) {
+            attempt++;
+            if (attempt >= retries) {
+                handleServiceError(error, 'retry', `All ${attempt} retry attempts exhausted`)
+                throw error;
+            }
+
+            handleServiceError(error, 'retry', `Retrying ${fn.name}... attempt ${attempt} after ${delay}ms`)
+            await new Promise(resolve => setTimeout(resolve, delay));
+            delay *= 2; // Backoff exponentiel
         }
-        return retry(fn, args, maxTry, retryCount + 1);
     }
+    throw new Error(`La fonction n'a pas réussi après ${attempt} tentatives`);
 }

@@ -1,16 +1,26 @@
 import { OrderBalanceService } from '@services/orderBalanceService'
-import { DatabaseService } from '@services/databaseService'
 import { MongodbService } from '@services/mongodbService'
 import { MappingService } from '@services/mappingService'
 import * as errorUtil from '@utils/errorUtil'
 import { MappedOrder } from '@models/dbTypes'
 import { Order } from 'ccxt'
 
+import config from '@config/index'
+
 jest.mock('@utils/platformUtil')
 jest.mock('@services/mongodbService')
 jest.mock('@services/databaseService')
 jest.mock('@services/mappingService')
 jest.mock('@utils/errorUtil')
+
+jest.mock('@config/index', () => ({
+  collection: {
+    orders: 'collection_active_orders'
+  },
+  collectionType: {
+    orders: 'activeOrders'
+  }
+}));
 
 describe('OrderBalanceService', () => {
   beforeEach(() => {
@@ -24,7 +34,7 @@ describe('OrderBalanceService', () => {
 
       const result = await OrderBalanceService.fetchDatabaseOrders()
 
-      expect(MongodbService.getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_ACTIVE_ORDERS)
+      expect(MongodbService.getData).toHaveBeenCalledWith(config?.collection?.orders)
       expect(result).toEqual(mockOrders)
     })
   })
@@ -63,12 +73,12 @@ describe('OrderBalanceService', () => {
       const mockMappedOrders: Partial<MappedOrder>[] = [{ _id: '1', symbol: 'BTC/USDT', platform: 'binance' }]
 
       jest.spyOn(OrderBalanceService, 'fetchAndMapOrders').mockResolvedValue(mockMappedOrders as MappedOrder[])
-      jest.spyOn(DatabaseService, 'saveDataToDatabase').mockResolvedValue()
+      jest.spyOn(MongodbService, 'saveDataToDatabase').mockResolvedValue()
 
       const result = await OrderBalanceService.updateOrdersFromServer(platform)
 
       expect(OrderBalanceService.fetchAndMapOrders).toHaveBeenCalledWith(platform)
-      expect(DatabaseService.saveDataToDatabase).toHaveBeenCalledWith(mockMappedOrders, process.env.MONGODB_COLLECTION_ACTIVE_ORDERS, platform, process.env.TYPE_ACTIVE_ORDERS)
+      expect(MongodbService.saveDataToDatabase).toHaveBeenCalledWith(mockMappedOrders, config?.collection?.orders, platform, config?.collectionType?.order)
       expect(result).toEqual(mockMappedOrders)
     })
 

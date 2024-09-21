@@ -1,14 +1,12 @@
 // src/controllers/lastUpdateController.ts
-import { validateEnvVariables } from '@utils/controllerUtil'
-import {
-  LastUpdateService
-} from '@services/lastUpdateService'
+import { LastUpdateService } from '@services/lastUpdateService'
 import { MongodbService } from '@services/mongodbService'
 import { Request, Response } from 'express'
 
 import { handleControllerError } from '@utils/errorUtil'
+import config from '@config/index'
 
-validateEnvVariables(['MONGODB_COLLECTION_LAST_UPDATE'])
+const COLLECTION_NAME = config.collection?.lastUpdate
 
 /**
  * Récupère l'enregistrement de dernière mise à jour unique pour une plateforme et un type donnés.
@@ -16,16 +14,15 @@ validateEnvVariables(['MONGODB_COLLECTION_LAST_UPDATE'])
 async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
   try {
     const { platform, type } = req.params
-    const collectionName = process.env.MONGODB_COLLECTION_LAST_UPDATE
 
-    if (!collectionName) {
-      throw new Error('MONGODB_COLLECTION_LAST_UPDATE is not defined')
+    if (!COLLECTION_NAME) {
+      throw new Error(`${COLLECTION_NAME} is not defined`)
     }
 
     // check si besoin de filter
     //const filter = { platform, type }
 
-    const lastUpdateData = await MongodbService.getDataMDB(collectionName)
+    const lastUpdateData = await MongodbService.getDataMDB(COLLECTION_NAME)
 
     if (lastUpdateData.length > 0) {
       console.log(

@@ -3,20 +3,16 @@
 import { MongodbService } from '@services/mongodbService';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil';
-import { validateEnvVariables } from '@utils/controllerUtil';
-import { DatabaseService } from '@services/databaseService';
 import { MappingService } from '@services/mappingService';
 import { MappedBalance } from 'src/models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
 import { ProcessorService } from '@services/processorService'
+import config from '@config/index';
 
-// Valide que les variables d'environnement nécessaires sont définies
-validateEnvVariables(['MONGODB_COLLECTION_BALANCE', 'TYPE_BALANCE']);
+const COLLECTION_NAME = config.collection?.balance;
+const COLLECTION_TYPE = config.collectionType?.balance;
 
-const COLLECTION_NAME = process.env.MONGODB_COLLECTION_BALANCE as string;
-const COLLECTION_TYPE = process.env.TYPE_BALANCE as string;
-
-// Définition de la classe BalancesService
+// Définition de la classe BalanceService
 export class BalanceService {
   /**
    * Récupère toutes les données de solde de la base de données.
@@ -72,7 +68,7 @@ export class BalanceService {
    */
   static async saveDatabaseBalance(mappedData: MappedBalance[], platform: string): Promise<void> {
     if (COLLECTION_NAME && COLLECTION_TYPE) {
-      await DatabaseService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE);
+      await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE);
     } else {
       throw new Error('Required environment variables are not set');
     }

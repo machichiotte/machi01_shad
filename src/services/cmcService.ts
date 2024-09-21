@@ -2,9 +2,11 @@ import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
 import { MappedCmc } from 'src/models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
+import config from '@config/index';
 
-const COLLECTION_NAME = process.env.MONGODB_COLLECTION_CMC as string;
-const COLLECTION_TYPE = process.env.TYPE_CMC as string;
+
+const COLLECTION_NAME = config.collection?.cmc;
+const COLLECTION_TYPE = config.collectionType?.cmc;
 
 interface FetchResponse {
   data: MappedCmc[];
@@ -12,7 +14,6 @@ interface FetchResponse {
 }
 
 export class CmcService {
-  private static readonly API_KEY = process.env.CMC_APIKEY as string;
   private static readonly limit = 5000;
   private static readonly baseStart = 1;
   private static readonly convert = 'USD';
@@ -31,7 +32,7 @@ export class CmcService {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'X-CMC_PRO_API_KEY': this.API_KEY
+            'X-CMC_PRO_API_KEY': config?.apiKeys?.cmc?.apiKey || ''
           }
         });
 

@@ -1,12 +1,13 @@
 // src/services/cron/taskExecutor.ts
 import { sendMail } from './sendMail'
-import config from '@services/config'
 import { getPlatforms } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 
 import { MarketService } from '@services/marketService'
 import { TickerService } from '@src/services/tickerService'
 import { BalanceService } from '@src/services/balanceService'
+
+import config from '@config/index'
 
 /**
  * Executes a cron task with retry mechanism and error handling
@@ -23,9 +24,13 @@ async function executeCronTask(task: () => Promise<void>, isCritical: boolean = 
         if (attempts < retries - 1) {
           await new Promise((res) => setTimeout(res, 5000 * (attempts + 1)))
         } else {
+          if (!config.smtp) {
+            throw new Error('Configuration SMTP manquante')
+          }
+
           sendMail({
             from: config.smtp.auth.user as string,
-            to: process.env.EMAIL_ADDRESS_SEND as string,
+            to: config.smtp.auth.receiver as string,
             subject: 'Critical Error Alert',
             text: `Critical error in scheduled task: ${(error as Error).message}`
           })

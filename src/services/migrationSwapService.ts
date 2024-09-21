@@ -4,10 +4,12 @@ import { StrategyService } from '@services/strategyService';
 import { TradeService } from '@services/tradeService';
 import { handleServiceError } from '@utils/errorUtil';
 import { MongodbService } from '@services/mongodbService'
+import config from '@config/index';
+
+const COLLECTION_NAME = config?.collection?.swap;
 
 async function fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
-  const collectionName = process.env.MONGODB_COLLECTION_SWAP as string;
-  return await MongodbService.getData(collectionName) as SwapMigration[];
+  return await MongodbService.getData(COLLECTION_NAME) as SwapMigration[];
 }
 
 async function updateTrade(trade: MappedTrade, oldAsset: string, newAsset: string, swapMultiplier: number, platform: string): Promise<void> {

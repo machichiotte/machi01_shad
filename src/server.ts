@@ -3,8 +3,9 @@ import express, { Request, Response, NextFunction } from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import { Server } from 'http'; // Importation du type Server
+import config from '@config/index';
 
-const PORT = process.env.PORT || 10000
+const PORT = config.port || 10000
 
 const app = express() as express.Application
 

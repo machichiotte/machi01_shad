@@ -2,9 +2,6 @@
 import { Request, Response } from 'express'
 import { OrderBalanceService } from '@services/orderBalanceService'
 import { handleControllerError } from '@utils/errorUtil'
-import { validateEnvVariables } from '@utils/controllerUtil'
-
-validateEnvVariables(['MONGODB_COLLECTION_ACTIVE_ORDERS', 'TYPE_ACTIVE_ORDERS'])
 
 /**
  * Récupère toutes les commandes de la base de données.

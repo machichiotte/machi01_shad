@@ -4,10 +4,20 @@ import { MongodbService } from '@services/mongodbService';
 import { MappedStrategy } from '@models/dbTypes';
 import { InsertManyResult } from 'mongodb';
 import { handleServiceError } from '@utils/errorUtil';
+import config from '@config/index';
 
 jest.mock('@services/lastUpdateService');
 jest.mock('@services/mongodbService');
 jest.mock('@utils/errorUtil');
+
+jest.mock('@config/index', () => ({
+  collection: {
+    strats: 'collection_strats',
+  },
+  collectionType: {
+    strats: 'strategy'
+  }
+}));
 
 describe('StrategyService', () => {
   beforeEach(() => {
@@ -24,7 +34,7 @@ describe('StrategyService', () => {
 
       const result = await StrategyService.fetchDatabaseStrategies();
 
-      expect(MongodbService.getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_STRAT);
+      expect(MongodbService.getData).toHaveBeenCalledWith(config?.collection?.strats);
       expect(result).toEqual(mockStrategies);
     });
   });
@@ -38,7 +48,7 @@ describe('StrategyService', () => {
       const result = await StrategyService.updateStrategyById(strategyId, updatedStrategy);
 
       expect(MongodbService.updateDataMDB).toHaveBeenCalledWith(
-        process.env.MONGODB_COLLECTION_STRAT,
+        config?.collection?.strats,
         { _id: strategyId },
         { $set: updatedStrategy }
       );
@@ -73,9 +83,9 @@ describe('StrategyService', () => {
 
       const result = await StrategyService.updateStrategies(mockStrategies as MappedStrategy[]);
 
-      expect(MongodbService.deleteAllDataMDB).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_STRAT);
-      expect(MongodbService.saveData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_STRAT, mockStrategies);
-      expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalledWith(process.env.TYPE_STRATEGY, '');
+      expect(MongodbService.deleteAllDataMDB).toHaveBeenCalledWith(config?.collection?.strats);
+      expect(MongodbService.saveData).toHaveBeenCalledWith(config?.collection?.strats, mockStrategies);
+      expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalledWith(config?.collectionType?.strats, '');
       expect(result).toEqual(mockInsertResult);
     });
   });

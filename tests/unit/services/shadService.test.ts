@@ -2,9 +2,20 @@ import { ShadService } from '@services/shadService';
 import { MongodbService } from '@services/mongodbService';
 import { databaseOperations } from '@services/databaseOperationsService';
 import { ShadData, HighestPrices } from '@models/dbTypes';
+import config from '@config/index';
 
 jest.mock('@services/mongodbService');
 jest.mock('@services/databaseOperationsService');
+
+jest.mock('@config/index', () => ({
+  collection: {
+    shad: 'collection_shad',
+    highestPrices: 'collection_highest_prices'
+  },
+  collectionType: {
+    shad: 'shad'
+  }
+}));
 
 describe('ShadService', () => {
   beforeEach(() => {
@@ -18,7 +29,7 @@ describe('ShadService', () => {
 
       const result = await ShadService.fetchShadInDatabase();
 
-      expect(MongodbService.getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_SHAD);
+      expect(MongodbService.getData).toHaveBeenCalledWith(config?.collection?.shad);
       expect(result).toEqual(mockShadData);
     });
   });
@@ -30,7 +41,7 @@ describe('ShadService', () => {
 
       const result = await ShadService.getHighestPrices();
 
-      expect(MongodbService.getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_HIGHEST_PRICES);
+      expect(MongodbService.getData).toHaveBeenCalledWith(config?.collection?.highestPrices);
       expect(result).toEqual(mockHighestPrices);
     });
   });
@@ -44,7 +55,7 @@ describe('ShadService', () => {
       await ShadService.updateHighestPrice(platform, base, price);
 
       expect(databaseOperations.updateOneUpsert).toHaveBeenCalledWith(
-        process.env.MONGODB_COLLECTION_HIGHEST_PRICES,
+        config?.collection?.highestPrices,
         { base, platform },
         {
           $set: {

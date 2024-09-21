@@ -3,13 +3,13 @@ import { createPlatformInstance, getPlatforms } from '@utils/platformUtil'
 import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil'
 import { LastUpdateService } from '@services/lastUpdateService'
 import { MongodbService } from '@services/mongodbService'
-import { DatabaseService } from '@services/databaseService'
 import { MappingService } from '@services/mappingService'
 import { MappedTicker } from '@models/dbTypes'
 import { handleServiceError } from '@utils/errorUtil'
+import config from '@config/index'
 
-const COLLECTION_NAME = process.env.MONGODB_COLLECTION_TICKERS as string
-const COLLECTION_TYPE = process.env.TYPE_TICKERS as string
+const COLLECTION_NAME = config?.collection?.tickers
+const COLLECTION_TYPE = config?.collectionType?.tickers
 
 export class TickerService {
 
@@ -111,7 +111,7 @@ export class TickerService {
    * Saves the provided tickers data to the database.
    */
   static async saveDatabaseTickers(mappedData: MappedTicker[], platform: string): Promise<void> {
-    await DatabaseService.saveDataToDatabase(
+    await MongodbService.saveDataToDatabase(
       mappedData,
       COLLECTION_NAME,
       platform,

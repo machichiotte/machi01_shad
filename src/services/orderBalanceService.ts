@@ -3,14 +3,14 @@ import {
   createPlatformInstance,
 } from '@utils/platformUtil'
 import { MongodbService } from '@services/mongodbService'
-import { DatabaseService } from '@services/databaseService'
 import { MappingService } from '@services/mappingService'
 import { Order, Exchange } from 'ccxt'
 import { MappedOrder } from '@models/dbTypes'
 import { handleServiceError } from '@utils/errorUtil'
+import config from '@config/index';
 
-const COLLECTION_NAME = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS as string
-const COLLECTION_TYPE = process.env.TYPE_ACTIVE_ORDERS as string
+const COLLECTION_NAME = config?.collection?.order;
+const COLLECTION_TYPE = config?.collectionType?.order;
 
 export class OrderBalanceService {
 
@@ -44,7 +44,7 @@ export class OrderBalanceService {
   static async updateOrdersFromServer(platform: string): Promise<MappedOrder[]> {
     try {
       const mappedData = await this.fetchAndMapOrders(platform)
-      await DatabaseService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE)
+      await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE)
       console.log(`Updated orders from server for ${platform}.`, {
         count: mappedData.length
       })

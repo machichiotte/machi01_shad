@@ -5,6 +5,7 @@ import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
 import { MappingService } from '@services/mappingService';
 import { MappedTicker } from '@models/dbTypes';
+import config from '@config/index';
 
 jest.mock('@utils/platformUtil');
 jest.mock('@utils/errorUtil');
@@ -12,6 +13,15 @@ jest.mock('@services/lastUpdateService');
 jest.mock('@services/mongodbService');
 jest.mock('@services/databaseService');
 jest.mock('@services/mappingService');
+
+jest.mock('@config/index', () => ({
+  collection: {
+    tickers: 'collection_tickers',
+  },
+  collectionType: {
+    tickers: 'tickers'
+  }
+}));
 
 describe('TickerService', () => {
   beforeEach(() => {
@@ -28,7 +38,7 @@ describe('TickerService', () => {
 
       const result = await TickerService.fetchDatabaseTickers();
 
-      expect(MongodbService.getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_TICKERS);
+      expect(MongodbService.getData).toHaveBeenCalledWith(config?.collection?.tickers);
       expect(result).toEqual(mockTickers);
     });
   });
@@ -72,8 +82,8 @@ describe('TickerService', () => {
 
       await TickerService.updateAllTickers();
 
-      expect(MongodbService.deleteAndProcessData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_TICKERS, expect.any(Array), '', true);
-      expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalledWith(process.env.TYPE_TICKERS, 'combined');
+      expect(MongodbService.deleteAndProcessData).toHaveBeenCalledWith(config?.collection?.tickers, expect.any(Array), '', true);
+      expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalledWith(config.collectionType?.tickers, 'combined');
     });
   });
 

@@ -87,7 +87,7 @@ async function saveTradesToDatabase(req: Request, res: Response): Promise<void> 
 async function saveAllTradesToDatabase(req: Request, res: Response): Promise<void> {
   const { newTrades } = req.body
   try {
-    await TradeService.saveAllTradesToDatabase(newTrades)
+    await TradeService.saveTradesToDatabase(newTrades)
     res.status(200).json({ message: 'Tous les trades sauvegardés avec succès' })
   } catch (error) {
     handleControllerError(res, error, 'saveAllTradesToDatabase')

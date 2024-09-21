@@ -1,7 +1,7 @@
 // src/services/cron/cronTasks.ts
 import cron from 'node-cron'
-import config from '@services/config'
 import { handleServiceError } from '@utils/errorUtil'
+import config from '@config/index'
 
 import { cronTickers, cronMarkets, cronBalances } from './taskExecutor'
 
@@ -24,17 +24,17 @@ async function initializeCronTasks(): Promise<void> {
 
     const tasks: Task[] = [
       {
-        schedule: config.cronSchedules.tickers,
+        schedule: config?.cronSchedules?.tickers ?? '0 * * * *',
         task: cronTickers,
         name: 'Tickers'
       },
       {
-        schedule: config.cronSchedules.markets,
+        schedule: config?.cronSchedules?.markets ?? '0 * * * *',
         task: cronMarkets,
         name: 'Markets'
       },
       {
-        schedule: config.cronSchedules.balances,
+        schedule: config?.cronSchedules?.balances ?? '0 * * * *',
         task: cronBalances,
         name: 'Balances'
       }

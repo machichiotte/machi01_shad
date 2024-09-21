@@ -20,7 +20,6 @@ describe('cmcController', () => {
             status: jest.fn().mockReturnThis()
         }
         mockResponse = responseObject
-        process.env.MONGODB_COLLECTION_CMC = 'testCollection'
 
         // Sauvegarder la fonction console.log originale
         originalConsoleLog = console.log

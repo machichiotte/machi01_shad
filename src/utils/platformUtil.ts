@@ -1,6 +1,7 @@
 // src/utils/platformUtil.ts
 import * as ccxt from 'ccxt'
 import { handleServiceError } from './errorUtil'
+import config from '@config/index'
 
 const PLATFORMS: string[] = ['binance', 'kucoin']
 
@@ -8,16 +9,16 @@ const PLATFORMS: string[] = ['binance', 'kucoin']
  * Utility function to create an exchange instance
  */
 function createPlatformInstance(platform: string): ccxt.Exchange {
-  const apiKey = process.env[`${platform.toUpperCase()}_API_KEY`]
-  const secret = process.env[`${platform.toUpperCase()}_SECRET_KEY`]
-  const passphrase = process.env[`${platform.toUpperCase()}_PASSPHRASE`] || ''
+  const platformConfig = config?.apiKeys?.[platform];
 
-  if (!apiKey) {
-    throw new Error(`API key missing for platform: ${platform}`)
+  if (!platformConfig) {
+    throw new Error(`Configuration manquante pour la plateforme : ${platform}`);
   }
 
-  if (!secret) {
-    throw new Error(`API secret missing for platform: ${platform}`)
+  const { apiKey, secretKey, passphrase } = platformConfig
+
+  if (!apiKey || !secretKey) {
+    throw new Error(`Clés API manquantes pour la plateforme : ${platform}`)
   }
 
   // Check if the platform is supported
@@ -34,7 +35,7 @@ function createPlatformInstance(platform: string): ccxt.Exchange {
 
     const platformParams: ccxt.Exchange['options'] = {
       apiKey,
-      secret,
+      secretKey,
       ...(passphrase && { password: passphrase }),
       timeout: 20000, // Timeout for requests
       enableRateLimit: true // Enable rate limiting

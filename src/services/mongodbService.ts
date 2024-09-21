@@ -1,15 +1,18 @@
 // src/services/mongodbService.ts
-import dotenv from 'dotenv'
 import { MongoClient, ServerApiVersion, Db, InsertManyResult, InsertOneResult, Document } from 'mongodb'
 import { MappedData } from '@models/dbTypes'
 import { databaseOperations } from '@services/databaseOperationsService'
 import { handleServiceError } from '@utils/errorUtil'
 import { retry } from '@utils/retryUtil'
 import { getMockedData } from '@src/utils/mockUtil'
+import { LastUpdateService } from '@services/lastUpdateService'
+import config from '@config/index';
 
-dotenv.config()
+if (!config.database) {
+  throw new Error('La configuration de la base de données est manquante');
+}
 
-const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+const uri = `mongodb+srv://${config.database.user}:${config.database.password}@${config.database.dbName}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
 let mongoInstance: MongoClient | null = null
 let db: Db | null = null
@@ -31,9 +34,13 @@ export class MongodbService {
   /**
  * Main function to get data from the collection
  */
-  static async getData(collectionName: string): Promise<MappedData[]> {
+  static async getData(collectionName: string | undefined): Promise<MappedData[]> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
+
     try {
-      if (process.env.OFFLINE_MODE === 'true') {
+      if (config.isOffline) {
         return getMockedData(collectionName)
       } else {
         const data = await MongodbService.getAllDataMDB(collectionName)
@@ -77,8 +84,8 @@ export class MongodbService {
     if (!db) {
       const client = await MongodbService.getMongoClient()
       try {
-        db = client.db(process.env.MONGODB_DATABASE)
-        console.log('Database selected:', process.env.MONGODB_DATABASE)
+        db = client.db(config.database?.dbName)
+        console.log('Database selected:', config.database?.dbName)
       } catch (error) {
         handleServiceError(error, 'getDB', 'Error getting database')
         throw error
@@ -91,14 +98,21 @@ export class MongodbService {
   /**
    * Creates a collection if it doesn't already exist.
    */
-  static async createCollectionIfNotExists(collectionName: string): Promise<void> {
+  static async createCollectionIfNotExists(collectionName: string | undefined): Promise<void> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
     await retry(MongodbService.createCollection, [collectionName], 3)
   }
 
   /**
    * Creates a collection.
    */
-  static async createCollection(collectionName: string): Promise<void> {
+  static async createCollection(collectionName: string | undefined): Promise<void> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
+
     try {
       const db = await MongodbService.getDB()
       const collections = await db
@@ -116,7 +130,10 @@ export class MongodbService {
   /**
    * Saves data to a specified collection.
    */
-  static async saveData(collectionName: string, data: object[] | object): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
+  static async saveData(collectionName: string | undefined, data: object[] | object): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
     try {
       if (!Array.isArray(data) && typeof data !== 'object') {
         throw new TypeError('Data must be an array or an object')
@@ -136,14 +153,20 @@ export class MongodbService {
   /**
    * Retrieves all data from a specified collection.
    */
-  static async getDataMDB(collectionName: string): Promise<Document[]> {
+  static async getDataMDB(collectionName: string | undefined): Promise<Document[]> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
     return await retry(databaseOperations.find, [collectionName, {}], 3)
   }
 
   /**
    * Retrieves a single document from a specified collection based on a query.
    */
-  static async getOne(collectionName: string, query: object): Promise<Document | null> {
+  static async getOne(collectionName: string | undefined, query: object): Promise<Document | null> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
     return await retry(databaseOperations.findOne, [collectionName, query], 3)
   }
 
@@ -154,22 +177,26 @@ export class MongodbService {
   /**
    * Retrieves all data from a specified collection with caching.
    */
-  static async getAllDataMDB(collectionName: string): Promise<CacheItem[] | Document[]> {
+  static async getAllDataMDB(collectionName: string | undefined): Promise<CacheItem[] | Document[]> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
     // Toujours retourner le cache si disponible
     if (MongodbService.cache[collectionName]) {
       // Si le cache est encore valide, le retourner
       const cacheExpirationTimes: { [key: string]: number } = {
-        'collection_active_orders': 60000,
-        'collection_cmc': 14400000,
-        'collection_tickers': 30000,
-        'collection_trades': 30000,
-        'collection_balance': 30000,
-        'collection_last_update': 30000,
-        'collection_load_markets': 86400000,
-        'collection_shad': 60000,
-        'collection_strat': 36000000,
-        'collection_swap': 86400000,
-        'collection_users': 0
+        'collection_balance': config.cacheExpirationTimes?.balances ?? 0,
+        'collection_cmc': config.cacheExpirationTimes?.cmc ?? 0,
+        'collection_highest_prices': config.cacheExpirationTimes?.highestPrices ?? 0,
+        'collection_last_update': config.cacheExpirationTimes?.lastUpdates ?? 0,
+        'collection_active_orders': config.cacheExpirationTimes?.orders ?? 0,
+        'collection_load_markets': config.cacheExpirationTimes?.markets ?? 0,
+        'collection_shad': config.cacheExpirationTimes?.shad ?? 0,
+        'collection_strat': config.cacheExpirationTimes?.strats ?? 0,
+        'collection_swap': config.cacheExpirationTimes?.swaps ?? 0,
+        'collection_tickers': config.cacheExpirationTimes?.tickers ?? 0,
+        'collection_trades': config.cacheExpirationTimes?.trades ?? 0,
+        'collection_users': config.cacheExpirationTimes?.users ?? 0,
       };
       const defaultExpirationTime = 0; // 30 secondes par défaut
 
@@ -191,7 +218,11 @@ export class MongodbService {
   }
 
 
-  static addToCache(collectionName: string, data: Document[]): void {
+  static addToCache(collectionName: string | undefined, data: Document[]): void {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
+
     try {
       if (data.length > 0) {
         MongodbService.cache[collectionName] = {
@@ -209,43 +240,42 @@ export class MongodbService {
   /**
    * Updates a document in a specified collection.
    */
-  static async updateDataMDB(collectionName: string, filter: object, update: object): Promise<boolean> {
+  static async updateDataMDB(collectionName: string | undefined, filter: object, update: object): Promise<boolean> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
     return await retry(databaseOperations.updateOne, [collectionName, filter, update], 3)
   }
 
   /**
    * Deletes a single document from a specified collection.
    */
-  static async deleteOneDataMDB(collectionName: string, filter: object): Promise<boolean> {
+  static async deleteOneDataMDB(collectionName: string | undefined, filter: object): Promise<boolean> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
     return await retry(databaseOperations.deleteOne, [collectionName, filter], 3)
   }
 
   /**
    * Deletes multiple documents from a specified collection.
    */
-  static async deleteMultipleDataMDB(collectionName: string, filter: object): Promise<number> {
+  static async deleteMultipleDataMDB(collectionName: string | undefined, filter: object): Promise<number> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
     return await retry(databaseOperations.deleteMany, [collectionName, filter], 3)
   }
 
   /**
    * Deletes all documents from a specified collection.
    */
-  static async deleteAllDataMDB(collectionName: string): Promise<number> {
+  static async deleteAllDataMDB(collectionName: string | undefined): Promise<number> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
     return await retry(databaseOperations.deleteMany, [collectionName, {}], 3)
   }
-
-  private static readonly activeOrdersCollection = process.env.MONGODB_COLLECTION_ACTIVE_ORDERS
-  private static readonly balanceCollection = process.env.MONGODB_COLLECTION_BALANCE
-  private static readonly cmcCollection = process.env.MONGODB_COLLECTION_CMC
-  private static readonly lastUpdateCollection = process.env.MONGODB_COLLECTION_LAST_UPDATE
-  private static readonly loadMarketsCollection = process.env.MONGODB_COLLECTION_LOAD_MARKETS
-  private static readonly shadCollection = process.env.MONGODB_COLLECTION_SHAD
-  private static readonly stratCollection = process.env.MONGODB_COLLECTION_STRAT
-  private static readonly swapCollection = process.env.MONGODB_COLLECTION_SWAP
-  private static readonly tradesCollection = process.env.MONGODB_COLLECTION_TRADES
-  private static readonly tickersCollection = process.env.MONGODB_COLLECTION_TICKERS
-  private static readonly usersCollection = process.env.MONGODB_COLLECTION_USERS
-  private static readonly highestPricesCollection = process.env.MONGODB_COLLECTION_HIGHEST_PRICES
 
   /**
    * Connects to MongoDB and creates necessary collections.
@@ -253,28 +283,15 @@ export class MongodbService {
   static async connectToMongoDB(): Promise<void> {
     try {
       await MongodbService.getDB()
-      console.log('Connected to MongoDB!')
+      console.log('Connecté à MongoDB !')
 
-      const collectionsToCreate = [
-        MongodbService.activeOrdersCollection,
-        MongodbService.balanceCollection,
-        MongodbService.cmcCollection,
-        MongodbService.lastUpdateCollection,
-        MongodbService.loadMarketsCollection,
-        MongodbService.shadCollection,
-        MongodbService.stratCollection,
-        MongodbService.swapCollection,
-        MongodbService.tradesCollection,
-        MongodbService.tickersCollection,
-        MongodbService.usersCollection,
-        MongodbService.highestPricesCollection
-      ]
+      const collectionsToCreate = Object.values(config.collection ?? {})
 
-      for (const collectionName of collectionsToCreate) {
-        await MongodbService.createCollectionIfNotExists(collectionName as string)
-      }
+      await Promise.all(collectionsToCreate.map(collectionName =>
+        MongodbService.createCollectionIfNotExists(collectionName as string)
+      ))
     } catch (error) {
-      handleServiceError(error, 'connectToMongoDB', 'Error connecting to MongoDB')
+      handleServiceError(error, 'connectToMongoDB', 'Erreur de connexion à MongoDB')
       throw error
     }
   }
@@ -282,7 +299,11 @@ export class MongodbService {
   /**
    * Updates a document in the database.
    */
-  static async updateInDatabase(collectionName: string, filter: object, update: object): Promise<void> {
+  static async updateInDatabase(collectionName: string | undefined, filter: object, update: object): Promise<void> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
+
     try {
       await MongodbService.updateDataMDB(collectionName, filter, update)
     } catch (error) {
@@ -291,11 +312,14 @@ export class MongodbService {
   }
 
   static async deleteAndProcessData(
-    collectionName: string,
+    collectionName: string | undefined,
     mapData: MappedData[],
     platform: string,
     replaceAll: boolean = false
   ): Promise<void> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
     try {
       if (mapData && mapData.length > 0) {
         if (replaceAll) {
@@ -308,6 +332,21 @@ export class MongodbService {
       }
     } catch (error) {
       handleServiceError(error, 'deleteAndProcessData', `Error processing data in ${collectionName}`)
+    }
+  }
+
+  static async saveDataToDatabase(data: MappedData[], collectionName: string | undefined, platform: string, updateType: string | undefined): Promise<void> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
+
+    try {
+      await MongodbService.deleteAndProcessData(collectionName, data, platform)
+      await LastUpdateService.saveLastUpdateToDatabase(updateType, platform)
+      console.log(`Données de ${platform} sauvegardées dans la base de données de ${collectionName}`)
+    } catch (error) {
+      handleServiceError(error, 'saveDataToDatabase', 'Erreur lors de la sauvegarde des données dans la base de données')
+      throw error
     }
   }
 }

@@ -1,11 +1,8 @@
 // src/controllers/shadController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { validateEnvVariables } from '@utils/controllerUtil'
 import { ShadService } from '@services/shadService'
 import { TrailingStopService } from '@services/trailingStopService'
-
-validateEnvVariables(['MONGODB_COLLECTION_CMC', 'TYPE_CMC'])
 
 /**
  * Récupère les dernières données CoinMarketCap de la base de données.

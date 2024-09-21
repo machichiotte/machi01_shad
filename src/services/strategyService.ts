@@ -4,13 +4,17 @@ import { MongodbService } from '@services/mongodbService'
 import { MappedStrategy } from '@models/dbTypes'
 import { InsertManyResult, InsertOneResult } from 'mongodb'
 import { handleServiceError } from '@utils/errorUtil'
+import config from '@config/index'
+
+const COLLECTION_NAME = config?.collection?.strat
+const COLLECTION_TYPE = config?.collectionType?.strat
 
 export class StrategyService {
   /**
    * Récupère les stratégies de la base de données.
    */
   static async fetchDatabaseStrategies(): Promise<MappedStrategy[]> {
-    return await MongodbService.getData(process.env.MONGODB_COLLECTION_STRAT as string) as MappedStrategy[];
+    return await MongodbService.getData(COLLECTION_NAME) as MappedStrategy[];
   }
 
   /**
@@ -22,7 +26,7 @@ export class StrategyService {
     }
     try {
       return await MongodbService.updateDataMDB(
-        process.env.MONGODB_COLLECTION_STRAT as string,
+        COLLECTION_NAME,
         { _id: strategyId },
         { $set: updatedStrategy }
       );
@@ -36,10 +40,10 @@ export class StrategyService {
    * Met à jour toutes les stratégies dans la base de données.
    */
   static async updateStrategies(strategies: MappedStrategy[]): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
-    const collectionName = process.env.MONGODB_COLLECTION_STRAT as string;
+    const collectionName = COLLECTION_NAME;
     await MongodbService.deleteAllDataMDB(collectionName);
     const data = await MongodbService.saveData(collectionName, strategies);
-    await LastUpdateService.saveLastUpdateToDatabase(process.env.TYPE_STRATEGY as string, '');
+    await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE, '');
     return data;
   }
 }

@@ -2,11 +2,18 @@ import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
 
 jest.mock('@services/mongodbService');
+jest.mock('@config/index', () => ({
+  collection: {
+    lastUpdate: 'collection_last_update'
+  },
+  collectionType: {
+    lastUpdate: 'lastUpdate'
+  }
+}));
 
 describe('lastUpdateService', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    process.env.MONGODB_COLLECTION_LAST_UPDATE = 'collection_last_update';
   });
 
   afterEach(() => {

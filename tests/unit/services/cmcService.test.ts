@@ -3,10 +3,20 @@ import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
 import { handleServiceError } from '@utils/errorUtil';
 import { MappedCmc } from '@models/dbTypes';
+import config from '@config/index';
 
 jest.mock('@services/lastUpdateService');
 jest.mock('@services/mongodbService');
 jest.mock('@utils/errorUtil');
+
+jest.mock('@config/index', () => ({
+  collection: {
+    cmc: 'collection_cmc'
+  },
+  collectionType: {
+    cmc: 'cmc'
+  }
+}));
 
 describe('cmcService', () => {
   beforeEach(() => {
@@ -49,7 +59,7 @@ describe('cmcService', () => {
       const result = await CmcService.fetchDatabaseCmc();
 
       expect(result).toEqual(mockData);
-      expect(MongodbService.getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_CMC);
+      expect(MongodbService.getData).toHaveBeenCalledWith(config?.collection?.cmc);
     });
   });
 
@@ -66,8 +76,8 @@ describe('cmcService', () => {
         message: 'Données CMC mises à jour avec succès',
         data: mockData
       }));
-      expect(MongodbService.deleteAllDataMDB).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_CMC);
-      expect(MongodbService.saveData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_CMC, mockData);
+      expect(MongodbService.deleteAllDataMDB).toHaveBeenCalledWith(config?.collection?.cmc);
+      expect(MongodbService.saveData).toHaveBeenCalledWith(config?.collection?.cmc, mockData);
       expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalled();
     });
 

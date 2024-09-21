@@ -5,9 +5,10 @@ import { MongodbService } from '@services/mongodbService';
 import { MappingService } from '@services/mappingService';
 import { MappedMarket } from '@models/dbTypes';
 import { handleServiceError } from '@utils/errorUtil';
+import config from '@config/index';
 
-const COLLECTION_NAME = process.env.MONGODB_COLLECTION_LOAD_MARKETS as string
-const COLLECTION_TYPE = process.env.TYPE_LOAD_MARKETS as string
+const COLLECTION_NAME = config?.collection?.market
+const COLLECTION_TYPE = config?.collectionType?.market
 
 export class MarketService {
   /**

@@ -8,6 +8,11 @@ jest.mock('bcrypt');
 jest.mock('crypto');
 jest.mock('@services/mongodbService');
 jest.mock('@utils/errorUtil');
+jest.mock('@config/index', () => ({
+  database: {
+    user: 'users'
+  }
+}));
 
 describe('authService', () => {
   afterEach(() => {
@@ -28,7 +33,6 @@ describe('authService', () => {
       const userDetails = { email: 'test@example.com', password: 'password' };
       (bcrypt.hash as jest.Mock).mockResolvedValue('hashedPassword');
       (MongodbService.saveData as jest.Mock).mockResolvedValue({ insertedId: 'someId' });
-      process.env.MONGODB_COLLECTION_USERS = 'users';
 
       const result = await AuthService.createUserDBService(userDetails);
 
@@ -55,7 +59,6 @@ describe('authService', () => {
     it('devrait trouver un utilisateur par email', async () => {
       const mockUser = { email: 'test@example.com', password: 'hashedPassword' };
       (MongodbService.getOne as jest.Mock).mockResolvedValue(mockUser);
-      process.env.MONGODB_COLLECTION_USERS = 'users';
 
       const result = await AuthService.findUserByEmail('test@example.com');
 
@@ -65,7 +68,6 @@ describe('authService', () => {
 
     it('devrait retourner null si l\'utilisateur n\'est pas trouvé', async () => {
       (MongodbService.getOne as jest.Mock).mockResolvedValue(null);
-      process.env.MONGODB_COLLECTION_USERS = 'users';
 
       const result = await AuthService.findUserByEmail('nonexistent@example.com');
 

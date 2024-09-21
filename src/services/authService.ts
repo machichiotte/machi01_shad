@@ -1,9 +1,11 @@
 // src/services/authService.ts
-
 import bcrypt from 'bcrypt'; // Pour le hachage des mots de passe
 import crypto from 'crypto'; // Utilisation du module crypto intégré
 import { MongodbService } from '@services/mongodbService';
 import { handleServiceError } from '@utils/errorUtil';
+import config from '@config/index';
+
+const COLLECTION_NAME = config?.database?.user;
 
 // Interface pour représenter un utilisateur
 interface User {
@@ -32,11 +34,10 @@ export class AuthService {
       const hashedPassword = await bcrypt.hash(userDetails.password, 10); // Ajustez les tours de sel selon les besoins
       const newUser = { ...userDetails, password: hashedPassword }; // Opérateur de propagation
 
-      const collection = process.env.MONGODB_COLLECTION_USERS;
-      if (!collection) {
+      if (!COLLECTION_NAME) {
         throw new Error("La collection MongoDB n'est pas définie");
       }
-      const result = await MongodbService.saveData(collection, newUser);
+      const result = await MongodbService.saveData(COLLECTION_NAME, newUser);
 
       console.log(
         '🚀 ~ createUserDBService ~ result:',
@@ -54,11 +55,10 @@ export class AuthService {
    */
   public static async findUserByEmail(email: string): Promise<User | null> {
     try {
-      const collection = process.env.MONGODB_COLLECTION_USERS;
-      if (!collection) {
+      if (!COLLECTION_NAME) {
         throw new Error("La collection MongoDB n'est pas définie");
       }
-      const user = await MongodbService.getOne(collection, { email }); // Filtrer par e-mail
+      const user = await MongodbService.getOne(COLLECTION_NAME, { email }); // Filtrer par e-mail
       return user as User | null; // Retourne l'objet utilisateur trouvé ou null s'il n'est pas trouvé
     } catch (error) {
       handleServiceError(error, 'findUserByEmail', 'Erreur lors de la recherche de l\'utilisateur');

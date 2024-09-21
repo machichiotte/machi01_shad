@@ -10,9 +10,10 @@ import { InsertOneResult, InsertManyResult } from 'mongodb'
 import { Trade } from 'ccxt'
 import Exchange from 'ccxt/js/src/abstract/kucoin'
 
-const TRADES_COLLECTION = process.env.MONGODB_COLLECTION_TRADES as string
-const TRADES_COLLECTION_2 = process.env.MONGODB_COLLECTION_TRADES2 as string
-const TRADES_TYPE = process.env.TYPE_TRADES as string
+import config from '@config/index'
+
+const TRADES_COLLECTION = config?.collection?.trades
+const TRADES_TYPE = config?.collectionType?.trades
 
 export class TradeService {
   // Méthodes de récupération
@@ -33,7 +34,7 @@ export class TradeService {
   // Méthodes de mise à jour
   static async updateTradeById(tradeId: string, updatedTrade: Partial<MappedTrade>): Promise<boolean> {
     if (!tradeId) {
-      throw new Error('L\'ID du trade est requis')
+      throw new Error(`L'ID du trade est requis`)
     }
 
     try {
@@ -69,10 +70,6 @@ export class TradeService {
 
   static async saveTradesToDatabase(newTrades: MappedTrade[]): Promise<void> {
     await this.saveTrades(newTrades, TRADES_COLLECTION, true)
-  }
-
-  static async saveAllTradesToDatabase(newTrades: MappedTrade[]): Promise<void> {
-    await this.saveTrades(newTrades, TRADES_COLLECTION_2, false)
   }
 
   // Méthodes privées
@@ -125,7 +122,11 @@ export class TradeService {
     return allTrades
   }
 
-  private static async saveTrades(newTrades: MappedTrade[], collection: string, isFiltered: boolean): Promise<void> {
+  private static async saveTrades(newTrades: MappedTrade[], collectionName: string | undefined, isFiltered: boolean): Promise<void> {
+    if (!collectionName) {
+      throw new Error("La collection MongoDB n'est pas définie");
+    }
+
     try {
       let tradesToInsert = newTrades
 
@@ -137,10 +138,10 @@ export class TradeService {
       }
 
       if (tradesToInsert.length > 0) {
-        await MongodbService.saveData(collection, tradesToInsert)
+        await MongodbService.saveData(collectionName, tradesToInsert)
       }
     } catch (error) {
-      handleServiceError(error, 'saveTrades', `Error saving trades to ${collection}`)
+      handleServiceError(error, 'saveTrades', `Error saving trades to ${collectionName}`)
       throw error
     }
   }

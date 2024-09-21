@@ -2,10 +2,10 @@ import { BalanceService } from '@services/balanceService';
 import { MongodbService } from '@services/mongodbService';
 import { createPlatformInstance } from '@utils/platformUtil';
 import { loadErrorPolicies, shouldRetry, handleServiceError } from '@utils/errorUtil';
-import { DatabaseService } from '@services/databaseService';
 import { MappingService } from '@services/mappingService';
 import { ProcessorService } from '@services/processorService';
 import { MappedBalance } from '@models/dbTypes';
+import config from '@config/index';
 
 jest.mock('@services/mongodbService');
 jest.mock('@utils/platformUtil');
@@ -14,6 +14,14 @@ jest.mock('@utils/controllerUtil');
 jest.mock('@services/databaseService');
 jest.mock('@services/mappingService');
 jest.mock('@services/processorService');
+jest.mock('@config/index', () => ({
+  collection: {
+    balances: 'collection_balance'
+  },
+  collectionType: {
+    balances: 'balances'
+  }
+}));
 
 describe('balanceService', () => {
   beforeEach(() => {
@@ -28,7 +36,7 @@ describe('balanceService', () => {
       const result = await BalanceService.fetchDatabaseBalances();
 
       expect(result).toEqual(mockBalances);
-      expect(MongodbService.getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_BALANCE);
+      expect(MongodbService.getData).toHaveBeenCalledWith(config?.collection?.balance);
     });
   });
 
@@ -78,11 +86,11 @@ describe('balanceService', () => {
 
       await BalanceService.saveDatabaseBalance(mockMappedData as MappedBalance[], 'test');
 
-      expect(DatabaseService.saveDataToDatabase).toHaveBeenCalledWith(
+      expect(MongodbService.saveDataToDatabase).toHaveBeenCalledWith(
         mockMappedData,
-        process.env.MONGODB_COLLECTION_BALANCE,
+        config?.collection?.balance,
         'test',
-        process.env.TYPE_BALANCE
+        config?.collectionType?.balance
       );
     });
   });

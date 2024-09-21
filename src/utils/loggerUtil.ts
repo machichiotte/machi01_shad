@@ -1,6 +1,6 @@
 // src/utils/loggerUtil.ts
 import winston from 'winston'
-import config from '@services/config'
+import config from '@config/index'
 
 const errorLogger = winston.createLogger({
   level: 'error',
@@ -8,7 +8,7 @@ const errorLogger = winston.createLogger({
     winston.format.timestamp(),
     winston.format.json()
   ),
-  transports: [new winston.transports.File({ filename: config.logFiles.error })]
+  transports: [new winston.transports.File({ filename: config.logFiles?.error })]
 })
 
 const infoLogger = winston.createLogger({
@@ -17,7 +17,7 @@ const infoLogger = winston.createLogger({
     winston.format.timestamp(),
     winston.format.json()
   ),
-  transports: [new winston.transports.File({ filename: config.logFiles.info })]
+  transports: [new winston.transports.File({ filename: config?.logFiles?.info })]
 })
 
 export { infoLogger, errorLogger }

@@ -4,11 +4,18 @@ import { MappedTrade, MappedStrategy, SwapMigration } from '@models/dbTypes';
 import { StrategyService } from '@services/strategyService';
 import { TradeService } from '@services/tradeService';
 import { handleServiceError } from '@utils/errorUtil';
+import config from '@config/index';
 
 jest.mock('@services/mongodbService');
 jest.mock('@services/strategyService');
 jest.mock('@services/tradeService');
 jest.mock('@utils/errorUtil');
+
+jest.mock('@config/index', () => ({
+  collection: {
+    swaps: 'collection_swap'
+  }
+}));
 
 describe('migrationSwapService', () => {
   beforeEach(() => {
@@ -25,7 +32,7 @@ describe('migrationSwapService', () => {
       const result = await fetchDatabaseSwapMigration();
 
       expect(result).toEqual(mockSwaps);
-      expect(MongodbService.getData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_SWAP);
+      expect(MongodbService.getData).toHaveBeenCalledWith(config?.collection?.swaps);
     });
   });
 
