@@ -9,7 +9,7 @@ class DatabaseService {
   static async saveDataToDatabase(data: MappedData[], collectionName: string, platform: string, updateType: string): Promise<void> {
     console.log(`Sauvegarde des données de ${platform} dans la base de données de ${collectionName}`)
     try {
-      await MongodbService.deleteAndSaveData(collectionName, data, platform)
+      await MongodbService.deleteAndProcessData(collectionName, data, platform)
       await LastUpdateService.saveLastUpdateToDatabase(updateType, platform)
       console.log(`Données de ${platform} sauvegardées dans la base de données de ${collectionName}`)
     } catch (error) {

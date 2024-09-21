@@ -27,14 +27,14 @@ describe('databaseService', () => {
     it('should save data to database and update last update date', async () => {
       await DatabaseService.saveDataToDatabase(mockData, mockCollectionName, mockPlatform, mockUpdateType);
 
-      expect(MongodbService.deleteAndSaveData).toHaveBeenCalledWith(mockCollectionName, mockData, mockPlatform);
+      expect(MongodbService.deleteAndProcessData).toHaveBeenCalledWith(mockCollectionName, mockData, mockPlatform);
       expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalledWith(mockUpdateType, mockPlatform);
       expect(console.log).toHaveBeenCalledTimes(2);
     });
 
     it('should handle errors correctly', async () => {
       const mockError = new Error('Test error');
-      (MongodbService.deleteAndSaveData as jest.Mock).mockRejectedValue(mockError);
+      (MongodbService.deleteAndProcessData as jest.Mock).mockRejectedValue(mockError);
 
       await expect(DatabaseService.saveDataToDatabase(mockData, mockCollectionName, mockPlatform, mockUpdateType))
         .rejects.toThrow('Test error');

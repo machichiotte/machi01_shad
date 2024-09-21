@@ -72,7 +72,7 @@ describe('TickerService', () => {
 
       await TickerService.updateAllTickers();
 
-      expect(MongodbService.deleteAndReplaceAll).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_TICKERS, expect.any(Array));
+      expect(MongodbService.deleteAndProcessData).toHaveBeenCalledWith(process.env.MONGODB_COLLECTION_TICKERS, expect.any(Array), '', true);
       expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalledWith(process.env.TYPE_TICKERS, 'combined');
     });
   });

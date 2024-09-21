@@ -77,7 +77,7 @@ export class TickerService {
       tickersData.push(...MappingService.mapTickers(platform, data))
     }
 
-    await MongodbService.deleteAndReplaceAll(COLLECTION_NAME, tickersData)
+    await MongodbService.deleteAndProcessData(COLLECTION_NAME, tickersData, '', true)
     await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE, 'combined')
     return tickersData
   }

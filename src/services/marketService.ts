@@ -25,7 +25,7 @@ export class MarketService {
   static async updateMarketsForPlatform(platform: string): Promise<void> {
     try {
       const currentMarkets = await this.fetchCurrentMarkets(platform)
-      await MongodbService.deleteAndSaveData(COLLECTION_NAME, currentMarkets, platform);
+      await MongodbService.deleteAndProcessData(COLLECTION_NAME, currentMarkets, platform);
       await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE || '', platform);
       console.log(`Market data for ${platform} updated in the database. Total records: ${currentMarkets.length}.`);
     } catch (error) {

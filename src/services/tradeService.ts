@@ -47,7 +47,7 @@ export class TradeService {
   static async updateTrades(platform: string): Promise<{ data: MappedTrade[] }> {
     try {
       const mappedData = await this.fetchPlatformTrades(platform)
-      await MongodbService.deleteAndSaveData(TRADES_COLLECTION, mappedData, platform)
+      await MongodbService.deleteAndProcessData(TRADES_COLLECTION, mappedData, platform)
       await LastUpdateService.saveLastUpdateToDatabase(TRADES_TYPE, platform)
       return { data: mappedData }
     } catch (error) {

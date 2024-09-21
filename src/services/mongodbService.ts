@@ -290,32 +290,24 @@ export class MongodbService {
     }
   }
 
-  /**
-   * Deletes existing data and saves new data for a specific platform.
-   */
-  static async deleteAndSaveData(collectionName: string, mapData: MappedData[], platform: string): Promise<void> {
+  static async deleteAndProcessData(
+    collectionName: string,
+    mapData: MappedData[],
+    platform: string,
+    replaceAll: boolean = false
+  ): Promise<void> {
     try {
       if (mapData && mapData.length > 0) {
-        const deleteParam = { platform }
-        await MongodbService.deleteMultipleDataMDB(collectionName, deleteParam)
+        if (replaceAll) {
+          await MongodbService.deleteAllDataMDB(collectionName)
+        } else {
+          const deleteParam = { platform }
+          await MongodbService.deleteMultipleDataMDB(collectionName, deleteParam)
+        }
         await MongodbService.saveData(collectionName, mapData)
       }
     } catch (error) {
-      handleServiceError(error, 'deleteAndSaveData', `Error deleting and saving data in ${collectionName}`)
-    }
-  }
-
-  /**
-   * Deletes all existing data and saves a new object in a collection.
-   */
-  static async deleteAndReplaceAll(collectionName: string, mapData: MappedData[]): Promise<void> {
-    try {
-      if (mapData && mapData.length > 0) {
-        await MongodbService.deleteAllDataMDB(collectionName)
-        await MongodbService.saveData(collectionName, mapData)
-      }
-    } catch (error) {
-      handleServiceError(error, 'deleteAndReplaceAll', `Error deleting and replacing all data in ${collectionName}`)
+      handleServiceError(error, 'deleteAndProcessData', `Error processing data in ${collectionName}`)
     }
   }
 }

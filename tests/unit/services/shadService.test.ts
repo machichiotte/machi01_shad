@@ -43,7 +43,7 @@ describe('ShadService', () => {
 
       await ShadService.updateHighestPrice(platform, base, price);
 
-      expect(databaseOperations.updateOneOne).toHaveBeenCalledWith(
+      expect(databaseOperations.updateOneUpsert).toHaveBeenCalledWith(
         process.env.MONGODB_COLLECTION_HIGHEST_PRICES,
         { base, platform },
         {

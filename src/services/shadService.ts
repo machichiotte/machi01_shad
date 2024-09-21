@@ -22,7 +22,7 @@ export class ShadService {
   static async updateHighestPrice(platform: string, base: string, price: number): Promise<void> {
     const collectionName = process.env.MONGODB_COLLECTION_HIGHEST_PRICES as string
     //ici le update ne fonctionne pas si il ny a pas dobjet avec la base et la platform 
-    await databaseOperations.updateOneOne(collectionName, { base, platform },
+    await databaseOperations.updateOneUpsert(collectionName, { base, platform },
       {
         $set: {
           base,

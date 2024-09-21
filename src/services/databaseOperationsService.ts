@@ -6,7 +6,7 @@ interface DatabaseOperations {
     insertOne: (collectionName: string, document: Document) => Promise<InsertOneResult>;
     insertMany: (collectionName: string, documents: Document[]) => Promise<InsertManyResult>;
     updateOne: (collectionName: string, filter: Document, update: Document) => Promise<boolean>;
-    updateOneOne: (collectionName: string, filter: Document, update: Document, options?: { upsert?: boolean }) => Promise<{ updated: boolean, upserted: boolean }>;
+    updateOneUpsert: (collectionName: string, filter: Document, update: Document, options?: { upsert?: boolean }) => Promise<{ updated: boolean, upserted: boolean }>;
     updateMany: (collectionName: string, filter: Document, update: Document) => Promise<UpdateResult>;
     deleteOne: (collectionName: string, filter: Document) => Promise<boolean>;
     deleteMany: (collectionName: string, filter: Document) => Promise<number>;
@@ -44,7 +44,7 @@ export const databaseOperations: DatabaseOperations = {
         return result.modifiedCount > 0;
     },
 
-    updateOneOne: async (collectionName: string, filter: Document, update: Document, options?: { upsert?: boolean }): Promise<{ updated: boolean, upserted: boolean }> => {
+    updateOneUpsert: async (collectionName: string, filter: Document, update: Document, options?: { upsert?: boolean }): Promise<{ updated: boolean, upserted: boolean }> => {
         const collection = await getCollection(collectionName);
         const updateOperation = update.$set ? update : { $set: update };
         const result = await collection.updateOne(filter, updateOperation, { upsert: options?.upsert });

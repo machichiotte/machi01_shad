@@ -39,13 +39,13 @@ describe('MarketService', () => {
     it('devrait mettre à jour les marchés pour une plateforme spécifiée', async () => {
       const mockCurrentMarkets: Partial<MappedMarket>[] = [{ symbol: 'BTC/USDT', platform: 'binance' }];
       jest.spyOn(MarketService, 'fetchCurrentMarkets').mockResolvedValue(mockCurrentMarkets as MappedMarket[]);
-      (MongodbService.deleteAndSaveData as jest.Mock).mockResolvedValue(undefined);
+      (MongodbService.deleteAndProcessData as jest.Mock).mockResolvedValue(undefined);
       (LastUpdateService.saveLastUpdateToDatabase as jest.Mock).mockResolvedValue(undefined);
 
       await MarketService.updateMarketsForPlatform('binance');
 
       expect(MarketService.fetchCurrentMarkets).toHaveBeenCalledWith('binance');
-      expect(MongodbService.deleteAndSaveData).toHaveBeenCalledWith(expect.any(String), mockCurrentMarkets, 'binance');
+      expect(MongodbService.deleteAndProcessData).toHaveBeenCalledWith(expect.any(String), mockCurrentMarkets, 'binance');
       expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalledWith(expect.any(String), 'binance');
     });
 
