@@ -1,9 +1,10 @@
 // src/services/migrationSwapService.ts
-import { MappedTrade, MappedStrategy, SwapMigration } from '@typ/database';
+import { MappedStrategy, SwapMigration } from '@typ/database';
 import { StrategyService } from '@services/strategyService';
 import { TradeService } from '@services/tradeService';
 import { handleServiceError } from '@utils/errorUtil';
 import { MongodbService } from '@services/mongodbService'
+import { MappedTrade } from '@typ/trade'
 import config from '@config/index';
 
 const COLLECTION_NAME = config.collection.swap;

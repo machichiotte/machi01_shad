@@ -3,8 +3,9 @@ import { calculateRecups, calculateAmountsAndPricesForShad } from './strategies'
 import { getCmcValues } from './cmc'
 import { getBalanceBySymbol, getProfit, getCurrentPossession, getPercentageDifference, getStatus, getPercentageToNextTp } from './utils'
 import { getTotalAmountAndBuy, getTotalSell } from './trades'
-import { MappedBalance, MappedOrder, MappedTrade, MappedTicker, MappedCmc, MappedStrategy } from '@typ/database'
-import { AssetMetrics } from '@typ/database'
+import { MappedBalance, MappedOrder, MappedTicker, MappedCmc, MappedStrategy, AssetMetrics } from '@typ/database'
+import { MappedTrade } from '@typ/trade'
+
 // Define stable coins
 import { STABLECOINS } from '@src/constants'
 
