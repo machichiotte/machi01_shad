@@ -1,13 +1,10 @@
 // src/index.ts
-import dotenv from 'dotenv'
 import { MongodbService } from '@services/mongodbService'
 import { startServer } from '@src/server'
-import { initializeCronTasks } from '@services/cron/cronTasks'
+import { initializeCronTasks } from '@services/cron/cronTasksService'
 
 import { cronBalances } from './services/cron/taskExecutor'
 import { handleMigrationSwaps } from './services/migrationSwapService'
-
-dotenv.config()
 
 async function startApp(): Promise<void> {
   try {

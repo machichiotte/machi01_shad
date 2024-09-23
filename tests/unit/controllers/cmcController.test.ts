@@ -5,7 +5,6 @@ import { handleControllerError } from '@utils/errorUtil'
 
 jest.mock('@services/cmcService')
 jest.mock('@utils/errorUtil')
-jest.mock('@utils/loggerUtil')
 
 describe('cmcController', () => {
     let mockRequest: Partial<Request>

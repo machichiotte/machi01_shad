@@ -89,14 +89,130 @@ Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant pr
 
 Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 
+- config/
+- ├── envConfig.ts
+- ├── index.ts
+- ├── types.ts
 - src/
 - ├── models/ # Modèles de données
+- │ ├── dbTypes.ts
+- │ ├── express.d.ts
+- │ ├── processorTypes.ts
+- │ ├── strategyModel.ts
 - ├── controllers/ # Contrôleurs pour gérer les requêtes
+- │ ├── authController.ts
+- │ ├── balanceController.ts
+- │ ├── cmcController.ts
+- │ ├── converterController.ts
+- │ ├── lastUpdateController.ts
+- │ ├── marketController.ts
+- │ ├── orderBalanceController.ts
+- │ ├── orderMarketController.ts
+- │ ├── shadController.ts
+- │ ├── strategyController.ts
+- │ ├── tickerController.ts
+- │ ├── tradeController.ts
 - ├── services/ # Services pour la logique métier
+- │ │ ├─ cron/
+- │ │ │ ├─ cronTasks.ts
+- │ │ │ ├─ sendMail.ts
+- │ │ │ ├─ taskExecutor.ts
+- │ │ ├─ metrics/
+- │ │ │ ├─ cmc.ts
+- │ │ │ ├─ global.ts
+- │ │ │ ├─ strategies.ts
+- │ │ │ ├─ trades.ts
+- │ │ │ ├─ utils.ts
+- │ ├── authService.ts
+- │ ├── balanceService.ts
+- │ ├── cmcService.ts
+- │ ├── converterService.ts
+- │ ├── databaseOperationsService.ts
+- │ ├── lastUpdateService.ts
+- │ ├── mappingService.ts
+- │ ├── marketService.ts
+- │ ├── migrationSwapService.ts
+- │ ├── mongodbService.ts
+- │ ├── orderBalanceService.ts
+- │ ├── orderMarketService.ts
+- │ ├── processorService.ts
+- │ ├── shadService.ts
+- │ ├── strategyService.ts
+- │ ├── tickerService.ts
+- │ ├── tradeService.ts
+- │ ├── trailingStopService.ts
 - ├── routes/ # Définition des routes API
+- │ ├── authRoutes.ts
+- │ ├── balanceRoutes.ts
+- │ ├── cmcRoutes.ts
+- │ ├── converterRoutes.ts
+- │ ├── lastUpdateRoutes.ts
+- │ ├── marketRoutes
+- │ ├── orderRoutes
+- │ ├── shadRoutes
+- │ ├── strategyRoutes
+- │ ├── tickerRoutes
+- │ ├── tradeRoutes
 - ├── middleware/ # Middleware pour l'authentification, etc.
-- └── utils/ # Utilitaires et helpers
-- index.ts
+- │ ├── authMiddleware.ts
+- │ ├── errorMiddleware.ts
+- ├── utils/ # Utilitaires et helpers
+- │ ├── errorUtil.ts
+- │ ├── fileUtil.ts
+- │ ├── loggerUtil.ts
+- │ ├── mappingUtil.ts
+- │ ├── mockUtil.ts
+- │ ├── platformUtil.ts
+- │ ├── processorUtil.ts
+- │ ├── retryUtil.ts
+- ├── constants.ts
+- ├── server.ts
+- └── index.ts
+- tests/
+- ├── unit/
+- │ ├── config.test.ts
+- │ ├── services/
+- │ │ ├── balanceService.test.ts
+- │ │ ├── orderService.test.ts
+- │ │ ├── marketDataService.test.ts
+- │ │ ├── authService.test.ts
+- │ │ ├── strategyService.test.ts
+- │ │ ├── tradeService.test.ts
+- │ │ ├── shadService.test.ts
+- │ │ ├── converterService.test.ts
+- │ ├── controllers/
+- │ │ ├── orderController.test.ts
+- │ │ ├── marketDataController.test.ts
+- │ │ ├── authController.test.ts
+- │ │ ├── strategyController.test.ts
+- │ │ ├── tradeController.test.ts
+- │ │ ├── shadController.test.ts
+- │ │ ├── converterController.test.ts
+- │ ├── models/
+- │ │ ├── userModel.test.ts
+- │ │ ├── orderModel.test.ts
+- │ │ ├── marketDataModel.test.ts
+- │ │ ├── strategyModel.test.ts
+- │ │ ├── tradeModel.test.ts
+- │ │ ├── shadModel.test.ts
+- │ │ ├── converterModel.test.ts
+- ├── integration/
+- │ ├── orderIntegration.test.ts
+- │ ├── marketDataIntegration.test.ts
+- │ ├── authIntegration.test.ts
+- │ ├── strategyIntegration.test.ts
+- │ ├── tradeIntegration.test.ts
+- │ ├── shadIntegration.test.ts
+- │ ├── converterIntegration.test.ts
+- └── **mocks**/
+-     ├── config.ts
+- jest.config.js
+- tsconfig.json
+- package.json
+- .env
+- .env.dev
+- .env.prod
+- .env.test
 
 ## Sécurité
 

@@ -2,8 +2,9 @@
 import { Trade, Market, Order, Tickers } from 'ccxt'
 import { STABLECOINS } from '@src/constants'
 import { getTotalUSDT } from '@utils/mappingUtil'
-import { MappedBalance, MappedTrade, MappedOrder, MappedTicker, MappedMarket } from '@models/dbTypes'
+import { MappedBalance, MappedOrder, MappedTicker, MappedMarket } from '@typ/database'
 import { Balance, Balances } from 'ccxt'
+import { MappedTrade } from '@typ/trade'
 
 export class MappingService {
   /**

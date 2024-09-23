@@ -3,12 +3,12 @@ import { createPlatformInstance } from '@utils/platformUtil';
 import { LastUpdateService } from '@services/lastUpdateService';
 import { MongodbService } from '@services/mongodbService';
 import { MappingService } from '@services/mappingService';
-import { MappedMarket } from '@models/dbTypes';
+import { MappedMarket } from '@typ/database';
 import { handleServiceError } from '@utils/errorUtil';
 import config from '@config/index';
 
-const COLLECTION_NAME = config?.collection?.market
-const COLLECTION_TYPE = config?.collectionType?.market
+const COLLECTION_NAME = config.collection.market
+const COLLECTION_TYPE = config.collectionType.market
 
 export class MarketService {
   /**

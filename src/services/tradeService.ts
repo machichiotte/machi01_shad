@@ -1,24 +1,19 @@
 // src/services/tradeService.ts
 import { createPlatformInstance } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
-import { MongodbService } from '@services/mongodbService'
 import { LastUpdateService } from '@services/lastUpdateService'
 import { MappingService } from '@services/mappingService'
-import { MappedTrade } from '@models/dbTypes'
-
-import { InsertOneResult, InsertManyResult } from 'mongodb'
+import { TradeRepository } from '@repositories/tradeRepository'
+import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ/trade'
 import { Trade } from 'ccxt'
 import Exchange from 'ccxt/js/src/abstract/kucoin'
-
 import config from '@config/index'
 
-const TRADES_COLLECTION = config?.collection?.trades
-const TRADES_TYPE = config?.collectionType?.trades
+const TRADES_TYPE = config.collectionType.trades
 
 export class TradeService {
-  // Méthodes de récupération
   static async fetchDatabaseTrades(): Promise<MappedTrade[]> {
-    return await MongodbService.getData(TRADES_COLLECTION) as MappedTrade[]
+    return await TradeRepository.fetchAllTrades()
   }
 
   static async fetchLastTrades(platform: string, symbol: string): Promise<Trade[]> {
@@ -31,24 +26,23 @@ export class TradeService {
     }
   }
 
-  // Méthodes de mise à jour
   static async updateTradeById(tradeId: string, updatedTrade: Partial<MappedTrade>): Promise<boolean> {
     if (!tradeId) {
       throw new Error(`L'ID du trade est requis`)
     }
 
     try {
-      return await MongodbService.updateDataMDB(TRADES_COLLECTION, { _id: tradeId }, { $set: updatedTrade })
+      return await TradeRepository.updateTradeById(tradeId, updatedTrade)
     } catch (error) {
       handleServiceError(error, 'updateTradeById', `Error updating trade with id ${tradeId}`)
       throw error
     }
   }
 
-  static async updateTrades(platform: string): Promise<{ data: MappedTrade[] }> {
+  static async updateTrades(platform: string): Promise<TradeServiceResult> {
     try {
       const mappedData = await this.fetchPlatformTrades(platform)
-      await MongodbService.deleteAndProcessData(TRADES_COLLECTION, mappedData, platform)
+      await TradeRepository.deleteAndProcessTrades(mappedData, platform)
       await LastUpdateService.saveLastUpdateToDatabase(TRADES_TYPE, platform)
       return { data: mappedData }
     } catch (error) {
@@ -57,10 +51,9 @@ export class TradeService {
     }
   }
 
-  // Méthodes d'ajout
-  static async addTradesManually(tradesData: MappedTrade | MappedTrade[]): Promise<{ data: InsertOneResult<Document> | InsertManyResult<Document> }> {
+  static async addTradesManually(tradesData: MappedTrade | MappedTrade[]): Promise<ManualTradeAdditionResult> {
     try {
-      const savedTrade = await MongodbService.saveData(TRADES_COLLECTION, tradesData)
+      const savedTrade = await TradeRepository.insertTrades(tradesData)
       return { data: savedTrade }
     } catch (error) {
       handleServiceError(error, 'addTradesManually', 'Error adding trades manually')
@@ -69,12 +62,18 @@ export class TradeService {
   }
 
   static async saveTradesToDatabase(newTrades: MappedTrade[]): Promise<void> {
-    await this.saveTrades(newTrades, TRADES_COLLECTION, true)
+    try {
+      const existingTrades = await this.fetchDatabaseTrades()
+      await TradeRepository.insertFilteredTrades(newTrades, existingTrades)
+    } catch (error) {
+      handleServiceError(error, 'saveTradesToDatabase', 'Error saving trades to database')
+      throw error
+    }
   }
 
-  // Méthodes privées
   private static async fetchPlatformTrades(platform: string): Promise<MappedTrade[]> {
     const platformInstance = createPlatformInstance(platform) as Exchange
+
     let trades: Trade[] = []
 
     switch (platform) {
@@ -90,6 +89,7 @@ export class TradeService {
 
     return MappingService.mapTrades(platform, trades)
   }
+
 
   private static async fetchKucoinTrades(platformInstance: Exchange): Promise<Trade[]> {
     const weeksBack = 4 * 52
@@ -120,29 +120,5 @@ export class TradeService {
       allTrades = allTrades.concat(trades)
     }
     return allTrades
-  }
-
-  private static async saveTrades(newTrades: MappedTrade[], collectionName: string | undefined, isFiltered: boolean): Promise<void> {
-    if (!collectionName) {
-      throw new Error("La collection MongoDB n'est pas définie");
-    }
-
-    try {
-      let tradesToInsert = newTrades
-
-      if (isFiltered) {
-        const existingTrades = await this.fetchDatabaseTrades()
-        tradesToInsert = newTrades.filter(newTrade =>
-          !existingTrades.some(existingTrade => existingTrade.timestamp === newTrade.timestamp)
-        )
-      }
-
-      if (tradesToInsert.length > 0) {
-        await MongodbService.saveData(collectionName, tradesToInsert)
-      }
-    } catch (error) {
-      handleServiceError(error, 'saveTrades', `Error saving trades to ${collectionName}`)
-      throw error
-    }
   }
 }

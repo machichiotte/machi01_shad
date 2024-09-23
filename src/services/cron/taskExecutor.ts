@@ -1,11 +1,11 @@
 // src/services/cron/taskExecutor.ts
-import { sendMail } from './sendMail'
+import { sendMail } from './emailService'
 import { getPlatforms } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 
 import { MarketService } from '@services/marketService'
-import { TickerService } from '@src/services/tickerService'
-import { BalanceService } from '@src/services/balanceService'
+import { TickerService } from '@services/tickerService'
+import { BalanceService } from '@services/balanceService'
 
 import config from '@config/index'
 

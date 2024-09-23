@@ -1,10 +1,9 @@
 // src/services/cron/processorService.ts
 import { calculateAssetMetrics } from '@services/metrics/global'
 import { MappingService } from '@services/mappingService'
-import { MappedStrategy, MappedTicker, MappedTrade, AssetMetrics, MappedCmc, MappedOrder, MappedBalance } from '@models/dbTypes'
+import { MappedStrategy, MappedTicker, AssetMetrics, MappedCmc, MappedOrder, MappedBalance } from '@typ/database'
 import { TradeService } from '@services/tradeService'
 import { TickerService } from '@services/tickerService'
-import { BalanceService } from '@services/balanceService'
 import { CmcService } from '@services/cmcService'
 import { OrderBalanceService, } from '@services/orderBalanceService'
 import { StrategyService } from '@services/strategyService'
@@ -12,8 +11,10 @@ import { getSymbolForPlatform } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 import { removeDuplicateDifferences, logDifferenceType, areAllDataValid, isValidAssetMetrics, removeDuplicatesAndStablecoins } from '@utils/processorUtil'
 
-import { Difference, Balance, Ticker } from '@models/processorTypes'
+import { Difference, Balance, Ticker } from '@typ/processor'
 import { STABLECOINS, QUOTE_CURRENCIES } from '@src/constants'
+import { BalanceService } from './balanceService'
+import { MappedTrade } from '@typ/trade'
 
 export class ProcessorService {
   /**
@@ -160,7 +161,7 @@ export class ProcessorService {
       TradeService.fetchDatabaseTrades(),
       OrderBalanceService.fetchDatabaseOrders(),
       TickerService.fetchDatabaseTickers(),
-      BalanceService.fetchDatabaseBalances()
+      BalanceService.fetchDatabaseBalance()
     ])
   }
 

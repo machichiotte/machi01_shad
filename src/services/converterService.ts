@@ -1,4 +1,4 @@
-import { MappedTrade } from "@models/dbTypes"
+import { MappedTrade } from "@typ/trade"
 import { STABLECOINS } from "@src/constants"
 
 /**

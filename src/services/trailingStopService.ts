@@ -1,26 +1,7 @@
-import { BalanceService } from '@src/services/balanceService';
-import { ShadService } from '@services/shadService';
-import { TickerService } from '@services/tickerService';
-import { OrderMarketService } from '@services/orderMarketService';
-import { MappedBalance } from '@models/dbTypes';
-
-import { handleServiceError } from '@utils/errorUtil'
-
-interface Asset {
-    base: string;
-    platform: string;
-}
-
-interface HighestPrice {
-    base: string;
-    platform: string;
-    highestPrice: number;
-}
-
-interface UpdatedOrder {
-    base: string;
-    platform: string;
-}
+import { MappedBalance } from '@typ/database';
+import { Asset, HighestPrice, UpdatedOrder } from '@typ/trailingStop';
+import { TrailingStopRepository } from '@repositories/trailingStopRepository';
+import { handleServiceError } from '@utils/errorUtil';
 
 export class TrailingStopService {
     private static readonly PERCENTAGE_TO_LOSE = 0.01;
@@ -31,25 +12,18 @@ export class TrailingStopService {
 
     static async handleTrailingStopHedge(simplifiedSelectedAssets?: Asset[]): Promise<UpdatedOrder[]> {
         try {
-            // Récupérer les balances de la base de données et les plus hauts prix en parallèle
-            const [balanceFromDb, highestPrices] = await Promise.all([
-                BalanceService.fetchDatabaseBalances(),
-                ShadService.getHighestPrices()
-            ]);
+            const [balanceFromDb, highestPrices] = await TrailingStopRepository.fetchBalanceAndHighestPrices();
 
-            // Si les actifs sélectionnés sont fournis, filtrer les balances
             const balanceFromDbFiltered = simplifiedSelectedAssets
                 ? this.filterBalances(balanceFromDb, simplifiedSelectedAssets)
                 : balanceFromDb;
 
-            // Grouper les balances par plateforme
             const symbolsAndBalanceByPlatform = this.groupBalancesByPlatform(balanceFromDbFiltered);
 
-            // Processus de trailing stop
             return this.processTrailingStops(symbolsAndBalanceByPlatform, highestPrices, !simplifiedSelectedAssets);
         } catch (error) {
-            handleServiceError(error, 'handleTrailingStopHedge', `Error handling trailing stop hedge`)
-            return []
+            handleServiceError(error, 'handleTrailingStopHedge', `Error handling trailing stop hedge`);
+            return [];
         }
     }
 
@@ -91,7 +65,7 @@ export class TrailingStopService {
             for (const [platform, symbolsAndBalances] of Object.entries(symbolsAndBalanceByPlatform)) {
                 if (kucoinOnly && platform !== 'kucoin') continue;
 
-                const platformTickers = await TickerService.fetchCurrentTickers(platform);
+                const platformTickers = await TrailingStopRepository.fetchCurrentTickers(platform);
                 let requestWeight = 0;
                 let orderCount = 0;
                 const lastResetTime = Date.now();
@@ -122,8 +96,8 @@ export class TrailingStopService {
 
             return updatedOrders;
         } catch (error) {
-            handleServiceError(error, 'processTrailingStops', `Error processing trailing stops`)
-            return []
+            handleServiceError(error, 'processTrailingStops', `Error processing trailing stops`);
+            return [];
         }
     }
 
@@ -150,29 +124,23 @@ export class TrailingStopService {
         try {
             if (!highestPrice && currentPrice) {
                 const stopPrice = currentPrice * (1 - this.PERCENTAGE_TO_LOSE);
-                await OrderMarketService.cancelAllOrdersByBunch(platform, base);
-                await OrderMarketService.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
-                await ShadService.updateHighestPrice(platform, base, currentPrice);
+                await TrailingStopRepository.cancelAllOrdersByBunch(platform, base);
+                await TrailingStopRepository.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
+                await TrailingStopRepository.updateHighestPrice(platform, base, currentPrice);
                 console.log(`Ordre de trailing stop créé pour ${base}`);
                 return { base, platform };
             }
-        } catch (error) {
-            handleServiceError(error, 'updateOrCreateOrder', `Error creating order for ${base} on ${platform}`)
-            return null
-        }
 
-        try {
             if (highestPrice && currentPrice && currentPrice > highestPrice) {
                 const stopLossPrice = Math.max(highestPrice, currentPrice) * (1 - this.PERCENTAGE_TO_LOSE);
-                await OrderMarketService.cancelAllOrdersByBunch(platform, base);
-                await OrderMarketService.createOrUpdateStopLossOrder(platform, stopLossPrice, base, balance);
-                await ShadService.updateHighestPrice(platform, base, currentPrice);
+                await TrailingStopRepository.cancelAllOrdersByBunch(platform, base);
+                await TrailingStopRepository.createOrUpdateStopLossOrder(platform, stopLossPrice, base, balance);
+                await TrailingStopRepository.updateHighestPrice(platform, base, currentPrice);
                 console.log(`Ordre de trailing stop mis à jour pour ${base}`);
                 return { base, platform };
             }
         } catch (error) {
-            handleServiceError(error, 'updateOrCreateOrder', `Error updating  order for ${base} on ${platform}`)
-            return null
+            handleServiceError(error, 'updateOrCreateOrder', `Error updating/creating order for ${base} on ${platform}`);
         }
 
         return null;

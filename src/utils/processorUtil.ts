@@ -1,8 +1,8 @@
 // src/utils/processorUtil.ts
-import { Difference } from '@models/processorTypes'
+import { Difference } from '@typ/processor'
 import { STABLECOINS } from '@src/constants'
-import { MappedCmc, MappedStrategy, MappedTrade, MappedOrder, MappedTicker, MappedBalance, AssetMetrics } from 'src/models/dbTypes'
-
+import { MappedCmc, MappedStrategy, MappedOrder, MappedTicker, MappedBalance, AssetMetrics } from '@typ/database'
+import { MappedTrade } from '@typ/trade'
 /**
  * Removes duplicates from balance differences.
  */

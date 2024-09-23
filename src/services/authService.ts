@@ -1,48 +1,29 @@
 // src/services/authService.ts
-import bcrypt from 'bcrypt'; // Pour le hachage des mots de passe
-import crypto from 'crypto'; // Utilisation du module crypto intégré
-import { MongodbService } from '@services/mongodbService';
+import bcrypt from 'bcrypt';
+import crypto from 'crypto';
+import { AuthRepository } from '@repositories/authRepository';
 import { handleServiceError } from '@utils/errorUtil';
+import { User } from '@typ/auth';
 import config from '@config/index';
 
-const COLLECTION_NAME = config?.database?.user;
+const HASH_ROUNDS = config.security.hashRounds || 10; // Nombre de tours de sel pour bcrypt
 
-// Interface pour représenter un utilisateur
-interface User {
-  email: string;
-  password: string;
-  [key: string]: string | number | boolean | undefined;
-}
-
-// Définition de la classe AuthService
 export class AuthService {
-  /**
-   * Compare un mot de passe en texte clair avec un mot de passe haché.
-   */
-  public static async isPasswordMatch(
-    password: string,
-    hashedPassword: string
-  ): Promise<boolean> {
-    return await bcrypt.compare(password, hashedPassword);
+
+  public static async isPasswordMatch(password: string, hashedPassword: string): Promise<boolean> {
+    return bcrypt.compare(password, hashedPassword);
   }
 
-  /**
-   * Crée un nouvel utilisateur dans la base de données avec un mot de passe haché.
-   */
   public static async createUserDBService(userDetails: User): Promise<boolean> {
     try {
-      const hashedPassword = await bcrypt.hash(userDetails.password, 10); // Ajustez les tours de sel selon les besoins
-      const newUser = { ...userDetails, password: hashedPassword }; // Opérateur de propagation
-
-      if (!COLLECTION_NAME) {
-        throw new Error("La collection MongoDB n'est pas définie");
+      if (!userDetails.email || !userDetails.password) {
+        throw new Error("Email et mot de passe sont requis");
       }
-      const result = await MongodbService.saveData(COLLECTION_NAME, newUser);
 
-      console.log(
-        '🚀 ~ createUserDBService ~ result:',
-        result
-      );
+      const hashedPassword = await bcrypt.hash(userDetails.password, HASH_ROUNDS);
+      const newUser = { ...userDetails, password: hashedPassword };
+
+      await AuthRepository.insertUser(newUser);
       return true;
     } catch (error) {
       handleServiceError(error, 'createUserDBService', 'Erreur lors de la création de l\'utilisateur');
@@ -50,31 +31,19 @@ export class AuthService {
     }
   }
 
-  /**
-   * Trouve un utilisateur dans la base de données par son adresse e-mail.
-   */
   public static async findUserByEmail(email: string): Promise<User | null> {
     try {
-      if (!COLLECTION_NAME) {
-        throw new Error("La collection MongoDB n'est pas définie");
-      }
-      const user = await MongodbService.getOne(COLLECTION_NAME, { email }); // Filtrer par e-mail
-      return user as User | null; // Retourne l'objet utilisateur trouvé ou null s'il n'est pas trouvé
+      return await AuthRepository.findUserByEmail(email);
     } catch (error) {
       handleServiceError(error, 'findUserByEmail', 'Erreur lors de la recherche de l\'utilisateur');
-      return null; // Indique une erreur ou que l'utilisateur n'a pas été trouvé
+      return null;
     }
   }
 
-  /**
-   * Génère un jeton de session aléatoire sécurisé.
-   */
   public static async generateSessionToken(): Promise<string> {
     try {
-      const randomBytes = crypto.randomBytes(32); // Simplifié sans callback
-      const token = randomBytes.toString('base64url');
-      console.log('Jeton de session généré avec succès.');
-      return token;
+      const randomBytes = crypto.randomBytes(32);
+      return randomBytes.toString('base64url');
     } catch (error) {
       handleServiceError(error, 'generateSessionToken', 'Échec de la génération du jeton de session');
       throw new Error('Échec de la génération du jeton de session');

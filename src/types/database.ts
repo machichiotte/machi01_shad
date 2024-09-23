@@ -1,3 +1,9 @@
+// src/types/database
+import { MappedTrade } from '@typ/trade'
+export interface LastUpdateData {
+    [key: string]: number | { [key: string]: number }
+}
+
 export interface MappedCmc {
     _id?: { $oid: string };
     id: number;
@@ -53,22 +59,7 @@ export interface MappedBalance {
 }
 
 // Interface pour le mapping des trades
-export interface MappedTrade {
-    _id?: string
-    base: string
-    quote: string
-    pair: string
-    date?: string
-    timestamp?: number
-    type: string
-    price: number
-    amount: number
-    total: number
-    fee: number
-    feecoin: string
-    platform: string
-    totalUSDT: number
-}
+
 
 // Interface pour le mapping des ordres
 export interface MappedOrder {

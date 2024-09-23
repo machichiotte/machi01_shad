@@ -1,6 +1,6 @@
 // src/services/metrics/utils.ts
 
-import { MappedBalance } from '@models/dbTypes'
+import { MappedBalance } from '@typ/database'
 
 const THRESHOLD = 0.01 // 1% threshold
 

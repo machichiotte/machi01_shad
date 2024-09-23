@@ -1,12 +1,11 @@
+// src/services/cmcService
 import { LastUpdateService } from '@services/lastUpdateService';
-import { MongodbService } from '@services/mongodbService';
-import { MappedCmc } from 'src/models/dbTypes';
+import { MappedCmc } from '@typ/database';
+import { CmcRepository } from '@repositories/cmcRepository';
 import { handleServiceError } from '@utils/errorUtil';
 import config from '@config/index';
 
-
-const COLLECTION_NAME = config.collection?.cmc;
-const COLLECTION_TYPE = config.collectionType?.cmc;
+const COLLECTION_TYPE = config.collectionType.cmc;
 
 interface FetchResponse {
   data: MappedCmc[];
@@ -19,7 +18,7 @@ export class CmcService {
   private static readonly convert = 'USD';
 
   /**
-   * Fetches the latest CoinMarketCap data from the API.
+   * Récupère les données CMC actuelles via l'API CoinMarketCap.
    */
   public static async fetchCurrentCmc(): Promise<MappedCmc[]> {
     let start = this.baseStart;
@@ -32,20 +31,23 @@ export class CmcService {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'X-CMC_PRO_API_KEY': config?.apiKeys?.cmc?.apiKey || ''
-          }
+            'X-CMC_PRO_API_KEY': config.apiKeys.cmc.apiKey || '',
+          },
         });
 
         if (!response.ok) throw new Error(`Échec de la récupération des données CoinMarketCap: ${response.statusText}`);
+
         const { data, status }: FetchResponse = await response.json();
         if (data.length === 0) break;
 
         allData.push(...data);
         start += data.length;
+
+        // Si toutes les données sont récupérées, on arrête la boucle
         if (status.total_count <= start) break;
       }
     } catch (error) {
-      handleServiceError(error, 'fetchCmcData', 'Erreur lors de la récupération des données CMC');
+      handleServiceError(error, 'fetchCurrentCmc', 'Erreur lors de la récupération des données CMC');
       throw error;
     }
 
@@ -53,24 +55,40 @@ export class CmcService {
   }
 
   /**
-   * Retrieves the latest CMC data from the database.
+   * Récupère les données CMC depuis la base de données via le repository.
    */
   public static async fetchDatabaseCmc(): Promise<MappedCmc[]> {
-    return await MongodbService.getData(COLLECTION_NAME) as MappedCmc[];
+    try {
+      return await CmcRepository.fetchCmcData();
+    } catch (error) {
+      handleServiceError(error, 'fetchDatabaseCmc', 'Erreur lors de la récupération des données CMC de la base de données');
+      throw error;
+    }
   }
 
-
   /**
-   * Updates the CMC data in the database.
+   * Met à jour les données CMC dans la base de données via le repository.
    */
   public static async updateDatabaseCmcData(data: MappedCmc[]): Promise<object> {
     try {
-      const deleteResult = await MongodbService.deleteAllDataMDB(COLLECTION_NAME);
-      const saveResult = await MongodbService.saveData(COLLECTION_NAME, data);
+      const deleteResult = await CmcRepository.deleteAllCmcData();
+      const saveResult = await CmcRepository.saveCmcData(data);
       await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE, '');
-      console.log('Données CMC mises à jour dans la base de données', { deleteResult, saveResult, totalCount: data.length });
 
-      return { status: true, message: 'Données CMC mises à jour avec succès', data, deleteResult, saveResult, totalCount: data.length };
+      console.log('Données CMC mises à jour dans la base de données', {
+        deleteResult,
+        saveResult,
+        totalCount: data.length,
+      });
+
+      return {
+        status: true,
+        message: 'Données CMC mises à jour avec succès',
+        data,
+        deleteResult,
+        saveResult,
+        totalCount: data.length,
+      };
     } catch (error) {
       handleServiceError(error, 'updateDatabaseCmcData', 'Erreur lors de la mise à jour des données CMC dans la base de données');
       throw error;
@@ -78,7 +96,8 @@ export class CmcService {
   }
 
   /**
-   * Updates CMC data by fetching the latest info from the API and saving it to the database.
+   * Met à jour les données CMC en récupérant les informations les plus récentes
+   * via l'API puis en les enregistrant dans la base de données.
    */
   public static async updateCmcData(): Promise<object> {
     try {

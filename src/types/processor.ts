@@ -1,4 +1,4 @@
-// src/models/processorTypes.ts
+// src/types/processor.ts
 
 export interface Difference {
     base: string

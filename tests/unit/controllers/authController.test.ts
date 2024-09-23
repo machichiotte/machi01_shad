@@ -4,7 +4,7 @@ import { AuthService } from '@services/authService'
 
 jest.mock('@services/authService')
 
-describe('Auth Controller', () => {
+describe('authController', () => {
     let mockRequest: Partial<Request>
     let mockResponse: Partial<Response>
     let responseObject: { json: jest.Mock; status: jest.Mock }
@@ -29,8 +29,8 @@ describe('Auth Controller', () => {
         })
 
         it('devrait créer un utilisateur avec succès', async () => {
-            mockRequest.body = { email: 'test@example.com', password: 'password123' }
-                ; (AuthService.createUserDBService as jest.Mock).mockResolvedValue(true)
+            mockRequest.body = { email: 'test@example.com', password: 'password123' };
+            (AuthService.createUserDBService as jest.Mock).mockResolvedValue(true)
             await registerUser(mockRequest as Request, mockResponse as Response)
             expect(mockResponse.status).toHaveBeenCalledWith(201)
             expect(responseObject.json).toHaveBeenCalledWith({
@@ -55,7 +55,7 @@ describe('Auth Controller', () => {
             mockRequest.body = { email: 'test@example.com', password: 'password123' }
                 ; (AuthService.findUserByEmail as jest.Mock).mockResolvedValue({
                     _id: 'userId',
-                    password: 'hashedPassword'
+                    password: 'testPassword'
                 })
                 ; (AuthService.isPasswordMatch as jest.Mock).mockResolvedValue(true)
                 ; (AuthService.generateSessionToken as jest.Mock).mockResolvedValue(

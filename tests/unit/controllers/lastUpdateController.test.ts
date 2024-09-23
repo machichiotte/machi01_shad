@@ -28,9 +28,9 @@ describe('lastUpdateController', () => {
 
   describe('getUniqueLastUpdate', () => {
     it('devrait retourner la dernière mise à jour unique', async () => {
-      mockRequest.params = { platform: 'test', type: 'testType' }
-        ; (MongodbService.getDataMDB as jest.Mock).mockResolvedValue([
-          { platform: 'test', type: 'testType', timestamp: '2023-01-01' }
+      mockRequest.params = { platform: 'testPlatfom', type: 'testType', timestamp: '2023-01-01' }
+        ; (MongodbService.findData as jest.Mock).mockResolvedValue([
+          { platform: 'testPlatfom', type: 'testType', timestamp: '2023-01-01' }
         ])
 
       await getUniqueLastUpdate(
@@ -39,7 +39,7 @@ describe('lastUpdateController', () => {
       )
 
       expect(mockJson).toHaveBeenCalledWith({
-        platform: 'test',
+        platform: 'testPlatfom',
         type: 'testType',
         timestamp: '2023-01-01'
       })
@@ -47,7 +47,7 @@ describe('lastUpdateController', () => {
 
     it("devrait retourner un horodatage nul si aucune mise à jour n'est trouvée", async () => {
       mockRequest.params = { platform: 'test', type: 'testType' }
-        ; (MongodbService.getDataMDB as jest.Mock).mockResolvedValue([])
+        ; (MongodbService.findData as jest.Mock).mockResolvedValue([])
 
       await getUniqueLastUpdate(
         mockRequest as Request,

@@ -1,5 +1,5 @@
 // src/services/metrics/cmc.ts
-import { MappedCmc } from "@models/dbTypes"
+import { MappedCmc } from "@typ/database"
 
 interface CmcValues {
   rank: number

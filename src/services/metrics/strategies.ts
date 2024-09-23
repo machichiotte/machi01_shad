@@ -1,5 +1,5 @@
 // src/services/metrics/strategies.ts
-import { MappedStrategy } from "@models/dbTypes"
+import { MappedStrategy } from "@typ/database"
 
 /**
  * Constants for error margin and maximum exposure

@@ -4,12 +4,12 @@ import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil'
 import { LastUpdateService } from '@services/lastUpdateService'
 import { MongodbService } from '@services/mongodbService'
 import { MappingService } from '@services/mappingService'
-import { MappedTicker } from '@models/dbTypes'
+import { MappedTicker } from '@typ/database'
 import { handleServiceError } from '@utils/errorUtil'
 import config from '@config/index'
 
-const COLLECTION_NAME = config?.collection?.tickers
-const COLLECTION_TYPE = config?.collectionType?.tickers
+const COLLECTION_NAME = config.collection.tickers
+const COLLECTION_TYPE = config.collectionType.tickers
 
 export class TickerService {
 

@@ -1,30 +1,30 @@
 // config/types.ts
 export interface EnvironmentConfig {
-    port?: number;
-    isOffline?: boolean
-    database?: {
-        user?: string;
-        password?: string;
-        cluster?: string;
-        dbName?: string;
+    port: number;
+    isOffline: boolean
+    database: {
+        user: string;
+        password: string;
+        cluster: string;
+        dbName: string;
     };
-    collection?: {
+    collection: {
         [key: string]: string;
     };
-    cacheExpirationTimes?: {
+    cacheExpirationTimes: {
         [key: string]: number;
     };
-    collectionType?: {
+    collectionType: {
         [key: string]: string;
     };
-    apiKeys?: {
+    apiKeys: {
         [platform: string]: {
             apiKey: string;
             secretKey?: string;
             passphrase?: string;
         }
     };
-    smtp?: {
+    smtp: {
         host: string;
         port: number;
         auth: {
@@ -33,14 +33,17 @@ export interface EnvironmentConfig {
             pass: string | undefined;
         }
     };
-    cronSchedules?: {
+    cronSchedules: {
         shad: string;
         markets: string;
         tickers: string;
         balances: string;
     };
-    logFiles?: {
+    logFiles: {
         error: string;
         info: string;
     };
+    security: {
+        hashRounds: number
+    }
 }

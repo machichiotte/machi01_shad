@@ -7,8 +7,7 @@ import {
   addTradesManually,
   updateTrades,
   fetchLastTrades,
-  saveTradesToDatabase,
-  saveAllTradesToDatabase
+  saveTradesToDatabase
 } from '@src/controllers/tradeController'
 
 jest.mock('@services/tradeService')

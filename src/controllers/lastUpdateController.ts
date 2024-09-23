@@ -6,7 +6,7 @@ import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import config from '@config/index'
 
-const COLLECTION_NAME = config.collection?.lastUpdate
+const COLLECTION_NAME = config.collection.lastUpdate
 
 /**
  * Récupère l'enregistrement de dernière mise à jour unique pour une plateforme et un type donnés.
@@ -15,14 +15,10 @@ async function getUniqueLastUpdate(req: Request, res: Response): Promise<void> {
   try {
     const { platform, type } = req.params
 
-    if (!COLLECTION_NAME) {
-      throw new Error(`${COLLECTION_NAME} is not defined`)
-    }
-
     // check si besoin de filter
     //const filter = { platform, type }
 
-    const lastUpdateData = await MongodbService.getDataMDB(COLLECTION_NAME)
+    const lastUpdateData = await MongodbService.findData(COLLECTION_NAME)
 
     if (lastUpdateData.length > 0) {
       console.log(

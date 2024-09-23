@@ -1,17 +1,20 @@
-module.exports = {
+export default {
+  preset: 'ts-jest',
+
   testEnvironment: "node",
-  preset: "ts-jest",
+  roots: ['<rootDir>/src', '<rootDir>/tests'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'], // Ignore le dossier dist
   transform: {
     "^.+\\.ts$": "ts-jest",
   },
   moduleNameMapper: {
-    "^@config/(.*)$": "<rootDir>/config/$1",
     "^@src/(.*)$": "<rootDir>/src/$1",
-    "^@services/(.*)$": "<rootDir>/src/services/$1",
-    "^@utils/(.*)$": "<rootDir>/src/utils/$1",
+    "^@config/(.*)$": "<rootDir>/config/$1",
     "^@controllers/(.*)$": "<rootDir>/src/controllers/$1",
+    "^@repositories/(.*)$": "<rootDir>/src/repositories/$1",
     "^@routes/(.*)$": "<rootDir>/src/routes/$1",
-    "^@models/(.*)$": "<rootDir>/src/models/$1"
+    "^@services/(.*)$": "<rootDir>/src/services/$1",
+    "^@typ/(.*)$": "<rootDir>/src/types/$1",
+    "^@utils/(.*)$": "<rootDir>/src/utils/$1"
   },
 };

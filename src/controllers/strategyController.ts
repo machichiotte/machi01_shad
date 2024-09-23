@@ -25,7 +25,7 @@ async function updateStrat(req: Request, res: Response): Promise<void> {
     const strat = req.body
     const data = await StrategyService.updateStrategies(strat)
     await LastUpdateService.saveLastUpdateToDatabase(
-      config.collectionType?.strat ?? '',
+      config.collectionType.strat ?? '',
       ''
     )
     res.status(200).json({ message: 'Stratégies mises à jour', data })

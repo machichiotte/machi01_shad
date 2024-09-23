@@ -5,12 +5,12 @@ import {
 import { MongodbService } from '@services/mongodbService'
 import { MappingService } from '@services/mappingService'
 import { Order, Exchange } from 'ccxt'
-import { MappedOrder } from '@models/dbTypes'
+import { MappedOrder } from '@typ/database'
 import { handleServiceError } from '@utils/errorUtil'
 import config from '@config/index';
 
-const COLLECTION_NAME = config?.collection?.order;
-const COLLECTION_TYPE = config?.collectionType?.order;
+const COLLECTION_NAME = config.collection.order;
+const COLLECTION_TYPE = config.collectionType.order;
 
 export class OrderBalanceService {
 

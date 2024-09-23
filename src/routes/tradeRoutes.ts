@@ -4,7 +4,7 @@ import {
   getTrades,
   addTradesManually,
   updateTrades
-} from '@src/controllers/tradeController'
+} from '@controllers/tradeController'
 
 const router = express.Router()
 

@@ -1,13 +1,13 @@
 // src/services/strategyService.ts
 import { LastUpdateService } from '@services/lastUpdateService'
 import { MongodbService } from '@services/mongodbService'
-import { MappedStrategy } from '@models/dbTypes'
+import { MappedStrategy } from '@typ/database'
 import { InsertManyResult, InsertOneResult } from 'mongodb'
 import { handleServiceError } from '@utils/errorUtil'
 import config from '@config/index'
 
-const COLLECTION_NAME = config?.collection?.strat
-const COLLECTION_TYPE = config?.collectionType?.strat
+const COLLECTION_NAME = config.collection.strat
+const COLLECTION_TYPE = config.collectionType.strat
 
 export class StrategyService {
   /**
@@ -25,7 +25,7 @@ export class StrategyService {
       throw new Error('L\'ID de la stratégie est requis');
     }
     try {
-      return await MongodbService.updateDataMDB(
+      return await MongodbService.updateOneData(
         COLLECTION_NAME,
         { _id: strategyId },
         { $set: updatedStrategy }
@@ -40,9 +40,8 @@ export class StrategyService {
    * Met à jour toutes les stratégies dans la base de données.
    */
   static async updateStrategies(strategies: MappedStrategy[]): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
-    const collectionName = COLLECTION_NAME;
-    await MongodbService.deleteAllDataMDB(collectionName);
-    const data = await MongodbService.saveData(collectionName, strategies);
+    await MongodbService.deleteAllData(COLLECTION_NAME);
+    const data = await MongodbService.insertData(COLLECTION_NAME, strategies);
     await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE, '');
     return data;
   }

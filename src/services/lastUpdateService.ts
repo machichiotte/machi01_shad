@@ -1,47 +1,47 @@
 // src/services/lastUpdateService.ts
-import { MongodbService } from '@services/mongodbService'
-import config from '@config/index'
-
-interface LastUpdateData {
-  [key: string]: number | { [key: string]: number }
-}
-
-const COLLECTION_NAME = config?.collection?.lastUpdate
+import { LastUpdateRepository } from '@repositories/lastUpdateRepository';
+import { LastUpdateData } from '@typ/database';
+import { handleServiceError } from '@utils/errorUtil';
 
 export class LastUpdateService {
   /**
-   * Fetches the last update information from the database.
+   * Récupère les informations de dernière mise à jour depuis la base de données via le repository.
    */
   static async fetchDatabaseLastUpdate(): Promise<LastUpdateData[]> {
-    return await MongodbService.getData(COLLECTION_NAME) as LastUpdateData[]
+    try {
+      return await LastUpdateRepository.fetchLastUpdate();
+    } catch (error) {
+      handleServiceError(error, 'fetchDatabaseLastUpdate', 'Erreur lors de la récupération des dernières mises à jour');
+      throw error;
+    }
   }
 
   /**
-   * Saves the last update information to the database.
+   * Sauvegarde les informations de dernière mise à jour dans la base de données via le repository.
    */
-  static async saveLastUpdateToDatabase(type: string | undefined, platform?: string): Promise<void> {
-    if (!type) {
-      throw new Error(`Le type n'est pas défini`);
-    }
-    const data: LastUpdateData = (await this.fetchDatabaseLastUpdate())[0] || {}
-    console.log(`saveLastUpdateToDatabase Type: ${type} | Platform: ${platform} | Size: ${Array.isArray(data) ? data.length : Object.keys(data).length} | Data: ${JSON.stringify(data)}`)
-    if (!platform) {
-      data[type] = Date.now()
-    } else {
-      if (!data[type] || typeof data[type] === 'number') {
-        data[type] = {}
+  static async saveLastUpdateToDatabase(type: string, platform?: string): Promise<void> {
+    try {
+      const data: LastUpdateData = (await this.fetchDatabaseLastUpdate())[0] || {};
+
+      console.log(`saveLastUpdateToDatabase Type: ${type} | Platform: ${platform} | Size: ${Array.isArray(data) ? data.length : Object.keys(data).length} | Data: ${JSON.stringify(data)}`);
+
+      if (!platform) {
+        data[type] = Date.now();
+      } else {
+        if (!data[type] || typeof data[type] === 'number') {
+          data[type] = {};
+        }
+
+        (data[type] as { [key: string]: number })[platform] = Date.now();
+        console.log(`data[type] ${(data[type] as { [key: string]: number })[platform]}`);
       }
 
-      ; (data[type] as { [key: string]: number })[platform] = Date.now()
-      console.log(
-        `data[type] ${(data[type] as { [key: string]: number })[platform]}`
-      )
+      // Sauvegarder les données mises à jour via le repository
+      await LastUpdateRepository.updateLastUpdate(data);
+
+    } catch (error) {
+      handleServiceError(error, 'saveLastUpdateToDatabase', `Erreur lors de la sauvegarde de la dernière mise à jour pour le type ${type}`);
+      throw error;
     }
-
-    // Enregistrer les données mises à jour dans MongoDB
-    const filter = {}
-    const update = { $set: data }
-
-    await MongodbService.updateInDatabase(COLLECTION_NAME, filter, update)
   }
 }

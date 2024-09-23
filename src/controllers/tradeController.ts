@@ -1,6 +1,6 @@
 // src/controllers/tradeController.ts
 import { Request, Response } from 'express'
-import { TradeService } from '@src/services/tradeService'
+import { TradeService } from '@services/tradeService'
 import { handleControllerError } from '@utils/errorUtil'
 
 /**

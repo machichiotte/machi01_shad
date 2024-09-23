@@ -15,11 +15,12 @@ import balanceRoutes from '@routes/balanceRoutes'
 import cmcRoutes from '@routes/cmcRoutes'
 import strategyRoutes from '@routes/strategyRoutes'
 import ordersRoutes from '@routes/orderRoutes'
-import marketsRoutes from '@src/routes/marketRoutes'
+import marketsRoutes from '@routes/marketRoutes'
 import tradesRoutes from '@routes/tradeRoutes'
-import tickersRoutes from '@src/routes/tickerRoutes'
+import tickersRoutes from '@routes/tickerRoutes'
 import lastUpdateRoutes from '@routes/lastUpdateRoutes'
 import shadRoutes from '@routes/shadRoutes'
+import { Routes } from '@typ/routes';
 
 // Middleware CORS
 app.use(cors())
@@ -32,9 +33,6 @@ app.use(express.static('dist'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-interface Routes {
-  [key: string]: express.Router
-}
 
 const routes: Routes = {
   converter: converterRoutes,
