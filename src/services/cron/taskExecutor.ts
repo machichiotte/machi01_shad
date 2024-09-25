@@ -1,14 +1,13 @@
 // src/services/cron/taskExecutor.ts
 import { sendMail } from './emailService'
-import { getPlatforms } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 
 import { MarketService } from '@services/marketService'
 import { TickerService } from '@services/tickerService'
 import { BalanceService } from '@services/balanceService'
 
-import config from '@config/index'
-
+import { config } from '@config/index';
+import { PLATFORM, PLATFORMS } from '@typ/platform'
 /**
  * Executes a cron task with retry mechanism and error handling
  */
@@ -46,12 +45,11 @@ async function executeCronTask(task: () => Promise<void>, isCritical: boolean = 
  */
 async function executeForPlatforms(
   taskName: string,
-  taskFunction: (platform: string) => Promise<void>
+  taskFunction: (platform: PLATFORM) => Promise<void>
 ): Promise<void> {
   console.log(`Executing cron job for ${taskName}...`)
-  const platforms = getPlatforms()
   await Promise.all(
-    platforms.map((platform) =>
+    PLATFORMS.map((platform) =>
       executeCronTask(() => taskFunction(platform), true)
     )
   )

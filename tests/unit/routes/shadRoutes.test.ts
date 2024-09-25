@@ -1,10 +1,10 @@
 import express from 'express';
 import request from 'supertest';
 import shadRoutes from '@routes/shadRoutes';
-import * as shadController from '@controllers/shadController';
+import * as shadController from '../../../src/controllers/shadController';
 
 // Mock du contrôleur Shad
-jest.mock('@controllers/shadController');
+jest.mock('../../../src/controllers/shadController');
 
 describe('shadRoutes', () => {
     let app: express.Application;

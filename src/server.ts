@@ -3,7 +3,7 @@ import express, { Request, Response, NextFunction } from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import { Server } from 'http'; // Importation du type Server
-import config from '@config/index';
+import { config } from '@config/index';
 
 const PORT = config.port || 10000
 
@@ -18,7 +18,7 @@ import ordersRoutes from '@routes/orderRoutes'
 import marketsRoutes from '@routes/marketRoutes'
 import tradesRoutes from '@routes/tradeRoutes'
 import tickersRoutes from '@routes/tickerRoutes'
-import lastUpdateRoutes from '@routes/lastUpdateRoutes'
+import timestampRoutes from '@routes/timestampRoutes'
 import shadRoutes from '@routes/shadRoutes'
 import { Routes } from '@typ/routes';
 
@@ -44,7 +44,7 @@ const routes: Routes = {
   market: marketsRoutes,
   trades: tradesRoutes,
   tickers: tickersRoutes,
-  lastUpdate: lastUpdateRoutes,
+  timestamp: timestampRoutes,
   shad: shadRoutes
 }
 

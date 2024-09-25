@@ -1,5 +1,6 @@
 // src/services/metrics/strategies.ts
-import { MappedStrategy } from "@typ/database"
+import { MappedStrat } from "@typ/strat"
+import { PLATFORM } from '@src/types/platform';
 
 /**
  * Constants for error margin and maximum exposure
@@ -88,7 +89,7 @@ function getRatioShad(strat: string): number {
 /**
  * Calculates various recovery amounts and strategy parameters
  */
-function calculateRecups(asset: string, platform: string, totalBuy: number, totalSell: number, myStrat: MappedStrategy) {
+function calculateRecups(asset: string, platform: string, totalBuy: number, totalSell: number, myStrat: MappedStrat) {
   const strat = myStrat.strategies[platform] || 'No strategy';
   const stratExpo = myStrat.maxExposure[platform] || MAX_EXPO;
   const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo || MAX_EXPO))
@@ -138,7 +139,7 @@ function calculateAmountAndPriceForShad(parsedRecup: number, parsedBalance: numb
 /**
  * Retrieve the platform fee percentage based on the platform name
  */
-function getPlatformFee(platform: string): number {
+function getPlatformFee(platform: PLATFORM): number {
   const fees: Record<string, number> = {
     binance: 0.1,
     kucoin: 0.1,
@@ -160,7 +161,7 @@ interface AmountsAndPrices {
 /**
  * Calculates amounts and prices for SHAD strategy
  */
-function calculateAmountsAndPricesForShad(recupTp1: number, balance: number, totalShad: number, recupTpX: number, averageEntryPrice: number, maxExposition: number, platform: string): AmountsAndPrices {
+function calculateAmountsAndPricesForShad(recupTp1: number, balance: number, totalShad: number, recupTpX: number, averageEntryPrice: number, maxExposition: number, platform: PLATFORM): AmountsAndPrices {
   const FACTOR_SELL_SHAD = 0.5
   const parsedValues = {
     recupTp1,

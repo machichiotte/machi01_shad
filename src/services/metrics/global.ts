@@ -3,11 +3,17 @@ import { calculateRecups, calculateAmountsAndPricesForShad } from './strategies'
 import { getCmcValues } from './cmc'
 import { getBalanceBySymbol, getProfit, getCurrentPossession, getPercentageDifference, getStatus, getPercentageToNextTp } from './utils'
 import { getTotalAmountAndBuy, getTotalSell } from './trades'
-import { MappedBalance, MappedOrder, MappedTicker, MappedCmc, MappedStrategy, AssetMetrics } from '@typ/database'
+import { AssetMetrics } from '@typ/metrics'
 import { MappedTrade } from '@typ/trade'
+import { MappedTicker } from '@typ/ticker'
+import { MappedBalance } from '@typ/balance'
+import { MappedOrder } from '@typ/order'
+import { MappedCmc } from '@typ/cmc'
+import { MappedStrat } from '@typ/strat'
 
 // Define stable coins
 import { STABLECOINS } from '@src/constants'
+import { PLATFORM } from '@src/types/platform'
 
 /**
  * Default metrics object with initial values set to "N/A".
@@ -65,7 +71,7 @@ function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: st
 /**
  * Calculates various metrics for a given asset.
 - */
-function calculateAssetMetrics(asset: string, platform: string, assetBalance: MappedBalance, closestCmc: MappedCmc | null, lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: MappedStrategy, lastTickers: MappedTicker[]): AssetMetrics {
+function calculateAssetMetrics(asset: string, platform: PLATFORM, assetBalance: MappedBalance, closestCmc: MappedCmc | null, lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: MappedStrat, lastTickers: MappedTicker[]): AssetMetrics {
   const balance = getBalanceBySymbol(asset, assetBalance)
   const currentPrice = getCurrentPrice(lastTickers, asset, platform)
   const cmcValues = closestCmc ? getCmcValues(closestCmc, currentPrice) : { cmc_rank: 'N/A', price: 'N/A' }

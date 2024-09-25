@@ -2,6 +2,7 @@
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { TickerService } from '@services/tickerService'
+import { isValidPlatform } from '@src/utils/platformUtil'
 
 /**
  * Récupère tous les tickers de la base de données.
@@ -20,6 +21,13 @@ async function getAllTickers(req: Request, res: Response): Promise<void> {
  */
 async function getAllTickersByPlatform(req: Request, res: Response): Promise<void> {
   const { platform } = req.params
+
+
+  if (!isValidPlatform(platform)) {
+    res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
+    return;
+  }
+
   try {
     const data = await TickerService.getAllTickersByPlatform(platform)
     res.status(200).json({ message: 'Tickers récupérés', data })
@@ -33,6 +41,12 @@ async function getAllTickersByPlatform(req: Request, res: Response): Promise<voi
  */
 async function getAllTickersBySymbolFromPlatform(req: Request, res: Response): Promise<void> {
   const { platform, symbol } = req.params
+
+  if (!isValidPlatform(platform)) {
+    res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
+    return;
+  }
+
   try {
     const data = await TickerService.getAllTickersBySymbolFromPlatform(platform, symbol)
     res.status(200).json({ message: 'Tickers récupérés', data })

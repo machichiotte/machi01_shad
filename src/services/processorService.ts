@@ -1,7 +1,6 @@
 // src/services/cron/processorService.ts
 import { calculateAssetMetrics } from '@services/metrics/global'
 import { MappingService } from '@services/mappingService'
-import { MappedStrategy, MappedTicker, AssetMetrics, MappedCmc, MappedOrder, MappedBalance } from '@typ/database'
 import { TradeService } from '@services/tradeService'
 import { TickerService } from '@services/tickerService'
 import { CmcService } from '@services/cmcService'
@@ -15,6 +14,13 @@ import { Difference, Balance, Ticker } from '@typ/processor'
 import { STABLECOINS, QUOTE_CURRENCIES } from '@src/constants'
 import { BalanceService } from './balanceService'
 import { MappedTrade } from '@typ/trade'
+import { MappedTicker } from '@typ/ticker'
+import { MappedBalance } from '@typ/balance'
+import { MappedCmc } from '@typ/cmc'
+import { MappedStrat } from '@typ/strat'
+import { AssetMetrics } from '@typ/metrics'
+import { MappedOrder } from '@typ/order'
+import { PLATFORM } from '@src/types/platform'
 
 export class ProcessorService {
   /**
@@ -23,7 +29,7 @@ export class ProcessorService {
    * corresponding to the detected differences. It also handles new symbols, balance differences,
    * and zero balances.
    */
-  static async processBalanceChanges(differences: Difference[], platform: string): Promise<void> {
+  static async processBalanceChanges(differences: Difference[], platform: PLATFORM): Promise<void> {
     try {
       // Mise à jour des ordres depuis le serveur
       await OrderBalanceService.updateOrdersFromServer(platform)
@@ -154,7 +160,7 @@ export class ProcessorService {
   /**
     * Fetches all data from the database.
     */
-  private static async fetchAllDatabaseData(): Promise<[MappedCmc[], MappedStrategy[], MappedTrade[], MappedOrder[], MappedTicker[], MappedBalance[]]> {
+  private static async fetchAllDatabaseData(): Promise<[MappedCmc[], MappedStrat[], MappedTrade[], MappedOrder[], MappedTicker[], MappedBalance[]]> {
     return await Promise.all([
       CmcService.fetchDatabaseCmc(),
       StrategyService.fetchDatabaseStrategies(),
@@ -171,7 +177,7 @@ export class ProcessorService {
   private static calculateAssetMetricsForBalance(
     bal: MappedBalance,
     dbCmc: MappedCmc[],
-    dbStrategies: MappedStrategy[],
+    dbStrategies: MappedStrat[],
     dbTrades: MappedTrade[],
     dbOpenOrders: MappedOrder[],
     dbTickers: MappedTicker[]
@@ -193,7 +199,7 @@ export class ProcessorService {
     )
     const assetStrategy = dbStrategies.find(
       (strategy) => strategy.asset === assetBase && strategy.strategies[assetPlatform]
-    ) || { asset: '', strategies: {}, maxExposure: {} } as MappedStrategy
+    ) || { asset: '', strategies: {}, maxExposure: {} } as MappedStrat
     const assetTicker = dbTickers.filter(
       (ticker) => ticker.symbol.startsWith(`${assetBase}/`) && ticker.platform === assetPlatform
     )
@@ -236,7 +242,7 @@ export class ProcessorService {
   /**
   * Processes a specific difference, retrieves trades, and updates the list of new trades.
   */
-  private static async processDifference(difference: Difference, platform: string, tickers: Ticker[], quoteCurrencies: string[], newTrades: MappedTrade[]): Promise<void> {
+  private static async processDifference(difference: Difference, platform: PLATFORM, tickers: Ticker[], quoteCurrencies: string[], newTrades: MappedTrade[]): Promise<void> {
     for (const quote of quoteCurrencies) {
       const symbol = getSymbolForPlatform(platform, difference.base, quote)
 

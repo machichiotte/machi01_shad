@@ -1,16 +1,13 @@
 // src/services/cmcService
-import { LastUpdateService } from '@services/lastUpdateService';
-import { MappedCmc } from '@typ/database';
+import { TimestampService } from '@services/timestampService';
 import { CmcRepository } from '@repositories/cmcRepository';
 import { handleServiceError } from '@utils/errorUtil';
-import config from '@config/index';
+import { MappedCmc, FetchResponse } from '@typ/cmc'
+import { config } from '@config/index';
 
 const COLLECTION_TYPE = config.collectionType.cmc;
 
-interface FetchResponse {
-  data: MappedCmc[];
-  status: { total_count: number };
-}
+
 
 export class CmcService {
   private static readonly limit = 5000;
@@ -73,7 +70,7 @@ export class CmcService {
     try {
       const deleteResult = await CmcRepository.deleteAllCmcData();
       const saveResult = await CmcRepository.saveCmcData(data);
-      await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE, '');
+      await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE, '');
 
       console.log('Données CMC mises à jour dans la base de données', {
         deleteResult,

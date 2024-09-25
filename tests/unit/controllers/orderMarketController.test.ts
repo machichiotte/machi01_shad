@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { createLimitBuyOrder, createMarketSellOrder, cancelAllOrders, deleteOrder } from '@controllers/orderMarketController';
-import { OrderMarketService } from '@services/orderMarketService';
-import { handleControllerError } from '@utils/errorUtil';
+import { createLimitBuyOrder, createMarketSellOrder, cancelAllOrders, deleteOrder } from '../../../src/controllers/orderMarketController';
+import { OrderMarketService } from '../../../src/services/orderMarketService';
+import { handleControllerError } from '../../../src/utils/errorUtil';
 
-jest.mock('@services/orderMarketService');
-jest.mock('@utils/errorUtil');
+jest.mock('../../../src/services/orderMarketService');
+jest.mock('../../../src/utils/errorUtil');
 
 describe('orderMarketController', () => {
     let mockRequest: Partial<Request>;

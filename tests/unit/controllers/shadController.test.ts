@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
-import { getShad, handleTrailingStopHedge } from '@controllers/shadController'
-import { ShadService } from '@services/shadService'
-import { TrailingStopService } from '@services/trailingStopService';
-import { handleControllerError } from '@utils/errorUtil'
+import { getShad, handleTrailingStopHedge } from '../../../src/controllers/shadController'
+import { ShadService } from '../../../src/services/shadService'
+import { TrailingStopService } from '../../../src/services/trailingStopService';
+import { handleControllerError } from '../../../src/utils/errorUtil'
 
 // Mock des dépendances
-jest.mock('@services/shadService')
-jest.mock('@utils/errorUtil')
-jest.mock('@services/trailingStopService');
+jest.mock('../../../src/services/shadService')
+jest.mock('../../../src/utils/errorUtil')
+jest.mock('../../../src/services/trailingStopService');
 
 describe('shadController', () => {
   describe('getShad', () => {

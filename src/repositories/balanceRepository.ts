@@ -1,7 +1,8 @@
 // src/repositories/balanceRepository.ts
 import { MongodbService } from '@services/mongodbService';
-import { MappedBalance } from '@typ/database';
-import config from '@config/index';
+import { MappedBalance } from '@typ/balance';
+import { config } from '@config/index';
+import { PLATFORM } from '@typ/platform'
 
 const COLLECTION_NAME = config.collection.balance;
 const COLLECTION_TYPE = config.collectionType.balance;
@@ -17,7 +18,7 @@ export class BalanceRepository {
     /**
      * Récupère les données de solde de la base de données pour une plateforme spécifique.
      */
-    static async fetchBalancesByPlatform(platform: string): Promise<MappedBalance[]> {
+    static async fetchBalancesByPlatform(platform: PLATFORM): Promise<MappedBalance[]> {
         const data = await this.fetchAllBalances();
         return data.filter((item: MappedBalance) => item.platform === platform);
     }
@@ -25,7 +26,7 @@ export class BalanceRepository {
     /**
      * Enregistre les données de solde dans la base de données pour une plateforme.
      */
-    static async saveBalances(mappedData: MappedBalance[], platform: string): Promise<void> {
+    static async saveBalances(mappedData: MappedBalance[], platform: PLATFORM): Promise<void> {
         await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE);
     }
 }

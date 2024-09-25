@@ -3,9 +3,11 @@ import { BalanceService } from '@services/balanceService';
 import { ShadService } from '@services/shadService';
 import { TickerService } from '@services/tickerService';
 import { OrderMarketService } from '@services/orderMarketService';
-import { MappedBalance } from '@typ/database';
+import { MappedBalance } from '@typ/balance';
 import { HighestPrice } from '@typ/trailingStop';
 import { handleServiceError } from '@utils/errorUtil';
+import { PLATFORM } from '@src/types/platform';
+
 
 export class TrailingStopRepository {
     static async fetchBalanceAndHighestPrices(): Promise<[MappedBalance[], HighestPrice[]]> {
@@ -20,7 +22,7 @@ export class TrailingStopRepository {
         }
     }
 
-    static async fetchCurrentTickers(platform: string) {
+    static async fetchCurrentTickers(platform: PLATFORM) {
         try {
             return await TickerService.fetchCurrentTickers(platform);
         } catch (error) {
@@ -29,7 +31,7 @@ export class TrailingStopRepository {
         }
     }
 
-    static async cancelAllOrdersByBunch(platform: string, base: string): Promise<void> {
+    static async cancelAllOrdersByBunch(platform: PLATFORM, base: string): Promise<void> {
         try {
             await OrderMarketService.cancelAllOrdersByBunch(platform, base);
         } catch (error) {
@@ -37,7 +39,7 @@ export class TrailingStopRepository {
         }
     }
 
-    static async createOrUpdateStopLossOrder(platform: string, stopPrice: number, base: string, balance: number): Promise<void> {
+    static async createOrUpdateStopLossOrder(platform: PLATFORM, stopPrice: number, base: string, balance: number): Promise<void> {
         try {
             await OrderMarketService.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
         } catch (error) {
@@ -45,7 +47,7 @@ export class TrailingStopRepository {
         }
     }
 
-    static async updateHighestPrice(platform: string, base: string, price: number): Promise<void> {
+    static async updateHighestPrice(platform: PLATFORM, base: string, price: number): Promise<void> {
         try {
             await ShadService.updateHighestPrice(platform, base, price);
         } catch (error) {

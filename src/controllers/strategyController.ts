@@ -1,9 +1,9 @@
 // src/controllers/strategyController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { LastUpdateService } from '@services/lastUpdateService'
+import { TimestampService } from '@services/timestampService'
 import { StrategyService } from '@services/strategyService'
-import config from '@config/index'
+import { config } from '@config/index';
 
 /**
  * Récupère les stratégies de la base de données.
@@ -24,7 +24,7 @@ async function updateStrat(req: Request, res: Response): Promise<void> {
   try {
     const strat = req.body
     const data = await StrategyService.updateStrategies(strat)
-    await LastUpdateService.saveLastUpdateToDatabase(
+    await TimestampService.saveTimestampToDatabase(
       config.collectionType.strat ?? '',
       ''
     )

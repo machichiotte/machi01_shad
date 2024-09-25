@@ -1,7 +1,7 @@
 // src/services/cron/cronTasks.ts
 import cron from 'node-cron'
 import { handleServiceError } from '@utils/errorUtil'
-import config from '@config/index'
+import { config } from '@config/index';
 
 import { cronTickers, cronMarkets, cronBalances } from './taskExecutor'
 

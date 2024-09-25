@@ -1,7 +1,7 @@
 // src/repositories/cmcRepository
 import { MongodbService } from '@services/mongodbService';
-import { MappedCmc } from '@typ/database';
-import config from '@config/index';
+import { MappedCmc } from '@typ/cmc';
+import { config } from '@config/index';
 
 const COLLECTION_NAME = config.collection.cmc;
 

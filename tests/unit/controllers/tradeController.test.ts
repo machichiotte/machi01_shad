@@ -1,370 +1,219 @@
-import { Request, Response } from 'express'
-import { TradeService } from '@src/services/tradeService'
-import { handleControllerError } from '@utils/errorUtil'
+import { Request, Response } from 'express';
+import { TradeService } from '../../../src/services/tradeService';
+import { handleControllerError } from '../../../src/utils/errorUtil';
+import { isValidPlatform } from '../../../src/utils/platformUtil';
 import {
-  getTrades,
   updateTradeById,
+  getTrades,
   addTradesManually,
   updateTrades,
   fetchLastTrades,
-  saveTradesToDatabase
-} from '@src/controllers/tradeController'
+  saveTradesToDatabase,
+  saveAllTradesToDatabase
+} from '../../../src/controllers/tradeController';
 
-jest.mock('@services/tradeService')
-jest.mock('@utils/errorUtil')
+jest.mock('../../../src/services/tradeService');
+jest.mock('../../../src/utils/errorUtil');
+jest.mock('../../../src/utils/platformUtil');
 
-describe('tradeController', () => {
-  let mockRequest: Partial<Request>
-  let mockResponse: Partial<Response>
-  let mockJson: jest.Mock
-  let mockStatus: jest.Mock
+describe('Trade Controller', () => {
+  let mockRequest: Partial<Request>;
+  let mockResponse: Partial<Response>;
+  let mockJson: jest.Mock;
+  let mockStatus: jest.Mock;
 
   beforeEach(() => {
-    mockJson = jest.fn()
-    mockStatus = jest.fn().mockReturnThis()
+    mockJson = jest.fn();
+    mockStatus = jest.fn().mockReturnValue({ json: mockJson });
     mockResponse = {
+      status: mockStatus,
       json: mockJson,
-      status: mockStatus
-    }
-    mockRequest = {}
-  })
+    };
+    mockRequest = {};
+  });
 
   describe('getTrades', () => {
-    it('devrait retourner tous les trades', async () => {
-      const mockTrades = [
-        {
-          id: 1,
-          base: 'EQX',
-          quote: 'USDT',
-          pair: 'EQX/USDT',
-          timestamp: 1725396742065,
-          type: 'buy',
-          price: 0.002799,
-          amount: 1532.9761,
-          total: 4.2908001039,
-          fee: 0.0128724003117,
-          feecoin: 'USDT',
-          platform: 'kucoin',
-          totalUSDT: 4.2908001039
-        },
-        {
-          id: 2,
-          base: 'EQX',
-          quote: 'USDT',
-          pair: 'EQX/USDT',
-          timestamp: 1725396742065,
-          type: 'buy',
-          price: 0.002799,
-          amount: 1532.9761,
-          total: 4.2908001039,
-          fee: 0.0128724003117,
-          feecoin: 'USDT',
-          platform: 'kucoin',
-          totalUSDT: 4.2908001039
-        }
-      ]
-        ; (TradeService.fetchDatabaseTrades as jest.Mock).mockResolvedValue(
-          mockTrades
-        )
+    it('should return trades successfully', async () => {
+      const mockTrades = [{ id: '1', symbol: 'BTC/USD' }];
+      (TradeService.fetchDatabaseTrades as jest.Mock).mockResolvedValue(mockTrades);
 
-      await getTrades(mockRequest as Request, mockResponse as Response)
+      await getTrades(mockRequest as Request, mockResponse as Response);
 
-      expect(mockJson).toHaveBeenCalledWith({ message: 'Trades récupérés', data: mockTrades })
-    })
+      expect(mockStatus).toHaveBeenCalledWith(200);
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Trades récupérés', data: mockTrades });
+    });
 
-    it('devrait gérer les erreurs', async () => {
-      const mockError = new Error('Erreur de test')
-        ; (TradeService.fetchDatabaseTrades as jest.Mock).mockRejectedValue(
-          mockError
-        )
+    it('should handle errors', async () => {
+      const mockError = new Error('Database error');
+      (TradeService.fetchDatabaseTrades as jest.Mock).mockRejectedValue(mockError);
 
-      await getTrades(mockRequest as Request, mockResponse as Response)
+      await getTrades(mockRequest as Request, mockResponse as Response);
 
-      expect(handleControllerError).toHaveBeenCalledWith(
-        mockResponse,
-        mockError,
-        'getTrades'
-      )
-    })
-  })
+      expect(handleControllerError).toHaveBeenCalledWith(mockResponse, mockError, 'getTrades');
+    });
+  });
 
   describe('updateTradeById', () => {
-    it('devrait mettre à jour un trade par son ID', async () => {
-      const mockTradeId = '123'
-      const mockUpdatedTrade = {
-        base: 'EQX',
-        quote: 'USDT',
-        pair: 'EQX/USDT',
-        timestamp: 1725396742065,
-        type: 'buy',
-        price: 0.002799,
-        amount: 1532.9761,
-        total: 4.2908001039,
-        fee: 0.0128724003117,
-        feecoin: 'USDT',
-        platform: 'kucoin',
-        totalUSDT: 4.2908001039
-      }
+    it('should update trade successfully', async () => {
+      const mockUpdatedTrade = { id: '1', symbol: 'ETH/USD' };
+      mockRequest.params = { tradeId: '1' };
+      mockRequest.body = mockUpdatedTrade;
+      (TradeService.updateTradeById as jest.Mock).mockResolvedValue(mockUpdatedTrade);
 
-      mockRequest.params = { tradeId: mockTradeId }
-      mockRequest.body = mockUpdatedTrade
+      await updateTradeById(mockRequest as Request, mockResponse as Response);
 
-        ; (TradeService.updateTradeById as jest.Mock).mockResolvedValue(
-          mockUpdatedTrade
-        )
+      expect(mockStatus).toHaveBeenCalledWith(200);
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Trade 1 mis à jour', data: mockUpdatedTrade });
+    });
 
-      await updateTradeById(mockRequest as Request, mockResponse as Response)
+    it('should handle errors', async () => {
+      const mockError = new Error('Update error');
+      mockRequest.params = { tradeId: '1' };
+      mockRequest.body = { symbol: 'ETH/USD' };
+      (TradeService.updateTradeById as jest.Mock).mockRejectedValue(mockError);
 
-      expect(TradeService.updateTradeById).toHaveBeenCalledWith(
-        mockTradeId,
-        mockUpdatedTrade
-      )
-      expect(mockJson).toHaveBeenCalledWith({ message: `Trade ${mockTradeId} mis à jour`, data: mockUpdatedTrade })
-    })
+      await updateTradeById(mockRequest as Request, mockResponse as Response);
 
-    it('devrait gérer les erreurs lors de la mise à jour', async () => {
-      const mockError = new Error('Erreur de mise à jour')
-      mockRequest.params = { id: '123' }
-      mockRequest.body = { status: 'completed' }
-        ; (TradeService.updateTradeById as jest.Mock).mockRejectedValue(mockError)
-
-      await updateTradeById(mockRequest as Request, mockResponse as Response)
-
-      expect(handleControllerError).toHaveBeenCalledWith(
-        mockResponse,
-        mockError,
-        'updateTradeById'
-      )
-    })
-  })
+      expect(handleControllerError).toHaveBeenCalledWith(mockResponse, mockError, 'updateTradeById');
+    });
+  });
 
   describe('addTradesManually', () => {
-    it('devrait ajouter des trades manuellement', async () => {
-      const mockTrades = [
-        {
-          base: 'EQX',
-          quote: 'USDT',
-          pair: 'EQX/USDT',
-          timestamp: 1725396742065,
-          type: 'buy',
-          price: 0.002799,
-          amount: 1532.9761,
-          total: 4.2908001039,
-          fee: 0.0128724003117,
-          feecoin: 'USDT',
-          platform: 'kucoin',
-          totalUSDT: 4.2908001039
-        },
-        {
-          base: 'EQX',
-          quote: 'USDT',
-          pair: 'EQX/USDT',
-          timestamp: 1725396685920,
-          type: 'buy',
-          price: 0.002799,
-          amount: 9790.3127,
-          total: 27.4030852473,
-          fee: 0.0822092557419,
-          feecoin: 'USDT',
-          platform: 'kucoin',
-          totalUSDT: 27.4030852473
-        }
-      ]
-      mockRequest.body = { trades_data: mockTrades }
-      const mockResult = { status: 200, message: 'Trades ajoutés avec succès' }
-        ; (TradeService.addTradesManually as jest.Mock).mockResolvedValue(
-          mockResult
-        )
+    it('should add trades successfully', async () => {
+      const mockTradesData = [{ symbol: 'BTC/USD' }, { symbol: 'ETH/USD' }];
+      mockRequest.body = { trades_data: mockTradesData };
+      (TradeService.addTradesManually as jest.Mock).mockResolvedValue(mockTradesData);
 
-      await addTradesManually(mockRequest as Request, mockResponse as Response)
+      await addTradesManually(mockRequest as Request, mockResponse as Response);
 
-      expect(TradeService.addTradesManually).toHaveBeenCalledWith(mockTrades)
-      expect(mockStatus).toHaveBeenCalledWith(mockResult.status)
-      expect(mockJson).toHaveBeenCalledWith({ message: 'Trades ajoutés', data: mockResult })
-    })
+      expect(mockStatus).toHaveBeenCalledWith(200);
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Trades ajoutés', data: mockTradesData });
+    });
 
-    it("devrait gérer les erreurs lors de l'ajout manuel", async () => {
-      const mockError = new Error("Erreur d'ajout")
-      mockRequest.body = [{ id: '1' }]
-        ; (TradeService.addTradesManually as jest.Mock).mockRejectedValue(
-          mockError
-        )
+    it('should handle errors', async () => {
+      const mockError = new Error('Add trades error');
+      mockRequest.body = { trades_data: [] };
+      (TradeService.addTradesManually as jest.Mock).mockRejectedValue(mockError);
 
-      await addTradesManually(mockRequest as Request, mockResponse as Response)
+      await addTradesManually(mockRequest as Request, mockResponse as Response);
 
-      expect(handleControllerError).toHaveBeenCalledWith(
-        mockResponse,
-        mockError,
-        'addTradesManually'
-      )
-    })
-  })
+      expect(handleControllerError).toHaveBeenCalledWith(mockResponse, mockError, 'addTradesManually');
+    });
+  });
 
   describe('updateTrades', () => {
-    it('devrait mettre à jour plusieurs trades', async () => {
-      const mockPlatform = 'testPlatform'
-      const mockResult = {
-        status: 200,
-        message: 'Trades mis à jour avec succès'
-      }
+    it('should update trades successfully', async () => {
+      const mockUpdatedTrades = [{ id: '1', symbol: 'BTC/USDT' }];
+      mockRequest.params = { platform: 'binance' };
+      (isValidPlatform as jest.MockedFunction<typeof isValidPlatform>).mockReturnValue(true);
+      (TradeService.updateTrades as jest.Mock).mockResolvedValue(mockUpdatedTrades);
 
-      mockRequest.params = { platform: mockPlatform }
-        ; (TradeService.updateTrades as jest.Mock).mockResolvedValue(mockResult)
+      await updateTrades(mockRequest as Request, mockResponse as Response);
 
-      await updateTrades(mockRequest as Request, mockResponse as Response)
+      expect(mockStatus).toHaveBeenCalledWith(200);
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Trades mis à jour', data: mockUpdatedTrades });
+    });
 
-      expect(TradeService.updateTrades).toHaveBeenCalledWith(mockPlatform)
-      expect(mockStatus).toHaveBeenCalledWith(200)
-      expect(mockJson).toHaveBeenCalledWith({ message: 'Trades mis à jour', data: mockResult })
-    })
+    it('should return 400 for invalid platform', async () => {
+      mockRequest.params = { platform: 'invalid' };
+      (isValidPlatform as jest.MockedFunction<typeof isValidPlatform>).mockReturnValue(true);
 
-    it('devrait gérer les erreurs lors de la mise à jour multiple', async () => {
-      const mockError = new Error('Erreur de mise à jour multiple')
-      mockRequest.params = {}
-        ; (TradeService.updateTrades as jest.Mock).mockRejectedValue(mockError)
+      await updateTrades(mockRequest as Request, mockResponse as Response);
 
-      await updateTrades(mockRequest as Request, mockResponse as Response)
+      expect(mockStatus).toHaveBeenCalledWith(400);
+      expect(mockJson).toHaveBeenCalledWith({ message: "La plateforme 'invalid' n'est pas valide." });
+    });
 
-      expect(handleControllerError).toHaveBeenCalledWith(
-        mockResponse,
-        mockError,
-        'updateTrades'
-      )
-    })
-  })
+    it('should handle errors', async () => {
+      const mockError = new Error('Update trades error');
+      mockRequest.params = { platform: 'binance' };
+      (isValidPlatform as jest.MockedFunction<typeof isValidPlatform>).mockReturnValue(true);
+      (TradeService.updateTrades as jest.Mock).mockRejectedValue(mockError);
+
+      await updateTrades(mockRequest as Request, mockResponse as Response);
+
+      expect(handleControllerError).toHaveBeenCalledWith(mockResponse, mockError, 'updateTrades');
+    });
+  });
 
   describe('fetchLastTrades', () => {
-    it('devrait récupérer les derniers trades', async () => {
-      const mockPlatform = 'binance'
-      const mockSymbol = 'BTCUSDT'
-      const mockTrades = [
-        {
-          base: 'EQX',
-          quote: 'USDT',
-          pair: 'EQX/USDT',
-          timestamp: 1725396742065,
-          type: 'buy',
-          price: 0.002799,
-          amount: 1532.9761,
-          total: 4.2908001039,
-          fee: 0.0128724003117,
-          feecoin: 'USDT',
-          platform: 'kucoin',
-          totalUSDT: 4.2908001039
-        },
-        {
-          base: 'EQX',
-          quote: 'USDT',
-          pair: 'EQX/USDT',
-          timestamp: 1725396685920,
-          type: 'buy',
-          price: 0.002799,
-          amount: 9790.3127,
-          total: 27.4030852473,
-          fee: 0.0822092557419,
-          feecoin: 'USDT',
-          platform: 'kucoin',
-          totalUSDT: 27.4030852473
-        }
-      ]
-      mockRequest.params = { platform: mockPlatform, symbol: mockSymbol }
-        ; (TradeService.fetchLastTrades as jest.Mock).mockResolvedValue(
-          mockTrades
-        )
+    it('should fetch last trades successfully', async () => {
+      const mockLastTrades = [{ id: '1', symbol: 'BTC/USD' }];
+      mockRequest.params = { platform: 'binance', symbol: 'BTC/USD' };
+      (isValidPlatform as jest.MockedFunction<typeof isValidPlatform>).mockReturnValue(true);
+      (TradeService.fetchLastTrades as jest.Mock).mockResolvedValue(mockLastTrades);
 
-      await fetchLastTrades(mockRequest as Request, mockResponse as Response)
+      await fetchLastTrades(mockRequest as Request, mockResponse as Response);
 
-      expect(TradeService.fetchLastTrades).toHaveBeenCalledWith(
-        mockPlatform,
-        mockSymbol
-      )
-      expect(mockJson).toHaveBeenCalledWith({ message: 'Derniers trades récupérés', data: mockTrades })
-    })
+      expect(mockStatus).toHaveBeenCalledWith(200);
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Derniers trades récupérés', data: mockLastTrades });
+    });
 
-    it('devrait gérer les erreurs lors de la récupération des derniers trades', async () => {
-      const mockError = new Error('Erreur de récupération')
-      mockRequest.params = { platform: 'binance', symbol: 'BTCUSDT' }
-        ; (TradeService.fetchLastTrades as jest.Mock).mockRejectedValue(mockError)
+    it('should return 400 for invalid platform', async () => {
+      mockRequest.params = { platform: 'invalid', symbol: 'BTC/USD' };
+      (isValidPlatform as jest.MockedFunction<typeof isValidPlatform>).mockReturnValue(true);
 
-      await fetchLastTrades(mockRequest as Request, mockResponse as Response)
+      await fetchLastTrades(mockRequest as Request, mockResponse as Response);
 
-      expect(handleControllerError).toHaveBeenCalledWith(
-        mockResponse,
-        mockError,
-        'fetchLastTrades'
-      )
-    })
-  })
+      expect(mockStatus).toHaveBeenCalledWith(400);
+      expect(mockJson).toHaveBeenCalledWith({ message: "La plateforme 'invalid' n'est pas valide." });
+    });
+
+    it('should handle errors', async () => {
+      const mockError = new Error('Fetch last trades error');
+      mockRequest.params = { platform: 'binance', symbol: 'BTC/USD' };
+      (isValidPlatform as jest.MockedFunction<typeof isValidPlatform>).mockReturnValue(true);
+      (TradeService.fetchLastTrades as jest.Mock).mockRejectedValue(mockError);
+
+      await fetchLastTrades(mockRequest as Request, mockResponse as Response);
+
+      expect(handleControllerError).toHaveBeenCalledWith(mockResponse, mockError, 'fetchLastTrades');
+    });
+  });
 
   describe('saveTradesToDatabase', () => {
-    it('devrait sauvegarder les trades dans la base de données', async () => {
-      const mockNewTrades = [
-        {
-          base: 'EQX',
-          quote: 'USDT',
-          pair: 'EQX/USDT',
-          timestamp: 1725396742065,
-          type: 'buy',
-          price: 0.002799,
-          amount: 1532.9761,
-          total: 4.2908001039,
-          fee: 0.0128724003117,
-          feecoin: 'USDT',
-          platform: 'kucoin',
-          totalUSDT: 4.2908001039
-        },
-        {
-          base: 'EQX',
-          quote: 'USDT',
-          pair: 'EQX/USDT',
-          timestamp: 1725396685920,
-          type: 'buy',
-          price: 0.002799,
-          amount: 9790.3127,
-          total: 27.4030852473,
-          fee: 0.0822092557419,
-          feecoin: 'USDT',
-          platform: 'kucoin',
-          totalUSDT: 27.4030852473
-        }
-      ]
-      mockRequest.body = { newTrades: mockNewTrades }
-        ; (TradeService.saveTradesToDatabase as jest.Mock).mockResolvedValue(
-          undefined
-        )
+    it('should save trades successfully', async () => {
+      const mockNewTrades = [{ symbol: 'BTC/USD' }, { symbol: 'ETH/USD' }];
+      mockRequest.body = { newTrades: mockNewTrades };
+      (TradeService.saveTradesToDatabase as jest.Mock).mockResolvedValue(undefined);
 
-      await saveTradesToDatabase(
-        mockRequest as Request,
-        mockResponse as Response
-      )
+      await saveTradesToDatabase(mockRequest as Request, mockResponse as Response);
 
-      expect(TradeService.saveTradesToDatabase).toHaveBeenCalledWith(
-        mockNewTrades
-      )
-      expect(mockStatus).toHaveBeenCalledWith(200)
-      expect(mockJson).toHaveBeenCalledWith({
-        message: 'Trades sauvegardés avec succès'
-      })
-    })
+      expect(mockStatus).toHaveBeenCalledWith(200);
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Trades sauvegardés avec succès' });
+    });
 
-    it('devrait gérer les erreurs lors de la sauvegarde des trades', async () => {
-      const mockError = new Error('Erreur de sauvegarde')
-      mockRequest.body = { newTrades: [{ id: '1' }] }
-        ; (TradeService.saveTradesToDatabase as jest.Mock).mockRejectedValue(
-          mockError
-        )
+    it('should handle errors', async () => {
+      const mockError = new Error('Save trades error');
+      mockRequest.body = { newTrades: [] };
+      (TradeService.saveTradesToDatabase as jest.Mock).mockRejectedValue(mockError);
 
-      await saveTradesToDatabase(
-        mockRequest as Request,
-        mockResponse as Response
-      )
+      await saveTradesToDatabase(mockRequest as Request, mockResponse as Response);
 
-      expect(handleControllerError).toHaveBeenCalledWith(
-        mockResponse,
-        mockError,
-        'saveTradesToDatabase'
-      )
-    })
-  })
+      expect(handleControllerError).toHaveBeenCalledWith(mockResponse, mockError, 'saveTradesToDatabase');
+    });
+  });
 
-})
+  describe('saveAllTradesToDatabase', () => {
+    it('should save all trades successfully', async () => {
+      const mockNewTrades = [{ symbol: 'BTC/USD' }, { symbol: 'ETH/USD' }];
+      mockRequest.body = { newTrades: mockNewTrades };
+      (TradeService.saveTradesToDatabase as jest.Mock).mockResolvedValue(undefined);
+
+      await saveAllTradesToDatabase(mockRequest as Request, mockResponse as Response);
+
+      expect(mockStatus).toHaveBeenCalledWith(200);
+      expect(mockJson).toHaveBeenCalledWith({ message: 'Tous les trades sauvegardés avec succès' });
+    });
+
+    it('should handle errors', async () => {
+      const mockError = new Error('Save all trades error');
+      mockRequest.body = { newTrades: [] };
+      (TradeService.saveTradesToDatabase as jest.Mock).mockRejectedValue(mockError);
+
+      await saveAllTradesToDatabase(mockRequest as Request, mockResponse as Response);
+
+      expect(handleControllerError).toHaveBeenCalledWith(mockResponse, mockError, 'saveAllTradesToDatabase');
+    });
+  });
+});

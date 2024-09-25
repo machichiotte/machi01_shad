@@ -1,13 +1,12 @@
 // src/services/orderBalanceService.ts
-import {
-  createPlatformInstance,
-} from '@utils/platformUtil'
+import { createPlatformInstance, } from '@utils/platformUtil'
 import { MongodbService } from '@services/mongodbService'
 import { MappingService } from '@services/mappingService'
 import { Order, Exchange } from 'ccxt'
-import { MappedOrder } from '@typ/database'
+import { MappedOrder } from '@typ/order'
 import { handleServiceError } from '@utils/errorUtil'
-import config from '@config/index';
+import { config } from '@config/index';
+import { PLATFORM } from '@src/types/platform';
 
 const COLLECTION_NAME = config.collection.order;
 const COLLECTION_TYPE = config.collectionType.order;
@@ -24,7 +23,7 @@ export class OrderBalanceService {
   /**
    * Fetches and maps orders for a given platform.
    */
-  static async fetchAndMapOrders(platform: string): Promise<MappedOrder[]> {
+  static async fetchAndMapOrders(platform: PLATFORM): Promise<MappedOrder[]> {
     try {
       const data = await this.fetchOpenOrdersByPlatform(platform)
       const mappedData = MappingService.mapOrders(platform, data)
@@ -41,7 +40,7 @@ export class OrderBalanceService {
   /**
    * Updates orders from the server for a given platform.
    */
-  static async updateOrdersFromServer(platform: string): Promise<MappedOrder[]> {
+  static async updateOrdersFromServer(platform: PLATFORM): Promise<MappedOrder[]> {
     try {
       const mappedData = await this.fetchAndMapOrders(platform)
       await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE)
@@ -58,7 +57,7 @@ export class OrderBalanceService {
   /**
    * Fetches open orders for a given platform.
    */
-  static async fetchOpenOrdersByPlatform(platform: string): Promise<Order[]> {
+  static async fetchOpenOrdersByPlatform(platform: PLATFORM): Promise<Order[]> {
     const platformInstance = createPlatformInstance(platform)
     try {
       if (platform === 'binance' && platformInstance.options) {

@@ -104,7 +104,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 - │ ├── balanceController.ts
 - │ ├── cmcController.ts
 - │ ├── converterController.ts
-- │ ├── lastUpdateController.ts
+- │ ├── timestampController.ts
 - │ ├── marketController.ts
 - │ ├── orderBalanceController.ts
 - │ ├── orderMarketController.ts
@@ -128,7 +128,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 - │ ├── cmcService.ts
 - │ ├── converterService.ts
 - │ ├── databaseOperationsService.ts
-- │ ├── lastUpdateService.ts
+- │ ├── timestampService.ts
 - │ ├── mappingService.ts
 - │ ├── marketService.ts
 - │ ├── migrationSwapService.ts
@@ -146,7 +146,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 - │ ├── balanceRoutes.ts
 - │ ├── cmcRoutes.ts
 - │ ├── converterRoutes.ts
-- │ ├── lastUpdateRoutes.ts
+- │ ├── timestampRoutes.ts
 - │ ├── marketRoutes
 - │ ├── orderRoutes
 - │ ├── shadRoutes
@@ -264,9 +264,9 @@ Le backend expose les points d'API suivants :
 - `POST /api/converter/post`: Convertir un fichier CSV
 - `POST /api/auth/login`: Connexion utilisateur
 - `POST /api/auth/register`: Inscription utilisateur
-- `GET /api/lastUpdate/get`: Obtenir la dernière mise à jour
-- `GET /api/lastUpdate/get/:type/:platform`: Obtenir une mise à jour spécifique
-- `GET /api/lastUpdate/update/:type`: Mettre à jour par type
+- `GET /api/timestamp/get`: Obtenir la dernière mise à jour
+- `GET /api/timestamp/get/:type/:platform`: Obtenir une mise à jour spécifique
+- `GET /api/timestamp/update/:type`: Mettre à jour par type
 
 ## Dépendances
 

@@ -1,15 +1,15 @@
 import { Request, Response } from 'express'
-import { TickerService } from '@src/services/tickerService'
-import { handleControllerError } from '@utils/errorUtil'
+import { TickerService } from '../../../src/services/tickerService'
+import { handleControllerError } from '../../../src/utils/errorUtil'
 import {
   getAllTickers,
   getAllTickersByPlatform,
   getAllTickersBySymbolFromPlatform,
   updateAllTickers
-} from '@src/controllers/tickerController'
+} from '../../../src/controllers/tickerController'
 
-jest.mock('@services/tickerService')
-jest.mock('@utils/errorUtil')
+jest.mock('../../../src/services/tickerService')
+jest.mock('../../../src/utils/errorUtil')
 
 describe('tickerController', () => {
   let mockRequest: Partial<Request>

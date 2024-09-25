@@ -5,17 +5,18 @@ import {
 } from '@utils/platformUtil'
 import { Order, Exchange } from 'ccxt'
 import { handleServiceError } from '@utils/errorUtil'
+import { PLATFORM } from '@src/types/platform'
 
 export class OrderMarketService {
 
-    static async createOrUpdateStopLossOrder(platform: string, stopPrice: number, base: string, balance: number): Promise<void> {
+    static async createOrUpdateStopLossOrder(platform: PLATFORM, stopPrice: number, base: string, balance: number): Promise<void> {
         return await this.createStopLossOrder(platform, base, balance, 'sell', 'limit', stopPrice)
     }
 
     /**
        * Deletes an order for a given platform.
        */
-    static async deleteOrder(platform: string, oId: string, symbol: string): Promise<void> {
+    static async deleteOrder(platform: PLATFORM, oId: string, symbol: string): Promise<void> {
         try {
             const platformInstance = createPlatformInstance(platform)
             await platformInstance.cancelOrder(oId, symbol.replace('/', ''))
@@ -29,14 +30,14 @@ export class OrderMarketService {
     /**
     * Creates a market order for a given platform.
     */
-    static async createMarketOrder(platform: string, asset: string, amount: number, orderType: 'buy' | 'sell'): Promise<void> {
+    static async createMarketOrder(platform: PLATFORM, asset: string, amount: number, orderType: 'buy' | 'sell'): Promise<void> {
         this.createOrder(platform, asset, amount, orderType, 'market')
     }
 
     /**
      * Creates a limit order for a given platform.
      */
-    static async createLimitOrder(platform: string, asset: string, amount: number, orderType: 'buy' | 'sell', price: number): Promise<void> {
+    static async createLimitOrder(platform: PLATFORM, asset: string, amount: number, orderType: 'buy' | 'sell', price: number): Promise<void> {
         this.createOrder(platform, asset, amount, orderType, 'limit', price)
     }
 
@@ -60,7 +61,7 @@ export class OrderMarketService {
         throw new Error('Mode d\'ordre non valide')
     }
 
-    static async createStopLossOrder(platform: string, asset: string, amount: number, orderType: 'buy' | 'sell', orderMode: 'market' | 'limit', stopPrice?: number): Promise<void> {
+    static async createStopLossOrder(platform: PLATFORM, asset: string, amount: number, orderType: 'buy' | 'sell', orderMode: 'market' | 'limit', stopPrice?: number): Promise<void> {
         try {
             const platformInstance = createPlatformInstance(platform)
             const symbol = getSymbolForPlatform(platform, asset)
@@ -77,7 +78,7 @@ export class OrderMarketService {
         }
     }
 
-    static async createOrder(platform: string, asset: string, amount: number, orderType: 'buy' | 'sell', orderMode: 'market' | 'limit', price?: number): Promise<void> {
+    static async createOrder(platform: PLATFORM, asset: string, amount: number, orderType: 'buy' | 'sell', orderMode: 'market' | 'limit', price?: number): Promise<void> {
         console.log('createOrder', platform, asset, amount, orderType, orderMode, price)
         try {
             const platformInstance = createPlatformInstance(platform)
@@ -94,7 +95,7 @@ export class OrderMarketService {
     /**
     * Cancels all orders for a given platform and asset.
     */
-    static async cancelAllOrdersByBunch(platform: string, asset: string): Promise<{ message: string }> {
+    static async cancelAllOrdersByBunch(platform: PLATFORM, asset: string): Promise<{ message: string }> {
         try {
             const platformInstance = createPlatformInstance(platform)
             const symbol = getSymbolForPlatform(platform, asset)
@@ -115,7 +116,7 @@ export class OrderMarketService {
     /**
     * Cancels all sell orders for a given platform and asset.
     */
-    static async cancelAllSellOrders(platform: string, asset: string): Promise<{ message: string }> {
+    static async cancelAllSellOrders(platform: PLATFORM, asset: string): Promise<{ message: string }> {
         try {
             const platformInstance = createPlatformInstance(platform)
             const symbol = getSymbolForPlatform(platform, asset)

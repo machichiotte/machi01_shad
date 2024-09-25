@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
-import { getConvertedCsv } from '@controllers/converterController'
-import * as ConverterService from '@services/converterService'
+import { getConvertedCsv } from '../../../src/controllers/converterController'
+import * as ConverterService from '../../../src/services/converterService'
 import Papa from 'papaparse'
 
-jest.mock('@services/converterService')
+jest.mock('../../../src/services/converterService')
 jest.mock('papaparse')
 
 describe('converterController', () => {

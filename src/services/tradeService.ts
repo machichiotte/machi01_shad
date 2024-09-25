@@ -1,22 +1,22 @@
 // src/services/tradeService.ts
 import { createPlatformInstance } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
-import { LastUpdateService } from '@services/lastUpdateService'
+import { TimestampService } from '@services/timestampService'
 import { MappingService } from '@services/mappingService'
 import { TradeRepository } from '@repositories/tradeRepository'
 import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ/trade'
 import { Trade } from 'ccxt'
 import Exchange from 'ccxt/js/src/abstract/kucoin'
-import config from '@config/index'
-
-const TRADES_TYPE = config.collectionType.trades
+import { config } from '@config/index';
+import { PLATFORM } from '@typ/platform'
+const TRADES_TYPE = config.collectionType.trade
 
 export class TradeService {
   static async fetchDatabaseTrades(): Promise<MappedTrade[]> {
     return await TradeRepository.fetchAllTrades()
   }
 
-  static async fetchLastTrades(platform: string, symbol: string): Promise<Trade[]> {
+  static async fetchLastTrades(platform: PLATFORM, symbol: string): Promise<Trade[]> {
     try {
       const platformInstance = createPlatformInstance(platform)
       return await platformInstance.fetchMyTrades(symbol)
@@ -39,11 +39,11 @@ export class TradeService {
     }
   }
 
-  static async updateTrades(platform: string): Promise<TradeServiceResult> {
+  static async updateTrades(platform: PLATFORM): Promise<TradeServiceResult> {
     try {
       const mappedData = await this.fetchPlatformTrades(platform)
       await TradeRepository.deleteAndProcessTrades(mappedData, platform)
-      await LastUpdateService.saveLastUpdateToDatabase(TRADES_TYPE, platform)
+      await TimestampService.saveTimestampToDatabase(TRADES_TYPE, platform)
       return { data: mappedData }
     } catch (error) {
       handleServiceError(error, 'updateTrades', `Error updating trades for ${platform}`)
@@ -71,7 +71,7 @@ export class TradeService {
     }
   }
 
-  private static async fetchPlatformTrades(platform: string): Promise<MappedTrade[]> {
+  private static async fetchPlatformTrades(platform: PLATFORM): Promise<MappedTrade[]> {
     const platformInstance = createPlatformInstance(platform) as Exchange
 
     let trades: Trade[] = []

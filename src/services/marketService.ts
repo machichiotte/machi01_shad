@@ -1,11 +1,12 @@
 // src/services/marketService.ts
 import { createPlatformInstance } from '@utils/platformUtil';
-import { LastUpdateService } from '@services/lastUpdateService';
+import { TimestampService } from '@services/timestampService';
 import { MongodbService } from '@services/mongodbService';
 import { MappingService } from '@services/mappingService';
-import { MappedMarket } from '@typ/database';
+import { MappedMarket } from '@typ/market';
 import { handleServiceError } from '@utils/errorUtil';
-import config from '@config/index';
+import { config } from '@config/index';
+import { PLATFORM } from '@src/types/platform';
 
 const COLLECTION_NAME = config.collection.market
 const COLLECTION_TYPE = config.collectionType.market
@@ -14,7 +15,7 @@ export class MarketService {
   /**
    * Fetches the current markets from the specified platform.
    */
-  static async fetchCurrentMarkets(platform: string): Promise<MappedMarket[]> {
+  static async fetchCurrentMarkets(platform: PLATFORM): Promise<MappedMarket[]> {
     const platformInstance = createPlatformInstance(platform);
     const data = await platformInstance.fetchMarkets();
     return MappingService.mapMarkets(platform, data);
@@ -23,11 +24,11 @@ export class MarketService {
   /**
    * Updates the markets for a specified platform.
    */
-  static async updateMarketsForPlatform(platform: string): Promise<void> {
+  static async updateMarketsForPlatform(platform: PLATFORM): Promise<void> {
     try {
       const currentMarkets = await this.fetchCurrentMarkets(platform)
       await MongodbService.deleteAndProcessData(COLLECTION_NAME, currentMarkets, platform);
-      await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE || '', platform);
+      await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE || '', platform);
       console.log(`Market data for ${platform} updated in the database. Total records: ${currentMarkets.length}.`);
     } catch (error) {
       handleServiceError(error, 'updateMarketsForPlatform', `Erreur lors de la mise à jour des marchés pour ${platform}`)

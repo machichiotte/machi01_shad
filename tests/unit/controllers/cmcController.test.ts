@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import { getCmc, updateCmc } from '@controllers/cmcController'
-import { CmcService } from '@services/cmcService'
-import { handleControllerError } from '@utils/errorUtil'
+import { getCmc, updateCmc } from '../../../src/controllers/cmcController'
+import { CmcService } from '../../../src/services/cmcService'
+import { handleControllerError } from '../../../src/utils/errorUtil'
 
-jest.mock('@services/cmcService')
-jest.mock('@utils/errorUtil')
+jest.mock('../../../src/services/cmcService')
+jest.mock('../../../src/utils/errorUtil')
 
 describe('cmcController', () => {
     let mockRequest: Partial<Request>

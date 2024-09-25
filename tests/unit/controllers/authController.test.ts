@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { registerUser, loginUser } from '@controllers/authController'
-import { AuthService } from '@services/authService'
+import { registerUser, loginUser } from '../../../src/controllers/authController'
+import { AuthService } from '../../../src/services/authService'
 
-jest.mock('@services/authService')
+jest.mock('../../../src/services/authService')
 
 describe('authController', () => {
     let mockRequest: Partial<Request>

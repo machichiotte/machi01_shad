@@ -1,10 +1,10 @@
 import express from 'express';
 import request from 'supertest';
 import strategyRoutes from '@routes/strategyRoutes';
-import * as strategyController from '@controllers/strategyController';
+import * as strategyController from '../../../src/controllers/strategyController';
 
 // Mock du contrôleur Strategy
-jest.mock('@controllers/strategyController');
+jest.mock('../../../src/controllers/strategyController');
 
 describe('strategyRoutes', () => {
     let app: express.Application;

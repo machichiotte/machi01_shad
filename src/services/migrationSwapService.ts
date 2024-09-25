@@ -1,11 +1,13 @@
 // src/services/migrationSwapService.ts
-import { MappedStrategy, SwapMigration } from '@typ/database';
+import { SwapMigration } from '@typ/database';
+import { MappedStrat } from '@typ/strat';
+
 import { StrategyService } from '@services/strategyService';
 import { TradeService } from '@services/tradeService';
 import { handleServiceError } from '@utils/errorUtil';
 import { MongodbService } from '@services/mongodbService'
 import { MappedTrade } from '@typ/trade'
-import config from '@config/index';
+import { config } from '@config/index';
 
 const COLLECTION_NAME = config.collection.swap;
 
@@ -31,7 +33,7 @@ async function updateTrade(trade: MappedTrade, oldAsset: string, newAsset: strin
   }
 }
 
-async function updateStrategy(strategy: MappedStrategy, newAsset: string, platform: string): Promise<void> {
+async function updateStrategy(strategy: MappedStrat, newAsset: string, platform: string): Promise<void> {
   const updatedStrategy = { asset: newAsset };
   await StrategyService.updateStrategyById(strategy._id, updatedStrategy);
   console.info(`Strategy swap completed for ${strategy.asset} to ${newAsset} on platform ${platform}.`);
@@ -42,7 +44,7 @@ async function handleMigrationSwaps(): Promise<void> {
     const [swaps, trades, strategies] = await Promise.all([
       fetchDatabaseSwapMigration(),
       TradeService.fetchDatabaseTrades() as Promise<MappedTrade[]>,
-      StrategyService.fetchDatabaseStrategies() as Promise<MappedStrategy[]>
+      StrategyService.fetchDatabaseStrategies() as Promise<MappedStrat[]>
     ]);
 
     const now = new Date();

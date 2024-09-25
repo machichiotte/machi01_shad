@@ -11,6 +11,6 @@ export interface Routes {
   market: Router,
   trades: Router,
   tickers: Router,
-  lastUpdate: Router,
+  timestamp: Router,
   shad: Router
 }

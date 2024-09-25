@@ -1,6 +1,6 @@
 // src/repositories/userRepository.ts
 import { MongodbService } from '@services/mongodbService';
-import config from '@config/index';
+import { config } from '@config/index';
 import { User } from '@typ/auth';
 import { handleServiceError } from '@src/utils/errorUtil';
 

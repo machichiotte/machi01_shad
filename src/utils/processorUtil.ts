@@ -1,8 +1,13 @@
 // src/utils/processorUtil.ts
 import { Difference } from '@typ/processor'
 import { STABLECOINS } from '@src/constants'
-import { MappedCmc, MappedStrategy, MappedOrder, MappedTicker, MappedBalance, AssetMetrics } from '@typ/database'
 import { MappedTrade } from '@typ/trade'
+import { MappedTicker } from '@typ/ticker'
+import { MappedBalance } from '@typ/balance'
+import { MappedCmc } from '@typ/cmc'
+import { MappedStrat } from '@typ/strat'
+import { AssetMetrics } from '@typ/metrics'
+import { MappedOrder } from '@typ/order'
 /**
  * Removes duplicates from balance differences.
  */
@@ -36,7 +41,7 @@ function logDifferenceType(difference: Difference): void {
 
 function areAllDataValid(
     dbCmc: MappedCmc[] | null,
-    dbStrategies: MappedStrategy[] | null,
+    dbStrategies: MappedStrat[] | null,
     dbTrades: MappedTrade[] | null,
     dbOpenOrders: MappedOrder[] | null,
     dbTickers: MappedTicker[] | null,

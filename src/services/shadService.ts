@@ -2,7 +2,11 @@
 import { MongodbService } from '@services/mongodbService'
 import { ShadData, HighestPrices } from '@typ/database'
 import { databaseOperations } from '@services/databaseOperationsService'
-import config from '@config/index'
+import { config } from '@config/index';
+import { PLATFORM } from '@src/types/platform';
+
+const COLLECTION_NAME_SHAD = config.collection.shad
+const COLLECTION_NAME_HIGH_PRICE = config.collection.highestPrice
 
 export class ShadService {
   /**
@@ -11,19 +15,16 @@ export class ShadService {
    * The collection name is specified in the environment variable MONGODB_COLLECTION_SHAD.
    */
   static async fetchShadInDatabase(): Promise<ShadData[]> {
-    const collectionName = config.collection.shad
-    return await MongodbService.getData(collectionName) as ShadData[]
+    return await MongodbService.getData(COLLECTION_NAME_SHAD) as ShadData[]
   }
 
   static async getHighestPrices(): Promise<HighestPrices[]> {
-    const collectionName = config.collection.highestPrices
-    return await MongodbService.getData(collectionName) as HighestPrices[]
+    return await MongodbService.getData(COLLECTION_NAME_HIGH_PRICE) as HighestPrices[]
   }
 
-  static async updateHighestPrice(platform: string, base: string, price: number): Promise<void> {
-    const collectionName = config.collection.highestPrices
+  static async updateHighestPrice(platform: PLATFORM, base: string, price: number): Promise<void> {
     //ici le update ne fonctionne pas si il ny a pas dobjet avec la base et la platform 
-    await databaseOperations.updateOneUpsert(collectionName, { base, platform },
+    await databaseOperations.updateOneUpsert(COLLECTION_NAME_HIGH_PRICE, { base, platform },
       {
         $set: {
           base,

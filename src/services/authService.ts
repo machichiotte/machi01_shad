@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import { AuthRepository } from '@repositories/authRepository';
 import { handleServiceError } from '@utils/errorUtil';
 import { User } from '@typ/auth';
-import config from '@config/index';
+import { config } from '@config/index';
 
 const HASH_ROUNDS = config.security.hashRounds || 10; // Nombre de tours de sel pour bcrypt
 

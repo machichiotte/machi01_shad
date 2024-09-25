@@ -1,12 +1,12 @@
 import express from 'express';
 import request from 'supertest';
 import orderRoutes from '@routes/orderRoutes';
-import * as orderBalanceController from '@controllers/orderBalanceController';
-import * as orderMarketController from '@controllers/orderMarketController';
+import * as orderBalanceController from '../../../src/controllers/orderBalanceController';
+import * as orderMarketController from '../../../src/controllers/orderMarketController';
 
 // Mock des contrôleurs
-jest.mock('@controllers/orderBalanceController');
-jest.mock('@controllers/orderMarketController');
+jest.mock('../../../src/controllers/orderBalanceController');
+jest.mock('../../../src/controllers/orderMarketController');
 
 describe('orderRoutes', () => {
   let app: express.Application;

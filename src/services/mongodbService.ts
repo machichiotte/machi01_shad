@@ -1,40 +1,17 @@
 // src/services/mongodbService.ts
-import { MongoClient, ServerApiVersion, Db, InsertManyResult, InsertOneResult, Document } from 'mongodb'
+import { MongoClient, ServerApiVersion, Db, Document } from 'mongodb'
 import { MappedData } from '@typ/database'
 import { retry } from '@utils/retryUtil'
 import { getMockedData } from '@utils/mockUtil'
 import { handleServiceError } from '@utils/errorUtil'
-import { LastUpdateService } from '@services/lastUpdateService'
+import { TimestampService } from '@services/timestampService'
 import { databaseOperations } from '@services/databaseOperationsService'
-import config from '@config/index';
-
-if (!config) {
-  throw new Error('La configuration est manquante');
-}
-
-if (!config.database) {
-  throw new Error('La configuration de la base de données est manquante');
-}
-
-const uri = `mongodb+srv://${config.database.user}:${config.database.password}@${config.database.dbName}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+import { CacheItem, InsertData } from '@typ/mongodb'
+import { CacheService } from './cacheService'
+import { config } from '@config/index';
 
 let mongoInstance: MongoClient | null = null
 let db: Db | null = null
-
-export interface updateOneDataParams {
-  matchedCount: number
-  modifiedCount: number
-  upsertedId: object
-  upsertedCount: number
-}
-
-type InsertData = InsertOneResult<Document> | InsertManyResult<Document>
-
-
-interface CacheItem {
-  data: Document[]
-  timestamp: number
-}
 
 export class MongodbService {
 
@@ -60,7 +37,12 @@ export class MongodbService {
    * Establishes a connection to the MongoDB client.
    */
   static async getMongoClient(): Promise<MongoClient> {
+    console.log('getMongoClient')
     if (!mongoInstance) {
+      console.log('no instance')
+
+      const uri = `mongodb+srv://${config.database.user}:${config.database.password}@${config.database.cluster}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+      console.log('uri', uri)
       try {
         console.log('Attempting to connect to MongoDB...')
         mongoInstance = new MongoClient(uri, {
@@ -85,10 +67,10 @@ export class MongodbService {
    */
   static async getDB(): Promise<Db> {
     if (!db) {
+
       const client = await MongodbService.getMongoClient()
       try {
-        db = client.db(config.database?.dbName)
-        console.log('Database selected:', config.database?.dbName)
+        db = client.db(config.database.dbName)
       } catch (error) {
         handleServiceError(error, 'getDB', 'Error getting database')
         throw error
@@ -106,7 +88,7 @@ export class MongodbService {
       console.log('Connecté à MongoDB !')
 
       const collectionsToCreate = Object.values(config.collection ?? {})
-
+      console.log('jaja collectionsToCreate', collectionsToCreate)
       await Promise.all(collectionsToCreate.map(collectionName =>
         MongodbService.createCollectionIfNotExists(collectionName)
       ))
@@ -196,29 +178,53 @@ export class MongodbService {
    * Retrieves all data from a specified collection with caching.
    */
   static async getAllDataMDB(collectionName: string): Promise<CacheItem[] | Document[]> {
-    // Check cache first
-    const cachedData = MongodbService.checkCache(collectionName);
+    // Déterminer la clé de cache appropriée
+    const key = this.getCacheKeyForCollection(collectionName);
+
+    // Vérifier d'abord le cache
+    const cachedData = CacheService.getFromCache(key);
     if (cachedData) return cachedData;
 
-    // Fetch new data if cache is expired
+    // Récupérer de nouvelles données si le cache est expiré
     return MongodbService.fetchAndCacheData(collectionName);
   }
 
-  private static checkCache(collectionName: string): Document[] | null {
-    const cacheItem = MongodbService.cache[collectionName];
-    const expirationTime = config.cacheExpirationTimes?.[collectionName] || 0;
-
-    if (cacheItem && (Date.now() - cacheItem.timestamp < expirationTime)) {
-      return cacheItem.data;
+  private static getCacheKeyForCollection(collectionName: string): keyof typeof config.cacheExpirationTimes {
+    switch (collectionName) {
+      case config.collection.balance:
+        return 'balance';
+      case config.collection.cmc:
+        return 'cmc';
+      case config.collection.highestPrice:
+        return 'highestPrice';
+      case config.collection.timestamp:
+        return 'timestamp';
+      case config.collection.market:
+        return 'market';
+      case config.collection.order:
+        return 'order';
+      case config.collection.shad:
+        return 'shad';
+      case config.collection.strat:
+        return 'strat';
+      case config.collection.swap:
+        return 'swaps';
+      case config.collection.ticker:
+        return 'ticker';
+      case config.collection.trade:
+        return 'trade';
+      case config.collection.user:
+        return 'user';
+      default:
+        throw new Error(`Collection non reconnue: ${collectionName}`);
     }
-    return null;
   }
 
-  private static async fetchAndCacheData(collectionName: string): Promise<Document[]> {
+  static async fetchAndCacheData(collectionName: string): Promise<Document[]> {
     try {
       console.log(`Fetching new data for collection: ${collectionName}`);
       const result = await retry(databaseOperations.find, [collectionName], 3);
-      MongodbService.addToCache(collectionName, result);
+      CacheService.addToCache(collectionName, result);
       return result;
     } catch (error) {
       handleServiceError(error, 'fetchAndCacheData', `Error fetching data from ${collectionName}`);
@@ -275,7 +281,7 @@ export class MongodbService {
   static async saveDataToDatabase(data: MappedData[], collectionName: string, platform: string, updateType: string): Promise<void> {
     try {
       await MongodbService.deleteAndProcessData(collectionName, data, platform)
-      await LastUpdateService.saveLastUpdateToDatabase(updateType, platform)
+      await TimestampService.saveTimestampToDatabase(updateType, platform)
       console.log(`Données de ${platform} sauvegardées dans la base de données de ${collectionName}`)
     } catch (error) {
       handleServiceError(error, 'saveDataToDatabase', 'Erreur lors de la sauvegarde des données dans la base de données')

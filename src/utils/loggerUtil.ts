@@ -1,6 +1,6 @@
 // src/utils/loggerUtil.ts
 import winston from 'winston';
-import config from '@config/index';
+import { config } from '@config/index';
 
 const errorLogger = winston.createLogger({
   level: 'error',

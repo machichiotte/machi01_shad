@@ -1,7 +1,8 @@
-import { MappedBalance } from '@typ/database';
+import { MappedBalance } from '@typ/balance';
 import { Asset, HighestPrice, UpdatedOrder } from '@typ/trailingStop';
 import { TrailingStopRepository } from '@repositories/trailingStopRepository';
 import { handleServiceError } from '@utils/errorUtil';
+import { PLATFORM } from '@src/types/platform';
 
 export class TrailingStopService {
     private static readonly PERCENTAGE_TO_LOSE = 0.01;
@@ -65,7 +66,7 @@ export class TrailingStopService {
             for (const [platform, symbolsAndBalances] of Object.entries(symbolsAndBalanceByPlatform)) {
                 if (kucoinOnly && platform !== 'kucoin') continue;
 
-                const platformTickers = await TrailingStopRepository.fetchCurrentTickers(platform);
+                const platformTickers = await TrailingStopRepository.fetchCurrentTickers(platform as PLATFORM);
                 let requestWeight = 0;
                 let orderCount = 0;
                 const lastResetTime = Date.now();
@@ -101,7 +102,7 @@ export class TrailingStopService {
         }
     }
 
-    private static async handleRateLimiting(platform: string, requestWeight: number, orderCount: number, lastResetTime: number): Promise<void> {
+    private static async handleRateLimiting(platform: PLATFORM, requestWeight: number, orderCount: number, lastResetTime: number): Promise<void> {
         try {
             const currentTime = Date.now();
             const timeSinceLastReset = currentTime - lastResetTime;
@@ -120,7 +121,7 @@ export class TrailingStopService {
         }
     }
 
-    private static async updateOrCreateOrder(platform: string, base: string, balance: number, currentPrice: number, highestPrice: number | undefined): Promise<UpdatedOrder | null> {
+    private static async updateOrCreateOrder(platform: PLATFORM, base: string, balance: number, currentPrice: number, highestPrice: number | undefined): Promise<UpdatedOrder | null> {
         try {
             if (!highestPrice && currentPrice) {
                 const stopPrice = currentPrice * (1 - this.PERCENTAGE_TO_LOSE);

@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import { getMarkets } from '@controllers/marketController'
-import { MarketService } from '@services/marketService'
-import { handleControllerError } from '@utils/errorUtil'
+import { getMarkets } from '../../../src/controllers/marketController'
+import { MarketService } from '../../../src/services/marketService'
+import { handleControllerError } from '../../../src/utils/errorUtil'
 
-jest.mock('@services/marketService')
-jest.mock('@utils/errorUtil')
-jest.mock('@utils/loggerUtil')
+jest.mock('../../../src/services/marketService')
+jest.mock('../../../src/utils/errorUtil')
+jest.mock('../../../src/utils/loggerUtil')
 
 describe('marketController', () => {
   let mockRequest: Partial<Request>

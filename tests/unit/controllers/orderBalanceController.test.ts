@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import { getOrders } from '@controllers/orderBalanceController'
-import { OrderBalanceService } from '@services/orderBalanceService'
-import { handleControllerError } from '@utils/errorUtil'
+import { getOrders } from '../../../src/controllers/orderBalanceController'
+import { OrderBalanceService } from '../../../src/services/orderBalanceService'
+import { handleControllerError } from '../../../src/utils/errorUtil'
 
-jest.mock('@services/orderBalanceService')
-jest.mock('@utils/errorUtil')
+jest.mock('../../../src/services/orderBalanceService')
+jest.mock('../../../src/utils/errorUtil')
 
 describe('orderBalanceController', () => {
   let mockRequest: Partial<Request>

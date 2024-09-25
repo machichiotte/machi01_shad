@@ -3,14 +3,14 @@ import {
   getStrat,
   updateStrat,
   updateStrategyById
-} from '@controllers/strategyController'
-import { StrategyService } from '@services/strategyService'
-import { LastUpdateService } from '@services/lastUpdateService'
-import { handleControllerError } from '@utils/errorUtil'
+} from '../../../src/controllers/strategyController'
+import { StrategyService } from '../../../src/services/strategyService'
+import { TimestampService } from '../../../src/services/timestampService'
+import { handleControllerError } from '../../../src/utils/errorUtil'
 
-jest.mock('@services/strategyService')
-jest.mock('@services/lastUpdateService')
-jest.mock('@utils/errorUtil')
+jest.mock('../../../src/services/strategyService')
+jest.mock('../../../src/services/timestampService')
+jest.mock('../../../src/utils/errorUtil')
 
 describe('strategyController', () => {
   let mockRequest: Partial<Request>
@@ -73,7 +73,7 @@ describe('strategyController', () => {
       await updateStrat(mockRequest as Request, mockResponse as Response)
 
       expect(StrategyService.updateStrategies).toHaveBeenCalledWith(mockStrat)
-      expect(LastUpdateService.saveLastUpdateToDatabase).toHaveBeenCalled()
+      expect(TimestampService.saveTimestampToDatabase).toHaveBeenCalled()
       expect(mockJson).toHaveBeenCalledWith({ message: 'Stratégies mises à jour', data: mockData })
     })
 

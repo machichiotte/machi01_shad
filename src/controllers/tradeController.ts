@@ -2,6 +2,7 @@
 import { Request, Response } from 'express'
 import { TradeService } from '@services/tradeService'
 import { handleControllerError } from '@utils/errorUtil'
+import { isValidPlatform } from '@src/utils/platformUtil'
 
 /**
  * Récupère tous les trades de la base de données.
@@ -47,6 +48,12 @@ async function addTradesManually(req: Request, res: Response): Promise<void> {
  */
 async function updateTrades(req: Request, res: Response): Promise<void> {
   const { platform } = req.params
+
+  if (!isValidPlatform(platform)) {
+    res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
+    return;
+  }
+
   try {
     const data = await TradeService.updateTrades(platform)
     res.status(200).json({ message: 'Trades mis à jour', data })
@@ -60,6 +67,12 @@ async function updateTrades(req: Request, res: Response): Promise<void> {
  */
 async function fetchLastTrades(req: Request, res: Response): Promise<void> {
   const { platform, symbol } = req.params
+
+  if (!isValidPlatform(platform)) {
+    res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
+    return;
+  }
+
   try {
     const data = await TradeService.fetchLastTrades(platform, symbol)
     res.status(200).json({ message: 'Derniers trades récupérés', data })

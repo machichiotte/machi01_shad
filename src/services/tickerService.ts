@@ -1,30 +1,23 @@
 // src/services/tickerService.ts
-import { createPlatformInstance, getPlatforms } from '@utils/platformUtil'
-import { loadErrorPolicies, shouldRetry } from '@utils/errorUtil'
-import { LastUpdateService } from '@services/lastUpdateService'
-import { MongodbService } from '@services/mongodbService'
+import { createPlatformInstance } from '@utils/platformUtil'
+import { TimestampService } from '@services/timestampService'
 import { MappingService } from '@services/mappingService'
-import { MappedTicker } from '@typ/database'
 import { handleServiceError } from '@utils/errorUtil'
-import config from '@config/index'
+import { retry } from '@src/utils/retryUtil'
+import { TickerRepository } from '@repositories/tickerRepository'
+import { MappedTicker } from '@typ/ticker'
+import { config } from '@config/index';
+import { PLATFORM, PLATFORMS } from '@src/types/platform'
 
-const COLLECTION_NAME = config.collection.tickers
-const COLLECTION_TYPE = config.collectionType.tickers
+const COLLECTION_TYPE = config.collectionType.ticker
 
 export class TickerService {
-
-  /**
-   * Fetches tickers data from the database.
-   */
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {
-    return await MongodbService.getData(COLLECTION_NAME) as MappedTicker[]
+    return TickerRepository.fetchAll()
   }
 
-  /**
-   * Gets filtered tickers for a specific platform.
-   */
-  static async getFilteredTickers(platform: string, additionalFilter?: (ticker: MappedTicker) => boolean): Promise<MappedTicker[]> {
-    const data = await this.fetchDatabaseTickers()
+  static async getFilteredTickers(platform: PLATFORM, additionalFilter?: (ticker: MappedTicker) => boolean): Promise<MappedTicker[]> {
+    const data = await TickerRepository.fetchAll()
 
     if (!Array.isArray(data) || data.length === 0) {
       throw new Error('No data found')
@@ -48,86 +41,51 @@ export class TickerService {
     return filteredData
   }
 
-  /**
-   * Gets all tickers for a specific platform.
-   */
-  static async getAllTickersByPlatform(platform: string): Promise<MappedTicker[]> {
+  static async getAllTickersByPlatform(platform: PLATFORM): Promise<MappedTicker[]> {
     return this.getFilteredTickers(platform)
   }
 
-  /**
-   * Gets all tickers for a specific symbol from a platform.
-   */
-  static async getAllTickersBySymbolFromPlatform(platform: string, symbol: string): Promise<MappedTicker[]> {
+  static async getAllTickersBySymbolFromPlatform(platform: PLATFORM, symbol: string): Promise<MappedTicker[]> {
     return this.getFilteredTickers(
       platform,
       (ticker: MappedTicker) => ticker.symbol === symbol
     )
   }
 
-  /**
-   * Updates all tickers for all platforms.
-   */
   static async updateAllTickers(): Promise<MappedTicker[]> {
     const tickersData: MappedTicker[] = []
-    const platforms = getPlatforms()
-    for (const platform of platforms) {
+    for (const platform of PLATFORMS) {
       const platformInstance = createPlatformInstance(platform)
       const data = await platformInstance.fetchTickers()
       tickersData.push(...MappingService.mapTickers(platform, data))
     }
 
-    await MongodbService.deleteAndProcessData(COLLECTION_NAME, tickersData, '', true)
-    await LastUpdateService.saveLastUpdateToDatabase(COLLECTION_TYPE, 'combined')
+    await TickerRepository.deleteAndSaveAll(tickersData)
+    await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE, 'combined')
     return tickersData
   }
 
-  /**
-   * Fetches current tickers for a specific platform.
-   */
-  static async fetchCurrentTickers(platform: string, retries: number = 3): Promise<MappedTicker[]> {
-    const errorPolicies = await loadErrorPolicies()
-
+  static async updateTickersForPlatform(platform: PLATFORM): Promise<void> {
     try {
-      const platformInstance = createPlatformInstance(platform)
-      const data = await platformInstance.fetchTickers()
-      return MappingService.mapTickers(platform, data)
+      const currentTickers = await this.fetchCurrentTickers(platform)
+      await TickerRepository.saveForPlatform(currentTickers, platform)
     } catch (error) {
-      handleServiceError(error, 'fetchCurrentTickers', `Error fetching tickers for ${platform}`)
-      if (retries > 0 && shouldRetry(platform, error as Error, errorPolicies)) {
-        const delay = Math.pow(2, 3 - retries) * 1000
-        console.log(`Retrying fetchCurrentTickers... (${3 - retries + 1}/3)`, {
-          delay
-        })
-        await new Promise((resolve) => setTimeout(resolve, delay))
-        return this.fetchCurrentTickers(platform, retries - 1)
-      }
-
-      throw error
+      handleServiceError(error, 'updateTickersForPlatform', `Erreur lors de la mise à jour des tickers pour ${platform}`)
     }
   }
 
-  /**
-   * Saves the provided tickers data to the database.
-   */
-  static async saveDatabaseTickers(mappedData: MappedTicker[], platform: string): Promise<void> {
-    await MongodbService.saveDataToDatabase(
-      mappedData,
-      COLLECTION_NAME,
-      platform,
-      COLLECTION_TYPE
-    )
-  }
+  static async fetchCurrentTickers(platform: PLATFORM): Promise<MappedTicker[]> {
+    const fetchAndMapTickers = async () => {
+      const platformInstance = createPlatformInstance(platform);
+      const data = await platformInstance.fetchTickers();
+      return MappingService.mapTickers(platform, data);
+    };
 
-  /**
- * Updates the tickers for a specified platform.
- */
-  static async updateTickersForPlatform(platform: string): Promise<void> {
     try {
-      const currentTickers = await TickerService.fetchCurrentTickers(platform, 3)
-      await TickerService.saveDatabaseTickers(currentTickers, platform)
+      return await retry(fetchAndMapTickers, [], 3, 1000);
     } catch (error) {
-      handleServiceError(error, 'updateTickersForPlatform', `Erreur lors de la mise à jour des tickers pour ${platform}`)
+      handleServiceError(error, 'fetchCurrentTickers', `Error fetching tickers for ${platform}`);
+      throw error;
     }
   }
 }

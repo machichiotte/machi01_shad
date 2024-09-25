@@ -1,20 +1,6 @@
 // src/utils/errorUtil.ts
 import { AuthenticationError } from 'ccxt'
-import { promises as fs } from 'fs'
 import { Response } from 'express'
-import path from 'path'
-
-interface ErrorPolicy {
-  retry: boolean
-}
-
-interface PlatformErrorPolicies {
-  [errorName: string]: ErrorPolicy
-}
-
-export interface ErrorPolicies {
-  [platform: string]: PlatformErrorPolicies
-}
 
 /*
 * Gestion des erreurs de réponse
@@ -54,27 +40,4 @@ function handleServiceError(error: unknown, functionName: string, message?: stri
   }
 }
 
-/*
-* Charger les politiques d'erreurs depuis le fichier JSON
-*/
-async function loadErrorPolicies(): Promise<ErrorPolicies> {
-  const filePath = path.resolve(__dirname, '../config/errorPolicies.json')
-  const data = await fs.readFile(filePath, 'utf8')
-  return JSON.parse(data)
-}
-
-/*
-* Détermine si une erreur justifie une nouvelle tentative
-*/
-function shouldRetry(platform: string, error: Error, errorPolicies: ErrorPolicies): boolean {
-  const platformPolicies = errorPolicies[platform]
-  if (platformPolicies) {
-    const policy = platformPolicies[error.name]
-    if (policy) {
-      return policy.retry
-    }
-  }
-  return true // Par défaut, retenter si la politique n'est pas définie
-}
-
-export { handleControllerError, handleServiceError, loadErrorPolicies, shouldRetry }
+export { handleControllerError, handleServiceError }
