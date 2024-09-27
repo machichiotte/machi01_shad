@@ -27,7 +27,15 @@ export interface CacheExpirationTimes {
 }
 
 export interface CollectionTypeConfig {
-    [key: string]: string;
+    balance: string;
+    cmc: string;
+    timestamp: string;
+    market: string;
+    order: string;
+    shad: string;
+    strat: string;
+    ticker: string;
+    trade: string;
 }
 
 export interface ApiKeyConfig {

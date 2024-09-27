@@ -58,10 +58,9 @@ export class TickerService {
     for (const platform of PLATFORMS) {
       const data = await PlatformService.fetchRawTicker(platform)
       tickersData.push(...MappingService.mapTickers(platform, data))
+      await TickerRepository.deleteAndSaveAll(tickersData)
+      await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE, platform)
     }
-
-    await TickerRepository.deleteAndSaveAll(tickersData)
-    await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE, 'combined')
     return tickersData
   }
 

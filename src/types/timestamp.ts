@@ -1,4 +1,22 @@
 // src/types/timestamp
+export interface ExchangeData {
+    [key: string]: {
+        $numberLong: string;
+    };
+}
+
 export interface TimestampData {
-    [key: string]: number | { [key: string]: number }
+    _id: {
+        $oid: string;
+    };
+    balance: ExchangeData;
+    order: ExchangeData;
+    cmc: {
+        $numberLong: string;
+    };
+    strategy: {
+        $numberLong: string;
+    };
+    market: ExchangeData;
+    ticker: ExchangeData;
 }

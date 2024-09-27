@@ -1,16 +1,15 @@
 // src/services/marketService.ts
 import { PlatformService } from '@services/platformService';
 import { TimestampService } from '@services/timestampService';
-import { MongodbService } from '@services/mongodbService';
 import { MappingService } from '@services/mappingService';
+import { MarketRepository } from '@repositories/marketRepository';
 import { MappedMarket } from '@typ/market';
 import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
 import { PLATFORM } from '@src/types/platform';
 import { executeForPlatforms } from '@utils/taskExecutor';
 
-const COLLECTION_NAME = config.collection.market
-const COLLECTION_TYPE = config.collectionType.market
+const COLLECTION_TYPE = config.collectionType.market;
 
 export class MarketService {
   /**
@@ -21,7 +20,7 @@ export class MarketService {
       const data = await PlatformService.fetchRawMarket(platform);
       return MappingService.mapMarkets(platform, data);
     } catch (error) {
-      handleServiceError(error, 'fetchCurrentBalancesByPlatform', `Erreur lors de la récupération des balances actuelles pour ${platform}`);
+      handleServiceError(error, 'fetchCurrentMarkets', `Erreur lors de la récupération des marchés actuels pour ${platform}`);
       throw error;
     }
   }
@@ -31,12 +30,12 @@ export class MarketService {
    */
   static async updateMarketsForPlatform(platform: PLATFORM): Promise<void> {
     try {
-      const currentMarkets = await this.fetchCurrentMarkets(platform)
-      await MongodbService.deleteAndProcessData(COLLECTION_NAME, currentMarkets, platform);
-      await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE || '', platform);
-      console.log(`Market data for ${platform} updated in the database. Total records: ${currentMarkets.length}.`);
+      const currentMarkets = await this.fetchCurrentMarkets(platform);
+      await MarketRepository.saveMarkets(currentMarkets, platform);
+      await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE, platform);
+      console.log(`Données de marché pour ${platform} mises à jour dans la base de données. Total des enregistrements : ${currentMarkets.length}.`);
     } catch (error) {
-      handleServiceError(error, 'updateMarketsForPlatform', `Erreur lors de la mise à jour des marchés pour ${platform}`)
+      handleServiceError(error, 'updateMarketsForPlatform', `Erreur lors de la mise à jour des marchés pour ${platform}`);
     }
   }
 
@@ -44,10 +43,10 @@ export class MarketService {
    * Retrieves the latest market data from the database.
    */
   static async getSavedMarkets(): Promise<MappedMarket[]> {
-    return await MongodbService.getData(COLLECTION_NAME) as MappedMarket[];
+    return await MarketRepository.getMarkets();
   }
 
   static async cronMarket(): Promise<void> {
-    await executeForPlatforms('updateMarkets', MarketService.updateMarketsForPlatform)
+    await executeForPlatforms('updateMarkets', MarketService.updateMarketsForPlatform);
   }
 }
