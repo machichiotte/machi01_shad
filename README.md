@@ -113,16 +113,14 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 - │ ├── tickerController.ts
 - │ ├── tradeController.ts
 - ├── services/ # Services pour la logique métier
-- │ │ ├─ cron/
-- │ │ │ ├─ cronTasks.ts
-- │ │ │ ├─ sendMail.ts
-- │ │ │ ├─ taskExecutor.ts
 - │ │ ├─ metrics/
 - │ │ │ ├─ cmc.ts
 - │ │ │ ├─ global.ts
 - │ │ │ ├─ strategies.ts
 - │ │ │ ├─ trades.ts
 - │ │ │ ├─ utils.ts
+- │ ├── cronTasksService.ts
+- │ ├── emailService.ts
 - │ ├── authService.ts
 - │ ├── balanceService.ts
 - │ ├── cmcService.ts
@@ -158,7 +156,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 - │ ├── errorMiddleware.ts
 - ├── utils/ # Utilitaires et helpers
 - │ ├── errorUtil.ts
-- │ ├── fileUtil.ts
+- │ ├── taskExecutor.ts
 - │ ├── loggerUtil.ts
 - │ ├── mappingUtil.ts
 - │ ├── mockUtil.ts

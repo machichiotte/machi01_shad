@@ -1,0 +1,112 @@
+[
+  {
+    "_id": {
+      "$oid": "66d26e6f45667465db372916"
+    },
+    "oldAsset": "RNDR",
+    "newAsset": "RENDER",
+    "swapRate": "1:1",
+    "platform": "kucoin",
+    "delistingDate": "2024-08-01T07:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "66d26f4a45667465db372918"
+    },
+    "oldAsset": "MATIC",
+    "newAsset": "POL",
+    "swapRate": "1:1",
+    "platform": "kucoin",
+    "delistingDate": "2024-09-04T08:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "66d26f4a45667465db372919"
+    },
+    "oldAsset": "MATIC",
+    "newAsset": "POL",
+    "swapRate": "1:1",
+    "platform": "binance",
+    "delistingDate": "2024-09-04T00:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "66d2823145667465db372922"
+    },
+    "oldAsset": "MAP",
+    "newAsset": "MAPO",
+    "swapRate": "1:1",
+    "platform": "kucoin",
+    "delistingDate": "2024-04-12T07:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "66d3350b45667465db372926"
+    },
+    "oldAsset": "CRPT",
+    "newAsset": "CHO",
+    "swapRate": "1:1.05",
+    "platform": "kucoin",
+    "delistingDate": "2024-08-29T00:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "66d3359345667465db372928"
+    },
+    "oldAsset": "FNSA",
+    "newAsset": "KLAY",
+    "swapRate": "1:148.07956",
+    "platform": "kucoin",
+    "delistingDate": "2024-08-28T00:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "66d335cc45667465db37292a"
+    },
+    "oldAsset": "FRONT",
+    "newAsset": "SLF",
+    "swapRate": "1:1",
+    "platform": "kucoin",
+    "delistingDate": "2024-08-26T00:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "66d3363745667465db37292c"
+    },
+    "oldAsset": "OCEAN",
+    "newAsset": "FET",
+    "swapRate": "1:0.433226",
+    "platform": "kucoin",
+    "delistingDate": "2024-07-01T00:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "66d3364845667465db37292e"
+    },
+    "oldAsset": "AGIX",
+    "newAsset": "FET",
+    "swapRate": "1:0.433350",
+    "platform": "kucoin",
+    "delistingDate": "2024-07-01T00:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "66d3389245667465db372930"
+    },
+    "oldAsset": "NTVRK",
+    "newAsset": "NETVR",
+    "swapRate": "1:1",
+    "platform": "kucoin",
+    "delistingDate": "2024-01-19T00:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "66d3394045667465db372932"
+    },
+    "oldAsset": "ALBT",
+    "newAsset": "NXRA",
+    "swapRate": "1:1",
+    "platform": "kucoin",
+    "delistingDate": "2024-02-02T00:00:00Z"
+  }
+]

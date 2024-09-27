@@ -1,11 +1,6 @@
-// src/services/cron/taskExecutor.ts
-import { sendMail } from './emailService'
+// src/utils/taskExecutor.ts
+//import { EmailService } from './emailService'
 import { handleServiceError } from '@utils/errorUtil'
-
-import { MarketService } from '@services/marketService'
-import { TickerService } from '@services/tickerService'
-import { BalanceService } from '@services/balanceService'
-
 import { config } from '@config/index';
 import { PLATFORM, PLATFORMS } from '@typ/platform'
 /**
@@ -27,12 +22,14 @@ async function executeCronTask(task: () => Promise<void>, isCritical: boolean = 
             throw new Error('Configuration SMTP manquante')
           }
 
-          sendMail({
+          /*
+          console.log('rajouter les mail ou notifications push)
+          EmailService.sendMail({
             from: config.smtp.auth.user as string,
             to: config.smtp.auth.receiver as string,
             subject: 'Critical Error Alert',
             text: `Critical error in scheduled task: ${(error as Error).message}`
-          })
+          })*/
         }
       }
       attempts++
@@ -43,35 +40,11 @@ async function executeCronTask(task: () => Promise<void>, isCritical: boolean = 
 /**
  * Executes a given task function for all platforms
  */
-async function executeForPlatforms(
-  taskName: string,
-  taskFunction: (platform: PLATFORM) => Promise<void>
-): Promise<void> {
+export async function executeForPlatforms(taskName: string, taskFunction: (platform: PLATFORM) => Promise<void>): Promise<void> {
   console.log(`Executing cron job for ${taskName}...`)
   await Promise.all(
     PLATFORMS.map((platform) =>
       executeCronTask(() => taskFunction(platform), true)
     )
   )
-}
-
-/**
- * Cron function for updating tickers across all platforms
- */
-export async function cronTickers(): Promise<void> {
-  await executeForPlatforms('updateTickers', TickerService.updateTickersForPlatform)
-}
-
-/**
- * Cron function for updating markets across all platforms
- */
-export async function cronMarkets(): Promise<void> {
-  await executeForPlatforms('updateMarkets', MarketService.updateMarketsForPlatform)
-}
-
-/**
- * Cron function for updating balances across all platforms
- */
-export async function cronBalances(): Promise<void> {
-  await executeForPlatforms('updateBalances', BalanceService.updateBalancesForPlatform)
 }

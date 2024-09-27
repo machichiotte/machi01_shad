@@ -1,6 +1,4 @@
 // src/utils/platformUtil.ts
-import * as ccxt from 'ccxt'
-import { handleServiceError } from './errorUtil'
 import { config } from '@config/index';
 import { PLATFORM, PLATFORMS } from '@typ/platform'
 
@@ -10,63 +8,38 @@ function isValidPlatform(platform: string): platform is PLATFORM {
 }
 
 /**
- * Utility function to create an exchange instance
- */
-function createPlatformInstance(platform: PLATFORM): ccxt.Exchange {
-  //par eemple si platform cest binance
-  if (!platform) {
-    throw new Error(`Plateforme incorrecte`);
-  }
-
-
-  // Récupérer la configuration de la plateforme
-  //comment je fais ici
-  /*
-  Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ binance: { apiKey: string; secretKey: string; }; kucoin: { apiKey: string; secretKey: string; passphrase: string; }; htx: { apiKey: string; secretKey: string; }; okx: { apiKey: string; secretKey: string; passphrase: string; }; gateio: { ...; }; }'.
-    No index signature with a parameter of type 'string' was found on type '{ binance: { apiKey: string; secretKey: string; }; kucoin: { apiKey: string; secretKey: string; passphrase: string; }; htx: { apiKey: string; secretKey: string; }; okx: { apiKey: string; secretKey: string; passphrase: string; }; gateio: { ...; }; }'.ts(7053)
-    */
+     * Vérifie la présence des clés API nécessaires pour une plateforme donnée.
+     * @param platform La plateforme à vérifier
+     * @returns true si toutes les clés nécessaires sont présentes, false sinon
+     */
+function checkApiKeys(platform: PLATFORM): boolean {
   const platformConfig = config.apiKeys.platform[platform];
-
   if (!platformConfig) {
-    throw new Error(`Configuration manquante pour la plateforme : ${platform}`);
+    console.error(`Configuration manquante pour la plateforme : ${platform}`);
+    return false;
   }
 
-  const { apiKey, secretKey } = platformConfig
-  const passphrase = 'passphrase' in platformConfig ? platformConfig.passphrase : undefined;
-
+  const { apiKey, secretKey } = platformConfig;
   if (!apiKey || !secretKey) {
-    throw new Error(`Clés API manquantes pour la plateforme : ${platform}`)
+    console.error(`Clés API manquantes pour la plateforme : ${platform}`);
+    return false;
   }
 
-  try {
-    // Check if the CCXT class exists
-    const exchangeClass = ccxt[platform as keyof typeof ccxt] as typeof ccxt.Exchange
-    if (typeof exchangeClass !== 'function') {
-      throw new Error(`Plateforme non supportée : ${platform}`)
+  // Vérification spécifique pour les plateformes nécessitant un passphrase
+  if (['kucoin', 'okx'].includes(platform)) {
+    if (!('passphrase' in platformConfig) || !platformConfig.passphrase) {
+      console.error(`Passphrase manquant pour la plateforme : ${platform}`);
+      return false;
     }
-
-    const platformParams: ccxt.Exchange['options'] = {
-      apiKey,
-      secretKey,
-      ...(passphrase && { password: passphrase }),
-      timeout: 20000, // Timeout for requests
-      enableRateLimit: true // Enable rate limiting
-    }
-
-    return new exchangeClass(platformParams)
-  } catch (error) {
-    handleServiceError(error, 'createPlatformInstance', `Error creating platform instance for ${platform}`)
-    throw error
   }
+
+  return true;
 }
 
 /**
  * Get the symbol format for a specific platform
  */
-function getSymbolForPlatform(
-  platform: string,
-  base: string,
-  quote: string = 'USDT'
+function getSymbolForPlatform(platform: PLATFORM, base: string, quote: string = 'USDT'
 ): string {
   let symbol: string
 
@@ -93,4 +66,4 @@ function getSymbolForPlatform(
   return symbol
 }
 
-export { isValidPlatform, createPlatformInstance, getSymbolForPlatform }
+export { isValidPlatform, getSymbolForPlatform, checkApiKeys }

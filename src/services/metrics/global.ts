@@ -1,7 +1,7 @@
 // src/services/metrics/global.ts
 import { calculateRecups, calculateAmountsAndPricesForShad } from './strategies'
 import { getCmcValues } from './cmc'
-import { getBalanceBySymbol, getProfit, getCurrentPossession, getPercentageDifference, getStatus, getPercentageToNextTp } from './utils'
+import { getBalanceBySymbol, getProfit, getCurrentPossession, getStatus } from './utils'
 import { getTotalAmountAndBuy, getTotalSell } from './trades'
 import { AssetMetrics } from '@typ/metrics'
 import { MappedTrade } from '@typ/trade'
@@ -10,10 +10,9 @@ import { MappedBalance } from '@typ/balance'
 import { MappedOrder } from '@typ/order'
 import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
-
-// Define stable coins
 import { STABLECOINS } from '@src/constants'
-import { PLATFORM } from '@src/types/platform'
+import { PLATFORM } from '@typ/platform'
+import { calculatePercentageChange, calculateProgressPercentage } from '@src/utils/metricsUtil'
 
 /**
  * Default metrics object with initial values set to "N/A".
@@ -71,7 +70,7 @@ function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: st
 /**
  * Calculates various metrics for a given asset.
 - */
-function calculateAssetMetrics(asset: string, platform: PLATFORM, assetBalance: MappedBalance, closestCmc: MappedCmc | null, lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: MappedStrat, lastTickers: MappedTicker[]): AssetMetrics {
+function calculateAssetMetrics(asset: string, platform: PLATFORM, assetBalance: MappedBalance, closestCmc: MappedCmc | null, lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: Omit<MappedStrat, '_id'>, lastTickers: MappedTicker[]): AssetMetrics {
   const balance = getBalanceBySymbol(asset, assetBalance)
   const currentPrice = getCurrentPrice(lastTickers, asset, platform)
   const cmcValues = closestCmc ? getCmcValues(closestCmc, currentPrice) : { cmc_rank: 'N/A', price: 'N/A' }
@@ -109,7 +108,7 @@ function calculateAssetMetrics(asset: string, platform: PLATFORM, assetBalance: 
       ...baseMetrics,
       averageEntryPrice,
       totalBuy,
-      percentageDifference: getPercentageDifference(
+      percentageDifference: calculatePercentageChange(
         currentPrice,
         averageEntryPrice
       ),
@@ -137,7 +136,7 @@ function calculateAssetMetrics(asset: string, platform: PLATFORM, assetBalance: 
     status: getStatus(sellOrders, ...Object.values(amountsAndPrices)),
     averageEntryPrice,
     totalBuy,
-    percentageDifference: getPercentageDifference(
+    percentageDifference: calculatePercentageChange(
       currentPrice,
       averageEntryPrice
     ),
@@ -145,7 +144,7 @@ function calculateAssetMetrics(asset: string, platform: PLATFORM, assetBalance: 
     totalSell,
     nbOpenBuyOrders: buyOrders.length,
     nbOpenSellOrders: sellOrders.length,
-    percentToNextTp: getPercentageToNextTp(
+    percentToNextTp: calculateProgressPercentage(
       currentPrice,
       amountsAndPrices.priceTp1
     )

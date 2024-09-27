@@ -1,8 +1,7 @@
 // src/services/orderBalanceService.ts
-import { createPlatformInstance, } from '@utils/platformUtil'
+import { PlatformService } from '@services/platformService'
 import { MongodbService } from '@services/mongodbService'
 import { MappingService } from '@services/mappingService'
-import { Order, Exchange } from 'ccxt'
 import { MappedOrder } from '@typ/order'
 import { handleServiceError } from '@utils/errorUtil'
 import { config } from '@config/index';
@@ -21,11 +20,52 @@ export class OrderBalanceService {
   }
 
   /**
+   * Get all orders for a specific symbol
+   */
+  static async getOrdersBySymbol(symbol: string): Promise<MappedOrder[]> {
+    const orders = await this.fetchDatabaseOrders();
+    return orders.filter(order => order.symbol === symbol);
+  }
+
+
+  /**
+ * Get all orders for a specific platform
+ */
+  static async getOrdersByPlatform(platform: string): Promise<MappedOrder[]> {
+    const orders = await this.fetchDatabaseOrders();
+    return orders.filter(order => order.platform === platform);
+  }
+
+  /**
+   * Get all orders by side (buy or sell)
+   */
+  static async getOrdersBySide(side: string): Promise<MappedOrder[]> {
+    const orders = await this.fetchDatabaseOrders();
+    return orders.filter(order => order.side?.toLowerCase() === side.toLowerCase());
+  }
+
+  /**
+   * Get all orders by type (limit, market, etc.)
+   */
+  static async getOrdersByType(type: string): Promise<MappedOrder[]> {
+    const orders = await this.fetchDatabaseOrders();
+    return orders.filter(order => order.type?.toLowerCase() === type.toLowerCase());
+  }
+
+  /**
+   * Example: Get all orders for a specific platform and symbol
+   */
+  static async getOrdersByPlatformAndSymbol(platform: string, symbol: string): Promise<MappedOrder[]> {
+    const orders = await this.fetchDatabaseOrders();
+    return orders.filter(order => order.platform === platform && order.symbol === symbol);
+  }
+
+  /**
    * Fetches and maps orders for a given platform.
    */
-  static async fetchAndMapOrders(platform: PLATFORM): Promise<MappedOrder[]> {
+  static async fetchAndMapOrders(platform: PLATFORM): Promise<Omit<MappedOrder, '_id'>[]> {
     try {
-      const data = await this.fetchOpenOrdersByPlatform(platform)
+      const data = await PlatformService.fetchOpenOrdersByPlatform(platform)
       const mappedData = MappingService.mapOrders(platform, data)
       console.log(`Fetched and mapped orders for ${platform}:`, {
         count: mappedData.length
@@ -40,7 +80,7 @@ export class OrderBalanceService {
   /**
    * Updates orders from the server for a given platform.
    */
-  static async updateOrdersFromServer(platform: PLATFORM): Promise<MappedOrder[]> {
+  static async updateOrdersFromServer(platform: PLATFORM): Promise<Omit<MappedOrder, '_id'>[]> {
     try {
       const mappedData = await this.fetchAndMapOrders(platform)
       await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE)
@@ -54,50 +94,5 @@ export class OrderBalanceService {
     }
   }
 
-  /**
-   * Fetches open orders for a given platform.
-   */
-  static async fetchOpenOrdersByPlatform(platform: PLATFORM): Promise<Order[]> {
-    const platformInstance = createPlatformInstance(platform)
-    try {
-      if (platform === 'binance' && platformInstance.options) {
-        platformInstance.options.warnOnFetchOpenOrdersWithoutSymbol = false
-      }
 
-      if (platform === 'kucoin') {
-        return await this.fetchOpenOrdersByPage(platformInstance)
-      } else {
-        return await platformInstance.fetchOpenOrders()
-      }
-    } catch (error) {
-      handleServiceError(error, 'fetchOpenOrdersByPlatform', `Error fetching open orders for ${platform}`)
-      throw error
-    }
-  }
-
-  static async fetchOpenOrdersByPage(platformInstance: Exchange): Promise<Order[]> {
-    const pageSize = 100
-    let currentPage = 1
-    let allOrders: Order[] = []
-
-    while (true) {
-      const limit = pageSize
-      const params = { currentPage }
-      const orders = await platformInstance.fetchOpenOrders(
-        undefined,
-        undefined,
-        limit,
-        params
-      )
-      allOrders = allOrders.concat(orders)
-
-      if (orders.length < pageSize) {
-        break
-      }
-
-      currentPage++
-    }
-
-    return allOrders
-  }
 }

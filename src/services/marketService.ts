@@ -1,5 +1,5 @@
 // src/services/marketService.ts
-import { createPlatformInstance } from '@utils/platformUtil';
+import { PlatformService } from '@services/platformService';
 import { TimestampService } from '@services/timestampService';
 import { MongodbService } from '@services/mongodbService';
 import { MappingService } from '@services/mappingService';
@@ -7,6 +7,7 @@ import { MappedMarket } from '@typ/market';
 import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
 import { PLATFORM } from '@src/types/platform';
+import { executeForPlatforms } from '@utils/taskExecutor';
 
 const COLLECTION_NAME = config.collection.market
 const COLLECTION_TYPE = config.collectionType.market
@@ -15,10 +16,14 @@ export class MarketService {
   /**
    * Fetches the current markets from the specified platform.
    */
-  static async fetchCurrentMarkets(platform: PLATFORM): Promise<MappedMarket[]> {
-    const platformInstance = createPlatformInstance(platform);
-    const data = await platformInstance.fetchMarkets();
-    return MappingService.mapMarkets(platform, data);
+  static async fetchCurrentMarkets(platform: PLATFORM): Promise<Omit<MappedMarket, '_id'>[]> {
+    try {
+      const data = await PlatformService.fetchRawMarket(platform);
+      return MappingService.mapMarkets(platform, data);
+    } catch (error) {
+      handleServiceError(error, 'fetchCurrentBalancesByPlatform', `Erreur lors de la récupération des balances actuelles pour ${platform}`);
+      throw error;
+    }
   }
 
   /**
@@ -42,4 +47,7 @@ export class MarketService {
     return await MongodbService.getData(COLLECTION_NAME) as MappedMarket[];
   }
 
+  static async cronMarket(): Promise<void> {
+    await executeForPlatforms('updateMarkets', MarketService.updateMarketsForPlatform)
+  }
 }

@@ -1,14 +1,13 @@
 // src/services/tradeService.ts
-import { createPlatformInstance } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 import { TimestampService } from '@services/timestampService'
 import { MappingService } from '@services/mappingService'
 import { TradeRepository } from '@repositories/tradeRepository'
 import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ/trade'
-import { Trade } from 'ccxt'
-import Exchange from 'ccxt/js/src/abstract/kucoin'
 import { config } from '@config/index';
-import { PLATFORM } from '@typ/platform'
+import { PLATFORM, PlatformTrade } from '@typ/platform'
+import { PlatformService } from './platformService'
+
 const TRADES_TYPE = config.collectionType.trade
 
 export class TradeService {
@@ -16,17 +15,16 @@ export class TradeService {
     return await TradeRepository.fetchAllTrades()
   }
 
-  static async fetchLastTrades(platform: PLATFORM, symbol: string): Promise<Trade[]> {
+  static async fetchLastTrades(platform: PLATFORM, symbol: string): Promise<PlatformTrade[]> {
     try {
-      const platformInstance = createPlatformInstance(platform)
-      return await platformInstance.fetchMyTrades(symbol)
+      return await PlatformService.fetchRawTrade(platform, symbol)
     } catch (error) {
       handleServiceError(error, 'fetchLastTrades', `Error fetching last trades for ${platform}`)
       throw error
     }
   }
 
-  static async updateTradeById(tradeId: string, updatedTrade: Partial<MappedTrade>): Promise<boolean> {
+  static async updateTradeById(tradeId: string, updatedTrade: MappedTrade): Promise<boolean> {
     if (!tradeId) {
       throw new Error(`L'ID du trade est requis`)
     }
@@ -51,12 +49,12 @@ export class TradeService {
     }
   }
 
-  static async addTradesManually(tradesData: MappedTrade | MappedTrade[]): Promise<ManualTradeAdditionResult> {
+  static async insertNewTrades(tradesData: MappedTrade | MappedTrade[]): Promise<ManualTradeAdditionResult> {
     try {
       const savedTrade = await TradeRepository.insertTrades(tradesData)
       return { data: savedTrade }
     } catch (error) {
-      handleServiceError(error, 'addTradesManually', 'Error adding trades manually')
+      handleServiceError(error, 'insertNewTrades', 'Error adding trades manually')
       throw error
     }
   }
@@ -72,53 +70,7 @@ export class TradeService {
   }
 
   private static async fetchPlatformTrades(platform: PLATFORM): Promise<MappedTrade[]> {
-    const platformInstance = createPlatformInstance(platform) as Exchange
-
-    let trades: Trade[] = []
-
-    switch (platform) {
-      case 'kucoin':
-        trades = await this.fetchKucoinTrades(platformInstance)
-        break
-      case 'htx':
-        trades = await this.fetchHtxTrades(platformInstance)
-        break
-      default:
-        throw new Error(`Plateforme non supportée: ${platform}`)
-    }
-
+    const trades = await PlatformService.fetchPlatformTrades(platform)
     return MappingService.mapTrades(platform, trades)
-  }
-
-
-  private static async fetchKucoinTrades(platformInstance: Exchange): Promise<Trade[]> {
-    const weeksBack = 4 * 52
-    let allTrades: Trade[] = []
-    for (let i = weeksBack; i > 1; i--) {
-      const trades = await platformInstance.fetchMyTrades(
-        undefined,
-        Date.now() - i * 7 * 86400 * 1000,
-        500
-      )
-      allTrades = allTrades.concat(trades)
-    }
-    return allTrades
-  }
-
-  private static async fetchHtxTrades(platformInstance: Exchange): Promise<Trade[]> {
-    const currentTime = Date.now()
-    const windowSize = 48 * 60 * 60 * 1000
-    const totalDuration = 1 * 365 * 24 * 60 * 60 * 1000
-    const iterations = Math.ceil(totalDuration / windowSize)
-    let allTrades: Trade[] = []
-
-    for (let i = 0; i < iterations; i++) {
-      const startTime = currentTime - (i + 1) * windowSize
-      const endTime = currentTime - i * windowSize
-      const param = { 'start-time': startTime, 'end-time': endTime }
-      const trades = await platformInstance.fetchMyTrades(undefined, undefined, 1000, param)
-      allTrades = allTrades.concat(trades)
-    }
-    return allTrades
   }
 }

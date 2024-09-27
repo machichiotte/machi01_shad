@@ -1,6 +1,6 @@
 // src/types/order
 export interface MappedOrder {
-    _id?: string
+    _id: { $oid: string };
     oId: string
     cId: string | undefined
     platform: string

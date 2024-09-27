@@ -29,7 +29,7 @@ export class ProcessorService {
    * corresponding to the detected differences. It also handles new symbols, balance differences,
    * and zero balances.
    */
-  static async processBalanceChanges(differences: Difference[], platform: PLATFORM): Promise<void> {
+  static async processBalanceChanges(platform: PLATFORM, differences: Difference[]): Promise<void> {
     try {
       // Mise à jour des ordres depuis le serveur
       await OrderBalanceService.updateOrdersFromServer(platform)

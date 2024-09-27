@@ -2,14 +2,14 @@
 import express from 'express'
 import {
   getTrades,
-  addTradesManually,
+  insertNewTrades,
   updateTrades
 } from '@controllers/tradeController'
 
 const router = express.Router()
 
 router.get('/get', getTrades)
-router.post('/add', addTradesManually)
+router.post('/add', insertNewTrades)
 router.get('/update/:platform', updateTrades)
 
 export default router

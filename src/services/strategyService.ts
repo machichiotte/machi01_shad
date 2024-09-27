@@ -2,7 +2,7 @@
 import { TimestampService } from '@services/timestampService'
 import { MongodbService } from '@services/mongodbService'
 import { MappedStrat } from '@typ/strat'
-import { InsertManyResult, InsertOneResult } from 'mongodb'
+import { InsertOne, InsertMany } from '@typ/trade'
 import { handleServiceError } from '@utils/errorUtil'
 import { config } from '@config/index';
 
@@ -20,10 +20,11 @@ export class StrategyService {
   /**
    * Met à jour une stratégie par son ID.
    */
-  static async updateStrategyById(strategyId: string | undefined, updatedStrategy: Partial<MappedStrat>): Promise<boolean> {
+  static async updateStrategyById(strategyId: string, updatedStrategy: Omit<MappedStrat, '_id'>): Promise<boolean> {
     if (!strategyId) {
       throw new Error('L\'ID de la stratégie est requis');
     }
+
     try {
       return await MongodbService.updateOneData(
         COLLECTION_NAME,
@@ -31,7 +32,7 @@ export class StrategyService {
         { $set: updatedStrategy }
       );
     } catch (error) {
-      handleServiceError(error, 'updateStrategyById', `Error updating strategy with id ${strategyId}`)
+      handleServiceError(error, 'updateStrategyById', `Error updating strategy with id ${strategyId}`);
       throw error;
     }
   }
@@ -39,7 +40,7 @@ export class StrategyService {
   /**
    * Met à jour toutes les stratégies dans la base de données.
    */
-  static async updateStrategies(strategies: MappedStrat[]): Promise<InsertOneResult<Document> | InsertManyResult<Document>> {
+  static async updateStrategies(strategies: MappedStrat[]): Promise<InsertOne | InsertMany> {
     await MongodbService.deleteAllData(COLLECTION_NAME);
     const data = await MongodbService.insertData(COLLECTION_NAME, strategies);
     await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE, '');

@@ -1,13 +1,14 @@
 // src/services/tickerService.ts
-import { createPlatformInstance } from '@utils/platformUtil'
 import { TimestampService } from '@services/timestampService'
 import { MappingService } from '@services/mappingService'
 import { handleServiceError } from '@utils/errorUtil'
-import { retry } from '@src/utils/retryUtil'
+import { executeWithRetry } from '@src/utils/retryUtil'
 import { TickerRepository } from '@repositories/tickerRepository'
 import { MappedTicker } from '@typ/ticker'
 import { config } from '@config/index';
 import { PLATFORM, PLATFORMS } from '@src/types/platform'
+import { executeForPlatforms } from '@src/utils/taskExecutor'
+import { PlatformService } from './platformService'
 
 const COLLECTION_TYPE = config.collectionType.ticker
 
@@ -52,11 +53,10 @@ export class TickerService {
     )
   }
 
-  static async updateAllTickers(): Promise<MappedTicker[]> {
-    const tickersData: MappedTicker[] = []
+  static async updateAllTickers(): Promise<Omit<MappedTicker, '_id'>[]> {
+    const tickersData: Omit<MappedTicker, '_id'>[] = []
     for (const platform of PLATFORMS) {
-      const platformInstance = createPlatformInstance(platform)
-      const data = await platformInstance.fetchTickers()
+      const data = await PlatformService.fetchRawTicker(platform)
       tickersData.push(...MappingService.mapTickers(platform, data))
     }
 
@@ -67,25 +67,27 @@ export class TickerService {
 
   static async updateTickersForPlatform(platform: PLATFORM): Promise<void> {
     try {
-      const currentTickers = await this.fetchCurrentTickers(platform)
+      const currentTickers = await TickerService.fetchCurrentTickers(platform)
       await TickerRepository.saveForPlatform(currentTickers, platform)
     } catch (error) {
       handleServiceError(error, 'updateTickersForPlatform', `Erreur lors de la mise à jour des tickers pour ${platform}`)
     }
   }
 
-  static async fetchCurrentTickers(platform: PLATFORM): Promise<MappedTicker[]> {
-    const fetchAndMapTickers = async () => {
-      const platformInstance = createPlatformInstance(platform);
-      const data = await platformInstance.fetchTickers();
-      return MappingService.mapTickers(platform, data);
-    };
+  static async fetchCurrentTickers(platform: PLATFORM): Promise<Omit<MappedTicker, '_id'>[]> {
 
     try {
-      return await retry(fetchAndMapTickers, [], 3, 1000);
+      return await executeWithRetry(platform, async () => {
+        const data = await PlatformService.fetchRawTicker(platform);
+        return MappingService.mapTickers(platform, data);
+      }, 'fetchCurrentTickers');
     } catch (error) {
       handleServiceError(error, 'fetchCurrentTickers', `Error fetching tickers for ${platform}`);
       throw error;
     }
+  }
+
+  static async cronTicker(): Promise<void> {
+    await executeForPlatforms('updateTickers', TickerService.updateTickersForPlatform)
   }
 }

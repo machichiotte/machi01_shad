@@ -33,13 +33,13 @@ async function updateTradeById(req: Request, res: Response): Promise<void> {
 /**
  * Ajoute manuellement des trades à la base de données.
  */
-async function addTradesManually(req: Request, res: Response): Promise<void> {
+async function insertNewTrades(req: Request, res: Response): Promise<void> {
   const tradesData = req.body.trades_data
   try {
-    const data = await TradeService.addTradesManually(tradesData)
+    const data = await TradeService.insertNewTrades(tradesData)
     res.status(200).json({ message: 'Trades ajoutés', data })
   } catch (error) {
-    handleControllerError(res, error, 'addTradesManually')
+    handleControllerError(res, error, 'insertNewTrades')
   }
 }
 
@@ -110,7 +110,7 @@ async function saveAllTradesToDatabase(req: Request, res: Response): Promise<voi
 export {
   updateTradeById,
   getTrades,
-  addTradesManually,
+  insertNewTrades,
   updateTrades,
   fetchLastTrades,
   saveTradesToDatabase,

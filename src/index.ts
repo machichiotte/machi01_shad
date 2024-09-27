@@ -1,10 +1,9 @@
 // src/index.ts
-import { MongodbService } from '@services/mongodbService'
 import { startServer } from '@src/server'
-import { initializeCronTasks } from '@services/cron/cronTasksService'
-
-import { cronBalances } from './services/cron/taskExecutor'
-import { handleMigrationSwaps } from './services/migrationSwapService'
+import { MongodbService } from '@services/mongodbService'
+import { BalanceService } from '@services/balanceService'
+//import { CronTaskService } from '@src/services/cronTasksService'
+//import { MigrationSwapService } from './services/migrationSwapService'
 
 async function startApp(): Promise<void> {
   try {
@@ -15,11 +14,11 @@ async function startApp(): Promise<void> {
 
     await MongodbService.connectToMongoDB()
 
-    await handleMigrationSwaps()
+    //await MigrationSwapService.handleMigrationSwap()
 
-    await cronBalances()
+    await BalanceService.cronBalance()
 
-    await initializeCronTasks()
+    //await CronTaskService.initializeCronTasks()
 
   } catch (error) {
     console.error('Error during server initialization:', error)

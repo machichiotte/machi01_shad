@@ -1,5 +1,5 @@
 // src/services/mappingService.ts
-import { Trade, Market, Order, Tickers, Balance, Balances } from 'ccxt'
+import { PlatformBalance, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@src/types/platform'
 import { STABLECOINS } from '@src/constants'
 import { getTotalUSDT } from '@utils/mappingUtil'
 import { MappedTrade } from '@typ/trade'
@@ -13,15 +13,16 @@ export class MappingService {
   /**
    * Méthode principale pour mapper les balances selon la plateforme.
    */
-  static mapBalance(platform: PLATFORM, balanceData: Balances): MappedBalance[] {
+  static mapBalance(platform: PLATFORM, balanceData: PlatformBalances): Omit<MappedBalance, '_id'>[] {
+
     // Vérification des données d'entrée
     if (typeof balanceData !== 'object' || balanceData === null) {
       console.error(`Données de balance invalides pour la plateforme : ${platform}`);
-      return [];
+      throw new Error(`Données de balance invalides pour la plateforme : ${platform}`)
     }
 
     const balances = Object.entries(balanceData)
-      .filter((entry): entry is [string, Balance] => {
+      .filter((entry): entry is [string, PlatformBalance] => {
         const [, data] = entry;
 
         return typeof data === 'object' && data !== null &&
@@ -39,7 +40,7 @@ export class MappingService {
   /**
    * Maps common trade data across all platforms.
    */
-  private static mapTradeCommon(item: Trade, platform: PLATFORM, conversionRates: Record<string, number> = {}): Omit<MappedTrade, '_id'> {
+  private static mapTradeCommon(item: PlatformTrade, platform: PLATFORM, conversionRates: Record<string, number> = {}): Omit<MappedTrade, '_id'> {
     console.log('Début de mapTradeCommon pour la plateforme:', platform);
     //console.log('Item reçu:', JSON.stringify(item));
 
@@ -83,16 +84,12 @@ export class MappingService {
   /**
    * Maps trade data for a specific platform.
    */
-  static mapTrades(
-    platform: PLATFORM,
-    data: Trade[],
-    conversionRates: Record<string, number> = {}
-  ): Omit<MappedTrade, '_id'>[] {
+  static mapTrades(platform: PLATFORM, data: PlatformTrade[], conversionRates: Record<string, number> = {}): MappedTrade[] {
     return data
       .map((item) => {
         const commonData = MappingService.mapTradeCommon(item, platform, conversionRates)
         if (platform === 'okx' && item.info?.data?.[0]?.details) {
-          return item.info.data[0].details.map((item: Trade) =>
+          return item.info.data[0].details.map((item: PlatformTrade) =>
             MappingService.mapTradeCommon(item, 'okx', conversionRates)
           )
         }
@@ -104,7 +101,7 @@ export class MappingService {
   /**
    * Maps order data for a specific platform.
    */
-  static mapOrders(platform: PLATFORM, data: Order[]): MappedOrder[] {
+  static mapOrders(platform: PLATFORM, data: PlatformOrder[]): Omit<MappedOrder, '_id'>[] {
     return data.map((item) => ({
       oId: item.id,
       cId: item?.clientOrderId,
@@ -120,7 +117,7 @@ export class MappingService {
   /**
    * Maps ticker data for a specific platform.
    */
-  static mapTickers(platform: PLATFORM, data: Tickers): MappedTicker[] {
+  static mapTickers(platform: PLATFORM, data: PlatformTickers): Omit<MappedTicker, '_id'>[] {
     return Object.values(data).map((item) => ({
       symbol: item.symbol,
       timestamp: item.timestamp,
@@ -132,9 +129,9 @@ export class MappingService {
   /**
    * Maps market data for a specific platform.
    */
-  static mapMarkets(platform: PLATFORM, data: Market[]): MappedMarket[] {
+  static mapMarkets(platform: PLATFORM, data: PlatformMarket[]): Omit<MappedMarket, '_id'>[] {
     return Object.values(data)
-      .filter((item): item is Market =>
+      .filter((item): item is PlatformMarket =>
         STABLECOINS.some((coin) => item?.quote === coin)
       )
       .map((item) => ({

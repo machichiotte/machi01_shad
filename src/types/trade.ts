@@ -1,9 +1,12 @@
 // src/types/trade
-import { Trade, Exchange } from 'ccxt'
 import { InsertOneResult, InsertManyResult } from 'mongodb'
 
+export type InsertOne = InsertOneResult<Document>
+export type InsertMany = InsertManyResult<Document>
+export type InsertData = InsertOne | InsertMany;
+
 export interface MappedTrade {
-    _id?: string
+    _id: { $oid: string };
     base: string
     quote: string
     pair: string
@@ -24,7 +27,5 @@ export interface TradeServiceResult {
 }
 
 export interface ManualTradeAdditionResult {
-    data: InsertOneResult<Document> | InsertManyResult<Document>
+    data: InsertData
 }
-
-export type PlatformTradeFetcher = (platformInstance: Exchange) => Promise<Trade[]>

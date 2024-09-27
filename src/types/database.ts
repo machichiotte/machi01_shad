@@ -15,6 +15,7 @@ export interface ShadData {
 }
 
 export interface SwapMigration {
+    _id?: { $oid: string };
     oldAsset: string
     newAsset: string
     swapRate: string
@@ -23,7 +24,7 @@ export interface SwapMigration {
 }
 
 export interface HighestPrices {
-    _id?: string
+    _id?: { $oid: string };
     base: string
     platform: string
     highestPrice: number

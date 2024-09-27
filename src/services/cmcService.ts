@@ -20,33 +20,33 @@ export class CmcService {
   public static async fetchCurrentCmc(): Promise<MappedCmc[]> {
     let start = this.baseStart;
     const allData: MappedCmc[] = [];
+    if (config.apiKeys.cmc.apiKey)
+      try {
+        while (true) {
+          const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=${start}&limit=${this.limit}&convert=${this.convert}`;
+          const response = await fetch(URL, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CMC_PRO_API_KEY': config.apiKeys.cmc.apiKey || '',
+            },
+          });
 
-    try {
-      while (true) {
-        const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=${start}&limit=${this.limit}&convert=${this.convert}`;
-        const response = await fetch(URL, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CMC_PRO_API_KEY': config.apiKeys.cmc.apiKey || '',
-          },
-        });
+          if (!response.ok) throw new Error(`Échec de la récupération des données CoinMarketCap: ${response.statusText}`);
 
-        if (!response.ok) throw new Error(`Échec de la récupération des données CoinMarketCap: ${response.statusText}`);
+          const { data, status }: FetchResponse = await response.json();
+          if (data.length === 0) break;
 
-        const { data, status }: FetchResponse = await response.json();
-        if (data.length === 0) break;
+          allData.push(...data);
+          start += data.length;
 
-        allData.push(...data);
-        start += data.length;
-
-        // Si toutes les données sont récupérées, on arrête la boucle
-        if (status.total_count <= start) break;
+          // Si toutes les données sont récupérées, on arrête la boucle
+          if (status.total_count <= start) break;
+        }
+      } catch (error) {
+        handleServiceError(error, 'fetchCurrentCmc', 'Erreur lors de la récupération des données CMC');
+        throw error;
       }
-    } catch (error) {
-      handleServiceError(error, 'fetchCurrentCmc', 'Erreur lors de la récupération des données CMC');
-      throw error;
-    }
 
     return allData;
   }

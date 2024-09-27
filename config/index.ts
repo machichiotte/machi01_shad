@@ -110,9 +110,9 @@ export const config = {
 
     cronSchedules: {
         shad: process.env.CRON_SCHEDULE_SHAD || '*/30 * * * *',
-        markets: process.env.CRON_SCHEDULE_MARKETS || '* */12 * * *',
-        tickers: process.env.CRON_SCHEDULE_TICKERS || '*/1 * * * *',
-        balances: process.env.CRON_SCHEDULE_BALANCES || '*/2 * * * *'
+        market: process.env.CRON_SCHEDULE_MARKET || '* */12 * * *',
+        ticker: process.env.CRON_SCHEDULE_TICKER || '*/1 * * * *',
+        balance: process.env.CRON_SCHEDULE_BALANCE || '*/2 * * * *'
     },
 
     logFiles: {

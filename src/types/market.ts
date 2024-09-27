@@ -1,6 +1,6 @@
 // src/types/market
 export interface MappedMarket {
-    _id?: string
+    _id: { $oid: string };
     symbol: string
     base: string
     quote: string

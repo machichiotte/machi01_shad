@@ -6,9 +6,10 @@ import { getMockedData } from '@utils/mockUtil'
 import { handleServiceError } from '@utils/errorUtil'
 import { TimestampService } from '@services/timestampService'
 import { databaseOperations } from '@services/databaseOperationsService'
-import { CacheItem, InsertData } from '@typ/mongodb'
+import { CacheItem } from '@typ/mongodb'
 import { CacheService } from './cacheService'
 import { config } from '@config/index';
+import { InsertData } from '@src/types/trade'
 
 let mongoInstance: MongoClient | null = null
 let db: Db | null = null
@@ -88,7 +89,6 @@ export class MongodbService {
       console.log('Connecté à MongoDB !')
 
       const collectionsToCreate = Object.values(config.collection ?? {})
-      console.log('jaja collectionsToCreate', collectionsToCreate)
       await Promise.all(collectionsToCreate.map(collectionName =>
         MongodbService.createCollectionIfNotExists(collectionName)
       ))
@@ -103,7 +103,11 @@ export class MongodbService {
    * Creates a collection if it doesn't already exist.
    */
   static async createCollectionIfNotExists(collectionName: string): Promise<void> {
-    await retry(MongodbService.createCollection, [collectionName], 3)
+    try {
+      await retry(MongodbService.createCollection, [collectionName], 'createCollectionIfNotExists')
+    } catch (error) {
+      handleServiceError(error, 'createCollectionIfNotExists', 'pb createCollectionIfNotExists')
+    }
   }
 
   /**
@@ -134,9 +138,9 @@ export class MongodbService {
       }
 
       if (Array.isArray(data)) {
-        return await retry(databaseOperations.insertMany, [collectionName, data], 3)
+        return await retry(databaseOperations.insertMany, [collectionName, data], 'insertData')
       } else {
-        return await retry(databaseOperations.insertOne, [collectionName, data], 3)
+        return await retry(databaseOperations.insertOne, [collectionName, data], 'insertData')
       }
     } catch (error) {
       handleServiceError(error, 'insertData', `Error saving data in ${collectionName}`)
@@ -148,14 +152,25 @@ export class MongodbService {
    * Retrieves all data from a specified collection.
    */
   static async findData(collectionName: string): Promise<Document[]> {
-    return await retry(databaseOperations.find, [collectionName, {}], 3)
+    try {
+      return await retry(databaseOperations.find, [collectionName, {}], 'findData')
+    } catch (error) {
+      handleServiceError(error, 'findOneData', `Error findData in ${collectionName}`)
+      throw error
+    }
   }
 
   /**
    * Retrieves a single document from a specified collection based on a query.
    */
   static async findOneData(collectionName: string, query: object): Promise<Document | null> {
-    return await retry(databaseOperations.findOne, [collectionName, query], 3)
+    try {
+      return await retry(databaseOperations.findOne, [collectionName, query], 'findOneData')
+    } catch (error) {
+      handleServiceError(error, 'findOneData', `Error findOneData in ${collectionName}`)
+
+      throw error
+    }
   }
 
 
@@ -223,7 +238,7 @@ export class MongodbService {
   static async fetchAndCacheData(collectionName: string): Promise<Document[]> {
     try {
       console.log(`Fetching new data for collection: ${collectionName}`);
-      const result = await retry(databaseOperations.find, [collectionName], 3);
+      const result = await retry(databaseOperations.find, [collectionName], 'fetchAndCacheData');
       CacheService.addToCache(collectionName, result);
       return result;
     } catch (error) {
@@ -237,31 +252,52 @@ export class MongodbService {
    * Deletes a single document from a specified collection.
    */
   static async deleteOneData(collectionName: string, filter: object): Promise<boolean> {
-    return await retry(databaseOperations.deleteOne, [collectionName, filter], 3)
+    try {
+      return await retry(databaseOperations.deleteOne, [collectionName, filter], 'deleteOneData')
+    } catch (error) {
+      handleServiceError(error, 'deleteOneData', `Error deleteOneData data from ${collectionName}`);
+      throw error;
+    }
   }
 
   /**
    * Deletes multiple documents from a specified collection.
    */
   static async deleteMultipleData(collectionName: string, filter: object): Promise<number> {
-    return await retry(databaseOperations.deleteMany, [collectionName, filter], 3)
+    try {
+      return await retry(databaseOperations.deleteMany, [collectionName, filter], 'deleteMultipleData')
+    } catch (error) {
+      handleServiceError(error, 'deleteMultipleData', `Error deleteMultipleData data from ${collectionName}`);
+      throw error;
+    }
   }
 
   /**
    * Deletes all documents from a specified collection.
    */
   static async deleteAllData(collectionName: string): Promise<number> {
-    return await retry(databaseOperations.deleteMany, [collectionName, {}], 3)
+    try {
+      return await retry(databaseOperations.deleteMany, [collectionName, {}], 'deleteAllData')
+    } catch (error) {
+      handleServiceError(error, 'deleteAllData', `Error deleteAllData data from ${collectionName}`);
+      throw error
+    }
   }
 
   /**
    * Updates a document in the database.
    */
-  static async updateOneData(collectionName: string, filter: object, update: object): Promise<boolean> {
-    return await retry(databaseOperations.updateOne, [collectionName, filter, update], 3)
+  static async updateOneData(collectionName: string, filter: object, update: MappedData): Promise<boolean> {
+    try {
+      return await retry(databaseOperations.updateOne, [collectionName, filter, update], 'updateOneData')
+    } catch (error) {
+      handleServiceError(error, 'updateOneData', `Error updateOneData data from ${collectionName}`);
+      throw error
+
+    }
   }
 
-  static async deleteAndProcessData(collectionName: string, mapData: MappedData[], platform: string, replaceAll: boolean = false): Promise<void> {
+  static async deleteAndProcessData(collectionName: string, mapData: Omit<MappedData, '_id'>[], platform: string, replaceAll: boolean = false): Promise<void> {
     try {
       if (mapData && mapData.length > 0) {
         if (replaceAll) {
@@ -278,7 +314,7 @@ export class MongodbService {
     }
   }
 
-  static async saveDataToDatabase(data: MappedData[], collectionName: string, platform: string, updateType: string): Promise<void> {
+  static async saveDataToDatabase(data: Omit<MappedData, '_id'>[], collectionName: string, platform: string, updateType: string): Promise<void> {
     try {
       await MongodbService.deleteAndProcessData(collectionName, data, platform)
       await TimestampService.saveTimestampToDatabase(updateType, platform)

@@ -14,19 +14,7 @@ function getCurrentPossession(
   return Math.round(currentPrice * balance * 100) / 100
 }
 
-/**
- * Calcule la différence en pourcentage entre deux valeurs.
- */
-function getPercentageDifference(
-  newValue: number | undefined,
-  oldValue: number | undefined
-): number | undefined {
-  //if newValue or oldValue is undefined, return undefined
-  if (newValue === undefined || newValue < 0) return undefined
-  if (oldValue === undefined || oldValue < 0) return undefined
 
-  return Number(((newValue - oldValue) / oldValue).toFixed(2))
-}
 
 /**
  * Calcule le profit en fonction des achats totaux, des ventes totales, du prix actuel et du solde.
@@ -91,24 +79,11 @@ function getStatus(
   return results
 }
 
-/**
- * Calcule le pourcentage de progression entre deux valeurs.
- */
-function getPercentageToNextTp(
-  newValue: number | undefined,
-  oldValue: number | undefined
-): number | undefined {
-  if (newValue === undefined || newValue < 0) return undefined
-  if (oldValue === undefined || oldValue < 0) return undefined
 
-  return Number((((oldValue - newValue) / newValue) * 100).toFixed(2))
-}
 
 export {
   getCurrentPossession,
-  getPercentageDifference,
   getProfit,
   getBalanceBySymbol,
   getStatus,
-  getPercentageToNextTp
 }
