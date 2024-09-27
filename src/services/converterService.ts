@@ -4,7 +4,7 @@ import { STABLECOINS } from "@src/constants"
 /**
  * Converts input data to JSON format based on the detected model type.
  */
-async function convertToJSON(data: TradeModel[]): Promise<MappedTrade[]> {
+async function convertToJSON(data: TradeModel[]): Promise<Omit<MappedTrade, '_id'>[]> {
   const modelType = detectModelType(data)
 
   switch (modelType) {
@@ -260,10 +260,10 @@ async function convertModelKucoin(data: Array<ModelKucoin>): Promise<MappedTrade
 /**
  * Converts OKX model data to a standardized format.
  */
-async function convertModelOkx(data: Array<ModelOkx>): Promise<MappedTrade[]> {
+async function convertModelOkx(data: Array<ModelOkx>): Promise<Omit<MappedTrade, '_id'>[]> {
   console.log('🚀 ~ convertModelOkx ~ data:', data)
 
-  const processedOrders = new Map<string, MappedTrade>()
+  const processedOrders = new Map<string, Omit<MappedTrade, '_id'>>()
 
   const convertItem = async (item: ModelOkx) => {
     const {

@@ -5,7 +5,7 @@ import { handleServiceError } from '@utils/errorUtil';
 import { MappingService } from '@services/mappingService';
 import { ProcessorService } from '@services/processorService';
 import { MappedBalance } from '@typ/balance';
-import { executeWithRetry } from '@utils/retryUtil';
+import { retry } from '@utils/retryUtil';
 import { PLATFORM } from '@src/types/platform';
 import { executeForPlatforms } from '@utils/taskExecutor';
 
@@ -19,7 +19,7 @@ export class BalanceService {
   static async fetchDatabaseBalancesByPlatform(platform: PLATFORM, retries: number = 3): Promise<MappedBalance[]> {
 
     try {
-      return await executeWithRetry(platform, () => BalanceRepository.fetchBalancesByPlatform(platform), 'fetchDatabaseBalancesByPlatform', retries);
+      return await retry(() => BalanceRepository.fetchBalancesByPlatform(platform), [], 'fetchDatabaseBalancesByPlatform', retries);
     } catch (error) {
       handleServiceError(error, 'fetchDatabaseBalancesByPlatform', `Erreur lors de la récupération des données de solde pour la plateforme ${platform}`);
       throw error;
@@ -31,10 +31,10 @@ export class BalanceService {
    */
   static async fetchCurrentBalancesByPlatform(platform: PLATFORM, retries: number = 3): Promise<Omit<MappedBalance, '_id'>[]> {
     try {
-      return await executeWithRetry(platform, async () => {
+      return await retry(async () => {
         const data = await PlatformService.fetchRawBalance(platform);
         return MappingService.mapBalance(platform, data);
-      }, 'fetchCurrentBalancesByPlatform', retries);
+      }, [], 'fetchCurrentBalancesByPlatform', retries);
     } catch (error) {
       handleServiceError(error, 'fetchCurrentBalancesByPlatform', `Erreur lors de la récupération des balances actuelles pour ${platform}`);
       throw error;
@@ -46,11 +46,11 @@ export class BalanceService {
    */
   static async updateBalanceForPlatform(platform: PLATFORM): Promise<Omit<MappedBalance, '_id'>[]> {
     try {
-      return await executeWithRetry(platform, async () => {
+      return await retry(async () => {
         const currentBalances = await this.fetchCurrentBalancesByPlatform(platform);
         await BalanceRepository.saveBalances(platform, currentBalances);
         return currentBalances;
-      }, 'updateBalanceForPlatform', 3)
+      }, [], 'updateBalanceForPlatform', 3)
     } catch (error) {
       handleServiceError(error, 'updateBalanceForPlatform', `Erreur lors de la mise à jour des balances pour la plateforme ${platform}`);
       throw error;
@@ -62,7 +62,7 @@ export class BalanceService {
    */
   static async updateBalancesForPlatform(platform: PLATFORM): Promise<void> {
     try {
-      return await executeWithRetry(platform, async () => {
+      return await retry(async () => {
         const [currentBalances, previousBalances] = await Promise.all([
           BalanceService.fetchCurrentBalancesByPlatform(platform),
           BalanceService.fetchDatabaseBalancesByPlatform(platform)
@@ -77,7 +77,7 @@ export class BalanceService {
             ProcessorService.processBalanceChanges(platform, differences)
           ]);
         }
-      }, 'updateBalancesForPlatform', 3)
+      }, [], 'updateBalancesForPlatform', 3)
     } catch (error) {
       handleServiceError(error, 'updateBalancesForPlatform', `Erreur lors de la mise à jour des balances pour ${platform}`);
       throw error;

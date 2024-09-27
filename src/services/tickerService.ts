@@ -2,7 +2,7 @@
 import { TimestampService } from '@services/timestampService'
 import { MappingService } from '@services/mappingService'
 import { handleServiceError } from '@utils/errorUtil'
-import { executeWithRetry } from '@src/utils/retryUtil'
+import { retry } from '@src/utils/retryUtil'
 import { TickerRepository } from '@repositories/tickerRepository'
 import { MappedTicker } from '@typ/ticker'
 import { config } from '@config/index';
@@ -77,10 +77,10 @@ export class TickerService {
   static async fetchCurrentTickers(platform: PLATFORM): Promise<Omit<MappedTicker, '_id'>[]> {
 
     try {
-      return await executeWithRetry(platform, async () => {
+      return await retry(async () => {
         const data = await PlatformService.fetchRawTicker(platform);
         return MappingService.mapTickers(platform, data);
-      }, 'fetchCurrentTickers');
+      }, [], 'fetchCurrentTickers');
     } catch (error) {
       handleServiceError(error, 'fetchCurrentTickers', `Error fetching tickers for ${platform}`);
       throw error;
