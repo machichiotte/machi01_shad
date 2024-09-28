@@ -1,4 +1,4 @@
-// src/types/ticker
+// src/types/ticker.ts
 export interface MappedTicker {
     _id: { $oid: string };
     symbol: string

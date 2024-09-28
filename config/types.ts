@@ -26,7 +26,7 @@ export interface CacheExpirationTimes {
     users: number;
 }
 
-export interface CollectionTypeConfig {
+export interface collectionCategoryConfig {
     balance: string;
     cmc: string;
     timestamp: string;
@@ -87,7 +87,7 @@ export interface EnvironmentConfig {
     database: DatabaseConfig;
     collection: CollectionConfig;
     cacheExpirationTimes: CacheExpirationTimes;
-    collectionType: CollectionTypeConfig;
+    collectionCategory: collectionCategoryConfig;
     apiKeys: ApiKeysConfig;
     smtp: SmtpConfig;
     cronSchedules: CronSchedulesConfig;

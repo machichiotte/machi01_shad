@@ -1,4 +1,4 @@
-// Importer les types nécessaires depuis Express
+// src/middlewares/fileUploadMiddleware.ts
 import { Request, Response, NextFunction } from 'express';
 
 // Définir une interface pour étendre la requête avec le fichier uploadé

@@ -1,4 +1,4 @@
-// src/types/trade
+// src/types/trade.ts
 import { InsertOneResult, InsertManyResult } from 'mongodb'
 
 export type InsertOne = InsertOneResult<Document>

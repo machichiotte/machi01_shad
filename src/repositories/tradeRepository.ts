@@ -1,4 +1,4 @@
-// src/repositories/tradeRepository
+// src/repositories/tradeRepository.ts
 import { MongodbService } from '@services/mongodbService'
 import { MappedTrade } from '@typ/trade'
 import { config } from '@config/index';

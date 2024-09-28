@@ -10,7 +10,7 @@ import { PLATFORM, PLATFORMS } from '@src/types/platform'
 import { executeForPlatforms } from '@src/utils/taskExecutor'
 import { PlatformService } from './platformService'
 
-const COLLECTION_TYPE = config.collectionType.ticker
+const COLLECTION_CATEGORY = config.collectionCategory.ticker
 
 export class TickerService {
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {
@@ -59,7 +59,7 @@ export class TickerService {
       const data = await PlatformService.fetchRawTicker(platform)
       tickersData.push(...MappingService.mapTickers(platform, data))
       await TickerRepository.deleteAndSaveAll(tickersData)
-      await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE, platform)
+      await TimestampService.saveTimestampToDatabase(COLLECTION_CATEGORY, platform)
     }
     return tickersData
   }

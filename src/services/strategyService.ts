@@ -7,7 +7,7 @@ import { handleServiceError } from '@utils/errorUtil'
 import { config } from '@config/index';
 
 const COLLECTION_NAME = config.collection.strat
-const COLLECTION_TYPE = config.collectionType.strat
+const COLLECTION_CATEGORY = config.collectionCategory.strat
 
 export class StrategyService {
   /**
@@ -43,7 +43,7 @@ export class StrategyService {
   static async updateStrategies(strategies: MappedStrat[]): Promise<InsertOne | InsertMany> {
     await MongodbService.deleteAllData(COLLECTION_NAME);
     const data = await MongodbService.insertData(COLLECTION_NAME, strategies);
-    await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE, '');
+    await TimestampService.saveTimestampToDatabase(COLLECTION_CATEGORY, '');
     return data;
   }
 }

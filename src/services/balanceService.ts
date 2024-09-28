@@ -49,6 +49,7 @@ export class BalanceService {
       return await retry(async () => {
         const currentBalances = await this.fetchCurrentBalancesByPlatform(platform);
         await BalanceRepository.saveBalances(platform, currentBalances);
+        //rajouter timestamp
         return currentBalances;
       }, [], 'updateBalanceForPlatform', 3)
     } catch (error) {
@@ -74,6 +75,8 @@ export class BalanceService {
           console.log(`Différences de solde détectées pour ${platform}:`, differences);
           await Promise.all([
             BalanceRepository.saveBalances(platform, currentBalances),
+            //rajouter timestamp
+
             ProcessorService.processBalanceChanges(platform, differences)
           ]);
         }

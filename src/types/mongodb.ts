@@ -1,4 +1,4 @@
-// src/types/mongodb
+// src/types/mongodb.ts
 import { Document } from 'mongodb';
 
 export interface CacheItem {

@@ -1,4 +1,4 @@
-// src/types/metrics
+// src/types/metrics.ts
 export interface AssetMetrics {
     iconUrl: string;
     asset: string;

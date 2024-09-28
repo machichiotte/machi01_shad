@@ -29,71 +29,71 @@ export const config = {
         balance: process.env.MONGODB_COLLECTION_BALANCE || '',
         cmc: process.env.MONGODB_COLLECTION_CMC || '',
         highestPrice: process.env.MONGODB_COLLECTION_HIGHEST_PRICE || '',
-        timestamp: process.env.MONGODB_COLLECTION_LAST_UPDATE || '',
-        market: process.env.MONGODB_COLLECTION_MARKETS || '',
-        order: process.env.MONGODB_COLLECTION_ORDERS || '',
+        timestamp: process.env.MONGODB_COLLECTION_TIMESTAMP || '',
+        market: process.env.MONGODB_COLLECTION_MARKET || '',
+        order: process.env.MONGODB_COLLECTION_ORDER || '',
         shad: process.env.MONGODB_COLLECTION_SHAD || '',
         strat: process.env.MONGODB_COLLECTION_STRAT || '',
         swap: process.env.MONGODB_COLLECTION_SWAP || '',
-        ticker: process.env.MONGODB_COLLECTION_TICKERS || '',
-        trade: process.env.MONGODB_COLLECTION_TRADES || '',
-        user: process.env.MONGODB_COLLECTION_USERS || ''
+        ticker: process.env.MONGODB_COLLECTION_TICKER || '',
+        trade: process.env.MONGODB_COLLECTION_TRADE || '',
+        user: process.env.MONGODB_COLLECTION_USER || ''
     },
 
     cacheExpirationTimes: {
         cmc: Number(process.env.CACHE_EXPIRATION_CMC) || DEFAULT_CACHE_EXPIRATION.cmc,
-        balance: Number(process.env.CACHE_EXPIRATION_BALANCE) || DEFAULT_CACHE_EXPIRATION.balances,
-        highestPrice: Number(process.env.CACHE_EXPIRATION_HIGHEST_PRICES) || DEFAULT_CACHE_EXPIRATION.highestPrices,
-        timestamp: Number(process.env.CACHE_EXPIRATION_LAST_UPDATE) || DEFAULT_CACHE_EXPIRATION.timestamps,
-        market: Number(process.env.CACHE_EXPIRATION_MARKETS) || DEFAULT_CACHE_EXPIRATION.markets,
-        order: Number(process.env.CACHE_EXPIRATION_ORDERS) || DEFAULT_CACHE_EXPIRATION.orders,
+        balance: Number(process.env.CACHE_EXPIRATION_BALANCE) || DEFAULT_CACHE_EXPIRATION.balance,
+        highestPrice: Number(process.env.CACHE_EXPIRATION_HIGHEST_PRICE) || DEFAULT_CACHE_EXPIRATION.highestPrice,
+        timestamp: Number(process.env.CACHE_EXPIRATION_TIMESTAMP) || DEFAULT_CACHE_EXPIRATION.timestamp,
+        market: Number(process.env.CACHE_EXPIRATION_MARKET) || DEFAULT_CACHE_EXPIRATION.market,
+        order: Number(process.env.CACHE_EXPIRATION_ORDER) || DEFAULT_CACHE_EXPIRATION.order,
         shad: Number(process.env.CACHE_EXPIRATION_SHAD) || DEFAULT_CACHE_EXPIRATION.shad,
-        strat: Number(process.env.CACHE_EXPIRATION_STRAT) || DEFAULT_CACHE_EXPIRATION.strats,
-        swaps: Number(process.env.CACHE_EXPIRATION_SWAP) || DEFAULT_CACHE_EXPIRATION.swaps,
-        ticker: Number(process.env.CACHE_EXPIRATION_TICKERS) || DEFAULT_CACHE_EXPIRATION.tickers,
-        trade: Number(process.env.CACHE_EXPIRATION_TRADES) || DEFAULT_CACHE_EXPIRATION.trades,
-        user: Number(process.env.CACHE_EXPIRATION_USERS) || DEFAULT_CACHE_EXPIRATION.users
+        strat: Number(process.env.CACHE_EXPIRATION_STRAT) || DEFAULT_CACHE_EXPIRATION.strat,
+        swaps: Number(process.env.CACHE_EXPIRATION_SWAP) || DEFAULT_CACHE_EXPIRATION.swap,
+        ticker: Number(process.env.CACHE_EXPIRATION_TICKER) || DEFAULT_CACHE_EXPIRATION.ticker,
+        trade: Number(process.env.CACHE_EXPIRATION_TRADE) || DEFAULT_CACHE_EXPIRATION.trade,
+        user: Number(process.env.CACHE_EXPIRATION_USER) || DEFAULT_CACHE_EXPIRATION.user
     },
 
 
-    collectionType: {
-        balance: process.env.TYPE_BALANCE || '',
-        cmc: process.env.TYPE_CMC || '',
-        timestamp: process.env.TYPE_LAST_UPDATE || '',
-        market: process.env.TYPE_MARKETS || '',
-        order: process.env.TYPE_ORDERS || '',
-        shad: process.env.TYPE_SHAD || '',
-        strat: process.env.TYPE_STRAT || '',
-        ticker: process.env.TYPE_TICKERS || '',
-        trade: process.env.TYPE_TRADES || '',
+    collectionCategory: {
+        balance: process.env.COLLECTION_CATEGORY_BALANCE || '',
+        cmc: process.env.COLLECTION_CATEGORY_CMC || '',
+        timestamp: process.env.COLLECTION_CATEGORY_TIMESTAMP || '',
+        market: process.env.COLLECTION_CATEGORY_MARKETS || '',
+        order: process.env.COLLECTION_CATEGORY_ORDERS || '',
+        shad: process.env.COLLECTION_CATEGORY_SHAD || '',
+        strat: process.env.COLLECTION_CATEGORY_STRAT || '',
+        ticker: process.env.COLLECTION_CATEGORY_TICKERS || '',
+        trade: process.env.COLLECTION_CATEGORY_TRADES || '',
     },
 
     apiKeys: {
         cmc: {
-            apiKey: process.env.CMC_APIKEY || ''
+            apiKey: process.env.APIKEY_CMC || ''
         },
         platform: {
             binance: {
-                apiKey: process.env.BINANCE_API_KEY || '',
-                secretKey: process.env.BINANCE_SECRET_KEY || ''
+                apiKey: process.env.APIKEY_BINANCE || '',
+                secretKey: process.env.SECRETKEY_BINANCE || ''
             },
             kucoin: {
-                apiKey: process.env.KUCOIN_API_KEY || '',
-                secretKey: process.env.KUCOIN_SECRET_KEY || '',
-                passphrase: process.env.KUCOIN_PASSPHRASE || ''
+                apiKey: process.env.APIKEY_KUCOIN || '',
+                secretKey: process.env.SECRETKEY_KUCOIN || '',
+                passphrase: process.env.PASSPHRASE_KUCOIN || ''
             },
             htx: {
-                apiKey: process.env.HTX_API_KEY || '',
-                secretKey: process.env.HTX_SECRET_KEY || '',
+                apiKey: process.env.APIKEY_HTX || '',
+                secretKey: process.env.SECRETKEY_HTX || '',
             },
             okx: {
-                apiKey: process.env.OKX_API_KEY || '',
-                secretKey: process.env.OKX_SECRET_KEY || '',
-                passphrase: process.env.OKX_PASSPHRASE || ''
+                apiKey: process.env.APIKEY_OKX || '',
+                secretKey: process.env.SECRETKEY_OKX || '',
+                passphrase: process.env.PASSPHRASE_OKX || ''
             },
             gateio: {
-                apiKey: process.env.GATEIO_API_KEY || '',
-                secretKey: process.env.GATEIO_SECRET_KEY || '',
+                apiKey: process.env.APIKEY_GATEIO || '',
+                secretKey: process.env.SECRETKEY_GATEIO || '',
             },
         }
     },

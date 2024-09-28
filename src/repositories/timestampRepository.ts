@@ -1,4 +1,4 @@
-// src/repositories/timestampRepository
+// src/repositories/timestampRepository.ts
 import { MongodbService } from '@services/mongodbService';
 import { TimestampData } from '@typ/timestamp';
 import { config } from '@config/index';

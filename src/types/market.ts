@@ -1,4 +1,4 @@
-// src/types/market
+// src/types/market.ts
 export interface MappedMarket {
     _id: { $oid: string };
     symbol: string

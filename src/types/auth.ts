@@ -1,4 +1,4 @@
-// src/types/auth
+// src/types/auth.ts
 export interface User {
     email: string;
     password: string;

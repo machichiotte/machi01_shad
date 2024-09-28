@@ -1,4 +1,4 @@
-// src/types/trailingStop
+// src/types/trailingStop.ts
 export interface Asset {
     base: string;
     platform: string;

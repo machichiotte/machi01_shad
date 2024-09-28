@@ -71,9 +71,9 @@ git clone https://github.com/machichiotte/machi-shad-backend.git
 Avant d'exécuter le backend, assurez-vous de configurer les variables d'environnement. Créez un fichier `.env` dans le répertoire racine du backend avec le contenu suivant :
 
 - `MONGODB_URI=votre_chaine_de_connexion_mongodb`
-- `CMC_APIKEY=votre_cle_api_coinmarketcap`
+- `APIKEY_CMC=votre_cle_api_coinmarketcap`
 - `MONGODB_COLLECTION_CMC=nom_de_votre_collection_cmc`
-- `TYPE_CMC=type_de_donnees_cmc`
+- `COLLECTION_CATEGORY_CMC=COLLECTION_CATEGORY_de_donnees_cmc`
 - `OFFLINE_MODE=true_ou_false`
 
 Remplacez les valeurs par vos propres paramètres.

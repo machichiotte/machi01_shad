@@ -1,4 +1,4 @@
-// src/types/cmc
+// src/types/cmc.ts
 export interface FetchResponse {
     data: MappedCmc[];
     status: { total_count: number };

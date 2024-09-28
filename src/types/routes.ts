@@ -1,4 +1,4 @@
-// src/types/routes
+// src/types/routes.ts
 import { Router } from 'express';
 
 export interface Routes {

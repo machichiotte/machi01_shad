@@ -1,13 +1,11 @@
-// src/services/cmcService
+// src/services/cmcService.ts
 import { TimestampService } from '@services/timestampService';
 import { CmcRepository } from '@repositories/cmcRepository';
 import { handleServiceError } from '@utils/errorUtil';
 import { MappedCmc, FetchResponse } from '@typ/cmc'
 import { config } from '@config/index';
 
-const COLLECTION_TYPE = config.collectionType.cmc;
-
-
+const COLLECTION_CATEGORY = config.collectionCategory.cmc;
 
 export class CmcService {
   private static readonly limit = 5000;
@@ -70,7 +68,7 @@ export class CmcService {
     try {
       const deleteResult = await CmcRepository.deleteAllCmcData();
       const saveResult = await CmcRepository.saveCmcData(data);
-      await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE, '');
+      await TimestampService.saveTimestampToDatabase(COLLECTION_CATEGORY, '');
 
       console.log('Données CMC mises à jour dans la base de données', {
         deleteResult,

@@ -1,4 +1,4 @@
-// src/repositories/trailingStopRepository
+// src/repositories/trailingStopRepository.ts
 import { BalanceService } from '@services/balanceService';
 import { ShadService } from '@services/shadService';
 import { TickerService } from '@services/tickerService';

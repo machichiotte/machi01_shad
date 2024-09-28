@@ -5,7 +5,7 @@ import { config } from '@config/index';
 import { PLATFORM } from '@typ/platform'
 
 const COLLECTION_NAME = config.collection.balance;
-const COLLECTION_TYPE = config.collectionType.balance;
+const COLLECTION_CATEGORY = config.collectionCategory.balance;
 
 export class BalanceRepository {
     /**
@@ -27,6 +27,6 @@ export class BalanceRepository {
      * Enregistre les données de solde dans la base de données pour une plateforme.
      */
     static async saveBalances(platform: PLATFORM, mappedData: Omit<MappedBalance, '_id'>[]): Promise<void> {
-        await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE);
+        await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_CATEGORY);
     }
 }

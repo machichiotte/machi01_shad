@@ -16,8 +16,6 @@ async function getOrders(req: Request, res: Response): Promise<void> {
   }
 }
 
-
-
 /**
  * Met à jour les commandes depuis le serveur pour une plateforme spécifique.
  */

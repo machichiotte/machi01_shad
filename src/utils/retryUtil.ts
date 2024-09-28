@@ -28,9 +28,6 @@ export async function retry<A extends unknown[], R>(
         } catch (error) {
             if (isNonRetryableError(error)) {
                 // Si l'erreur est non récupérable, pas besoin de réessayer
-                if (error instanceof Error) {
-                    handleServiceError(error, 'retry', `Erreur non récupérable lors de l'exécution de ${functionName}: ${error.message}`);
-                }
                 throw error;
             }
 
@@ -40,7 +37,7 @@ export async function retry<A extends unknown[], R>(
                 throw error;
             }
 
-            handleServiceError(error, 'retry', `Nouvelle tentative de ${functionName}... essai ${attempt} après ${delay}ms`);
+            console.info(`Nouvelle tentative de ${functionName}... essai ${attempt} après ${delay}ms`);
             await new Promise(resolve => setTimeout(resolve, delay));
             delay *= 2; // Backoff exponentiel
         }

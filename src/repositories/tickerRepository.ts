@@ -1,11 +1,11 @@
-// src/repositories/tickerRepository
+// src/repositories/tickerRepository.ts
 import { MongodbService } from '@services/mongodbService'
 import { MappedTicker } from '@typ/ticker'
 import { config } from '@config/index'
 import { PLATFORM } from '@src/types/platform';
 
 const COLLECTION_NAME = config.collection.ticker
-const COLLECTION_TYPE = config.collectionType.ticker
+const COLLECTION_CATEGORY = config.collectionCategory.ticker
 
 export class TickerRepository {
     static async fetchAll(): Promise<MappedTicker[]> {
@@ -21,7 +21,7 @@ export class TickerRepository {
             mappedData,
             COLLECTION_NAME,
             platform,
-            COLLECTION_TYPE
+            COLLECTION_CATEGORY
         )
     }
 }

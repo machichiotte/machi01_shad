@@ -3,6 +3,7 @@
 import { handleServiceError } from '@utils/errorUtil'
 import { config } from '@config/index';
 import { PLATFORM, PLATFORMS } from '@typ/platform'
+import { checkApiKeys } from './platformUtil';
 /**
  * Executes a cron task with retry mechanism and error handling
  */
@@ -41,9 +42,9 @@ async function executeCronTask(task: () => Promise<void>, isCritical: boolean = 
  * Executes a given task function for all platforms
  */
 export async function executeForPlatforms(taskName: string, taskFunction: (platform: PLATFORM) => Promise<void>): Promise<void> {
-  console.log(`Executing cron job for ${taskName}...`)
+  console.log(`Exécution de la tâche cron pour ${taskName}...`)
   await Promise.all(
-    PLATFORMS.map((platform) =>
+    PLATFORMS.filter(platform => checkApiKeys(platform)).map((platform) =>
       executeCronTask(() => taskFunction(platform), true)
     )
   )

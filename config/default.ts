@@ -2,15 +2,15 @@
 export const DEFAULT_PORT = 10000;
 export const DEFAULT_CACHE_EXPIRATION = {
     cmc: 14400000,
-    balances: 30000,
-    highestPrices: 30000,
-    timestamps: 30000,
-    markets: 86400000,
-    orders: 60000,
+    balance: 30000,
+    highestPrice: 30000,
+    timestamp: 30000,
+    market: 86400000,
+    order: 60000,
     shad: 60000,
-    strats: 36000000,
-    swaps: 86400000,
-    tickers: 30000,
-    trades: 30000,
-    users: 0
+    strat: 36000000,
+    swap: 86400000,
+    ticker: 30000,
+    trade: 30000,
+    user: 0
 };

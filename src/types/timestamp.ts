@@ -1,8 +1,6 @@
-// src/types/timestamp
+// src/types/timestamp.ts
 export interface ExchangeData {
-    [key: string]: {
-        $numberLong: string;
-    };
+    [key: string]: number
 }
 
 export interface TimestampData {
@@ -11,12 +9,8 @@ export interface TimestampData {
     };
     balance: ExchangeData;
     order: ExchangeData;
-    cmc: {
-        $numberLong: string;
-    };
-    strategy: {
-        $numberLong: string;
-    };
+    cmc: number
+    strategy: number
     market: ExchangeData;
     ticker: ExchangeData;
 }

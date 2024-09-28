@@ -8,7 +8,7 @@ import { config } from '@config/index';
 import { PLATFORM } from '@src/types/platform';
 
 const COLLECTION_NAME = config.collection.order;
-const COLLECTION_TYPE = config.collectionType.order;
+const COLLECTION_CATEGORY = config.collectionCategory.order;
 
 export class OrderBalanceService {
 
@@ -83,7 +83,7 @@ export class OrderBalanceService {
   static async updateOrdersFromServer(platform: PLATFORM): Promise<Omit<MappedOrder, '_id'>[]> {
     try {
       const mappedData = await this.fetchAndMapOrders(platform)
-      await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_TYPE)
+      await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_CATEGORY)
       console.log(`Updated orders from server for ${platform}.`, {
         count: mappedData.length
       })

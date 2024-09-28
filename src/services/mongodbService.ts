@@ -309,10 +309,10 @@ export class MongodbService {
     }
   }
 
-  static async saveDataToDatabase(data: Omit<MappedData, '_id'>[], collectionName: string, platform: string, updateType: string): Promise<void> {
+  static async saveDataToDatabase(data: Omit<MappedData, '_id'>[], collectionName: string, platform: string, tsCategory: string): Promise<void> {
     try {
       await MongodbService.deleteAndProcessData(collectionName, data, platform)
-      await TimestampService.saveTimestampToDatabase(updateType, platform)
+      await TimestampService.saveTimestampToDatabase(tsCategory, platform)
       console.log(`Données de ${platform} sauvegardées dans la base de données de ${collectionName}`)
     } catch (error) {
       handleServiceError(error, 'saveDataToDatabase', 'Erreur lors de la sauvegarde des données dans la base de données')

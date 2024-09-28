@@ -1,7 +1,6 @@
 // src/controllers/timestampController.ts
 import { TimestampService } from '@services/timestampService'
 import { Request, Response } from 'express'
-
 import { handleControllerError } from '@utils/errorUtil'
 import { TimestampRepository } from '@src/repositories/timestampRepository'
 

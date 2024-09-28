@@ -1,4 +1,4 @@
-// src/types/platform
+// src/types/platform.ts
 import { Trade, Market, Order, Tickers, Balance, Balances } from 'ccxt'
 
 export type PlatformOrder = Order

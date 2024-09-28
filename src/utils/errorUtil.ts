@@ -29,7 +29,7 @@ function handleControllerError(res: Response, error: unknown, functionName: stri
 
 function handleServiceError(error: unknown, functionName: string, message?: string): void {
   if (error instanceof AuthenticationError) {
-    console.error(`Service Authentication error in ${functionName} (${message}):`, error.message)
+    console.error(`Service Authentication error in ${functionName} : (${error.message}):`)
 
   } else if (error instanceof Error) {
     console.error(`Service Error in ${functionName} (${message}):`, error.message)

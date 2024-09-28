@@ -1,4 +1,4 @@
-// src/types/strat
+// src/types/strat.ts
 export interface MappedStrat {
     _id: { $oid: string };
     asset: string

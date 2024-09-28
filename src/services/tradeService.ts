@@ -8,7 +8,7 @@ import { config } from '@config/index';
 import { PLATFORM, PlatformTrade } from '@typ/platform'
 import { PlatformService } from './platformService'
 
-const TRADES_TYPE = config.collectionType.trade
+const COLLECTION_CATEGORY = config.collectionCategory.trade
 
 export class TradeService {
   static async fetchDatabaseTrades(): Promise<MappedTrade[]> {
@@ -41,7 +41,7 @@ export class TradeService {
     try {
       const mappedData = await this.fetchPlatformTrades(platform)
       await TradeRepository.deleteAndProcessTrades(mappedData, platform)
-      await TimestampService.saveTimestampToDatabase(TRADES_TYPE, platform)
+      await TimestampService.saveTimestampToDatabase(COLLECTION_CATEGORY, platform)
       return { data: mappedData }
     } catch (error) {
       handleServiceError(error, 'updateTrades', `Error updating trades for ${platform}`)

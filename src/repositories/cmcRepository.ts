@@ -1,4 +1,4 @@
-// src/repositories/cmcRepository
+// src/repositories/cmcRepository.ts
 import { MongodbService } from '@services/mongodbService';
 import { MappedCmc } from '@typ/cmc';
 import { config } from '@config/index';

@@ -1,4 +1,4 @@
-// src/types/order
+// src/types/order.ts
 export interface MappedOrder {
     _id: { $oid: string };
     oId: string

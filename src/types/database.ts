@@ -1,4 +1,4 @@
-// src/types/database
+// src/types/database.ts
 import { MappedBalance } from '@typ/balance'
 import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'

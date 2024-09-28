@@ -9,7 +9,7 @@ import { config } from '@config/index';
 import { PLATFORM } from '@src/types/platform';
 import { executeForPlatforms } from '@utils/taskExecutor';
 
-const COLLECTION_TYPE = config.collectionType.market;
+const COLLECTION_CATEGORY = config.collectionCategory.market;
 
 export class MarketService {
   /**
@@ -32,7 +32,7 @@ export class MarketService {
     try {
       const currentMarkets = await this.fetchCurrentMarkets(platform);
       await MarketRepository.saveMarkets(currentMarkets, platform);
-      await TimestampService.saveTimestampToDatabase(COLLECTION_TYPE, platform);
+      await TimestampService.saveTimestampToDatabase(COLLECTION_CATEGORY, platform);
       console.log(`Données de marché pour ${platform} mises à jour dans la base de données. Total des enregistrements : ${currentMarkets.length}.`);
     } catch (error) {
       handleServiceError(error, 'updateMarketsForPlatform', `Erreur lors de la mise à jour des marchés pour ${platform}`);

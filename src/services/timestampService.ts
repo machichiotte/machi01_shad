@@ -1,6 +1,6 @@
 // src/services/timestampService.ts
 import { TimestampRepository } from '@repositories/timestampRepository';
-import { TimestampData } from '@typ/timestamp';
+import { ExchangeData, TimestampData } from '@typ/timestamp';
 import { handleServiceError } from '@utils/errorUtil';
 export class TimestampService {
   /**
@@ -17,38 +17,42 @@ export class TimestampService {
 
   private static initializeTimestampData(): Omit<TimestampData, '_id'> {
     return {
-      cmc: { $numberLong: Date.now().toString() },
-      strategy: { $numberLong: Date.now().toString() },
-      balance: {},
-      order: {},
-      market: {},
-      ticker: {}
+      cmc: Date.now(),
+      strategy: Date.now(),
+      balance: {} as ExchangeData,
+      order: {} as ExchangeData,
+      market: {} as ExchangeData,
+      ticker: {} as ExchangeData
     };
   }
 
   /**
    * Sauvegarde les informations de dernière mise à jour dans la base de données via le repository.
    */
-  static async saveTimestampToDatabase(type: string, platform?: string): Promise<void> {
-    console.log('typeeee', type)
+  static async saveTimestampToDatabase(category: string, platform?: string): Promise<void> {
+    console.log('typeeee', category)
     console.log('platformeeeee', platform)
     try {
+      const bla = (await this.fetchDatabaseTimestamp())[0]
+      const bla2 = this.initializeTimestampData()
+      console.log('bla', bla)
+      console.log('bla2', bla2)
       // Récupération des données actuelles depuis la base de données
       const data: TimestampData = (await this.fetchDatabaseTimestamp())[0] || this.initializeTimestampData()
 
-      const currentTimestamp = Date.now().toString(); // Utilisation de timestamp en string comme attendu par MongoDB
-
+      const currentTimestamp = Date.now(); // Utilisation de timestamp en string comme attendu par MongoDB
+      console.log('currentTimestamp', currentTimestamp)
       if (!platform) {
-        this.updateSimpleType(data, type, currentTimestamp); // Mise à jour d'un champ sans plateforme
+        this.updateSimpleType(data, category, currentTimestamp); // Mise à jour d'un champ sans plateforme
       } else {
-        this.updatePlatformType(data, type, platform, currentTimestamp); // Mise à jour d'un champ dépendant d'une plateforme
+        this.updateForPlatformType(data, category, platform, currentTimestamp); // Mise à jour d'un champ dépendant d'une plateforme
       }
 
       // Sauvegarder les données mises à jour via le repository
       await TimestampRepository.updateTimestamp(data);
 
     } catch (error) {
-      handleServiceError(error, 'saveTimestampToDatabase', `Erreur lors de la sauvegarde de la dernière mise à jour pour le type ${type}`);
+      handleServiceError(error, 'saveTimestampToDatabase', ``);
       throw error;
     }
   }
@@ -56,13 +60,14 @@ export class TimestampService {
   /**
   * Met à jour un champ simple (sans plateforme) dans les données du timestamp.
   */
-  private static updateSimpleType(data: TimestampData, type: string, currentTimestamp: string): void {
+  private static updateSimpleType(data: TimestampData, type: string, currentTimestamp: number): void {
+    console.log('updateSimpleType type', type)
     switch (type) {
       case 'cmc':
-        data.cmc.$numberLong = currentTimestamp;
+        data.cmc = currentTimestamp;
         break;
       case 'strategy':
-        data.strategy.$numberLong = currentTimestamp;
+        data.strategy = currentTimestamp;
         break;
       default:
         throw new Error(`Type non reconnu: ${type}`);
@@ -72,22 +77,36 @@ export class TimestampService {
   /**
    * Met à jour un champ dépendant d'une plateforme dans les données du timestamp.
    */
-  private static updatePlatformType(data: TimestampData, type: string, platform: string, currentTimestamp: string): void {
-    switch (type) {
-      case 'activeOrders':
-        data.order[platform] = { $numberLong: currentTimestamp };
+  private static updateForPlatformType(data: TimestampData, category: string, platform: string, currentTimestamp: number): void {
+    console.log('updateForPlatformType - category:', category);
+    console.log('updateForPlatformType - platform:', platform);
+
+    // Vérification que 'platform' est bien une clé valide dans 'data.balance' 
+    console.log('balance avant mise à jour:', data.balance);
+
+    switch (category) {
+      case 'order':
+        data.order[platform] = currentTimestamp;
         break;
-      case 'tickers':
-        data.ticker[platform] = { $numberLong: currentTimestamp };
+      case 'ticker':
+        data.ticker[platform] = currentTimestamp;
         break;
       case 'balance':
-        data.balance[platform] = { $numberLong: currentTimestamp };
+        console.log(`Mise à jour de 'balance' pour la plateforme: ${platform}`);
+        if (typeof data.balance !== 'object') {
+          console.error("Le champ 'balance' n'est pas un objet comme attendu", data.balance);
+        }
+        data.balance[platform] = currentTimestamp;
+        console.log('balance après mise à jour:', data.balance[platform]); // Log pour vérifier la mise à jour
         break;
-      case 'loadMarkets':
-        data.market[platform] = { $numberLong: currentTimestamp };
+      case 'market':
+        data.market[platform] = currentTimestamp;
         break;
       default:
-        throw new Error(`Type ou plateforme non reconnus: ${type}, ${platform}`);
+        throw new Error(`Category ou plateforme non reconnus: ${category}, ${platform}`);
     }
+
+    console.log('balance après switch:', data.balance); // Pour vérifier l'état final de balance
   }
+
 }
