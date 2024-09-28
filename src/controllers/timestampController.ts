@@ -1,12 +1,9 @@
 // src/controllers/timestampController.ts
 import { TimestampService } from '@services/timestampService'
-import { MongodbService } from '@services/mongodbService'
 import { Request, Response } from 'express'
 
 import { handleControllerError } from '@utils/errorUtil'
-import { config } from '@config/index'
-
-const COLLECTION_NAME = config.collection.timestamp
+import { TimestampRepository } from '@src/repositories/timestampRepository'
 
 /**
  * Récupère l'enregistrement de dernière mise à jour unique pour une plateforme et un type donnés.
@@ -14,41 +11,29 @@ const COLLECTION_NAME = config.collection.timestamp
 async function getUniqueTimestamp(req: Request, res: Response): Promise<void> {
   try {
     const { platform, type } = req.params
+    const filter = { platform, type }
 
-    // check si besoin de filter
-    //const filter = { platform, type }
+    const timestampData = await TimestampRepository.findTimestamp(filter)
 
-    const timestampData = await MongodbService.findData(COLLECTION_NAME)
-
-    if (timestampData.length > 0) {
-      console.log(
-        'Dernière mise à jour unique récupérée de la base de données.',
-        {
-          platform,
-          type
-        }
-      )
-      res.json(timestampData[0])
+    if (timestampData) {
+      res.status(200).json({
+        message: `Dernière mise à jour unique récupérée de la base de données. Platform: ${platform}, Type: ${type}`,
+        data: timestampData
+      })
     } else {
-      console.log(
-        "Aucune dernière mise à jour trouvée, retour d'un horodatage nul.",
-        {
-          platform,
-          type
-        }
-      )
-      res.json({ platform, type, timestamp: null })
+      res.status(404).json({
+        message: `Aucune dernière mise à jour trouvée, retour d'un horodatage nul. Platform: ${platform}, Type: ${type}`,
+        error: `Aucune dernière mise à jour trouvée, retour d'un horodatage nul. Platform: ${platform}, Type: ${type}`
+      })
     }
   } catch (error) {
     console.error(
-      'Échec de la récupération de la dernière mise à jour unique.',
-      {
-        error: error instanceof Error ? error.message : 'Erreur inconnue',
-        platform: req.params.platform,
-        type: req.params.type
-      }
+      `Échec de la récupération de la dernière mise à jour unique. Platform: \`${req.params.platform}\`, Type: \`${req.params.type}\`, Erreur: \`${error instanceof Error ? error.message : 'Erreur inconnue'}\``
     )
-    res.status(500).json({ error: 'Erreur interne du serveur' })
+    res.status(500).json({
+      message: 'Erreur interne du serveur',
+      error
+    })
   }
 }
 

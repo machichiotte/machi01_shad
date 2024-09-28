@@ -11,31 +11,37 @@ export class CacheService {
   /**
    * Adds data to cache with a timestamp.
    */
-  static addToCache(key: string, data: MappedData[]): void {
-    CacheService.cache[key] = {
-      data,
-      timestamp: Date.now(),
-    };
+  static async addToCache(key: string, data: MappedData[]): Promise<void> {
+    return Promise.resolve().then(() => {
+      CacheService.cache[key] = {
+        data,
+        timestamp: Date.now(),
+      };
+    });
   }
 
   /**
    * Retrieves cached data if it has not expired.
    */
-  static getFromCache(key: CacheKey): MappedData[] | null {
-    const cacheItem = CacheService.cache[key];
-    const expirationTime = config.cacheExpirationTimes[key] || 0;
+  static async getFromCache(key: CacheKey): Promise<MappedData[] | null> {
+    return Promise.resolve().then(() => {
+      const cacheItem = CacheService.cache[key];
+      const expirationTime = config.cacheExpirationTimes[key] || 0;
 
-    if (cacheItem && (Date.now() - cacheItem.timestamp < expirationTime)) {
-      return cacheItem.data;
-    }
+      if (cacheItem && (Date.now() - cacheItem.timestamp < expirationTime)) {
+        return cacheItem.data;
+      }
 
-    return null;
+      return null;
+    });
   }
 
   /**
    * Clears cache for a specific key.
    */
-  static clearCache(key: CacheKey): void {
-    delete CacheService.cache[key];
+  static async clearCache(key: CacheKey): Promise<void> {
+    return Promise.resolve().then(() => {
+      delete CacheService.cache[key];
+    });
   }
 }

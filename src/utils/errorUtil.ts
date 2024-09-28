@@ -7,19 +7,19 @@ import { Response } from 'express'
 */
 function handleControllerError(res: Response, error: unknown, functionName: string): void {
   if (error instanceof AuthenticationError) {
-    console.error(`Authentication error in ${functionName}:`, error.message)
+    console.error(`Controller Authentication error in ${functionName}:`, error.message)
     res.status(401).json({
       message: `Authentication error in ${functionName}`,
       error: error.message
     })
   } else if (error instanceof Error) {
-    console.error(`Error in ${functionName}:`, error)
+    console.error(`Controller Error in ${functionName}:`, error)
     res.status(500).json({
       message: `Error in ${functionName}`,
       error: error.message
     })
   } else {
-    console.error(`Unknown error in ${functionName}:`, error)
+    console.error(`Controller Unknown error in ${functionName}:`, error)
     res.status(500).json({
       message: `Unknown error in ${functionName}`,
       error: error
@@ -29,13 +29,13 @@ function handleControllerError(res: Response, error: unknown, functionName: stri
 
 function handleServiceError(error: unknown, functionName: string, message?: string): void {
   if (error instanceof AuthenticationError) {
-    console.error(`Authentication error in ${functionName} (${message}):`, error.message)
+    console.error(`Service Authentication error in ${functionName} (${message}):`, error.message)
 
   } else if (error instanceof Error) {
-    console.error(`Error in ${functionName} (${message}):`, error)
+    console.error(`Service Error in ${functionName} (${message}):`, error.message)
 
   } else {
-    console.error(`Unknown error in ${functionName} (${message}):`, error)
+    console.error(`Service Unknown error in ${functionName} (${message}):`, error)
 
   }
 }

@@ -17,8 +17,8 @@ let db: Db | null = null
 export class MongodbService {
 
   /**
- * Main function to get data from the collection
- */
+   * Main function to get data from the collection
+   */
   static async getData(collectionName: string): Promise<MappedData[]> {
     try {
       if (config.isOffline) {
@@ -38,12 +38,8 @@ export class MongodbService {
    * Establishes a connection to the MongoDB client.
    */
   static async getMongoClient(): Promise<MongoClient> {
-    console.log('getMongoClient')
     if (!mongoInstance) {
-      console.log('no instance')
-
       const uri = `mongodb+srv://${config.database.user}:${config.database.password}@${config.database.cluster}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
-      console.log('uri', uri)
       try {
         console.log('Attempting to connect to MongoDB...')
         mongoInstance = new MongoClient(uri, {
@@ -68,7 +64,6 @@ export class MongodbService {
    */
   static async getDB(): Promise<Db> {
     if (!db) {
-
       const client = await MongodbService.getMongoClient()
       try {
         db = client.db(config.database.dbName)
@@ -90,7 +85,7 @@ export class MongodbService {
 
       const collectionsToCreate = Object.values(config.collection ?? {})
       await Promise.all(collectionsToCreate.map(collectionName =>
-        MongodbService.createCollectionIfNotExists(collectionName)
+        this.createCollectionIfNotExists(collectionName)
       ))
     } catch (error) {
       handleServiceError(error, 'connectToMongoDB', 'Erreur de connexion à MongoDB')
@@ -104,7 +99,7 @@ export class MongodbService {
    */
   static async createCollectionIfNotExists(collectionName: string): Promise<void> {
     try {
-      await retry(MongodbService.createCollection, [collectionName], 'createCollectionIfNotExists')
+      await retry(this.createCollection, [collectionName], 'createCollectionIfNotExists')
     } catch (error) {
       handleServiceError(error, 'createCollectionIfNotExists', 'pb createCollectionIfNotExists')
     }
@@ -179,7 +174,7 @@ export class MongodbService {
   static addToCache(collectionName: string, data: Document[]): void {
     try {
       if (data.length > 0) {
-        MongodbService.cache[collectionName] = {
+        this.cache[collectionName] = {
           data,
           timestamp: Date.now()
         }
@@ -197,11 +192,11 @@ export class MongodbService {
     const key = this.getCacheKeyForCollection(collectionName);
 
     // Vérifier d'abord le cache
-    const cachedData = CacheService.getFromCache(key);
+    const cachedData = await CacheService.getFromCache(key);
     if (cachedData) return cachedData;
 
     // Récupérer de nouvelles données si le cache est expiré
-    return MongodbService.fetchAndCacheData(collectionName);
+    return this.fetchAndCacheData(collectionName);
   }
 
   private static getCacheKeyForCollection(collectionName: string): keyof typeof config.cacheExpirationTimes {
@@ -239,7 +234,7 @@ export class MongodbService {
     try {
       console.log(`Fetching new data for collection: ${collectionName}`);
       const result = await retry(databaseOperations.find, [collectionName], 'fetchAndCacheData');
-      CacheService.addToCache(collectionName, result);
+      await CacheService.addToCache(collectionName, result);
       return result;
     } catch (error) {
       handleServiceError(error, 'fetchAndCacheData', `Error fetching data from ${collectionName}`);

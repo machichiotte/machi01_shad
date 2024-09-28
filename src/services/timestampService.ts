@@ -30,6 +30,8 @@ export class TimestampService {
    * Sauvegarde les informations de dernière mise à jour dans la base de données via le repository.
    */
   static async saveTimestampToDatabase(type: string, platform?: string): Promise<void> {
+    console.log('typeeee', type)
+    console.log('platformeeeee', platform)
     try {
       // Récupération des données actuelles depuis la base de données
       const data: TimestampData = (await this.fetchDatabaseTimestamp())[0] || this.initializeTimestampData()
