@@ -1,15 +1,11 @@
 // src/services/marketService.ts
 import { PlatformService } from '@services/platformService';
-import { TimestampService } from '@services/timestampService';
 import { MappingService } from '@services/mappingService';
 import { MarketRepository } from '@repositories/marketRepository';
 import { MappedMarket } from '@typ/market';
 import { handleServiceError } from '@utils/errorUtil';
-import { config } from '@config/index';
 import { PLATFORM } from '@src/types/platform';
-import { executeForPlatforms } from '@utils/taskExecutor';
-
-const COLLECTION_CATEGORY = config.collectionCategory.market;
+import { executeForPlatforms } from '@src/utils/cronUtil';
 
 export class MarketService {
   /**
@@ -32,7 +28,6 @@ export class MarketService {
     try {
       const currentMarkets = await this.fetchCurrentMarkets(platform);
       await MarketRepository.saveMarkets(currentMarkets, platform);
-      await TimestampService.saveTimestampToDatabase(COLLECTION_CATEGORY, platform);
       console.log(`Données de marché pour ${platform} mises à jour dans la base de données. Total des enregistrements : ${currentMarkets.length}.`);
     } catch (error) {
       handleServiceError(error, 'updateMarketsForPlatform', `Erreur lors de la mise à jour des marchés pour ${platform}`);

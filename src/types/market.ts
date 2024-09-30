@@ -1,6 +1,8 @@
+import { ObjectId } from 'mongodb';
+
 // src/types/market.ts
 export interface MappedMarket {
-    _id: { $oid: string };
+    _id: ObjectId;
     symbol: string
     base: string
     quote: string

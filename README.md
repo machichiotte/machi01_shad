@@ -156,7 +156,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 - │ ├── errorMiddleware.ts
 - ├── utils/ # Utilitaires et helpers
 - │ ├── errorUtil.ts
-- │ ├── taskExecutor.ts
+- │ ├── cronUtil.ts
 - │ ├── loggerUtil.ts
 - │ ├── mappingUtil.ts
 - │ ├── mockUtil.ts

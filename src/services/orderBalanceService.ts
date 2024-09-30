@@ -27,7 +27,6 @@ export class OrderBalanceService {
     return orders.filter(order => order.symbol === symbol);
   }
 
-
   /**
  * Get all orders for a specific platform
  */
@@ -80,19 +79,17 @@ export class OrderBalanceService {
   /**
    * Updates orders from the server for a given platform.
    */
-  static async updateOrdersFromServer(platform: PLATFORM): Promise<Omit<MappedOrder, '_id'>[]> {
+  static async updateOrdersFromServer(platform: PLATFORM): Promise<void> {
     try {
       const mappedData = await this.fetchAndMapOrders(platform)
-      await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, platform, COLLECTION_CATEGORY)
+
+      await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform)
       console.log(`Updated orders from server for ${platform}.`, {
         count: mappedData.length
       })
-      return mappedData
     } catch (error) {
       handleServiceError(error, 'updateOrdersFromServer', `Error updating orders from server for ${platform}`)
       throw error
     }
   }
-
-
 }

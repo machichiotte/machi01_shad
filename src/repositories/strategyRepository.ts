@@ -1,0 +1,29 @@
+// src/repositories.strategyRepository.ts
+import { MongodbService } from '@services/mongodbService';
+import { MappedStrat } from '@typ/strat';
+import { config } from '@config/index';
+import { ObjectId } from 'mongodb';
+
+const COLLECTION_NAME = config.collection.strat;
+const COLLECTION_CATEGORY = config.collectionCategory.strat;
+
+export class StrategyRepository {
+    static async fetchAll(): Promise<MappedStrat[]> {
+        return await MongodbService.getData(COLLECTION_NAME) as MappedStrat[];
+    }
+
+    static async updateById(mappedData: MappedStrat): Promise<boolean> {
+        const { _id, ...mappedStrat } = mappedData;
+        console.log('strategyRepository updateById _id', _id)
+        return await MongodbService.updateOneData(COLLECTION_NAME, { _id: new ObjectId(_id) }, { $set: mappedStrat });
+    }
+
+    static async deleteAll(): Promise<void> {
+        await MongodbService.deleteAllData(COLLECTION_NAME);
+    }
+
+    static async saveStrategies(strategies: MappedStrat[]): Promise<void> {
+        //return await MongodbService.insertData(COLLECTION_NAME, strategies);
+        await MongodbService.saveDataToDatabase(strategies, COLLECTION_NAME, COLLECTION_CATEGORY);
+    }
+}

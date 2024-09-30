@@ -1,11 +1,13 @@
 // src/types/cmc.ts
+import { ObjectId } from 'mongodb';
+
 export interface FetchResponse {
     data: MappedCmc[];
     status: { total_count: number };
 }
 
 export interface MappedCmc {
-    _id?: { $oid: string };
+    _id?: ObjectId;
     id: number;
     name: string;
     symbol: string;

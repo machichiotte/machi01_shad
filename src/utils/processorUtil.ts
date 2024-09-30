@@ -40,12 +40,12 @@ function logDifferenceType(difference: Difference): void {
 }
 
 function areAllDataValid(
-    dbCmc: MappedCmc[] | null,
-    dbStrategies: MappedStrat[] | null,
-    dbTrades: MappedTrade[] | null,
-    dbOpenOrders: MappedOrder[] | null,
-    dbTickers: MappedTicker[] | null,
-    dbBalances: MappedBalance[] | null
+    dbCmc: MappedCmc[],
+    dbStrategies: MappedStrat[],
+    dbTrades: MappedTrade[],
+    dbOpenOrders: MappedOrder[],
+    dbTickers: MappedTicker[],
+    dbBalances: MappedBalance[]
 ): boolean {
     const invalidData: string[] = []
     if (!dbCmc) invalidData.push('CMC')

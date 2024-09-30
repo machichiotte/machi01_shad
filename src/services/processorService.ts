@@ -6,13 +6,11 @@ import { TickerService } from '@services/tickerService'
 import { CmcService } from '@services/cmcService'
 import { OrderBalanceService, } from '@services/orderBalanceService'
 import { StrategyService } from '@services/strategyService'
-import { getSymbolForPlatform } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
-import { removeDuplicateDifferences, logDifferenceType, areAllDataValid, isValidAssetMetrics, removeDuplicatesAndStablecoins } from '@utils/processorUtil'
-
-import { Difference, Balance, Ticker } from '@typ/processor'
+import { areAllDataValid, isValidAssetMetrics, removeDuplicatesAndStablecoins } from '@utils/processorUtil'
+import { Difference, Balance } from '@typ/processor'
 import { STABLECOINS, QUOTE_CURRENCIES } from '@src/constants'
-import { BalanceService } from './balanceService'
+import { BalanceService } from '@services/balanceService'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
 import { MappedBalance } from '@typ/balance'
@@ -31,30 +29,15 @@ export class ProcessorService {
    */
   static async processBalanceChanges(platform: PLATFORM, differences: Difference[]): Promise<void> {
     try {
-      // Mise à jour des ordres depuis le serveur
-      await OrderBalanceService.updateOrdersFromServer(platform)
-
-      // Récupération des tickers sauvegardés pour la plateforme spécifiée
-      const tickers: MappedTicker[] = await TickerService.getAllTickersByPlatform(platform)
-
-      // Suppression des doublons dans le tableau des différences
-      const uniqueDifferences: Difference[] =
-        removeDuplicateDifferences(differences)
-
-      const newTrades: MappedTrade[] = []
-
-      // Boucle sur les différences sans doublons
-      for (const difference of uniqueDifferences) {
-        await this.processDifference(
-          difference,
-          platform,
-          tickers,
-          QUOTE_CURRENCIES,
-          newTrades
-        )
+      await OrderBalanceService.updateOrdersFromServer(platform);
+      const newTrades: MappedTrade[] = [];
+      for (const difference of differences) {
+        const trades = await this.processDifference(difference);
+        if (Array.isArray(trades) && trades.length > 0) {
+          newTrades.push(...trades);
+        }
       }
 
-      // Sauvegarde des nouveaux trades détectés
       if (newTrades.length > 0) {
         await TradeService.saveTradesToDatabase(newTrades)
       }
@@ -242,27 +225,16 @@ export class ProcessorService {
   /**
   * Processes a specific difference, retrieves trades, and updates the list of new trades.
   */
-  private static async processDifference(difference: Difference, platform: PLATFORM, tickers: Ticker[], quoteCurrencies: string[], newTrades: MappedTrade[]): Promise<void> {
-    for (const quote of quoteCurrencies) {
-      const symbol = getSymbolForPlatform(platform, difference.base, quote)
-
-      const marketExists = tickers.some(
-        (ticker) =>
-          ticker.symbol === difference.base + '/' + quote &&
-          ticker.platform === platform
-      )
-
-      if (marketExists) {
-        try {
-          const tradeList = await TradeService.fetchLastTrades(platform, symbol)
-          const mappedTrades = MappingService.mapTrades(platform, tradeList, {})
-          newTrades.push(...mappedTrades)
-        } catch (error) {
-          handleServiceError(error, 'fetchLastTrades', `Error fetching trades for ${symbol}`)
-        }
-      }
+  private static async processDifference(difference: Difference): Promise<MappedTrade[]> {
+    //logDifferenceType(difference) si besoin pour des evolutions futures
+    try {
+      const tradeList = await TradeService.fetchLastTrades(difference.platform, difference.base)
+      if (tradeList && tradeList.length > 0)
+        return MappingService.mapTrades(difference.platform, tradeList, {})
+    } catch (error) {
+      console.warn(`Impossible de récupérer les trades pour ${difference.platform} - ${difference.base} : ${error}`);
     }
 
-    logDifferenceType(difference)
+    return []
   }
 }

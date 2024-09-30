@@ -3,13 +3,13 @@ import express from 'express'
 import {
   getTrades,
   insertNewTrades,
-  updateTrades
+  updateTradesByPlatform
 } from '@controllers/tradeController'
 
 const router = express.Router()
 
 router.get('/get', getTrades)
 router.post('/add', insertNewTrades)
-router.get('/update/:platform', updateTrades)
+router.get('/update/:platform', updateTradesByPlatform)
 
 export default router

@@ -1,6 +1,7 @@
 // src/types/order.ts
+import { ObjectId } from 'mongodb';
 export interface MappedOrder {
-    _id: { $oid: string };
+    _id: ObjectId;
     oId: string
     cId: string | undefined
     platform: string

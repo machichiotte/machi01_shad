@@ -7,7 +7,8 @@ import { ProcessorService } from '@services/processorService';
 import { MappedBalance } from '@typ/balance';
 import { retry } from '@utils/retryUtil';
 import { PLATFORM } from '@src/types/platform';
-import { executeForPlatforms } from '@utils/taskExecutor';
+import { executeForPlatforms } from '@src/utils/cronUtil';
+import { removeDuplicateDifferences } from '@src/utils/processorUtil';
 
 export class BalanceService {
   static async fetchDatabaseBalance(): Promise<MappedBalance[]> {
@@ -70,14 +71,12 @@ export class BalanceService {
         ]);
 
         const differences = ProcessorService.compareBalances(previousBalances, currentBalances);
+        const uniqueDifferences = removeDuplicateDifferences(differences)
 
-        if (differences.length > 0) {
-          console.log(`Différences de solde détectées pour ${platform}:`, differences);
+        if (uniqueDifferences.length > 0) {
           await Promise.all([
             BalanceRepository.saveBalances(platform, currentBalances),
-            //rajouter timestamp
-
-            ProcessorService.processBalanceChanges(platform, differences)
+            ProcessorService.processBalanceChanges(platform, uniqueDifferences)
           ]);
         }
       }, [], 'updateBalancesForPlatform', 3)

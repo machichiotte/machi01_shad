@@ -1,6 +1,8 @@
 // src/types/ticker.ts
+import { ObjectId } from 'mongodb';
+
 export interface MappedTicker {
-    _id: { $oid: string };
+    _id: ObjectId;
     symbol: string
     timestamp: number | undefined
     last: number | undefined

@@ -2,6 +2,7 @@
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { StrategyService } from '@services/strategyService'
+import { MappedStrat } from '@src/types/strat'
 
 /**
  * Récupère les stratégies de la base de données.
@@ -32,11 +33,11 @@ async function updateStrat(req: Request, res: Response): Promise<void> {
  * Met à jour une stratégie spécifique par son ID.
  */
 async function updateStrategyById(req: Request, res: Response): Promise<void> {
-  const { strategyId } = req.params
-  const updatedStrategy = req.body
+  //TODO changer ca dans le front const { strategyId } = req.params
+  //const { strategyId } = req.params
+  const updatedStrategy = req.body as MappedStrat
   try {
     const result = await StrategyService.updateStrategyById(
-      strategyId,
       updatedStrategy
     )
     res.json(result)
@@ -45,4 +46,24 @@ async function updateStrategyById(req: Request, res: Response): Promise<void> {
   }
 }
 
-export { getStrat, updateStrat, updateStrategyById }
+/**
+ * Met à jour une stratégie spécifique par son ID.
+ */
+async function updateStrategyByIds(req: Request, res: Response): Promise<void> {
+  const updatedStrategies = req.body as MappedStrat[];
+  const results = [];
+
+  for (const strategy of updatedStrategies) {
+    try {
+      const result = await StrategyService.updateStrategyById(strategy);
+      results.push(result);
+    } catch (error) {
+      handleControllerError(res, error, 'updateStrategyById');
+      return;
+    }
+  }
+
+  res.status(200).json({ message: 'Stratégies mises à jour', data: results });
+}
+
+export { getStrat, updateStrat, updateStrategyById, updateStrategyByIds }

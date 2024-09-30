@@ -41,9 +41,6 @@ export class MappingService {
    * Maps common trade data across all platforms.
    */
   private static mapTradeCommon(item: PlatformTrade, platform: PLATFORM, conversionRates: Record<string, number> = {}): Omit<MappedTrade, '_id'> {
-    console.log('Début de mapTradeCommon pour la plateforme:', platform);
-    //console.log('Item reçu:', JSON.stringify(item));
-
     if (!item) {
       console.error('Item est undefined');
       return {} as Omit<MappedTrade, '_id'>;

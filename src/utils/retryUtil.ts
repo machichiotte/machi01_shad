@@ -1,7 +1,4 @@
 // src/utils/retryUtil.ts
-import { handleServiceError } from '@utils/errorUtil';
-
-// Type spécifique pour définir une erreur irrécupérable
 interface NonRetryableError extends Error {
     isNonRetryable?: boolean;
 }
@@ -28,14 +25,10 @@ export async function retry<A extends unknown[], R>(
         } catch (error) {
             if (isNonRetryableError(error)) {
                 // Si l'erreur est non récupérable, pas besoin de réessayer
-                throw error;
+                throw new Error(`La fonction n'a pas besoin de retry ${error}`);
             }
 
             attempt++;
-            if (attempt >= retries) {
-                handleServiceError(error, 'retry', `Toutes les ${attempt} tentatives de ${functionName} ont échoué`);
-                throw error;
-            }
 
             console.info(`Nouvelle tentative de ${functionName}... essai ${attempt} après ${delay}ms`);
             await new Promise(resolve => setTimeout(resolve, delay));

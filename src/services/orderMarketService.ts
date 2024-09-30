@@ -1,5 +1,5 @@
 // src/services/orderMarketService.ts
-import { getSymbolForPlatform } from '@utils/platformUtil'
+import { getMarketSymbolForPlatform } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 import { PLATFORM } from '@src/types/platform'
 import { PlatformService } from './platformService'
@@ -47,7 +47,7 @@ export class OrderMarketService {
                 throw new Error('Le prix doit être spécifié pour les ordres stop loss.')
             }
 
-            const symbol = getSymbolForPlatform(platform, asset)
+            const symbol = getMarketSymbolForPlatform(platform, asset)
             const stopLossPrice = stopPrice - stopPrice * 0.001
             await PlatformService.executeMarketOrder(platform, symbol, amount, orderType, orderMode, stopLossPrice, stopPrice)
         } catch (error) {
@@ -59,7 +59,7 @@ export class OrderMarketService {
     static async createOrder(platform: PLATFORM, asset: string, amount: number, orderType: 'buy' | 'sell', orderMode: 'market' | 'limit', price?: number): Promise<void> {
         console.log('createOrder', platform, asset, amount, orderType, orderMode, price)
         try {
-            const symbol = getSymbolForPlatform(platform, asset)
+            const symbol = getMarketSymbolForPlatform(platform, asset)
             await PlatformService.executeMarketOrder(platform, symbol, amount, orderType, orderMode, price)
         } catch (error) {
             handleServiceError(error, 'createOrder', `Error creating order for ${platform}`)
@@ -72,7 +72,7 @@ export class OrderMarketService {
     */
     static async cancelAllOrdersByBunch(platform: PLATFORM, asset: string): Promise<{ message: string }> {
         try {
-            const symbol = getSymbolForPlatform(platform, asset)
+            const symbol = getMarketSymbolForPlatform(platform, asset)
             await PlatformService.bunchCancelAllOrdersByAsset(platform, symbol)
             return { message: `Cancelled all ${symbol} orders for ${platform}.` }
         } catch (error) {
@@ -92,7 +92,7 @@ export class OrderMarketService {
         try {
             const orders = await OrderBalanceService.getOrdersByPlatformAndSymbol(platform, asset)
             const filteredOrders = orderSide ? orders.filter(order => order.side === orderSide) : orders
-            const orderIds = filteredOrders.map(order => order._id.$oid)
+            const orderIds = filteredOrders.map(order => order._id)
 
             if (orderIds.length === 0) {
                 return { message: `Aucun ordre ouvert pour ce symbole ${orderSide ? ` avec côté ${orderSide}` : ''}` }

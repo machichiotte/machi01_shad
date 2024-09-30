@@ -28,7 +28,7 @@ export class MigrationSwapService {
     };
 
     if (trade._id) {
-      await TradeService.updateTradeById(trade._id.$oid, updatedTrade);
+      await TradeService.updateTradeById(updatedTrade);
       console.info(`Trade swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`);
     } else {
       console.error('Trade _id is undefined, cannot update trade');
@@ -38,7 +38,7 @@ export class MigrationSwapService {
   static async updateStrategy(strategy: MappedStrat, newAsset: string, platform: string): Promise<void> {
     const updatedStrategy = { ...strategy, asset: newAsset };
     if (strategy._id && updatedStrategy) {
-      await StrategyService.updateStrategyById(strategy._id.$oid, updatedStrategy);
+      await StrategyService.updateStrategyById(updatedStrategy);
       console.info(`Strategy swap completed for ${strategy.asset} to ${newAsset} on platform ${platform}.`);
     }
   }

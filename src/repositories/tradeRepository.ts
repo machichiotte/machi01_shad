@@ -3,7 +3,7 @@ import { MongodbService } from '@services/mongodbService'
 import { MappedTrade } from '@typ/trade'
 import { config } from '@config/index';
 import { InsertData } from '@typ/trade';
-import { PLATFORM } from '@src/types/platform';
+import { ObjectId } from 'mongodb';
 
 const TRADES_COLLECTION = config.collection.trade
 
@@ -12,12 +12,11 @@ export class TradeRepository {
         return await MongodbService.getData(TRADES_COLLECTION) as MappedTrade[]
     }
 
-    static async updateTradeById(tradeId: string, updatedTrade: MappedTrade): Promise<boolean> {
-        return await MongodbService.updateOneData(TRADES_COLLECTION, { _id: tradeId }, { $set: updatedTrade })
-    }
+    static async updateTradeById(updatedTrade: MappedTrade): Promise<boolean> {
+        const { _id, ...mappedData } = updatedTrade;
+        console.log('tradeRepository updateTradeById _id', _id)
 
-    static async deleteAndProcessTrades(mappedData: MappedTrade[], platform: PLATFORM): Promise<void> {
-        await MongodbService.deleteAndProcessData(TRADES_COLLECTION, mappedData, platform)
+        return await MongodbService.updateOneData(TRADES_COLLECTION, { _id: new ObjectId(_id) }, { $set: mappedData })
     }
 
     static async insertTrades(tradesData: MappedTrade | MappedTrade[]): Promise<InsertData> {

@@ -1,10 +1,10 @@
 // src/services/platformService.ts
 import * as ccxt from 'ccxt';
 import { config } from '@config/index';
-import { PLATFORM, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers } from '@typ/platform';
+import { PLATFORM, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@typ/platform';
 import { handleServiceError } from '@utils/errorUtil';
 import { checkApiKeys } from '@utils/platformUtil';
-import { PlatformTrade } from '@typ/platform';
+import { ObjectId } from 'mongodb';
 
 export class PlatformService {
 
@@ -57,15 +57,10 @@ export class PlatformService {
         return await platformInstance.fetchMyTrades(symbol, since, limit, params);
     }
 
-    static async fetchRawOpenOrders(platform: PLATFORM, symbol?: string, since?: number, limit?: number, params?: Record<string, unknown>): Promise<PlatformOrder[]> {
-        const platformInstance = this.createPlatformInstance(platform);
-        if (platform === 'binance' && platformInstance.options) {
-            platformInstance.options.warnOnFetchOpenOrdersWithoutSymbol = false
-        }
-        return await platformInstance.fetchOpenOrders(symbol, since, limit, params);
-    }
+
 
     // orders
+    // fetch
     static async fetchOpenOrdersByPlatform(platform: PLATFORM): Promise<PlatformOrder[]> {
         try {
             if (platform === 'kucoin') {
@@ -77,6 +72,14 @@ export class PlatformService {
             handleServiceError(error, 'fetchOpenOrdersByPlatform', `Error fetching open orders for ${platform}`)
             throw error
         }
+    }
+
+    static async fetchRawOpenOrders(platform: PLATFORM, symbol?: string, since?: number, limit?: number, params?: Record<string, unknown>): Promise<PlatformOrder[]> {
+        const platformInstance = this.createPlatformInstance(platform);
+        if (platform === 'binance' && platformInstance.options) {
+            platformInstance.options.warnOnFetchOpenOrdersWithoutSymbol = false
+        }
+        return await platformInstance.fetchOpenOrders(symbol, since, limit, params);
     }
 
     static async fetchRawOpenOrdersByPage(platform: PLATFORM, symbol?: string, since?: number, limit?: number, params?: Record<string, unknown>, pageSize: number = 100): Promise<PlatformOrder[]> {
@@ -108,7 +111,8 @@ export class PlatformService {
         return allOrders
     }
 
-    static async bunchCancelAllOrdersByAsset(platform: PLATFORM, symbol?: string, orderIds?: string[]) {
+    //cancel
+    static async bunchCancelAllOrdersByAsset(platform: PLATFORM, symbol?: string, orderIds?: ObjectId[]) {
         if (platform === 'okx') {
             if (symbol && orderIds)
                 await this.cancelAllOrdersRecursively(platform, symbol, orderIds)
@@ -119,9 +123,9 @@ export class PlatformService {
 
     }
 
-    static async cancelAllOrdersRecursively(platform: PLATFORM, symbol: string, orderIds: string[]) {
+    static async cancelAllOrdersRecursively(platform: PLATFORM, symbol: string, orderIds: ObjectId[]) {
         const platformInstance = this.createPlatformInstance(platform)// Récupère tous les ordres ouverts pour le symbole donné
-        await Promise.all(orderIds.map(id => platformInstance.cancelOrder(id, symbol)))
+        await Promise.all(orderIds.map(order => platformInstance.cancelOrder(order.toHexString(), symbol)))
     }
 
     static async cancelOneOrder(platform: PLATFORM, symbol: string, orderId: string) {
@@ -130,6 +134,7 @@ export class PlatformService {
         await platformInstance.cancelOrder(orderId, symbol)
     }
 
+    //execute order
     static async executeMarketOrder(platform: PLATFORM, symbol: string, amount: number, orderSide: 'buy' | 'sell', orderMode: 'market' | 'limit', price?: number, stopLossPrice?: number): Promise<PlatformOrder> {
         const platformInstance = this.createPlatformInstance(platform)
         if (orderMode === 'market') {
@@ -153,8 +158,13 @@ export class PlatformService {
     // trades 
     static async fetchPlatformTrades(platform: PLATFORM): Promise<PlatformTrade[]> {
         let trades: PlatformTrade[] = []
+        const platformInstance = this.createPlatformInstance(platform)
 
         switch (platform) {
+            //TODO POSSIBLE BUG AVEC BINANCE IL FAUDRA RAJOUTER LES AUTRES APRES TEST
+            case 'binance':
+                trades = await platformInstance.fetchMyTrades();
+                break;
             case 'kucoin':
                 trades = await this.fetchKucoinTrades(platform)
                 break

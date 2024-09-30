@@ -1,20 +1,22 @@
 // src/types/processor.ts
 
+import { PLATFORM } from "./platform"
+
 export interface Difference {
     base: string
-    platform: string
+    platform: PLATFORM
     newSymbol?: boolean
     balanceDifference?: boolean
     zeroBalance?: boolean
 }
 
 export interface Balance {
-    platform: string
+    platform: PLATFORM
     base: string
     balance: number
 }
 
 export interface Ticker {
     symbol: string
-    platform: string
+    platform: PLATFORM
 }

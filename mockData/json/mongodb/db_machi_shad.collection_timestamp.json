@@ -4,20 +4,36 @@
       "$oid": "65a96fb4e334c2acf07b9104"
     },
     "balance": {
-      "binance": 1727322076161
+      "binance": {
+        "$numberLong": "1727322076161"
+      }
     },
-    "cmc": 1716775615632,
-    "strategy": 1725751205530,
+    "cmc": {
+      "$numberLong": "1716775615632"
+    },
+    "strategy": {
+      "$numberLong": "1725751205530"
+    },
     "order": {
-      "binance": 1727322080885
+      "binance": {
+        "$numberLong": "1727322080885"
+      }
     },
     "market": {
-      "binance": 1726682347261,
-      "kucoin": 1726682342945
+      "binance": {
+        "$numberLong": "1726682347261"
+      },
+      "kucoin": {
+        "$numberLong": "1726682342945"
+      }
     },
     "ticker": {
-      "binance": 1726925471542,
-      "kucoin": 1726925466534
+      "binance": {
+        "$numberLong": "1726925471542"
+      },
+      "kucoin": {
+        "$numberLong": "1726925466534"
+      }
     }
   }
 ]

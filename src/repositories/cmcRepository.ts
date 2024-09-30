@@ -4,6 +4,7 @@ import { MappedCmc } from '@typ/cmc';
 import { config } from '@config/index';
 
 const COLLECTION_NAME = config.collection.cmc;
+const COLLECTION_CATEGORY = config.collectionCategory.cmc;
 
 export class CmcRepository {
     /**
@@ -23,7 +24,7 @@ export class CmcRepository {
     /**
      * Insère de nouvelles données CMC dans la base de données.
      */
-    public static async saveCmcData(data: MappedCmc[]): Promise<object> {
-        return await MongodbService.insertData(COLLECTION_NAME, data);
+    public static async saveCmcData(mappedData: Omit<MappedCmc, '_id'>[]): Promise<void> {
+        await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY);
     }
 }

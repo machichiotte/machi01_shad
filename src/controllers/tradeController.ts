@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { TradeService } from '@services/tradeService'
 import { handleControllerError } from '@utils/errorUtil'
 import { isValidPlatform } from '@src/utils/platformUtil'
+import { MappedTrade } from '@src/types/trade'
 
 /**
  * Récupère tous les trades de la base de données.
@@ -20,11 +21,15 @@ async function getTrades(req: Request, res: Response): Promise<void> {
  * Met à jour un trade spécifique par son ID.
  */
 async function updateTradeById(req: Request, res: Response): Promise<void> {
-  const { tradeId } = req.params
-  const updatedTrade = req.body
+  //TODO modifier front const { tradeId } = req.params
+  const updatedTrade = req.body as MappedTrade
+  if (!updatedTrade._id) {
+    throw new Error(`L'ID du trade est requis`)
+  }
+
   try {
-    const data = await TradeService.updateTradeById(tradeId, updatedTrade)
-    res.status(200).json({ message: `Trade ${tradeId} mis à jour`, data })
+    const data = await TradeService.updateTradeById(updatedTrade)
+    res.status(200).json({ message: `Trade ${updatedTrade._id} mis à jour`, data })
   } catch (error) {
     handleControllerError(res, error, 'updateTradeById')
   }
@@ -46,7 +51,7 @@ async function insertNewTrades(req: Request, res: Response): Promise<void> {
 /**
  * Met à jour les trades pour une plateforme spécifique.
  */
-async function updateTrades(req: Request, res: Response): Promise<void> {
+async function updateTradesByPlatform(req: Request, res: Response): Promise<void> {
   const { platform } = req.params
 
   if (!isValidPlatform(platform)) {
@@ -111,7 +116,7 @@ export {
   updateTradeById,
   getTrades,
   insertNewTrades,
-  updateTrades,
+  updateTradesByPlatform,
   fetchLastTrades,
   saveTradesToDatabase,
   saveAllTradesToDatabase

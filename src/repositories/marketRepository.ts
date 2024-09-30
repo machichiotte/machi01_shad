@@ -6,13 +6,14 @@ import { config } from '@config/index';
 import { PLATFORM } from '@src/types/platform';
 
 const COLLECTION_NAME = config.collection.market;
-
+const COLLECTION_CATEGORY = config.collectionCategory.market;
 export class MarketRepository {
-    static async saveMarkets(markets: Omit<MappedMarket, '_id'>[], platform: PLATFORM): Promise<void> {
-        await MongodbService.deleteAndProcessData(COLLECTION_NAME, markets, platform);
-    }
 
     static async getMarkets(): Promise<MappedMarket[]> {
         return await MongodbService.getData(COLLECTION_NAME) as MappedMarket[];
+    }
+
+    static async saveMarkets(mappedData: Omit<MappedMarket, '_id'>[], platform: PLATFORM): Promise<void> {
+        await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
     }
 }

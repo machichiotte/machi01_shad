@@ -13,17 +13,17 @@ export interface CollectionConfig {
 
 export interface CacheExpirationTimes {
     cmc: number;
-    balances: number;
-    highestPrices: number;
-    timestamps: number;
-    markets: number;
-    orders: number;
+    balance: number;
+    highestPrice: number;
+    timestamp: number;
+    market: number;
+    order: number;
     shad: number;
-    strats: number;
-    swaps: number;
-    tickers: number;
-    trades: number;
-    users: number;
+    strat: number;
+    swap: number;
+    ticker: number;
+    trade: number;
+    user: number;
 }
 
 export interface collectionCategoryConfig {
@@ -67,9 +67,9 @@ export interface SmtpConfig {
 
 export interface CronSchedulesConfig {
     shad: string;
-    markets: string;
-    tickers: string;
-    balances: string;
+    market: string;
+    ticker: string;
+    balance: string;
 }
 
 export interface LogFilesConfig {

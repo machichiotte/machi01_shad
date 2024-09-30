@@ -60,12 +60,12 @@ export const config = {
         balance: process.env.COLLECTION_CATEGORY_BALANCE || '',
         cmc: process.env.COLLECTION_CATEGORY_CMC || '',
         timestamp: process.env.COLLECTION_CATEGORY_TIMESTAMP || '',
-        market: process.env.COLLECTION_CATEGORY_MARKETS || '',
-        order: process.env.COLLECTION_CATEGORY_ORDERS || '',
+        market: process.env.COLLECTION_CATEGORY_MARKET || '',
+        order: process.env.COLLECTION_CATEGORY_ORDER || '',
         shad: process.env.COLLECTION_CATEGORY_SHAD || '',
         strat: process.env.COLLECTION_CATEGORY_STRAT || '',
-        ticker: process.env.COLLECTION_CATEGORY_TICKERS || '',
-        trade: process.env.COLLECTION_CATEGORY_TRADES || '',
+        ticker: process.env.COLLECTION_CATEGORY_TICKER || '',
+        trade: process.env.COLLECTION_CATEGORY_TRADE || '',
     },
 
     apiKeys: {

@@ -10,6 +10,7 @@ import { CacheItem } from '@typ/mongodb'
 import { CacheService } from './cacheService'
 import { config } from '@config/index';
 import { InsertData } from '@src/types/trade'
+import { PLATFORM } from '@src/types/platform'
 
 let mongoInstance: MongoClient | null = null
 let db: Db | null = null
@@ -282,20 +283,19 @@ export class MongodbService {
   /**
    * Updates a document in the database.
    */
-  static async updateOneData(collectionName: string, filter: object, update: MappedData): Promise<boolean> {
+  static async updateOneData(collectionName: string, filter: Document, update: Document): Promise<boolean> {
     try {
-      return await retry(databaseOperations.updateOne, [collectionName, filter, update], 'updateOneData')
+      return await retry(databaseOperations.updateOne, [collectionName, filter, update], 'updateOneData');
     } catch (error) {
-      handleServiceError(error, 'updateOneData', `Error updateOneData data from ${collectionName}`);
-      throw error
-
+      handleServiceError(error, 'updateOneData', `Erreur lors de la mise à jour des données dans ${collectionName}`);
+      throw error;
     }
   }
 
-  static async deleteAndProcessData(collectionName: string, mapData: Omit<MappedData, '_id'>[], platform: string, replaceAll: boolean = false): Promise<void> {
+  static async deleteAndProcessData(collectionName: string, mapData: Omit<MappedData, '_id'>[], platform?: PLATFORM): Promise<void> {
     try {
       if (mapData && mapData.length > 0) {
-        if (replaceAll) {
+        if (!platform) {
           await MongodbService.deleteAllData(collectionName)
         } else {
           const deleteParam = { platform }
@@ -309,7 +309,7 @@ export class MongodbService {
     }
   }
 
-  static async saveDataToDatabase(data: Omit<MappedData, '_id'>[], collectionName: string, platform: string, tsCategory: string): Promise<void> {
+  static async saveDataToDatabase(data: Omit<MappedData, '_id'>[], collectionName: string, tsCategory: string, platform?: PLATFORM): Promise<void> {
     try {
       await MongodbService.deleteAndProcessData(collectionName, data, platform)
       await TimestampService.saveTimestampToDatabase(tsCategory, platform)

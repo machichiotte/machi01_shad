@@ -7,6 +7,10 @@ import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ
 import { config } from '@config/index';
 import { PLATFORM, PlatformTrade } from '@typ/platform'
 import { PlatformService } from './platformService'
+import { MarketService } from './marketService'
+import { QUOTE_CURRENCIES } from '@src/constants'
+import { getMarketSymbolForPlatform } from '@utils/platformUtil'
+import { retry } from '@src/utils/retryUtil'
 
 const COLLECTION_CATEGORY = config.collectionCategory.trade
 
@@ -15,24 +19,49 @@ export class TradeService {
     return await TradeRepository.fetchAllTrades()
   }
 
-  static async fetchLastTrades(platform: PLATFORM, symbol: string): Promise<PlatformTrade[]> {
-    try {
-      return await PlatformService.fetchRawTrade(platform, symbol)
-    } catch (error) {
-      handleServiceError(error, 'fetchLastTrades', `Error fetching last trades for ${platform}`)
-      throw error
+  static async fetchLastTrades(platform: PLATFORM, base: string): Promise<PlatformTrade[]> {
+    const markets = await MarketService.getSavedMarkets();
+    const validSymbols = QUOTE_CURRENCIES
+      .filter(quote => markets.some(market =>
+        market.base === base && market.quote === quote && market.platform === platform
+      ))
+      .map(quote => getMarketSymbolForPlatform(platform, base, quote));
+
+    const trades: PlatformTrade[] = [];
+    const batchSize = 3; // Ajustez selon les limites de l'API
+
+    for (let i = 0; i < validSymbols.length; i += batchSize) {
+      const symbolBatch = validSymbols.slice(i, i + batchSize);
+
+      const batchPromises = symbolBatch.map(symbol =>
+        retry(
+          async () => PlatformService.fetchRawTrade(platform, symbol),
+          [],
+          `fetchRawTrade(${platform}, ${symbol})`
+        )
+      );
+
+      const batchResults = await Promise.all(batchPromises);
+      batchResults.forEach(result => trades.push(...result));
+
+      // Ajoutez un délai entre les lots pour respecter les limites de taux
+      if (i + batchSize < validSymbols.length) {
+        await new Promise(resolve => setTimeout(resolve, 2000)); // 2 secondes de délai
+      }
     }
+
+    return trades;
   }
 
-  static async updateTradeById(tradeId: string, updatedTrade: MappedTrade): Promise<boolean> {
-    if (!tradeId) {
+  static async updateTradeById(updatedTrade: MappedTrade): Promise<boolean> {
+    if (!updatedTrade._id) {
       throw new Error(`L'ID du trade est requis`)
     }
 
     try {
-      return await TradeRepository.updateTradeById(tradeId, updatedTrade)
+      return await TradeRepository.updateTradeById(updatedTrade)
     } catch (error) {
-      handleServiceError(error, 'updateTradeById', `Error updating trade with id ${tradeId}`)
+      handleServiceError(error, 'updateTradeById', `Error updating trade with id ${updatedTrade._id}`)
       throw error
     }
   }
@@ -40,7 +69,7 @@ export class TradeService {
   static async updateTrades(platform: PLATFORM): Promise<TradeServiceResult> {
     try {
       const mappedData = await this.fetchPlatformTrades(platform)
-      await TradeRepository.deleteAndProcessTrades(mappedData, platform)
+      await TradeRepository.insertTrades(mappedData)
       await TimestampService.saveTimestampToDatabase(COLLECTION_CATEGORY, platform)
       return { data: mappedData }
     } catch (error) {

@@ -9,13 +9,15 @@ import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
 import { TimestampData } from '@typ/timestamp'
 
+import { ObjectId } from 'mongodb';
+
 export interface ShadData {
     // Define the structure of SHAD data here
     [key: string]: string | number | object
 }
 
 export interface SwapMigration {
-    _id?: { $oid: string };
+    _id?: ObjectId;
     oldAsset: string
     newAsset: string
     swapRate: string
@@ -24,7 +26,7 @@ export interface SwapMigration {
 }
 
 export interface HighestPrices {
-    _id?: { $oid: string };
+    _id?: ObjectId;
     base: string
     platform: string
     highestPrice: number

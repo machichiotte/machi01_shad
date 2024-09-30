@@ -1,16 +1,23 @@
 // src/types/timestamp.ts
+import { ObjectId } from 'mongodb';
+
 export interface ExchangeData {
-    [key: string]: number
+    [key: string]: {
+        $numberLong: string;
+    };
 }
 
 export interface TimestampData {
-    _id: {
-        $oid: string;
-    };
+    _id: ObjectId;
     balance: ExchangeData;
     order: ExchangeData;
-    cmc: number
-    strategy: number
+    cmc: {
+        $numberLong: string;
+    };
+    strategy: {
+        $numberLong: string;
+    };
     market: ExchangeData;
     ticker: ExchangeData;
+    trade: ExchangeData;
 }

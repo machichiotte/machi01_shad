@@ -1,35 +1,31 @@
 // src/services/tickerService.ts
-import { TimestampService } from '@services/timestampService'
 import { MappingService } from '@services/mappingService'
 import { handleServiceError } from '@utils/errorUtil'
 import { retry } from '@src/utils/retryUtil'
 import { TickerRepository } from '@repositories/tickerRepository'
 import { MappedTicker } from '@typ/ticker'
-import { config } from '@config/index';
 import { PLATFORM, PLATFORMS } from '@src/types/platform'
-import { executeForPlatforms } from '@src/utils/taskExecutor'
+import { executeForPlatforms } from '@src/utils/cronUtil'
 import { PlatformService } from './platformService'
-
-const COLLECTION_CATEGORY = config.collectionCategory.ticker
 
 export class TickerService {
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {
-    return TickerRepository.fetchAll()
+    return await TickerRepository.fetchAll()
   }
 
   static async getFilteredTickers(platform: PLATFORM, additionalFilter?: (ticker: MappedTicker) => boolean): Promise<MappedTicker[]> {
-    const data = await TickerRepository.fetchAll()
+    const data = await this.fetchDatabaseTickers()
 
     if (!Array.isArray(data) || data.length === 0) {
       throw new Error('No data found')
     }
 
     let filteredData = data.filter(
-      (ticker: MappedTicker) => ticker.platform === platform
+      ticker => ticker.platform === platform
     )
 
     if (filteredData.length === 0) {
-      throw new Error('Platform not found')
+      throw new Error(`Tickers not found for platform ${platform}`)
     }
 
     if (additionalFilter) {
@@ -58,8 +54,7 @@ export class TickerService {
     for (const platform of PLATFORMS) {
       const data = await PlatformService.fetchRawTicker(platform)
       tickersData.push(...MappingService.mapTickers(platform, data))
-      await TickerRepository.deleteAndSaveAll(tickersData)
-      await TimestampService.saveTimestampToDatabase(COLLECTION_CATEGORY, platform)
+      await TickerRepository.saveTickers(platform, tickersData)
     }
     return tickersData
   }
@@ -67,7 +62,7 @@ export class TickerService {
   static async updateTickersForPlatform(platform: PLATFORM): Promise<void> {
     try {
       const currentTickers = await TickerService.fetchCurrentTickers(platform)
-      await TickerRepository.saveForPlatform(currentTickers, platform)
+      await TickerRepository.saveTickers(platform, currentTickers)
     } catch (error) {
       handleServiceError(error, 'updateTickersForPlatform', `Erreur lors de la mise à jour des tickers pour ${platform}`)
     }

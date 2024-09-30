@@ -1,38 +1,33 @@
 // src/services/strategyService.ts
-import { TimestampService } from '@services/timestampService'
-import { MongodbService } from '@services/mongodbService'
-import { MappedStrat } from '@typ/strat'
-import { InsertOne, InsertMany } from '@typ/trade'
-import { handleServiceError } from '@utils/errorUtil'
-import { config } from '@config/index';
-
-const COLLECTION_NAME = config.collection.strat
-const COLLECTION_CATEGORY = config.collectionCategory.strat
+import { MappedStrat } from '@typ/strat';
+import { handleServiceError } from '@utils/errorUtil';
+import { StrategyRepository } from '@repositories/strategyRepository';
 
 export class StrategyService {
   /**
    * Récupère les stratégies de la base de données.
    */
   static async fetchDatabaseStrategies(): Promise<MappedStrat[]> {
-    return await MongodbService.getData(COLLECTION_NAME) as MappedStrat[];
+    try {
+      return await StrategyRepository.fetchAll();
+    } catch (error) {
+      handleServiceError(error, 'fetchDatabaseStrategies', 'Error fetching strategies');
+      throw error;
+    }
   }
 
   /**
    * Met à jour une stratégie par son ID.
    */
-  static async updateStrategyById(strategyId: string, updatedStrategy: Omit<MappedStrat, '_id'>): Promise<boolean> {
-    if (!strategyId) {
-      throw new Error('L\'ID de la stratégie est requis');
+  static async updateStrategyById(updatedStrategy: MappedStrat): Promise<boolean> {
+    if (!updatedStrategy._id) {
+      throw new Error(`L'ID de la stratégie est requis`);
     }
 
     try {
-      return await MongodbService.updateOneData(
-        COLLECTION_NAME,
-        { _id: strategyId },
-        { $set: updatedStrategy }
-      );
+      return await StrategyRepository.updateById(updatedStrategy);
     } catch (error) {
-      handleServiceError(error, 'updateStrategyById', `Error updating strategy with id ${strategyId}`);
+      handleServiceError(error, 'updateStrategyById', `Error updating strategy with id ${updatedStrategy._id}`);
       throw error;
     }
   }
@@ -40,10 +35,13 @@ export class StrategyService {
   /**
    * Met à jour toutes les stratégies dans la base de données.
    */
-  static async updateStrategies(strategies: MappedStrat[]): Promise<InsertOne | InsertMany> {
-    await MongodbService.deleteAllData(COLLECTION_NAME);
-    const data = await MongodbService.insertData(COLLECTION_NAME, strategies);
-    await TimestampService.saveTimestampToDatabase(COLLECTION_CATEGORY, '');
-    return data;
+  static async updateStrategies(strategies: MappedStrat[]): Promise<void> {
+    try {
+      await StrategyRepository.deleteAll();
+      await StrategyRepository.saveStrategies(strategies);
+    } catch (error) {
+      handleServiceError(error, 'updateStrategies', 'Error updating strategies');
+      throw error;
+    }
   }
 }

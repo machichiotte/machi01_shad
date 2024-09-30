@@ -39,7 +39,7 @@ function checkApiKeys(platform: PLATFORM): boolean {
 /**
  * Get the symbol format for a specific platform
  */
-function getSymbolForPlatform(platform: PLATFORM, base: string, quote: string = 'USDT'
+function getMarketSymbolForPlatform(platform: PLATFORM, base: string, quote: string = 'USDT'
 ): string {
   let symbol: string
 
@@ -66,4 +66,4 @@ function getSymbolForPlatform(platform: PLATFORM, base: string, quote: string = 
   return symbol
 }
 
-export { isValidPlatform, getSymbolForPlatform, checkApiKeys }
+export { isValidPlatform, getMarketSymbolForPlatform, checkApiKeys }

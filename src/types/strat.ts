@@ -1,6 +1,8 @@
 // src/types/strat.ts
+import { ObjectId } from 'mongodb';
+
 export interface MappedStrat {
-    _id: { $oid: string };
+    _id: ObjectId;
     asset: string
     strategies: {
         [key: string]: string
