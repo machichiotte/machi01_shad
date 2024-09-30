@@ -5,9 +5,9 @@ import { retry } from '@utils/retryUtil'
 import { getMockedData } from '@utils/mockUtil'
 import { handleServiceError } from '@utils/errorUtil'
 import { TimestampService } from '@services/timestampService'
-import { databaseOperations } from '@services/databaseOperationsService'
+import { mongodbOperations } from '@services/mongodbOperationsService'
 import { CacheItem } from '@typ/mongodb'
-import { CacheService } from './cacheService'
+import { CacheService } from '@services/cacheService'
 import { config } from '@config/index';
 import { InsertData } from '@src/types/trade'
 import { PLATFORM } from '@src/types/platform'
@@ -134,9 +134,9 @@ export class MongodbService {
       }
 
       if (Array.isArray(data)) {
-        return await retry(databaseOperations.insertMany, [collectionName, data], 'insertData')
+        return await retry(mongodbOperations.insertMany, [collectionName, data], 'insertData')
       } else {
-        return await retry(databaseOperations.insertOne, [collectionName, data], 'insertData')
+        return await retry(mongodbOperations.insertOne, [collectionName, data], 'insertData')
       }
     } catch (error) {
       handleServiceError(error, 'insertData', `Error saving data in ${collectionName}`)
@@ -149,7 +149,7 @@ export class MongodbService {
    */
   static async findData(collectionName: string): Promise<Document[]> {
     try {
-      return await retry(databaseOperations.find, [collectionName, {}], 'findData')
+      return await retry(mongodbOperations.find, [collectionName, {}], 'findData')
     } catch (error) {
       handleServiceError(error, 'findOneData', `Error findData in ${collectionName}`)
       throw error
@@ -161,7 +161,7 @@ export class MongodbService {
    */
   static async findOneData(collectionName: string, query: object): Promise<Document | null> {
     try {
-      return await retry(databaseOperations.findOne, [collectionName, query], 'findOneData')
+      return await retry(mongodbOperations.findOne, [collectionName, query], 'findOneData')
     } catch (error) {
       handleServiceError(error, 'findOneData', `Error findOneData in ${collectionName}`)
 
@@ -234,7 +234,7 @@ export class MongodbService {
   static async fetchAndCacheData(collectionName: string): Promise<Document[]> {
     try {
       console.log(`Fetching new data for collection: ${collectionName}`);
-      const result = await retry(databaseOperations.find, [collectionName], 'fetchAndCacheData');
+      const result = await retry(mongodbOperations.find, [collectionName], 'fetchAndCacheData');
       await CacheService.addToCache(collectionName, result);
       return result;
     } catch (error) {
@@ -249,7 +249,7 @@ export class MongodbService {
    */
   static async deleteOneData(collectionName: string, filter: object): Promise<boolean> {
     try {
-      return await retry(databaseOperations.deleteOne, [collectionName, filter], 'deleteOneData')
+      return await retry(mongodbOperations.deleteOne, [collectionName, filter], 'deleteOneData')
     } catch (error) {
       handleServiceError(error, 'deleteOneData', `Error deleteOneData data from ${collectionName}`);
       throw error;
@@ -261,7 +261,7 @@ export class MongodbService {
    */
   static async deleteMultipleData(collectionName: string, filter: object): Promise<number> {
     try {
-      return await retry(databaseOperations.deleteMany, [collectionName, filter], 'deleteMultipleData')
+      return await retry(mongodbOperations.deleteMany, [collectionName, filter], 'deleteMultipleData')
     } catch (error) {
       handleServiceError(error, 'deleteMultipleData', `Error deleteMultipleData data from ${collectionName}`);
       throw error;
@@ -273,7 +273,7 @@ export class MongodbService {
    */
   static async deleteAllData(collectionName: string): Promise<number> {
     try {
-      return await retry(databaseOperations.deleteMany, [collectionName, {}], 'deleteAllData')
+      return await retry(mongodbOperations.deleteMany, [collectionName, {}], 'deleteAllData')
     } catch (error) {
       handleServiceError(error, 'deleteAllData', `Error deleteAllData data from ${collectionName}`);
       throw error
@@ -285,7 +285,7 @@ export class MongodbService {
    */
   static async updateOneData(collectionName: string, filter: Document, update: Document): Promise<boolean> {
     try {
-      return await retry(databaseOperations.updateOne, [collectionName, filter, update], 'updateOneData');
+      return await retry(mongodbOperations.updateOne, [collectionName, filter, update], 'updateOneData');
     } catch (error) {
       handleServiceError(error, 'updateOneData', `Erreur lors de la mise à jour des données dans ${collectionName}`);
       throw error;

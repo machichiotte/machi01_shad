@@ -1,8 +1,8 @@
-// src/services/databaseOperationsService.ts
+// src/services/mongodbOperationsService.ts
 import { Collection, Document, InsertOneResult, InsertManyResult, UpdateResult, AggregateOptions, AnyBulkWriteOperation, FindOptions, BulkWriteResult } from 'mongodb';
 import { MongodbService } from '@services/mongodbService';
 
-interface DatabaseOperations {
+interface MongodbOperations {
     insertOne: (collectionName: string, document: Document) => Promise<InsertOneResult>;
     insertMany: (collectionName: string, documents: Document[]) => Promise<InsertManyResult>;
     updateOne: (collectionName: string, filter: Document, update: Document) => Promise<boolean>;
@@ -26,7 +26,7 @@ const getCollection = async (collectionName: string): Promise<Collection> => {
     return db.collection(collectionName);
 };
 
-export const databaseOperations: DatabaseOperations = {
+export const mongodbOperations: MongodbOperations = {
     insertOne: async (collectionName: string, document: Document): Promise<InsertOneResult> => {
         const collection = await getCollection(collectionName);
         return await collection.insertOne(document);

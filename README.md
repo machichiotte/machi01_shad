@@ -125,7 +125,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 - │ ├── balanceService.ts
 - │ ├── cmcService.ts
 - │ ├── converterService.ts
-- │ ├── databaseOperationsService.ts
+- │ ├── mongodbOperationsService.ts
 - │ ├── timestampService.ts
 - │ ├── mappingService.ts
 - │ ├── marketService.ts

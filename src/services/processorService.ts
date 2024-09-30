@@ -18,7 +18,8 @@ import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
 import { AssetMetrics } from '@typ/metrics'
 import { MappedOrder } from '@typ/order'
-import { PLATFORM } from '@src/types/platform'
+import { PLATFORM } from '@typ/platform'
+import { OrderBalanceRepository } from '@repositories/orderBalanceRepository'
 
 export class ProcessorService {
   /**
@@ -148,7 +149,7 @@ export class ProcessorService {
       CmcService.fetchDatabaseCmc(),
       StrategyService.fetchDatabaseStrategies(),
       TradeService.fetchDatabaseTrades(),
-      OrderBalanceService.fetchDatabaseOrders(),
+      OrderBalanceRepository.fetchDatabaseOrders(),
       TickerService.fetchDatabaseTickers(),
       BalanceService.fetchDatabaseBalance()
     ])
