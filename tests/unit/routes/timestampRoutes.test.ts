@@ -1,6 +1,6 @@
 import express from 'express';
 import request from 'supertest';
-import timestampRoutes from '@routes/timestampRoutes';
+import timestampRoutes from '../../../src/routes/timestampRoutes';
 import * as timestampController from '../../../src/controllers/timestampController';
 
 // Mock du contrôleur Timestamp

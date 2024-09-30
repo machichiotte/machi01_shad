@@ -1,6 +1,6 @@
 import express from 'express';
 import request from 'supertest';
-import cmcRoutes from '@routes/cmcRoutes';
+import cmcRoutes from '../../../src/routes/cmcRoutes';
 import * as cmcController from '../../../src/controllers/cmcController';
 
 // Mock du contrôleur CMC

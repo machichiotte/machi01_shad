@@ -1,6 +1,6 @@
 import express from 'express';
 import request from 'supertest';
-import shadRoutes from '@routes/shadRoutes';
+import shadRoutes from '../../../src/routes/shadRoutes';
 import * as shadController from '../../../src/controllers/shadController';
 
 // Mock du contrôleur Shad

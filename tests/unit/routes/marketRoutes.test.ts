@@ -1,6 +1,6 @@
 import express from 'express';
 import request from 'supertest';
-import marketRoutes from '@routes/marketRoutes';
+import marketRoutes from '../../../src/routes/marketRoutes';
 import * as marketController from '../../../src/controllers/marketController';
 
 // Mock du contrôleur Market

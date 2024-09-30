@@ -1,6 +1,6 @@
 import express from 'express';
 import request from 'supertest';
-import strategyRoutes from '@routes/strategyRoutes';
+import strategyRoutes from '../../../src/routes/strategyRoutes';
 import * as strategyController from '../../../src/controllers/strategyController';
 
 // Mock du contrôleur Strategy

@@ -1,6 +1,6 @@
 import express from 'express';
 import request from 'supertest';
-import balanceRoutes from '@routes/balanceRoutes';
+import balanceRoutes from '../../../src/routes/balanceRoutes';
 import * as balanceController from '../../../src/controllers/balanceController';
 
 // Mock du contrôleur de balance

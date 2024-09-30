@@ -1,6 +1,6 @@
 import express from 'express';
 import request from 'supertest';
-import orderRoutes from '@routes/orderRoutes';
+import orderRoutes from '../../../src/routes/orderRoutes';
 import * as orderBalanceController from '../../../src/controllers/orderBalanceController';
 import * as orderMarketController from '../../../src/controllers/orderMarketController';
 

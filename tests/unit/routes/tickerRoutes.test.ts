@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'supertest';
-import tickerRoutes from '@routes/tickerRoutes';
-import * as tickerController from '@src/controllers/tickerController';
+import tickerRoutes from '../../../src/routes/tickerRoutes';
+import * as tickerController from '../../../src/controllers/tickerController';
 
 jest.mock('@src/controllers/tickerController');
 
