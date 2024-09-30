@@ -2,25 +2,13 @@
 import express, { Request, Response, NextFunction } from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import { Server } from 'http'; // Importation du type Server
+import { Server } from 'http';
 import { config } from '@config/index';
+import apiRoutes from '@routes/index';
 
 const PORT = config.port || 10000
 
 const app = express() as express.Application
-
-import converterRoutes from '@routes/converterRoutes'
-import authRoutes from '@routes/authRoutes'
-import balanceRoutes from '@routes/balanceRoutes'
-import cmcRoutes from '@routes/cmcRoutes'
-import strategyRoutes from '@routes/strategyRoutes'
-import ordersRoutes from '@routes/orderRoutes'
-import marketsRoutes from '@routes/marketRoutes'
-import tradesRoutes from '@routes/tradeRoutes'
-import tickersRoutes from '@routes/tickerRoutes'
-import timestampRoutes from '@routes/timestampRoutes'
-import shadRoutes from '@routes/shadRoutes'
-import { Routes } from '@typ/routes';
 
 // Middleware CORS
 app.use(cors())
@@ -33,35 +21,14 @@ app.use(express.static('dist'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-
-const routes: Routes = {
-  converter: converterRoutes,
-  auth: authRoutes,
-  balance: balanceRoutes,
-  cmc: cmcRoutes,
-  strategy: strategyRoutes,
-  orders: ordersRoutes,
-  market: marketsRoutes,
-  trades: tradesRoutes,
-  tickers: tickersRoutes,
-  timestamp: timestampRoutes,
-  shad: shadRoutes
-}
-
-// Utilisation des routes avec une boucle
-Object.entries(routes).forEach(([name, router]) => {
-  if (router && typeof router === 'function') {
-    app.use(`/api/${name}`, router)
-  } else {
-    console.error(`La route ${name} n'est pas une fonction middleware valide.`)
-  }
-})
+// Utilisation des routes avec un préfixe commun '/api'
+app.use('/api', apiRoutes);
 
 // Middleware de gestion des erreurs
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack)
+app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(error.stack)
   res.status(500).json({ error: 'Internal Server Error' })
-  next()
+  next(error)
 })
 
 // Middleware de gestion des erreurs 404
