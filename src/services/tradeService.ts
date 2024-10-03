@@ -6,7 +6,7 @@ import { TradeRepository } from '@repositories/tradeRepository'
 import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ/trade'
 import { config } from '@config/index';
 import { PLATFORM, PlatformTrade } from '@typ/platform'
-import { PlatformService } from './platformService'
+import { CcxtService } from '@services/ccxtService'
 import { MarketService } from './marketService'
 import { QUOTE_CURRENCIES } from '@src/constants'
 import { getMarketSymbolForPlatform } from '@utils/platformUtil'
@@ -35,7 +35,7 @@ export class TradeService {
 
       const batchPromises = symbolBatch.map(symbol =>
         retry(
-          async () => PlatformService.fetchRawTrade(platform, symbol),
+          async () => CcxtService.fetchRawTrade(platform, symbol),
           [],
           `fetchRawTrade(${platform}, ${symbol})`
         )
@@ -99,7 +99,7 @@ export class TradeService {
   }
 
   private static async fetchPlatformTrades(platform: PLATFORM): Promise<MappedTrade[]> {
-    const trades = await PlatformService.fetchPlatformTrades(platform)
+    const trades = await CcxtService.fetchPlatformTrades(platform)
     return MappingService.mapTrades(platform, trades)
   }
 }

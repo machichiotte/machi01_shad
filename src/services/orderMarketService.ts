@@ -2,7 +2,7 @@
 import { getMarketSymbolForPlatform } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 import { PLATFORM } from '@src/types/platform'
-import { PlatformService } from './platformService'
+import { CcxtService } from '@services/ccxtService'
 import { OrderBalanceService } from './orderBalanceService'
 
 export class OrderMarketService {
@@ -16,7 +16,7 @@ export class OrderMarketService {
        */
     static async deleteOrder(platform: PLATFORM, oId: string, symbol: string): Promise<void> {
         try {
-            await PlatformService.cancelOneOrder(platform, oId, symbol.replace('/', ''))
+            await CcxtService.cancelOneOrder(platform, oId, symbol.replace('/', ''))
             console.log(`Deleted order ${oId} for ${platform}.`, { symbol })
         } catch (error) {
             handleServiceError(error, 'deleteOrder', `Error deleting ${symbol}order with id ${oId} for ${platform}`)
@@ -49,7 +49,7 @@ export class OrderMarketService {
 
             const symbol = getMarketSymbolForPlatform(platform, asset)
             const stopLossPrice = stopPrice - stopPrice * 0.001
-            await PlatformService.executeMarketOrder(platform, symbol, amount, orderType, orderMode, stopLossPrice, stopPrice)
+            await CcxtService.executeMarketOrder(platform, symbol, amount, orderType, orderMode, stopLossPrice, stopPrice)
         } catch (error) {
             handleServiceError(error, 'createStopLossOrder', `Error creating stop loss order for ${platform}`)
             throw error
@@ -60,7 +60,7 @@ export class OrderMarketService {
         console.log('createOrder', platform, asset, amount, orderType, orderMode, price)
         try {
             const symbol = getMarketSymbolForPlatform(platform, asset)
-            await PlatformService.executeMarketOrder(platform, symbol, amount, orderType, orderMode, price)
+            await CcxtService.executeMarketOrder(platform, symbol, amount, orderType, orderMode, price)
         } catch (error) {
             handleServiceError(error, 'createOrder', `Error creating order for ${platform}`)
             throw error
@@ -73,7 +73,7 @@ export class OrderMarketService {
     static async cancelAllOrdersByBunch(platform: PLATFORM, asset: string): Promise<{ message: string }> {
         try {
             const symbol = getMarketSymbolForPlatform(platform, asset)
-            await PlatformService.bunchCancelAllOrdersByAsset(platform, symbol)
+            await CcxtService.bunchCancelAllOrdersByAsset(platform, symbol)
             return { message: `Cancelled all ${symbol} orders for ${platform}.` }
         } catch (error) {
             handleServiceError(error, 'cancelAllOrders', `Error canceling all orders for ${platform}`)
@@ -97,7 +97,7 @@ export class OrderMarketService {
             if (orderIds.length === 0) {
                 return { message: `Aucun ordre ouvert pour ce symbole ${orderSide ? ` avec côté ${orderSide}` : ''}` }
             } else {
-                PlatformService.cancelAllOrdersRecursively(platform, asset, orderIds)
+                CcxtService.cancelAllOrdersRecursively(platform, asset, orderIds)
                 return { message: `${orderIds.length} ordres${orderSide ? ` ${orderSide}` : ''} annulés avec succès` }
             }
         } catch (error) {

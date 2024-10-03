@@ -1,18 +1,18 @@
 // src/services/balanceService.ts
 import { BalanceRepository } from '@repositories/balanceRepository';
-import { PlatformService } from '@services/platformService';
+import { CcxtService } from '@services/ccxtService';
 import { handleServiceError } from '@utils/errorUtil';
 import { MappingService } from '@services/mappingService';
 import { ProcessorService } from '@services/processorService';
 import { MappedBalance } from '@typ/balance';
 import { retry } from '@utils/retryUtil';
-import { PLATFORM } from '@src/types/platform';
-import { executeForPlatforms } from '@src/utils/cronUtil';
-import { removeDuplicateDifferences } from '@src/utils/processorUtil';
+import { PLATFORM } from '@typ/platform';
+import { executeForPlatforms } from '@utils/cronUtil';
+import { removeDuplicateDifferences } from '@utils/processorUtil';
 
 export class BalanceService {
   static async fetchDatabaseBalance(): Promise<MappedBalance[]> {
-    return await BalanceRepository.fetchAllBalances()
+    return await BalanceRepository.fetchAll()
   }
   /**
    * Récupère les données de solde de la base de données pour une plateforme spécifique avec tentatives.
@@ -20,7 +20,7 @@ export class BalanceService {
   static async fetchDatabaseBalancesByPlatform(platform: PLATFORM, retries: number = 3): Promise<MappedBalance[]> {
 
     try {
-      return await retry(() => BalanceRepository.fetchBalancesByPlatform(platform), [], 'fetchDatabaseBalancesByPlatform', retries);
+      return await retry(() => BalanceRepository.fetchByPlatform(platform), [], 'fetchDatabaseBalancesByPlatform', retries);
     } catch (error) {
       handleServiceError(error, 'fetchDatabaseBalancesByPlatform', `Erreur lors de la récupération des données de solde pour la plateforme ${platform}`);
       throw error;
@@ -33,7 +33,7 @@ export class BalanceService {
   static async fetchCurrentBalancesByPlatform(platform: PLATFORM, retries: number = 3): Promise<Omit<MappedBalance, '_id'>[]> {
     try {
       return await retry(async () => {
-        const data = await PlatformService.fetchRawBalance(platform);
+        const data = await CcxtService.fetchRawBalance(platform);
         return MappingService.mapBalance(platform, data);
       }, [], 'fetchCurrentBalancesByPlatform', retries);
     } catch (error) {

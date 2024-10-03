@@ -149,7 +149,7 @@ export class ProcessorService {
       CmcService.fetchDatabaseCmc(),
       StrategyService.fetchDatabaseStrategies(),
       TradeService.fetchDatabaseTrades(),
-      OrderBalanceRepository.fetchDatabaseOrders(),
+      OrderBalanceRepository.fetchAll(),
       TickerService.fetchDatabaseTickers(),
       BalanceService.fetchDatabaseBalance()
     ])

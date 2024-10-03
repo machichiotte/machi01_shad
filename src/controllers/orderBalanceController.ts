@@ -9,7 +9,7 @@ import { isValidPlatform } from '@utils/platformUtil'
  */
 async function getOrders(req: Request, res: Response): Promise<void> {
   try {
-    const data = await OrderBalanceService.fetchDatabaseOrders()
+    const data = await OrderBalanceService.fetchDatabase()
     res.status(200).json({ message: 'Ordres récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'getOrders')

@@ -44,4 +44,35 @@ export class CacheService {
       delete CacheService.cache[key];
     });
   }
+
+  static getCacheKeyForCollection(collectionName: string): keyof typeof config.cacheExpirationTimes {
+    switch (collectionName) {
+      case config.collection.balance:
+        return 'balance';
+      case config.collection.cmc:
+        return 'cmc';
+      case config.collection.highestPrice:
+        return 'highestPrice';
+      case config.collection.timestamp:
+        return 'timestamp';
+      case config.collection.market:
+        return 'market';
+      case config.collection.order:
+        return 'order';
+      case config.collection.shad:
+        return 'shad';
+      case config.collection.strat:
+        return 'strat';
+      case config.collection.swap:
+        return 'swaps';
+      case config.collection.ticker:
+        return 'ticker';
+      case config.collection.trade:
+        return 'trade';
+      case config.collection.user:
+        return 'user';
+      default:
+        throw new Error(`Collection non reconnue: ${collectionName}`);
+    }
+  }
 }

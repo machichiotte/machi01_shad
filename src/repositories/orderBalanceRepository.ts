@@ -11,14 +11,14 @@ export class OrderBalanceRepository {
     /**
      * Fetch all orders from the database.
      */
-    static async fetchDatabaseOrders(): Promise<MappedOrder[]> {
+    static async fetchAll(): Promise<MappedOrder[]> {
         return await MongodbService.getData(COLLECTION_NAME) as MappedOrder[];
     }
 
     /**
      * Save mapped orders to the database.
      */
-    static async saveOrders(mappedOrders: Omit<MappedOrder, '_id'>[], platform: PLATFORM): Promise<void> {
+    static async save(mappedOrders: Omit<MappedOrder, '_id'>[], platform: PLATFORM): Promise<void> {
         await MongodbService.saveDataToDatabase(mappedOrders, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
     }
 }

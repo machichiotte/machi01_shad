@@ -1,4 +1,4 @@
-// src/services/platformService.ts
+// src/services/ccxtService.ts
 import * as ccxt from 'ccxt';
 import { config } from '@config/index';
 import { PLATFORM, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@typ/platform';
@@ -6,7 +6,7 @@ import { handleServiceError } from '@utils/errorUtil';
 import { checkApiKeys } from '@utils/platformUtil';
 import { ObjectId } from 'mongodb';
 
-export class PlatformService {
+export class CcxtService {
 
     static createPlatformInstance(platform: PLATFORM): ccxt.Exchange {
         if (!checkApiKeys(platform)) {
@@ -214,4 +214,4 @@ export class PlatformService {
     }
 }
 
-export default new PlatformService();
+export default new CcxtService();

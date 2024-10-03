@@ -6,7 +6,7 @@ import { TickerRepository } from '@repositories/tickerRepository'
 import { MappedTicker } from '@typ/ticker'
 import { PLATFORM, PLATFORMS } from '@src/types/platform'
 import { executeForPlatforms } from '@src/utils/cronUtil'
-import { PlatformService } from './platformService'
+import { CcxtService } from '@services/ccxtService'
 
 export class TickerService {
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {
@@ -52,7 +52,7 @@ export class TickerService {
   static async updateAllTickers(): Promise<Omit<MappedTicker, '_id'>[]> {
     const tickersData: Omit<MappedTicker, '_id'>[] = []
     for (const platform of PLATFORMS) {
-      const data = await PlatformService.fetchRawTicker(platform)
+      const data = await CcxtService.fetchRawTicker(platform)
       tickersData.push(...MappingService.mapTickers(platform, data))
       await TickerRepository.saveTickers(platform, tickersData)
     }
@@ -72,7 +72,7 @@ export class TickerService {
 
     try {
       return await retry(async () => {
-        const data = await PlatformService.fetchRawTicker(platform);
+        const data = await CcxtService.fetchRawTicker(platform);
         return MappingService.mapTickers(platform, data);
       }, [], 'fetchCurrentTickers');
     } catch (error) {

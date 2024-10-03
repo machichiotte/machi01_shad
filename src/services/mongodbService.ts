@@ -169,28 +169,12 @@ export class MongodbService {
     }
   }
 
-
-
-  private static cache: { [key: string]: CacheItem } = {}
-  static addToCache(collectionName: string, data: Document[]): void {
-    try {
-      if (data.length > 0) {
-        this.cache[collectionName] = {
-          data,
-          timestamp: Date.now()
-        }
-      }
-    } catch (error) {
-      handleServiceError(error, 'addToCache', `Error adding to cache in ${collectionName}`)
-    }
-  }
-
   /**
    * Retrieves all data from a specified collection with caching.
    */
   static async getAllDataMDB(collectionName: string): Promise<CacheItem[] | Document[]> {
     // Déterminer la clé de cache appropriée
-    const key = this.getCacheKeyForCollection(collectionName);
+    const key = CacheService.getCacheKeyForCollection(collectionName);
 
     // Vérifier d'abord le cache
     const cachedData = await CacheService.getFromCache(key);
@@ -198,37 +182,6 @@ export class MongodbService {
 
     // Récupérer de nouvelles données si le cache est expiré
     return this.fetchAndCacheData(collectionName);
-  }
-
-  private static getCacheKeyForCollection(collectionName: string): keyof typeof config.cacheExpirationTimes {
-    switch (collectionName) {
-      case config.collection.balance:
-        return 'balance';
-      case config.collection.cmc:
-        return 'cmc';
-      case config.collection.highestPrice:
-        return 'highestPrice';
-      case config.collection.timestamp:
-        return 'timestamp';
-      case config.collection.market:
-        return 'market';
-      case config.collection.order:
-        return 'order';
-      case config.collection.shad:
-        return 'shad';
-      case config.collection.strat:
-        return 'strat';
-      case config.collection.swap:
-        return 'swaps';
-      case config.collection.ticker:
-        return 'ticker';
-      case config.collection.trade:
-        return 'trade';
-      case config.collection.user:
-        return 'user';
-      default:
-        throw new Error(`Collection non reconnue: ${collectionName}`);
-    }
   }
 
   static async fetchAndCacheData(collectionName: string): Promise<Document[]> {

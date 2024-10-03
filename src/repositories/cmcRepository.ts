@@ -10,21 +10,21 @@ export class CmcRepository {
     /**
      * Récupère les données CMC depuis la base de données.
      */
-    public static async fetchCmcData(): Promise<MappedCmc[]> {
+    public static async fetchAll(): Promise<MappedCmc[]> {
         return await MongodbService.getData(COLLECTION_NAME) as MappedCmc[];
     }
 
     /**
      * Supprime toutes les données CMC de la base de données.
      */
-    public static async deleteAllCmcData(): Promise<number> {
+    public static async deleteAll(): Promise<number> {
         return await MongodbService.deleteAllData(COLLECTION_NAME);
     }
 
     /**
      * Insère de nouvelles données CMC dans la base de données.
      */
-    public static async saveCmcData(mappedData: Omit<MappedCmc, '_id'>[]): Promise<void> {
+    public static async save(mappedData: Omit<MappedCmc, '_id'>[]): Promise<void> {
         await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY);
     }
 }

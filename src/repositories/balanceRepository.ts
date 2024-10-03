@@ -11,15 +11,15 @@ export class BalanceRepository {
     /**
      * Récupère toutes les données de solde de la base de données.
      */
-    static async fetchAllBalances(): Promise<MappedBalance[]> {
+    static async fetchAll(): Promise<MappedBalance[]> {
         return await MongodbService.getData(COLLECTION_NAME) as MappedBalance[];
     }
 
     /**
      * Récupère les données de solde de la base de données pour une plateforme spécifique.
      */
-    static async fetchBalancesByPlatform(platform: PLATFORM): Promise<MappedBalance[]> {
-        const data = await this.fetchAllBalances();
+    static async fetchByPlatform(platform: PLATFORM): Promise<MappedBalance[]> {
+        const data = await this.fetchAll();
         return data.filter((item: MappedBalance) => item.platform === platform);
     }
 

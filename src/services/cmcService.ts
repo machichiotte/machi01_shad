@@ -51,7 +51,7 @@ export class CmcService {
    */
   public static async fetchDatabaseCmc(): Promise<MappedCmc[]> {
     try {
-      return await CmcRepository.fetchCmcData();
+      return await CmcRepository.fetchAll();
     } catch (error) {
       handleServiceError(error, 'fetchDatabaseCmc', 'Erreur lors de la récupération des données CMC de la base de données');
       throw error;
@@ -63,8 +63,8 @@ export class CmcService {
    */
   public static async updateDatabaseCmcData(data: MappedCmc[]): Promise<object> {
     try {
-      const deleteResult = await CmcRepository.deleteAllCmcData();
-      const saveResult = await CmcRepository.saveCmcData(data);
+      const deleteResult = await CmcRepository.deleteAll();
+      const saveResult = await CmcRepository.save(data);
 
       return {
         status: true,
