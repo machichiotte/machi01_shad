@@ -13,22 +13,14 @@
                 <form @submit.prevent="onSignup()">
                     <div class="form-group">
                         <label>Email</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            v-model.trim="email"
-                        />
+                        <input type="text" class="form-control" v-model.trim="email" />
                         <div class="error" v-if="errors.email">
                             {{ errors.email }}
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input
-                            type="password"
-                            class="form-control"
-                            v-model.trim="password"
-                        />
+                        <input type="password" class="form-control" v-model.trim="password" />
                         <div class="error" v-if="errors.password">
                             {{ errors.password }}
                         </div>
@@ -46,7 +38,7 @@
 </template>
 <script>
 import SignupValidations from '../services/SignupValidations';
-import { useAuthStore } from '../store/auth';
+import { useAuthStore } from '../store/authStore';
 
 export default {
     data() {
@@ -104,4 +96,4 @@ export default {
         },
     },
 };
-</script>
+</script>../store/authStore

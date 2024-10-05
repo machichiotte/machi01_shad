@@ -1,4 +1,4 @@
-// src/store/calcul.js
+// src/store/calculStoreStore.js
 import { defineStore } from 'pinia'
 import {
   fetchCmc,
@@ -93,43 +93,43 @@ export const useCalculStore = defineStore('calcul', {
     /**
      * @returns {Promise<void>}
      */
-    async fetchBalances() {
-      await this.fetchData('balances', fetchBalances, this.setBalances)
+    async loadBalances() {
+      await this.loadData('balances', fetchBalances, this.setBalances)
     },
 
     /**
      * @returns {Promise<void>}
      */
-    async fetchTrades() {
-      await this.fetchData('trades', fetchTrades, this.setTrades)
+    async loadTrades() {
+      await this.loadData('trades', fetchTrades, this.setTrades)
     },
 
     /**
      * @returns {Promise<void>}
      */
-    async fetchStrats() {
-      await this.fetchData('strats', fetchStrategy, this.setStrats)
+    async loadStrats() {
+      await this.loadData('strats', fetchStrategy, this.setStrats)
     },
 
     /**
      * @returns {Promise<void>}
      */
-    async fetchCmc() {
-      await this.fetchData('cmc', fetchCmc, this.setCmc)
+    async loadCmc() {
+      await this.loadData('cmc', fetchCmc, this.setCmc)
     },
 
     /**
      * @returns {Promise<void>}
      */
-    async fetchOrders() {
-      await this.fetchData('orders', fetchOrders, this.setOrders)
+    async loadOrders() {
+      await this.loadData('orders', fetchOrders, this.setOrders)
     },
 
     /**
      * @returns {Promise<void>}
      */
-    async fetchShad() {
-      await this.fetchData('shad', fetchShad, this.setShad)
+    async loadShad() {
+      await this.loadData('shad', fetchShad, this.setShad)
     },
 
     /**
@@ -138,14 +138,14 @@ export const useCalculStore = defineStore('calcul', {
      * @param {function(any): void} setFn
      * @returns {Promise<void>}
      */
-    async fetchData(type, fetchFn, setFn) {
+    async loadData(type, fetchFn, setFn) {
       const now = Date.now()
       const lastFetch = this.getLastFetchTimestamp(type)
       if (!lastFetch || this.shouldFetchData(lastFetch)) {
         try {
-          const data = await fetchFn()
-          if (data) {
-            setFn(data)
+          const result = await fetchFn()
+          if (result) {
+            setFn(result.data)
             this.setLastFetchTimestamp({ type, timestamp: now })
           }
         } catch (error) {

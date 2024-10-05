@@ -38,7 +38,7 @@
 </template>
 <script setup>
 import { ref } from 'vue';;
-import { useAuthStore } from '../store/auth';
+import { useAuthStore } from '../store/authStore';
 import SignupValidations from '../services/SignupValidations';
 
 const authStore = useAuthStore();
@@ -76,3 +76,4 @@ const onLogin = async () => {
     }
 };
 </script>
+../store/authStore

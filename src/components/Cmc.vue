@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useCalculStore } from '../store/calcul';
+import { useCalculStore } from '../store/calculStore';
 import { cmcColumns } from '../js/columns.js'
 import { FilterMatchMode } from 'primevue/api'
 import SearchBar from "./shad/SearchBar.vue";
@@ -42,7 +42,7 @@ const cmcItems = computed(() => calculStore.getCmc)
 
 const getCmcData = async () => {
   try {
-    await calculStore.fetchCmc();
+    await calculStore.loadCmc();
     console.log("CMC data retrieved:", calculStore.getCmc)
   } catch (error) {
     console.error("An error occurred while retrieving data:", error)
@@ -67,4 +67,4 @@ onMounted(async () => {
   height: 700px;
   width: auto;
 }
-</style>
+</style>../store/calculStoreStore

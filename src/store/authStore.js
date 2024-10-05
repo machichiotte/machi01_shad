@@ -1,4 +1,4 @@
-// src/store/auth.js
+// src/store/authStore.js
 import { defineStore } from 'pinia'
 import SignupValidations from '../services/SignupValidations'
 

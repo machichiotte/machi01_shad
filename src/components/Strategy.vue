@@ -57,7 +57,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { successSpin, errorSpin } from '../js/spinner.js';
 import { strategies } from '../js/strategies.js';
-import { useCalculStore } from '../store/calcul.js';
+import { useCalculStore } from '../store/calculStore.js';
 import { FilterMatchMode } from 'primevue/api'
 import SearchBar from "./shad/SearchBar.vue";
 import { getSelectedStrategy, setSelectedStrategy, isDisabled, getSelectedMaxExposure, setSelectedMaxExposure } from '../js/utils/strategyUtils.js';
@@ -183,8 +183,8 @@ const updateAllMaxExposure = () => {
 
 onMounted(async () => {
   try {
-    await calculStore.fetchBalances();
-    await calculStore.fetchStrats();
+    await calculStore.loadBalances();
+    await calculStore.loadStrats();
     console.log("Strats data retrieved:", strat.value);
     console.log("Balances data retrieved:", balance.value);
   } catch (error) {
@@ -221,3 +221,4 @@ onMounted(async () => {
   margin-left: 5px;
 }
 </style>
+../store/calculStoreStore.js

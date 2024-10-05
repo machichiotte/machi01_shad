@@ -25,7 +25,7 @@
 
 import { ref, computed, onMounted } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
-import { useCalculStore } from '../../store/calcul';
+import { useCalculStore } from '../../store/calculStore';
 import TradesForm from "../forms/TradesForm.vue";
 import SearchBar from "../shad/SearchBar.vue";
 import TradesActions from "./TradesActions.vue";
@@ -42,7 +42,7 @@ const trades = computed(() => calculStore.getTrades);
 
 const getTradesData = async () => {
   try {
-    await calculStore.fetchTrades();
+    await calculStore.loadTrades();
     console.log("Trade data retrieved:", trades.value.length);
   } catch (error) {
     console.error("An error occurred while retrieving data:", error);
@@ -74,3 +74,4 @@ onMounted(async () => {
   margin-bottom: 0.5rem;
 }
 </style>
+../../store/calculStoreStore

@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { useCalculStore } from '../../store/calcul'; // Import Pinia store
+import { useCalculStore } from '../../store/calculStore'; // Import Pinia store
 import { FilterMatchMode } from 'primevue/api';
 import OrdersTable from "./OrdersTable.vue";
 import SearchBar from "../shad/SearchBar.vue";
@@ -33,7 +33,7 @@ const orders = computed(() => calculStore.getOrders);
 // Function to fetch order data using Pinia store
 const getOrdersData = async () => {
   try {
-    await calculStore.fetchOrders(); // Call Pinia action to fetch data
+    await calculStore.loadOrders(); // Call Pinia action to fetch data
     console.log("Orders data retrieved:", orders.value.length);
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
@@ -56,3 +56,4 @@ onMounted(async () => {
   width: auto;
 }
 </style>
+../../store/calculStoreStore

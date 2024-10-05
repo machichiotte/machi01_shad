@@ -16,8 +16,8 @@
         <PlatformSelector v-if="activeTopTab === 'platforms'" :initialSelectedPlatforms="selectedPlatforms"
           @update:selectedPlatforms="updateSelectedPlatforms" />
         <UpdateBarSelector v-if="activeTopTab === 'fetch'" />
-        <ActionSelector v-if="activeTopTab === 'action'" :selectedAssets="selectedAssets"
-          :filters="filters" @delete-action="handleDeleteAction" />
+        <ActionSelector v-if="activeTopTab === 'action'" :selectedAssets="selectedAssets" :filters="filters"
+          @delete-action="handleDeleteAction" />
       </div>
     </div>
 
@@ -53,7 +53,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useCalculStore } from '@/store/calcul'; // Import the Pinia store
+import { useCalculStore } from '../../store/calculStore'; // Import the Pinia store
 
 import { FilterMatchMode } from 'primevue/api'
 import ShadDataTable from './ShadDataTable.vue'
@@ -118,10 +118,10 @@ const filteredShadItems = computed(() => {
  */
 const getData = async () => {
   try {
-    await calculStore.fetchTrades();
-    await calculStore.fetchOrders();
-    await calculStore.fetchShad();
-    
+    await calculStore.loadTrades();
+    await calculStore.loadOrders();
+    await calculStore.loadShad();
+
     console.log("Trades data retrieved:", tradesItems.value.length)
     console.log("Orders data retrieved:", openOrdersItems.value.length)
     console.log("Shad data retrieved:", shadItems.value.length)
