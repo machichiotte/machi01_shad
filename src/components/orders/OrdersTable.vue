@@ -8,7 +8,7 @@
 
 <script setup>
 import { ref, watchEffect } from 'vue';
-import { openOrdersTableColumns } from '../../js/columns.js';
+import { openOrdersTableColumns } from '@js/columns.js';
 
 const itemsPerPage = ref(10);
 

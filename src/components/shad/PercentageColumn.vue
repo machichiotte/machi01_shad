@@ -11,22 +11,19 @@
     </span>
 </template>
 
-<script setup>
-import { computed } from 'vue';
+<script setup lang="ts">
+import { computed, defineProps } from 'vue';
 
-const props = defineProps({
-    percentage: {
-        type: [Number, String], // Accept Number or String
-        default: 'N/A' // Default value if null or undefined
-    }
-});
+const props = defineProps<{
+    percentage: number | string; // Accept Number or String
+}>();
 
 // Check if the value is a valid number
 const isNumber = computed(() => typeof props.percentage === 'number' && !isNaN(props.percentage));
 
 // Display the default value or the formatted percentage
 const displayValue = computed(() => {
-  return isNumber.value ? `${(props.percentage * 100).toFixed(2)}%` : props.percentage;
+    return isNumber.value ? `${(props.percentage as number * 100).toFixed(2)}%` : props.percentage;
 });
 </script>
 

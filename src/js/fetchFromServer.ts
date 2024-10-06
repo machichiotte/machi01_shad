@@ -1,6 +1,6 @@
-// src/js/fetchFromServer.js
-const serverHost = import.meta.env.VITE_SERVER_HOST
-const ENDPOINTS = {
+// src/js/fetchFromServer.ts
+const serverHost: string = import.meta.env.VITE_SERVER_HOST as string;
+const ENDPOINTS: Record<string, string> = {
   CMC: `${serverHost}/cmc/get`,
   CONVERTER: `${serverHost}/converter/post`,
   STRATEGY: `${serverHost}/strategy/get`,
@@ -16,7 +16,7 @@ const ENDPOINTS = {
  * @param {string} endpoint
  * @returns {Promise<any>}
  */
-const fetchData = async (dataType, endpoint) => {
+const fetchData = async (dataType: string, endpoint: string): Promise<any> => {
   try {
     const response = await fetch(endpoint)
     if (!response.ok) throw new Error(`Failed to fetch ${dataType}`)
@@ -32,7 +32,7 @@ const fetchData = async (dataType, endpoint) => {
  * @param {FormData} formData
  * @returns {Promise<any>}
  */
-const getConvertedCsv = async (formData) => {
+const getConvertedCsv = async (formData: FormData): Promise<any> => {
   console.log('getter getConvertedCsv formData', formData.get('csvFile'))
   return fetchData('converter CSV', ENDPOINTS.CONVERTER, {
     method: 'POST',
@@ -41,21 +41,21 @@ const getConvertedCsv = async (formData) => {
 }
 
 // Wrapper functions for fetching different types of data
-const fetchShad = () => fetchData('Shad', ENDPOINTS.SHAD)
-const fetchStrategy = () => fetchData('Strategy', ENDPOINTS.STRATEGY)
-const fetchTickers = () => fetchData('Tickers', ENDPOINTS.TICKERS)
-const fetchCmc = () => fetchData('CMC', ENDPOINTS.CMC)
-const fetchBalances = () => fetchData('Balances', ENDPOINTS.BALANCE)
-const fetchTrades = () => fetchData('Trades', ENDPOINTS.TRADES)
-const fetchOrders = () => fetchData('Orders', ENDPOINTS.ORDERS)
+const fetchBalance = (): Promise<any> => fetchData('Balances', ENDPOINTS.BALANCE)
+const fetchCmc = (): Promise<any> => fetchData('CMC', ENDPOINTS.CMC)
+const fetchOrder = (): Promise<any> => fetchData('Orders', ENDPOINTS.ORDERS)
+const fetchShad = (): Promise<any> => fetchData('Shad', ENDPOINTS.SHAD)
+const fetchStrategy = (): Promise<any> => fetchData('Strategy', ENDPOINTS.STRATEGY)
+const fetchTicker = (): Promise<any> => fetchData('Tickers', ENDPOINTS.TICKERS)
+const fetchTrade = (): Promise<any> => fetchData('Trades', ENDPOINTS.TRADES)
 
 export {
   getConvertedCsv,
   fetchStrategy,
   fetchShad,
   fetchCmc,
-  fetchBalances,
-  fetchTrades,
-  fetchOrders,
-  fetchTickers
+  fetchBalance,
+  fetchTrade,
+  fetchOrder,
+  fetchTicker
 }

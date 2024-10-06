@@ -12,15 +12,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useCalculStore } from '../store/calculStore';
-import { cmcColumns } from '../js/columns.js'
+import { cmcColumns } from '../js/columns.ts'
 import { FilterMatchMode } from 'primevue/api'
 import SearchBar from "./shad/SearchBar.vue";
 
-const itemsPerPage = 13
-const cols = cmcColumns
+const itemsPerPage = ref(13)
+const cols = ref(cmcColumns)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })

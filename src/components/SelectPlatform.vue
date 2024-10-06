@@ -8,18 +8,9 @@
   </select>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 
-/**
- * @typedef {Object} PlatformOption
- * @property {string} value
- * @property {string} label
- */
-
-/**
- * @type {import('vue').PropType<PlatformOption[]>}
- */
 const props = defineProps({
   options: {
     type: Array,
@@ -27,5 +18,5 @@ const props = defineProps({
   }
 });
 
-const selectedPlatform = ref('');
+const selectedPlatform = ref<string>('');
 </script>

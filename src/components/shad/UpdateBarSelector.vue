@@ -7,7 +7,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 /**
  * @component UpdateBarSelector
  */
@@ -42,7 +42,7 @@ const errors = ref(Array(fetchOptions.length).fill(false))
  * @param {number} index
  * @returns {Promise<void>}
  */
-async function fetchData(fetchFunction, index) {
+async function fetchData(fetchFunction: () => Promise<void>, index: number): Promise<void> {
     errors.value[index] = false
 
     try {

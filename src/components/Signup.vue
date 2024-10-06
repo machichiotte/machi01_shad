@@ -36,64 +36,63 @@
         </div>
     </div>
 </template>
-<script>
+
+<script setup lang="ts">
+import { ref, onMounted, onBeforeRouteLeave, onBeforeRouteEnter } from 'vue';
 import SignupValidations from '../services/SignupValidations';
 import { useAuthStore } from '../store/authStore';
 
-export default {
-    data() {
-        return {
-            email: '',
-            password: '',
-            errors: [],
-            error: '',
-        };
-    },
-    beforeRouteLeave() {
-        console.log('route leaving');
-        console.log(this.$pinia);
-    },
-    beforeRouteEnter(_, _1, next) {
-        next((vm) => {
-            console.log('route entering');
-            console.log(vm.$pinia.state.auth);
+const email = ref('');
+const password = ref('');
+const errors = ref<string[]>([]);
+const error = ref('');
+
+onMounted(() => {
+    console.log('Component is now mounted !');
+});
+
+onBeforeRouteLeave((to, from, next) => {
+    console.log('route leaving');
+    console.log(this.$pinia);
+    next();
+});
+
+onBeforeRouteEnter((to, from, next) => {
+    next((vm) => {
+        console.log('route entering');
+        console.log(vm.$pinia.state.auth);
+    });
+});
+
+const onSignup = async () => {
+    let validations = new SignupValidations(
+        email.value,
+        password.value,
+    );
+
+    errors.value = validations.checkValidations();
+    if (errors.value.length) {
+        return false;
+    }
+    error.value = '';
+
+    const authStore = useAuthStore();
+
+    authStore.showLoading(true);
+    try {
+        const isSigned = await authStore.signup({
+            email: email.value,
+            password: password.value,
         });
-    },
-    methods: {
-        /**
-         * @returns {Promise<void>}
-         */
-        async onSignup() {
-            let validations = new SignupValidations(
-                this.email,
-                this.password,
-            );
 
-            this.errors = validations.checkValidations();
-            if (this.errors.length) {
-                return false;
-            }
-            this.error = '';
+        if (isSigned) {
+            authStore.showLoading(false);
+            router.push('/login');
+        }
 
-            const authStore = useAuthStore();
-
-            authStore.showLoading(true);
-            try {
-                const isSigned = await authStore.signup({
-                    email: this.email,
-                    password: this.password,
-                });
-
-                if (isSigned) {
-                    authStore.showLoading(false);
-                    this.$router.push('/login');
-                }
-
-            } catch (error) {
-                this.error = error;
-                authStore.showLoading(false);
-            }
-        },
-    },
+    } catch (error) {
+        error.value = error;
+        authStore.showLoading(false);
+    }
 };
-</script>../store/authStore
+</script>

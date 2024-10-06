@@ -1,10 +1,10 @@
-// src/js/shad/shadUtils.js
+// src/js/shad/shadUtils.ts
 import {
   BINANCE_PLATFORM_ID,
   HTX_PLATFORM_ID,
   BINANCE_THRESHOLD,
   HTX_THRESHOLD
-} from '../shad/constants.js'
+} from '@js/shad/constants'
 
 /**
  * Calculate the price threshold based on the current price and a given threshold.
@@ -12,21 +12,21 @@ import {
  * @param {number} threshold - The threshold to apply.
  * @returns {number} - The calculated price threshold.
  */
-export const getPriceThreshold = (currentPrice, threshold) => currentPrice * threshold
+export const getPriceThreshold = (currentPrice: number, threshold: number): number => currentPrice * threshold
 
 /**
  * Count consecutive occurrences of the value '1' in the status array.
  * @param {Array<number>} status - The array of status values.
  * @returns {number} - The count of consecutive pairs.
  */
-export const countOccurrences = (status) => status.filter((value) => value === 1).length
+export const countOccurrences = (status: Array<number>): number => status.filter((value: number) => value === 1).length
 
 /**
  * Determine the status of an asset based on its current data and trading conditions.
  * @param {Object} data - The data object containing asset and trading information.
  * @returns {Object} - An object containing severity and label for the status.
  */
-export function evaluateAssetStatus(data) {
+export function evaluateAssetStatus(data: any): any {
   const { currentPrice, platform, status, nbOpenSellOrders, priceTp1, priceTp2 } = data
 
   if (status === 'stable coin') {
@@ -38,7 +38,7 @@ export function evaluateAssetStatus(data) {
     return { severity: 'warning', label: `STATUS ERROR` }
   }
 
-  const totalOrders = status.reduce((acc, val) => acc + val, 0)
+  const totalOrders = status.reduce((acc: number, val: number) => acc + val, 0)
 
   if (nbOpenSellOrders === 0) {
     return { severity: 'danger', label: "No open orders" }
@@ -55,7 +55,7 @@ export function evaluateAssetStatus(data) {
   const platformThreshold = platform === BINANCE_PLATFORM_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD
   const priceThreshold = getPriceThreshold(currentPrice, platformThreshold)
 
-  const nextOrder = status.findIndex((value) => value === 0)
+  const nextOrder = status.findIndex((value: number) => value === 0)
   if (nextOrder !== -1) {
     return priceThreshold < data[`priceTp${nextOrder + 1}`]
       ? { severity: 'success', label: 'Max orders placed' }
@@ -72,13 +72,13 @@ export function evaluateAssetStatus(data) {
  * @param {string} field - The name of the field to update.
  * @param {*} newValue - The new value for the field.
  */
-function updateAssetField(items, data, field, newValue) {
+function updateAssetField(items: Array<any>, data: any, field: string, newValue: any): void {
   if (!Array.isArray(items)) {
     console.warn('Invalid items reference or items is not an array:', items)
     return
   }
 
-  const rowIndex = items.findIndex((item) => item.asset === data.asset)
+  const rowIndex = items.findIndex((item: any) => item.asset === data.asset)
   if (rowIndex === -1) {
     console.warn('Item not found in the list:', data.asset)
     return
@@ -97,7 +97,7 @@ function updateAssetField(items, data, field, newValue) {
  * @param {Object} data - The data object of the asset to update.
  * @param {string|Object} newStrat - The new strategy to apply to the asset.
  */
-export const applyStrategyToRow = (items, data, newStrat) =>
+export const applyStrategyToRow = (items: Array<any>, data: any, newStrat: string | Object): void =>
   updateAssetField(items, data, 'strat', newStrat)
 
 /**
@@ -109,8 +109,8 @@ export const applyStrategyToRow = (items, data, newStrat) =>
  * 
  * @throws {Warning} Logs a warning if maxExposition is not a valid number or is negative.
  */
-export const setMaxExposure = (items, data, maxExposition) => {
-  if (isNaN(maxExposition) || maxExposition < 0) {
+export const setMaxExposure = (items: Array<any>, data: any, maxExposition: number | string): void => {
+  if (isNaN(maxExposition as number) || maxExposition as number < 0) {
     console.warn('Invalid maxExposition value:', maxExposition)
     return
   }
@@ -124,9 +124,9 @@ const ERROR_ALLOWED = 0.05
  * @param {string} platform - The name of the trading platform.
  * @returns {number} - The fee percentage for the given platform.
  */
-function retrievePlatformFee(platform) {
+function retrievePlatformFee(platform: string): number {
   // Define the platform fees
-  const fees = {
+  const fees: { [key: string]: number } = {
     binance: 0.1, // 0.1% fee
     kucoin: 0.1, // 0.1% fee
     htx: 0.1, // 0.1% fee
@@ -165,7 +165,7 @@ function retrievePlatformFee(platform) {
  *   - priceTp4: Price for TP 4.
  *   - priceTp5: Price for TP 5.
  */
-function getTakeProfitValues(data, maxExposition, ratioShad, averageEntryPrice) {
+function getTakeProfitValues(data: any, maxExposition: number, ratioShad: number, averageEntryPrice: number): any {
   const { totalBuy, totalSell, balance } = data
   // Intermediate calculations
   const recupTpX = getRecupTpX(maxExposition, ratioShad)
@@ -225,14 +225,14 @@ function getTakeProfitValues(data, maxExposition, ratioShad, averageEntryPrice) 
  * @param {Object} data - The data object containing necessary trading information.
  * @returns {Object} - Calculated recovery values.
  */
-export function getTakeProfitsTargets(data) {
+export function getTakeProfitsTargets(data: any): any {
   const stratExpo = data.maxExposition ?? 0 // Ensure default value
   const maxExposition = Math.max(0, stratExpo) // Ensure non-negative exposition
   const ratioShad = determineStrategyFactor(data.strat)
   const recupShad = calculateRecoveryGap(data.totalBuy, data.totalSell, maxExposition)
   const averageEntryPrice = data.totalBuy / data.totalAmount
 
-  const calculatedValues = getTakeProfitValues(data, maxExposition, ratioShad, averageEntryPrice)
+  const calculatedValues = getTakeProfitValues(data, maxExposition, ratioShad as number, averageEntryPrice)
   const totalShad = getDoneShad(data, maxExposition, recupShad, calculatedValues.recupTpX)
 
   return {
@@ -250,7 +250,7 @@ export function getTakeProfitsTargets(data) {
  * @param {string} strat - The strategy to evaluate.
  * @returns {number|string} The corresponding strategy factor or a default value.
  */
-function determineStrategyFactor(strat) {
+function determineStrategyFactor(strat: string): number | string {
   if (strat !== undefined) {
     switch (strat) {
       case 'Shad':
@@ -276,13 +276,13 @@ function determineStrategyFactor(strat) {
  * @param {number} maxExposition - The maximum allowed exposure.
  * @returns {number} The calculated recovery gap.
  */
-function calculateRecoveryGap(totalBuy, totalSell, maxExposition) {
+function calculateRecoveryGap(totalBuy: number, totalSell: number, maxExposition: number): number {
   //todo depends on the strategy
   if (totalSell > 0) {
     if (maxExposition < totalBuy && totalSell < totalBuy - maxExposition) {
       return 0
     } else {
-      return Math.round(totalSell - (totalBuy - maxExposition), 2)
+      return Math.round(totalSell - (totalBuy - maxExposition))
     }
   }
   return 0
@@ -295,7 +295,7 @@ function calculateRecoveryGap(totalBuy, totalSell, maxExposition) {
  * @param {number} ratioShad - The Shad ratio used for calculation.
  * @returns {number} The calculated recovery value for TpX.
  */
-function getRecupTpX(maxExposition, ratioShad) {
+function getRecupTpX(maxExposition: number, ratioShad: number): number {
   const result = (maxExposition * ratioShad * 0.5).toFixed(2)
   return parseFloat(result)
 }
@@ -307,7 +307,7 @@ function getRecupTpX(maxExposition, ratioShad) {
  * @param {number} recupTpX
  * @returns {number}
  */
-function getDoneShad(data, maxExposition, recupShad, recupTpX) {
+function getDoneShad(data: any, maxExposition: number, recupShad: number, recupTpX: number): number {
   const { totalBuy, totalSell } = data
   if (
     maxExposition < (1 - ERROR_ALLOWED) * totalBuy &&
@@ -315,7 +315,7 @@ function getDoneShad(data, maxExposition, recupShad, recupTpX) {
   ) {
     return -1
   } else if (recupShad >= (1 - ERROR_ALLOWED) * recupTpX) {
-    return -1 + Math.round(1 + ERROR_ALLOWED + recupShad / recupTpX, 2)
+    return -1 + Math.round(1 + ERROR_ALLOWED + recupShad / recupTpX)
   } else {
     return 0
   }

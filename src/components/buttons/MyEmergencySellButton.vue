@@ -1,23 +1,31 @@
-<!-- src/components/buttonsMyEmergencySellButton.vue -->
+<!-- src/components/buttons/MyEmergencySellButton.vue -->
 <template>
-  <Button label="Emergency Sell" icon="pi pi-exclamation-triangle" severity="danger" class="mr-2" @click="emergencySellClicked"> </Button>
+  <Button label="Emergency Sell" icon="pi pi-exclamation-triangle" severity="danger" class="mr-2"
+    @click="emergencySellClicked"> </Button>
 </template>
 
-<script setup>
-import { marketSellOrder, cancelAllSellOrders } from '../../js/orders.js'
-import { loadingSpin, successSpinHtml } from '../../js/spinner.js'
+<script lang="ts" setup>
+import { marketSellOrder, cancelAllSellOrders } from '@js/orders.js'
+import { loadingSpin, successSpinHtml } from '@js/spinner.js'
 
-const props = defineProps({
-  selectedAssets: Object // Prop for selected assets
-})
+interface SelectedAsset {
+  platform: string;
+  asset: string;
+  balance: number;
+  nbOpenSellOrders: number;
+}
+
+const props = defineProps<{
+  selectedAssets: SelectedAsset[]; // Prop pour les actifs sélectionnés
+}>();
 
 /**
  * @async
  * @function cancelOpenSellOrders
- * @param {Array} selectedRows - Array of selected assets
- * @returns {Promise<Array>} - Array of assets with successful cancellations
+ * @param {SelectedAsset[]} selectedRows - Tableau des actifs sélectionnés
+ * @returns {Promise<string[]>} - Tableau des actifs avec des annulations réussies
  */
-const cancelOpenSellOrders = async (selectedRows) => {
+const cancelOpenSellOrders = async (selectedRows: SelectedAsset[]): Promise<string[]> => {
   const cancellationPromises = selectedRows.map(async (row) => {
     if (row.nbOpenSellOrders > 0) {
       const cancel = await cancelAllSellOrders(row.platform, row.asset);
@@ -25,21 +33,21 @@ const cancelOpenSellOrders = async (selectedRows) => {
     }
     return row.asset;
   });
-  return (await Promise.all(cancellationPromises)).filter(Boolean);
+  return (await Promise.all(cancellationPromises)).filter(Boolean) as string[];
 };
 
 /**
  * @async
  * @function placeMarketSellOrders
- * @param {Array} assetsToPlaceOrders - Array of assets to place orders for
- * @param {Array} selectedRows - Array of selected assets
- * @returns {Promise<Array>} - Array of order placement results
+ * @param {string[]} assetsToPlaceOrders - Tableau des actifs pour passer des ordres
+ * @param {SelectedAsset[]} selectedRows - Tableau des actifs sélectionnés
+ * @returns {Promise<string[]>} - Tableau des résultats de placement d'ordres
  */
-const placeMarketSellOrders = async (assetsToPlaceOrders, selectedRows) => {
+const placeMarketSellOrders = async (assetsToPlaceOrders: string[], selectedRows: SelectedAsset[]): Promise<string[]> => {
   return Promise.all(assetsToPlaceOrders.map(async (asset) => {
     const selectedRow = selectedRows.find((row) => row.asset === asset);
-    const balance = selectedRow.balance;
-    const orderResult = await marketSellOrder(selectedRow.platform, asset, balance);
+    const balance = selectedRow?.balance || 0; // Utiliser 0 si selectedRow est undefined
+    const orderResult = await marketSellOrder(selectedRow?.platform, asset, balance);
     return `${asset}: ${orderResult}`;
   }));
 };
@@ -49,7 +57,7 @@ const placeMarketSellOrders = async (assetsToPlaceOrders, selectedRows) => {
  * @function emergencySellClicked
  * @returns {Promise<void>}
  */
-const emergencySellClicked = async () => {
+const emergencySellClicked = async (): Promise<void> => {
   const selectedRows = props.selectedAssets;
   loadingSpin();
 

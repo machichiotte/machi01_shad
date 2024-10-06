@@ -53,132 +53,101 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useCalculStore } from '../../store/calculStore'; // Import the Pinia store
+import { useCalculStore } from '@store/calculStore'; // Import the Pinia store
 
 import { FilterMatchMode } from 'primevue/api'
-import ShadDataTable from './ShadDataTable.vue'
-import SearchBar from './SearchBar.vue'
+import ShadDataTable from '@components/shad/ShadDataTable.vue'
+import SearchBar from '@components/shad/SearchBar.vue'
 
-import PlatformSelector from './PlatformSelector.vue'
-import UpdateBarSelector from './UpdateBarSelector.vue'
-import ActionSelector from './ActionSelector.vue'
+import PlatformSelector from '@components/shad/PlatformSelector.vue'
+import UpdateBarSelector from '@components/shad/UpdateBarSelector.vue'
+import ActionSelector from '@components/shad/ActionSelector.vue'
 
-import TradesTable from '../trades/TradesTable.vue'
-import OrdersTable from '../orders/OrdersTable.vue'
-import BuyCalculator from './BuyCalculator.vue'
+import TradesTable from '@components/trades/TradesTable.vue'
+import OrdersTable from '@components/orders/OrdersTable.vue'
+import BuyCalculator from '@components/shad/BuyCalculator.vue'
 
-/**
- * @type {import('vue').Ref<Array>}
- */
-const selectedAssets = ref([])
 
-/**
- * @type {import('vue').Ref<Object>}
- */
-const filters = ref({
+// Définition des types
+interface Filter {
+  global: {
+    value: string | null;
+    matchMode: FilterMatchMode;
+  };
+}
+
+interface Item {
+  platform: string;
+}
+
+// Références
+const selectedAssets = ref < Array < any >> ([]);
+const filters = ref < Filter > ({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-})
-
-/**
- * @type {import('vue').Ref<Array<string>>}
- */
-const selectedPlatforms = ref(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
-
-/**
- * @type {import('pinia').Store}
- */
+});
+const selectedPlatforms = ref < Array < string >> (['binance', 'kucoin', 'htx', 'okx', 'gateio']);
 const calculStore = useCalculStore();
 
-/**
- * @type {import('vue').ComputedRef<Array>}
- */
-const tradesItems = computed(() => calculStore.getTrades);
+// Computed properties
+const tradesItems = computed < Array < any >> (() => calculStore.getTrades);
+const openOrdersItems = computed < Array < any >> (() => calculStore.getOrders);
+const shadItems = computed < Array < any >> (() => calculStore.getShad);
+const filteredShadItems = computed < Array < any >> (() => {
+  return shadItems.value.filter((item: Item) => selectedPlatforms.value.includes(item.platform));
+});
 
-/**
- * @type {import('vue').ComputedRef<Array>}
- */
-const openOrdersItems = computed(() => calculStore.getOrders);
-
-/**
- * @type {import('vue').ComputedRef<Array>}
- */
-const shadItems = computed(() => calculStore.getShad);
-
-/**
- * @type {import('vue').ComputedRef<Array>}
- */
-const filteredShadItems = computed(() => {
-  return shadItems.value.filter(item => selectedPlatforms.value.includes(item.platform))
-})
-
-/**
- * @async
- * @function
- * @returns {Promise<void>}
- */
-const getData = async () => {
+// Fonction asynchrone pour récupérer les données
+const getData = async (): Promise<void> => {
   try {
     await calculStore.loadTrades();
     await calculStore.loadOrders();
     await calculStore.loadShad();
 
-    console.log("Trades data retrieved:", tradesItems.value.length)
-    console.log("Orders data retrieved:", openOrdersItems.value.length)
-    console.log("Shad data retrieved:", shadItems.value.length)
-
+    console.log("Trades data retrieved:", tradesItems.value.length);
+    console.log("Orders data retrieved:", openOrdersItems.value.length);
+    console.log("Shad data retrieved:", shadItems.value.length);
   } catch (error) {
-    console.error("An error occurred while retrieving data:", error)
+    console.error("An error occurred while retrieving data:", error);
   }
-}
-
-onMounted(async () => {
-  await getData()
-})
-
-/**
- * @function handleDeleteAction
- */
-const handleDeleteAction = () => {
-  console.log('Delete action received from grandchild component');
-  // Perform the delete action here
-  deleteProductsDialog.value = true
 };
 
-/**
- * @function updateSelectedAssets
- * @param {Array} newSelection
- */
-function updateSelectedAssets(newSelection) {
-  selectedAssets.value = newSelection
+onMounted(async () => {
+  await getData();
+});
+
+// Fonction pour gérer la suppression d'une action
+const handleDeleteAction = (): void => {
+  console.log('Delete action received from grandchild component');
+  // Perform the delete action here
+  deleteProductsDialog.value = true; // Assurez-vous que deleteProductsDialog est défini
+};
+
+// Fonction pour mettre à jour les actifs sélectionnés
+function updateSelectedAssets(newSelection: Array<any>): void {
+  selectedAssets.value = newSelection;
 }
 
-/**
- * @function updateSelectedPlatforms
- * @param {Array} newPlatforms
- */
-function updateSelectedPlatforms(newPlatforms) {
-  console.log('updateSelectedPlatforms', newPlatforms)
-  selectedPlatforms.value = newPlatforms
+// Fonction pour mettre à jour les plateformes sélectionnées
+function updateSelectedPlatforms(newPlatforms: Array<string>): void {
+  console.log('updateSelectedPlatforms', newPlatforms);
+  selectedPlatforms.value = newPlatforms;
 }
 
-const isBottomExpanded = ref(false)
-const activeTab = ref('trades')
+// État pour l'expansion des onglets
+const isBottomExpanded = ref < boolean > (false);
+const activeTab = ref < string > ('trades');
 
-/**
- * @function toggleExpandCollapse
- */
-function toggleExpandCollapse() {
-  isBottomExpanded.value = !isBottomExpanded.value
+// Fonction pour basculer l'expansion
+function toggleExpandCollapse(): void {
+  isBottomExpanded.value = !isBottomExpanded.value;
 }
 
-const isTopExpanded = ref(false)
-const activeTopTab = ref('platforms')
+const isTopExpanded = ref < boolean > (false);
+const activeTopTab = ref < string > ('platforms');
 
-/**
- * @function toggleTopExpandCollapse
- */
-function toggleTopExpandCollapse() {
-  isTopExpanded.value = !isTopExpanded.value
+// Fonction pour basculer l'expansion du haut
+function toggleTopExpandCollapse(): void {
+  isTopExpanded.value = !isTopExpanded.value;
 }
 </script>
 

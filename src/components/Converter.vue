@@ -14,85 +14,79 @@
         </button>
     </div>
 </template>
-  
-<script>
-import { getConvertedCsv } from "../js/fetchFromServer.js";
 
-export default {
-    name: "ConverterPage",
-    data() {
-        return {
-            jsonAvailable: false,
-            downloadable: false,
-            jsonData: null,
-            uploadSuccess: null,
-        };
-    },
-    methods: {
-        /**
-         * @async
-         * @returns {Promise<void>}
-         */
-        async uploadCsv() {
-            this.uploadSuccess = null;
-            this.jsonAvailable = false;
-            this.downloadable = false;
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { getConvertedCsv } from "../js/fetchFromServer.ts";
 
-            const fileInput = this.$refs.csvFileInput;
-            const file = fileInput.files[0];
+const csvFileInput = ref(null);
+const jsonAvailable = ref(false);
+const downloadable = ref(false);
+const jsonData = ref(null);
+const uploadSuccess = ref(null);
 
-            if (file) {
-                const formData = new FormData();
-                formData.append("csvFile", file);
-                try {
-                    const response = await getConvertedCsv(formData);
+onMounted(() => {
+    csvFileInput.value = ref(null);
+    jsonAvailable.value = false;
+    downloadable.value = false;
+    jsonData.value = null;
+    uploadSuccess.value = null;
+});
 
-                    this.jsonAvailable = true;
-                    this.downloadable = true;
-                    this.jsonData = response.data;
+const uploadCsv = async () => {
+    uploadSuccess.value = null;
+    jsonAvailable.value = false;
+    downloadable.value = false;
 
-                    this.uploadSuccess = response.success;
-                } catch (error) {
-                    console.error("Error while sending CSV file", error);
+    const file = csvFileInput.value.files[0];
 
-                    this.uploadSuccess = false;
-                    this.jsonAvailable = false; 
-                    this.downloadable = false; 
-                }
-            } else {
-                console.error("No file selected");
+    if (file) {
+        const formData = new FormData();
+        formData.append("csvFile", file);
+        try {
+            const response = await getConvertedCsv(formData);
 
-                this.uploadSuccess = false;
-            }
-        },
+            jsonAvailable.value = true;
+            downloadable.value = true;
+            jsonData.value = response.data;
 
-        /**
-         * @returns {void}
-         */
-        downloadJson() {
-            if (this.jsonData) {
-                const jsonData = JSON.stringify(this.jsonData);
-                const blob = new Blob([jsonData], { type: "application/json" });
+            uploadSuccess.value = response.success;
+        } catch (error) {
+            console.error("Error while sending CSV file", error);
 
-                const url = URL.createObjectURL(blob);
+            uploadSuccess.value = false;
+            jsonAvailable.value = false;
+            downloadable.value = false;
+        }
+    } else {
+        console.error("No file selected");
 
-                const downloadLink = document.createElement("a");
-                downloadLink.href = url;
-                downloadLink.download = "data.json";
+        uploadSuccess.value = false;
+    }
+};
 
-                document.body.appendChild(downloadLink);
+const downloadJson = () => {
+    if (jsonData.value) {
+        const jsonDataString = JSON.stringify(jsonData.value);
+        const blob = new Blob([jsonDataString], { type: "application/json" });
 
-                downloadLink.click();
+        const url = URL.createObjectURL(blob);
 
-                document.body.removeChild(downloadLink);
+        const downloadLink = document.createElement("a");
+        downloadLink.href = url;
+        downloadLink.download = "data.json";
 
-                URL.revokeObjectURL(url);
-            }
-        },
-    },
+        document.body.appendChild(downloadLink);
+
+        downloadLink.click();
+
+        document.body.removeChild(downloadLink);
+
+        URL.revokeObjectURL(url);
+    }
 };
 </script>
-  
+
 <style scoped>
 .page {
     overflow-x: auto;

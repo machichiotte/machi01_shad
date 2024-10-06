@@ -23,24 +23,24 @@
         <RouterLink to="/converter" active-class="selected-link">Converter</RouterLink>
       </nav>
     </header>
-    <RouterView /> 
+    <RouterView />
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 
-const isMenuOpen = ref(false)
-const isDarkMode = ref(false)
+const isMenuOpen = ref<boolean>(false)
+const isDarkMode = ref<boolean>(false)
 const dark = '#2c3e50'
 const light = '#ffffff'
 
-function toggleMenu() {
+function toggleMenu(): void {
   isMenuOpen.value = !isMenuOpen.value
 }
 
-function toggleDarkMode() {
+function toggleDarkMode(): void {
   isDarkMode.value = !isDarkMode.value
   document.body.classList.toggle('dark-mode', isDarkMode.value)
 }
@@ -67,21 +67,26 @@ body.dark-mode {
 /* Flex container for logo and dark mode button */
 .header-container {
   display: flex;
-  align-items: center; /* Center vertically */
+  align-items: center;
+  /* Center vertically */
   padding: 10px;
-  justify-content: space-between; /* Ensure logo and button are spaced evenly */
+  justify-content: space-between;
+  /* Ensure logo and button are spaced evenly */
 }
 
 /* Center the logo horizontally */
 .logo-container {
-  flex-grow: 1; /* Allows the logo to take up remaining space */
+  flex-grow: 1;
+  /* Allows the logo to take up remaining space */
   display: flex;
-  justify-content: center; /* Centers the logo horizontally */
+  justify-content: center;
+  /* Centers the logo horizontally */
   align-items: center;
 }
 
 .logo {
-  height: 6vh; /* Set logo height to 6% of the viewport height */
+  height: 6vh;
+  /* Set logo height to 6% of the viewport height */
   max-width: 100%;
   object-fit: contain;
 }
@@ -91,18 +96,23 @@ body.dark-mode {
   background: none;
   border: none;
   cursor: pointer;
-  margin-left: auto; /* Pushes the button to the right */
-  color: var(--dark-text); /* Default color for light mode */
-  transition: color 0.3s ease; /* Smooth transition for color change */
+  margin-left: auto;
+  /* Pushes the button to the right */
+  color: var(--dark-text);
+  /* Default color for light mode */
+  transition: color 0.3s ease;
+  /* Smooth transition for color change */
 }
 
 /* Ensure the icon color changes according to the mode */
 .dark-mode-button:hover {
-  color: var(--primary-color); /* Change color on hover for better UX */
+  color: var(--primary-color);
+  /* Change color on hover for better UX */
 }
 
 body.dark-mode .dark-mode-button {
-  color: var(--light-text); /* Set color for dark mode */
+  color: var(--light-text);
+  /* Set color for dark mode */
 }
 
 header {

@@ -10,10 +10,7 @@
     </div>
 </template>
 
-<script setup>
-/**
- * @emits showDialog
- */
+<script setup lang="ts">
 const emit = defineEmits(['showDialog'])
 
 function handleShowDialog() {

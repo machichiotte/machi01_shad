@@ -7,10 +7,11 @@
         <div v-for="(asset, index) in reactiveAssets" :key="asset.asset" class="asset-row">
             <h4>{{ asset.asset }}</h4>
 
-            <!-- todo here I want to add in parentheses the totalBuy before invest and the average entry price before invest-->
-            <h4>Total Buy : {{ formatSignificantDigits(asset.totalBuy,2) }}</h4>
-            <h4>AVG : {{ formatSignificantDigits(asset.averageEntryPrice,
-                asset.significantPriceDigits) }}</h4>
+            <!-- Afficher le totalBuy et le prix d'entrée moyen avant l'investissement -->
+            <h4>Total Buy : {{ formatSignificantDigits(asset.totalBuy, 2) }} (avant invest : {{
+            formatSignificantDigits(asset.totalBuyBeforeInvest, 2) }})</h4>
+            <h4>AVG : {{ formatSignificantDigits(asset.averageEntryPrice, asset.significantPriceDigits) }} (avant invest
+                : {{ formatSignificantDigits(asset.averageEntryPriceBeforeInvest, 2) }})</h4>
 
             <!-- Inputs for Fee and Investment -->
             <div class="input-group">
@@ -26,13 +27,10 @@
             <!-- Display Results -->
             <div class="results">
                 <p>Total Buy: {{ formatSignificantDigits(asset.totalFuturBuy, 2) }}</p>
-                <p>Average Entry Price: {{ formatSignificantDigits(asset.avgWithFee,
-            asset.significantPriceDigits)
-                    }}</p>
-                <p>Amount to Sell: {{ formatSignificantDigits(asset.amountToSell, asset.significantAmountDigits)
-                    }}</p>
-                <p>Entry Price Decrease: {{ formatSignificantDigits(asset.baissePrixEntree, 2)
-                    }}%</p>
+                <p>Average Entry Price: {{ formatSignificantDigits(asset.avgWithFee, asset.significantPriceDigits) }}
+                </p>
+                <p>Amount to Sell: {{ formatSignificantDigits(asset.amountToSell, asset.significantAmountDigits) }}</p>
+                <p>Entry Price Decrease: {{ formatSignificantDigits(asset.baissePrixEntree, 2) }}%</p>
                 <p>Next TP: {{ formatSignificantDigits(asset.nextTp, 2) }}%</p>
             </div>
         </div>
@@ -67,6 +65,8 @@ watch(
                 nextTp: asset.nextTp,
                 significantPriceDigits: asset.significantPriceDigits,
                 significantAmountDigits: asset.significantAmountDigits,
+                totalBuyBeforeInvest: asset.totalBuy, // Ajout de la valeur avant l'investissement
+                averageEntryPriceBeforeInvest: asset.averageEntryPrice, // Ajout de la valeur avant l'investissement
                 ...asset,
             })
         );
@@ -82,8 +82,8 @@ watch(
  * @param {Object} asset
  */
 function calculateResults(asset) {
-    asset.significantPriceDigits= getSignificantDigits(asset.currentPrice),
-    asset.significantAmountDigits= getSignificantDigits(asset.balance),
+    asset.significantPriceDigits = getSignificantDigits(asset.currentPrice);
+    asset.significantAmountDigits = getSignificantDigits(asset.balance);
 
     asset.amountBuyFromInvest = calculateAmountBuyFromInvest(asset);
     asset.totalAmountBuy = calculateFuturTotalAmountBuy(asset);

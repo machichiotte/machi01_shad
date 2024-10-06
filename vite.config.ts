@@ -1,4 +1,4 @@
-// vite.config.js
+// vite.config.ts
 
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
@@ -10,7 +10,7 @@ export default defineConfig({
     {
       name: 'vite-plugin-csp-nonce',
       transformIndexHtml(html) {
-        const nonce = btoa(Math.random().toString()).substring(0, 16) // Générer un nonce
+        const nonce = btoa(Math.random().toString()).substring(0, 16) // Generate a nonce
         return html.replace(
           /<meta http-equiv="Content-Security-Policy" content="(.*?)">/,
           (match, p1) => {
@@ -19,7 +19,7 @@ export default defineConfig({
         )
       },
       handleHotUpdate({ file, server }) {
-        // Injecter le nonce dans les styles lors de la mise à jour à chaud
+        // Inject the nonce into styles during hot update
         const nonce = btoa(Math.random().toString()).substring(0, 16)
         server.ws.send({
           type: 'custom',
@@ -41,7 +41,7 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: 'dist', // Correspond à outputDir de Vue CLI
-    assetsDir: 'static' // Correspond à assetsDir de Vue CLI
+    outDir: 'dist', // Corresponds to outputDir of Vue CLI
+    assetsDir: 'static' // Corresponds to assetsDir of Vue CLI
   }
 })

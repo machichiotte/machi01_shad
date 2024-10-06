@@ -18,11 +18,7 @@
   </div>
 </template>
 
-<script setup>
-/**
- * @component Trades
- */
-
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import { useCalculStore } from '../../store/calculStore';
@@ -31,8 +27,8 @@ import SearchBar from "../shad/SearchBar.vue";
 import TradesActions from "./TradesActions.vue";
 import TradesTable from "./TradesTable.vue";
 
-const showDialog = ref(false);
-const filters = ref({
+const showDialog = ref<boolean>(false);
+const filters = ref<{ global: { value: string | null; matchMode: FilterMatchMode } }>({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
@@ -74,4 +70,3 @@ onMounted(async () => {
   margin-bottom: 0.5rem;
 }
 </style>
-../../store/calculStoreStore

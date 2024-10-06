@@ -16,6 +16,8 @@
                 placeholder="Total" @input="updateCalculatedValues(index)" />
             <span class="calculated-value">Calculated Quantity: {{ calculateQuantity(index) }}</span>
             <Button icon="pi pi-times" class="p-button-danger" @click="removeOrder(index)" />
+            <span v-if="!isValidOrder(order)" class="error-message">Invalid order: Price and Quantity must be positive
+                numbers.</span>
         </div>
         <!-- Button to add an order line -->
         <Button label="Add Line" @click="addOrder" :disabled="buyOrders.length >= 10" />
@@ -28,8 +30,8 @@
 import { ref, computed } from 'vue'
 import InputNumber from 'primevue/inputnumber'
 import Button from 'primevue/button'
-import { successSpinHtml } from '../../js/spinner.js'
-import { bunchLimitBuyOrders } from '../../js/orders.js'
+import { successSpinHtml } from '@js/spinner.js'
+import { bunchLimitBuyOrders } from '@js/orders.js'
 
 const props = defineProps({
     assets: Object,
@@ -43,11 +45,19 @@ const selectedAsset = ref(null)
 const buyOrders = ref([{ price: null, quantity: null, total: null }])
 
 /**
+ * @param {Object} order
+ * @returns {boolean}
+ */
+const isValidOrder = (order) => {
+    return order.price > 0 && order.quantity > 0;
+}
+
+/**
  * @returns {void}
  */
 const addOrder = () => {
     if (buyOrders.value.length < 10) {
-        buyOrders.value.push({ price: null, quantity: null, total: null })
+        buyOrders.value.push({ price: null, quantity: null, total: null });
     }
 }
 
@@ -96,6 +106,11 @@ const calculateQuantity = (index) => {
  * @returns {Promise<void>}
  */
 const submitOrders = async () => {
+    if (buyOrders.value.some(order => !isValidOrder(order))) {
+        alert('Please ensure all orders have valid price and quantity.');
+        return;
+    }
+
     const orderPlacementResults = await Promise.all(buyOrders.value.map(async (order) => {
         try {
             const result = await bunchLimitBuyOrders(selectedAsset.value.platform, selectedAsset.value.asset, order.quantity, order.price);
@@ -140,13 +155,15 @@ const assetOptions = computed(() => {
     gap: 1rem;
     margin-bottom: 0.5rem;
     flex-direction: column;
-    /* Add this to align elements vertically */
 }
 
 .calculated-value {
     font-size: 0.8rem;
-    /* Smaller font size for calculated values */
     color: #888;
-    /* Grey color for indication */
+}
+
+.error-message {
+    color: red;
+    font-size: 0.8rem;
 }
 </style>

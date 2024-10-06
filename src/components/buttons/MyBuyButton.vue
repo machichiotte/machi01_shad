@@ -7,20 +7,20 @@
         <Dialog v-if="showBuyOrdersForm" header="Add Buy Orders" :visible="showBuyOrdersForm" modal :closable="false"
             @hide="showBuyOrdersForm = false">
             <AddBuyOrdersForm :selectedAssets="props.selectedAssets" @close="showBuyOrdersForm = false" />
-
         </Dialog>
     </div>
 </template>
 
-<script setup>
-import { ref } from 'vue' // Import computed from the vue library
-import AddBuyOrdersForm from '../forms/AddBuyOrdersForm.vue'
+<script setup lang="ts">
+import { ref, defineProps } from 'vue' // Import ref and defineProps from the vue library
+import AddBuyOrdersForm from '@components/forms/AddBuyOrdersForm.vue'
 
-//const selectedAssets = ref([]) // declare the selectedAssets reference
+// Define an interface for the props
+interface Props {
+    selectedAssets: Record<string, any>; // Define the prop type as an object
+}
 
-const props = defineProps({
-    selectedAssets: Object // Define the prop type as an object
-})
+const props = defineProps<Props>() // Use the interface with defineProps
 
 const showBuyOrdersForm = ref(false)
 </script>

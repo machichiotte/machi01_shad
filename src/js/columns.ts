@@ -1,12 +1,18 @@
-// src/js/columns.js
-const cmcColumns = [
+// src/js/columns.ts
+type Column = {
+  header: string;
+  field: string;
+  numeric?: boolean;
+};
+
+const cmcColumns: Column[] = [
   { header: 'Rank', field: 'rank', numeric: true },
   { header: 'Name', field: 'name' },
   { header: 'Symbol', field: 'symbol' },
   { header: 'Price', field: 'price' }
 ]
 
-const ordersColumns = [
+const ordersColumns: Column[] = [
   { header: 'oId', field: 'oId' },
   { header: 'Platform', field: 'platform' },
   { header: 'Symbol', field: 'symbol' },
@@ -16,7 +22,7 @@ const ordersColumns = [
   { header: 'Price', field: 'price', numeric: true }
 ]
 
-const tradesColumns = [
+const tradesColumns: Column[] = [
   { header: 'Platform', field: 'platform' },
   { header: 'base', field: 'base' },
   { header: 'quote', field: 'quote' },
@@ -32,7 +38,7 @@ const tradesColumns = [
   { header: 'Explatform', field: 'explatform' }
 ]
 
-const tradesTableColumns = [
+const tradesTableColumns: Column[] = [
   { header: 'Date', field: 'date' },
   { header: 'Pair', field: 'pair' },
   { header: 'Type', field: 'type' },
@@ -45,7 +51,7 @@ const tradesTableColumns = [
   { header: 'Explatform', field: 'explatform' }
 ]
 
-const openOrdersTableColumns = [
+const openOrdersTableColumns: Column[] = [
   { header: 'Platform', field: 'platform' },
   { header: 'Symbol', field: 'symbol' },
   { header: 'Side', field: 'side' },

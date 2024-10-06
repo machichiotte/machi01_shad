@@ -2,10 +2,10 @@
 <template>
     <DataTable class="mt-4 custom-data-table" :value="filteredItems" :rows="itemsPerPage" :dataKey="rowKey"
         :filters="filters" :pt="{
-            bodyrow: ({ props }) => ({
-                class: [{ 'bold-row': props.frozenRow }]
-            })
-        }" paginator stripedRows scrollable scroll-height="530px" v-model:selection="localSelectedAssets"
+        bodyrow: ({ props }) => ({
+            class: [{ 'bold-row': props.frozenRow }]
+        })
+    }" paginator stripedRows scrollable scroll-height="530px" v-model:selection="localSelectedAssets"
         @update:selection="emitSelection" selectionMode="multiple" dataKey="rank"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25, 100, 500]"
@@ -79,9 +79,9 @@
                     </div>
                     <!-- Secondary text at bottom right -->
                     <div :class="{
-                        'text-green': slotProps.data.cryptoPercentChange24h > 0,
-                        'text-red': slotProps.data.cryptoPercentChange24h < 0
-                    } + ' current-price-secondary-text'">
+        'text-green': slotProps.data.cryptoPercentChange24h > 0,
+        'text-red': slotProps.data.cryptoPercentChange24h < 0
+    } + ' current-price-secondary-text'">
                         {{ (100 * slotProps.data.cryptoPercentChange24h).toFixed(2) }}%
                     </div>
                 </div>
@@ -123,9 +123,9 @@
                     </div>
                     <!-- Secondary text at bottom right -->
                     <div :class="{
-                        'text-green': slotProps.data.percentageDifference > 0,
-                        'text-red': slotProps.data.percentageDifference < 0
-                    } + ' percentage-text'">
+        'text-green': slotProps.data.percentageDifference > 0,
+        'text-red': slotProps.data.percentageDifference < 0
+    } + ' percentage-text'">
                         {{ (100 * slotProps.data.percentageDifference).toFixed(2) }}%
                     </div>
                 </div>
@@ -142,10 +142,10 @@
                 <span>
                     <!-- Check if currentPossession is defined and is a valid number -->
                     {{
-                        typeof slotProps.data.currentPossession === 'number'
-                            ? slotProps.data.currentPossession.toFixed(2) + '$'
-                            : 'N/A'
-                    }}
+        typeof slotProps.data.currentPossession === 'number'
+            ? slotProps.data.currentPossession.toFixed(2) + '$'
+            : 'N/A'
+    }}
                 </span>
             </template>
         </Column>
@@ -155,10 +155,10 @@
                 <span>
                     <!-- Check if profit is defined and is a valid number -->
                     {{
-                        typeof slotProps.data.profit === 'number'
-                            ? slotProps.data.profit.toFixed(2) + '$'
-                            : 'N/A'
-                    }}
+        typeof slotProps.data.profit === 'number'
+            ? slotProps.data.profit.toFixed(2) + '$'
+            : 'N/A'
+    }}
                 </span>
             </template>
         </Column>
@@ -211,30 +211,32 @@
 
         <Column :exportable="false" class="actions-column">
             <template #body="slotProps">
-              <div class="actions-container">
-                <Button icon="pi pi-pencil" outlined rounded class="action-button edit-button" @click="editProduct(slotProps.data)" />
-                <Button icon="pi pi-trash" outlined rounded severity="danger" class="action-button delete-button" @click="confirmDeleteProduct(slotProps.data)" />
-              </div>
+                <div class="actions-container">
+                    <Button icon="pi pi-pencil" outlined rounded class="action-button edit-button"
+                        @click="editProduct(slotProps.data)" />
+                    <Button icon="pi pi-trash" outlined rounded severity="danger" class="action-button delete-button"
+                        @click="confirmDeleteProduct(slotProps.data)" />
+                </div>
             </template>
-          </Column>
+        </Column>
     </DataTable>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { evaluateAssetStatus, setMaxExposure, applyStrategyToRow } from '../../js/shad/shadUtils.js';
-import { fetchTickers } from '../../js/fetchFromServer.js';
-import { strategies } from '../../js/strategies.js';
-import PercentageColumn from './PercentageColumn.vue';
+import { evaluateAssetStatus, setMaxExposure, applyStrategyToRow } from '@js/shad/shadUtils.js';
+import { fetchTickers } from '@js/fetchFromServer.js';
+import { strategies } from '@js/strategies.js';
+import PercentageColumn from '@components/shad/PercentageColumn.vue';
 
 /**
  * @constant
  */
 const strategiesList = ref(strategies);
 const itemsPerPage = ref(50);
-const selectedPlatforms = ref([]);
-const localItems = ref([]);
-const localSelectedAssets = ref([]);
+const selectedPlatforms = ref<string[]>([]);
+const localItems = ref<any[]>([]);
+const localSelectedAssets = ref<any[]>([]);
 
 /**
  * @typedef {Object} Props
@@ -245,23 +247,22 @@ const localSelectedAssets = ref([]);
 /**
  * @type {Props}
  */
-const props = defineProps({
-    items: {
-        type: Array,
-        required: true,
-    },
+const props = defineProps<{
+    items: Array<any>;
     filters: {
-        type: Object,
-        default: () => ({
-            global: { value: null, matchMode: null }
-        })
-    }
-});
+        global: {
+            value: string | null;
+            matchMode: string | null;
+        };
+    };
+}>();
 
 /**
  * @type {function}
  */
-const emit = defineEmits(['update:selectedAssets']);
+const emit = defineEmits<{
+    (e: 'update:selectedAssets', selection: any[]): void;
+}>();
 
 /**
  * @type {import('vue').ComputedRef}
@@ -306,7 +307,7 @@ watch(() => props.selectedAssets, (selectedItem) => {
  * @param {Array} selectedPlatforms
  * @returns {Array}
  */
-function filterItems(items, searchTerm, selectedPlatforms) {
+function filterItems(items: any[], searchTerm: string | null, selectedPlatforms: string[]): any[] {
     if (!searchTerm && selectedPlatforms.length === platformOptions.value.length) {
         return items;
     }
@@ -324,7 +325,7 @@ function filterItems(items, searchTerm, selectedPlatforms) {
 /**
  * @param {Array} selection
  */
-function emitSelection(selection) {
+function emitSelection(selection: any[]) {
     emit('update:selectedAssets', selection);
 }
 
@@ -340,7 +341,7 @@ function updateTickers() {
             const key = `${ticker.platform}-${ticker.symbol}`;
             dict[key] = ticker;
             return dict;
-        }, {});
+        }, {} as Record<string, any>);
 
         localItems.value.forEach(item => {
             const key = `${item.platform}-${item.asset}/USDT`;
@@ -357,7 +358,7 @@ function updateTickers() {
  * @param {Object} rowData
  * @returns {string}
  */
-const rowKey = (rowData) => `${rowData.asset}-${rowData.platform}`;
+const rowKey = (rowData: any) => `${rowData.asset}-${rowData.platform}`;
 
 let tickerInterval;
 
@@ -390,7 +391,7 @@ onUnmounted(() => {
 
 .actions-column {
     min-width: 8rem;
-  }
+}
 
 .price-container {
     position: relative;

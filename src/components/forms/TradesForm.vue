@@ -76,18 +76,51 @@
     </Dialog>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue';
-import { successSpin, errorSpin } from "../../js/spinner.js";
+import { successSpin, errorSpin } from "@js/spinner.js";
 
-const serverHost = import.meta.env.VITE_SERVER_HOST;
-const types = ref(['buy', 'sell'])
-const platforms = ref(['binance', 'gateio', 'htx', 'kucoin', 'okx'])
+const serverHost: string = import.meta.env.VITE_SERVER_HOST;
+const types = ref<string[]>(['buy', 'sell']);
+const platforms = ref<string[]>(['binance', 'gateio', 'htx', 'kucoin', 'okx']);
+
+interface FormData {
+    platform: string;
+    base: string;
+    quote: string;
+    date: string;
+    pair: string;
+    type: string;
+    price: number;
+    amount: number;
+    total: number;
+    totalUSDT: number;
+    fee: number;
+    feecoin: string;
+}
+
+const formDataInitial: FormData = {
+    platform: '',
+    base: '',
+    quote: 'USDT',
+    date: '2024-03-28 21:44:58',
+    pair: '',
+    type: '',
+    price: 0,
+    amount: 0,
+    total: 0,
+    totalUSDT: 0,
+    fee: 0,
+    feecoin: ''
+};
+
+const formData = ref<FormData>({ ...formDataInitial });
+const isSaveDisabled = ref<boolean>(true);
 
 /**
  * @returns {void}
  */
-const checkFormValidity = () => {
+const checkFormValidity = (): void => {
     const formDataValue = formData.value;
     formDataValue.pair = formDataValue.base + '/' + formDataValue.quote;
 
@@ -107,7 +140,7 @@ const checkFormValidity = () => {
  * @param {string} dateString
  * @returns {boolean}
  */
-const isValidDateFormat = (dateString) => {
+const isValidDateFormat = (dateString: string): boolean => {
     const combinedRegex = /^(?:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z|^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})$/;
     return combinedRegex.test(dateString);
 };
@@ -115,10 +148,10 @@ const isValidDateFormat = (dateString) => {
 /**
  * @returns {void}
  */
-const saveTrade = () => {
+const saveTrade = (): void => {
     const formDataValue = formData.value;
-    formDataValue.base = formDataValue.base.toUpperCase()
-    formDataValue.quote = formDataValue.quote.toUpperCase()
+    formDataValue.base = formDataValue.base.toUpperCase();
+    formDataValue.quote = formDataValue.quote.toUpperCase();
 
     if (!isSaveDisabled.value) {
         addTradesToDatabase(formDataValue);
@@ -132,10 +165,10 @@ const saveTrade = () => {
 }
 
 /**
- * @param {Object} formDataValue
+ * @param {FormData} formDataValue
  * @returns {Promise<void>}
  */
-async function addTradesToDatabase(formDataValue) {
+async function addTradesToDatabase(formDataValue: FormData): Promise<void> {
     try {
         const response = await fetch(`${serverHost}/trades/add`, {
             method: "POST",
@@ -162,25 +195,6 @@ async function addTradesToDatabase(formDataValue) {
         );
     }
 }
-
-const formDataInitial = {
-    platform: '',
-    base: '',
-    quote: 'USDT',
-    date: '2024-03-28 21:44:58',
-    pair: '',
-    type: '',
-    price: 0,
-    amount: 0,
-    total: 0,
-    totalUSDT: 0,
-    fee: 0,
-    feecoin: ''
-}
-
-const formData = ref({ ...formDataInitial })
-
-const isSaveDisabled = ref(true);
 
 watch(formData, () => {
     checkFormValidity();

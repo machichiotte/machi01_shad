@@ -1,7 +1,7 @@
-// src/orders.js
+// src/orders.ts
 
 // Get the server host from environment variables
-const serverHost = import.meta.env.VITE_SERVER_HOST
+const serverHost: string = import.meta.env.VITE_SERVER_HOST as string;
 
 /**
  * Generic function to send an HTTP request with a JSON body
@@ -10,7 +10,7 @@ const serverHost = import.meta.env.VITE_SERVER_HOST
  * @param {string} [method='POST'] - The HTTP method (default 'POST')
  * @returns {Promise<Object|number>} The JSON response or the response status
  */
-const httpRequest = async (url, requestBody, method = 'POST') => {
+const httpRequest = async (url: string, requestBody: Object, method: string = 'POST'): Promise<Object | number> => {
   try {
     const response = await fetch(url, {
       method,
@@ -22,8 +22,13 @@ const httpRequest = async (url, requestBody, method = 'POST') => {
       console.error(`Error: Request to ${url} failed with status ${response.status}`)
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
+    const jsonResponse = await response.json();
 
-    return method === 'POST' ? await response.json() : response.status
+    if (jsonResponse.error) {
+      throw new Error(jsonResponse.message || 'Unknown error');
+    }
+
+    return jsonResponse.data || response.status;
   } catch (error) {
     console.error(`Error making ${method} request to ${url}:`, error)
     throw error
@@ -36,7 +41,7 @@ const httpRequest = async (url, requestBody, method = 'POST') => {
  * @param {string} asset - The concerned asset
  * @returns {Promise<Object>} The JSON response from the API
  */
-const cancelAllOrders = (platform, asset) => {
+const cancelAllOrders = (platform: string, asset: string): Promise<Object> => {
   return httpRequest(`${serverHost}/orders/cancel/all`, { platform, asset })
 }
 
@@ -46,7 +51,7 @@ const cancelAllOrders = (platform, asset) => {
  * @param {string} asset - The concerned asset
  * @returns {Promise<Object>} The JSON response from the API
  */
-const cancelAllSellOrders = (platform, asset) => {
+const cancelAllSellOrders = (platform: string, asset: string): Promise<Object> => {
   return httpRequest(`${serverHost}/orders/cancel/all/sell`, { platform, asset })
 }
 
@@ -57,7 +62,7 @@ const cancelAllSellOrders = (platform, asset) => {
  * @param {number} amount - The amount of the asset to sell
  * @returns {Promise<number>} The response status
  */
-const marketSellOrder = (platform, asset, amount) => {
+const marketSellOrder = (platform: string, asset: string, amount: number): Promise<number> => {
   return httpRequest(`${serverHost}/orders/market-sell-order`, { platform, asset, amount })
 }
 
@@ -69,7 +74,7 @@ const marketSellOrder = (platform, asset, amount) => {
  * @param {number} price - The price of the asset
  * @returns {Promise<number>} The response status
  */
-const bunchLimitSellOrders = (platform, asset, amount, price) => {
+const bunchLimitSellOrders = (platform: string, asset: string, amount: number, price: number): Promise<number> => {
   return httpRequest(`${serverHost}/orders/bunch-limit-sell-orders`, {
     platform,
     asset,
@@ -86,8 +91,7 @@ const bunchLimitSellOrders = (platform, asset, amount, price) => {
  * @param {number} price - The price of the asset
  * @returns {Promise<number>} The response status
  */
-//const bunchLimitBuyOrders = (platform, asset, amount, price) => {
-const bunchLimitBuyOrders = (platform, asset, amount, price) => {
+const bunchLimitBuyOrders = (platform: string, asset: string, amount: number, price: number): Promise<number> => {
   return httpRequest(`${serverHost}/orders/bunch-limit-buy-orders`, {
     platform,
     asset,

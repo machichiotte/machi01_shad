@@ -1,10 +1,10 @@
-// src/jspinner.js
+// src/spinner.ts
 import Swal from 'sweetalert2';
 
 /**
  * @returns {void}
  */
-const loadingSpin = () => {
+const loadingSpin = (): void => {
     Swal.fire({
         title: 'Processing',
         text: 'Please wait...',
@@ -19,7 +19,7 @@ const loadingSpin = () => {
  * @param {boolean} confirmBtn
  * @returns {void}
  */
-const successSpin = (title, text, outsideClick, confirmBtn) => {
+const successSpin = (title: string, text: string, outsideClick: boolean, confirmBtn: boolean): void => {
     Swal.fire({
         title: title,
         text: text,
@@ -36,7 +36,7 @@ const successSpin = (title, text, outsideClick, confirmBtn) => {
  * @param {boolean} confirmBtn
  * @returns {void}
  */
-const successSpinHtml = (title, html, outsideClick, confirmBtn) => {
+const successSpinHtml = (title: string, html: string, outsideClick: boolean, confirmBtn: boolean): void => {
     Swal.fire({
         title: title,
         html: html,
@@ -53,7 +53,7 @@ const successSpinHtml = (title, html, outsideClick, confirmBtn) => {
  * @param {boolean} confirmBtn
  * @returns {void}
  */
-const errorSpin = (title, text, outsideClick, confirmBtn) => {
+const errorSpin = (title: string, text: string, outsideClick: boolean, confirmBtn: boolean): void => {
     Swal.fire({
         title: title,
         text: text,
@@ -70,7 +70,7 @@ const errorSpin = (title, text, outsideClick, confirmBtn) => {
  * @param {boolean} confirmBtn
  * @returns {void}
  */
-const errorSpinHtml = (title, html, outsideClick, confirmBtn) => {
+const errorSpinHtml = (title: string, html: string, outsideClick: boolean, confirmBtn: boolean): void => {
     Swal.fire({
         title: title,
         html: html,

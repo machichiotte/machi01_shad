@@ -3,21 +3,38 @@
   <Button label="Add Sell Orders" icon="pi pi-cart-plus" severity="info" class="mr-2" @click="iAmClicked"></Button>
 </template>
 
-<script setup>
-import { bunchLimitSellOrders, cancelAllSellOrders } from '../../js/orders.js'
-import { loadingSpin, successSpinHtml, errorSpin } from '../../js/spinner.js'
+<script setup lang="ts">
+import { bunchLimitSellOrders, cancelAllSellOrders } from '@js/orders.js'
+import { loadingSpin, successSpinHtml, errorSpin } from '@js/spinner.js'
 
-const props = defineProps({
-  selectedAssets: Array // Change prop type to Array as it should be an array
-})
+// Définir les types pour les props
+interface SelectedAsset {
+  asset: string;
+  platform: string;
+  nbOpenSellOrders: number;
+  amountTp1: number;
+  amountTp2: number;
+  amountTp3: number;
+  amountTp4: number;
+  amountTp5: number;
+  priceTp1: number;
+  priceTp2: number;
+  priceTp3: number;
+  priceTp4: number;
+  priceTp5: number;
+}
+
+const props = defineProps<{
+  selectedAssets: SelectedAsset[]; // Changement du type de prop pour un tableau d'objets SelectedAsset
+}>();
 
 /**
  * @async
  * @function cancelExistingSellOrders
- * @param {Array} selectedRows - Array of selected assets
- * @returns {Promise<Array>} - Array of assets with successful cancellations
+ * @param {SelectedAsset[]} selectedRows - Tableau d'actifs sélectionnés
+ * @returns {Promise<string[]>} - Tableau d'actifs avec des annulations réussies
  */
-const cancelExistingSellOrders = async (selectedRows) => {
+const cancelExistingSellOrders = async (selectedRows: SelectedAsset[]): Promise<string[]> => {
   const cancellationResults = await Promise.all(selectedRows.map(async (row) => {
     try {
       if (row.nbOpenSellOrders > 0) {
@@ -30,17 +47,17 @@ const cancelExistingSellOrders = async (selectedRows) => {
       return null;
     }
   }));
-  return cancellationResults.filter(Boolean);
+  return cancellationResults.filter(Boolean) as string[];
 }
 
 /**
  * @async
  * @function placeSellOrders
- * @param {Array} assetsToPlaceOrders - Array of assets to place orders for
- * @param {Array} selectedRows - Array of selected assets
- * @returns {Promise<Array>} - Array of order placement results
+ * @param {string[]} assetsToPlaceOrders - Tableau d'actifs pour passer des commandes
+ * @param {SelectedAsset[]} selectedRows - Tableau d'actifs sélectionnés
+ * @returns {Promise<string[]>} - Tableau des résultats de placement de commandes
  */
-const placeSellOrders = async (assetsToPlaceOrders, selectedRows) => {
+const placeSellOrders = async (assetsToPlaceOrders: string[], selectedRows: SelectedAsset[]): Promise<string[]> => {
   return await Promise.all(assetsToPlaceOrders.map(async (asset) => {
     const selectedRow = selectedRows.find(row => row.asset === asset);
     const amounts = [selectedRow.amountTp1, selectedRow.amountTp2, selectedRow.amountTp3, selectedRow.amountTp4, selectedRow.amountTp5];
@@ -71,7 +88,7 @@ const placeSellOrders = async (assetsToPlaceOrders, selectedRows) => {
  * @function iAmClicked
  * @returns {Promise<void>}
  */
-const iAmClicked = async () => {
+const iAmClicked = async (): Promise<void> => {
   const selectedRows = props.selectedAssets;
   loadingSpin();
 

@@ -13,23 +13,29 @@
     </div>
 </template>
 
-<script setup>
-import MyBunchSellButton from '../buttons/MyBunchSellButton.vue'
-import MyEmergencySellButton from '../buttons/MyEmergencySellButton.vue'
-import MyBuyButton from '../buttons/MyBuyButton.vue'
-import MyDeleteButton from '../buttons/MyDeleteButton.vue'
+<script setup lang="ts">
+import MyBunchSellButton from '@components/buttons/MyBunchSellButton.vue'
+import MyEmergencySellButton from '@components/buttons/MyEmergencySellButton.vue'
+import MyBuyButton from '@components/buttons/MyBuyButton.vue'
+import MyDeleteButton from '@components/buttons/MyDeleteButton.vue'
 
-// Props to receive from ShadContainer.vue
-const props = defineProps({
-    selectedAssets: Array,
-    filters: Object
-});
+// Définir les types pour les props
+interface Props {
+    selectedAssets: Array<any>; // Remplacez `any` par le type approprié si possible
+    filters: Record<string, any>; // Remplacez `any` par le type approprié si possible
+}
 
-// Expose `confirmDeleteSelected` to be called by parent components
-const emit = defineEmits(['delete-action']);
-// Relay the event to the grandparent component
+// Props à recevoir de ShadContainer.vue
+const props = defineProps<Props>();
+
+// Exposer `confirmDeleteSelected` pour être appelé par les composants parents
+const emit = defineEmits<{
+    (e: 'delete-action'): void;
+}>();
+
+// Relayer l'événement au composant grand-parent
 const onDeleteClicked = () => {
-    emit('delete-action'); // Emit the "delete-action" event
+    emit('delete-action'); // Émettre l'événement "delete-action"
 };
 </script>
 

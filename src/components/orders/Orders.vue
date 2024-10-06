@@ -12,26 +12,34 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { useCalculStore } from '../../store/calculStore'; // Import Pinia store
+import { useCalculStore } from '@store/calculStore'; // Import Pinia store
 import { FilterMatchMode } from 'primevue/api';
-import OrdersTable from "./OrdersTable.vue";
-import SearchBar from "../shad/SearchBar.vue";
+import OrdersTable from "@components/OrdersTable.vue";
+import SearchBar from "@components/shad/SearchBar.vue";
+
+// Define types for orders
+interface Order {
+  id: number;
+  // Ajoutez d'autres propriétés selon votre modèle de données
+}
 
 // Use Pinia store
 const calculStore = useCalculStore();
 
 // Reactive variables
-const filters = ref({
+const filters = ref<{
+  global: { value: string | null; matchMode: FilterMatchMode };
+}>({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 
 // Access orders from Pinia store
-const orders = computed(() => calculStore.getOrders);
+const orders = computed<Order[]>(() => calculStore.getOrders);
 
 // Function to fetch order data using Pinia store
-const getOrdersData = async () => {
+const getOrdersData = async (): Promise<void> => {
   try {
     await calculStore.loadOrders(); // Call Pinia action to fetch data
     console.log("Orders data retrieved:", orders.value.length);
@@ -56,4 +64,3 @@ onMounted(async () => {
   width: auto;
 }
 </style>
-../../store/calculStoreStore

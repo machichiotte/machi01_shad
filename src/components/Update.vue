@@ -1,5 +1,4 @@
 <!-- src/components/Update.vue -->
-<!-- src/components/Update.vue -->
 <template>
   <div>
     <h1 class="title">Data Update</h1>
@@ -12,8 +11,7 @@
     </ul>
     <Button @click="updateAll()" class="update-button">Update platform</Button>
     <div v-for="platform in platforms" :key="platform" class="platform-container">
-      <ToggleButton :id="platform" v-model="selectedPlatforms[platform]" :onLabel="platform"
-        :offLabel="platform" />
+      <ToggleButton :id="platform" v-model="selectedPlatforms[platform]" :onLabel="platform" :offLabel="platform" />
     </div>
     <div class="toggle-container">
       <ToggleButton id="balance" v-model="updateBalance" onLabel="Balance" offLabel="Balance" />
@@ -24,7 +22,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 
 import {
@@ -33,11 +31,6 @@ import {
   errorSpinHtml,
   errorSpin,
 } from "../js/spinner.js";
-import {
-  saveOrdersDataToIndexedDB,
-  saveBalancesDataToIndexedDB,
-  saveCmcToIndexedDB,
-} from "../js/indexedDB";
 
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 const API_ENDPOINTS = {
@@ -69,8 +62,6 @@ async function fetchAndUpdateCoinMarketCapData() {
 
     cryptoData.value = data.data;
 
-    await saveCmcToIndexedDB(response);
-
     successSpinHtml(
       "Update completed",
       `Result: ${totalCount}`,
@@ -89,7 +80,7 @@ async function fetchAndUpdateCoinMarketCapData() {
  * @param {string} platform
  * @returns {Promise<string>}
  */
-async function updatePlatformData(platform) {
+async function updatePlatformData(platform: string): Promise<string> {
   try {
     loadingSpin();
     let result = '';
@@ -106,8 +97,6 @@ async function updatePlatformData(platform) {
       if (balance_data_response.ok) {
         const balance_data = await balance_data_response.json();
 
-        saveBalancesDataToIndexedDB(balance_data.data, platform);
-
         balanceCount = balance_data.data.length;
 
         result += `${balanceCount} assets. `;
@@ -119,7 +108,6 @@ async function updatePlatformData(platform) {
       if (orders_data_response.ok) {
         const orders_data = await orders_data_response.json();
 
-        saveOrdersDataToIndexedDB(orders_data, platform);
         ordersCount = orders_data.length;
 
         result += `${ordersCount} open orders. `;
@@ -156,7 +144,7 @@ async function updateAll() {
 /**
  * @param {string} finalResult
  */
-function showUpdateResult(finalResult) {
+function showUpdateResult(finalResult: string) {
   successSpinHtml(
     "Save completed",
     finalResult,
@@ -169,7 +157,7 @@ function showUpdateResult(finalResult) {
  * @param {string} message
  * @param {Error} error
  */
-function handleError(message, error) {
+function handleError(message: string, error: Error) {
   console.error(message, error);
   errorSpin(
     "Error",

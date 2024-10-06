@@ -4,121 +4,83 @@
         <canvas ref="chart"></canvas>
     </div>
 </template>
-  
-<script>
+
+<script setup lang="ts">
 import { Chart, LinearScale } from 'chart.js/auto';
 Chart.register(LinearScale);
 
-/*export default {
-    name: "ShadOverlayGraph",
-    mounted() {
-        this.renderChart();
-    },
-    methods: {
-        renderChart() {
-            const ctx = this.$refs.chart.getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                    datasets: [
-                        {
-                            label: 'Sales',
-                            data: [120, 150, 180, 170, 200, 250, 210, 250, 150, 140],
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1,
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            type: 'linear',
-                            beginAtZero: true,
-                        },
-                    },
-                },
-            });
+interface Props {
+    trades: Array<{
+        date: string;
+        type: string;
+        amount: string;
+    }>;
+}
+
+const props = defineProps<Props>();
+
+const prices = ref<Array<{ snapped_at: string }>>([]);
+const chartData = ref<null | { labels: string[]; datasets: { label: string; data: number[]; backgroundColor: string; borderColor: string; borderWidth: number }[] }>(null);
+const chartOptions = ref<{ scales: { y: { type: string; beginAtZero: boolean } } }>({
+    scales: {
+        y: {
+            type: 'linear',
+            beginAtZero: true,
         },
     },
-};*/
+});
 
+onMounted(() => {
+    prepareChartData();
+    initChart();
+});
 
-export default {
-    props: {
-        trades: {
-            type: Array,
-            required: true
-        }
-    },
-    data() {
-        return {
-            prices: [],
-            chartData: null,
-            chartOptions: {
-                // Chart configuration options
+function prepareChartData() {
+    prices.value = props.trades.map(trade => ({
+        snapped_at: trade.date,
+    }));
+    chartData.value = {
+        labels: prices.value.map(price => price.snapped_at),
+        datasets: [
+            {
+                label: 'Wallet',
+                data: prices.value.map(price => calculateTotalQuantity(new Date(price.snapped_at))),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+            },
+        ],
+    };
+}
+
+function calculateTotalQuantity(date: Date): number {
+    let totalQuantity = 0;
+
+    props.trades.forEach(trade => {
+        const tradeDate = new Date(trade.date);
+
+        if (tradeDate.getTime() === date.getTime()) {
+            if (trade.type === 'buy') {
+                totalQuantity += parseFloat(trade.amount);
+            } else if (trade.type === 'sell') {
+                totalQuantity -= parseFloat(trade.amount);
             }
-        };
-    },
-    mounted() {
-        // Retrieve trade and price data from your data sources
-
-        // Prepare data for the chart
-        this.prepareChartData();
-
-        // Initialize the chart
-        this.initChart();
-    },
-    methods: {
-        prepareChartData() {
-            // Prepare data for the chart
-            this.chartData = {
-                labels: this.prices.map(price => price.snapped_at),
-                datasets: [
-                    {
-                        label: 'Wallet',
-                        data: this.prices.map(price => this.calculateTotalQuantity(new Date(price.snapped_at))),
-                        borderColor: 'blue',
-                        fill: false
-                    }
-                ]
-            };
-        },
-        calculateTotalQuantity(date) {
-            let totalQuantity = 0;
-
-            // Loop through trades and perform appropriate calculations
-            this.trades.forEach(trade => {
-                const tradeDate = new Date(trade.date);
-
-                // Check if the trade date matches the specified date
-                if (tradeDate.getTime() === date.getTime()) {
-                    // Calculate quantity based on trade type (buy or sell)
-                    if (trade.type === 'buy') {
-                        totalQuantity += parseFloat(trade.amount);
-                    } else if (trade.type === 'sell') {
-                        totalQuantity -= parseFloat(trade.amount);
-                    }
-                }
-            });
-
-            return totalQuantity;
-        },
-        initChart() {
-            const ctx = this.$refs.chart.getContext('2d');
-            this.chart = new Chart(ctx, {
-                type: 'line',
-                data: this.chartData,
-                options: this.chartOptions
-            });
         }
-    }
-};
+    });
 
+    return totalQuantity;
+}
+
+function initChart() {
+    const ctx = ref.value.$refs.chart.getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: chartData.value,
+        options: chartOptions.value,
+    });
+}
 </script>
-  
+
 <style scoped>
 canvas {
     max-width: 600px;

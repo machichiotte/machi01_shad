@@ -1,23 +1,22 @@
-// main.js
+// main.ts
 import { app, BrowserWindow } from 'electron';
 
-let mainWindow;
+let mainWindow: BrowserWindow | null = null;
 
-function createWindow () {
+function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     webPreferences: {
       contextIsolation: true,
-      enableRemoteModule: false,
       nodeIntegration: false,
     }
   });
 
-  // Charge l'application Vue.js
+  // Load the Vue.js application
   mainWindow.loadFile(`dist/index.html`);
-  
-  mainWindow.on('closed', function () {
+
+  mainWindow.on('closed', () => {
     mainWindow = null;
   });
 }

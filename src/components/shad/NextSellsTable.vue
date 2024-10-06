@@ -17,14 +17,17 @@
     </tbody>
   </table>
 </template>
-  
-<script setup>
-const props = defineProps({
-  data: {
-    type: Array,
-    required: true
-  }
-})
+
+<script setup lang="ts">
+interface NextSell {
+  amount: number;
+  price: number;
+  total: number;
+}
+
+const props = defineProps<{
+  data: NextSell[];
+}>()
 
 export { props }
 </script>

@@ -1,10 +1,10 @@
-// src/store/authStore.js
+// src/store/authStore.ts
 import { defineStore } from 'pinia'
 import SignupValidations from '../services/SignupValidations'
 
 const serverHost = import.meta.env.VITE_SERVER_HOST
 const AUTH = 'auth'
-let timer = ''
+let timer: string = ''
 
 /**
  * @typedef {Object} AuthState
@@ -86,7 +86,7 @@ export const useAuthStore = defineStore('auth', {
      * @param {Object} payload
      * @returns {Promise<void>}
      */
-    async login(payload) {
+    async login(payload: { email: string; password: string }) {
       return this.auth({ ...payload, url: `${serverHost}/${AUTH}/login` })
     },
 
@@ -94,7 +94,7 @@ export const useAuthStore = defineStore('auth', {
      * @param {Object} payload
      * @returns {Promise<Object>}
      */
-    async signup(payload) {
+    async signup(payload: { email: string; password: string }) {
       try {
         const url = `${serverHost}/${AUTH}/register`
         const response = await fetch(url, {
@@ -140,7 +140,7 @@ export const useAuthStore = defineStore('auth', {
      * @param {Object} payload
      * @returns {Promise<void>}
      */
-    async auth(payload) {
+    async auth(payload: { email: string; password: string; url: string }) {
       const postData = {
         email: payload.email,
         password: payload.password,
@@ -172,9 +172,9 @@ export const useAuthStore = defineStore('auth', {
           localStorage.setItem('userData', JSON.stringify(tokenData))
           this.setUserTokenData(tokenData)
         }
-      } catch (err) {
+      } catch (error) {
         const errorMessage = SignupValidations.getErrorMessageFromCode(
-          err.response.data.error.errors[0].message
+          error.response.data.error.errors[0].message
         )
         throw errorMessage
       }
@@ -183,7 +183,7 @@ export const useAuthStore = defineStore('auth', {
     /**
      * @param {Object} payload
      */
-    setUserTokenData(payload) {
+    setUserTokenData(payload: { email: string; token: string; expiresIn: number; userId: string }) {
       this.email = payload.email
       this.token = payload.token
       this.expiresIn = payload.expiresIn
@@ -200,10 +200,10 @@ export const useAuthStore = defineStore('auth', {
     /**
      */
     clearUserData() {
-      this.email = null
-      this.token = null
-      this.expiresIn = null
-      this.userId = null
+      this.email = ''
+      this.token = ''
+      this.expiresIn = 0
+      this.userId = ''
     }
   }
 })

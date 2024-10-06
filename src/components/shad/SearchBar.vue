@@ -14,17 +14,20 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 /**
  * @component SearchBar
  * @props {Object} filters
  */
-const props = defineProps({
-    filters: {
-        type: Object,
-        required: true
-    }
-})
+interface Filters {
+    global: {
+        value: string;
+    };
+}
+
+const props = defineProps<{
+    filters: Filters;
+}>();
 </script>
 
 <style scoped>

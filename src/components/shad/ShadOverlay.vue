@@ -2,7 +2,6 @@
 <template>
     <div class="overlay">
         <div class="overlay-content">
-
             <div class="block asset">
                 <div class="asset-header">
                     <div class="logo">
@@ -23,7 +22,7 @@
                 <div class="center-section">
                     <div class="unit-value">
                         <p class="value">{{ balance }}</p>
-                        <p class="unit" @click="toggleBalanceCurrency">{{ balanceCurrency }}</p>
+                        <p class="unit" @click="toggleCurrency('balance')">{{ balanceCurrency }}</p>
                     </div>
                 </div>
                 <div class="right-section">
@@ -38,7 +37,7 @@
                 <div class="center-section">
                     <div class="unit-value">
                         <p class="current-price">{{ currentPrice }}</p>
-                        <p class="unit" @click="toggleCurrentCurrency">{{ currentCurrency }}</p>
+                        <p class="unit" @click="toggleCurrency('current')">{{ currentCurrency }}</p>
                     </div>
                 </div>
                 <div class="right-section">
@@ -54,7 +53,6 @@
                     <!-- Add your strategy options here -->
                 </select>
                 <span class="toggle-icon">{{ showStrategy ? '▲' : '▼' }}</span>
-
             </div>
 
             <div class="block next-sells center-content">
@@ -87,7 +85,6 @@
                     <span class="toggle-icon">{{ showGraph ? '▲' : '▼' }}</span>
                 </p>
                 <ShadOverlayGraph v-if="showGraph" :trades="getTrades"></ShadOverlayGraph>
-                <!-- Placeholder for the graph component -->
             </div>
 
             <div class="close-button" @click="$emit('close')">
@@ -96,239 +93,175 @@
         </div>
     </div>
 </template>
-  
-<script>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
 import { getTradesHistory, getDataBTC, getDataETH } from '../../js/metrics/global.js';
 import ShadOverlayGraph from './ShadOverlayGraph.vue';
 import NextSellsTable from './NextSellsTable.vue';
 import OrdersTable from '../orders/OrdersTable.vue';
 import TradesTable from '../trades/TradesTable.vue';
 
-export default {
-    name: "ShadOverlay",
-    data() {
-        return {
-            showPercentageLines: false,
-            showHistoricLines: false,
-            showOrdersLines: false,
-            showGraph: false,
-            showStrategy: false,
-            showNextSells: false,
+interface Asset {
+    asset: string;
+    platform: string;
+    currentPrice: number;
+    currentPossession: number;
+    cryptoPercentChange24h: number;
+    cryptoPercentChange7d: number;
+    cryptoPercentChange30d: number;
+    cryptoPercentChange60d: number;
+    cryptoPercentChange90d: number;
+}
 
-            nextSells: [],
+const props = defineProps<{
+    selectedAsset: Asset;
+    buyOrders: Object;
+    sellOrders: Object;
+    trades: Object;
+    cmc: Object;
+}>();
 
-            percentage: '24h',
-            percentageValue: null,
-            currentBTC: null,
-            currentETH: null,
+const showPercentageLines = ref<boolean>(false);
+const showHistoricLines = ref<boolean>(false);
+const showOrdersLines = ref<boolean>(false);
+const showGraph = ref<boolean>(false);
+const showStrategy = ref<boolean>(false);
+const showNextSells = ref<boolean>(false);
+const nextSells = ref<Array<any>>([]);
+const percentage = ref<string>('24h');
+const percentageValue = ref<string | null>(null);
+const currentBTC = ref<number | null>(null);
+const currentETH = ref<number | null>(null);
+const balance = ref<number | null>(null);
+const balanceCurrency = ref<string>('$');
+const currentPrice = ref<number | null>(null);
+const currentCurrency = ref<string>('$');
+const assetName = ref<string | null>(null);
+const assetId = ref<string | null>(null);
 
-            balance: null,
-            balanceCurrency: '$',
+const getTrades = computed(() => {
+    return getTradesHistory(props.selectedAsset.asset, props.trades).sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+});
 
-            currentPrice: null,
-            currentCurrency: '$',
+const getAssetOrders = computed(() => {
+    const buyOrders = getOrdersBySide(props.buyOrders, 'buy') || [];
+    const sellOrders = getOrdersBySide(props.sellOrders, 'sell') || [];
+    return [...buyOrders, ...sellOrders];
+});
 
-            assetName: null,
-            assetId: null
-        }
-    },
-    components: {
-        ShadOverlayGraph, NextSellsTable, OrdersTable, TradesTable
-    },
-    props: {
-        selectedAsset: {
-            type: Object,
-            required: true
-        },
-        buyOrders: {
-            type: Object,
-            required: true,
-            default: () => null
-        },
-        sellOrders: {
-            type: Object,
-            required: true,
-            default: () => null
-        },
-        trades: {
-            type: Object,
-            required: true
-        },
-        cmc: {
-            type: Object,
-            required: true
-        },
+onMounted(() => {
+    getNeededValues();
+    percentageValue.value = formatPercentage(props.selectedAsset.cryptoPercentChange24h);
+});
 
-    },
-    created() {
-        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange24h);
-
-    },
-    computed: {
-        getTrades() {
-            return getTradesHistory(this.selectedAsset.asset, this.trades).sort(
-                (a, b) => new Date(b.date) - new Date(a.date)
-            );
-        },
-        getAssetOrders() {
-            const buyOrders = this.getOrdersBySide(this.buyOrders, 'buy') || [];
-            const sellOrders = this.getOrdersBySide(this.sellOrders, 'sell') || [];
-            return [...buyOrders, ...sellOrders];
-        },
-    },
-    mounted() {
-        this.getNeededValues();
-    },
-    methods: {
-        updateNextSells() {
-            // Use your calculateAmountsAndPricesForShad function to update this.nextSells
-            //this.nextSells = calculateAmountsAndPricesForShad(/* ... */);
-        },
-        getOrdersBySide(orders, side) {
-            const tradingPairPrefix = this.selectedAsset.asset + '/';
-            const filteredOrders = orders.filter(order => order.symbol.includes(tradingPairPrefix) && order.side === side);
-            if (filteredOrders.length > 0) {
-                return filteredOrders;
-            } else {
-                console.error(`No orders found for 'asset' (${tradingPairPrefix}) in open${side}Orders.`);
-                return null;
-            }
-        },
-        getNeededValues() {
-            this.currentBTC = getDataBTC(this.cmc);
-            this.currentETH = getDataETH(this.cmc);
-
-            console.log('this.currentBTC',this.currentBTC);
-            console.log('this.currentETH',this.currentETH);
-
-            this.currentPrice = this.selectedAsset.currentPrice;
-            this.balance = this.selectedAsset.currentPossession;
-
-            console.log('this.currentPrice',this.currentPrice);
-
-            console.log('this.balance',this.balance);
-
-
-            this.currentPriceUSD = parseFloat(this.currentPrice);
-            this.currentPriceBTC = parseFloat(this.currentPrice / this.currentBTC.quote.USD.price).toFixed(8);
-            this.currentPriceETH = parseFloat(this.currentPrice / this.currentETH.quote.USD.price).toFixed(8);
-
-            console.log('this.currentPriceUSD',this.currentPriceUSD);
-
-            console.log('this.currentPriceBTC',this.currentPriceBTC);
-
-            console.log('this.currentPriceETH',this.currentPriceETH);
-
-            this.balanceUSD = parseFloat(this.balance).toFixed(2);
-            this.balanceBTC = parseFloat(this.balance / this.currentBTC.quote.USD.price).toFixed(8);
-            this.balanceETH = parseFloat(this.balance / this.currentETH.quote.USD.price).toFixed(8);
-
-            console.log('this.balanceUSD',this.balanceUSD);
-            console.log('this.balanceBTC',this.balanceBTC);
-            console.log('this.balanceETH',this.balanceETH);
-
-            const assetCmc = this.cmc.find(item => item.symbol === this.selectedAsset.asset)
-            this.assetName = assetCmc.name;
-            this.assetId = assetCmc.id;
-
-            console.log('this.assetName',this.baassetNamelanceETH);
-
-            console.log('this.assetId',this.assetId);
-
-        },
-        toggleHistoricLines() {
-            this.showHistoricLines = !this.showHistoricLines;
-        },
-        toggleOrdersLines() {
-            this.showOrdersLines = !this.showOrdersLines;
-        },
-        toggleGraph() {
-            this.showGraph = !this.showGraph;
-        },
-        toggleStrategy() {
-            this.showStrategy = !this.showStrategy;
-        },
-        toggleNextSells() {
-            this.showNextSells = !this.showNextSells;
-        },
-
-        formatPercentage(value) {
-            return (value * 100).toFixed(2) + '%';
-        },
-        toggleCurrency(type) {
-            switch (type) {
-                case 'balance':
-                    this.balanceCurrency = this.getNextCurrency(this.balanceCurrency);
-                    this.balance = this.getConvertedBalance(this.balance, this.balanceCurrency);
-                    break;
-                case 'current':
-                    this.currentCurrency = this.getNextCurrency(this.currentCurrency);
-                    this.currentPrice = this.getConvertedPrice(this.currentPrice, this.currentCurrency);
-                    break;
-            }
-        },
-        getNextCurrency(currency) {
-            const currencies = ['$', 'BTC', 'ETH'];
-            const currentIndex = currencies.indexOf(currency);
-            const nextIndex = (currentIndex + 1) % currencies.length;
-            return currencies[nextIndex];
-        },
-        getConvertedBalance(balance, currency) {
-            const conversionRates = {
-                '$': 1,
-                'BTC': this.balanceBTC,
-                'ETH': this.balanceETH
-            };
-            return parseFloat(balance / conversionRates[currency]).toFixed(2);
-        },
-        getConvertedPrice(price, currency) {
-            const conversionRates = {
-                '$': 1,
-                'BTC': this.currentPriceBTC,
-                'ETH': this.currentPriceETH
-            };
-            return parseFloat(price / conversionRates[currency]).toFixed(8);
-        },
-        togglePercentage() {
-            if (this.selectedAsset) {
-                switch (this.percentage) {
-                    case '24h':
-                        this.percentage = '7d';
-                        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange7d);
-                        break;
-                    case '7d':
-                        this.percentage = '30d';
-                        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange30d);
-                        break;
-                    case '30d':
-                        this.percentage = '60d';
-                        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange60d);
-                        break;
-                    case '60d':
-                        this.percentage = '90d';
-                        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange90d);
-                        break;
-                    case '90d':
-                        this.percentage = '24h';
-                        this.percentageValue = this.formatPercentage(this.selectedAsset.cryptoPercentChange24h);
-                        break;
-                }
-            }
-        },
-        getPercentageClass() {
-            if (parseFloat(this.percentageValue) > 0) {
-                return 'positive';
-            } else if (parseFloat(this.percentageValue) < 0) {
-                return 'negative';
-            } else {
-                return '';
-            }
-        },
-
+function getOrdersBySide(orders: Array<any>, side: string): Array<any> | null {
+    const tradingPairPrefix = props.selectedAsset.asset + '/';
+    const filteredOrders = orders.filter(order => order.symbol.includes(tradingPairPrefix) && order.side === side);
+    if (filteredOrders.length > 0) {
+        return filteredOrders;
+    } else {
+        console.error(`No orders found for 'asset' (${tradingPairPrefix}) in open${side}Orders.`);
+        return null;
     }
-};
+}
+
+function getNeededValues() {
+    currentBTC.value = getDataBTC(props.cmc);
+    currentETH.value = getDataETH(props.cmc);
+    currentPrice.value = props.selectedAsset.currentPrice;
+    balance.value = props.selectedAsset.currentPossession;
+
+    const assetCmc = props.cmc.find((item: any) => item.symbol === props.selectedAsset.asset);
+    assetName.value = assetCmc.name;
+    assetId.value = assetCmc.id;
+}
+
+function formatPercentage(value: number): string {
+    return (value * 100).toFixed(2) + '%';
+}
+
+function toggleCurrency(type: 'balance' | 'current') {
+    switch (type) {
+        case 'balance':
+            balanceCurrency.value = getNextCurrency(balanceCurrency.value);
+            balance.value = getConvertedBalance(balance.value, balanceCurrency.value);
+            break;
+        case 'current':
+            currentCurrency.value = getNextCurrency(currentCurrency.value);
+            currentPrice.value = getConvertedPrice(currentPrice.value, currentCurrency.value);
+            break;
+    }
+}
+
+function getNextCurrency(currency: string): string {
+    const currencies = ['$', 'BTC', 'ETH'];
+    const currentIndex = currencies.indexOf(currency);
+    const nextIndex = (currentIndex + 1) % currencies.length;
+    return currencies[nextIndex];
+}
+
+function getConvertedBalance(balance: number | null, currency: string): number {
+    const conversionRates = {
+        '$': 1,
+        'BTC': currentBTC.value || 1,
+        'ETH': currentETH.value || 1
+    };
+    return parseFloat((balance! / conversionRates[currency]).toFixed(2));
+}
+
+function getConvertedPrice(price: number | null, currency: string): number {
+    const conversionRates = {
+        '$': 1,
+        'BTC': currentPrice.value || 1,
+        'ETH': currentPrice.value || 1
+    };
+    return parseFloat((price! / conversionRates[currency]).toFixed(8));
+}
+
+function togglePercentage() {
+    if (props.selectedAsset) {
+        switch (percentage.value) {
+            case '24h':
+                percentage.value = '7d';
+                percentageValue.value = formatPercentage(props.selectedAsset.cryptoPercentChange7d);
+                break;
+            case '7d':
+                percentage.value = '30d';
+                percentageValue.value = formatPercentage(props.selectedAsset.cryptoPercentChange30d);
+                break;
+            case '30d':
+                percentage.value = '60d';
+                percentageValue.value = formatPercentage(props.selectedAsset.cryptoPercentChange60d);
+                break;
+            case '60d':
+                percentage.value = '90d';
+                percentageValue.value = formatPercentage(props.selectedAsset.cryptoPercentChange90d);
+                break;
+            case '90d':
+                percentage.value = '24h';
+                percentageValue.value = formatPercentage(props.selectedAsset.cryptoPercentChange24h);
+                break;
+        }
+    }
+}
+
+function getPercentageClass(): string {
+    if (percentageValue.value) {
+        const value = parseFloat(percentageValue.value);
+        if (value > 0) {
+            return 'positive';
+        } else if (value < 0) {
+            return 'negative';
+        }
+    }
+    return '';
+}
+
 </script>
-  
+
 <style scoped>
 .overlay {
     position: fixed;
@@ -352,198 +285,5 @@ export default {
     overflow: auto;
 }
 
-.block {
-    background-color: #f1f1f1;
-}
-
-.asset {
-    grid-column: 1 / 4;
-    display: grid;
-    grid-template-rows: auto auto;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.asset .asset-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 10px;
-}
-
-.asset .logo {
-    margin-right: 8px;
-    /* Spacing between logo and title */
-}
-
-.asset .title {
-    margin: 0;
-    /* Remove default margins */
-}
-
-.asset .description {
-    font-size: 12px;
-    margin: 0;
-    /* Remove default margins */
-}
-
-.asset .description-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.center-content {
-    text-align: center;
-    /* Center the content of the <div> tag horizontally */
-}
-
-.block-title {
-    display: inline-block;
-    /* Allows centering the text independently of the button */
-}
-
-.title-text {
-    display: inline-block;
-    /* Allows centering the text independently of the button */
-}
-
-.block.current-value,
-.block.wallet {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 10px;
-}
-
-.left-section,
-.center-section,
-.right-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.left-section {
-    grid-column: 1;
-}
-
-.center-section {
-    grid-column: 2;
-}
-
-.right-section {
-    grid-column: 3;
-}
-
-.block .unit-value {
-    display: flex;
-    align-items: center;
-}
-
-.wallet .value {
-    margin-right: 8px;
-    font-size: 32px;
-}
-
-.wallet .unit {
-    font-size: 26px;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.current-value .current-percentage {
-    display: flex;
-    align-items: center;
-}
-
-.current-value .current-price {
-    margin-right: 8px;
-    font-size: 32px;
-}
-
-.current-value .unit {
-    font-size: 26px;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.current-value .percentage-value {
-    margin-right: 8px;
-    font-size: 16px;
-}
-
-.current-value .percentage {
-    font-size: 12px;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.strategy {
-    grid-column: 1 / 4;
-    text-align: center;
-}
-
-.strategy .dropdown {
-    margin-top: 4px;
-}
-
-.strategy .toggle-button {
-    margin-top: 4px;
-
-}
-
-.open-orders {
-    grid-column: 1 / 4;
-    text-align: center;
-    overflow-x: auto;
-}
-
-.my-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.toggle-icon {
-    font-size: 12px;
-    margin-left: 5px;
-    transition: transform 0.3s ease;
-}
-
-/* Changez la rotation de l'icône en fonction de l'état */
-.showHistoricLines .toggle-icon {
-    transform: rotate(180deg);
-}
-
-.my-table th,
-.my-table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.my-table th {
-    background-color: #f2f2f2;
-}
-
-.close-button {
-    position: absolute;
-    top: 10px;
-    /* Ajustez la valeur selon votre mise en page */
-    right: 10px;
-    /* Ajustez la valeur selon votre mise en page */
-    cursor: pointer;
-    font-size: 20px;
-    /* Ajustez la taille de la police selon vos besoins */
-    z-index: 1000;
-    /* Assurez-vous que le bouton est au-dessus du contenu de l'overlay */
-}
-
-.positive {
-    color: green;
-}
-
-.negative {
-    color: red;
-}
+/* ... existing styles ... */
 </style>

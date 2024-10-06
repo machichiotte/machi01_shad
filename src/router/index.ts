@@ -1,18 +1,18 @@
-// src/router/index.js
+// src/router/index.ts
 
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@comp/Home.vue'
-import Shad from '@comp/shad/Shad.vue'
-import Orders from '@comp/orders/Orders.vue'
-import Cmc from '@comp/Cmc.vue'
-import Update from '@comp/Update.vue'
-import Strategy from '@comp/Strategy.vue'
-import Trades from '@comp/trades/Trades.vue'
-import Converter from '@comp/Converter.vue'
-import Login from '@comp/Login.vue'
-import Signup from '@comp/Signup.vue'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import Home from '@components/Home.vue'
+import Shad from '@components/shad/Shad.vue'
+import Orders from '@components/orders/Orders.vue'
+import Cmc from '@components/Cmc.vue'
+import Update from '@components/Update.vue'
+import Strategy from '@components/Strategy.vue'
+import Trades from '@components/trades/Trades.vue'
+import Converter from '@components/Converter.vue'
+import Login from '@components/Login.vue'
+import Signup from '@components/Signup.vue'
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   { path: '/', name: 'home', component: Home },
   { path: '/update', name: 'update', component: Update },
   { path: '/orders', name: 'orders', component: Orders },

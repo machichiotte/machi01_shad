@@ -10,13 +10,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import PieChart from "@/components/PieChart.vue";
-import { fetchShad } from '../js/fetchFromServer.js';
+import { fetchShad } from '../js/fetchFromServer';
 
-/**
- * @component
- */
 export default {
   name: "HomePage",
   data() {
@@ -79,5 +76,4 @@ export default {
   width: 300px;
   height: 300px;
 }
-
 </style>

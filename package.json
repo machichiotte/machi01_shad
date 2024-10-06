@@ -5,13 +5,13 @@
   "type": "module",
   "description": "Hello World!",
   "author": "machichiotte",
-  "main": "main.js",
+  "main": "main.ts",
   "scripts": {
     "dev": "vite",
     "build": "rimraf dist && vite build && electron .",
     "preview": "vite preview",
     "test:unit": "vitest",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "lint": "eslint . --ext .vue,.js,.jsx,.ts,.tsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "clean": "rimraf dist"
   },

@@ -1,5 +1,4 @@
-// src/js/shad/constants.js
-
+// src/js/shad/constants.ts
 export const BINANCE_PLATFORM_ID = 'binance';
 export const BINANCE_THRESHOLD = 3; // 300%
 

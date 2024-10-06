@@ -6,7 +6,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import Chart from "chart.js/auto";
 
 /**

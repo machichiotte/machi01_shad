@@ -14,7 +14,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 /**
  * @component TradesSearch
  * @props {Object} filters - Required
