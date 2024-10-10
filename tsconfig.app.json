@@ -1,0 +1,40 @@
+// tsconfig.app.json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "preserve",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Ajout des chemins d'accès */
+    "baseUrl": ".",
+    "paths": {
+      "@js/*": ["src/js/*"],
+      "@router/*": ["src/router/*"],
+      "@store/*": ["src/store/*"],
+      "@typ/*": ["src/types/*"],
+      "@comp/*": ["src/components/*"],
+      "@machi/*": ["src/components/machi/*"],
+      "@btn/*": ["src/components/button/*"],
+      "@order/*": ["src/components/order/*"],
+      "@form/*": ["src/components/form/*"],
+      "@trade/*": ["src/components/trade/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+}

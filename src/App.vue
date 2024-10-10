@@ -1,4 +1,24 @@
 <!-- src/App.vue -->
+<script setup lang="ts">
+import { ref } from 'vue'
+import { RouterLink, RouterView } from 'vue-router'
+
+const isMenuOpen = ref<boolean>(false)
+const isDarkMode = ref<boolean>(false)
+const dark = '#2c3e50'
+const light = '#ffffff'
+
+function toggleMenu(): void {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+function toggleDarkMode(): void {
+  isDarkMode.value = !isDarkMode.value
+  //TODO changer les choses
+  //document.body.classList.toggle('dark-mode', isDarkMode.value)
+}
+</script>
+
 <template>
   <div id="app" :class="{ 'dark-mode': isDarkMode }">
     <!-- Logo and Dark Mode Toggle in Flex Container -->
@@ -17,34 +37,15 @@
         <RouterLink to="/update" active-class="selected-link">Update</RouterLink>
         <RouterLink to="/orders" active-class="selected-link">Open Orders</RouterLink>
         <RouterLink to="/cmc" active-class="selected-link">Show Data</RouterLink>
-        <RouterLink to="/shad" active-class="selected-link">SHAD</RouterLink>
+        <RouterLink to="/machi" active-class="selected-link">Machi</RouterLink>
         <RouterLink to="/strategy" active-class="selected-link">Strategy</RouterLink>
         <RouterLink to="/trades" active-class="selected-link">Trades</RouterLink>
-        <RouterLink to="/converter" active-class="selected-link">Converter</RouterLink>
       </nav>
     </header>
     <RouterView />
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
-
-const isMenuOpen = ref<boolean>(false)
-const isDarkMode = ref<boolean>(false)
-const dark = '#2c3e50'
-const light = '#ffffff'
-
-function toggleMenu(): void {
-  isMenuOpen.value = !isMenuOpen.value
-}
-
-function toggleDarkMode(): void {
-  isDarkMode.value = !isDarkMode.value
-  document.body.classList.toggle('dark-mode', isDarkMode.value)
-}
-</script>
 <style scoped>
 body {
   background-color: var(--light-bg);

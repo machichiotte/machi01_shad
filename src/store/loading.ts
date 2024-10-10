@@ -1,10 +1,11 @@
+// src/store/loading.ts
 import { defineStore } from 'pinia';
 
 interface LoadingState {
   showLoading: boolean;
 }
-
-interface LoadingActions {
+//todo export pas utile mais sinon error
+export interface LoadingActions {
   setLoading(payload: boolean): void;
 }
 

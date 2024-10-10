@@ -17,7 +17,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useCalculStore } from '../store/calculStore';
 import { cmcColumns } from '../js/columns.ts'
 import { FilterMatchMode } from 'primevue/api'
-import SearchBar from "./shad/SearchBar.vue";
+import SearchBar from "./machi/SearchBar.vue";
 
 const itemsPerPage = ref(13)
 const cols = ref(cmcColumns)

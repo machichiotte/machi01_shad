@@ -1,4 +1,3 @@
-<!-- src/components/Strategy.vue -->
 <template>
   <div>
     <div class="button-container">
@@ -53,14 +52,14 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted, computed } from 'vue';
-import { successSpin, errorSpin } from '../js/spinner.js';
-import { strategies } from '../js/strategies.js';
-import { useCalculStore } from '../store/calculStore.js';
+import { successSpin, errorSpin } from '../js/utils/spinner';
+import { strategies } from '../js/strat/index';
+import { useCalculStore } from '../store/calculStore';
 import { FilterMatchMode } from 'primevue/api'
-import SearchBar from "./shad/SearchBar.vue";
-import { getSelectedStrategy, setSelectedStrategy, isDisabled, getSelectedMaxExposure, setSelectedMaxExposure } from '../js/utils/strategyUtils.js';
+import SearchBar from "./machi/SearchBar.vue";
+import { getSelectedStrategy, setSelectedStrategy, isDisabled, getSelectedMaxExposure, setSelectedMaxExposure } from '../js/utils/strategyUtils';
 
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 
@@ -96,129 +95,62 @@ const tableData = computed(() => {
       row[platform] = {
         strategy: getSelectedStrategy(strat, asset, platform),
         maxExposure: getSelectedMaxExposure(strat, asset, platform),
-        disabled: isDisabled(balance, asset, platform)
+        disabled: isDisabled(strat, asset, platform)
       };
     });
     return row;
   });
 });
 
-/**
- * @returns {Promise<void>}
- */
-const updateStrat = async () => {
-  const stratMap = tableData.value.map(row => {
-    const strategies = {};
-    const maxExposure = {};
-
-    platforms.value.forEach(platform => {
-      if (!row[platform].disabled) {
-        strategies[platform] = row[platform].strategy;
-        maxExposure[platform] = row[platform].maxExposure;
-      }
-    });
-
-    return {
-      asset: row.asset,
-      strategies: strategies,
-      maxExposure: maxExposure
-    };
-  });
-
+async function updateAllStrats() {
+  successSpin('Saving strategies...');
   try {
-    const response = await fetch(`${serverHost}/strategy/update`, {
+    await fetch(`${serverHost}/api/updateStrategies`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(stratMap)
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ strategies: strat.value }),
     });
-
-    await response.json();
-
-    successSpin('Save completed', `Strat: ${stratMap.length}`, true, true);
-  } catch (err) {
-    console.error(err);
-    errorSpin('Error', `${err}`, false, true);
-  }
-};
-
-/**
- * @returns {void}
- */
-const updateAllStrats = () => {
-  const selectedStrategyValue = selectedStrategy.value;
-
-  strat.value.forEach((item) => {
-    const asset = item.asset;
-    const strategies = item.strategies || {};
-
-    platforms.value.forEach((platform) => {
-      if (!isDisabled(balance, asset, platform)) {
-        strategies[platform] = selectedStrategyValue;
-      }
-    });
-
-    item.strategies = strategies;
-  });
-};
-
-/**
- * @returns {void}
- */
-const updateAllMaxExposure = () => {
-  const selectedMaxExposureValue = selectedMaxExposure.value;
-
-  strat.value.forEach((item) => {
-    const asset = item.asset;
-    const maxExposure = item.maxExposure || {};
-
-    platforms.value.forEach((platform) => {
-      if (!isDisabled(balance, asset, platform)) {
-        maxExposure[platform] = selectedMaxExposureValue;
-      }
-    });
-
-    item.maxExposure = maxExposure;
-  });
-};
-
-onMounted(async () => {
-  try {
-    await calculStore.loadBalances();
-    await calculStore.loadStrats();
-    console.log("Strats data retrieved:", strat.value);
-    console.log("Balances data retrieved:", balance.value);
+    successSpin('Strategies saved successfully!');
   } catch (error) {
-    console.error("An error occurred while retrieving data:", error);
+    errorSpin('Error saving strategies: ', error.message);
   }
-});
+}
+
+async function updateAllMaxExposure() {
+  successSpin('Updating max exposure...');
+  try {
+    await fetch(`${serverHost}/api/updateMaxExposure`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ maxExposure: strat.value }),
+    });
+    successSpin('Max exposure updated successfully!');
+  } catch (error) {
+    errorSpin('Error updating max exposure: ', error.message);
+  }
+}
 </script>
 
 <style scoped>
 .button-container {
-  display: flex;
-  justify-content: flex-end;
+  margin: 20px 0;
 }
 
 .text-align-left {
-  text-align: left;
+  display: flex;
+  justify-content: space-between;
+}
+
+.select-container {
+  display: flex;
+  justify-content: space-between;
 }
 
 .centered-column {
   text-align: center;
 }
-
-.select-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.select-container select {
-  margin-right: 5px;
-}
-
-.select-container select:last-child {
-  margin-left: 5px;
-}
 </style>
-../store/calculStoreStore.js

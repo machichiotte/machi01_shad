@@ -1,6 +1,6 @@
-## Machi GPT Shad - Frontend
+## Machi00 - Client
 
-This project is the frontend part of the Machi GPT Shad application. It is a web application that allows users to view and manage trading orders and market data.
+This project is the frontend part of the Machi00 client application. It is a web application that allows users to view and manage trading orders and market data.
 
 ### Key Features
 
@@ -15,16 +15,9 @@ This project is the frontend part of the Machi GPT Shad application. It is a web
 - **Vue Router**: Managing application routes
 - **Bootstrap**: CSS framework for layout and design
 - **Bootstrap Vue**: Integrating Bootstrap with Vue.js
-- **Chart.js**: Creating charts for visualizing market data
-- **Pagination**: Layout for data table pagination
 - **Path**: Manipulating file and directory paths
 - **Portal Vue**: Managing rendering to another location in the DOM
-- **Vue Chartjs**: Integrating Chart.js with Vue.js for charts
-- **Vue Good Table**: Displaying and sorting tabular data in tables
-- **Vue Good Table Next**: Enhanced version of Vue Good Table
 - **Vue Router**: Managing routes for navigation
-- **Vue Sweetalert2**: Library for elegant alert messages in the application
-- **Vuejs Paginate**: Managing pagination in application pages
 - **Popper.js Core**: Library for popups (tooltips and popovers)
 
 ### Project Setup
@@ -92,14 +85,13 @@ machi-shad
 │  │  ├── logo_machi.svg
 │  │  ├── logo.png
 │  │  ├── logo.svg
-│  │  └── main.css
+│  │  └── style.css
 │  ├── components
 │  │  ├── buttons
 │  │  │  ├── MyBunchSellButton.vue
 │  │  │  ├── MyBuyButton.vue
 │  │  │  └── MyEmergencySellButton.vue
 │  │  ├── Cmc.vue
-│  │  ├── Converter.vue
 │  │  ├── forms
 │  │  │  ├── AddBuyOrdersForm.vue
 │  │  │  └── TradesForm.vue
@@ -114,10 +106,8 @@ machi-shad
 │  │  ├── shad
 │  │  │  ├── NextSellsTable.vue
 │  │  │  ├── PercentageColumn.vue
-│  │  │  ├── Shad.vue
-│  │  │  ├── ShadDataTable.vue
-│  │  │  ├── ShadOverlay.vue
-│  │  │  └── ShadOverlayGraph.vue
+│  │  │  ├── Machi.vue
+│  │  │  ├── MachiDataTable.vue
 │  │  ├── Signup.vue
 │  │  ├── Strategy.vue
 │  │  ├── Trades.vue
@@ -145,8 +135,9 @@ machi-shad
 │  │  └── Validations.js
 │  └── store
 │    ├── auth.js
-│    ├── calcul.js
+│    ├── calcul.ts
 │    ├── loading.js
 ├── vite.config.js
 ├── vitest.config.js
 └── yarn.lock
+```

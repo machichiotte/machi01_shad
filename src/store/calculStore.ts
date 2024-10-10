@@ -1,15 +1,15 @@
-// src/store/calculStoreStore.js
+// src/store/calculStoreStore.ts
 import { defineStore } from 'pinia'
 import {
   fetchCmc,
   fetchBalance,
   fetchOrder,
-  fetchShad,
+  fetchMachi,
   fetchStrategy,
   fetchTrade,
   fetchTicker
-} from '../js/fetchFromServer.js'
-import { TYPES, Balance, Cmc, Order, Shad, Strat, Trade, Ticker } from '@/types/calcul.js'
+} from '../js/server/fetchFromServer.js'
+import { TYPES, Balance, Cmc, Order, Machi, Strat, Trade, Ticker } from '../types/responseData.ts'
 
 export const useCalculStore = defineStore('calcul', {
   state: () => ({
@@ -19,7 +19,7 @@ export const useCalculStore = defineStore('calcul', {
     order: [] as Order[],
     buyOrder: [] as Order[],
     sellOrder: [] as Order[],
-    shad: [] as Shad[],
+    machi: [] as Machi[],
     strat: [] as Strat[],
     ticker: [] as Ticker[],
     trade: [] as Trade[],
@@ -27,7 +27,7 @@ export const useCalculStore = defineStore('calcul', {
       balance: 0 as number,
       cmc: 0 as number,
       order: 0 as number,
-      shad: 0 as number,
+      machi: 0 as number,
       strat: 0 as number,
       ticker: 0 as number,
       trade: 0 as number,
@@ -36,7 +36,7 @@ export const useCalculStore = defineStore('calcul', {
 
   getters: {
     getTicker: (state) => state.ticker,
-    getShad: (state) => state.shad,
+    getMachi: (state) => state.machi,
     getBalance: (state) => state.balance,
     getTrade: (state) => state.trade,
     getStrat: (state) => state.strat,
@@ -73,8 +73,8 @@ export const useCalculStore = defineStore('calcul', {
       await this.loadData(TYPES.ORDER, fetchOrder, this.setOrder)
     },
 
-    async loadShad() {
-      await this.loadData(TYPES.SHAD, fetchShad, this.setShad)
+    async loadMachi() {
+      await this.loadData(TYPES.MACHI, fetchMachi, this.setMachi)
     },
 
     async loadData(type: TYPES, fetchFn: () => Promise<any>, setFn: (data: any) => void) {
@@ -128,8 +128,8 @@ export const useCalculStore = defineStore('calcul', {
       this.lastFetchTimestamp[type] = timestamp
     },
 
-    setShad(data: Shad[]) {
-      this.shad = data
+    setMachi(data: Machi[]) {
+      this.machi = data
     }
   }
 })

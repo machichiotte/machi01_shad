@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self';" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' http://localhost:10000"
+    />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -12,6 +15,6 @@
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/src/index.ts"></script>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
