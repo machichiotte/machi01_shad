@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { marketSellOrder, cancelAllSellOrders } from '../../js/server/orders'
+import { addMarketSellOrder, cancelAllSellOrders } from '../../js/server/order'
 import { loadingSpin, successSpinHtml } from '../../js/utils/spinner'
 
 interface SelectedAsset {
@@ -54,7 +54,7 @@ const placeMarketSellOrders = async (assetsToPlaceOrders: string[], selectedRows
       throw new Error("selectedRow is undefined");
     }
     const balance = selectedRow?.balance || 0; // Utiliser 0 si selectedRow est undefined
-    const orderResult = await marketSellOrder(selectedRow.platform, asset, balance);
+    const orderResult = await addMarketSellOrder(selectedRow.platform, asset, balance);
     return `${asset}: ${orderResult}`;
   }));
 };

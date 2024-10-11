@@ -1,6 +1,8 @@
 // src/types/response.ts
-export interface ResponseMongodb {
+export interface ApiResponse<T> {
+    status: 'success' | 'error';
     message: string;
-    data?: any;
-    error?: string;
+    timestamp: number;
+    data: T | null;
+    error?: string | null;
 }

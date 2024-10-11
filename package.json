@@ -7,7 +7,7 @@
   "author": "machichiotte",
   "main": "main.ts",
   "scripts": {
-    "dev": "vite",
+    "dev": "vue-tsc -b && vite",
     "build": "vue-tsc -b && vite build && electron .",
     "preview": "vite preview",
     "test": "vitest",

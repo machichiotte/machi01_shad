@@ -1,3 +1,4 @@
+<!-- src/components/Strategy.vue -->
 <template>
   <div>
     <div class="button-container">
@@ -105,7 +106,7 @@ const tableData = computed(() => {
 async function updateAllStrats() {
   successSpin('Saving strategies...');
   try {
-    await fetch(`${serverHost}/api/updateStrategies`, {
+    await fetch(`${serverHost}/strategy/update`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -121,6 +122,7 @@ async function updateAllStrats() {
 async function updateAllMaxExposure() {
   successSpin('Updating max exposure...');
   try {
+    //TODO faire modif ici
     await fetch(`${serverHost}/api/updateMaxExposure`, {
       method: 'POST',
       headers: {

@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { fetchMachi } from '../js/server/fetchFromServer.js';
+//import { fetchMachi } from '../js/server/fetchFromServer.js';
 
 // Define the interface for the Balance object
 interface Balance {
@@ -26,7 +26,7 @@ const balances = ref<Balance[]>([]);
 const getHomeData = async () => {
   try {
     console.log('Fetching home data...');
-    balances.value = await fetchMachi(); // Assuming fetchMachi() returns a Promise<Balance[]>
+    //balances.value = await fetchMachi(); // Assuming fetchMachi() returns a Promise<Balance[]>
     loaded.value = true;
     console.log('Home data:', balances.value);
   } catch (error) {

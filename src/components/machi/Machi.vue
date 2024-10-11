@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useCalculStore } from '../../store/calculStore'; // Import the Pinia store
 import { FilterMatchMode } from 'primevue/api'

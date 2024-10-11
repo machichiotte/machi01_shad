@@ -29,7 +29,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { successSpinHtml } from '../../js/utils/spinner'
-import { bunchLimitBuyOrders } from '../../js/server/orders'
+import { addLimitBuyOrder } from '../../js/server/order'
 
 const props = defineProps({
     assets: Object,
@@ -111,7 +111,7 @@ const submitOrders = async () => {
 
     const orderPlacementResults = await Promise.all(buyOrders.value.map(async (order) => {
         try {
-            const result = await bunchLimitBuyOrders(selectedAsset.value.platform, selectedAsset.value.asset, order.quantity, order.price);
+            const result = await addLimitBuyOrder(selectedAsset.value.platform, selectedAsset.value.asset, order.quantity, order.price);
             return result;
         } catch (error) {
             console.error('Error placing order:', error);

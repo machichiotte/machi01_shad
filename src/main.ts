@@ -12,7 +12,7 @@ import PrimeVue from 'primevue/config'
 import 'primevue/resources/themes/aura-light-green/theme.css'
 import 'primeicons/primeicons.css'
 
-import LogoMachi from '@comp/LogoMachi.vue'
+import LogoMachi from './components/LogoMachi.vue'
 
 import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'

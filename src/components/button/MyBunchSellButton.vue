@@ -1,6 +1,6 @@
 <!-- src/components/MyBunchSellButton.vue -->
 <script setup lang="ts">
-import { bunchLimitSellOrders, cancelAllSellOrders } from '../../js/server/orders'
+import { addLimitSellOrder, cancelAllSellOrders } from '../../js/server/order'
 import { loadingSpin, successSpinHtml } from '../../js/utils/spinner'
 
 // Définir les types pour les props
@@ -55,7 +55,7 @@ const placeSellOrders = async (assetsToPlaceOrders: string[], selectedRows: Sele
       const orderResults = await Promise.all(
         amounts.map(async (amount, index) => {
           try {
-            await bunchLimitSellOrders(selectedRow.platform, asset, amount, prices[index]);
+            await addLimitSellOrder(selectedRow.platform, asset, amount, prices[index]);
             return 200;
           } catch (error) {
             return (error as Error).message;

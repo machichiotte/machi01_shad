@@ -1,40 +1,25 @@
-// src/js/fetchFromServer.ts
-const serverHost: string = import.meta.env.VITE_SERVER_HOST as string;
-const ENDPOINTS: Record<string, string> = {
-  CMC: `${serverHost}/cmc/get`,
-  STRATEGY: `${serverHost}/strategy/get`,
-  BALANCE: `${serverHost}/balance/get`,
-  TRADES: `${serverHost}/trades/get`,
-  ORDERS: `${serverHost}/order/get`,
-  TICKERS: `${serverHost}/tickers/get`,
-  MACHI: `${serverHost}/shad/get`
-}
+// src/js/server/fetchFromServer
+import { fetchApiData } from './common';  // Import de fetchApiData depuis common.ts
+import { Balance, Cmc, Machi, Order, Strat, Ticker, Trade } from "../../types/responseData";
 
-/**
- * @param {string} dataType
- * @param {string} endpoint
- * @returns {Promise<any>}
- */
-const fetchData = async (dataType: string, endpoint: string): Promise<any> => {
-  try {
-    const response = await fetch(endpoint)
-    if (!response.ok) throw new Error(`Failed to fetch ${dataType}`)
-    const responseJson = await response.json()
-    return responseJson
-  } catch (error) {
-    console.error(`Error fetching ${dataType} data:`, error)
-    throw error
-  }
-}
+const ENDPOINTS: Record<string, string> = {
+  CMC: '/cmc/get',
+  STRATEGY: '/strategy/get',
+  BALANCE: '/balance/get',
+  TRADES: '/trades/get',
+  ORDERS: '/order/get',
+  TICKERS: '/tickers/get',
+  MACHI: '/shad/get'
+};
 
 // Wrapper functions for fetching different types of data
-const fetchBalance = (): Promise<any> => fetchData('Balances', ENDPOINTS.BALANCE)
-const fetchCmc = (): Promise<any> => fetchData('CMC', ENDPOINTS.CMC)
-const fetchOrder = (): Promise<any> => fetchData('Orders', ENDPOINTS.ORDERS)
-const fetchMachi = (): Promise<any> => fetchData('Machi', ENDPOINTS.MACHI)
-const fetchStrategy = (): Promise<any> => fetchData('Strategy', ENDPOINTS.STRATEGY)
-const fetchTicker = (): Promise<any> => fetchData('Tickers', ENDPOINTS.TICKERS)
-const fetchTrade = (): Promise<any> => fetchData('Trades', ENDPOINTS.TRADES)
+const fetchBalance = (): Promise<Balance[]> => fetchApiData<Balance[]>(ENDPOINTS.BALANCE);
+const fetchCmc = (): Promise<Cmc[]> => fetchApiData<Cmc[]>(ENDPOINTS.CMC);
+const fetchOrder = (): Promise<Order[]> => fetchApiData<Order[]>(ENDPOINTS.ORDERS);
+const fetchMachi = (): Promise<Machi[]> => fetchApiData<Machi[]>(ENDPOINTS.MACHI);
+const fetchStrategy = (): Promise<Strat[]> => fetchApiData<Strat[]>(ENDPOINTS.STRATEGY);
+const fetchTicker = (): Promise<Ticker[]> => fetchApiData<Ticker[]>(ENDPOINTS.TICKERS);
+const fetchTrade = (): Promise<Trade[]> => fetchApiData<Trade[]>(ENDPOINTS.TRADES);
 
 export {
   fetchBalance,
@@ -44,5 +29,4 @@ export {
   fetchStrategy,
   fetchTicker,
   fetchTrade,
-
-}
+};
