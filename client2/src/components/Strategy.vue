@@ -1,0 +1,165 @@
+<!-- src/components/Strategy.vue -->
+<template>
+  <div>
+    <div class="button-container">
+      <button @click="updateStrat">Save</button>
+    </div>
+    <div class="text-align-left">
+      <select v-model="selectedStrategy" @change="updateAllStrats">
+        <option value="">Select a strategy</option>
+        <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
+          {{ strategy }}
+        </option>
+      </select>
+
+      <select v-model="selectedMaxExposure" @change="updateAllMaxExposure">
+        <option value="">Select max exposure</option>
+        <option v-for="exposure in exposures" :key="exposure" :value="exposure">
+          {{ exposure }}
+        </option>
+      </select>
+    </div>
+
+    <SearchBar :filters="filters" />
+
+    <DataTable :value="tableData" :columns="columns" :paginator="true" :rows="10" scrollable columnResizeMode="fit"
+      :filters="filters" showGridlines>
+      <Column field="base" header="Base" class="centered-column" />
+      <Column v-for="platform in platforms" :key="platform" :field="platform" :header="platform"
+        class="centered-column">
+        <template #body="slotProps">
+          <div class="select-container">
+            <select v-if="slotProps.data[platform].isVisible" :value="slotProps.data[platform].strategy"
+              @input="setSelectedStrategy(strat, slotProps.data.base, platform, $event.target.value)">
+              <option value=""></option>
+              <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
+                {{ strategy }}
+              </option>
+            </select>
+
+            <select v-if="slotProps.data[platform].isVisible" :value="slotProps.data[platform].maxExposure"
+              @input="setSelectedMaxExposure(strat, slotProps.data.base, platform, $event.target.value)">
+              <option value=""></option>
+              <option v-for="exposure in exposures" :key="exposure" :value="exposure">
+                {{ exposure }}
+              </option>
+            </select>
+          </div>
+        </template>
+      </Column>
+    </DataTable>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed } from 'vue';
+import { successSpin, errorSpin } from '../js/utils/spinner';
+import { strategies } from '../js/strat/index';
+import { useCalculStore } from '../store/calculStore';
+import { FilterMatchMode } from 'primevue/api'
+import SearchBar from "./machi/SearchBar.vue";
+import { getSelectedStrategy, setSelectedStrategy, isVisible, getSelectedMaxExposure, setSelectedMaxExposure } from '../js/utils/strategyUtils';
+
+const serverHost = import.meta.env.VITE_SERVER_HOST;
+
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+})
+
+const calculStore = useCalculStore();
+
+const selectedStrategy = ref('');
+const selectedMaxExposure = ref('');
+
+const strategiesList = ref(strategies);
+const exposures = ref([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000]);
+const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
+
+const balance = computed(() => calculStore.getBalance);
+
+const strat = computed(() => calculStore.getStrat);
+
+const platforms = computed(() => [...new Set(balance.value.map((item) => item.platform))].sort());
+const bases = computed(() => [...new Set(balance.value.map((item) => item.base))].sort());
+const columns = computed(() => {
+  return [
+    { field: 'base', header: 'Base' },
+    ...platforms.value.map(platform => ({ field: platform, header: platform }))
+  ];
+});
+
+const tableData = computed(() => {
+  if (!bases.value.length) {
+    console.error('Aucune base trouvée');
+    return [];
+  }
+
+  return bases.value.map(base => {
+
+    const row = { base };
+
+    platforms.value.forEach(platform => {
+
+      row[platform] = {
+        strategy: getSelectedStrategy(strat.value, base, platform),
+        maxExposure: getSelectedMaxExposure(strat.value, base, platform),
+        isVisible: isVisible(strat.value, base, platform)
+      };
+    });
+    return row;
+  });
+});
+
+const getStrategyData = async () => {
+  try {
+    await calculStore.loadStrat();
+    await calculStore.loadBalance();
+  } catch (error) {
+    console.error("An error occurred while retrieving data:", error);
+  }
+};
+
+async function updateAllStrats() {
+  successSpin('Saving strategies...');
+  try {
+    await updateStrategies(strat.value)
+    successSpin('Strategies saved successfully!');
+  } catch (error) {
+    errorSpin('Error saving strategies: ', error.message);
+  }
+}
+
+async function updateAllMaxExposure() {
+  successSpin('Updating max exposure...');
+  try {
+    await updateMaxExposure(strat.value)
+    successSpin('Max exposure updated successfully!');
+  } catch (error) {
+    errorSpin('Error updating max exposure: ', error.message);
+  }
+}
+
+onMounted(async () => {
+  await getStrategyData();
+});
+</script>
+
+<style scoped>
+.button-container {
+  margin: 20px 0;
+}
+
+.text-align-left {
+  display: flex;
+  justify-content: space-between;
+}
+
+.select-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.centered-column {
+  text-align: center;
+}
+</style>

@@ -1,0 +1,30 @@
+{
+  "name": "base_front",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "pinia": "^2.2.4",
+    "primeicons": "^7.0.0",
+    "primevue": "^3.48.1",
+    "vue": "^3.5.10",
+    "vue-router": "^4.0.13",
+    "vue-sweetalert2": "^5.0.11"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.13",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.2",
+    "vue-tsc": "^2.1.6"
+  }
+}

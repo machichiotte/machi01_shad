@@ -1,0 +1,22 @@
+[
+  {
+    "value": "binance",
+    "label": "Binance"
+  },
+  {
+    "value": "kucoin",
+    "label": "Kucoin"
+  },
+  {
+    "value": "htx",
+    "label": "Htx"
+  },
+  {
+    "value": "okx",
+    "label": "Okx"
+  },
+  {
+    "value": "gateio",
+    "label": "Gateio"
+  }
+]
