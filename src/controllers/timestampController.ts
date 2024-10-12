@@ -16,6 +16,7 @@ async function getUniqueTimestamp(req: Request, res: Response): Promise<void> {
 
     if (timestampData) {
       res.status(200).json({
+        status: "success",
         message: `Dernière mise à jour unique récupérée de la base de données. Platform: ${platform}, Type: ${type}`,
         data: timestampData
       })
@@ -30,6 +31,7 @@ async function getUniqueTimestamp(req: Request, res: Response): Promise<void> {
       `Échec de la récupération de la dernière mise à jour unique. Platform: \`${req.params.platform}\`, Type: \`${req.params.type}\`, Erreur: \`${error instanceof Error ? error.message : 'Erreur inconnue'}\``
     )
     res.status(500).json({
+      status: "error",
       message: 'Erreur interne du serveur',
       error
     })
@@ -42,7 +44,7 @@ async function getUniqueTimestamp(req: Request, res: Response): Promise<void> {
 async function getTimestamp(req: Request, res: Response): Promise<void> {
   try {
     const data = await TimestampService.fetchDatabaseTimestamp()
-    res.status(200).json({ message: 'Dernières mises à jour récupérées', data })
+    res.status(200).json({ status: "success", message: 'Dernières mises à jour récupérées', data })
   } catch (error) {
     handleControllerError(res, error, 'getTimestamp')
   }
@@ -56,7 +58,7 @@ async function updateTimestampByType(req: Request, res: Response): Promise<void>
     const { platform, type } = req.params
     await TimestampService.saveTimestampToDatabase(type, platform)
     const timestamp = new Date().toISOString()
-    res.status(200).json({ message: 'Dernière mise à jour mise à jour', data: { platform, type, timestamp } })
+    res.status(200).json({ status: "success", message: 'Dernière mise à jour mise à jour', data: { platform, type, timestamp } })
   } catch (error) {
     handleControllerError(res, error, 'updateTimestampByType')
   }

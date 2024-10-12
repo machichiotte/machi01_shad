@@ -14,7 +14,6 @@ export class StrategyRepository {
 
     static async updateById(mappedData: MappedStrat): Promise<boolean> {
         const { _id, ...mappedStrat } = mappedData;
-        console.log('strategyRepository updateById _id', _id)
         return await MongodbService.updateOneData(COLLECTION_NAME, { _id: new ObjectId(_id) }, { $set: mappedStrat });
     }
 

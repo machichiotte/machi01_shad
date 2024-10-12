@@ -10,6 +10,7 @@ async function getMarkets(req: Request, res: Response): Promise<void> {
   try {
     const data = await MarketService.getSavedMarkets()
     res.status(200).json({
+      status: "success",
       message: 'Données de marché récupérées',
       data
     })

@@ -74,7 +74,6 @@ export class MappingService {
       totalUSDT: totalUSDT || 0
     };
 
-    console.log('Trade mappé:', JSON.stringify(mappedTrade));
     return mappedTrade;
   }
 

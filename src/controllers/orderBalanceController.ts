@@ -10,7 +10,10 @@ import { isValidPlatform } from '@utils/platformUtil'
 async function getOrders(req: Request, res: Response): Promise<void> {
   try {
     const data = await OrderBalanceService.fetchDatabase()
-    res.status(200).json({ message: 'Ordres récupérés', data })
+    res.status(200).json({
+      status: "success",
+      message: 'Ordres récupérés', data
+    })
   } catch (error) {
     handleControllerError(res, error, 'getOrders')
   }
@@ -23,13 +26,14 @@ async function updateOrders(req: Request, res: Response): Promise<void> {
   const { platform } = req.params
 
   if (!isValidPlatform(platform)) {
-    res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
+    res.status(400).json({ status: "error", message: `La plateforme '${platform}' n'est pas valide.` });
     return;
+
   }
 
   try {
     const data = await OrderBalanceService.updateOrdersFromServer(platform)
-    res.status(200).json({ message: 'Ordres mis à jour', data })
+    res.status(200).json({ status: "success", message: 'Ordres mis à jour', data })
   } catch (error) {
     handleControllerError(res, error, 'updateOrders')
   }

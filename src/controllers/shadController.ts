@@ -10,7 +10,7 @@ import { TrailingStopService } from '@services/trailingStopService'
 async function getShad(req: Request, res: Response): Promise<void> {
   try {
     const data = await ShadService.fetchShadInDatabase()
-    res.status(200).json({ message: 'Données Shad récupérées', data })
+    res.status(200).json({ status: "success", message: 'Données Shad récupérées', data })
   } catch (error) {
     handleControllerError(res, error, 'getShad')
   }
@@ -24,7 +24,7 @@ async function handleTrailingStopHedge(req: Request, res: Response): Promise<voi
       : undefined;
 
     const data = await TrailingStopService.handleTrailingStopHedge(simplifiedSelectedAssets);
-    res.status(200).json({ message: 'Mise à jour des ordres de trailing stop terminée', data });
+    res.status(200).json({ status: "success", message: 'Mise à jour des ordres de trailing stop terminée', data });
   } catch (error) {
     handleControllerError(res, error, 'handleTrailingStopHedge');
   }

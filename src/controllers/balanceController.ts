@@ -10,6 +10,7 @@ async function getBalances(req: Request, res: Response): Promise<void> {
   try {
     const data = await BalanceService.fetchDatabaseBalance()
     res.status(200).json({
+      status: "success",
       message: 'Le solde en base de données a été récupéré avec succès.',
       data: data
     })
@@ -26,6 +27,7 @@ async function updateCurrentBalance(req: Request, res: Response): Promise<void> 
 
   if (!PLATFORMS.includes(platform)) {
     res.status(400).json({
+      status: "error",
       message: `La plateforme ${platform} n'est pas supportée. Veuillez spécifier une plateforme valide.`,
     })
   }
@@ -33,6 +35,7 @@ async function updateCurrentBalance(req: Request, res: Response): Promise<void> 
   try {
     const data = await BalanceService.updateBalanceForPlatform(platform)
     res.status(200).json({
+      status: "success",
       message: 'Le solde actuel a été mis à jour avec succès.',
       data: data
     })

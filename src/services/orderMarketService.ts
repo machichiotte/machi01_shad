@@ -57,7 +57,6 @@ export class OrderMarketService {
     }
 
     static async createOrder(platform: PLATFORM, asset: string, amount: number, orderType: 'buy' | 'sell', orderMode: 'market' | 'limit', price?: number): Promise<void> {
-        console.log('createOrder', platform, asset, amount, orderType, orderMode, price)
         try {
             const symbol = getMarketSymbolForPlatform(platform, asset)
             await CcxtService.executeMarketOrder(platform, symbol, amount, orderType, orderMode, price)

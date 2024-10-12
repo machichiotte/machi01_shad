@@ -5,11 +5,10 @@ import { MappedOrder } from '@typ/order';
 import { handleServiceError } from '@utils/errorUtil';
 import { PLATFORM } from '@src/types/platform';
 import { OrderBalanceRepository } from '@repositories/orderBalanceRepository';
-import { MappedData } from '@src/types/database';
 
 export class OrderBalanceService {
 
-  static async fetchDatabase(): Promise<MappedData[]> {
+  static async fetchDatabase(): Promise<MappedOrder[]> {
     return await OrderBalanceRepository.fetchAll()
   }
 

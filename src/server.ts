@@ -24,16 +24,18 @@ app.use(bodyParser.json())
 // Utilisation des routes avec un préfixe commun '/api'
 app.use('/api', apiRoutes);
 
+//TODO VERIFIER SI UTILE OU PAS
 // Middleware de gestion des erreurs
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(error.stack)
-  res.status(500).json({ error: 'Internal Server Error' })
+  res.status(500).json({ status: "error", message: 'Internal Server Error', error })
   next(error)
 })
 
+//TODO VERIFIER SI UTILE OU PAS
 // Middleware de gestion des erreurs 404
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.status(404).json({ error: 'Not Found' })
+  res.status(404).json({ status: "error", message: 'Not Found' })
   next()
 })
 

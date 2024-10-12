@@ -11,6 +11,7 @@ async function getCmc(req: Request, res: Response): Promise<void> {
   try {
     const data = await CmcService.fetchDatabaseCmc()
     res.status(200).json({
+      status: "success",
       message: 'Données CMC récupérées avec succès',
       data
     })
@@ -26,6 +27,7 @@ async function updateCmc(req: Request, res: Response): Promise<void> {
   try {
     const data = await CmcService.updateCmcData()
     res.status(200).json({
+      status: "success",
       message: 'Données CMC mises à jour avec succès',
       data,
     })

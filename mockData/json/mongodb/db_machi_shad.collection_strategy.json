@@ -1,2821 +1,5206 @@
-[
-  {
-    "_id": {
-      "$oid": "6489c52b90fc78f502da5446"
-    },
-    "1EARTH": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "1INCH": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "2CRZ": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "AAC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "AAVE": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ABBC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ACE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ADA": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ADX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "AE": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "AGLD": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "AI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "AION": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "AIOZ": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "AKT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ALEPH": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ALGO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ALICE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "ALPHA": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ANC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": "strategy3"
-    },
-    "ANKR": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ANT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "AOA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "APE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "API3": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "APN": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "APPC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ARDR": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ASD": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ASR": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "AST": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "ATM": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ATOM": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ATP": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "AUTO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "AVA": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "AVAX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "AXS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "BAL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BAND": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BAX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "BCH": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BEAM": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BEL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BEPRO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "BIX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "BLOK": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "BLZ": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BMON": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BNB": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BNS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "BOA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "BOBA": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BOLT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "BOND": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "BOSON": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "BSV": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "BTC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BTG": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BTT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "BURGER": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BUSD": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "BUY": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CAKE": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "CARD": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CAS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CELO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CFX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "CGG": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CHR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "CHZ": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "CIRUS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CIX100": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CKB": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "CLUB": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CLV": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "CMT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "COCOS": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "COMP": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "COTI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "CPOOL": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CRE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "CREDI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CRO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CRU": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "CRV": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "CTI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CTK": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "CTSI": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "CTXC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "CUDOS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CVC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "CWAR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "CWS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DAC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "DAG": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DAO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DAPPT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DAPPX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DASH": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DATA": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DEGO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DENT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DEXE": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DFI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DFYN": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DHT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "DKA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "DLT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DNT": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DODO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DOGE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DON": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DORA": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DOT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DREAMS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DREP": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DSLA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DTA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "DUSK": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "DYDX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "DYP": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "EDG": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "EGLD": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "EGT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "EKT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "ELA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "ELF": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ELON": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "EM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "ENJ": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ENQ": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ENS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "EOS": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "EOSC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "EPIK": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "EPX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "EQX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "EQZ": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ERN": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "ETC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ETH": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ETHW": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ETN": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "FEAR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "FET": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "FIL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "FILDA": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "FIO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "FIRO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "FKX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "FLAME": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "FLOW": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "FLR": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "FOR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "FORESTPLUS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "FORM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "FORTH": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "FRM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "FSN": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "FTM": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "FUN": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "GAFI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "GAS": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "GFT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "GHX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "GLCH": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "GLQ": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "GMB": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "GMEE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "GMT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "GO": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "GODS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "GOF": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "GOM2": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "GOVI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "GRT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "GTC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "GVT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "HAI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "HAPI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "HARD": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "HBAR": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "HBC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "HEART": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "HEGIC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "HIFI": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "HIT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "HNT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "HORD": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "HOTCROSS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "HPT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "HT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "HTR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "HYDRA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ICP": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ICX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "IDEA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "IMX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "INJ": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "INSUR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "IOI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "IOST": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "IOTA": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "IOTX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "IRIS": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ISP": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "JAR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "JASMY": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "JST": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "KAI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "KAR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "KAT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "KAVA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "KCASH": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "KCS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "KEY": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "KLAY": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "KLV": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "KMD": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "KSM": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "LABS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "LAMB": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "LAVAX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "LAYER": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "LEVER": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "LIKE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "LINA": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "LINK": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "LIT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "LITH": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "LOKI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "LOL": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "LPOOL": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "LPT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "LRC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "LSK": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "LSS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "LTC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "LTO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "LUNA": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "LUNC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "LYM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MAKI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MANA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MAP": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MARSH": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MASK": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "MATIC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "MBL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "MDS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "MDX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "MEM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MIR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "MITH": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "MJT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MKR": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "MLK": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MLN": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "MNET": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MNST": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MONI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MOVR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "MSWAP": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "MTL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "MTV": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "NAKA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "NAS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "NAV": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "NEBL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "NEO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "NEST": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "NFT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "NGL": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "NIM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "NKN": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "NMR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "NODE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "NORD": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "NSURE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "NTVRK": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "NULS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "NXRA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "OCN": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "ODDZ": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "OG": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "OGN": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "OGV": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "OM": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "OMG": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ONG": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ONT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "OOE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "OOKI": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ORAI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ORBS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ORC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ORN": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "OXT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "PAI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "PBR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "PCX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "PEOPLE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "PERL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "PERP": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "PHA": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "PHNX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "PIVX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "PLU": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "PMON": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "PNT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "POLC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "POLK": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "POLS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "POLX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "POND": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "PRE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "PROM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "PRQ": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "PSG": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "PUNDIX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "PUSH": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "PYR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "QI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "QISWAP": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "QNT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "QTUM": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "QUICK": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "REAP": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "REEF": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "REN": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "REP": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "REQ": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "REVU": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "RIF": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "RLC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "RMRK": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "RNDR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ROSE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ROUTE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "RSR": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "RUFF": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "RUNE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SAND": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "SC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "SCLP": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SEELE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "SENSO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SGB": {
-      "binance": "",
-      "gateio": "strategy3",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "SHA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SHIB": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SHR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SKEY": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SKL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "SKU": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SLP": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "SMT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "SNT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "SNX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "SOFI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "SOL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "SOLO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "SOLR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SOLVE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SOS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SRK": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SRM": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "STC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "STMX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "STN": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "STND": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "STORJ": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "STX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SUKU": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SUN": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SUPER": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "SUSHI": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "SUTER": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SWASH": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SWINGBY": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SXP": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "SYLO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "SYS": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "T": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "TARA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "TCT": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "TEL": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "TFUEL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "THETA": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "TKO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "TLM": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "TNB": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "TOKO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "TOWER": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "TRB": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "TRIAS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "TRIBE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "TROY": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "TRVL": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "TRX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "TXA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "UBX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "UFO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "UMA": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "UNFI": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "UNI": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "UOS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "USDT": {
-      "binance": "strategy3",
-      "gateio": "strategy3",
-      "huobi": "strategy3",
-      "kucoin": "strategy3"
-    },
-    "UTK": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "UUU": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "VAI": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "VALUE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "VEGA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "VELO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "VET": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "VID": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "VIDT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "VIDY": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "VLX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "VOXEL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "VR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "VRA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "VSYS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "VTHO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "VXV": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "WABI": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "WAN": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "WAVES": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "WEST": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "WICC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "WILD": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "WIN": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "WING": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "WNXM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "WOM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "WOO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "WPR": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "WTC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "XAVA": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "XCAD": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "XCUR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "XDB": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "XEC": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "XEM": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "XHV": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "XLM": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "XNL": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "XNO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "XPR": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "XRP": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "XRT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "XTM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "XTZ": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "XVS": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "XYM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "XYO": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "YAM": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "YEE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "YFI": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "YGG": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "YOYO": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ZCX": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ZEC": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ZEE": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ZEN": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "ZIL": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    },
-    "ZKS": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "strategy3",
-      "kucoin": ""
-    },
-    "ZKT": {
-      "binance": "",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": "strategy3"
-    },
-    "ZRX": {
-      "binance": "strategy3",
-      "gateio": "",
-      "huobi": "",
-      "kucoin": ""
-    }
+[{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159b6"
+  },
+  "asset": "1000SATS",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "15"
   }
-]
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159b7"
+  },
+  "asset": "1EARTH",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159b8"
+  },
+  "asset": "1INCH",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159b9"
+  },
+  "asset": "AAC",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159ba"
+  },
+  "asset": "AAVE",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159bb"
+  },
+  "asset": "ABBC",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159bc"
+  },
+  "asset": "ACE",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159bd"
+  },
+  "asset": "ADA",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "100"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159be"
+  },
+  "asset": "ADX",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159bf"
+  },
+  "asset": "AE",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159c0"
+  },
+  "asset": "AGLD",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159c1"
+  },
+  "asset": "AI",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159c2"
+  },
+  "asset": "AION",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159c3"
+  },
+  "asset": "AIOZ",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "75"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159c4"
+  },
+  "asset": "AKT",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159c5"
+  },
+  "asset": "ALEPH",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "150"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159c6"
+  },
+  "asset": "ALGO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "300"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159c7"
+  },
+  "asset": "ALICE",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159c8"
+  },
+  "asset": "ALPHA",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159c9"
+  },
+  "asset": "ANC",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159ca"
+  },
+  "asset": "ANKR",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "100"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159cb"
+  },
+  "asset": "ANT",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "100"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159cc"
+  },
+  "asset": "APE",
+  "strategies": {
+    "binance": "Shad",
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5",
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159cd"
+  },
+  "asset": "API3",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159ce"
+  },
+  "asset": "APN",
+  "strategies": {
+    "gateio": "Shad",
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "150",
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159cf"
+  },
+  "asset": "APPC",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159d0"
+  },
+  "asset": "ARDR",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "200"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159d1"
+  },
+  "asset": "ASD",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159d2"
+  },
+  "asset": "ASR",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "15"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159d3"
+  },
+  "asset": "AST",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159d4"
+  },
+  "asset": "ATM",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159d5"
+  },
+  "asset": "ATOM",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159d6"
+  },
+  "asset": "ATP",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159d7"
+  },
+  "asset": "AUTO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159d8"
+  },
+  "asset": "AVA",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159d9"
+  },
+  "asset": "AVAX",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "200"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159da"
+  },
+  "asset": "AXS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159db"
+  },
+  "asset": "BADGER",
+  "strategies": {
+    "okx": "Shad"
+  },
+  "maxExposure": {
+    "okx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159dc"
+  },
+  "asset": "BAL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159dd"
+  },
+  "asset": "BAND",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159de"
+  },
+  "asset": "BAT",
+  "strategies": {
+    "okx": "Shad"
+  },
+  "maxExposure": {
+    "okx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159df"
+  },
+  "asset": "BAX",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159e0"
+  },
+  "asset": "BCH",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159e1"
+  },
+  "asset": "BEAM",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159e2"
+  },
+  "asset": "BEAMX",
+  "strategies": {
+    "gateio": ""
+  },
+  "maxExposure": {
+    "gateio": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159e3"
+  },
+  "asset": "BEL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159e4"
+  },
+  "asset": "BEPRO",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159e5"
+  },
+  "asset": "BIX",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159e6"
+  },
+  "asset": "BLOK",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159e7"
+  },
+  "asset": "BLZ",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159e8"
+  },
+  "asset": "BMON",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159e9"
+  },
+  "asset": "BNB",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159ea"
+  },
+  "asset": "BOLT",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159eb"
+  },
+  "asset": "BOND",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159ec"
+  },
+  "asset": "BOSON",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159ed"
+  },
+  "asset": "BSV",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159ee"
+  },
+  "asset": "BTC",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159ef"
+  },
+  "asset": "BTG",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159f0"
+  },
+  "asset": "BTT",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159f1"
+  },
+  "asset": "BURGER",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159f2"
+  },
+  "asset": "CAKE",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159f3"
+  },
+  "asset": "CAS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159f4"
+  },
+  "asset": "CELO",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159f5"
+  },
+  "asset": "CFX",
+  "strategies": {
+    "binance": "Shad skip x2"
+  },
+  "maxExposure": {
+    "binance": "200"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159f6"
+  },
+  "asset": "CHR",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159f7"
+  },
+  "asset": "CHZ",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159f8"
+  },
+  "asset": "CIRUS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159f9"
+  },
+  "asset": "CKB",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159fa"
+  },
+  "asset": "CLV",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159fb"
+  },
+  "asset": "CMT",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159fc"
+  },
+  "asset": "COMBO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159fd"
+  },
+  "asset": "COMP",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159fe"
+  },
+  "asset": "COTI",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a159ff"
+  },
+  "asset": "CPOOL",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a00"
+  },
+  "asset": "CRE",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a01"
+  },
+  "asset": "CREDI",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "15"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a02"
+  },
+  "asset": "CRO",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a03"
+  },
+  "asset": "CRU",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a04"
+  },
+  "asset": "CRV",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a05"
+  },
+  "asset": "CTI",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "15"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a06"
+  },
+  "asset": "CTK",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a07"
+  },
+  "asset": "CTSI",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a08"
+  },
+  "asset": "CTXC",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "100"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a09"
+  },
+  "asset": "CUDOS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a0a"
+  },
+  "asset": "CVC",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a0b"
+  },
+  "asset": "CWAR",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a0c"
+  },
+  "asset": "CWS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a0d"
+  },
+  "asset": "DAC",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a0e"
+  },
+  "asset": "DAG",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a0f"
+  },
+  "asset": "DAO",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a10"
+  },
+  "asset": "DAPPX",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a11"
+  },
+  "asset": "DASH",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a12"
+  },
+  "asset": "DATA",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a13"
+  },
+  "asset": "DEGO",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a14"
+  },
+  "asset": "DENT",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a15"
+  },
+  "asset": "DEXE",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a16"
+  },
+  "asset": "DFI",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a17"
+  },
+  "asset": "DFYN",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a18"
+  },
+  "asset": "DGB",
+  "strategies": {
+    "okx": ""
+  },
+  "maxExposure": {
+    "okx": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a19"
+  },
+  "asset": "DHT",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a1a"
+  },
+  "asset": "DIA",
+  "strategies": {
+    "okx": ""
+  },
+  "maxExposure": {
+    "okx": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a1b"
+  },
+  "asset": "DKA",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a1c"
+  },
+  "asset": "DLT",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a1d"
+  },
+  "asset": "DNT",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a1e"
+  },
+  "asset": "DODO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a1f"
+  },
+  "asset": "DOGE",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a20"
+  },
+  "asset": "DON",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a21"
+  },
+  "asset": "DORA",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a22"
+  },
+  "asset": "DOT",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a23"
+  },
+  "asset": "DREAMS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a24"
+  },
+  "asset": "DREP",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a25"
+  },
+  "asset": "DSLA",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a26"
+  },
+  "asset": "DTA",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a27"
+  },
+  "asset": "DUSK",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a28"
+  },
+  "asset": "DYDX",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a29"
+  },
+  "asset": "DYP",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a2a"
+  },
+  "asset": "EGLD",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a2b"
+  },
+  "asset": "EGT",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a2c"
+  },
+  "asset": "EKT",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a2d"
+  },
+  "asset": "ELA",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a2e"
+  },
+  "asset": "ELF",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a2f"
+  },
+  "asset": "ELON",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a30"
+  },
+  "asset": "EM",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a31"
+  },
+  "asset": "ENJ",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a32"
+  },
+  "asset": "ENS",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a33"
+  },
+  "asset": "EOS",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a34"
+  },
+  "asset": "EOSC",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a35"
+  },
+  "asset": "EPIK",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a36"
+  },
+  "asset": "EPX",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a37"
+  },
+  "asset": "EQX",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a38"
+  },
+  "asset": "ERN",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a39"
+  },
+  "asset": "ETC",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a3a"
+  },
+  "asset": "ETH",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a3b"
+  },
+  "asset": "ETHW",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a3c"
+  },
+  "asset": "FEAR",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a3d"
+  },
+  "asset": "FET",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a3e"
+  },
+  "asset": "FIL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a3f"
+  },
+  "asset": "FILDA",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a40"
+  },
+  "asset": "FIO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a41"
+  },
+  "asset": "FIRO",
+  "strategies": {
+    "binance": "Shad skip x2"
+  },
+  "maxExposure": {
+    "binance": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a42"
+  },
+  "asset": "FLAME",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a43"
+  },
+  "asset": "FLOW",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a44"
+  },
+  "asset": "FLR",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a45"
+  },
+  "asset": "FOR",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a46"
+  },
+  "asset": "FORTH",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a47"
+  },
+  "asset": "FRM",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a48"
+  },
+  "asset": "FSN",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a49"
+  },
+  "asset": "FTM",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a4a"
+  },
+  "asset": "FUN",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a4b"
+  },
+  "asset": "GAFI",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a4c"
+  },
+  "asset": "GAME",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a4d"
+  },
+  "asset": "GAS",
+  "strategies": {
+    "binance": "Shad",
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5",
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a4e"
+  },
+  "asset": "GFT",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a4f"
+  },
+  "asset": "GHX",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a50"
+  },
+  "asset": "GLQ",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a51"
+  },
+  "asset": "GMEE",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a52"
+  },
+  "asset": "GMT",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a53"
+  },
+  "asset": "GO",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a54"
+  },
+  "asset": "GODS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a55"
+  },
+  "asset": "GOF",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a56"
+  },
+  "asset": "GRT",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a57"
+  },
+  "asset": "GTC",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a58"
+  },
+  "asset": "GVT",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a59"
+  },
+  "asset": "HAI",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a5a"
+  },
+  "asset": "HAPI",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a5b"
+  },
+  "asset": "HARD",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a5c"
+  },
+  "asset": "HBAR",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a5d"
+  },
+  "asset": "HBC",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a5e"
+  },
+  "asset": "HEART",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "20"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a5f"
+  },
+  "asset": "HIFI",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a60"
+  },
+  "asset": "HITCHAIN",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a61"
+  },
+  "asset": "HNT",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a62"
+  },
+  "asset": "HOOK",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a63"
+  },
+  "asset": "HORD",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a64"
+  },
+  "asset": "HOTCROSS",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "20"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a65"
+  },
+  "asset": "HPT",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a66"
+  },
+  "asset": "HT",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a67"
+  },
+  "asset": "HTR",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a68"
+  },
+  "asset": "HTX",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a69"
+  },
+  "asset": "HYDRA",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a6a"
+  },
+  "asset": "ICP",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a6b"
+  },
+  "asset": "ICX",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a6c"
+  },
+  "asset": "IDEA",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "150"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a6d"
+  },
+  "asset": "IMX",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a6e"
+  },
+  "asset": "INJ",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a6f"
+  },
+  "asset": "INSUR",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a70"
+  },
+  "asset": "IOI",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a71"
+  },
+  "asset": "IOST",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a72"
+  },
+  "asset": "IOTA",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a73"
+  },
+  "asset": "IOTX",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a74"
+  },
+  "asset": "IRIS",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a75"
+  },
+  "asset": "ISP",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a76"
+  },
+  "asset": "JASMY",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a77"
+  },
+  "asset": "JST",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a78"
+  },
+  "asset": "KAI",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a79"
+  },
+  "asset": "KAVA",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a7a"
+  },
+  "asset": "KCASH",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a7b"
+  },
+  "asset": "KCS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a7c"
+  },
+  "asset": "KEY",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a7d"
+  },
+  "asset": "KLAY",
+  "strategies": {
+    "binance": "Shad",
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5",
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a7e"
+  },
+  "asset": "KLV",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a7f"
+  },
+  "asset": "KMD",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a80"
+  },
+  "asset": "KSM",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a81"
+  },
+  "asset": "LAMB",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a82"
+  },
+  "asset": "LAYER",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a83"
+  },
+  "asset": "LEO",
+  "strategies": {
+    "okx": ""
+  },
+  "maxExposure": {
+    "okx": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a84"
+  },
+  "asset": "LET",
+  "strategies": {
+    "okx": ""
+  },
+  "maxExposure": {
+    "okx": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a85"
+  },
+  "asset": "LEVER",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a86"
+  },
+  "asset": "LIKE",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a87"
+  },
+  "asset": "LINA",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a88"
+  },
+  "asset": "LINK",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a89"
+  },
+  "asset": "LIT",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a8a"
+  },
+  "asset": "LITH",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a8b"
+  },
+  "asset": "LOL",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a8c"
+  },
+  "asset": "LPOOL",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a8d"
+  },
+  "asset": "LPT",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a8e"
+  },
+  "asset": "LRC",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a8f"
+  },
+  "asset": "LSK",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a90"
+  },
+  "asset": "LSS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a91"
+  },
+  "asset": "LTC",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a92"
+  },
+  "asset": "LTO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a93"
+  },
+  "asset": "LUNA",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a94"
+  },
+  "asset": "LUNC",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a95"
+  },
+  "asset": "LYM",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a96"
+  },
+  "asset": "MANA",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a97"
+  },
+  "asset": "MAPO",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "25"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a98"
+  },
+  "asset": "MARSH",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a99"
+  },
+  "asset": "MASK",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a9a"
+  },
+  "asset": "MATIC",
+  "strategies": {
+    "binance": ""
+  },
+  "maxExposure": {
+    "binance": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a9b"
+  },
+  "asset": "MBL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a9c"
+  },
+  "asset": "MDS",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a9d"
+  },
+  "asset": "MDX",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a9e"
+  },
+  "asset": "MINA",
+  "strategies": {
+    "okx": ""
+  },
+  "maxExposure": {
+    "okx": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15a9f"
+  },
+  "asset": "MIR",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aa0"
+  },
+  "asset": "MJT",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aa1"
+  },
+  "asset": "MKR",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aa2"
+  },
+  "asset": "MLK",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aa3"
+  },
+  "asset": "MLN",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aa4"
+  },
+  "asset": "MONI",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aa5"
+  },
+  "asset": "MOVR",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aa6"
+  },
+  "asset": "MTL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aa7"
+  },
+  "asset": "MTV",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aa8"
+  },
+  "asset": "NAKA",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aa9"
+  },
+  "asset": "NAS",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aaa"
+  },
+  "asset": "NAV",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aab"
+  },
+  "asset": "NEBL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aac"
+  },
+  "asset": "NEO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aad"
+  },
+  "asset": "NEST",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aae"
+  },
+  "asset": "NETVR",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aaf"
+  },
+  "asset": "NFT",
+  "strategies": {
+    "binance": "Shad",
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5",
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ab0"
+  },
+  "asset": "NGL",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ab1"
+  },
+  "asset": "NIM",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "25"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ab2"
+  },
+  "asset": "NKN",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ab3"
+  },
+  "asset": "NMR",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ab4"
+  },
+  "asset": "NODE",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ab5"
+  },
+  "asset": "NORD",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ab6"
+  },
+  "asset": "NSURE",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ab7"
+  },
+  "asset": "NULS",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ab8"
+  },
+  "asset": "NXRA",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ab9"
+  },
+  "asset": "OCN",
+  "strategies": {
+    "gateio": "Shad",
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5",
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aba"
+  },
+  "asset": "ODDZ",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15abb"
+  },
+  "asset": "OG",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15abc"
+  },
+  "asset": "OGN",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15abd"
+  },
+  "asset": "OGV",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15abe"
+  },
+  "asset": "OM",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15abf"
+  },
+  "asset": "OMG",
+  "strategies": {
+    "okx": "Shad"
+  },
+  "maxExposure": {
+    "okx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ac0"
+  },
+  "asset": "OMI",
+  "strategies": {
+    "okx": "Shad"
+  },
+  "maxExposure": {
+    "okx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ac1"
+  },
+  "asset": "ONG",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ac2"
+  },
+  "asset": "ONT",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ac3"
+  },
+  "asset": "OOE",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ac4"
+  },
+  "asset": "OOKI",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ac5"
+  },
+  "asset": "ORAI",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ac6"
+  },
+  "asset": "ORBS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ac7"
+  },
+  "asset": "ORN",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ac8"
+  },
+  "asset": "OXT",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "25"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ac9"
+  },
+  "asset": "PAI",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aca"
+  },
+  "asset": "PBR",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15acb"
+  },
+  "asset": "PCX",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15acc"
+  },
+  "asset": "PEOPLE",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15acd"
+  },
+  "asset": "PERL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ace"
+  },
+  "asset": "PERP",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15acf"
+  },
+  "asset": "PHA",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ad0"
+  },
+  "asset": "PIVX",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ad1"
+  },
+  "asset": "PLU",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "100"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ad2"
+  },
+  "asset": "PNT",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ad3"
+  },
+  "asset": "POLC",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ad4"
+  },
+  "asset": "POLK",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ad5"
+  },
+  "asset": "POLS",
+  "strategies": {
+    "htx": "Shad skip x2"
+  },
+  "maxExposure": {
+    "htx": "25"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ad6"
+  },
+  "asset": "POLX",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ad7"
+  },
+  "asset": "POND",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ad8"
+  },
+  "asset": "PRE",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ad9"
+  },
+  "asset": "PROM",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ada"
+  },
+  "asset": "PRQ",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15adb"
+  },
+  "asset": "PSG",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15adc"
+  },
+  "asset": "PUNDIX",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15add"
+  },
+  "asset": "PUSH",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ade"
+  },
+  "asset": "PYR",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15adf"
+  },
+  "asset": "QI",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ae0"
+  },
+  "asset": "QISWAP",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ae1"
+  },
+  "asset": "QNT",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ae2"
+  },
+  "asset": "QTUM",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ae3"
+  },
+  "asset": "QUICK",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ae4"
+  },
+  "asset": "REAP",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ae5"
+  },
+  "asset": "REEF",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ae6"
+  },
+  "asset": "REN",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ae7"
+  },
+  "asset": "RENDER",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ae8"
+  },
+  "asset": "REP",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15ae9"
+  },
+  "asset": "REQ",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aea"
+  },
+  "asset": "REVU",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aeb"
+  },
+  "asset": "RIF",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aec"
+  },
+  "asset": "RLC",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aed"
+  },
+  "asset": "ROSE",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aee"
+  },
+  "asset": "ROUTE",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aef"
+  },
+  "asset": "RSR",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15af0"
+  },
+  "asset": "RUFF",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15af1"
+  },
+  "asset": "RUNE",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15af2"
+  },
+  "asset": "SAND",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15af3"
+  },
+  "asset": "SC",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15af4"
+  },
+  "asset": "SCLP",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15af5"
+  },
+  "asset": "SEELE",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15af6"
+  },
+  "asset": "SENSO",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "75"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15af7"
+  },
+  "asset": "SGB",
+  "strategies": {
+    "gateio": "Shad"
+  },
+  "maxExposure": {
+    "gateio": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15af8"
+  },
+  "asset": "SHA",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15af9"
+  },
+  "asset": "SHIB",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15afa"
+  },
+  "asset": "SHR",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15afb"
+  },
+  "asset": "SKEY",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15afc"
+  },
+  "asset": "SKL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15afd"
+  },
+  "asset": "SLP",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15afe"
+  },
+  "asset": "SMT",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15aff"
+  },
+  "asset": "SNT",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b00"
+  },
+  "asset": "SNX",
+  "strategies": {
+    "binance": "Shad",
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5",
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b01"
+  },
+  "asset": "SOFI",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "75"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b02"
+  },
+  "asset": "SOL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b03"
+  },
+  "asset": "SOLO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b04"
+  },
+  "asset": "SOLVE",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b05"
+  },
+  "asset": "STC",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b06"
+  },
+  "asset": "STMX",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b07"
+  },
+  "asset": "STN",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b08"
+  },
+  "asset": "STND",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b09"
+  },
+  "asset": "STORJ",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b0a"
+  },
+  "asset": "STX",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b0b"
+  },
+  "asset": "SUKU",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b0c"
+  },
+  "asset": "SUN",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b0d"
+  },
+  "asset": "SUPER",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b0e"
+  },
+  "asset": "SUSHI",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b0f"
+  },
+  "asset": "SUTER",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b10"
+  },
+  "asset": "SWASH",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b11"
+  },
+  "asset": "SXP",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b12"
+  },
+  "asset": "SYLO",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "25"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b13"
+  },
+  "asset": "SYS",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b14"
+  },
+  "asset": "T",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b15"
+  },
+  "asset": "TARA",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b16"
+  },
+  "asset": "TEL",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b17"
+  },
+  "asset": "TFUEL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b18"
+  },
+  "asset": "THETA",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b19"
+  },
+  "asset": "TKO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b1a"
+  },
+  "asset": "TLM",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b1b"
+  },
+  "asset": "TNB",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b1c"
+  },
+  "asset": "TOKO",
+  "strategies": {
+    "kucoin": "Shad skip x2"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b1d"
+  },
+  "asset": "TOWER",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b1e"
+  },
+  "asset": "TRB",
+  "strategies": {
+    "htx": "Shad skip x2"
+  },
+  "maxExposure": {
+    "htx": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b1f"
+  },
+  "asset": "TRIAS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "15"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b20"
+  },
+  "asset": "TRIBE",
+  "strategies": {
+    "htx": "Shad skip x2"
+  },
+  "maxExposure": {
+    "htx": "15"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b21"
+  },
+  "asset": "TROY",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b22"
+  },
+  "asset": "TRVL",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b23"
+  },
+  "asset": "TRX",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "200"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b24"
+  },
+  "asset": "UFO",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b25"
+  },
+  "asset": "UMA",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b26"
+  },
+  "asset": "UNFI",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b27"
+  },
+  "asset": "UNI",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b28"
+  },
+  "asset": "UOS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b29"
+  },
+  "asset": "USDC",
+  "strategies": {
+    "binance": ""
+  },
+  "maxExposure": {
+    "binance": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b2a"
+  },
+  "asset": "USDT",
+  "strategies": {
+    "binance": "",
+    "gateio": "",
+    "htx": "",
+    "kucoin": "",
+    "okx": ""
+  },
+  "maxExposure": {
+    "binance": "",
+    "gateio": "",
+    "htx": "",
+    "kucoin": "",
+    "okx": ""
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b2b"
+  },
+  "asset": "UTK",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b2c"
+  },
+  "asset": "UUU",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b2d"
+  },
+  "asset": "VAI",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b2e"
+  },
+  "asset": "VALUE",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b2f"
+  },
+  "asset": "VEGA",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b30"
+  },
+  "asset": "VELO",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b31"
+  },
+  "asset": "VET",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b32"
+  },
+  "asset": "VIDT",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b33"
+  },
+  "asset": "VIDY",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b34"
+  },
+  "asset": "VLX",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b35"
+  },
+  "asset": "VOXEL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b36"
+  },
+  "asset": "VR",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b37"
+  },
+  "asset": "VRA",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b38"
+  },
+  "asset": "VSYS",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b39"
+  },
+  "asset": "VTHO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b3a"
+  },
+  "asset": "VXV",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b3b"
+  },
+  "asset": "WABI",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b3c"
+  },
+  "asset": "WAN",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b3d"
+  },
+  "asset": "WAVES",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "200"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b3e"
+  },
+  "asset": "WEST",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b3f"
+  },
+  "asset": "WICC",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b40"
+  },
+  "asset": "WILD",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b41"
+  },
+  "asset": "WIN",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b42"
+  },
+  "asset": "WING",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "25"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b43"
+  },
+  "asset": "WNXM",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "50"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b44"
+  },
+  "asset": "WOO",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b45"
+  },
+  "asset": "WPR",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b46"
+  },
+  "asset": "WTC",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b47"
+  },
+  "asset": "XAVA",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b48"
+  },
+  "asset": "XCAD",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b49"
+  },
+  "asset": "XCUR",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b4a"
+  },
+  "asset": "XDB",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b4b"
+  },
+  "asset": "XEC",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b4c"
+  },
+  "asset": "XEM",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b4d"
+  },
+  "asset": "XLM",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b4e"
+  },
+  "asset": "XMR",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b4f"
+  },
+  "asset": "XNL",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b50"
+  },
+  "asset": "XNO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b51"
+  },
+  "asset": "XPR",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b52"
+  },
+  "asset": "XRP",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b53"
+  },
+  "asset": "XRT",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b54"
+  },
+  "asset": "XTM",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b55"
+  },
+  "asset": "XTZ",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b56"
+  },
+  "asset": "XVS",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b57"
+  },
+  "asset": "XYM",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b58"
+  },
+  "asset": "XYO",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b59"
+  },
+  "asset": "YAM",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b5a"
+  },
+  "asset": "YEE",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b5b"
+  },
+  "asset": "YFI",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b5c"
+  },
+  "asset": "YGG",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b5d"
+  },
+  "asset": "YOYO",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b5e"
+  },
+  "asset": "ZCX",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b5f"
+  },
+  "asset": "ZEC",
+  "strategies": {
+    "kucoin": "Strategy 3"
+  },
+  "maxExposure": {
+    "kucoin": "25"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b60"
+  },
+  "asset": "ZEE",
+  "strategies": {
+    "kucoin": "Shad"
+  },
+  "maxExposure": {
+    "kucoin": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b61"
+  },
+  "asset": "ZEN",
+  "strategies": {
+    "htx": "Shad skip x2"
+  },
+  "maxExposure": {
+    "htx": "10"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b62"
+  },
+  "asset": "ZIL",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b63"
+  },
+  "asset": "ZKB",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b64"
+  },
+  "asset": "ZKS",
+  "strategies": {
+    "htx": "Shad"
+  },
+  "maxExposure": {
+    "htx": "5"
+  }
+},
+{
+  "_id": {
+    "$oid": "66dcdfa30726db7817a15b65"
+  },
+  "asset": "ZRX",
+  "strategies": {
+    "binance": "Shad"
+  },
+  "maxExposure": {
+    "binance": "5"
+  }
+}]

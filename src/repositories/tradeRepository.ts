@@ -14,8 +14,6 @@ export class TradeRepository {
 
     static async updateTradeById(updatedTrade: MappedTrade): Promise<boolean> {
         const { _id, ...mappedData } = updatedTrade;
-        console.log('tradeRepository updateTradeById _id', _id)
-
         return await MongodbService.updateOneData(TRADES_COLLECTION, { _id: new ObjectId(_id) }, { $set: mappedData })
     }
 

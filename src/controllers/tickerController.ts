@@ -10,7 +10,7 @@ import { isValidPlatform } from '@src/utils/platformUtil'
 async function getAllTickers(req: Request, res: Response): Promise<void> {
   try {
     const data = await TickerService.fetchDatabaseTickers()
-    res.status(200).json({ message: 'Tickers récupérés', data })
+    res.status(200).json({ status: "success", message: 'Tickers récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'getAllTickers')
   }
@@ -30,7 +30,7 @@ async function getAllTickersByPlatform(req: Request, res: Response): Promise<voi
 
   try {
     const data = await TickerService.getAllTickersByPlatform(platform)
-    res.status(200).json({ message: 'Tickers récupérés', data })
+    res.status(200).json({ status: "success", message: 'Tickers récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'getAllTickersByPlatform')
   }
@@ -49,7 +49,7 @@ async function getAllTickersBySymbolFromPlatform(req: Request, res: Response): P
 
   try {
     const data = await TickerService.getAllTickersBySymbolFromPlatform(platform, symbol)
-    res.status(200).json({ message: 'Tickers récupérés', data })
+    res.status(200).json({ status: "success", message: 'Tickers récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'getAllTickersBySymbolFromPlatform')
   }
@@ -61,7 +61,7 @@ async function getAllTickersBySymbolFromPlatform(req: Request, res: Response): P
 async function updateAllTickers(req: Request, res: Response): Promise<void> {
   try {
     const data = await TickerService.updateAllTickers()
-    res.status(200).json({ message: 'Tickers mis à jour', data })
+    res.status(200).json({ status: "success", message: 'Tickers mis à jour', data })
   } catch (error) {
     handleControllerError(res, error, 'updateAllTickers')
   }

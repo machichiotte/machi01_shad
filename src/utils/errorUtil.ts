@@ -2,25 +2,25 @@
 import { AuthenticationError } from 'ccxt'
 import { Response } from 'express'
 
-/*
-* Gestion des erreurs de réponse
-*/
 function handleControllerError(res: Response, error: unknown, functionName: string): void {
   if (error instanceof AuthenticationError) {
     console.error(`Controller Authentication error in ${functionName}:`, error.message)
     res.status(401).json({
+      status: "error",
       message: `Authentication error in ${functionName}`,
       error: error.message
     })
   } else if (error instanceof Error) {
     console.error(`Controller Error in ${functionName}:`, error)
     res.status(500).json({
+      status: "error",
       message: `Error in ${functionName}`,
       error: error.message
     })
   } else {
     console.error(`Controller Unknown error in ${functionName}:`, error)
     res.status(500).json({
+      status: "error",
       message: `Unknown error in ${functionName}`,
       error: error
     })

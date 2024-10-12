@@ -26,8 +26,8 @@ router.post('/market-buy-order', createMarketBuyOrder)
 router.post('/market-sell-order', createMarketSellOrder)
 router.post('/limit-sell-order', createLimitSellOrder)
 router.post('/limit-buy-order', createLimitBuyOrder)
-router.post('/cancel/all', cancelAllOrders)
-router.post('/cancel/all/sell', cancelAllSellOrders)
-router.post('/cancel/all/buy', cancelAllBuyOrders)
+router.post('/cancel-all', cancelAllOrders)
+router.post('/cancel-all-sell', cancelAllSellOrders)
+router.post('/cancel-all-buy', cancelAllBuyOrders)
 
 export default router

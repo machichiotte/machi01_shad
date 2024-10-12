@@ -24,7 +24,7 @@ function fileUploadMiddleware(req: FileUploadRequest, res: Response, next: NextF
   } catch (error) {
     // Gestion des erreurs
     console.error('Erreur lors du téléchargement du fichier:', error);
-    res.status(500).json({ success: false, message: 'Une erreur s\'est produite lors du téléchargement du fichier.', error: error instanceof Error ? error.message : String(error) });
+    res.status(500).json({ success: 'error', message: 'Une erreur s\'est produite lors du téléchargement du fichier.', error: error instanceof Error ? error.message : String(error) });
   }
 }
 

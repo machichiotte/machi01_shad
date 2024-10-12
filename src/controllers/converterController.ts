@@ -11,7 +11,10 @@ async function getConvertedCsv(req: Request, res: Response): Promise<void> {
   try {
     // Ensure the file is defined and of the correct type
     if (!req.file) {
-      res.status(400).json({ message: 'No file uploaded' })
+      res.status(400).json({
+        status: "error",
+        message: 'No file uploaded'
+      })
       return
     }
 
@@ -30,7 +33,7 @@ async function getConvertedCsv(req: Request, res: Response): Promise<void> {
           result.data.length > 0
             ? await convertToJSON(result.data as TradeModel[])
             : []
-        res.status(200).json({ message: 'CSV converted to JSON', data })
+        res.status(200).json({ status: "success", message: 'CSV converted to JSON', data })
       },
       error: (error: Papa.ParseError) => {
         handleControllerError(res, error, 'papaParse')

@@ -131,7 +131,6 @@ async function getTotalUSDTFromAPI(
  * Converts HTX model data to a standardized format.
  */
 async function convertModelHTX(data: Array<ModelHtx>): Promise<MappedTrade[]> {
-  console.log('🚀 ~ convertModelHTX ~ data:', data)
   const convertedData = await Promise.all(
     data.map(async (item) => {
       if (
@@ -172,7 +171,6 @@ async function convertModelHTX(data: Array<ModelHtx>): Promise<MappedTrade[]> {
  * Converts Binance model data to a standardized format.
  */
 async function convertModelBinance(data: Array<ModelBinance>): Promise<MappedTrade[]> {
-  console.log('🚀 ~ convertModelBinance ~ data:', data)
   const convertedData = await Promise.all(
     data.map(async (item) => {
       if (
@@ -231,7 +229,6 @@ async function convertModelBinance(data: Array<ModelBinance>): Promise<MappedTra
  * Converts KuCoin model data to a standardized format.
  */
 async function convertModelKucoin(data: Array<ModelKucoin>): Promise<MappedTrade[]> {
-  console.log('🚀 ~ convertModelKucoin ~ data:', data)
   const convertedData = await Promise.all(
     data.map(async (item) => {
       if (item && item.Symbol && item.Symbol.includes('-')) {
@@ -261,8 +258,6 @@ async function convertModelKucoin(data: Array<ModelKucoin>): Promise<MappedTrade
  * Converts OKX model data to a standardized format.
  */
 async function convertModelOkx(data: Array<ModelOkx>): Promise<Omit<MappedTrade, '_id'>[]> {
-  console.log('🚀 ~ convertModelOkx ~ data:', data)
-
   const processedOrders = new Map<string, Omit<MappedTrade, '_id'>>()
 
   const convertItem = async (item: ModelOkx) => {
@@ -290,11 +285,8 @@ async function convertModelOkx(data: Array<ModelOkx>): Promise<Omit<MappedTrade,
       return null
     }
 
-    console.log('🚀 ~ convertItem ~ orderId:', orderId)
     if (processedOrders.has(orderId)) {
       const previousObject = processedOrders.get(orderId)!
-
-      console.log('🚀 ~ convertItem ~ already processed orderId:', orderId)
 
       if (base === balanceUnit) {
         Object.assign(previousObject, {
@@ -348,8 +340,6 @@ async function convertModelOkx(data: Array<ModelOkx>): Promise<Omit<MappedTrade,
       return order
     }
   )
-
-  console.log('🚀 ~ convertModelOkx ~ allProcessedOrders:', allProcessedOrders)
 
   return allProcessedOrders.filter(Boolean)
 }
