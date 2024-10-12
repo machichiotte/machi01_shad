@@ -127,7 +127,6 @@ const updateSelectedAssets = (newSelection: Machi[]): void => {
 
 // Function to update selected platforms
 const updateSelectedPlatforms = (newPlatforms: string[]): void => {
-  console.log('updateSelectedPlatforms', newPlatforms)
   selectedPlatforms.value = newPlatforms
 }
 

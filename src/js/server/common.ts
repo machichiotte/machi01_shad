@@ -6,17 +6,16 @@ const serverHost: string = import.meta.env.VITE_SERVER_HOST as string; // Centra
 // Fonction utilitaire pour traiter la réponse
 const handleApiResponse = async <T>(response: Response): Promise<ApiResponse<T>> => {
     const jsonResponse = (await response.json()) as ApiResponse<T>;
-
     if (!response.ok || jsonResponse.status !== 'success') {
         throw new Error(jsonResponse.error || `Failed request with status ${response.status}`);
     }
 
-    //console.log('handleApiResponse', jsonResponse.message)
+    console.log('handleApiResponse', jsonResponse.message) //IMPORTANT POUR LES BUGS
 
     return jsonResponse;
 };
 
-// Fonction pour envoyer une requête HTTP
+// Fonction pour envoyer une requête HTTP (POST)
 const executeApiRequest = async <T>(
     endpoint: string,
     requestBody: Record<string, unknown>,  // Plus précis que "Object"

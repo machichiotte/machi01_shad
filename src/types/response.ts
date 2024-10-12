@@ -3,6 +3,6 @@ export interface ApiResponse<T> {
     status: 'success' | 'error';
     message: string;
     timestamp: number;
-    data: T | null;
+    data?: T | null;
     error?: string | null;
 }

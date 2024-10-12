@@ -9,11 +9,11 @@ import Trades from '../components/trade/Trades.vue'
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', name: 'home', component: Home },
-  { path: '/orders', name: 'orders', component: Orders },
+  { path: '/order', name: 'order', component: Orders },
   { path: '/cmc', name: 'cmc', component: Cmc },
   { path: '/machi', name: 'machi', component: Machi },
   { path: '/strategy', name: 'strategy', component: Strategy },
-  { path: '/trades', name: 'trades', component: Trades },
+  { path: '/trade', name: 'trade', component: Trades },
 ]
 
 const router = createRouter({

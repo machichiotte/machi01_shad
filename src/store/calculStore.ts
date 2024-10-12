@@ -13,7 +13,6 @@ import { TYPES, Balance, Cmc, Order, Machi, Strat, Trade, Ticker } from '../type
 
 export const useCalculStore = defineStore('calcul', {
   state: () => ({
-    fetchStrategy,
     balance: [] as Balance[],
     cmc: [] as Cmc[],
     order: [] as Order[],
@@ -83,8 +82,9 @@ export const useCalculStore = defineStore('calcul', {
       if (!lastFetch || this.shouldFetchData(lastFetch)) {
         try {
           const result = await fetchFn()
+
           if (result) {
-            setFn(result.data)
+            setFn(result)
             this.setLastFetchTimestamp({ type, timestamp: now })
           }
         } catch (error) {

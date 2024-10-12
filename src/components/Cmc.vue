@@ -43,7 +43,6 @@ const cmcItems = computed(() => calculStore.getCmc)
 const getCmcData = async () => {
   try {
     await calculStore.loadCmc();
-    console.log("CMC data retrieved:", calculStore.getCmc)
   } catch (error) {
     console.error("An error occurred while retrieving data:", error)
   }

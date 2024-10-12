@@ -6,20 +6,20 @@ const ENDPOINTS: Record<string, string> = {
   CMC: '/cmc/get',
   STRATEGY: '/strategy/get',
   BALANCE: '/balance/get',
-  TRADES: '/trades/get',
-  ORDERS: '/order/get',
-  TICKERS: '/tickers/get',
+  TRADE: '/trade/get',
+  ORDER: '/order/get',
+  TICKER: '/ticker/get',
   MACHI: '/shad/get'
 };
 
 // Wrapper functions for fetching different types of data
 const fetchBalance = (): Promise<Balance[]> => fetchApiData<Balance[]>(ENDPOINTS.BALANCE);
 const fetchCmc = (): Promise<Cmc[]> => fetchApiData<Cmc[]>(ENDPOINTS.CMC);
-const fetchOrder = (): Promise<Order[]> => fetchApiData<Order[]>(ENDPOINTS.ORDERS);
+const fetchOrder = (): Promise<Order[]> => fetchApiData<Order[]>(ENDPOINTS.ORDER);
 const fetchMachi = (): Promise<Machi[]> => fetchApiData<Machi[]>(ENDPOINTS.MACHI);
 const fetchStrategy = (): Promise<Strat[]> => fetchApiData<Strat[]>(ENDPOINTS.STRATEGY);
-const fetchTicker = (): Promise<Ticker[]> => fetchApiData<Ticker[]>(ENDPOINTS.TICKERS);
-const fetchTrade = (): Promise<Trade[]> => fetchApiData<Trade[]>(ENDPOINTS.TRADES);
+const fetchTicker = (): Promise<Ticker[]> => fetchApiData<Ticker[]>(ENDPOINTS.TICKER);
+const fetchTrade = (): Promise<Trade[]> => fetchApiData<Trade[]>(ENDPOINTS.TRADE);
 
 export {
   fetchBalance,

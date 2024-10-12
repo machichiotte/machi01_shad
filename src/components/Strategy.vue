@@ -77,11 +77,12 @@ const strategiesList = ref(strategies);
 const exposures = ref([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000]);
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
 
-const balance = computed(() => calculStore.getBalances);
-const strat = computed(() => calculStore.getStrats);
+const balance = computed(() => calculStore.getBalance);
+
+const strat = computed(() => calculStore.getStrat);
+
 const platforms = computed(() => [...new Set(balance.value.map((item) => item.platform))].sort());
 const assets = computed(() => [...new Set(balance.value.map((item) => item.base))].sort());
-
 const columns = computed(() => {
   return [
     { field: 'asset', header: 'Asset' },
@@ -90,9 +91,18 @@ const columns = computed(() => {
 });
 
 const tableData = computed(() => {
+  if (!assets.value.length) {
+    console.error('Aucun asset trouvé');
+    return [];
+  }
+
   return assets.value.map(asset => {
+
     const row = { asset };
+
+
     platforms.value.forEach(platform => {
+
       row[platform] = {
         strategy: getSelectedStrategy(strat, asset, platform),
         maxExposure: getSelectedMaxExposure(strat, asset, platform),
@@ -103,16 +113,19 @@ const tableData = computed(() => {
   });
 });
 
+const getStrategyData = async () => {
+  try {
+    await calculStore.loadStrat();
+    await calculStore.loadBalance();
+  } catch (error) {
+    console.error("An error occurred while retrieving data:", error);
+  }
+};
+
 async function updateAllStrats() {
   successSpin('Saving strategies...');
   try {
-    await fetch(`${serverHost}/strategy/update`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ strategies: strat.value }),
-    });
+    await updateStrategies(strat.value)
     successSpin('Strategies saved successfully!');
   } catch (error) {
     errorSpin('Error saving strategies: ', error.message);
@@ -122,19 +135,16 @@ async function updateAllStrats() {
 async function updateAllMaxExposure() {
   successSpin('Updating max exposure...');
   try {
-    //TODO faire modif ici
-    await fetch(`${serverHost}/api/updateMaxExposure`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ maxExposure: strat.value }),
-    });
+    await updateMaxExposure(strat.value)
     successSpin('Max exposure updated successfully!');
   } catch (error) {
     errorSpin('Error updating max exposure: ', error.message);
   }
 }
+
+onMounted(async () => {
+  await getStrategyData();
+});
 </script>
 
 <style scoped>
