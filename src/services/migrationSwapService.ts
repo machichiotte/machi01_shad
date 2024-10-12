@@ -36,10 +36,10 @@ export class MigrationSwapService {
   }
 
   static async updateStrategy(strategy: MappedStrat, newAsset: string, platform: string): Promise<void> {
-    const updatedStrategy = { ...strategy, asset: newAsset };
+    const updatedStrategy = { ...strategy, base: newAsset };
     if (strategy._id && updatedStrategy) {
       await StrategyService.updateStrategyById(updatedStrategy);
-      console.info(`Strategy swap completed for ${strategy.asset} to ${newAsset} on platform ${platform}.`);
+      console.info(`Strategy swap completed for ${strategy.base} to ${newAsset} on platform ${platform}.`);
     }
   }
 
@@ -54,7 +54,7 @@ export class MigrationSwapService {
       const now = new Date();
 
       for (const swap of swaps) {
-        const { oldAsset, newAsset, swapRate, platform, delistingDate } = swap;
+        const { oldBase: oldAsset, newBase: newAsset, swapRate, platform, delistingDate } = swap;
         const delisting = new Date(delistingDate);
 
         if (now < delisting) {
@@ -70,7 +70,7 @@ export class MigrationSwapService {
           .map(trade => this.updateTrade(trade, oldAsset, newAsset, swapMultiplier, platform));
 
         const strategyUpdates = strategies
-          .filter(strategy => strategy.asset === oldAsset && strategy.strategies[platform])
+          .filter(strategy => strategy.base === oldAsset && strategy.strategies[platform])
           .map(strategy => this.updateStrategy(strategy, newAsset, platform));
 
         await Promise.all([...tradeUpdates, ...strategyUpdates]);

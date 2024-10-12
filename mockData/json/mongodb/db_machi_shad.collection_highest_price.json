@@ -1,0 +1,720 @@
+[{
+  "_id": {
+    "$oid": "66eb230747c6dcc2bb3672c0"
+  },
+  "base": "SCLP",
+  "platform": "kucoin",
+  "highestPrice": 0.2325
+},
+{
+  "_id": {
+    "$oid": "66eb230e47c6dcc2bb367a8a"
+  },
+  "platform": "kucoin",
+  "base": "FRM",
+  "highestPrice": 0.01814
+},
+{
+  "_id": {
+    "$oid": "66eb327b47c6dcc2bb48a3e9"
+  },
+  "platform": "kucoin",
+  "base": "XMR",
+  "highestPrice": 171.57
+},
+{
+  "_id": {
+    "$oid": "66eb328047c6dcc2bb48ab19"
+  },
+  "base": "RUNE",
+  "platform": "kucoin",
+  "highestPrice": 4.0596
+},
+{
+  "_id": {
+    "$oid": "66eb328647c6dcc2bb48b6df"
+  },
+  "platform": "kucoin",
+  "base": "RENDER",
+  "highestPrice": 4.829
+},
+{
+  "_id": {
+    "$oid": "66eb328b47c6dcc2bb48bcb2"
+  },
+  "platform": "kucoin",
+  "base": "ZEC",
+  "highestPrice": 30.146
+},
+{
+  "_id": {
+    "$oid": "66eb329147c6dcc2bb48c25d"
+  },
+  "base": "DOGE",
+  "platform": "kucoin",
+  "highestPrice": 0.10216
+},
+{
+  "_id": {
+    "$oid": "66eb329647c6dcc2bb48c80a"
+  },
+  "platform": "kucoin",
+  "base": "ODDZ",
+  "highestPrice": 0.00625
+},
+{
+  "_id": {
+    "$oid": "66eb329c47c6dcc2bb48cf29"
+  },
+  "platform": "kucoin",
+  "base": "AIOZ",
+  "highestPrice": 0.374
+},
+{
+  "_id": {
+    "$oid": "66eb32a447c6dcc2bb48d7b5"
+  },
+  "base": "XCUR",
+  "platform": "kucoin",
+  "highestPrice": 0.006055
+},
+{
+  "_id": {
+    "$oid": "66eb32aa47c6dcc2bb48dde8"
+  },
+  "base": "BTT",
+  "platform": "kucoin",
+  "highestPrice": 8.657e-7
+},
+{
+  "_id": {
+    "$oid": "66eb32b147c6dcc2bb48e9de"
+  },
+  "base": "REVU",
+  "platform": "kucoin",
+  "highestPrice": 0.00908
+},
+{
+  "_id": {
+    "$oid": "66eb32b747c6dcc2bb48f18f"
+  },
+  "base": "BAX",
+  "platform": "kucoin",
+  "highestPrice": 0.00005976
+},
+{
+  "_id": {
+    "$oid": "66eb32bc47c6dcc2bb48f723"
+  },
+  "platform": "kucoin",
+  "base": "TOKO",
+  "highestPrice": 0.0005471
+},
+{
+  "_id": {
+    "$oid": "66eb32c247c6dcc2bb48fd84"
+  },
+  "platform": "kucoin",
+  "base": "SENSO",
+  "highestPrice": 0.0389
+},
+{
+  "_id": {
+    "$oid": "66eb32c747c6dcc2bb4903aa"
+  },
+  "base": "DYP",
+  "platform": "kucoin",
+  "highestPrice": 0.02375
+},
+{
+  "_id": {
+    "$oid": "66eb32cd47c6dcc2bb490935"
+  },
+  "platform": "kucoin",
+  "base": "VSYS",
+  "highestPrice": 0.0004523
+},
+{
+  "_id": {
+    "$oid": "66eb32d347c6dcc2bb490feb"
+  },
+  "base": "SUTER",
+  "platform": "kucoin",
+  "highestPrice": 0.0002074
+},
+{
+  "_id": {
+    "$oid": "66eb32da47c6dcc2bb491846"
+  },
+  "platform": "kucoin",
+  "base": "XYM",
+  "highestPrice": 0.01455
+},
+{
+  "_id": {
+    "$oid": "66eb32e047c6dcc2bb491e59"
+  },
+  "base": "PBR",
+  "platform": "kucoin",
+  "highestPrice": 0.02846
+},
+{
+  "_id": {
+    "$oid": "66eb32e547c6dcc2bb492640"
+  },
+  "base": "DEGO",
+  "platform": "kucoin",
+  "highestPrice": 1.4611
+},
+{
+  "_id": {
+    "$oid": "66eb32ec47c6dcc2bb492f3a"
+  },
+  "base": "SWASH",
+  "platform": "kucoin",
+  "highestPrice": 0.00551
+},
+{
+  "_id": {
+    "$oid": "66eb32f147c6dcc2bb49390a"
+  },
+  "base": "PRE",
+  "platform": "kucoin",
+  "highestPrice": 0.00951
+},
+{
+  "_id": {
+    "$oid": "66eb32f647c6dcc2bb493e0e"
+  },
+  "base": "CWS",
+  "platform": "kucoin",
+  "highestPrice": 0.2379
+},
+{
+  "_id": {
+    "$oid": "66eb32fc47c6dcc2bb494482"
+  },
+  "base": "SUN",
+  "platform": "kucoin",
+  "highestPrice": 0.0236
+},
+{
+  "_id": {
+    "$oid": "66eb330247c6dcc2bb494ac6"
+  },
+  "base": "VELO",
+  "platform": "kucoin",
+  "highestPrice": 0.016025
+},
+{
+  "_id": {
+    "$oid": "66eb330747c6dcc2bb494fb8"
+  },
+  "platform": "kucoin",
+  "base": "DAO",
+  "highestPrice": 0.275
+},
+{
+  "_id": {
+    "$oid": "66eb330e47c6dcc2bb4956c4"
+  },
+  "platform": "kucoin",
+  "base": "POLK",
+  "highestPrice": 0.01099
+},
+{
+  "_id": {
+    "$oid": "66eb331347c6dcc2bb495ca0"
+  },
+  "platform": "kucoin",
+  "base": "MAPO",
+  "highestPrice": 0.009815
+},
+{
+  "_id": {
+    "$oid": "66eb331947c6dcc2bb49635b"
+  },
+  "base": "IDEA",
+  "platform": "kucoin",
+  "highestPrice": 0.000844
+},
+{
+  "_id": {
+    "$oid": "66eb331f47c6dcc2bb49690c"
+  },
+  "base": "PLU",
+  "platform": "kucoin",
+  "highestPrice": 2.143
+},
+{
+  "_id": {
+    "$oid": "66eb332547c6dcc2bb49721c"
+  },
+  "platform": "kucoin",
+  "base": "ACE",
+  "highestPrice": 0.00213
+},
+{
+  "_id": {
+    "$oid": "66eb332b47c6dcc2bb497ae6"
+  },
+  "platform": "kucoin",
+  "base": "NIM",
+  "highestPrice": 0.0011838
+},
+{
+  "_id": {
+    "$oid": "66eb333247c6dcc2bb4983f1"
+  },
+  "base": "LYM",
+  "platform": "kucoin",
+  "highestPrice": 0.0010712
+},
+{
+  "_id": {
+    "$oid": "66eb333747c6dcc2bb498978"
+  },
+  "base": "JST",
+  "platform": "kucoin",
+  "highestPrice": 0.02745
+},
+{
+  "_id": {
+    "$oid": "66eb333c47c6dcc2bb498f7e"
+  },
+  "base": "SYLO",
+  "platform": "kucoin",
+  "highestPrice": 0.000865
+},
+{
+  "_id": {
+    "$oid": "66eb334147c6dcc2bb4995cb"
+  },
+  "base": "API3",
+  "platform": "kucoin",
+  "highestPrice": 1.5699
+},
+{
+  "_id": {
+    "$oid": "66eb334847c6dcc2bb499d3d"
+  },
+  "base": "SHR",
+  "platform": "kucoin",
+  "highestPrice": 0.001381
+},
+{
+  "_id": {
+    "$oid": "66eb334e47c6dcc2bb49a415"
+  },
+  "platform": "kucoin",
+  "base": "HTR",
+  "highestPrice": 0.03775
+},
+{
+  "_id": {
+    "$oid": "66eb335347c6dcc2bb49aa02"
+  },
+  "base": "MTV",
+  "platform": "kucoin",
+  "highestPrice": 0.0006872
+},
+{
+  "_id": {
+    "$oid": "66eb335847c6dcc2bb49afb7"
+  },
+  "platform": "kucoin",
+  "base": "UOS",
+  "highestPrice": 0.08192
+},
+{
+  "_id": {
+    "$oid": "66eb335e47c6dcc2bb49b62e"
+  },
+  "platform": "kucoin",
+  "base": "CIRUS",
+  "highestPrice": 0.00837
+},
+{
+  "_id": {
+    "$oid": "66eb336347c6dcc2bb49bdc5"
+  },
+  "platform": "kucoin",
+  "base": "ABBC",
+  "highestPrice": 0.0061
+},
+{
+  "_id": {
+    "$oid": "66eb336847c6dcc2bb49c7d3"
+  },
+  "platform": "kucoin",
+  "base": "GAS",
+  "highestPrice": 3.2729
+},
+{
+  "_id": {
+    "$oid": "66eb336e47c6dcc2bb49ce6c"
+  },
+  "base": "GODS",
+  "platform": "kucoin",
+  "highestPrice": 0.1822
+},
+{
+  "_id": {
+    "$oid": "66eb337347c6dcc2bb49d432"
+  },
+  "platform": "kucoin",
+  "base": "VIDT",
+  "highestPrice": 0.04318
+},
+{
+  "_id": {
+    "$oid": "66eb337947c6dcc2bb49da7d"
+  },
+  "base": "HNT",
+  "platform": "kucoin",
+  "highestPrice": 7.021
+},
+{
+  "_id": {
+    "$oid": "66eb337e47c6dcc2bb49dfba"
+  },
+  "base": "DYDX",
+  "platform": "kucoin",
+  "highestPrice": 0.8524
+},
+{
+  "_id": {
+    "$oid": "66eb338447c6dcc2bb49e65f"
+  },
+  "platform": "kucoin",
+  "base": "CTI",
+  "highestPrice": 0.017018
+},
+{
+  "_id": {
+    "$oid": "66eb338947c6dcc2bb49ec79"
+  },
+  "platform": "kucoin",
+  "base": "POLX",
+  "highestPrice": 0.0000057
+},
+{
+  "_id": {
+    "$oid": "66eb338e47c6dcc2bb49f1d8"
+  },
+  "base": "ALEPH",
+  "platform": "kucoin",
+  "highestPrice": 0.1519
+},
+{
+  "_id": {
+    "$oid": "66eb339347c6dcc2bb49f735"
+  },
+  "platform": "kucoin",
+  "base": "SNX",
+  "highestPrice": 1.392
+},
+{
+  "_id": {
+    "$oid": "66eb339847c6dcc2bb49fe25"
+  },
+  "platform": "kucoin",
+  "base": "TEL",
+  "highestPrice": 0.001646
+},
+{
+  "_id": {
+    "$oid": "66eb339f47c6dcc2bb4a0716"
+  },
+  "platform": "kucoin",
+  "base": "NFT",
+  "highestPrice": 4.1e-7
+},
+{
+  "_id": {
+    "$oid": "66eb33a547c6dcc2bb4a127d"
+  },
+  "base": "KLV",
+  "platform": "kucoin",
+  "highestPrice": 0.001783
+},
+{
+  "_id": {
+    "$oid": "66eb33ab47c6dcc2bb4a19bd"
+  },
+  "platform": "kucoin",
+  "base": "ROSE",
+  "highestPrice": 0.0604
+},
+{
+  "_id": {
+    "$oid": "66eb33b147c6dcc2bb4a240e"
+  },
+  "platform": "kucoin",
+  "base": "PROM",
+  "highestPrice": 5.121
+},
+{
+  "_id": {
+    "$oid": "66eb33b647c6dcc2bb4a2a17"
+  },
+  "platform": "kucoin",
+  "base": "SHIB",
+  "highestPrice": 0.000013483
+},
+{
+  "_id": {
+    "$oid": "66eb33bc47c6dcc2bb4a301f"
+  },
+  "platform": "kucoin",
+  "base": "AKT",
+  "highestPrice": 2.4934
+},
+{
+  "_id": {
+    "$oid": "66eb33c247c6dcc2bb4a3732"
+  },
+  "platform": "kucoin",
+  "base": "SKEY",
+  "highestPrice": 0.04975
+},
+{
+  "_id": {
+    "$oid": "66eb33c847c6dcc2bb4a3e13"
+  },
+  "platform": "kucoin",
+  "base": "EQX",
+  "highestPrice": 0.002996
+},
+{
+  "_id": {
+    "$oid": "66eb33cd47c6dcc2bb4a442d"
+  },
+  "platform": "kucoin",
+  "base": "LPOOL",
+  "highestPrice": 0.06048
+},
+{
+  "_id": {
+    "$oid": "66eb33d347c6dcc2bb4a4b26"
+  },
+  "platform": "kucoin",
+  "base": "CPOOL",
+  "highestPrice": 0.12798
+},
+{
+  "_id": {
+    "$oid": "66eb33d947c6dcc2bb4a5142"
+  },
+  "platform": "kucoin",
+  "base": "KAI",
+  "highestPrice": 0.0018812
+},
+{
+  "_id": {
+    "$oid": "66eb33df47c6dcc2bb4a5c5c"
+  },
+  "platform": "kucoin",
+  "base": "NETVR",
+  "highestPrice": 0.06142
+},
+{
+  "_id": {
+    "$oid": "66eb33e647c6dcc2bb4a6332"
+  },
+  "base": "FEAR",
+  "platform": "kucoin",
+  "highestPrice": 0.05494
+},
+{
+  "_id": {
+    "$oid": "66eb33eb47c6dcc2bb4a67e3"
+  },
+  "platform": "kucoin",
+  "base": "WEST",
+  "highestPrice": 0.032379
+},
+{
+  "_id": {
+    "$oid": "66eb33f047c6dcc2bb4a6cda"
+  },
+  "base": "CREDI",
+  "platform": "kucoin",
+  "highestPrice": 0.01469
+},
+{
+  "_id": {
+    "$oid": "66eb33f647c6dcc2bb4a73ac"
+  },
+  "base": "MLK",
+  "platform": "kucoin",
+  "highestPrice": 0.20327
+},
+{
+  "_id": {
+    "$oid": "66eb33fb47c6dcc2bb4a7972"
+  },
+  "base": "GMEE",
+  "platform": "kucoin",
+  "highestPrice": 0.012977
+},
+{
+  "_id": {
+    "$oid": "66eb340047c6dcc2bb4a7f35"
+  },
+  "platform": "kucoin",
+  "base": "GLQ",
+  "highestPrice": 0.0579
+},
+{
+  "_id": {
+    "$oid": "66eb340647c6dcc2bb4a8549"
+  },
+  "base": "CRO",
+  "platform": "kucoin",
+  "highestPrice": 0.08
+},
+{
+  "_id": {
+    "$oid": "66eb340c47c6dcc2bb4a8bb2"
+  },
+  "base": "ORBS",
+  "platform": "kucoin",
+  "highestPrice": 0.02296
+},
+{
+  "_id": {
+    "$oid": "66eb341247c6dcc2bb4a9213"
+  },
+  "base": "KCS",
+  "platform": "kucoin",
+  "highestPrice": 7.314
+},
+{
+  "_id": {
+    "$oid": "66eb341a47c6dcc2bb4a9e94"
+  },
+  "platform": "kucoin",
+  "base": "ORAI",
+  "highestPrice": 5.407
+},
+{
+  "_id": {
+    "$oid": "66eb341f47c6dcc2bb4aa642"
+  },
+  "platform": "kucoin",
+  "base": "STND",
+  "highestPrice": 0.015939
+},
+{
+  "_id": {
+    "$oid": "66eb342647c6dcc2bb4aacb2"
+  },
+  "platform": "kucoin",
+  "base": "XPR",
+  "highestPrice": 0.0008286
+},
+{
+  "_id": {
+    "$oid": "66eb342c47c6dcc2bb4ab406"
+  },
+  "platform": "kucoin",
+  "base": "TRIAS",
+  "highestPrice": 4.145
+},
+{
+  "_id": {
+    "$oid": "66eb343347c6dcc2bb4abac2"
+  },
+  "base": "ZCX",
+  "platform": "kucoin",
+  "highestPrice": 0.08968
+},
+{
+  "_id": {
+    "$oid": "66eb343847c6dcc2bb4ac06b"
+  },
+  "platform": "kucoin",
+  "base": "PRQ",
+  "highestPrice": 0.09896
+},
+{
+  "_id": {
+    "$oid": "66eb343e47c6dcc2bb4ac68c"
+  },
+  "platform": "kucoin",
+  "base": "GHX",
+  "highestPrice": 0.0719
+},
+{
+  "_id": {
+    "$oid": "66eb352b47c6dcc2bb4be185"
+  },
+  "base": "AGLD",
+  "platform": "kucoin",
+  "highestPrice": 0.8969
+},
+{
+  "_id": {
+    "$oid": "66eb353047c6dcc2bb4be83e"
+  },
+  "base": "BOND",
+  "platform": "kucoin",
+  "highestPrice": 1.885
+},
+{
+  "_id": {
+    "$oid": "66eb353647c6dcc2bb4beea8"
+  },
+  "platform": "kucoin",
+  "base": "CUDOS",
+  "highestPrice": 0.008997
+},
+{
+  "_id": {
+    "$oid": "66eb353b47c6dcc2bb4bf53c"
+  },
+  "base": "NAKA",
+  "platform": "kucoin",
+  "highestPrice": 0.8004
+},
+{
+  "_id": {
+    "$oid": "66eb354147c6dcc2bb4bfbe3"
+  },
+  "base": "LIKE",
+  "platform": "kucoin",
+  "highestPrice": 0.04468
+},
+{
+  "_id": {
+    "$oid": "66eb354a47c6dcc2bb4c0993"
+  },
+  "base": "HAPI",
+  "platform": "kucoin",
+  "highestPrice": 8.4323
+},
+{
+  "_id": {
+    "$oid": "66eb355047c6dcc2bb4c10e5"
+  },
+  "platform": "kucoin",
+  "base": "KLAY",
+  "highestPrice": 0.1298
+},
+{
+  "_id": {
+    "$oid": "66eb355747c6dcc2bb4c18a4"
+  },
+  "base": "GAFI",
+  "platform": "kucoin",
+  "highestPrice": 2.523
+},
+{
+  "_id": {
+    "$oid": "66eb39a947c6dcc2bb516ce6"
+  },
+  "platform": "kucoin",
+  "base": "VXV",
+  "highestPrice": 0.3775
+}]

@@ -16,11 +16,11 @@ import { calculatePercentageChange, calculateProgressPercentage } from '@src/uti
 
 /**
  * Default metrics object with initial values set to "N/A".
- * This serves as a template for asset metrics.
+ * This serves as a template for base metrics.
  */
 const DEFAULT_METRICS: AssetMetrics = {
   iconUrl: 'N/A',
-  asset: 'N/A',
+  base: 'N/A',
   status: 'N/A',
   strat: 'N/A',
   ratioShad: 'N/A',
@@ -51,7 +51,7 @@ const DEFAULT_METRICS: AssetMetrics = {
 }
 
 /**
- * Retrieves the current price of an asset from the last tickers.
+ * Retrieves the current price of a base from the last tickers.
  */
 function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: string): number | undefined {
   if (!Array.isArray(lastTickers) || !base || !platform) {
@@ -68,28 +68,28 @@ function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: st
 }
 
 /**
- * Calculates various metrics for a given asset.
+ * Calculates various metrics for a given base.
 - */
-function calculateAssetMetrics(asset: string, platform: PLATFORM, assetBalance: MappedBalance, closestCmc: MappedCmc | null, lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: Omit<MappedStrat, '_id'>, lastTickers: MappedTicker[]): AssetMetrics {
-  const balance = getBalanceBySymbol(asset, assetBalance)
-  const currentPrice = getCurrentPrice(lastTickers, asset, platform)
+function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: MappedBalance, closestCmc: MappedCmc | null, lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: Omit<MappedStrat, '_id'>, lastTickers: MappedTicker[]): AssetMetrics {
+  const balance = getBalanceBySymbol(base, mappedBalance)
+  const currentPrice = getCurrentPrice(lastTickers, base, platform)
   const cmcValues = closestCmc ? getCmcValues(closestCmc, currentPrice) : { cmc_rank: 'N/A', price: 'N/A' }
-  const totalSell = getTotalSell(asset, lastTrades)
+  const totalSell = getTotalSell(base, lastTrades)
 
   const { buyOrders, sellOrders } = filterOpenOrdersBySide(
     lastOpenOrders,
     platform,
-    asset
+    base
   )
 
   const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(
-    asset,
+    base,
     lastTrades
   )
 
   const baseMetrics: AssetMetrics = {
     ...DEFAULT_METRICS,
-    asset,
+    base,
     currentPrice,
     currentPossession: getCurrentPossession(currentPrice, balance),
     totalAmount,
@@ -98,7 +98,7 @@ function calculateAssetMetrics(asset: string, platform: PLATFORM, assetBalance: 
     platform
   }
 
-  if (STABLECOINS.includes(asset)) {
+  if (STABLECOINS.includes(base)) {
     return { ...baseMetrics, status: 'stable coin' }
   }
 
@@ -119,7 +119,7 @@ function calculateAssetMetrics(asset: string, platform: PLATFORM, assetBalance: 
     }
   }
 
-  const recups = calculateRecups(asset, platform, totalBuy, totalSell, strategy)
+  const recups = calculateRecups(base, platform, totalBuy, totalSell, strategy)
   const amountsAndPrices = calculateAmountsAndPricesForShad(
     recups.recupTp1,
     balance,
@@ -150,7 +150,7 @@ function calculateAssetMetrics(asset: string, platform: PLATFORM, assetBalance: 
     )
   }
 
-  //console.log(`Métriques finales calculées pour ${asset}:`, finalMetrics);
+  //console.log(`Métriques finales calculées pour ${base}:`, finalMetrics);
   return finalMetrics;
 }
 

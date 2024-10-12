@@ -182,8 +182,8 @@ export class ProcessorService {
       QUOTE_CURRENCIES.some(quote => order.symbol === `${assetBase}/${quote}`)
     )
     const assetStrategy = dbStrategies.find(
-      (strategy) => strategy.asset === assetBase && strategy.strategies[assetPlatform]
-    ) || { asset: '', strategies: {}, maxExposure: {} } as MappedStrat
+      (strategy) => strategy.base === assetBase && strategy.strategies[assetPlatform]
+    ) || { base: '', strategies: {}, maxExposure: {} } as MappedStrat
     const assetTicker = dbTickers.filter(
       (ticker) => ticker.symbol.startsWith(`${assetBase}/`) && ticker.platform === assetPlatform
     )
@@ -203,7 +203,7 @@ export class ProcessorService {
           closestCmc,
           [],
           [],
-          { asset: '', strategies: {}, maxExposure: {} },
+          { base: '', strategies: {}, maxExposure: {} },
           assetTicker
         )
       } else {

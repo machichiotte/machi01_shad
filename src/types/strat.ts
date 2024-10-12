@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 
 export interface MappedStrat {
     _id: ObjectId;
-    asset: string
+    base: string
     strategies: {
         [key: string]: string
     }

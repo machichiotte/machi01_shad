@@ -89,7 +89,7 @@ function getRatioShad(strat: string): number {
 /**
  * Calculates various recovery amounts and strategy parameters
  */
-function calculateRecups(asset: string, platform: string, totalBuy: number, totalSell: number, myStrat: Omit<MappedStrat, '_id'>) {
+function calculateRecups(base: string, platform: string, totalBuy: number, totalSell: number, myStrat: Omit<MappedStrat, '_id'>) {
   const strat = myStrat.strategies[platform] || 'No strategy';
   const stratExpo = myStrat.maxExposure[platform] || MAX_EXPO;
   const maxExposition = Math.max(5 + 0.05, Math.min(totalBuy, stratExpo || MAX_EXPO))

@@ -19,11 +19,11 @@ async function getShad(req: Request, res: Response): Promise<void> {
 async function handleTrailingStopHedge(req: Request, res: Response): Promise<void> {
   try {
     // Vérifie si des actifs sélectionnés sont fournis dans les paramètres, sinon les définit comme undefined
-    const simplifiedSelectedAssets = req.params.simplifiedSelectedAssets
-      ? JSON.parse(req.params.simplifiedSelectedAssets as string) as Array<{ base: string, platform: string }>
+    const simplifiedSelectedBases = req.params.simplifiedSelectedBases
+      ? JSON.parse(req.params.simplifiedSelectedBases as string) as Array<{ base: string, platform: string }>
       : undefined;
 
-    const data = await TrailingStopService.handleTrailingStopHedge(simplifiedSelectedAssets);
+    const data = await TrailingStopService.handleTrailingStopHedge(simplifiedSelectedBases);
     res.status(200).json({ status: "success", message: 'Mise à jour des ordres de trailing stop terminée', data });
   } catch (error) {
     handleControllerError(res, error, 'handleTrailingStopHedge');

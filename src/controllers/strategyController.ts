@@ -38,7 +38,7 @@ async function updateStrategyById(req: Request, res: Response): Promise<void> {
   const updatedStrategy = req.body.data as MappedStrat
   try {
     const data = await StrategyService.updateStrategyById(updatedStrategy)
-    res.json({ status: "success", message: `La strategie de ${updatedStrategy.asset} a été mise à jour`, data })
+    res.json({ status: "success", message: `La strategie de ${updatedStrategy.base} a été mise à jour`, data })
   } catch (error) {
     handleControllerError(res, error, 'updateStrategyById')
   }

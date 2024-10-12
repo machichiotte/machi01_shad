@@ -1,39 +1,37 @@
-[
-  {
-    "_id": {
-      "$oid": "65a96fb4e334c2acf07b9104"
+[{
+  "_id": {
+    "$oid": "65a96fb4e334c2acf07b9104"
+  },
+  "balance": {
+    "binance": {
+      "$numberLong": "1727322076161"
+    }
+  },
+  "cmc": {
+    "$numberLong": "1716775615632"
+  },
+  "strategy": {
+    "$numberLong": "1725751205530"
+  },
+  "order": {
+    "binance": {
+      "$numberLong": "1728693535591"
+    }
+  },
+  "market": {
+    "binance": {
+      "$numberLong": "1726682347261"
     },
-    "balance": {
-      "binance": {
-        "$numberLong": "1727322076161"
-      }
+    "kucoin": {
+      "$numberLong": "1726682342945"
+    }
+  },
+  "ticker": {
+    "binance": {
+      "$numberLong": "1726925471542"
     },
-    "cmc": {
-      "$numberLong": "1716775615632"
-    },
-    "strategy": {
-      "$numberLong": "1725751205530"
-    },
-    "order": {
-      "binance": {
-        "$numberLong": "1727322080885"
-      }
-    },
-    "market": {
-      "binance": {
-        "$numberLong": "1726682347261"
-      },
-      "kucoin": {
-        "$numberLong": "1726682342945"
-      }
-    },
-    "ticker": {
-      "binance": {
-        "$numberLong": "1726925471542"
-      },
-      "kucoin": {
-        "$numberLong": "1726925466534"
-      }
+    "kucoin": {
+      "$numberLong": "1726925466534"
     }
   }
-]
+}]

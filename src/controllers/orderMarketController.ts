@@ -15,38 +15,38 @@ enum OrderType {
 }
 
 async function handleOrder(req: Request, res: Response, orderType: OrderType): Promise<void> {
-  const { platform, asset, amount, price, oId, symbol } = req.body
+  const { platform, base, amount, price, oId, symbol } = req.body
   try {
     let data
     switch (orderType) {
       case OrderType.LIMIT_BUY:
       case OrderType.LIMIT_SELL:
-        data = await OrderMarketService.createLimitOrder(platform, asset, amount, orderType.includes('Buy') ? 'buy' : 'sell', price)
+        data = await OrderMarketService.createLimitOrder(platform, base, amount, orderType.includes('Buy') ? 'buy' : 'sell', price)
         break
       case OrderType.MARKET_BUY:
       case OrderType.MARKET_SELL:
-        data = await OrderMarketService.createMarketOrder(platform, asset, amount, orderType.includes('Buy') ? 'buy' : 'sell')
+        data = await OrderMarketService.createMarketOrder(platform, base, amount, orderType.includes('Buy') ? 'buy' : 'sell')
         break
       case OrderType.CANCEL_ALL:
-        data = await OrderMarketService.cancelAllOrdersByBunch(platform, asset)
+        data = await OrderMarketService.cancelAllOrdersByBunch(platform, base)
         break
       case OrderType.CANCEL_BUY:
       case OrderType.CANCEL_SELL:
-        data = await OrderMarketService.cancelAllOrdersNoBunch(platform, asset, orderType.includes('Buy') ? 'buy' : 'sell')
+        data = await OrderMarketService.cancelAllOrdersNoBunch(platform, base, orderType.includes('Buy') ? 'buy' : 'sell')
         break
       case OrderType.DELETE:
         await OrderMarketService.deleteOrder(platform, oId, symbol)
         break
     }
 
-    const message = getResponseMessage(orderType, asset, platform)
+    const message = getResponseMessage(orderType, base, platform)
     res.status(200).json({ status: "success", message, data })
   } catch (error) {
     handleControllerError(res, error, `handleOrder (${orderType})`)
   }
 }
 
-function getResponseMessage(orderType: OrderType, asset?: string, platform?: string): string {
+function getResponseMessage(orderType: OrderType, base?: string, platform?: string): string {
   switch (orderType) {
     case OrderType.LIMIT_BUY:
     case OrderType.LIMIT_SELL:
@@ -55,11 +55,11 @@ function getResponseMessage(orderType: OrderType, asset?: string, platform?: str
     case OrderType.MARKET_SELL:
       return 'Ordre au marché créé'
     case OrderType.CANCEL_ALL:
-      return `Tous les ordres annulés pour ${asset} sur ${platform}`
+      return `Tous les ordres annulés pour ${base} sur ${platform}`
     case OrderType.CANCEL_BUY:
-      return `Tous les ordres d'achat annulés pour ${asset} sur ${platform}`
+      return `Tous les ordres d'achat annulés pour ${base} sur ${platform}`
     case OrderType.CANCEL_SELL:
-      return `Tous les ordres de vente annulés pour ${asset} sur ${platform}`
+      return `Tous les ordres de vente annulés pour ${base} sur ${platform}`
     case OrderType.DELETE:
       return 'Ordre supprimé'
     default:

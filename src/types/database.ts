@@ -18,8 +18,8 @@ export interface ShadData {
 
 export interface SwapMigration {
     _id?: ObjectId;
-    oldAsset: string
-    newAsset: string
+    oldBase: string
+    newBase: string
     swapRate: string
     platform: string
     delistingDate: string

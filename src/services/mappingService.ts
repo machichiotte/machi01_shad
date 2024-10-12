@@ -46,7 +46,7 @@ export class MappingService {
       return {} as Omit<MappedTrade, '_id'>;
     }
 
-    const [baseAsset, quoteAsset] = item.symbol?.toUpperCase().split('/') || []
+    const [base, quote] = item.symbol?.toUpperCase().split('/') || []
 
     const totalUSDT = getTotalUSDT(
       item.symbol?.toUpperCase() || '',
@@ -60,8 +60,8 @@ export class MappingService {
       : 'N/A'
 
     const mappedTrade = {
-      base: baseAsset,
-      quote: quoteAsset,
+      base: base,
+      quote: quote,
       pair: item.symbol?.toUpperCase() || '',
       timestamp: item.timestamp || -1,
       type: item.side || '',

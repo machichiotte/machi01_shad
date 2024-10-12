@@ -1,7 +1,7 @@
 // src/types/metrics.ts
 export interface AssetMetrics {
     iconUrl: string;
-    asset: string;
+    base: string;
     status: number[] | string;
     strat: string;
     ratioShad: string | number;
