@@ -6,7 +6,7 @@
 
         <Dialog v-if="showBuyOrdersForm" header="Add Buy Orders" :visible="showBuyOrdersForm" modal :closable="false"
             @hide="showBuyOrdersForm = false">
-            <AddBuyOrdersForm :selectedAssets="props.selectedAssets" @close="showBuyOrdersForm = false" />
+            <AddBuyOrdersForm :selectedBases="props.selectedBases" @close="showBuyOrdersForm = false" />
         </Dialog>
     </div>
 </template>
@@ -17,7 +17,7 @@ import AddBuyOrdersForm from '../form/AddBuyOrdersForm.vue'
 
 // Define an interface for the props
 interface Props {
-    selectedAssets: Record<string, any>; // Define the prop type as an object
+    selectedBases: Record<string, any>; // Define the prop type as an object
 }
 
 const props = defineProps<Props>() // Use the interface with defineProps

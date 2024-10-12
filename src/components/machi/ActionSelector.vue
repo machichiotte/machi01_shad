@@ -1,14 +1,14 @@
 <!-- src/components/machi/ActionSelector.vue -->
 <template>
     <div class="action-selector">
-        <p v-if="!selectedAssets || selectedAssets.length === 0" class="no-assets-message">
-            No assets selected. Please select assets to display available actions.
+        <p v-if="!selectedBases || selectedBases.length === 0" class="no-bases-message">
+            No Base selected. Please select base to display available actions.
         </p>
         <!-- Action buttons -->
-        <MyBunchSellButton v-if="selectedAssets && selectedAssets.length > 0" :selectedAssets="selectedAssets" />
-        <MyEmergencySellButton v-if="selectedAssets && selectedAssets.length > 0" :selectedAssets="selectedAssets" />
-        <MyBuyButton v-if="selectedAssets && selectedAssets.length > 0" :selectedAssets="selectedAssets" />
-        <MyDeleteButton v-if="selectedAssets && selectedAssets.length > 0" :selectedAssets="selectedAssets"
+        <MyBunchSellButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases" />
+        <MyEmergencySellButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases" />
+        <MyBuyButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases" />
+        <MyDeleteButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases"
             @delete-clicked="onDeleteClicked" />
     </div>
 </template>
@@ -20,8 +20,8 @@ import MyBuyButton from '../button/MyBuyButton.vue'
 import MyDeleteButton from '../button/MyDeleteButton.vue'
 
 // Définir les types pour les props
-const { selectedAssets } = defineProps<{
-    selectedAssets: Array<any>; // Remplacez `any` par le type approprié
+const { selectedBases } = defineProps<{
+    selectedBases: Array<any>; // Remplacez `any` par le type approprié
     //filters: Record<string, any>; // Remplacez `any` par le type approprié
 }>();
 
@@ -43,20 +43,5 @@ const onDeleteClicked = () => {
     /* Distributes action buttons and search bar */
     align-items: center;
     margin-bottom: 16px;
-}
-
-.flex {
-    display: flex;
-}
-
-.justify-content-end {
-    margin-left: auto;
-    /* Aligns to the right */
-}
-
-.no-assets-message {
-    color: black;
-    text-align: center;
-    width: 100%;
 }
 </style>

@@ -24,23 +24,21 @@
 
     <DataTable :value="tableData" :columns="columns" :paginator="true" :rows="10" scrollable columnResizeMode="fit"
       :filters="filters" showGridlines>
-      <Column field="asset" header="Asset" class="centered-column" />
+      <Column field="base" header="Base" class="centered-column" />
       <Column v-for="platform in platforms" :key="platform" :field="platform" :header="platform"
         class="centered-column">
         <template #body="slotProps">
           <div class="select-container">
-            <select :value="slotProps.data[platform].strategy"
-              @input="setSelectedStrategy(strat, slotProps.data.asset, platform, $event.target.value)"
-              :disabled="slotProps.data[platform].disabled">
+            <select v-if="slotProps.data[platform].isVisible" :value="slotProps.data[platform].strategy"
+              @input="setSelectedStrategy(strat, slotProps.data.base, platform, $event.target.value)">
               <option value=""></option>
               <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
                 {{ strategy }}
               </option>
             </select>
 
-            <select :value="slotProps.data[platform].maxExposure"
-              @input="setSelectedMaxExposure(strat, slotProps.data.asset, platform, $event.target.value)"
-              :disabled="slotProps.data[platform].disabled">
+            <select v-if="slotProps.data[platform].isVisible" :value="slotProps.data[platform].maxExposure"
+              @input="setSelectedMaxExposure(strat, slotProps.data.base, platform, $event.target.value)">
               <option value=""></option>
               <option v-for="exposure in exposures" :key="exposure" :value="exposure">
                 {{ exposure }}
@@ -60,7 +58,7 @@ import { strategies } from '../js/strat/index';
 import { useCalculStore } from '../store/calculStore';
 import { FilterMatchMode } from 'primevue/api'
 import SearchBar from "./machi/SearchBar.vue";
-import { getSelectedStrategy, setSelectedStrategy, isDisabled, getSelectedMaxExposure, setSelectedMaxExposure } from '../js/utils/strategyUtils';
+import { getSelectedStrategy, setSelectedStrategy, isVisible, getSelectedMaxExposure, setSelectedMaxExposure } from '../js/utils/strategyUtils';
 
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 
@@ -82,31 +80,30 @@ const balance = computed(() => calculStore.getBalance);
 const strat = computed(() => calculStore.getStrat);
 
 const platforms = computed(() => [...new Set(balance.value.map((item) => item.platform))].sort());
-const assets = computed(() => [...new Set(balance.value.map((item) => item.base))].sort());
+const bases = computed(() => [...new Set(balance.value.map((item) => item.base))].sort());
 const columns = computed(() => {
   return [
-    { field: 'asset', header: 'Asset' },
+    { field: 'base', header: 'Base' },
     ...platforms.value.map(platform => ({ field: platform, header: platform }))
   ];
 });
 
 const tableData = computed(() => {
-  if (!assets.value.length) {
-    console.error('Aucun asset trouvé');
+  if (!bases.value.length) {
+    console.error('Aucune base trouvée');
     return [];
   }
 
-  return assets.value.map(asset => {
+  return bases.value.map(base => {
 
-    const row = { asset };
-
+    const row = { base };
 
     platforms.value.forEach(platform => {
 
       row[platform] = {
-        strategy: getSelectedStrategy(strat, asset, platform),
-        maxExposure: getSelectedMaxExposure(strat, asset, platform),
-        disabled: isDisabled(strat, asset, platform)
+        strategy: getSelectedStrategy(strat.value, base, platform),
+        maxExposure: getSelectedMaxExposure(strat.value, base, platform),
+        isVisible: isVisible(strat.value, base, platform)
       };
     });
     return row;

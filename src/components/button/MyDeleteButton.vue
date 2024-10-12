@@ -2,13 +2,13 @@
 <template>
     <div>
         <Button label="Delete" icon="pi pi-trash" severity="danger" class="mr-2" @click="handleClick"
-            :disabled="!selectedAssets || !selectedAssets.length" />
+            :disabled="!selectedBases || !selectedBases.length" />
     </div>
 </template>
 
 <script setup>
 const props = defineProps({
-    selectedAssets: {
+    selectedBases: {
         type: Array,
         default: () => []
     },

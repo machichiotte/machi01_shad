@@ -14,7 +14,7 @@
         <PlatformSelector v-if="activeTopTab === 'platforms'" :initialSelectedPlatforms="selectedPlatforms"
           @update:selectedPlatforms="updateSelectedPlatforms" />
         <UpdateBarSelector v-if="activeTopTab === 'fetch'" />
-        <ActionSelector v-if="activeTopTab === 'action'" :selectedAssets="selectedAssets" :filters="filters"
+        <ActionSelector v-if="activeTopTab === 'action'" :selectedBases="selectedBases" :filters="filters"
           @delete-action="handleDeleteAction" />
       </div>
     </div>
@@ -28,7 +28,7 @@
           </div>
         </template>
       </Toolbar>
-      <MachiDataTable :items="filteredMachiItems" @update:selectedAssets="updateSelectedAssets" />
+      <MachiDataTable :items="filteredMachiItems" @update:selectedBases="updateSelectedBases" />
     </div>
 
     <!-- Fixed Bottom Tab Container -->
@@ -43,7 +43,7 @@
       <div class="tab-content">
         <TradesTable v-if="activeTab === 'trades'" :items="tradesItems" :filters="filters" />
         <OrdersTable v-if="activeTab === 'orders'" :items="openOrdersItems" :filters="filters" />
-        <BuyCalculator v-if="activeTab === 'buyCalculator'" :selectedAssets="selectedAssets" />
+        <BuyCalculator v-if="activeTab === 'buyCalculator'" :selectedBases="selectedBases" />
       </div>
     </div>
   </div>
@@ -67,8 +67,8 @@ import BuyCalculator from './BuyCalculator.vue';
 import { Filter } from '../../types/filter'
 import { Trade, Order, Machi } from '../../types/responseData'
 
-// Define the selected assets with proper types
-const selectedAssets = ref<Machi[]>([])
+// Define the selected bases with proper types
+const selectedBases = ref<Machi[]>([])
 
 // Filters with a well-defined structure
 const filters = ref<Filter>({
@@ -120,9 +120,9 @@ const handleDeleteAction = (): void => {
   //deleteProductsDialog.value = true
 };
 
-// Function to update selected assets
-const updateSelectedAssets = (newSelection: Machi[]): void => {
-  selectedAssets.value = newSelection
+// Function to update selected bases
+const updateSelectedBases = (newSelection: Machi[]): void => {
+  selectedBases.value = newSelection
 }
 
 // Function to update selected platforms

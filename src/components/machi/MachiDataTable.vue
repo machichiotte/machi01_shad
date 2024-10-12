@@ -1,7 +1,7 @@
 <!-- src/components/machi/MachiDataTable.vue -->
 <template>
     <DataTable class="mt-4 custom-data-table" :value="items" :rows="10" paginator stripedRows scrollable
-        scroll-height="530px" v-model:selection="localSelectedAssets" @update:selection="emitSelection"
+        scroll-height="530px" v-model:selection="localSelectedBases" @update:selection="emitSelection"
         selectionMode="multiple"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25, 100, 500]"
@@ -9,7 +9,7 @@
         <ColumnGroup type="header">
             <Row>
                 <Column header="Icon" field="iconUrl" :rowspan="2" frozen alignFrozen="left" />
-                <Column header="Asset" field="asset" :rowspan="2" sortable frozen alignFrozen="left" />
+                <Column header="Base" field="base" :rowspan="2" sortable frozen alignFrozen="left" />
                 <Column header="Platform" field="platform" :rowspan="2" sortable frozen alignFrozen="left" />
                 <Column header="Current Price" field="currentPrice" :rowspan="2" sortable frozen alignFrozen="left" />
                 <Column header="Strat" :rowspan="2" frozen alignFrozen="left" />
@@ -60,11 +60,11 @@
 
         <Column field="iconUrl" frozen alignFrozen="left">
             <template #body="slotProps">
-                <img :src="slotProps.data.iconUrl" :alt="slotProps.data.asset" class="border-round icon-32" />
+                <img :src="slotProps.data.iconUrl" :alt="slotProps.data.base" class="border-round icon-32" />
             </template>
         </Column>
 
-        <Column field="asset" frozen alignFrozen="left" />
+        <Column field="base" frozen alignFrozen="left" />
 
         <Column field="platform" class="platform-column" frozen alignFrozen="left" />
 
@@ -82,8 +82,8 @@
 
         <Column field="status" class="status-column" frozen alignFrozen="left">
             <template #body="slotProps">
-                <Tag :value="evaluateAssetStatus(slotProps.data).label"
-                    :severity="evaluateAssetStatus(slotProps.data).severity" />
+                <Tag :value="evaluateBaseStatus(slotProps.data).label"
+                    :severity="evaluateBaseStatus(slotProps.data).severity" />
             </template>
         </Column>
 
@@ -171,7 +171,7 @@ import {
     HTX_THRESHOLD
 } from '../../js/constants'
 
-import { updateAssetField } from '../../js/strat/common';
+import { updateBaseField } from '../../js/strat/common';
 
 export default defineComponent({
     props: {
@@ -179,20 +179,20 @@ export default defineComponent({
             type: Array as PropType<Machi[]>,
             required: true
         },
-        localSelectedAssets: {
+        localSelectedBases: {
             type: Array as PropType<Machi[]>,
             default: () => []
         }
     },
     methods: {
         emitSelection() {
-            this.$emit('update:selection', this.localSelectedAssets);
+            this.$emit('update:selection', this.localSelectedBases);
         },
         applyStrategyToRow(items: Machi[], data: any, newStrat: string | Object) {
             // Logique pour appliquer la stratégie
-            updateAssetField(items, data, 'strat', newStrat)
+            updateBaseField(items, data, 'strat', newStrat)
         },
-        evaluateAssetStatus(data: Machi) {
+        evaluateBaseStatus(data: Machi) {
             // Logique pour évaluer le statut de l'actif
             const { currentPrice, platform, status, nbOpenSellOrders, priceTp1, priceTp2 } = data
 

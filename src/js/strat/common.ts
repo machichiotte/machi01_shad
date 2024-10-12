@@ -36,15 +36,15 @@ export function calculateRecoveryGap(totalBuy: number, totalSell: number, maxExp
 }
 
 // Generic function to update a specific field of an item in a list and recalculate related values.
-export function updateAssetField(items: Array<any>, data: any, field: string, newValue: any): void {
+export function updateBaseField(items: Array<any>, data: any, field: string, newValue: any): void {
     if (!Array.isArray(items)) {
         console.warn('Invalid items reference or items is not an array:', items)
         return
     }
 
-    const rowIndex = items.findIndex((item: any) => item.asset === data.asset)
+    const rowIndex = items.findIndex((item: any) => item.base === data.base)
     if (rowIndex === -1) {
-        console.warn('Item not found in the list:', data.asset)
+        console.warn('Item not found in the list:', data.base)
         return
     }
 
@@ -54,13 +54,13 @@ export function updateAssetField(items: Array<any>, data: any, field: string, ne
     items[rowIndex] = item
 }
 
-// Sets the maximum exposure for a given asset and updates related values.
+// Sets the maximum exposure for a given base and updates related values.
 export const setMaxExposure = (items: Array<any>, data: any, maxExposition: number | string): void => {
     if (isNaN(maxExposition as number) || maxExposition as number < 0) {
         console.warn('Invalid maxExposition value:', maxExposition)
         return
     }
-    updateAssetField(items, data, 'maxExposition', maxExposition)
+    updateBaseField(items, data, 'maxExposition', maxExposition)
 }
 
 export function getTakeProfitsTargets(data: any): any {

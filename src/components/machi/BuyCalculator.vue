@@ -3,35 +3,35 @@
     <div class="buy-calculator">
         <h3>Buy Calculator</h3>
 
-        <!-- Loop over each selected asset and display inputs and results -->
-        <div v-for="(asset, index) in reactiveAssets" :key="asset.asset" class="asset-row">
-            <h4>{{ asset.asset }}</h4>
+        <!-- Loop over each selected base and display inputs and results -->
+        <div v-for="(base, index) in reactiveBases" :key="base.base" class="base-row">
+            <h4>{{ base.base }}</h4>
 
             <!-- Afficher le totalBuy et le prix d'entrée moyen avant l'investissement -->
-            <h4>Total Buy : {{ formatSignificantDigits(asset.totalBuy, 2) }} (avant invest : {{
-                formatSignificantDigits(asset.totalBuyBeforeInvest, 2) }})</h4>
-            <h4>AVG : {{ formatSignificantDigits(asset.averageEntryPrice, asset.significantPriceDigits) }} (avant invest
-                : {{ formatSignificantDigits(asset.averageEntryPriceBeforeInvest, 2) }})</h4>
+            <h4>Total Buy : {{ formatSignificantDigits(base.totalBuy, 2) }} (avant invest : {{
+                formatSignificantDigits(base.totalBuyBeforeInvest, 2) }})</h4>
+            <h4>AVG : {{ formatSignificantDigits(base.averageEntryPrice, base.significantPriceDigits) }} (avant invest
+                : {{ formatSignificantDigits(base.averageEntryPriceBeforeInvest, 2) }})</h4>
 
             <!-- Inputs for Fee and Investment -->
             <div class="input-group">
                 <label for="fee">Fee (%)</label>
-                <input type="number" :id="'fee-' + index" v-model.number="asset.fee" @input="calculateResults(asset)"
+                <input type="number" :id="'fee-' + index" v-model.number="base.fee" @input="calculateResults(base)"
                     min="0" step="0.01" />
 
                 <label for="invest">Investment</label>
-                <input type="number" :id="'invest-' + index" v-model.number="asset.invest"
-                    @input="calculateResults(asset)" min="0" step="0.01" />
+                <input type="number" :id="'invest-' + index" v-model.number="base.invest"
+                    @input="calculateResults(base)" min="0" step="0.01" />
             </div>
 
             <!-- Display Results -->
             <div class="results">
-                <p>Total Buy: {{ formatSignificantDigits(asset.totalFuturBuy, 2) }}</p>
-                <p>Average Entry Price: {{ formatSignificantDigits(asset.avgWithFee, asset.significantPriceDigits) }}
+                <p>Total Buy: {{ formatSignificantDigits(base.totalFuturBuy, 2) }}</p>
+                <p>Average Entry Price: {{ formatSignificantDigits(base.avgWithFee, base.significantPriceDigits) }}
                 </p>
-                <p>Amount to Sell: {{ formatSignificantDigits(asset.amountToSell, asset.significantAmountDigits) }}</p>
-                <p>Entry Price Decrease: {{ formatSignificantDigits(asset.baissePrixEntree, 2) }}%</p>
-                <p>Next TP: {{ formatSignificantDigits(asset.nextTp, 2) }}%</p>
+                <p>Amount to Sell: {{ formatSignificantDigits(base.amountToSell, base.significantAmountDigits) }}</p>
+                <p>Entry Price Decrease: {{ formatSignificantDigits(base.baissePrixEntree, 2) }}%</p>
+                <p>Next TP: {{ formatSignificantDigits(base.nextTp, 2) }}%</p>
             </div>
         </div>
     </div>
@@ -41,144 +41,98 @@
 <script setup>
 import { ref, reactive, watch } from 'vue';
 
-// Props to receive selected assets
+// Props to receive selected bases
 const props = defineProps({
-    selectedAssets: {
+    selectedBases: {
         type: Array,
         required: true,
     },
 });
 
-const reactiveAssets = ref([]);
+const reactiveBases = ref([]);
 watch(
-    () => props.selectedAssets,
-    (newAssets) => {
-        // Reset reactiveAssets with new assets
-        reactiveAssets.value = newAssets.map((asset) =>
+    () => props.selectedBases,
+    (newBases) => {
+        // Reset reactiveBases with new bases
+        reactiveBases.value = newBases.map((base) =>
             reactive({
-                fee: asset.fee !== undefined ? asset.fee : 0.1, // Default fee value
-                invest: asset.invest !== undefined ? asset.invest : 995, // Initial investment
-                avgWithFee: asset.avgWithFee,
-                amountToSell: asset.amountToSell,
-                baissePrixEntree: asset.baissePrixEntree,
-                totalFuturBuy: asset.totalFuturBuy,
-                nextTp: asset.nextTp,
-                significantPriceDigits: asset.significantPriceDigits,
-                significantAmountDigits: asset.significantAmountDigits,
-                totalBuyBeforeInvest: asset.totalBuy, // Ajout de la valeur avant l'investissement
-                averageEntryPriceBeforeInvest: asset.averageEntryPrice, // Ajout de la valeur avant l'investissement
-                ...asset,
+                fee: base.fee !== undefined ? base.fee : 0.1, // Default fee value
+                invest: base.invest !== undefined ? base.invest : 995, // Initial investment
+                avgWithFee: base.avgWithFee,
+                amountToSell: base.amountToSell,
+                baissePrixEntree: base.baissePrixEntree,
+                totalFuturBuy: base.totalFuturBuy,
+                nextTp: base.nextTp,
+                significantPriceDigits: base.significantPriceDigits,
+                significantAmountDigits: base.significantAmountDigits,
+                totalBuyBeforeInvest: base.totalBuy, // Ajout de la valeur avant l'investissement
+                averageEntryPriceBeforeInvest: base.averageEntryPrice, // Ajout de la valeur avant l'investissement
+                ...base,
             })
         );
 
-        // Recalculate results for each asset
-        reactiveAssets.value.forEach((asset) => calculateResults(asset));
+        // Recalculate results for each base
+        reactiveBases.value.forEach((base) => calculateResults(base));
     },
     { deep: true, immediate: true } // Deep watch to detect all changes
 );
 
 // Calculate results on each modification
-/**
- * @param {Object} asset
- */
-function calculateResults(asset) {
-    asset.significantPriceDigits = getSignificantDigits(asset.currentPrice);
-    asset.significantAmountDigits = getSignificantDigits(asset.balance);
+function calculateResults(base) {
+    base.significantPriceDigits = getSignificantDigits(base.currentPrice);
+    base.significantAmountDigits = getSignificantDigits(base.balance);
 
-    asset.amountBuyFromInvest = calculateAmountBuyFromInvest(asset);
-    asset.totalAmountBuy = calculateFuturTotalAmountBuy(asset);
-    asset.totalFuturBuy = calculateFuturTotalBuy(asset);
-    asset.avgWithFee = calculateFuturAvgWithFee(asset);
-    asset.amountToSell = calculateFuturAmountToSell(asset);
-    asset.baissePrixEntree = calculateBaissePrixEntree(asset);
-    asset.nextTp = calculateNextTp(asset);
+    base.amountBuyFromInvest = calculateAmountBuyFromInvest(base);
+    base.totalAmountBuy = calculateFuturTotalAmountBuy(base);
+    base.totalFuturBuy = calculateFuturTotalBuy(base);
+    base.avgWithFee = calculateFuturAvgWithFee(base);
+    base.amountToSell = calculateFuturAmountToSell(base);
+    base.baissePrixEntree = calculateBaissePrixEntree(base);
+    base.nextTp = calculateNextTp(base);
 }
 
-// Intermediary calculation functions
-/**
- * @param {Object} asset
- * @returns {number}
- */
-function calculateDepense(asset) {
-    return asset.invest ? asset.invest - calculateFee(asset) : 0;
+function calculateDepense(base) {
+    return base.invest ? base.invest - calculateFee(base) : 0;
 }
 
-/**
- * @param {Object} asset
- * @returns {number}
- */
-function calculateFee(asset) {
-    return (asset.fee / 100) * asset.invest;
+
+function calculateFee(base) {
+    return (base.fee / 100) * base.invest;
 }
 
-/**
- * @param {Object} asset
- * @returns {number}
- */
-function calculateAmountBuyFromInvest(asset) {
-    return calculateDepense(asset) / asset.currentPrice;
+
+function calculateAmountBuyFromInvest(base) {
+    return calculateDepense(base) / base.currentPrice;
 }
 
-/**
- * @param {Object} asset
- * @returns {number}
- */
-function calculateFuturTotalAmountBuy(asset) {
-    return calculateAmountBuyFromInvest(asset) + asset.balance;
+function calculateFuturTotalAmountBuy(base) {
+    return calculateAmountBuyFromInvest(base) + base.balance;
 }
 
-/**
- * @param {Object} asset
- * @returns {number}
- */
-function calculateFuturTotalBuy(asset) {
-    return asset.invest + asset.totalBuy - asset.totalSell;
+function calculateFuturTotalBuy(base) {
+    return base.invest + base.totalBuy - base.totalSell;
 }
 
-/**
- * @param {Object} asset
- * @returns {number}
- */
-function calculateFuturAvg(asset) {
-    return calculateFuturTotalBuy(asset) / calculateFuturTotalAmountBuy(asset);
+function calculateFuturAvg(base) {
+    return calculateFuturTotalBuy(base) / calculateFuturTotalAmountBuy(base);
 }
 
-/**
- * @param {Object} asset
- * @returns {number}
- */
-function calculateFuturAvgWithFee(asset) {
-    return calculateFuturAvg(asset) + (asset.fee / 100) * calculateFuturAvg(asset);
+function calculateFuturAvgWithFee(base) {
+    return calculateFuturAvg(base) + (base.fee / 100) * calculateFuturAvg(base);
 }
 
-/**
- * @param {Object} asset
- * @returns {number}
- */
-function calculateFuturAmountToSell(asset) {
-    return ((calculateFuturTotalBuy(asset) - asset.maxExposition) * calculateFuturTotalAmountBuy(asset) / calculateFuturTotalBuy(asset));
+function calculateFuturAmountToSell(base) {
+    return ((calculateFuturTotalBuy(base) - base.maxExposition) * calculateFuturTotalAmountBuy(base) / calculateFuturTotalBuy(base));
 }
 
-/**
- * @param {Object} asset
- * @returns {number}
- */
-function calculateBaissePrixEntree(asset) {
-    return 100 * ((calculateFuturAvgWithFee(asset) - asset.averageEntryPrice) / asset.averageEntryPrice);
+function calculateBaissePrixEntree(base) {
+    return 100 * ((calculateFuturAvgWithFee(base) - base.averageEntryPrice) / base.averageEntryPrice);
 }
 
-/**
- * @param {Object} asset
- * @returns {number}
- */
-function calculateNextTp(asset) {
-    return 100 * ((calculateFuturAvgWithFee(asset) - asset.currentPrice) / asset.currentPrice);
+function calculateNextTp(base) {
+    return 100 * ((calculateFuturAvgWithFee(base) - base.currentPrice) / base.currentPrice);
 }
 
-/**
- * @param {number} value
- * @returns {number}
- */
 function getSignificantDigits(value) {
     if (!value || typeof value !== 'number') return 2;
     const valueStr = value.toString();
@@ -188,16 +142,10 @@ function getSignificantDigits(value) {
     return 0;
 }
 
-/**
- * @param {number} value
- * @param {number} digits
- * @returns {string}
- */
 function formatSignificantDigits(value, digits) {
     return parseFloat(value).toFixed(digits);
 }
 </script>
-
 
 <style scoped>
 .buy-calculator {
@@ -208,7 +156,7 @@ function formatSignificantDigits(value, digits) {
     color: black;
 }
 
-.asset-row {
+.base-row {
     display: flex;
     /* Use Flexbox for horizontal layout */
     align-items: center;

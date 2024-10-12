@@ -1,8 +1,8 @@
 <!-- src/components/forms/AddBuyOrdersForm.vue -->
 <template>
     <div>
-        <!-- Dropdown with selected assets -->
-        <Dropdown :options="assetOptions" optionLabel="asset" placeholder="Select Asset" v-model="selectedAsset"
+        <!-- Dropdown with selected bases -->
+        <Dropdown :options="baseOptions" optionLabel="base" placeholder="Select Base" v-model="selectedBase"
             class="mb-3" />
 
         <!-- Buy order lines -->
@@ -32,13 +32,13 @@ import { successSpinHtml } from '../../js/utils/spinner'
 import { addLimitBuyOrder } from '../../js/server/order'
 
 const props = defineProps({
-    assets: Object,
+    bases: Object,
     visible: Boolean,
-    selectedAssets: Object,
+    selectedBases: Object,
     onClose: Function
 })
 
-const selectedAsset = ref(null)
+const selectedBase = ref(null)
 
 const buyOrders = ref([{ price: null, quantity: null, total: null }])
 
@@ -111,7 +111,7 @@ const submitOrders = async () => {
 
     const orderPlacementResults = await Promise.all(buyOrders.value.map(async (order) => {
         try {
-            const result = await addLimitBuyOrder(selectedAsset.value.platform, selectedAsset.value.asset, order.quantity, order.price);
+            const result = await addLimitBuyOrder(selectedBase.value.platform, selectedBase.value.base, order.quantity, order.price);
             return result;
         } catch (error) {
             console.error('Error placing order:', error);
@@ -131,18 +131,18 @@ const submitOrders = async () => {
     props.onClose();
 };
 
-const assetOptions = computed(() => {
-    const assets = props.selectedAssets.map(row => ({
-        asset: row.asset,
+const baseOptions = computed(() => {
+    const bases = props.selectedBases.map(row => ({
+        base: row.base,
         platform: row.platform
     }));
 
-    const uniqueAssets = Array.from(new Set(assets.map(a => a.asset)))
-        .map(asset => {
-            return assets.find(a => a.asset === asset);
+    const uniqueBases = Array.from(new Set(bases.map(a => a.base)))
+        .map(base => {
+            return bases.find(a => a.base === base);
         });
 
-    return uniqueAssets;
+    return uniqueBases;
 });
 
 </script>

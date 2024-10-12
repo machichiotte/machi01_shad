@@ -39,7 +39,7 @@ export interface Trade {
 
 export interface Strat {
   _id: ObjectId;
-  asset: string
+  base: string
   strategies: {
     [key: string]: string
   }
@@ -110,7 +110,7 @@ export interface Machi {
     $oid: string; // ID de l'objet en format MongoDB ObjectID
   };
   iconUrl: string; // URL de l'icône
-  asset: string; // Nom de l'actif (ex: LIT)
+  base: string; // Nom de l'actif (ex: LIT)
   status: number[] | string; // Tableau de statuts (la structure reste la même pour éviter tout conflit avec la base de données)
   strat: string; // Stratégie appliquée (ex: Shad)
   ratioShad: number; // Ratio Shad
@@ -162,7 +162,7 @@ export interface Ticker {
 
 /* pour remplacer Shad, mais il faut un autre nom que asset
 interface Asset {
-    asset: string; // Symbole de l'actif (ex: "ASSET_SYMBOL")
+    base: string; // Symbole de l'actif (ex: "ASSET_SYMBOL")
     iconUrl: string; // URL de l'icône
     ticker: string; // Symbole de trading (ex: "TICKER_SYMBOL")
     name: string; // Nom de l'actif (ex: "ASSET_NAME")
