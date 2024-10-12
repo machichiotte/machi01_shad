@@ -1,11 +1,11 @@
-// src/router/index.ts
+// src/router.ts
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../components/Home.vue'
-import Machi from '../components/machi/Machi.vue'
-import Orders from '../components/order/Orders.vue'
-import Cmc from '../components/Cmc.vue'
-import Strategy from '../components/Strategy.vue'
-import Trades from '../components/trade/Trades.vue'
+import Home from './components/Home.vue'
+import Machi from './components/machi/Machi.vue'
+import Orders from './components/order/Orders.vue'
+import Cmc from './components/Cmc.vue'
+import Strategy from './components/Strategy.vue'
+import Trades from './components/trade/Trades.vue'
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', name: 'home', component: Home },

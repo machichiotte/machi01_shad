@@ -20,21 +20,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-
-    /* Ajout des chemins d'accès */
-    "baseUrl": ".",
-    "paths": {
-      "@js/*": ["src/js/*"],
-      "@router/*": ["src/router/*"],
-      "@store/*": ["src/store/*"],
-      "@typ/*": ["src/types/*"],
-      "@comp/*": ["src/components/*"],
-      "@machi/*": ["src/components/machi/*"],
-      "@btn/*": ["src/components/button/*"],
-      "@order/*": ["src/components/order/*"],
-      "@form/*": ["src/components/form/*"],
-      "@trade/*": ["src/components/trade/*"]
-    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

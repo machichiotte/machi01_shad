@@ -1,16 +1,14 @@
-// main.ts
+// src/main.ts
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
-import router from '../src/router/index'
+import router from './router'
 
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 
 import PrimeVue from 'primevue/config'
-import 'primevue/resources/themes/aura-light-green/theme.css'
-import 'primeicons/primeicons.css'
 
 import LogoMachi from './components/LogoMachi.vue'
 
