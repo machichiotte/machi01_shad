@@ -25,10 +25,14 @@
         <template #end>
           <div class="flex justify-content-end">
             <SearchBar :filters="filters" />
-          </div>
+          </div>c
         </template>
       </Toolbar>
-      <MachiDataTable :items="filteredMachiItems" @update:selectedBases="updateSelectedBases" />
+
+      <!-- Conteneur de cartes -->
+      <div class="card-container"></div>
+      <MachiCard v-for="item in filteredMachiItems" :key="item.base" :item="item"
+        @update:selectedBases="updateSelectedBases" />
     </div>
 
     <!-- Fixed Bottom Tab Container -->
@@ -53,7 +57,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useCalculStore } from '../../store/calculStore'; // Import the Pinia store
 import { FilterMatchMode } from 'primevue/api'
-import MachiDataTable from './MachiDataTable.vue'
+import MachiCard from './MachiCard.vue'
 import SearchBar from './SearchBar.vue'
 
 import PlatformSelector from './PlatformSelector.vue'
@@ -151,6 +155,21 @@ const toggleTopExpandCollapse = (): void => {
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* 2 colonnes */
+  gap: 1rem;
+  /* Espace entre les cartes */
+}
+
+.machi-card {
+  background-color: #f5f5f5;
+  /* Background gris clair */
+  border-radius: 8px;
+  /* Bordures arrondies */
 }
 
 .card {

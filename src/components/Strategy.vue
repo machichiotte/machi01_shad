@@ -150,6 +150,14 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.p-datatable {
+  max-width: 100%;
+  width: 90%;
+  /* Ajuste la largeur pour centrer */
+  overflow-x: auto;
+  /* Permet le scroll horizontal si nécessaire */
+}
+
 /* Ajoutez cette classe pour styliser les lignes du tableau */
 .p-datatable tbody tr {
   border-bottom: 1px solid #ccc;
@@ -160,7 +168,6 @@ onMounted(async () => {
   border-bottom: none;
   /* Enlever la bordure sur la dernière ligne */
 }
-
 
 .button-container {
   margin: 20px 0;
@@ -191,13 +198,5 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   margin: 0 auto;
-}
-
-.p-datatable {
-  max-width: 100%;
-  width: 90%;
-  /* Ajuste la largeur pour centrer */
-  overflow-x: auto;
-  /* Permet le scroll horizontal si nécessaire */
 }
 </style>

@@ -49,7 +49,6 @@ nav a.selected-link {
 }
 
 main {
-  background-color: blueviolet;
   flex-grow: 1;
   overflow-y: auto;
   display: flex;
