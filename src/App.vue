@@ -1,44 +1,66 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-
 </script>
 
 <template>
-  <nav>
-    <RouterLink to="/machi" active-class="selected-link">Machi</RouterLink>
-    <RouterLink to="/order" active-class="selected-link">Order</RouterLink>
-    <RouterLink to="/cmc" active-class="selected-link">Cmc</RouterLink>
-    <RouterLink to="/strategy" active-class="selected-link">Strategy</RouterLink>
-    <RouterLink to="/trade" active-class="selected-link">Trade</RouterLink>
-  </nav>
-  <RouterView />
+  <div class="layout">
+    <nav>
+      <RouterLink to="/machi" active-class="selected-link">Machi</RouterLink>
+      <RouterLink to="/order" active-class="selected-link">Order</RouterLink>
+      <RouterLink to="/cmc" active-class="selected-link">Cmc</RouterLink>
+      <RouterLink to="/strategy" active-class="selected-link">Strategy</RouterLink>
+      <RouterLink to="/trade" active-class="selected-link">Trade</RouterLink>
+    </nav>
+    <main>
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <style scoped>
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  margin: 0;
+  /* Enlever les marges */
+  padding: 0;
+  /* Enlever les espacements */
+}
+
 nav {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: center;
+  padding: 10px 0;
 }
 
 nav a {
-  padding: 10px;
+  padding: 0 20px;
   text-align: center;
   text-decoration: none;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+nav a.selected-link {
+  font-weight: bold;
+  border-bottom: 2px solid black;
+  /* Pour indiquer le lien actif */
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+main {
+  background-color: blueviolet;
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  /* Utiliser flex pour gérer l'espace */
+
 }
 
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+main>* {
+  width: 100%;
+  /* S'assure que les enfants prennent toute la largeur du main */
+  margin: 0;
+  /* Annule les marges des éléments internes */
 }
 </style>

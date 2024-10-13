@@ -19,7 +19,7 @@ import { cmcColumns } from '../js/columns.ts'
 import { FilterMatchMode } from 'primevue/api'
 import SearchBar from "./machi/SearchBar.vue";
 
-const itemsPerPage = ref(13)
+const itemsPerPage = ref(100)
 const cols = ref(cmcColumns)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
@@ -35,7 +35,7 @@ const rows = computed(() => {
       symbol: item['symbol'],
       price: item.quote.USD.price,
     }
-  })
+  }).sort((a, b) => a.rank - b.rank);
 })
 
 const cmcItems = computed(() => calculStore.getCmc)

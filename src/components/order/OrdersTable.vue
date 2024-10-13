@@ -40,7 +40,7 @@ watchEffect(() => {
         amount: parseFloat(item['amount']),
         price: item['price']
       };
-    })
+    }).reverse();
   }
 })
 

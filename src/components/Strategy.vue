@@ -1,56 +1,4 @@
 <!-- src/components/Strategy.vue -->
-<template>
-  <div>
-    <div class="button-container">
-      <button @click="updateStrat">Save</button>
-    </div>
-    <div class="text-align-left">
-      <select v-model="selectedStrategy" @change="updateAllStrats">
-        <option value="">Select a strategy</option>
-        <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
-          {{ strategy }}
-        </option>
-      </select>
-
-      <select v-model="selectedMaxExposure" @change="updateAllMaxExposure">
-        <option value="">Select max exposure</option>
-        <option v-for="exposure in exposures" :key="exposure" :value="exposure">
-          {{ exposure }}
-        </option>
-      </select>
-    </div>
-
-    <SearchBar :filters="filters" />
-
-    <DataTable :value="tableData" :columns="columns" :paginator="true" :rows="10" scrollable columnResizeMode="fit"
-      :filters="filters" showGridlines>
-      <Column field="base" header="Base" class="centered-column" />
-      <Column v-for="platform in platforms" :key="platform" :field="platform" :header="platform"
-        class="centered-column">
-        <template #body="slotProps">
-          <div class="select-container">
-            <select v-if="slotProps.data[platform].isVisible" :value="slotProps.data[platform].strategy"
-              @input="setSelectedStrategy(strat, slotProps.data.base, platform, $event.target.value)">
-              <option value=""></option>
-              <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
-                {{ strategy }}
-              </option>
-            </select>
-
-            <select v-if="slotProps.data[platform].isVisible" :value="slotProps.data[platform].maxExposure"
-              @input="setSelectedMaxExposure(strat, slotProps.data.base, platform, $event.target.value)">
-              <option value=""></option>
-              <option v-for="exposure in exposures" :key="exposure" :value="exposure">
-                {{ exposure }}
-              </option>
-            </select>
-          </div>
-        </template>
-      </Column>
-    </DataTable>
-  </div>
-</template>
-
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { successSpin, errorSpin } from '../js/utils/spinner';
@@ -144,22 +92,112 @@ onMounted(async () => {
 });
 </script>
 
+<template>
+  <div>
+    <div class="button-container">
+      <button @click="updateStrat">Save</button>
+    </div>
+
+    <div class="text-align-left">
+      <select v-model="selectedStrategy" @change="updateAllStrats">
+        <option value="">Select a strategy</option>
+        <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
+          {{ strategy }}
+        </option>
+      </select>
+
+      <select v-model="selectedMaxExposure" @change="updateAllMaxExposure">
+        <option value="">Select max exposure</option>
+        <option v-for="exposure in exposures" :key="exposure" :value="exposure">
+          {{ exposure }}
+        </option>
+      </select>
+    </div>
+
+    <SearchBar :filters="filters" />
+
+    <!-- Wrap the table in a div to apply the centering -->
+    <div class="data-table-wrapper">
+      <DataTable :value="tableData" :columns="columns" :paginator="true" :rows="500" scrollable columnResizeMode="fit"
+        :filters="filters" showGridlines>
+        <Column field="base" header="Base" class="centered-column" />
+        <Column v-for="platform in platforms" :key="platform" :field="platform" :header="platform"
+          class="centered-column">
+          <template #body="slotProps">
+            <div class="select-container">
+              <select v-if="slotProps.data[platform].isVisible" :value="slotProps.data[platform].strategy"
+                @input="setSelectedStrategy(strat, slotProps.data.base, platform, $event.target.value)">
+                <option value=""></option>
+                <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
+                  {{ strategy }}
+                </option>
+              </select>
+
+              <select v-if="slotProps.data[platform].isVisible" :value="slotProps.data[platform].maxExposure"
+                @input="setSelectedMaxExposure(strat, slotProps.data.base, platform, $event.target.value)">
+                <option value=""></option>
+                <option v-for="exposure in exposures" :key="exposure" :value="exposure">
+                  {{ exposure }}
+                </option>
+              </select>
+            </div>
+          </template>
+        </Column>
+      </DataTable>
+    </div>
+  </div>
+
+</template>
+
 <style scoped>
+/* Ajoutez cette classe pour styliser les lignes du tableau */
+.p-datatable tbody tr {
+  border-bottom: 1px solid #ccc;
+  /* Couleur de la bordure */
+}
+
+.p-datatable tbody tr:last-child {
+  border-bottom: none;
+  /* Enlever la bordure sur la dernière ligne */
+}
+
+
 .button-container {
   margin: 20px 0;
 }
 
 .text-align-left {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  /* Centre les deux selects */
+  gap: 20px;
+  /* Ajuste l'espace entre les selects */
+  margin-bottom: 20px;
 }
 
 .select-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  /* Centre les selects dans chaque colonne */
+  gap: 10px;
 }
 
 .centered-column {
   text-align: center;
+}
+
+/* Centrer et gérer la largeur du tableau */
+.data-table-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.p-datatable {
+  max-width: 100%;
+  width: 90%;
+  /* Ajuste la largeur pour centrer */
+  overflow-x: auto;
+  /* Permet le scroll horizontal si nécessaire */
 }
 </style>

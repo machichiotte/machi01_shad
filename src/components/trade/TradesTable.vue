@@ -1,19 +1,10 @@
 <!-- src/components/trades/TradesTable.vue -->
-<template>
-  <div class="table-container">
-    <DataTable :value="filteredItems" :rows="itemsPerPage" columnResizeMode="fit" :paginator="true" scrollable
-      :filters="filters" sortField="date" :sortOrder="-1">
-      <Column v-for="(col, index) in cols" :key="index" :field="col.field" :header="col.header" sortable></Column>
-    </DataTable>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 import { tradesColumns } from '../../js/columns.js'
 import { Trade } from '../../types/responseData';
 
-// Interface pour les filtres
+// Interface pour les filtres 
 interface Filters {
   [key: string]: any; // Si tu connais les types des filtres, remplace 'any' par les types exacts
 }
@@ -40,7 +31,10 @@ watchEffect(() => {
         date = item['date'];
       } else if (item['timestamp']) {
         const timestamp = item['timestamp'];
+        console.log('ca rentre ici timestamp', timestamp)
+
         const formattedDate = new Date(timestamp);
+        console.log('ca rentre ici formattedDate', formattedDate)
 
         const year = formattedDate.getFullYear();
         const month = String(formattedDate.getMonth() + 1).padStart(2, '0');
@@ -50,6 +44,8 @@ watchEffect(() => {
         const seconds = String(formattedDate.getSeconds()).padStart(2, '0');
 
         date = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        console.log('ca rentre ici date', date)
+
       } else {
         date = 'Invalid date'; // Cas où 'timestamp' serait manquant ou invalide
       }
@@ -67,11 +63,20 @@ watchEffect(() => {
         fee: item['fee'],
         feecoin: item['feecoin'],
         platform: item['platform']
-      } as Trade; // Cast explicite pour s'assurer que le retour est bien de type TradeItem
+      } as Trade;
     });
   }
 });
 </script>
+
+<template>
+  <div class="table-container">
+    <DataTable :value="filteredItems" :rows="itemsPerPage" columnResizeMode="fit" :paginator="true" scrollable
+      :filters="filters" sortField="date" :sortOrder="-1">
+      <Column v-for="(col, index) in cols" :key="index" :field="col.field" :header="col.header" sortable></Column>
+    </DataTable>
+  </div>
+</template>
 
 <style scoped>
 .table-container {

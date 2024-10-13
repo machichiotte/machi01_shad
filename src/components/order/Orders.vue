@@ -1,14 +1,4 @@
 <!-- src/components/order/Orders.vue -->
-<template>
-  <div class="page">
-    <h1>Current Orders List</h1>
-    <div class="card">
-      <SearchBar :filters="filters" />
-      <OrdersTable :items="orders" :filters="filters" />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { useCalculStore } from '../../store/calculStore';
@@ -42,9 +32,22 @@ onMounted(async () => {
 });
 </script>
 
+<template>
+  <div class="page">
+    <h1>Current Orders List</h1>
+    <div class="card">
+      <SearchBar :filters="filters" />
+      <OrdersTable :items="orders" :filters="filters" />
+    </div>
+  </div>
+</template>
+
 <style scoped>
 .page {
-  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
 }
 
 #table {
