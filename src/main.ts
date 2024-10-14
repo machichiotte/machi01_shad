@@ -9,6 +9,7 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 
 import PrimeVue from 'primevue/config'
+import 'primeicons/primeicons.css'
 
 import LogoMachi from './components/LogoMachi.vue'
 
@@ -37,6 +38,7 @@ import Calendar from 'primevue/calendar'
 import ToggleButton from 'primevue/togglebutton'
 import MultiSelect from 'primevue/multiselect'
 import Checkbox from 'primevue/checkbox'
+import ProgressBar from 'primevue/progressbar'
 
 import './style.css'
 
@@ -74,5 +76,6 @@ app.component('Calendar', Calendar)
 app.component('ToggleButton', ToggleButton)
 app.component('MultiSelect', MultiSelect)
 app.component('Checkbox', Checkbox)
+app.component('ProgressBar', ProgressBar)
 
 app.mount('#app')

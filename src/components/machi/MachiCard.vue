@@ -1,83 +1,100 @@
-    <!-- src/components/machi/MachiCard.vue -->
-    <script setup lang="ts">
-    import { ref } from 'vue';
-    import { Machi } from '../../types/responseData';
+<!-- src/components/machi/MachiCard.vue -->
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Machi } from '../../types/responseData';
+const valueStrat = ref(null);
+const strats = ref([{ name: 'shad' }, { name: 'ab/cd' }, { name: '...' }])
 
-    defineProps<{
-        item: Machi;
-    }>();
+defineProps<{
+    item: Machi;
+}>();
 
-    const isDetailsVisible = ref(false);
+const isDetailsVisible = ref(false);
 
-    const toggleDetails = () => {
-        isDetailsVisible.value = !isDetailsVisible.value;
-    };
+const toggleDetails = () => {
+    isDetailsVisible.value = !isDetailsVisible.value;
+};
 </script>
 
 <template>
     <div class="machi-card">
         <div class="card-header" @click="toggleDetails">
             <!-- Partie 1 : Image et Rang -->
-            <div class="header-part part-1">
+            <!-- Ligne 1 : Espace vide pour équilibrer visuellement -->
+            <div class="case-a1">
+                <p>#{{ item.rank }}</p>
+
+            </div>
+            <!-- Ligne 2 : Image -->
+            <div class="case-b1">
+                //todo bloquer a 64px
                 <img :src="item.iconUrl" alt="Icon" class="icon" />
-                <div>
-                    <p>#{{ item.rank }}</p>
-                </div>
             </div>
 
+            <!-- Ligne 3 : Rang -->
+            <div class="case-c1">
+                <p>{{ item.platform }}</p>
+
+            </div>
+
+
             <!-- Partie 2 : Informations de l'asset -->
-            <div class="header-part part-2">
-                <!-- Nom et Symbole : Aligné à gauche -->
-                <div class="flex flex-col gap-2 text-left">
+            <!-- Ligne 1 : Nom et Symbole, Possession et Balance -->
+            <div class="case-a2">
+
+                <!-- Nom et Symbole : pour le momeent cest au centre au dessus de lautre div, je veux cette div a gauche de case-a2 -->
+                <div class="label-indice">
+
                     <label>{{ item.base }}</label>
                     <small>{{ 'XXX' }}</small>
                 </div>
 
-                <!-- Possession et Balance : Centré -->
-                <div class="flex flex-col gap-2 text-center">
-                    <label>{{ item.currentPossession }}</label>
-                    <small>{{ item.balance }}</small>
+                <!-- Possession et Balance au centre de case-a2-->
+                <div class="label-indice">
+                    <label>{{ item.currentPossession }}$</label>
+                    <small>{{ item.balance }} {{ item.base }}</small>
                 </div>
+            </div>
 
-                <!-- Barre de progression -->
-                <div class="progress-bar">
-                    <div class="filled" :style="{ width: `${item.percentToNextTp}%`, backgroundColor: 'green' }"></div>
-                    <div class="unfilled" :style="{ width: `${100 - item.percentToNextTp}%`, backgroundColor: 'red' }">
-                    </div>
-                    <span>{{ item.percentToNextTp.toFixed(2) }}%</span>
-                </div>
+            <!-- Ligne 2 : Barre de progression -->
+            <div class="case-b2">
+                <ProgressBar :value='item.percentToNextTp'></ProgressBar>
+            </div>
 
-                <!-- Prix actuel et variation -->
-                <div class="flex flex-col gap-2 text-center">
+            <!-- Ligne 3 : Prix actuel et variation -->
+            <div class="case-c2">
+                <div class="label-indice">
                     <label>{{ item.currentPrice }}</label>
                     <small>
-                        <span @click="">{{ '24h' }}</span>:
-                        {{ '666' }}%
+                        <span @click="">{{ '24h' }}</span>: {{ '666' }}%
                     </small>
                 </div>
             </div>
 
             <!-- Partie 3 : Stratégie et Exposition -->
-            <div class="header-part part-3">
-                <div class="flex flex-col gap-2">
-                    <select>
-                        <option>Stratégie 1</option>
-                        <option>Stratégie 2</option>
-                    </select>
-                    <select>
-                        <option>Max Exposition 1</option>
-                        <option>Max Exposition 2</option>
-                    </select>
-                </div>
+            <!-- Ligne 1 : Sélection de stratégie et exposition -->
+            <div class="case-a3">
+                <FloatLabel class="w-full md:w-56" variant="in">
+                    <Select v-model="valueStrat" inputId="in_label" variant="filled" :options="strats"
+                        optionLabel="name" class="w-full" />
+                    <label for="in_label">strategy</label>
+                </FloatLabel>
+                <select>
+                    <option>Max Exposition 1</option>
+                    <option>Max Exposition 2</option>
+                </select>
+            </div>
 
-                <div class="flex flex-col gap-2 text-center">
-                    <label class="tp1-price">TP1: {{ item.recupTp1 }}</label>
-                    <small>{{ item.priceTp1 }}</small>
+            <!-- Ligne 2 : TP1 et prix -->
+            <div class="case-b3">
+                <div class="label-indice">
+                    <label class="tp1-price"> {{ item.recupTp1 }}$</label>
+                    <small>{{ item.base }}:{{ item.priceTp1 }}</small>
                 </div>
             </div>
 
             <!-- Partie 4 : Chevron pour expansion -->
-            <div class="header-part part-4">
+            <div class="case-b4">
                 <Button icon="pi pi-chevron-down" class="expand-button" />
             </div>
         </div>
@@ -93,53 +110,123 @@
 </template>
 
 <style scoped>
-/* Carte avec bordure arrondie et background gris clair */
 .machi-card {
-    border: 1px solid red;
+    border: 1px solid white;
     border-radius: 15px;
     margin-bottom: 1rem;
     margin-left: 1rem;
     margin-right: 1rem;
-    background-color: blue;
+    padding: 0.5rem;
+    background-color: grey;
     cursor: pointer;
 }
 
 .card-header {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 6fr 2fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    background-color: grey;
+    padding: 0.5rem;
+    height: 200px;
+    gap: 0.5rem;
+}
 
+.icon {
+    width: 64px;
+    height: 64px;
+}
+
+.label-indice {
+    background-color: green;
+    display: flex;
+    flex-direction: column;
+}
+
+.label-indice label {
+    text-align: left;
+    background-color: pink;
+}
+
+.label-indice small {
+    background-color: chocolate;
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 0.9rem;
+}
+
+.case-a1 {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.case-a2 {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem;
+    grid-column: 2;
+    grid-row: 1;
 }
 
-/* Proportions des parties 1, 2, 3, et 4 */
-.part-1 {
-    flex-basis: 10%;
-    background-color: aquamarine;
+.case-a2 .label-indice:nth-child(2) {
+    text-align: center;
+    flex: 1;
 }
 
-.part-2 {
-    flex-basis: 65%;
+.case-a3 {
+    grid-column: 3;
+    grid-row: 1;
 }
 
-.part-3 {
-    flex-basis: 20%;
-    background-color: aquamarine;
-
+.case-a4 {
+    grid-column: 4;
+    grid-row: 1;
 }
 
-.part-4 {
-    flex-basis: 5%;
+.case-b1 {
+    grid-column: 1;
+    grid-row: 2;
 }
 
-/* Partie 1 : Image et Rang */
-.part-1 img {
-    width: 50px;
-    height: 50px;
+.case-b2 {
+    grid-column: 2;
+    grid-row: 2;
 }
 
-.part-1 p {
-    font-size: 0.9rem;
+.case-b3 {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.case-b4 {
+    grid-column: 4;
+    grid-row: 2;
+}
+
+.case-c1 {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.case-c2 {
+    display: flex;
+    align-items: center;
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.case-c3 {
+    grid-column: 3;
+    grid-row: 3;
+}
+
+.case-b4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.expand-button {
+    margin: 0;
 }
 
 /* Style de la barre de progression */
@@ -166,23 +253,26 @@
     top: 0;
 }
 
-/* Centrer les éléments textuels */
-.flex-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* pour la progress bar de PrimeVue*/
+.p-progressbar {
+    height: 20px;
+    background: blue;
+    font-size: smaller;
+    /*fonctionne*/
 }
 
-/* Alignement vertical pour les dropdowns */
-.dropdowns select {
-    margin-bottom: 0.5rem;
+/* ne fonctionne pas*/
+.p-progressbar-label {
+    color: red;
+    font-size: smaller;
 }
 
-.tp1-price {
-    font-weight: bold;
+/* ne fonctionne pas*/
+.p-progressbar-value {
+    color: green;
 }
 
-/* Style des détails supplémentaires */
+/* Détails supplémentaires */
 .card-details {
     margin-top: 1rem;
 }
@@ -192,4 +282,3 @@
     margin-top: 0.5rem;
 }
 </style>
-
