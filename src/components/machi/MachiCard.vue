@@ -1,6 +1,7 @@
 <!-- src/components/machi/MachiCard.vue -->
 <script setup lang="ts">
 import { ref } from 'vue';
+import InfoLabel from './InfoLabel.vue';
 import { Machi } from '../../types/responseData';
 const valueStrat = ref(null);
 const strats = ref([{ name: 'shad' }, { name: 'ab/cd' }, { name: '...' }])
@@ -27,7 +28,6 @@ const toggleDetails = () => {
             </div>
             <!-- Ligne 2 : Image -->
             <div class="case-b1">
-                //todo bloquer a 64px
                 <img :src="item.iconUrl" alt="Icon" class="icon" />
             </div>
 
@@ -37,23 +37,11 @@ const toggleDetails = () => {
 
             </div>
 
-
             <!-- Partie 2 : Informations de l'asset -->
             <!-- Ligne 1 : Nom et Symbole, Possession et Balance -->
             <div class="case-a2">
-
-                <!-- Nom et Symbole : pour le momeent cest au centre au dessus de lautre div, je veux cette div a gauche de case-a2 -->
-                <div class="label-indice">
-
-                    <label>{{ item.base }}</label>
-                    <small>{{ 'XXX' }}</small>
-                </div>
-
-                <!-- Possession et Balance au centre de case-a2-->
-                <div class="label-indice">
-                    <label>{{ item.currentPossession }}$</label>
-                    <small>{{ item.balance }} {{ item.base }}</small>
-                </div>
+                <InfoLabel :label="item.base" :small="item.base" />
+                <InfoLabel :label="`${item.currentPossession}$`" :small="`${item.balance} ${item.base}`" />
             </div>
 
             <!-- Ligne 2 : Barre de progression -->
@@ -145,13 +133,14 @@ const toggleDetails = () => {
 .label-indice label {
     text-align: left;
     background-color: pink;
+    font-size: 1.2rem;
 }
 
 .label-indice small {
     background-color: chocolate;
     display: inline-block;
     margin-left: 10px;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .case-a1 {
@@ -220,13 +209,10 @@ const toggleDetails = () => {
 }
 
 .case-b4 {
+    background-color: darkcyan;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.expand-button {
-    margin: 0;
 }
 
 /* Style de la barre de progression */
@@ -278,7 +264,11 @@ const toggleDetails = () => {
 }
 
 /* Chevron d'expansion */
-.expand-button {
-    margin-top: 0.5rem;
+.expand-button .pi-chevron-down {
+    background-color: darkkhaki;
+    font-size: 24px;
+    /* Taille de l'icône */
+    color: red;
+    /* Couleur de l'icône */
 }
 </style>
