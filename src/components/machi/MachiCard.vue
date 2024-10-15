@@ -6,7 +6,6 @@ import { Machi } from '../../types/responseData';
 import WalletBlock from './block/WalletBlock.vue';
 import CurrentPriceBlock from './block/CurrentPriceBlock.vue';
 import NextTp from './block/NextTp.vue';
-import InfoLabel from './block/InfoLabel.vue';
 import StratBlock from './block/StratBlock.vue';
 import AssetBlock from './block/AssetBlock.vue';
 
