@@ -4,23 +4,31 @@ import { ref } from 'vue';
 import BaseBlock from './BaseBlock.vue';
 // Données pour les stratégies
 const valueStrat = ref(null);
+const valueMaxExpo = ref(null);
+
 const strats = ref([{ name: 'SHAD' }, { name: 'AB/CD' }, { name: '...' }]); // Exemple de stratégies
 </script>
 
 <template>
     <BaseBlock title="STRATEGY">
-        <FloatLabel class="w-full md:w-56" variant="in">
+        <FloatLabel class="w-full md:w-56" variant="on">
             <!-- Select pour les stratégies -->
-            <Select v-model="valueStrat" inputId="in_label" variant="filled" :options="strats" optionLabel="name"
+            <Select v-model="valueStrat" inputId="on_label" variant="filled" :options="strats" optionLabel="name"
                 class="w-full" />
-            <label for="in_label">strategy</label>
+            <label for="on_label">strategy</label>
         </FloatLabel>
 
-        <!-- Sélecteur pour l'exposition maximale -->
-        <select class="max-exposure-select">
-            <option>Max Exposition 1</option>
-            <option>Max Exposition 2</option>
-        </select>
+        <FloatLabel class="w-full md:w-56" variant="in">
+            <Select v-model="valueStrat" inputId="in_label" :options="strats" optionLabel="name" class="w-full"
+                variant="filled" />
+            <label for="in_label">In Label</label>
+        </FloatLabel>
+
+        <FloatLabel variant="on">
+            <InputText id="value3" v-model="valueMaxExpo" autocomplete="off" />
+            <label for="value3">MAX EXPO</label>
+        </FloatLabel>
+
     </BaseBlock>
 </template>
 
