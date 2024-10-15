@@ -1,90 +1,80 @@
 <!-- src/components/machi/MachiCard.vue -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import InfoLabel from './InfoLabel.vue';
 import { Machi } from '../../types/responseData';
-const valueStrat = ref(null);
-const strats = ref([{ name: 'shad' }, { name: 'ab/cd' }, { name: '...' }])
 
-defineProps<{
+import WalletBlock from './block/WalletBlock.vue';
+import CurrentPriceBlock from './block/CurrentPriceBlock.vue';
+import NextTp from './block/NextTp.vue';
+import InfoLabel from './block/InfoLabel.vue';
+import StratBlock from './block/StratBlock.vue';
+import AssetBlock from './block/AssetBlock.vue';
+
+// Déclarer les props
+const props = defineProps<{
     item: Machi;
 }>();
+
+// Accès à 'item' via 'props'
+const item = props.item;
+
 
 const isDetailsVisible = ref(false);
 
 const toggleDetails = () => {
     isDetailsVisible.value = !isDetailsVisible.value;
 };
+
+// Utiliser item depuis props pour les périodes
+
+
+// jaimerais que la valeur priceTp1 ait exactement le meme nombre de chiffre significatif que currentPrice
 </script>
 
 <template>
-    <div class="machi-card">
+    <div class="machi-card" v-if="item">
         <div class="card-header" @click="toggleDetails">
-            <!-- Partie 1 : Image et Rang -->
-            <!-- Ligne 1 : Espace vide pour équilibrer visuellement -->
+            <!-- Affichage de l'item et d'autres éléments -->
             <div class="case-a1">
-                <p>#{{ item.rank }}</p>
-
-            </div>
-            <!-- Ligne 2 : Image -->
-            <div class="case-b1">
-                <img :src="item.iconUrl" alt="Icon" class="icon" />
-            </div>
-
-            <!-- Ligne 3 : Rang -->
-            <div class="case-c1">
-                <p>{{ item.platform }}</p>
 
             </div>
 
-            <!-- Partie 2 : Informations de l'asset -->
-            <!-- Ligne 1 : Nom et Symbole, Possession et Balance -->
             <div class="case-a2">
-                <InfoLabel :label="item.base" :small="item.base" />
-                <InfoLabel :label="`${item.currentPossession}$`" :small="`${item.balance} ${item.base}`" />
+                <AssetBlock :item="item" />
+
+                <WalletBlock :item=item />
             </div>
 
-            <!-- Ligne 2 : Barre de progression -->
+            <div class="case-a3">
+                <StratBlock />
+            </div>
+
+
+            <div class="case-b1">
+
+            </div>
             <div class="case-b2">
                 <ProgressBar :value='item.percentToNextTp'></ProgressBar>
             </div>
-
-            <!-- Ligne 3 : Prix actuel et variation -->
-            <div class="case-c2">
-                <div class="label-indice">
-                    <label>{{ item.currentPrice }}</label>
-                    <small>
-                        <span @click="">{{ '24h' }}</span>: {{ '666' }}%
-                    </small>
-                </div>
-            </div>
-
-            <!-- Partie 3 : Stratégie et Exposition -->
-            <!-- Ligne 1 : Sélection de stratégie et exposition -->
-            <div class="case-a3">
-                <FloatLabel class="w-full md:w-56" variant="in">
-                    <Select v-model="valueStrat" inputId="in_label" variant="filled" :options="strats"
-                        optionLabel="name" class="w-full" />
-                    <label for="in_label">strategy</label>
-                </FloatLabel>
-                <select>
-                    <option>Max Exposition 1</option>
-                    <option>Max Exposition 2</option>
-                </select>
-            </div>
-
-            <!-- Ligne 2 : TP1 et prix -->
             <div class="case-b3">
-                <div class="label-indice">
-                    <label class="tp1-price"> {{ item.recupTp1 }}$</label>
-                    <small>{{ item.base }}:{{ item.priceTp1 }}</small>
-                </div>
+                <NextTp :item=item />
             </div>
 
-            <!-- Partie 4 : Chevron pour expansion -->
             <div class="case-b4">
                 <Button icon="pi pi-chevron-down" class="expand-button" />
             </div>
+
+
+            <div class="case-c1">
+                <p>{{ item.platform }}</p>
+            </div>
+            <div class="case-c2">
+                <CurrentPriceBlock :item=item />
+            </div>
+
+            <div class="case-c3">
+            </div>
+
         </div>
 
         <!-- Détails supplémentaires lorsque le chevron est cliqué -->
@@ -95,7 +85,13 @@ const toggleDetails = () => {
             <p>Total Amount: {{ item.totalAmount }}</p>
         </div>
     </div>
+
+    <!-- Affichage si item est non défini -->
+    <div v-else>
+        <p>Chargement des données...</p>
+    </div>
 </template>
+
 
 <style scoped>
 .machi-card {
@@ -107,6 +103,7 @@ const toggleDetails = () => {
     padding: 0.5rem;
     background-color: grey;
     cursor: pointer;
+
 }
 
 .card-header {
@@ -114,9 +111,7 @@ const toggleDetails = () => {
     grid-template-columns: 1fr 6fr 2fr 1fr;
     grid-template-rows: repeat(3, 1fr);
     background-color: grey;
-    padding: 0.5rem;
-    height: 200px;
-    gap: 0.5rem;
+    height: auto;
 }
 
 .icon {
@@ -130,25 +125,16 @@ const toggleDetails = () => {
     flex-direction: column;
 }
 
-.label-indice label {
-    text-align: left;
-    background-color: pink;
-    font-size: 1.2rem;
-}
-
-.label-indice small {
-    background-color: chocolate;
-    display: inline-block;
-    margin-left: 10px;
-    font-size: 0.8rem;
-}
-
 .case-a1 {
     grid-column: 1;
     grid-row: 1;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 .case-a2 {
+    background-color: darkgoldenrod;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -174,19 +160,32 @@ const toggleDetails = () => {
 .case-b1 {
     grid-column: 1;
     grid-row: 2;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 .case-b2 {
     grid-column: 2;
     grid-row: 2;
+    background-color: darkslateblue;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 .case-b3 {
+    align-items: center;
+    display: flex;
+    justify-content: center;
     grid-column: 3;
     grid-row: 2;
 }
 
 .case-b4 {
+    align-items: center;
+    display: flex;
+    justify-content: center;
     grid-column: 4;
     grid-row: 2;
 }
@@ -194,10 +193,14 @@ const toggleDetails = () => {
 .case-c1 {
     grid-column: 1;
     grid-row: 3;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 .case-c2 {
     display: flex;
+    justify-content: center;
     align-items: center;
     grid-column: 2;
     grid-row: 3;
@@ -206,13 +209,6 @@ const toggleDetails = () => {
 .case-c3 {
     grid-column: 3;
     grid-row: 3;
-}
-
-.case-b4 {
-    background-color: darkcyan;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 /* Style de la barre de progression */

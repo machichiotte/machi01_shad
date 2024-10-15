@@ -19,21 +19,15 @@ defineProps<{
     flex-direction: column;
     text-align: left;
     font-size: 1.2rem;
-    color: blueviolet;
-    background-color: yellowgreen;
     padding: 0.5rem;
 }
 
 .label-indice label {
-    font-size: 1.2rem;
-    color: darkorange;
-    background-color: pink;
+    font-size: 1.3rem;
 }
 
 .label-indice small {
-    background-color: chocolate;
-    color: darkolivegreen;
-    font-size: 0.9rem;
-    margin-left: 10px;
+    font-size: 0.8rem;
+    margin-left: 20px;
 }
 </style>
