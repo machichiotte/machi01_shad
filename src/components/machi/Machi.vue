@@ -25,7 +25,7 @@
         <template #end>
           <div class="flex justify-content-end">
             <SearchBar :filters="filters" />
-          </div>c
+          </div>
         </template>
       </Toolbar>
 

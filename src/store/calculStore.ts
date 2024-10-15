@@ -79,11 +79,20 @@ export const useCalculStore = defineStore('calcul', {
     async loadData(type: TYPES, fetchFn: () => Promise<any>, setFn: (data: any) => void) {
       const now = Date.now()
       const lastFetch = this.getLastFetchTimestamp(type)
+
+      console.log('loadData typeeee', type)
       if (!lastFetch || this.shouldFetchData(lastFetch)) {
+        console.log('loadData if')
+
         try {
+          console.log('loadData try')
+
           const result = await fetchFn()
+          console.log('loadData result')
 
           if (result) {
+            console.log('loadData result222', result)
+
             setFn(result)
             this.setLastFetchTimestamp({ type, timestamp: now })
           }

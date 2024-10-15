@@ -1,6 +1,7 @@
 <!-- src/components/block/StrategyBlock.vue -->
 <script setup lang="ts">
 import { ref } from 'vue';
+import BaseBlock from './BaseBlock.vue';
 // Données pour les stratégies
 const valueStrat = ref(null);
 const strats = ref([{ name: 'SHAD' }, { name: 'AB/CD' }, { name: '...' }]); // Exemple de stratégies
