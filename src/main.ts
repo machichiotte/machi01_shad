@@ -16,6 +16,7 @@ import LogoMachi from './components/LogoMachi.vue'
 
 import Button from 'primevue/button'
 import Calendar from 'primevue/calendar'
+import Card from 'primevue/card'
 import Checkbox from 'primevue/checkbox'
 import Column from 'primevue/column'
 import ColumnGroup from 'primevue/columngroup'
@@ -57,6 +58,7 @@ app.use(ToastService);
 
 app.component('Button', Button)
 app.component('Calendar', Calendar)
+app.component('Card', Card)
 app.component('Checkbox', Checkbox)
 app.component('Column', Column)
 app.component('ColumnGroup', ColumnGroup)

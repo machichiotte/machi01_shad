@@ -31,10 +31,8 @@ watchEffect(() => {
         date = item['date'];
       } else if (item['timestamp']) {
         const timestamp = item['timestamp'];
-        console.log('ca rentre ici timestamp', timestamp)
 
         const formattedDate = new Date(timestamp);
-        console.log('ca rentre ici formattedDate', formattedDate)
 
         const year = formattedDate.getFullYear();
         const month = String(formattedDate.getMonth() + 1).padStart(2, '0');
@@ -44,7 +42,6 @@ watchEffect(() => {
         const seconds = String(formattedDate.getSeconds()).padStart(2, '0');
 
         date = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-        console.log('ca rentre ici date', date)
 
       } else {
         date = 'Invalid date'; // Cas où 'timestamp' serait manquant ou invalide

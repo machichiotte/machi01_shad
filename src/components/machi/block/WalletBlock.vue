@@ -1,6 +1,5 @@
 <!-- src/components/block/WalletBlock.vue -->
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import BaseBlock from './BaseBlock.vue';
 import InfoLabel from './InfoLabel.vue';
 

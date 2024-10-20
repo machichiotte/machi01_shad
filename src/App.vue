@@ -5,9 +5,10 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
   <div class="layout">
     <nav>
-      <RouterLink to="/machi" active-class="selected-link">Machi</RouterLink>
+      <RouterLink to="/" active-class="selected-link">Machi</RouterLink>
       <RouterLink to="/order" active-class="selected-link">Order</RouterLink>
       <RouterLink to="/cmc" active-class="selected-link">Cmc</RouterLink>
+      <RouterLink to="/home" active-class="selected-link">Balance</RouterLink>
       <RouterLink to="/strategy" active-class="selected-link">Strategy</RouterLink>
       <RouterLink to="/trade" active-class="selected-link">Trade</RouterLink>
     </nav>

@@ -8,10 +8,10 @@ import Strategy from './components/Strategy.vue'
 import Trades from './components/trade/Trades.vue'
 
 const routes: Array<RouteRecordRaw> = [
-  { path: '/', name: 'home', component: Home },
+  { path: '/', name: 'machi', component: Machi },
   { path: '/order', name: 'order', component: Orders },
   { path: '/cmc', name: 'cmc', component: Cmc },
-  { path: '/machi', name: 'machi', component: Machi },
+  { path: '/home', name: 'balance', component: Home },
   { path: '/strategy', name: 'strategy', component: Strategy },
   { path: '/trade', name: 'trade', component: Trades },
 ]

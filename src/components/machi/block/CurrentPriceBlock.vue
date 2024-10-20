@@ -1,6 +1,5 @@
 <!-- src/components/block/CurrentPriceBlock.vue -->
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import BaseBlock from './BaseBlock.vue';
 import InfoLabelClick from './InfoLabelClick.vue';
 
