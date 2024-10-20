@@ -12,7 +12,7 @@ interface Filters {
 // Définir les propriétés avec les types appropriés
 const props = defineProps<{
   items: Trade[]; // Tableau d'éléments de type 'TradeItem'
-  filters: Filters; // Objet des filtres
+  filters?: Filters; // Objet des filtres
 }>()
 
 const itemsPerPage = ref<number>(10);

@@ -30,6 +30,7 @@ import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 import InputNumber from 'primevue/inputnumber'
 import InputText from 'primevue/inputtext'
+import Menubar from 'primevue/menubar'
 import MultiSelect from 'primevue/multiselect'
 import ProgressBar from 'primevue/progressbar'
 import RadioButton from 'primevue/radiobutton'
@@ -71,6 +72,7 @@ app.component('IconField', IconField)
 app.component('InputIcon', InputIcon)
 app.component('InputNumber', InputNumber)
 app.component('InputText', InputText)
+app.component('Menubar', Menubar)
 app.component('MultiSelect', MultiSelect)
 app.component('ProgressBar', ProgressBar)
 app.component('RadioButton', RadioButton)
