@@ -17,7 +17,7 @@ interface Props {
 const props = defineProps<Props>();
 
 const formattedPrice = computed(() => {
-    return props.price !== undefined && props.price !== null ? props.price.toFixed(2) : 'N/A';
+    return props.price !== undefined && props.price !== null ? props.price.toFixed(2) : NaN;
 });
 
 const formattedChange = computed(() => {
