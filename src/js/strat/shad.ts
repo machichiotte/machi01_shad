@@ -67,8 +67,11 @@ export function getShadTakeProfitsTargets(data: any): any {
   const recupShad = calculateRecoveryGap(data.totalBuy, data.totalSell, maxExposition)
   const averageEntryPrice = data.totalBuy / data.totalAmount
 
+  console.log('getShadTakeProfitsTargets data', data)
+
   const calculatedValues = getTakeProfitValues(data, maxExposition, ratioShad as number, averageEntryPrice)
   const totalShad = getDoneShad(data, maxExposition, recupShad, calculatedValues.recupTpX)
+  console.log('getShadTakeProfitsTargets calculatedValues', calculatedValues)
 
   return {
     maxExposition,

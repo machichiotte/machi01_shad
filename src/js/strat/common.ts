@@ -8,13 +8,13 @@ export const getPriceThreshold = (currentPrice: number, threshold: number): numb
 export function determineStrategyFactor(strat: string): number | string {
     if (strat !== undefined) {
         switch (strat) {
-            case 'Shad':
+            case 'shad':
                 return 2;
-            case 'Shad skip x2':
+            case 'shad skip x2':
                 return 4;
-            case 'Strategy 3':
+            case 'strategy 3':
                 return 8;
-            case 'Strategy 4':
+            case 'strategy 4':
                 return 16;
             default:
                 return '8'; // Default value for unrecognized strategies
@@ -65,5 +65,5 @@ export const setMaxExposure = (items: Array<any>, data: any, maxExposition: numb
 
 export function getTakeProfitsTargets(data: any): any {
     //TODO ajouter pleins de strategies 
-    getShadTakeProfitsTargets(data)
+    return getShadTakeProfitsTargets(data)
 }

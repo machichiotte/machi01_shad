@@ -18,9 +18,9 @@ const props = defineProps({
     }
 })
 
-const emit = defineEmits(['delete-clicked'])
+const emit = defineEmits(['delete:clicked'])
 
 const handleClick = () => {
-    emit('delete-clicked')
+    emit('delete:clicked')
 }
 </script>

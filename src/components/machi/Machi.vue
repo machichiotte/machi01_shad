@@ -191,7 +191,7 @@ onBeforeUnmount(() => {
           @update:selectedPlatforms="updateSelectedPlatforms" />
         <UpdateBarSelector v-if="activeTopTab === 'fetch'" />
         <ActionSelector v-if="activeTopTab === 'action'" :selectedBases="selectedBases" :filters="filters"
-          @delete-action="handleDeleteAction" />
+          @delete:action="handleDeleteAction" />
 
       </div>
     </div>

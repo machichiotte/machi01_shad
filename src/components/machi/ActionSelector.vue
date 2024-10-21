@@ -9,7 +9,7 @@
         <MyEmergencySellButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases" />
         <MyBuyButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases" />
         <MyDeleteButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases"
-            @delete-clicked="onDeleteClicked" />
+            @delete:clicked="onDeleteClicked" />
     </div>
 </template>
 
@@ -27,12 +27,12 @@ const { selectedBases } = defineProps<{
 
 // Exposer `confirmDeleteSelected` pour être appelé par les composants parents
 const emit = defineEmits<{
-    (e: 'delete-action'): void;
+    (e: 'delete:action'): void;
 }>();
 
 // Relayer l'événement au composant grand-parent
 const onDeleteClicked = () => {
-    emit('delete-action'); // Émettre l'événement "delete-action"
+    emit('delete:action'); // Émettre l'événement "delete-action"
 };
 </script>
 

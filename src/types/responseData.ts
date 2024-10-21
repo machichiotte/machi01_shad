@@ -228,7 +228,7 @@ interface LiveData {
   currentPrice: number; // Prix actuel
   currentPossession: number; // Possession actuelle
 }
-
+*/
 // Interface pour les take profits
 interface TakeProfit {
   price: number; // Prix du TP
@@ -237,7 +237,7 @@ interface TakeProfit {
 }
 
 // Interface pour les takeProfits avec le statut des TP
-interface TakeProfits {
+export interface TakeProfits {
   tp1: TakeProfit;
   tp2: TakeProfit;
   tp3: TakeProfit;
@@ -246,6 +246,7 @@ interface TakeProfits {
   status: number[]; // Statut des TP
 }
 
+/*
 // Interface principale pour les ordres (open et trade)
 interface Orders {
   open: {
