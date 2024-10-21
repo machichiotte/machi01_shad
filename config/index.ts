@@ -17,7 +17,7 @@ switch (process.env.NODE_ENV) {
 // Export the config variables
 export const config = {
     port: Number(process.env.PORT) || DEFAULT_PORT,
-    isOffline: process.env.OFFLINE_MODE === 'false',
+    isOffline: process.env.OFFLINE_MODE === 'true',
     database: {
         user: process.env.MONGODB_USER || '',
         password: process.env.MONGODB_PASSWORD || '',

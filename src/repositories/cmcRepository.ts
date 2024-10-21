@@ -25,6 +25,7 @@ export class CmcRepository {
      * Insère de nouvelles données CMC dans la base de données.
      */
     public static async save(mappedData: Omit<MappedCmc, '_id'>[]): Promise<void> {
-        await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY);
+        const sortedData = mappedData.sort((a, b) => a.cmc_rank - b.cmc_rank);
+        await MongodbService.saveDataToDatabase(sortedData, COLLECTION_NAME, COLLECTION_CATEGORY);
     }
 }

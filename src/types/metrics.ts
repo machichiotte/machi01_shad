@@ -22,11 +22,6 @@ export interface AssetMetrics {
     balance: string | number;
     recupTp1: string | number;
     recupTpX: string | number;
-    tp1: string | number;
-    tp2: string | number;
-    tp3: string | number;
-    tp4: string | number;
-    tp5: string | number;
     percentToNextTp: string | number | undefined;
     platform: string;
 }

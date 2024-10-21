@@ -5,10 +5,10 @@
     },
     "base": "1000SATS",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "15"
+      "binance": 15
     }
   },
   {
@@ -17,10 +17,10 @@
     },
     "base": "1EARTH",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -29,10 +29,10 @@
     },
     "base": "1INCH",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -41,10 +41,10 @@
     },
     "base": "AAC",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "50"
+      "htx": 50
     }
   },
   {
@@ -53,10 +53,10 @@
     },
     "base": "AAVE",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "50"
+      "binance": 50
     }
   },
   {
@@ -65,10 +65,10 @@
     },
     "base": "ABBC",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -77,10 +77,10 @@
     },
     "base": "ACE",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -89,10 +89,10 @@
     },
     "base": "ADA",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "100"
+      "binance": 100
     }
   },
   {
@@ -101,10 +101,10 @@
     },
     "base": "ADX",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -113,10 +113,10 @@
     },
     "base": "AE",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -125,10 +125,10 @@
     },
     "base": "AGLD",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -137,10 +137,10 @@
     },
     "base": "AI",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -149,10 +149,10 @@
     },
     "base": "AION",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -161,10 +161,10 @@
     },
     "base": "AIOZ",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "75"
+      "kucoin": 75
     }
   },
   {
@@ -173,10 +173,10 @@
     },
     "base": "AKT",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -185,10 +185,10 @@
     },
     "base": "ALEPH",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "150"
+      "kucoin": 150
     }
   },
   {
@@ -197,10 +197,10 @@
     },
     "base": "ALGO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "300"
+      "binance": 300
     }
   },
   {
@@ -209,10 +209,10 @@
     },
     "base": "ALICE",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -221,10 +221,10 @@
     },
     "base": "ALPHA",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -233,10 +233,10 @@
     },
     "base": "ANC",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -245,10 +245,10 @@
     },
     "base": "ANKR",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "100"
+      "binance": 100
     }
   },
   {
@@ -257,10 +257,10 @@
     },
     "base": "ANT",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "100"
+      "binance": 100
     }
   },
   {
@@ -269,12 +269,12 @@
     },
     "base": "APE",
     "strategies": {
-      "binance": "Shad",
-      "kucoin": "Shad"
+      "binance": "shad",
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "binance": "5",
-      "kucoin": "5"
+      "binance": 5,
+      "kucoin": 5
     }
   },
   {
@@ -283,10 +283,10 @@
     },
     "base": "API3",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -295,12 +295,12 @@
     },
     "base": "APN",
     "strategies": {
-      "gateio": "Shad",
-      "htx": "Shad"
+      "gateio": "shad",
+      "htx": "shad"
     },
     "maxExposure": {
-      "gateio": "150",
-      "htx": "5"
+      "gateio": 150,
+      "htx": 5
     }
   },
   {
@@ -309,10 +309,10 @@
     },
     "base": "APPC",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -321,10 +321,10 @@
     },
     "base": "ARDR",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "200"
+      "binance": 200
     }
   },
   {
@@ -333,10 +333,10 @@
     },
     "base": "ASD",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -345,10 +345,10 @@
     },
     "base": "ASR",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "15"
+      "binance": 15
     }
   },
   {
@@ -357,10 +357,10 @@
     },
     "base": "AST",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -369,10 +369,10 @@
     },
     "base": "ATM",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -381,10 +381,10 @@
     },
     "base": "ATOM",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -393,10 +393,10 @@
     },
     "base": "ATP",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -405,10 +405,10 @@
     },
     "base": "AUTO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -417,10 +417,10 @@
     },
     "base": "AVA",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -429,10 +429,10 @@
     },
     "base": "AVAX",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "200"
+      "binance": 200
     }
   },
   {
@@ -441,10 +441,10 @@
     },
     "base": "AXS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -453,10 +453,10 @@
     },
     "base": "BADGER",
     "strategies": {
-      "okx": "Shad"
+      "okx": "shad"
     },
     "maxExposure": {
-      "okx": "5"
+      "okx": 5
     }
   },
   {
@@ -465,10 +465,10 @@
     },
     "base": "BAL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -477,10 +477,10 @@
     },
     "base": "BAND",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -489,10 +489,10 @@
     },
     "base": "BAT",
     "strategies": {
-      "okx": "Shad"
+      "okx": "shad"
     },
     "maxExposure": {
-      "okx": "5"
+      "okx": 5
     }
   },
   {
@@ -501,10 +501,10 @@
     },
     "base": "BAX",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -513,10 +513,10 @@
     },
     "base": "BCH",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -525,10 +525,10 @@
     },
     "base": "BEAM",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -540,7 +540,7 @@
       "gateio": ""
     },
     "maxExposure": {
-      "gateio": ""
+      "gateio": 5
     }
   },
   {
@@ -549,10 +549,10 @@
     },
     "base": "BEL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -561,10 +561,10 @@
     },
     "base": "BEPRO",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -573,10 +573,10 @@
     },
     "base": "BIX",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -585,10 +585,10 @@
     },
     "base": "BLOK",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -597,10 +597,10 @@
     },
     "base": "BLZ",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -609,10 +609,10 @@
     },
     "base": "BMON",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -621,10 +621,10 @@
     },
     "base": "BNB",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -633,10 +633,10 @@
     },
     "base": "BOLT",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -645,10 +645,10 @@
     },
     "base": "BOND",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -657,10 +657,10 @@
     },
     "base": "BOSON",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -669,10 +669,10 @@
     },
     "base": "BSV",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -681,10 +681,10 @@
     },
     "base": "BTC",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": ""
+      "binance": 1000
     }
   },
   {
@@ -693,10 +693,10 @@
     },
     "base": "BTG",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -705,10 +705,10 @@
     },
     "base": "BTT",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -717,10 +717,10 @@
     },
     "base": "BURGER",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -729,10 +729,10 @@
     },
     "base": "CAKE",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -741,10 +741,10 @@
     },
     "base": "CAS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -753,10 +753,10 @@
     },
     "base": "CELO",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -765,10 +765,10 @@
     },
     "base": "CFX",
     "strategies": {
-      "binance": "Shad skip x2"
+      "binance": "shad skip x2"
     },
     "maxExposure": {
-      "binance": "200"
+      "binance": 200
     }
   },
   {
@@ -777,10 +777,10 @@
     },
     "base": "CHR",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -789,10 +789,10 @@
     },
     "base": "CHZ",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -801,10 +801,10 @@
     },
     "base": "CIRUS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -813,10 +813,10 @@
     },
     "base": "CKB",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -825,10 +825,10 @@
     },
     "base": "CLV",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -837,10 +837,10 @@
     },
     "base": "CMT",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -849,10 +849,10 @@
     },
     "base": "COMBO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -861,10 +861,10 @@
     },
     "base": "COMP",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -873,10 +873,10 @@
     },
     "base": "COTI",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -885,10 +885,10 @@
     },
     "base": "CPOOL",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -897,10 +897,10 @@
     },
     "base": "CRE",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -909,10 +909,10 @@
     },
     "base": "CREDI",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "15"
+      "kucoin": 15
     }
   },
   {
@@ -921,10 +921,10 @@
     },
     "base": "CRO",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -933,10 +933,10 @@
     },
     "base": "CRU",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -945,10 +945,10 @@
     },
     "base": "CRV",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -957,10 +957,10 @@
     },
     "base": "CTI",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "15"
+      "kucoin": 15
     }
   },
   {
@@ -969,10 +969,10 @@
     },
     "base": "CTK",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -981,10 +981,10 @@
     },
     "base": "CTSI",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -993,10 +993,10 @@
     },
     "base": "CTXC",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "100"
+      "binance": 100
     }
   },
   {
@@ -1005,10 +1005,10 @@
     },
     "base": "CUDOS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -1017,10 +1017,10 @@
     },
     "base": "CVC",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1029,10 +1029,10 @@
     },
     "base": "CWAR",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1041,10 +1041,10 @@
     },
     "base": "CWS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1053,10 +1053,10 @@
     },
     "base": "DAC",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1065,10 +1065,10 @@
     },
     "base": "DAG",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1077,10 +1077,10 @@
     },
     "base": "DAO",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -1089,10 +1089,10 @@
     },
     "base": "DAPPX",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1101,10 +1101,10 @@
     },
     "base": "DASH",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1113,10 +1113,10 @@
     },
     "base": "DATA",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1125,10 +1125,10 @@
     },
     "base": "DEGO",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -1137,10 +1137,10 @@
     },
     "base": "DENT",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1149,10 +1149,10 @@
     },
     "base": "DEXE",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1161,10 +1161,10 @@
     },
     "base": "DFI",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1173,10 +1173,10 @@
     },
     "base": "DFYN",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1188,7 +1188,7 @@
       "okx": ""
     },
     "maxExposure": {
-      "okx": ""
+      "okx": 5
     }
   },
   {
@@ -1197,10 +1197,10 @@
     },
     "base": "DHT",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1212,7 +1212,7 @@
       "okx": ""
     },
     "maxExposure": {
-      "okx": ""
+      "okx": 5
     }
   },
   {
@@ -1221,10 +1221,10 @@
     },
     "base": "DKA",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1233,10 +1233,10 @@
     },
     "base": "DLT",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1245,10 +1245,10 @@
     },
     "base": "DNT",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -1257,10 +1257,10 @@
     },
     "base": "DODO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1269,10 +1269,10 @@
     },
     "base": "DOGE",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -1281,10 +1281,10 @@
     },
     "base": "DON",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1293,10 +1293,10 @@
     },
     "base": "DORA",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -1305,10 +1305,10 @@
     },
     "base": "DOT",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1317,10 +1317,10 @@
     },
     "base": "DREAMS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1329,10 +1329,10 @@
     },
     "base": "DREP",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1341,10 +1341,10 @@
     },
     "base": "DSLA",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1353,10 +1353,10 @@
     },
     "base": "DTA",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1365,10 +1365,10 @@
     },
     "base": "DUSK",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1377,10 +1377,10 @@
     },
     "base": "DYDX",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1389,10 +1389,10 @@
     },
     "base": "DYP",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1401,10 +1401,10 @@
     },
     "base": "EGLD",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1413,10 +1413,10 @@
     },
     "base": "EGT",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1425,10 +1425,10 @@
     },
     "base": "EKT",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1437,10 +1437,10 @@
     },
     "base": "ELA",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1449,10 +1449,10 @@
     },
     "base": "ELF",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1461,10 +1461,10 @@
     },
     "base": "ELON",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1473,10 +1473,10 @@
     },
     "base": "EM",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1485,10 +1485,10 @@
     },
     "base": "ENJ",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1497,10 +1497,10 @@
     },
     "base": "ENS",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1509,10 +1509,10 @@
     },
     "base": "EOS",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1521,10 +1521,10 @@
     },
     "base": "EOSC",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -1533,10 +1533,10 @@
     },
     "base": "EPIK",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1545,10 +1545,10 @@
     },
     "base": "EPX",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1557,10 +1557,10 @@
     },
     "base": "EQX",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -1569,10 +1569,10 @@
     },
     "base": "ERN",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1581,10 +1581,10 @@
     },
     "base": "ETC",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1593,10 +1593,10 @@
     },
     "base": "ETH",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": ""
+      "binance": 3000
     }
   },
   {
@@ -1605,10 +1605,10 @@
     },
     "base": "ETHW",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1617,10 +1617,10 @@
     },
     "base": "FEAR",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -1629,10 +1629,10 @@
     },
     "base": "FET",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": ""
+      "binance": 5
     }
   },
   {
@@ -1641,10 +1641,10 @@
     },
     "base": "FIL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1653,10 +1653,10 @@
     },
     "base": "FILDA",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -1665,10 +1665,10 @@
     },
     "base": "FIO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1677,10 +1677,10 @@
     },
     "base": "FIRO",
     "strategies": {
-      "binance": "Shad skip x2"
+      "binance": "shad skip x2"
     },
     "maxExposure": {
-      "binance": "10"
+      "binance": 10
     }
   },
   {
@@ -1689,10 +1689,10 @@
     },
     "base": "FLAME",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1701,10 +1701,10 @@
     },
     "base": "FLOW",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1713,10 +1713,10 @@
     },
     "base": "FLR",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1725,10 +1725,10 @@
     },
     "base": "FOR",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1737,10 +1737,10 @@
     },
     "base": "FORTH",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1749,10 +1749,10 @@
     },
     "base": "FRM",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1761,10 +1761,10 @@
     },
     "base": "FSN",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1773,10 +1773,10 @@
     },
     "base": "FTM",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1785,10 +1785,10 @@
     },
     "base": "FUN",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1797,10 +1797,10 @@
     },
     "base": "GAFI",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1809,10 +1809,10 @@
     },
     "base": "GAME",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1821,12 +1821,12 @@
     },
     "base": "GAS",
     "strategies": {
-      "binance": "Shad",
-      "kucoin": "Shad"
+      "binance": "shad",
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "binance": "5",
-      "kucoin": "50"
+      "binance": 5,
+      "kucoin": 50
     }
   },
   {
@@ -1835,10 +1835,10 @@
     },
     "base": "GFT",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1847,10 +1847,10 @@
     },
     "base": "GHX",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -1859,10 +1859,10 @@
     },
     "base": "GLQ",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1871,10 +1871,10 @@
     },
     "base": "GMEE",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1883,10 +1883,10 @@
     },
     "base": "GMT",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1895,10 +1895,10 @@
     },
     "base": "GO",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -1907,10 +1907,10 @@
     },
     "base": "GODS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1919,10 +1919,10 @@
     },
     "base": "GOF",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -1931,10 +1931,10 @@
     },
     "base": "GRT",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1943,10 +1943,10 @@
     },
     "base": "GTC",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1955,10 +1955,10 @@
     },
     "base": "GVT",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -1967,10 +1967,10 @@
     },
     "base": "HAI",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1979,10 +1979,10 @@
     },
     "base": "HAPI",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -1991,10 +1991,10 @@
     },
     "base": "HARD",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2003,10 +2003,10 @@
     },
     "base": "HBAR",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2015,10 +2015,10 @@
     },
     "base": "HBC",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2027,10 +2027,10 @@
     },
     "base": "HEART",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "20"
+      "kucoin": 20
     }
   },
   {
@@ -2039,10 +2039,10 @@
     },
     "base": "HIFI",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2051,10 +2051,10 @@
     },
     "base": "HITCHAIN",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2063,10 +2063,10 @@
     },
     "base": "HNT",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2075,10 +2075,10 @@
     },
     "base": "HOOK",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2087,10 +2087,10 @@
     },
     "base": "HORD",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -2099,10 +2099,10 @@
     },
     "base": "HOTCROSS",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "20"
+      "htx": 20
     }
   },
   {
@@ -2111,10 +2111,10 @@
     },
     "base": "HPT",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2123,10 +2123,10 @@
     },
     "base": "HT",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2135,10 +2135,10 @@
     },
     "base": "HTR",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -2147,10 +2147,10 @@
     },
     "base": "HTX",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2159,10 +2159,10 @@
     },
     "base": "HYDRA",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2171,10 +2171,10 @@
     },
     "base": "ICP",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2183,10 +2183,10 @@
     },
     "base": "ICX",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2195,10 +2195,10 @@
     },
     "base": "IDEA",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "150"
+      "kucoin": 150
     }
   },
   {
@@ -2207,10 +2207,10 @@
     },
     "base": "IMX",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2219,10 +2219,10 @@
     },
     "base": "INJ",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2231,10 +2231,10 @@
     },
     "base": "INSUR",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2243,10 +2243,10 @@
     },
     "base": "IOI",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2255,10 +2255,10 @@
     },
     "base": "IOST",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2267,10 +2267,10 @@
     },
     "base": "IOTA",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2279,10 +2279,10 @@
     },
     "base": "IOTX",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2291,10 +2291,10 @@
     },
     "base": "IRIS",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2303,10 +2303,10 @@
     },
     "base": "ISP",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2315,10 +2315,10 @@
     },
     "base": "JASMY",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2327,10 +2327,10 @@
     },
     "base": "JST",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2339,10 +2339,10 @@
     },
     "base": "KAI",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -2351,10 +2351,10 @@
     },
     "base": "KAVA",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2363,10 +2363,10 @@
     },
     "base": "KCASH",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2375,10 +2375,10 @@
     },
     "base": "KCS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2387,10 +2387,10 @@
     },
     "base": "KEY",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2399,12 +2399,12 @@
     },
     "base": "KLAY",
     "strategies": {
-      "binance": "Shad",
-      "kucoin": "Shad"
+      "binance": "shad",
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "binance": "5",
-      "kucoin": "5"
+      "binance": 5,
+      "kucoin": 5
     }
   },
   {
@@ -2413,10 +2413,10 @@
     },
     "base": "KLV",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2425,10 +2425,10 @@
     },
     "base": "KMD",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2437,10 +2437,10 @@
     },
     "base": "KSM",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2449,10 +2449,10 @@
     },
     "base": "LAMB",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2461,10 +2461,10 @@
     },
     "base": "LAYER",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2476,7 +2476,7 @@
       "okx": ""
     },
     "maxExposure": {
-      "okx": ""
+      "okx": 5
     }
   },
   {
@@ -2488,7 +2488,7 @@
       "okx": ""
     },
     "maxExposure": {
-      "okx": ""
+      "okx": 5
     }
   },
   {
@@ -2497,10 +2497,10 @@
     },
     "base": "LEVER",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2509,10 +2509,10 @@
     },
     "base": "LIKE",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2521,10 +2521,10 @@
     },
     "base": "LINA",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2533,10 +2533,10 @@
     },
     "base": "LINK",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2545,10 +2545,10 @@
     },
     "base": "LIT",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2557,10 +2557,10 @@
     },
     "base": "LITH",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2569,10 +2569,10 @@
     },
     "base": "LOL",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2581,10 +2581,10 @@
     },
     "base": "LPOOL",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -2593,10 +2593,10 @@
     },
     "base": "LPT",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2605,10 +2605,10 @@
     },
     "base": "LRC",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2617,10 +2617,10 @@
     },
     "base": "LSK",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2629,10 +2629,10 @@
     },
     "base": "LSS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2641,10 +2641,10 @@
     },
     "base": "LTC",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2653,10 +2653,10 @@
     },
     "base": "LTO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2665,10 +2665,10 @@
     },
     "base": "LUNA",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2677,10 +2677,10 @@
     },
     "base": "LUNC",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2689,10 +2689,10 @@
     },
     "base": "LYM",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2701,10 +2701,10 @@
     },
     "base": "MANA",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2713,10 +2713,10 @@
     },
     "base": "MAPO",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "25"
+      "kucoin": 25
     }
   },
   {
@@ -2725,10 +2725,10 @@
     },
     "base": "MARSH",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2737,22 +2737,22 @@
     },
     "base": "MASK",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
     "_id": {
       "$oid": "66dcdfa30726db7817a15a9a"
     },
-    "base": "MATIC",
+    "base": "POL",
     "strategies": {
-      "binance": ""
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": ""
+      "binance": 5
     }
   },
   {
@@ -2761,10 +2761,10 @@
     },
     "base": "MBL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2773,10 +2773,10 @@
     },
     "base": "MDS",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2785,10 +2785,10 @@
     },
     "base": "MDX",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2797,10 +2797,10 @@
     },
     "base": "MINA",
     "strategies": {
-      "okx": ""
+      "okx": "shad"
     },
     "maxExposure": {
-      "okx": ""
+      "okx": 5
     }
   },
   {
@@ -2809,10 +2809,10 @@
     },
     "base": "MIR",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2821,10 +2821,10 @@
     },
     "base": "MJT",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2833,10 +2833,10 @@
     },
     "base": "MKR",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2845,10 +2845,10 @@
     },
     "base": "MLK",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -2857,10 +2857,10 @@
     },
     "base": "MLN",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2869,10 +2869,10 @@
     },
     "base": "MONI",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2881,10 +2881,10 @@
     },
     "base": "MOVR",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2893,10 +2893,10 @@
     },
     "base": "MTL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2905,10 +2905,10 @@
     },
     "base": "MTV",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -2917,10 +2917,10 @@
     },
     "base": "NAKA",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -2929,10 +2929,10 @@
     },
     "base": "NAS",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -2941,10 +2941,10 @@
     },
     "base": "NAV",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2953,10 +2953,10 @@
     },
     "base": "NEBL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2965,10 +2965,10 @@
     },
     "base": "NEO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -2977,10 +2977,10 @@
     },
     "base": "NEST",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "50"
+      "htx": 50
     }
   },
   {
@@ -2989,10 +2989,10 @@
     },
     "base": "NETVR",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3001,12 +3001,12 @@
     },
     "base": "NFT",
     "strategies": {
-      "binance": "Shad",
-      "kucoin": "Shad"
+      "binance": "shad",
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "binance": "5",
-      "kucoin": "5"
+      "binance": 5,
+      "kucoin": 5
     }
   },
   {
@@ -3015,10 +3015,10 @@
     },
     "base": "NGL",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3027,10 +3027,10 @@
     },
     "base": "NIM",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "25"
+      "kucoin": 25
     }
   },
   {
@@ -3039,10 +3039,10 @@
     },
     "base": "NKN",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3051,10 +3051,10 @@
     },
     "base": "NMR",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3063,10 +3063,10 @@
     },
     "base": "NODE",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3075,10 +3075,10 @@
     },
     "base": "NORD",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3087,10 +3087,10 @@
     },
     "base": "NSURE",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3099,10 +3099,10 @@
     },
     "base": "NULS",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "50"
+      "htx": 50
     }
   },
   {
@@ -3111,10 +3111,10 @@
     },
     "base": "NXRA",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3123,12 +3123,12 @@
     },
     "base": "OCN",
     "strategies": {
-      "gateio": "Shad",
-      "htx": "Shad"
+      "gateio": "shad",
+      "htx": "shad"
     },
     "maxExposure": {
-      "gateio": "5",
-      "htx": "5"
+      "gateio": 5,
+      "htx": 5
     }
   },
   {
@@ -3137,10 +3137,10 @@
     },
     "base": "ODDZ",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3149,10 +3149,10 @@
     },
     "base": "OG",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3161,10 +3161,10 @@
     },
     "base": "OGN",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3173,10 +3173,10 @@
     },
     "base": "OGV",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3185,10 +3185,10 @@
     },
     "base": "OM",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "50"
+      "binance": 50
     }
   },
   {
@@ -3197,10 +3197,10 @@
     },
     "base": "OMG",
     "strategies": {
-      "okx": "Shad"
+      "okx": "shad"
     },
     "maxExposure": {
-      "okx": "5"
+      "okx": 5
     }
   },
   {
@@ -3209,10 +3209,10 @@
     },
     "base": "OMI",
     "strategies": {
-      "okx": "Shad"
+      "okx": "shad"
     },
     "maxExposure": {
-      "okx": "5"
+      "okx": 5
     }
   },
   {
@@ -3221,10 +3221,10 @@
     },
     "base": "ONG",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3233,10 +3233,10 @@
     },
     "base": "ONT",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3245,10 +3245,10 @@
     },
     "base": "OOE",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3257,10 +3257,10 @@
     },
     "base": "OOKI",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3269,10 +3269,10 @@
     },
     "base": "ORAI",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3281,10 +3281,10 @@
     },
     "base": "ORBS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3293,10 +3293,10 @@
     },
     "base": "ORN",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3305,10 +3305,10 @@
     },
     "base": "OXT",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "25"
+      "binance": 25
     }
   },
   {
@@ -3317,10 +3317,10 @@
     },
     "base": "PAI",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3329,10 +3329,10 @@
     },
     "base": "PBR",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -3341,10 +3341,10 @@
     },
     "base": "PCX",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -3353,10 +3353,10 @@
     },
     "base": "PEOPLE",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3365,10 +3365,10 @@
     },
     "base": "PERL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3377,10 +3377,10 @@
     },
     "base": "PERP",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3389,10 +3389,10 @@
     },
     "base": "PHA",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3401,10 +3401,10 @@
     },
     "base": "PIVX",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3413,10 +3413,10 @@
     },
     "base": "PLU",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "100"
+      "kucoin": 100
     }
   },
   {
@@ -3425,10 +3425,10 @@
     },
     "base": "PNT",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3437,10 +3437,10 @@
     },
     "base": "POLC",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3449,10 +3449,10 @@
     },
     "base": "POLK",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -3461,10 +3461,10 @@
     },
     "base": "POLS",
     "strategies": {
-      "htx": "Shad skip x2"
+      "htx": "shad skip x2"
     },
     "maxExposure": {
-      "htx": "25"
+      "htx": 25
     }
   },
   {
@@ -3473,10 +3473,10 @@
     },
     "base": "POLX",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -3485,10 +3485,10 @@
     },
     "base": "POND",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3497,10 +3497,10 @@
     },
     "base": "PRE",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -3509,10 +3509,10 @@
     },
     "base": "PROM",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3521,10 +3521,10 @@
     },
     "base": "PRQ",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3533,10 +3533,10 @@
     },
     "base": "PSG",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3545,10 +3545,10 @@
     },
     "base": "PUNDIX",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3557,10 +3557,10 @@
     },
     "base": "PUSH",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3569,10 +3569,10 @@
     },
     "base": "PYR",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3581,10 +3581,10 @@
     },
     "base": "QI",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3593,10 +3593,10 @@
     },
     "base": "QISWAP",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3605,10 +3605,10 @@
     },
     "base": "QNT",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3617,10 +3617,10 @@
     },
     "base": "QTUM",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3629,10 +3629,10 @@
     },
     "base": "QUICK",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3641,10 +3641,10 @@
     },
     "base": "REAP",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3653,10 +3653,10 @@
     },
     "base": "REEF",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3665,10 +3665,10 @@
     },
     "base": "REN",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3677,10 +3677,10 @@
     },
     "base": "RENDER",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -3689,10 +3689,10 @@
     },
     "base": "REP",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -3701,10 +3701,10 @@
     },
     "base": "REQ",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3713,10 +3713,10 @@
     },
     "base": "REVU",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -3725,10 +3725,10 @@
     },
     "base": "RIF",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3737,10 +3737,10 @@
     },
     "base": "RLC",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3749,10 +3749,10 @@
     },
     "base": "ROSE",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3761,10 +3761,10 @@
     },
     "base": "ROUTE",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3773,10 +3773,10 @@
     },
     "base": "RSR",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3785,10 +3785,10 @@
     },
     "base": "RUFF",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3797,10 +3797,10 @@
     },
     "base": "RUNE",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3809,10 +3809,10 @@
     },
     "base": "SAND",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3821,10 +3821,10 @@
     },
     "base": "SC",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3833,10 +3833,10 @@
     },
     "base": "SCLP",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -3845,10 +3845,10 @@
     },
     "base": "SEELE",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3857,10 +3857,10 @@
     },
     "base": "SENSO",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "75"
+      "kucoin": 75
     }
   },
   {
@@ -3869,10 +3869,10 @@
     },
     "base": "SGB",
     "strategies": {
-      "gateio": "Shad"
+      "gateio": "shad"
     },
     "maxExposure": {
-      "gateio": "5"
+      "gateio": 5
     }
   },
   {
@@ -3881,10 +3881,10 @@
     },
     "base": "SHA",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3893,10 +3893,10 @@
     },
     "base": "SHIB",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -3905,10 +3905,10 @@
     },
     "base": "SHR",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -3917,10 +3917,10 @@
     },
     "base": "SKEY",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -3929,10 +3929,10 @@
     },
     "base": "SKL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3941,10 +3941,10 @@
     },
     "base": "SLP",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -3953,10 +3953,10 @@
     },
     "base": "SMT",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3965,10 +3965,10 @@
     },
     "base": "SNT",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -3977,12 +3977,12 @@
     },
     "base": "SNX",
     "strategies": {
-      "binance": "Shad",
-      "kucoin": "Shad"
+      "binance": "shad",
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "binance": "5",
-      "kucoin": "5"
+      "binance": 5,
+      "kucoin": 5
     }
   },
   {
@@ -3991,10 +3991,10 @@
     },
     "base": "SOFI",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "75"
+      "htx": 75
     }
   },
   {
@@ -4003,10 +4003,10 @@
     },
     "base": "SOL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4015,10 +4015,10 @@
     },
     "base": "SOLO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4027,10 +4027,10 @@
     },
     "base": "SOLVE",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4039,10 +4039,10 @@
     },
     "base": "STC",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4051,10 +4051,10 @@
     },
     "base": "STMX",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4063,10 +4063,10 @@
     },
     "base": "STN",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -4075,10 +4075,10 @@
     },
     "base": "STND",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4087,10 +4087,10 @@
     },
     "base": "STORJ",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4099,10 +4099,10 @@
     },
     "base": "STX",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4111,10 +4111,10 @@
     },
     "base": "SUKU",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4123,10 +4123,10 @@
     },
     "base": "SUN",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4135,10 +4135,10 @@
     },
     "base": "SUPER",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4147,10 +4147,10 @@
     },
     "base": "SUSHI",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4159,10 +4159,10 @@
     },
     "base": "SUTER",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -4171,10 +4171,10 @@
     },
     "base": "SWASH",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -4183,10 +4183,10 @@
     },
     "base": "SXP",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4195,10 +4195,10 @@
     },
     "base": "SYLO",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "25"
+      "kucoin": 25
     }
   },
   {
@@ -4207,10 +4207,10 @@
     },
     "base": "SYS",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4219,10 +4219,10 @@
     },
     "base": "T",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4231,10 +4231,10 @@
     },
     "base": "TARA",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4243,10 +4243,10 @@
     },
     "base": "TEL",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4255,10 +4255,10 @@
     },
     "base": "TFUEL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4267,10 +4267,10 @@
     },
     "base": "THETA",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4279,10 +4279,10 @@
     },
     "base": "TKO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4291,10 +4291,10 @@
     },
     "base": "TLM",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4303,10 +4303,10 @@
     },
     "base": "TNB",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -4315,10 +4315,10 @@
     },
     "base": "TOKO",
     "strategies": {
-      "kucoin": "Shad skip x2"
+      "kucoin": "shad skip x2"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -4327,10 +4327,10 @@
     },
     "base": "TOWER",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4339,10 +4339,10 @@
     },
     "base": "TRB",
     "strategies": {
-      "htx": "Shad skip x2"
+      "htx": "shad skip x2"
     },
     "maxExposure": {
-      "htx": ""
+      "htx": 5
     }
   },
   {
@@ -4351,10 +4351,10 @@
     },
     "base": "TRIAS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "15"
+      "kucoin": 15
     }
   },
   {
@@ -4363,10 +4363,10 @@
     },
     "base": "TRIBE",
     "strategies": {
-      "htx": "Shad skip x2"
+      "htx": "shad skip x2"
     },
     "maxExposure": {
-      "htx": "15"
+      "htx": 15
     }
   },
   {
@@ -4375,10 +4375,10 @@
     },
     "base": "TROY",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4387,10 +4387,10 @@
     },
     "base": "TRVL",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4399,10 +4399,10 @@
     },
     "base": "TRX",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "200"
+      "binance": 200
     }
   },
   {
@@ -4411,10 +4411,10 @@
     },
     "base": "UFO",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4423,10 +4423,10 @@
     },
     "base": "UMA",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4435,10 +4435,10 @@
     },
     "base": "UNFI",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4447,10 +4447,10 @@
     },
     "base": "UNI",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4459,10 +4459,10 @@
     },
     "base": "UOS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4503,10 +4503,10 @@
     },
     "base": "UTK",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4515,10 +4515,10 @@
     },
     "base": "UUU",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -4527,10 +4527,10 @@
     },
     "base": "VAI",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4539,10 +4539,10 @@
     },
     "base": "VALUE",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -4551,10 +4551,10 @@
     },
     "base": "VEGA",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4563,10 +4563,10 @@
     },
     "base": "VELO",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4575,10 +4575,10 @@
     },
     "base": "VET",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4587,10 +4587,10 @@
     },
     "base": "VIDT",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4599,10 +4599,10 @@
     },
     "base": "VIDY",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -4611,10 +4611,10 @@
     },
     "base": "VLX",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "10"
+      "kucoin": 10
     }
   },
   {
@@ -4623,10 +4623,10 @@
     },
     "base": "VOXEL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4635,10 +4635,10 @@
     },
     "base": "VR",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4647,10 +4647,10 @@
     },
     "base": "VRA",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -4659,10 +4659,10 @@
     },
     "base": "VSYS",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "50"
+      "kucoin": 50
     }
   },
   {
@@ -4671,10 +4671,10 @@
     },
     "base": "VTHO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4683,10 +4683,10 @@
     },
     "base": "VXV",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4695,10 +4695,10 @@
     },
     "base": "WABI",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4707,10 +4707,10 @@
     },
     "base": "WAN",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4719,10 +4719,10 @@
     },
     "base": "WAVES",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "200"
+      "binance": 200
     }
   },
   {
@@ -4731,10 +4731,10 @@
     },
     "base": "WEST",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4743,10 +4743,10 @@
     },
     "base": "WICC",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -4755,10 +4755,10 @@
     },
     "base": "WILD",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -4767,10 +4767,10 @@
     },
     "base": "WIN",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4779,10 +4779,10 @@
     },
     "base": "WING",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "25"
+      "binance": 25
     }
   },
   {
@@ -4791,10 +4791,10 @@
     },
     "base": "WNXM",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "50"
+      "htx": 50
     }
   },
   {
@@ -4803,10 +4803,10 @@
     },
     "base": "WOO",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -4815,10 +4815,10 @@
     },
     "base": "WPR",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4827,10 +4827,10 @@
     },
     "base": "WTC",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4839,10 +4839,10 @@
     },
     "base": "XAVA",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4851,10 +4851,10 @@
     },
     "base": "XCAD",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4863,10 +4863,10 @@
     },
     "base": "XCUR",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4875,10 +4875,10 @@
     },
     "base": "XDB",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4887,10 +4887,10 @@
     },
     "base": "XEC",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4899,10 +4899,10 @@
     },
     "base": "XEM",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4911,10 +4911,10 @@
     },
     "base": "XLM",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4923,10 +4923,10 @@
     },
     "base": "XMR",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4935,10 +4935,10 @@
     },
     "base": "XNL",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4947,10 +4947,10 @@
     },
     "base": "XNO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4959,10 +4959,10 @@
     },
     "base": "XPR",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -4971,10 +4971,10 @@
     },
     "base": "XRP",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -4983,10 +4983,10 @@
     },
     "base": "XRT",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -4995,10 +4995,10 @@
     },
     "base": "XTM",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -5007,10 +5007,10 @@
     },
     "base": "XTZ",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -5019,10 +5019,10 @@
     },
     "base": "XVS",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -5031,10 +5031,10 @@
     },
     "base": "XYM",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -5043,10 +5043,10 @@
     },
     "base": "XYO",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -5055,10 +5055,10 @@
     },
     "base": "YAM",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -5067,10 +5067,10 @@
     },
     "base": "YEE",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -5079,10 +5079,10 @@
     },
     "base": "YFI",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -5091,10 +5091,10 @@
     },
     "base": "YGG",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -5103,10 +5103,10 @@
     },
     "base": "YOYO",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -5115,10 +5115,10 @@
     },
     "base": "ZCX",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -5130,7 +5130,7 @@
       "kucoin": "Strategy 3"
     },
     "maxExposure": {
-      "kucoin": "25"
+      "kucoin": 25
     }
   },
   {
@@ -5139,10 +5139,10 @@
     },
     "base": "ZEE",
     "strategies": {
-      "kucoin": "Shad"
+      "kucoin": "shad"
     },
     "maxExposure": {
-      "kucoin": "5"
+      "kucoin": 5
     }
   },
   {
@@ -5151,10 +5151,10 @@
     },
     "base": "ZEN",
     "strategies": {
-      "htx": "Shad skip x2"
+      "htx": "shad skip x2"
     },
     "maxExposure": {
-      "htx": "10"
+      "htx": 10
     }
   },
   {
@@ -5163,10 +5163,10 @@
     },
     "base": "ZIL",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   },
   {
@@ -5175,10 +5175,10 @@
     },
     "base": "ZKB",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -5187,10 +5187,10 @@
     },
     "base": "ZKS",
     "strategies": {
-      "htx": "Shad"
+      "htx": "shad"
     },
     "maxExposure": {
-      "htx": "5"
+      "htx": 5
     }
   },
   {
@@ -5199,10 +5199,10 @@
     },
     "base": "ZRX",
     "strategies": {
-      "binance": "Shad"
+      "binance": "shad"
     },
     "maxExposure": {
-      "binance": "5"
+      "binance": 5
     }
   }
 ]

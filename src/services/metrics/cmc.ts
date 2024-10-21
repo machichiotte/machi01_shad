@@ -3,13 +3,13 @@ import { MappedCmc } from "@typ/cmc"
 
 interface CmcValues {
   rank: number
-  currentCmcPrice: number | 'N/A'
+  currentCmcPrice: number
   iconUrl: string
-  cryptoPercentChange24h: number | 'N/A'
-  cryptoPercentChange7d: number | 'N/A'
-  cryptoPercentChange30d: number | 'N/A'
-  cryptoPercentChange60d: number | 'N/A'
-  cryptoPercentChange90d: number | 'N/A'
+  cryptoPercentChange24h: number
+  cryptoPercentChange7d: number
+  cryptoPercentChange30d: number
+  cryptoPercentChange60d: number
+  cryptoPercentChange90d: number
 }
 
 /**
@@ -20,23 +20,23 @@ function getCmcValues(cmc: MappedCmc, currentPrice: number | undefined): CmcValu
   if (!Array.isArray(cmc) || cmc.length === 0 || currentPrice === undefined) {
     return {
       rank: 0,
-      currentCmcPrice: 'N/A',
+      currentCmcPrice: NaN,
       iconUrl: '',
-      cryptoPercentChange24h: 'N/A',
-      cryptoPercentChange7d: 'N/A',
-      cryptoPercentChange30d: 'N/A',
-      cryptoPercentChange60d: 'N/A',
-      cryptoPercentChange90d: 'N/A'
+      cryptoPercentChange24h: NaN,
+      cryptoPercentChange7d: NaN,
+      cryptoPercentChange30d: NaN,
+      cryptoPercentChange60d: NaN,
+      cryptoPercentChange90d: NaN
     }
   }
 
-  const getPercentChange = (value: number | undefined): number | 'N/A' =>
-    value !== undefined ? value / 100 : 'N/A'
+  const getPercentChange = (value: number | undefined): number =>
+    value !== undefined ? value / 100 : NaN
   return {
     rank: parseInt(cmc.cmc_rank?.toString() || '0'),
     currentCmcPrice: cmc.quote?.USD?.price
       ? parseFloat(cmc.quote.USD.price.toFixed(7))
-      : 'N/A',
+      : NaN,
     iconUrl: cmc.id ? getIconUrl(cmc.id) : '',
     cryptoPercentChange24h: getPercentChange(cmc.quote?.USD?.percent_change_24h),
     cryptoPercentChange7d: getPercentChange(cmc.quote?.USD?.percent_change_7d),

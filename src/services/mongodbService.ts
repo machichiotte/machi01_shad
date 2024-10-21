@@ -23,6 +23,7 @@ export class MongodbService {
   static async getData(collectionName: string): Promise<MappedData[]> {
     try {
       if (config.isOffline) {
+        //console.log('offline')
         return getMockedData(collectionName)
       } else {
         const data = await MongodbService.getAllDataMDB(collectionName)

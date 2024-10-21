@@ -23,31 +23,26 @@ const DEFAULT_METRICS: AssetMetrics = {
   base: 'N/A',
   status: 'N/A',
   strat: 'N/A',
-  ratioShad: 'N/A',
-  totalShad: 'N/A',
-  rank: 'N/A',
-  averageEntryPrice: 'N/A',
-  totalBuy: 'N/A',
-  maxExposition: 'N/A',
-  percentageDifference: 'N/A',
-  currentPrice: 'N/A',
-  currentPossession: 'N/A',
-  profit: 'N/A',
-  totalSell: 'N/A',
-  recupShad: 'N/A',
-  nbOpenBuyOrders: 'N/A',
-  nbOpenSellOrders: 'N/A',
-  totalAmount: 'N/A',
-  balance: 'N/A',
-  recupTp1: 'N/A',
-  recupTpX: 'N/A',
-  tp1: 'N/A',
-  tp2: 'N/A',
-  tp3: 'N/A',
-  tp4: 'N/A',
-  tp5: 'N/A',
-  percentToNextTp: 'N/A',
-  platform: 'N/A'
+  platform: 'N/A',
+  ratioShad: NaN,
+  totalShad: NaN,
+  rank: NaN,
+  averageEntryPrice: NaN,
+  totalBuy: NaN,
+  maxExposition: NaN,
+  percentageDifference: NaN,
+  currentPrice: NaN,
+  currentPossession: NaN,
+  profit: NaN,
+  totalSell: NaN,
+  recupShad: NaN,
+  nbOpenBuyOrders: NaN,
+  nbOpenSellOrders: NaN,
+  totalAmount: NaN,
+  balance: NaN,
+  recupTp1: NaN,
+  recupTpX: NaN,
+  percentToNextTp: NaN,
 }
 
 /**
@@ -73,7 +68,7 @@ function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: st
 function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: MappedBalance, closestCmc: MappedCmc | null, lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: Omit<MappedStrat, '_id'>, lastTickers: MappedTicker[]): AssetMetrics {
   const balance = getBalanceBySymbol(base, mappedBalance)
   const currentPrice = getCurrentPrice(lastTickers, base, platform)
-  const cmcValues = closestCmc ? getCmcValues(closestCmc, currentPrice) : { cmc_rank: 'N/A', price: 'N/A' }
+  const cmcValues = closestCmc ? getCmcValues(closestCmc, currentPrice) : { cmc_rank: NaN, price: NaN }
   const totalSell = getTotalSell(base, lastTrades)
 
   const { buyOrders, sellOrders } = filterOpenOrdersBySide(

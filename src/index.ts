@@ -2,7 +2,7 @@
 import { startServer } from '@src/server'
 import { MongodbService } from '@services/mongodbService'
 import { BalanceService } from '@services/balanceService'
-//import { CronTaskService } from '@src/services/cronTasksService'
+import { CronTaskService } from '@src/services/cronTasksService'
 //import { MigrationSwapService } from './services/migrationSwapService'
 
 async function startApp(): Promise<void> {
@@ -18,7 +18,7 @@ async function startApp(): Promise<void> {
 
     await BalanceService.cronBalance()
 
-    //await CronTaskService.initializeCronTasks()
+    await CronTaskService.initializeCronTasks()
 
   } catch (error) {
     console.error('Error during server initialization:', error)

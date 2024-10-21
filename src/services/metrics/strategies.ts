@@ -78,10 +78,10 @@ function getDoneShad(totalBuy: number, totalSell: number, maxExposition: number,
  */
 function getRatioShad(strat: string): number {
   const ratios: Record<string, number> = {
-    'Shad': 2,
-    'Shad skip x2': 4,
-    'Strategy 3': 8,
-    'Strategy 4': 16
+    'shad': 2,
+    'shad skip x2': 4,
+    'strategy 3': 8,
+    'strategy 4': 16
   }
   return ratios[strat] || 8
 }
