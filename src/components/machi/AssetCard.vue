@@ -65,7 +65,7 @@ const onMenuSelect = (menuLabel: string) => {
                 <CurrentPriceBlock :item=item />
                 <WalletBlock :item=item />
                 <NextTp :item=item />
-                <StratBlock />
+                <StratBlock :item=item />
             </div>
 
             <div class="case-a2">

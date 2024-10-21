@@ -2,32 +2,29 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import BaseBlock from './BaseBlock.vue';
-// Données pour les stratégies
-const valueStrat = ref(null);
-const valueMaxExpo = ref(null);
 
-const strats = ref([{ name: 'SHAD' }, { name: 'AB/CD' }, { name: '...' }]); // Exemple de stratégies
+const props = defineProps({
+    item: Object
+});
+
+const strat = props?.item?.strat || 'Shad';  //ce sont lesvaleurs que je veux attribuer 
+const stratExpo = props?.item?.stratExpo || 0;
+
+// Données pour les stratégies
+const valueStrat = ref(strat);
+const valueMaxExpo = ref(stratExpo);
+
+const strats = ref([{ name: 'SHAD', value: 'Shad' }, { name: 'AB/CD', value: 'AB/CD' }, { name: '...' }]); // Exemple de stratégies
 </script>
 
 <template>
     <BaseBlock title="STRATEGY">
-        <FloatLabel class="w-full md:w-56" variant="on">
-            <!-- Select pour les stratégies -->
-            <Select v-model="valueStrat" inputId="on_label" variant="filled" :options="strats" optionLabel="name"
-                class="w-full" />
-            <label for="on_label">strategy</label>
-        </FloatLabel>
 
-        <FloatLabel class="w-full md:w-56" variant="in">
-            <Select v-model="valueStrat" inputId="in_label" :options="strats" optionLabel="name" class="w-full"
-                variant="filled" />
-            <label for="in_label">In Label</label>
-        </FloatLabel>
+        <Select v-model="valueStrat" id="strat" :options="strats" optionLabel="name" optionValue="value"
+            autocomplete="off" placeholder="Select a Strat" />
 
-        <FloatLabel variant="on">
-            <InputText id="value3" v-model="valueMaxExpo" autocomplete="off" />
-            <label for="value3">MAX EXPO</label>
-        </FloatLabel>
+        <InputText id="expo" v-model="valueMaxExpo" autocomplete="off" placeholder="Select a max expo" />
+
 
     </BaseBlock>
 </template>
@@ -39,5 +36,45 @@ const strats = ref([{ name: 'SHAD' }, { name: 'AB/CD' }, { name: '...' }]); // E
     border-radius: 4px;
     border: 1px solid #ccc;
     width: 100%;
+}
+
+.float-label {
+    position: relative;
+    margin-top: 1.5rem;
+}
+
+.float-label input {
+    width: 100%;
+    padding: 8px 8px 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+/* Par défaut, le label est centré dans l'input */
+.float-label label {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #aaa;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+/* Si le champ a du texte ou est en focus, le label flotte au-dessus */
+.float-label input:focus+label,
+.float-label input:not(:placeholder-shown)+label {
+    top: 0;
+    left: 8px;
+    font-size: 12px;
+    color: #007bff;
+}
+
+/* Modification de la bordure lorsque l'input est en focus */
+.float-label input:focus {
+    border-color: #007bff;
 }
 </style>
