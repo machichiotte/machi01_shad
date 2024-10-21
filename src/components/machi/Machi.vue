@@ -175,11 +175,16 @@ onBeforeUnmount(() => {
     <!-- Top Expandable Container -->
     <div class="top-tab-container" :class="{ expanded: isTopExpanded }">
       <div class="tab-header">
-        <Button label="Platform Selector" @click="activeTopTab = 'platforms'"
-          :class="{ active: activeTopTab === 'platforms' }" />
-        <Button label="Update data" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
-        <Button label="Actions" @click="activeTopTab = 'action'" :class="{ active: activeTopTab === 'action' }" />
-        <Button icon="pi pi-chevron-down" @click="toggleTopExpandCollapse" class="expand-collapse-button" />
+        <div class="tab_menu">
+          <Button label="Platform Selector" @click="activeTopTab = 'platforms'"
+            :class="{ active: activeTopTab === 'platforms' }" />
+          <Button label="Update data" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
+          <Button label="Actions" @click="activeTopTab = 'action'" :class="{ active: activeTopTab === 'action' }" />
+          <Button icon="pi pi-chevron-down" @click="toggleTopExpandCollapse" class="expand-collapse-button" />
+
+        </div>
+        <SearchBar :filters="filters" />
+
       </div>
       <div class="tab-content">
         <PlatformSelector v-if="activeTopTab === 'platforms'" :initialSelectedPlatforms="selectedPlatforms"
@@ -187,15 +192,14 @@ onBeforeUnmount(() => {
         <UpdateBarSelector v-if="activeTopTab === 'fetch'" />
         <ActionSelector v-if="activeTopTab === 'action'" :selectedBases="selectedBases" :filters="filters"
           @delete-action="handleDeleteAction" />
+
       </div>
     </div>
 
     <div class="content-container">
       <Toolbar class="mb-4">
         <template #end>
-          <div class="flex justify-content-end">
-            <SearchBar :filters="filters" />
-          </div>
+
         </template>
       </Toolbar>
 
@@ -283,8 +287,26 @@ onBeforeUnmount(() => {
 }
 
 .tab-header {
+  display: flex;
+  /* Ajoute flexbox pour organiser les éléments */
+  align-items: center;
+  /* Aligne verticalement les éléments au centre */
   padding-top: 4px;
   padding-bottom: 4px;
+}
+
+.tab_menu {
+  display: flex;
+  /* Utiliser flexbox pour la mise en page */
+  justify-content: center;
+  /* Centre horizontalement les éléments du menu */
+  flex-grow: 1;
+  /* Permet au menu de prendre tout l'espace disponible */
+}
+
+.search-bar {
+  margin-left: auto;
+  /* Pousse la barre de recherche tout à droite */
 }
 
 .tab-content {
@@ -308,9 +330,5 @@ onBeforeUnmount(() => {
 
 .bottom-tab-container:not(.expanded) {
   height: 40px;
-}
-
-.expand-collapse-button {
-  margin-left: auto;
 }
 </style>

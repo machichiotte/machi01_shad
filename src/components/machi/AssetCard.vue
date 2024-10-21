@@ -1,6 +1,6 @@
 <!-- src/components/machi/AssetCard.vue -->
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Machi, Order } from '../../types/responseData';
 
 import WalletBlock from './block/WalletBlock.vue';
@@ -27,15 +27,15 @@ const filteredTrades = trades.filter((trade) => {
     return trade.base === item.base && trade.platform === props.item.platform;
 });
 
-console.log('propsorder0')
-
 const orders = props.orders;
-console.log('propsorder1')
-console.log('propsorder', props.orders)
-
 const filteredOrders = orders.filter((order) => {
     return order.symbol.startsWith(item.base + '/') && order.platform === props.item.platform;
 });
+
+const buyOpenOrdersCount = computed(() => filteredOrders.filter(order => order.side === 'buy').length);
+const sellOpenOrdersCount = computed(() => filteredOrders.filter(order => order.side === 'sell').length);
+const buyTradesCount = computed(() => filteredTrades.filter(trade => trade.type === 'buy').length);
+const sellTradesCount = computed(() => filteredTrades.filter(trade => trade.type === 'sell').length);
 
 const isDetailsVisible = ref(false);
 
@@ -44,9 +44,9 @@ const toggleDetails = () => {
 };
 
 const menubarOptions = ref([
-    { label: 'Open Orders', command: () => onMenuSelect('0') },
+    { label: `Open Orders (${buyOpenOrdersCount.value}/${sellOpenOrdersCount.value})`, command: () => onMenuSelect('0') },
     { label: 'Next TP', command: () => onMenuSelect('1') },
-    { label: 'Historic', command: () => onMenuSelect('2') }
+    { label: `Historic (${buyTradesCount.value}/${sellTradesCount.value})`, command: () => onMenuSelect('2') }
 ]);
 
 const selectedMenu = ref('1');
