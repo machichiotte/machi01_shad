@@ -13,10 +13,10 @@ export class TickerRepository {
     }
 
     static async deleteAndSaveAll(tickersData: Omit<MappedTicker, '_id'>[]): Promise<void> {
-        await MongodbService.deleteAndProcessData(COLLECTION_NAME, tickersData)
+        await MongodbService.deleteAndInsertData(COLLECTION_NAME, tickersData)
     }
 
     static async saveTickers(platform: PLATFORM, mappedData: Omit<MappedTicker, '_id'>[]): Promise<void> {
-        await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform)
+        await MongodbService.saveDataAndTimestampToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform)
     }
 }

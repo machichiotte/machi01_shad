@@ -7,7 +7,7 @@ export class TimestampService {
   /**
    * Récupère les informations de dernière mise à jour depuis la base de données via le repository.
    */
-  static async fetchDatabaseTimestamp(): Promise<TimestampData[]> {
+  static async fetchDatabaseTimestamp(): Promise<TimestampData> {
     try {
       return await TimestampRepository.fetchTimestamp();
     } catch (error) {
@@ -22,7 +22,7 @@ export class TimestampService {
   static async saveTimestampToDatabase(category: string, platform?: string): Promise<void> {
     try {
       // Récupération des données actuelles depuis la base de données
-      const mappedData: TimestampData = (await this.fetchDatabaseTimestamp())[0]
+      const mappedData: TimestampData = (await this.fetchDatabaseTimestamp())
       const currentTimestamp = Date.now(); // Utilisation de timestamp en string comme attendu par MongoDB
       if (!platform) {
         this.updateSimpleType(mappedData, category, currentTimestamp); // Mise à jour d'un champ sans plateforme

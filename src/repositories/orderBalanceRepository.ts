@@ -19,6 +19,6 @@ export class OrderBalanceRepository {
      * Save mapped orders to the database.
      */
     static async save(mappedOrders: Omit<MappedOrder, '_id'>[], platform: PLATFORM): Promise<void> {
-        await MongodbService.saveDataToDatabase(mappedOrders, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
+        await MongodbService.saveDataAndTimestampToDatabase(mappedOrders, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
     }
 }

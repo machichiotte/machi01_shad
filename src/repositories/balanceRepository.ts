@@ -27,6 +27,6 @@ export class BalanceRepository {
      * Enregistre les données de solde dans la base de données pour une plateforme.
      */
     static async saveBalances(platform: PLATFORM, mappedData: Omit<MappedBalance, '_id'>[]): Promise<void> {
-        await MongodbService.saveDataToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
+        await MongodbService.saveDataAndTimestampToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
     }
 }

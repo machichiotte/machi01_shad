@@ -8,6 +8,7 @@ import { MarketService } from '@services/marketService'
 import { BalanceService } from '@services/balanceService'
 
 import { Task } from '@src/types/cron';
+import { CmcService } from './cmcService';
 
 export class CronTaskService {
   /**
@@ -36,6 +37,16 @@ export class CronTaskService {
           schedule: config.cronSchedules.balance,
           task: BalanceService.cronBalance,
           name: 'Balances'
+        },
+        {
+          schedule: config.cronSchedules.balance,
+          task: BalanceService.cronBalance,
+          name: 'Balances'
+        },
+        {
+          schedule: config.cronSchedules.cmc,
+          task: CmcService.updateCmcData,
+          name: 'Cmc'
         }
       ]
 

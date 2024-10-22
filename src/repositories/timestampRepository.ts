@@ -10,8 +10,12 @@ export class TimestampRepository {
     /**
      * Récupère les informations de dernière mise à jour depuis la base de données.
      */
-    static async fetchTimestamp(): Promise<TimestampData[]> {
-        return await MongodbService.getData(COLLECTION_NAME) as TimestampData[];
+    static async fetchTimestamp(): Promise<TimestampData> {
+        const data = await MongodbService.getData(COLLECTION_NAME);
+        if (!data || data.length === 0) {
+            throw new Error('No timestamp data found');
+        }
+        return data[0] as TimestampData;
     }
 
     /**

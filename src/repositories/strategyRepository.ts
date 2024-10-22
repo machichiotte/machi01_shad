@@ -23,6 +23,6 @@ export class StrategyRepository {
 
     static async saveStrategies(strategies: MappedStrat[]): Promise<void> {
         //return await MongodbService.insertData(COLLECTION_NAME, strategies);
-        await MongodbService.saveDataToDatabase(strategies, COLLECTION_NAME, COLLECTION_CATEGORY);
+        await MongodbService.saveDataAndTimestampToDatabase(strategies, COLLECTION_NAME, COLLECTION_CATEGORY);
     }
 }

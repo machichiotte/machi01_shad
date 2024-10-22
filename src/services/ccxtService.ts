@@ -49,7 +49,8 @@ export class CcxtService {
 
     static async fetchRawMarket(platform: PLATFORM): Promise<PlatformMarket[]> {
         const platformInstance = this.createPlatformInstance(platform);
-        return await platformInstance.fetchMarkets();
+        const markets = await platformInstance.fetchMarkets()
+        return markets;
     }
 
     static async fetchRawTrade(platform: PLATFORM, symbol?: string, since?: number, limit?: number, params?: Record<string, unknown>): Promise<PlatformTrade[]> {

@@ -112,7 +112,8 @@ export const config = {
         shad: process.env.CRON_SCHEDULE_SHAD || '*/30 * * * *',
         market: process.env.CRON_SCHEDULE_MARKET || '* */12 * * *',
         ticker: process.env.CRON_SCHEDULE_TICKER || '*/1 * * * *',
-        balance: process.env.CRON_SCHEDULE_BALANCE || '*/2 * * * *'
+        balance: process.env.CRON_SCHEDULE_BALANCE || '*/2 * * * *',
+        cmc: process.env.CRON_SCHEDULE_CMC || '0 0 * * *'
     },
 
     logFiles: {

@@ -26,7 +26,7 @@ export class MarketService {
    */
   static async updateMarketsForPlatform(platform: PLATFORM): Promise<void> {
     try {
-      const currentMarkets = await this.fetchCurrentMarkets(platform);
+      const currentMarkets = await MarketService.fetchCurrentMarkets(platform);
       await MarketRepository.save(currentMarkets, platform);
       console.log(`Données de marché pour ${platform} mises à jour dans la base de données. Total des enregistrements : ${currentMarkets.length}.`);
     } catch (error) {

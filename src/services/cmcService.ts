@@ -86,9 +86,9 @@ export class CmcService {
    */
   public static async updateCmcData(): Promise<object> {
     try {
-      const data = await this.fetchCurrentCmc();
-      //console.log('Dernières données CMC récupérées', { count: data.length });
-      return await this.updateDatabaseCmcData(data);
+      const data = await CmcService.fetchCurrentCmc();
+      console.log('Dernières données CMC récupérées', { count: data.length });
+      return await CmcService.updateDatabaseCmcData(data);
     } catch (error) {
       handleServiceError(error, 'updateCmcData', 'Erreur lors de la mise à jour des données CMC');
       throw error;
