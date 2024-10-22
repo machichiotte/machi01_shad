@@ -1,5 +1,5 @@
 // src/repositories/cmcRepository.ts
-import { MongodbService } from '@services/mongodbService';
+import { DatabaseService } from '@services/databaseService';
 import { MappedCmc } from '@typ/cmc';
 import { config } from '@config/index';
 
@@ -11,14 +11,14 @@ export class CmcRepository {
      * Récupère les données CMC depuis la base de données.
      */
     public static async fetchAll(): Promise<MappedCmc[]> {
-        return await MongodbService.getData(COLLECTION_NAME) as MappedCmc[];
+        return await DatabaseService.getData(COLLECTION_NAME) as MappedCmc[];
     }
 
     /**
      * Supprime toutes les données CMC de la base de données.
      */
     public static async deleteAll(): Promise<number> {
-        return await MongodbService.deleteAllData(COLLECTION_NAME);
+        return await DatabaseService.deleteAllData(COLLECTION_NAME);
     }
 
     /**
@@ -26,6 +26,6 @@ export class CmcRepository {
      */
     public static async save(mappedData: Omit<MappedCmc, '_id'>[]): Promise<void> {
         const sortedData = mappedData.sort((a, b) => a.cmc_rank - b.cmc_rank);
-        await MongodbService.saveDataAndTimestampToDatabase(sortedData, COLLECTION_NAME, COLLECTION_CATEGORY);
+        await DatabaseService.saveDataAndTimestampToDatabase(sortedData, COLLECTION_NAME, COLLECTION_CATEGORY);
     }
 }

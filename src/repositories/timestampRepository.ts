@@ -1,5 +1,5 @@
 // src/repositories/timestampRepository.ts
-import { MongodbService } from '@services/mongodbService';
+import { DatabaseService } from '@services/databaseService';
 import { TimestampData } from '@typ/timestamp';
 import { config } from '@config/index';
 import { ObjectId } from 'mongodb';
@@ -11,7 +11,7 @@ export class TimestampRepository {
      * Récupère les informations de dernière mise à jour depuis la base de données.
      */
     static async fetchTimestamp(): Promise<TimestampData> {
-        const data = await MongodbService.getData(COLLECTION_NAME);
+        const data = await DatabaseService.getData(COLLECTION_NAME);
         if (!data || data.length === 0) {
             throw new Error('No timestamp data found');
         }
@@ -38,10 +38,10 @@ export class TimestampRepository {
         const filter = { _id: objectId };
         const update = { $set: mappedData };
 
-        await MongodbService.updateOneData(COLLECTION_NAME, filter, update);
+        await DatabaseService.updateOneData(COLLECTION_NAME, filter, update);
     }
 
     static async findTimestamp(filter: object): Promise<TimestampData> {
-        return await MongodbService.findOneData(COLLECTION_NAME, filter) as TimestampData
+        return await DatabaseService.findOneData(COLLECTION_NAME, filter) as TimestampData
     }
 }
