@@ -14,6 +14,9 @@ export interface TimestampData {
     cmc: {
         $numberLong: string;
     };
+    machi: {
+        $numberLong: string;
+    };
     strategy: {
         $numberLong: string;
     };

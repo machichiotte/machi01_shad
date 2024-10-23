@@ -1,15 +1,16 @@
-// src/services/shadService.ts
-import { ShadRepository } from '@repositories/shadRepository';
-import { ShadData, HighestPrices } from '@typ/database';
+// src/services/machiService.ts
+import { MachiRepository } from '@repositories/machiRepository';
+import { HighestPrices } from '@typ/database';
 import { PLATFORM } from '@src/types/platform';
 import { HighestPriceRepository } from '@src/repositories/highPriceRepository';
+import { Asset } from '@src/types/metrics';
 
-export class ShadService {
+export class MachiService {
   /**
    * Fetches the most recent SHAD data from the database.
    */
-  static async fetchShadInDatabase(): Promise<ShadData[]> {
-    return await ShadRepository.fetchAll();
+  static async fetchMachiInDatabase(): Promise<Asset[]> {
+    return await MachiRepository.fetchAll();
   }
 
   /**

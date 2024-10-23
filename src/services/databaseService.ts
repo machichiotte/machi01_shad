@@ -144,9 +144,9 @@ export class DatabaseService {
 
     static async fetchAndCacheData(collectionName: string): Promise<Document[]> {
         try {
-            console.log(`Fetching new data for collection: ${collectionName}`);
+            console.log(`Fetching database data for collection: ${collectionName}`);
             const result = await retry(mongodbOperations.find, [collectionName], 'fetchAndCacheData');
-            await CacheService.addToCache(collectionName, result);
+            await CacheService.addToCache(collectionName, result as MappedData[]);
             return result;
         } catch (error) {
             handleServiceError(error, 'fetchAndCacheData', `Error fetching data from ${collectionName}`);

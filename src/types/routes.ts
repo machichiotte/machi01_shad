@@ -12,5 +12,5 @@ export interface Routes {
   trades: Router,
   tickers: Router,
   timestamp: Router,
-  shad: Router
+  machi: Router
 }

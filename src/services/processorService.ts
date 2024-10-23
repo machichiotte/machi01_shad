@@ -20,6 +20,11 @@ import { PLATFORM } from '@typ/platform'
 import { OrderBalanceRepository } from '@repositories/orderBalanceRepository'
 
 import { Asset } from '@typ/metrics'
+import { config } from '@config/index';
+
+import { DatabaseService } from './databaseService'
+const COLLECTION_NAME = config.collection.machi;
+const COLLECTION_CATEGORY = config.collectionCategory.machi;
 
 export class ProcessorService {
   /**
@@ -64,6 +69,16 @@ export class ProcessorService {
     return []
   }
 
+
+
+  /**
+    * Enregistre les données de solde dans la base de données pour une plateforme.
+    */
+  static async saveMachi(): Promise<void> {
+    const data = await this.calculateAllMetrics();
+    await DatabaseService.saveDataAndTimestampToDatabase(data, COLLECTION_NAME, COLLECTION_CATEGORY);
+  }
+
   /**
    * Calculates all metrics for assets.
    */
@@ -95,8 +110,6 @@ export class ProcessorService {
     return allValues
   }
 
-
-
   /**
     * Fetches all data from the database.
     */
@@ -124,15 +137,13 @@ export class ProcessorService {
   ): Asset | null {
     const assetBase = bal.base
     const assetPlatform = bal.platform
-
     const cmcMatches = dbCmc.filter((cmc) => cmc.symbol === assetBase);
     const closestCmc = cmcMatches.length > 0
       ? cmcMatches.reduce((prev, current) =>
-        Math.abs(current.quote?.USD?.price - bal.balance) < Math.abs(prev.quote?.USD?.price - bal.balance)
-          ? current
-          : prev
+        current.cmc_rank < prev.cmc_rank ? current : prev
       )
       : null;
+
     const assetTrades = dbTrades.filter((trade) => trade.base === assetBase)
     const assetOrders = dbOpenOrders.filter((order) =>
       QUOTE_CURRENCIES.some(quote => order.symbol === `${assetBase}/${quote}`)
@@ -178,6 +189,4 @@ export class ProcessorService {
       assetTicker
     )
   }
-
-
 }

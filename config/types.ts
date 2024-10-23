@@ -18,7 +18,7 @@ export interface CacheExpirationTimes {
     timestamp: number;
     market: number;
     order: number;
-    shad: number;
+    machi: number;
     strat: number;
     swap: number;
     ticker: number;
@@ -32,7 +32,7 @@ export interface collectionCategoryConfig {
     timestamp: string;
     market: string;
     order: string;
-    shad: string;
+    machi: string;
     strat: string;
     ticker: string;
     trade: string;
@@ -66,7 +66,7 @@ export interface SmtpConfig {
 }
 
 export interface CronSchedulesConfig {
-    shad: string;
+    machi: string;
     market: string;
     ticker: string;
     balance: string;

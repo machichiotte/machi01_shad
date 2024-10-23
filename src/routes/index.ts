@@ -11,7 +11,7 @@ import marketRoutes from './marketRoutes';
 import tradeRoutes from './tradeRoutes';
 import tickerRoutes from './tickerRoutes';
 import timestampRoutes from './timestampRoutes';
-import shadRoutes from './shadRoutes';
+import machiRoutes from './machiRoutes';
 
 const router = Router();
 
@@ -26,6 +26,6 @@ router.use('/market', marketRoutes);
 router.use('/trade', tradeRoutes);
 router.use('/ticker', tickerRoutes);
 router.use('/timestamp', timestampRoutes);
-router.use('/shad', shadRoutes);
+router.use('/machi', machiRoutes);
 
 export default router;

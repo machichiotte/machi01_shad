@@ -21,7 +21,7 @@ async function startApp(): Promise<void> {
     // await MigrationSwapService.handleMigrationSwap();
     await CronTaskService.initializeCronTasks();
 
-    await ProcessorService.calculateAllMetrics();
+    await ProcessorService.saveMachi();
 
   } catch (error) {
     console.error('Error during server initialization:', error);

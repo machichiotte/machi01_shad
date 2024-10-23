@@ -120,9 +120,6 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
 
   const type = addTypes(base)
 
-
-
-  //ici il faut changer pour que ca retourne bien sous le nouveua format 
   const baseMetrics: Asset = {
     ...DEFAULT_METRICS,
     base: base,
@@ -176,19 +173,15 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
 
   }
 
-  // ici on va utiliser type nouvellement cree plutoot que status(avant)
   if (baseMetrics.type.includes('stablecoin')) {
     return { ...baseMetrics }
   }
 
   const strategyForPlatform = strategy?.strategies?.[platform];
 
-  //pas de balance on retourne un Asset avec moins dinfo complete alors quavant cetait assetmetrics (le retour est toujours lancien change ca)
   if (balance === 0 || strategyForPlatform === undefined) {
     return {
       ...baseMetrics,
-
-
       profit: getProfit(totalBuy, totalSell, currentPrice, balance),
 
       /*
@@ -199,8 +192,6 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
       */
 
       //????? rajouter le averageprice a ce moment la pas avant ou pas ???
-
-
     }
   }
 
@@ -233,7 +224,7 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
     },
   }
 
-  //console.log(`Métriques finales calculées pour ${base}:`, finalMetrics); 
+  //console.log(`Métriques finales calculées pour ${base}:`, finalMetrics);
   return finalMetrics;
 }
 

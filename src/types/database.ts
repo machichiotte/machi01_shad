@@ -13,11 +13,6 @@ import { AssetMetrics } from '@typ/metrics' //TODO DELETE
 
 import { ObjectId } from 'mongodb';
 
-export interface ShadData {
-    // Define the structure of SHAD data here
-    [key: string]: string | number | object
-}
-
 export interface SwapMigration {
     _id?: ObjectId;
     oldBase: string
@@ -34,4 +29,4 @@ export interface HighestPrices {
     highestPrice: number
 }
 
-export type MappedData = TimestampData | HighestPrices | Asset | AssetMetrics | MappedMarket | MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrat | ShadData | SwapMigration;
+export type MappedData = TimestampData | HighestPrices | Asset | AssetMetrics | MappedMarket | MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrat | SwapMigration;

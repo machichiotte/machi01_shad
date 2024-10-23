@@ -18,7 +18,8 @@ interface CmcValues {
  */
 //function getCmcValues(cmc: MappedCmc[],currentPrice : number): CmcValues {
 function getCmcValues(cmc: MappedCmc, currentPrice: number | undefined): CmcValues {
-  if (!Array.isArray(cmc) || cmc.length === 0 || currentPrice === undefined) {
+  if (currentPrice === undefined) {
+
     return {
       rank: 0,
       name: '',

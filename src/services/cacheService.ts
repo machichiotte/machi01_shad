@@ -59,8 +59,8 @@ export class CacheService {
         return 'market';
       case config.collection.order:
         return 'order';
-      case config.collection.shad:
-        return 'shad';
+      case config.collection.machi:
+        return 'machi';
       case config.collection.strat:
         return 'strat';
       case config.collection.swap:

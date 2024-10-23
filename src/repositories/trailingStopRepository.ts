@@ -1,6 +1,6 @@
 // src/repositories/trailingStopRepository.ts
 import { BalanceService } from '@services/balanceService';
-import { ShadService } from '@services/shadService';
+import { MachiService } from '@src/services/machiService';
 import { TickerService } from '@services/tickerService';
 import { OrderMarketService } from '@services/orderMarketService';
 import { MappedBalance } from '@typ/balance';
@@ -14,7 +14,7 @@ export class TrailingStopRepository {
         try {
             return await Promise.all([
                 BalanceService.fetchDatabaseBalance(),
-                ShadService.getHighestPrices()
+                MachiService.getHighestPrices()
             ]);
         } catch (error) {
             handleServiceError(error, 'fetchBalanceAndHighestPrices', 'Error fetching balance and highest prices');
@@ -49,7 +49,7 @@ export class TrailingStopRepository {
 
     static async updateHighestPrice(platform: PLATFORM, base: string, price: number): Promise<void> {
         try {
-            await ShadService.updateHighestPrice(platform, base, price);
+            await MachiService.updateHighestPrice(platform, base, price);
         } catch (error) {
             handleServiceError(error, 'updateHighestPrice', `Error updating highest price for ${base} on ${platform}`);
         }

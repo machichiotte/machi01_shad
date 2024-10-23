@@ -7,7 +7,7 @@ export const DEFAULT_CACHE_EXPIRATION = {
     timestamp: 30000,
     market: 86400000,
     order: 60000,
-    shad: 60000,
+    machi: 60000,
     strat: 36000000,
     swap: 86400000,
     ticker: 30000,

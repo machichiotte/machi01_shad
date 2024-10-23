@@ -61,7 +61,7 @@ function areAllDataValid(
 }
 
 function isValidAssetMetrics(values: Asset | null): values is Asset {
-    return values !== null && typeof values.cmc.rank === 'number' && values.cmc.rank > 0 && !!values.liveData.currentPossession
+    return values !== null && typeof values.cmc.rank === 'number' && values.cmc.rank > 0 && values.liveData.currentPossession > 0
 }
 
 function removeDuplicatesAndStablecoins(differences: BalanceWithDifference[]): BalanceWithDifference[] {

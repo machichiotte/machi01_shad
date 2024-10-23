@@ -1,18 +1,18 @@
-// src/controllers/shadController.ts
+// src/controllers/machiController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { ShadService } from '@services/shadService'
+import { MachiService } from '@src/services/machiService'
 import { TrailingStopService } from '@services/trailingStopService'
 
 /**
  * Récupère les dernières données CoinMarketCap de la base de données.
  */
-async function getShad(req: Request, res: Response): Promise<void> {
+async function getMachi(req: Request, res: Response): Promise<void> {
   try {
-    const data = await ShadService.fetchShadInDatabase()
-    res.status(200).json({ status: "success", message: 'Données Shad récupérées', data })
+    const data = await MachiService.fetchMachiInDatabase()
+    res.status(200).json({ status: "success", message: 'Données Machi récupérées', data })
   } catch (error) {
-    handleControllerError(res, error, 'getShad')
+    handleControllerError(res, error, 'getMachi')
   }
 }
 
@@ -30,4 +30,4 @@ async function handleTrailingStopHedge(req: Request, res: Response): Promise<voi
   }
 }
 
-export { getShad, handleTrailingStopHedge }
+export { getMachi, handleTrailingStopHedge }
