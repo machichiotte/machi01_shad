@@ -15,10 +15,11 @@ import { MappedTicker } from '@typ/ticker'
 import { MappedBalance, BalanceWithDifference } from '@typ/balance'
 import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
-import { AssetMetrics } from '@typ/metrics'
 import { MappedOrder } from '@typ/order'
 import { PLATFORM } from '@typ/platform'
 import { OrderBalanceRepository } from '@repositories/orderBalanceRepository'
+
+import { Asset } from '@typ/metrics'
 
 export class ProcessorService {
   /**
@@ -66,7 +67,7 @@ export class ProcessorService {
   /**
    * Calculates all metrics for assets.
    */
-  static async calculateAllMetrics(): Promise<AssetMetrics[]> {
+  static async calculateAllMetrics(): Promise<Asset[]> {
     const [dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances] =
       await this.fetchAllDatabaseData()
 
@@ -74,7 +75,7 @@ export class ProcessorService {
       return []
     }
 
-    const allValues: AssetMetrics[] = []
+    const allValues: Asset[] = []
     const ignoredBalances: string[] = []
     const notAddedAssets: string[] = []
 
@@ -120,7 +121,7 @@ export class ProcessorService {
     dbTrades: MappedTrade[],
     dbOpenOrders: MappedOrder[],
     dbTickers: MappedTicker[]
-  ): AssetMetrics | null {
+  ): Asset | null {
     const assetBase = bal.base
     const assetPlatform = bal.platform
 

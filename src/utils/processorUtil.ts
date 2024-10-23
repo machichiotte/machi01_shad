@@ -5,8 +5,10 @@ import { MappedTicker } from '@typ/ticker'
 import { MappedBalance, BalanceWithDifference } from '@typ/balance'
 import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
-import { AssetMetrics } from '@typ/metrics'
 import { MappedOrder } from '@typ/order'
+
+import { Asset } from '@typ/metrics'
+
 
 function removeDuplicateDifferences(differences: BalanceWithDifference[]): BalanceWithDifference[] {
     const uniqueMap = new Map<string, BalanceWithDifference>()
@@ -58,8 +60,8 @@ function areAllDataValid(
     return true
 }
 
-function isValidAssetMetrics(values: AssetMetrics | null): values is AssetMetrics {
-    return values !== null && typeof values.rank === 'number' && values.rank > 0 && !!values.currentPossession
+function isValidAssetMetrics(values: Asset | null): values is Asset {
+    return values !== null && typeof values.cmc.rank === 'number' && values.cmc.rank > 0 && !!values.liveData.currentPossession
 }
 
 function removeDuplicatesAndStablecoins(differences: BalanceWithDifference[]): BalanceWithDifference[] {

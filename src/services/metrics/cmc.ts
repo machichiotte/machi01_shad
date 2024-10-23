@@ -2,7 +2,8 @@
 import { MappedCmc } from "@typ/cmc"
 
 interface CmcValues {
-  rank: number
+  rank: number,
+  name: string,
   currentCmcPrice: number
   iconUrl: string
   cryptoPercentChange24h: number
@@ -20,6 +21,7 @@ function getCmcValues(cmc: MappedCmc, currentPrice: number | undefined): CmcValu
   if (!Array.isArray(cmc) || cmc.length === 0 || currentPrice === undefined) {
     return {
       rank: 0,
+      name: '',
       currentCmcPrice: NaN,
       iconUrl: '',
       cryptoPercentChange24h: NaN,
@@ -38,6 +40,7 @@ function getCmcValues(cmc: MappedCmc, currentPrice: number | undefined): CmcValu
       ? parseFloat(cmc.quote.USD.price.toFixed(7))
       : NaN,
     iconUrl: cmc.id ? getIconUrl(cmc.id) : '',
+    name: cmc.name,
     cryptoPercentChange24h: getPercentChange(cmc.quote?.USD?.percent_change_24h),
     cryptoPercentChange7d: getPercentChange(cmc.quote?.USD?.percent_change_7d),
     cryptoPercentChange30d: getPercentChange(cmc.quote?.USD?.percent_change_30d),

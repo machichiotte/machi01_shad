@@ -153,9 +153,16 @@ function getPlatformFee(platform: PLATFORM): number {
 }
 
 interface AmountsAndPrices {
-  amountTp1: number
-  priceTp1: number
-  [key: string]: number
+  amountTp1: number;
+  priceTp1: number;
+  amountTp2: number;
+  priceTp2: number;
+  amountTp3: number;
+  priceTp3: number;
+  amountTp4: number;
+  priceTp4: number;
+  amountTp5: number;
+  priceTp5: number;
 }
 
 /**
@@ -185,21 +192,45 @@ function calculateAmountsAndPricesForShad(recupTp1: number, balance: number, tot
       ? (parsedValues.recupTp1 / amountTp1) * feeMultiplier
       : parsedValues.averageEntryPrice * feeMultiplier
 
-  const amountsAndPrices: AmountsAndPrices = { amountTp1, priceTp1 }
 
   let remainingBalance = parsedValues.balance - amountTp1
+  let amountTp2 = 0, amountTp3 = 0, amountTp4 = 0, amountTp5 = 0;
+  let priceTp2 = 0, priceTp3 = 0, priceTp4 = 0, priceTp5 = 0;
 
   for (let i = 2; i <= 5; i++) {
+    // Calcul des montants et prix pour chaque niveau de TP
     const { amount, price } = calculateAmountAndPriceForShad(
       parsedValues.recupTpX,
       remainingBalance,
       FACTOR_SELL_SHAD
-    )
+    );
 
-    amountsAndPrices[`amountTp${i}`] = amount
-    amountsAndPrices[`priceTp${i}`] = price * feeMultiplier
-    remainingBalance -= amount
+    // Utilisation des variables directement pour les montants et prix
+    if (i === 2) {
+      amountTp2 = amount;
+      priceTp2 = price * feeMultiplier;
+    } else if (i === 3) {
+      amountTp3 = amount;
+      priceTp3 = price * feeMultiplier;
+    } else if (i === 4) {
+      amountTp4 = amount;
+      priceTp4 = price * feeMultiplier;
+    } else if (i === 5) {
+      amountTp5 = amount;
+      priceTp5 = price * feeMultiplier;
+    }
+
+    // Mise à jour de la balance restante
+    remainingBalance -= amount; // Soustraction du montant calculé
+
+    // Vérification si la balance restante est épuisée
+    if (remainingBalance <= 0) {
+      break; // Sortir de la boucle si le solde est épuisé
+    }
   }
+
+  const amountsAndPrices: AmountsAndPrices = { amountTp1, priceTp1, amountTp2, amountTp3, amountTp4, amountTp5, priceTp2, priceTp3, priceTp4, priceTp5 }
+
 
   return amountsAndPrices
 }

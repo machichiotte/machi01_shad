@@ -2,6 +2,7 @@ import { startServer } from '@src/server';
 import { MongodbService } from '@services/mongodbService';
 import { CronTaskService } from '@services/cronTasksService';
 import { UpdateService } from './services/updateSevice';
+import { ProcessorService } from './services/processorService';
 
 async function startApp(): Promise<void> {
   try {
@@ -19,6 +20,8 @@ async function startApp(): Promise<void> {
 
     // await MigrationSwapService.handleMigrationSwap();
     await CronTaskService.initializeCronTasks();
+
+    await ProcessorService.calculateAllMetrics();
 
   } catch (error) {
     console.error('Error during server initialization:', error);

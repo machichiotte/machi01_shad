@@ -3,7 +3,7 @@ import { calculateRecups, calculateAmountsAndPricesForShad } from './strategies'
 import { getCmcValues } from './cmc'
 import { getBalanceBySymbol, getProfit, getCurrentPossession, getStatus } from './utils'
 import { getTotalAmountAndBuy, getTotalSell } from './trades'
-import { AssetMetrics } from '@typ/metrics'
+import { Asset } from '@typ/metrics'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
 import { MappedBalance } from '@typ/balance'
@@ -12,43 +12,66 @@ import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
 import { STABLECOINS } from '@src/constants'
 import { PLATFORM } from '@typ/platform'
-import { calculatePercentageChange, calculateProgressPercentage } from '@src/utils/metricsUtil'
+//import { calculatePercentageChange, calculateProgressPercentage } from '@src/utils/metricsUtil'
 
 /**
  * Default metrics object with initial values set to "N/A".
  * This serves as a template for base metrics.
  */
-const DEFAULT_METRICS: AssetMetrics = {
-  iconUrl: 'N/A',
+const DEFAULT_METRICS: Asset = {
   base: 'N/A',
-  status: 'N/A',
-  strat: 'N/A',
+  iconUrl: 'N/A',
+  ticker: 'N/A',
+  name: 'N/A',
   platform: 'N/A',
-  ratioShad: NaN,
-  totalShad: NaN,
-  rank: NaN,
-  averageEntryPrice: NaN,
-  totalBuy: NaN,
-  maxExposition: NaN,
-  percentageDifference: NaN,
-  currentPrice: NaN,
-  currentPossession: NaN,
-  profit: NaN,
-  totalSell: NaN,
-  recupShad: NaN,
-  nbOpenBuyOrders: NaN,
-  nbOpenSellOrders: NaN,
-  totalAmount: NaN,
-  balance: NaN,
-  recupTp1: NaN,
-  recupTpX: NaN,
-  percentToNextTp: NaN,
-}
+  profit: 0,
+  type: [],
+  cmc: {
+    currentCmcPrice: NaN,
+    rank: NaN,
+    cryptoPercentChange24h: NaN,
+    cryptoPercentChange7d: NaN,
+    cryptoPercentChange30d: NaN,
+    cryptoPercentChange60d: NaN,
+    cryptoPercentChange90d: NaN,
+  },
+  strat: {
+    strategy: 'N/A',
+    maxExposition: NaN,
+    takeProfits: {
+      tp1: { price: NaN, amount: NaN, percentToNextTp: NaN },
+      tp2: { price: NaN, amount: NaN, percentToNextTp: NaN },
+      tp3: { price: NaN, amount: NaN, percentToNextTp: NaN },
+      tp4: { price: NaN, amount: NaN, percentToNextTp: NaN },
+      tp5: { price: NaN, amount: NaN, percentToNextTp: NaN },
+      status: [0, 0, 0, 0, 0],
+    },
+  },
+  orders: {
+    open: {
+      nbOpenBuyOrders: NaN,
+      nbOpenSellOrders: NaN,
+      currentOrders: [],
+    },
+    trade: {
+      totalBuy: NaN,
+      totalSell: NaN,
+      totalAmountBuySell: NaN,
+      averageEntryPrice: NaN,
+      trades: [],
+    },
+  },
+  liveData: {
+    balance: NaN,
+    currentPrice: NaN,
+    currentPossession: NaN,
+  },
+};
 
 /**
  * Retrieves the current price of a base from the last tickers.
  */
-function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: string): number | undefined {
+function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: string): number {
   if (!Array.isArray(lastTickers) || !base || !platform) {
     console.warn('Paramètres invalides pour getCurrentPrice')
     return -1
@@ -65,10 +88,23 @@ function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: st
 /**
  * Calculates various metrics for a given base.
 - */
-function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: MappedBalance, closestCmc: MappedCmc | null, lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: Omit<MappedStrat, '_id'>, lastTickers: MappedTicker[]): AssetMetrics {
+function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: MappedBalance, closestCmc: MappedCmc | null, lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: Omit<MappedStrat, '_id'>, lastTickers: MappedTicker[]): Asset {
   const balance = getBalanceBySymbol(base, mappedBalance)
   const currentPrice = getCurrentPrice(lastTickers, base, platform)
-  const cmcValues = closestCmc ? getCmcValues(closestCmc, currentPrice) : { cmc_rank: NaN, price: NaN }
+  const cmcValues = closestCmc ?
+    getCmcValues(closestCmc, currentPrice) :
+    {
+      rank: 0,
+      name: '',
+      currentCmcPrice: 0,
+      iconUrl: '',
+      cryptoPercentChange24h: 0,
+      cryptoPercentChange7d: 0,
+      cryptoPercentChange30d: 0,
+      cryptoPercentChange60d: 0,
+      cryptoPercentChange90d: 0
+    }
+
   const totalSell = getTotalSell(base, lastTrades)
 
   const { buyOrders, sellOrders } = filterOpenOrdersBySide(
@@ -82,39 +118,94 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
     lastTrades
   )
 
-  const baseMetrics: AssetMetrics = {
+  const type = addTypes(base)
+
+
+
+  //ici il faut changer pour que ca retourne bien sous le nouveua format 
+  const baseMetrics: Asset = {
     ...DEFAULT_METRICS,
-    base,
-    currentPrice,
-    currentPossession: getCurrentPossession(currentPrice, balance),
-    totalAmount,
-    balance,
-    ...cmcValues,
-    platform
+    base: base,
+
+    platform,
+    iconUrl: cmcValues.iconUrl,
+    type: type,
+
+    name: cmcValues.name,
+
+    liveData: {
+      balance: balance, // Correctement défini dans liveData
+      currentPrice: currentPrice, // Vous pouvez aussi ajouter d'autres propriétés ici
+      currentPossession: getCurrentPossession(currentPrice, balance), // Calcul de la possession actuelle
+    },
+    strat: {
+      strategy: strategy.strategies[platform],
+      maxExposition: strategy.maxExposure[platform],
+      takeProfits: {
+        tp1: { price: NaN, amount: NaN, percentToNextTp: NaN },
+        tp2: { price: NaN, amount: NaN, percentToNextTp: NaN },
+        tp3: { price: NaN, amount: NaN, percentToNextTp: NaN },
+        tp4: { price: NaN, amount: NaN, percentToNextTp: NaN },
+        tp5: { price: NaN, amount: NaN, percentToNextTp: NaN },
+        status: [0, 0, 0, 0, 0],
+      },
+    },
+    cmc: {
+      currentCmcPrice: cmcValues.currentCmcPrice,
+      rank: cmcValues.rank,
+      cryptoPercentChange24h: cmcValues.cryptoPercentChange24h,
+      cryptoPercentChange7d: cmcValues.cryptoPercentChange7d,
+      cryptoPercentChange30d: cmcValues.cryptoPercentChange30d,
+      cryptoPercentChange60d: cmcValues.cryptoPercentChange60d,
+      cryptoPercentChange90d: cmcValues.cryptoPercentChange90d
+    },
+    orders: {
+      open: {
+        nbOpenBuyOrders: buyOrders.length,
+        nbOpenSellOrders: sellOrders.length,
+        currentOrders: lastOpenOrders
+      },
+      trade: {
+        totalBuy: totalBuy,
+        totalSell: totalSell,
+        totalAmountBuySell: totalAmount,
+        averageEntryPrice: averageEntryPrice,
+        trades: lastTrades
+      }
+    },
+
   }
 
-  if (STABLECOINS.includes(base)) {
-    return { ...baseMetrics, status: 'stable coin' }
+  // ici on va utiliser type nouvellement cree plutoot que status(avant)
+  if (baseMetrics.type.includes('stablecoin')) {
+    return { ...baseMetrics }
   }
 
   const strategyForPlatform = strategy?.strategies?.[platform];
+
+  //pas de balance on retourne un Asset avec moins dinfo complete alors quavant cetait assetmetrics (le retour est toujours lancien change ca)
   if (balance === 0 || strategyForPlatform === undefined) {
     return {
       ...baseMetrics,
-      averageEntryPrice,
-      totalBuy,
+
+
+      profit: getProfit(totalBuy, totalSell, currentPrice, balance),
+
+      /*
       percentageDifference: calculatePercentageChange(
         currentPrice,
         averageEntryPrice
       ),
-      profit: getProfit(totalBuy, totalSell, currentPrice, balance),
-      totalSell,
-      nbOpenBuyOrders: buyOrders.length,
-      nbOpenSellOrders: sellOrders.length
+      */
+
+      //????? rajouter le averageprice a ce moment la pas avant ou pas ???
+
+
     }
   }
 
   const recups = calculateRecups(base, platform, totalBuy, totalSell, strategy)
+
   const amountsAndPrices = calculateAmountsAndPricesForShad(
     recups.recupTp1,
     balance,
@@ -124,29 +215,48 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
     recups.maxExposition,
     platform
   )
+
   const finalMetrics = {
     ...baseMetrics,
-    ...recups,
-    ...amountsAndPrices,
-    status: getStatus(sellOrders, ...Object.values(amountsAndPrices)),
-    averageEntryPrice,
-    totalBuy,
-    percentageDifference: calculatePercentageChange(
-      currentPrice,
-      averageEntryPrice
-    ),
     profit: getProfit(totalBuy, totalSell, currentPrice, balance),
-    totalSell,
-    nbOpenBuyOrders: buyOrders.length,
-    nbOpenSellOrders: sellOrders.length,
-    percentToNextTp: calculateProgressPercentage(
-      currentPrice,
-      amountsAndPrices.priceTp1
-    )
+    strat: {
+      strategy: strategy.strategies[platform],
+      maxExposition: strategy.maxExposure[platform],
+      takeProfits: {
+        tp1: { price: amountsAndPrices.priceTp1, amount: amountsAndPrices.amountTp1, percentToNextTp: NaN },
+        tp2: { price: amountsAndPrices.priceTp2, amount: amountsAndPrices.amountTp2, percentToNextTp: NaN },
+        tp3: { price: amountsAndPrices.priceTp3, amount: amountsAndPrices.amountTp3, percentToNextTp: NaN },
+        tp4: { price: amountsAndPrices.priceTp4, amount: amountsAndPrices.amountTp4, percentToNextTp: NaN },
+        tp5: { price: amountsAndPrices.priceTp5, amount: amountsAndPrices.amountTp5, percentToNextTp: NaN },
+        status: getStatus(sellOrders, ...Object.values(amountsAndPrices)),
+      },
+    },
   }
 
-  //console.log(`Métriques finales calculées pour ${base}:`, finalMetrics);
+  //console.log(`Métriques finales calculées pour ${base}:`, finalMetrics); 
   return finalMetrics;
+}
+
+function addTypes(base: string): string[] {
+  // Initialisation des types
+  const types: string[] = []
+
+  // Ajout du type "stablecoin"
+  if (STABLECOINS.includes(base)) {
+    types.push('stablecoin')
+  }
+
+  // Ajout du type "defi"
+  /* if (DEFI_TOKENS.includes(base)) {
+    types.push('defi')
+  }
+  
+  // Ajout du type "nft"
+  if (NFT_TOKENS.includes(base)) {
+    types.push('nft')
+  }*/
+
+  return types;;
 }
 
 /**
