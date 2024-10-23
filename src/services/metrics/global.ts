@@ -1,7 +1,7 @@
 // src/services/metrics/global.ts
 import { calculateRecups, calculateAmountsAndPricesForShad } from './strategies'
 import { getCmcValues } from './cmc'
-import { getBalanceBySymbol, getProfit, getCurrentPossession, getStatus } from './utils'
+import { getBalanceBySymbol, getProfit, getCurrentPossession, getTakeProfitStatus } from './utils'
 import { getTotalAmountAndBuy, getTotalSell } from './trades'
 import { Asset } from '@typ/metrics'
 import { MappedTrade } from '@typ/trade'
@@ -219,7 +219,7 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
         tp3: { price: amountsAndPrices.priceTp3, amount: amountsAndPrices.amountTp3, percentToNextTp: NaN },
         tp4: { price: amountsAndPrices.priceTp4, amount: amountsAndPrices.amountTp4, percentToNextTp: NaN },
         tp5: { price: amountsAndPrices.priceTp5, amount: amountsAndPrices.amountTp5, percentToNextTp: NaN },
-        status: getStatus(sellOrders, ...Object.values(amountsAndPrices)),
+        status: getTakeProfitStatus(sellOrders, ...Object.values(amountsAndPrices)),
       },
     },
   }

@@ -57,7 +57,7 @@ function getBalanceBySymbol(base: string, balanceObj: MappedBalance): number {
 /**
  * Détermine le statut des ordres de vente ouverts par rapport aux valeurs TP.
  */
-function getStatus(
+function getTakeProfitStatus(
   openSellOrders: Array<{ amount: number; price: number }>,
   ...tpValues: number[]
 ): number[] {
@@ -85,5 +85,5 @@ export {
   getCurrentPossession,
   getProfit,
   getBalanceBySymbol,
-  getStatus,
+  getTakeProfitStatus,
 }

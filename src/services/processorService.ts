@@ -18,27 +18,20 @@ import { MappedStrat } from '@typ/strat'
 import { MappedOrder } from '@typ/order'
 import { PLATFORM } from '@typ/platform'
 import { OrderBalanceRepository } from '@repositories/orderBalanceRepository'
-
 import { Asset } from '@typ/metrics'
 import { config } from '@config/index';
-
 import { DatabaseService } from './databaseService'
+
 const COLLECTION_NAME = config.collection.machi;
 const COLLECTION_CATEGORY = config.collectionCategory.machi;
 
 export class ProcessorService {
-  /**
-   * Processes detected balance differences between current and previous balances.
-   * This function updates server orders, retrieves tickers, and processes trades for symbols
-   * corresponding to the detected differences. It also handles new symbols, balance differences,
-   * and zero balances.
-   */
   static async processBalanceChanges(platform: PLATFORM, differences: BalanceWithDifference[]): Promise<void> {
     try {
       await OrderBalanceService.updateOrdersFromServer(platform);
       const newTrades: MappedTrade[] = [];
       for (const difference of differences) {
-        const trades = await this.processDifference(difference);
+        const trades = await this.checkNewTrades(difference);
         if (Array.isArray(trades) && trades.length > 0) {
           newTrades.push(...trades);
         }
@@ -53,10 +46,7 @@ export class ProcessorService {
     }
   }
 
-  /**
- * Processes a specific difference, retrieves trades, and updates the list of new trades.
- */
-  private static async processDifference(difference: BalanceWithDifference): Promise<MappedTrade[]> {
+  private static async checkNewTrades(difference: BalanceWithDifference): Promise<MappedTrade[]> {
     //logDifferenceType(difference) si besoin pour des evolutions futures
     try {
       const tradeList = await TradeService.fetchLastTrades(difference.platform, difference.base)
@@ -69,20 +59,15 @@ export class ProcessorService {
     return []
   }
 
-
-
-  /**
-    * Enregistre les données de solde dans la base de données pour une plateforme.
-    */
   static async saveMachi(): Promise<void> {
-    const data = await this.calculateAllMetrics();
+    const data = await this.calculateAllMachi();
     await DatabaseService.saveDataAndTimestampToDatabase(data, COLLECTION_NAME, COLLECTION_CATEGORY);
   }
 
   /**
    * Calculates all metrics for assets.
    */
-  static async calculateAllMetrics(): Promise<Asset[]> {
+  static async calculateAllMachi(): Promise<Asset[]> {
     const [dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances] =
       await this.fetchAllDatabaseData()
 
@@ -94,20 +79,20 @@ export class ProcessorService {
     const ignoredBalances: string[] = []
     const notAddedAssets: string[] = []
 
-    for (const bal of dbBalances) {
-      if (typeof bal.balance === 'number' && bal.balance > 0) {
-        const assetMetrics = this.calculateAssetMetricsForBalance(bal, dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers)
+    for (const item of dbBalances) {
+      if (typeof item.balance === 'number' && item.balance > 0) {
+        const assetMetrics = this.calculateMachiForBalance(item, dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers)
         if (isValidAssetMetrics(assetMetrics)) {
           allValues.push(assetMetrics)
         } else {
-          notAddedAssets.push(`${bal.base}:${bal.platform}`)
+          notAddedAssets.push(`${item.base}:${item.platform}`)
         }
       } else {
-        ignoredBalances.push(`${bal.base}:${bal.platform}`)
+        ignoredBalances.push(`${item.base}:${item.platform}`)
       }
     }
 
-    return allValues
+    return allValues.sort((a, b) => a.cmc.rank - b.cmc.rank)
   }
 
   /**
@@ -127,16 +112,16 @@ export class ProcessorService {
   /**
    * Calculates asset metrics for a given balance.
    */
-  private static calculateAssetMetricsForBalance(
-    bal: MappedBalance,
+  private static calculateMachiForBalance(
+    balance: MappedBalance,
     dbCmc: MappedCmc[],
     dbStrategies: MappedStrat[],
     dbTrades: MappedTrade[],
     dbOpenOrders: MappedOrder[],
     dbTickers: MappedTicker[]
   ): Asset | null {
-    const assetBase = bal.base
-    const assetPlatform = bal.platform
+    const assetBase = balance.base
+    const assetPlatform = balance.platform
     const cmcMatches = dbCmc.filter((cmc) => cmc.symbol === assetBase);
     const closestCmc = cmcMatches.length > 0
       ? cmcMatches.reduce((prev, current) =>
@@ -151,6 +136,7 @@ export class ProcessorService {
     const assetStrategy = dbStrategies.find(
       (strategy) => strategy.base === assetBase && strategy.strategies[assetPlatform]
     ) || { base: '', strategies: {}, maxExposure: {} } as MappedStrat
+
     const assetTicker = dbTickers.filter(
       (ticker) => ticker.symbol.startsWith(`${assetBase}/`) && ticker.platform === assetPlatform
     )
@@ -166,7 +152,7 @@ export class ProcessorService {
         return calculateAssetMetrics(
           assetBase,
           assetPlatform,
-          bal,
+          balance,
           closestCmc,
           [],
           [],
@@ -181,7 +167,7 @@ export class ProcessorService {
     return calculateAssetMetrics(
       assetBase,
       assetPlatform,
-      bal,
+      balance,
       closestCmc,
       assetTrades,
       assetOrders,
