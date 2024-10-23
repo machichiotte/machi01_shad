@@ -1,5 +1,5 @@
 // src/repositories/shadRepository.ts
-import { MongodbService } from '@services/mongodbService';
+import { DatabaseService } from '@services/databaseService';
 import { ShadData } from '@typ/database';
 import { config } from '@config/index';
 
@@ -10,6 +10,6 @@ export class ShadRepository {
      * Fetches the most recent SHAD data from the database.
      */
     static async fetchAll(): Promise<ShadData[]> {
-        return await MongodbService.getData(COLLECTION_NAME) as ShadData[];
+        return await DatabaseService.getData(COLLECTION_NAME) as ShadData[];
     }
 }

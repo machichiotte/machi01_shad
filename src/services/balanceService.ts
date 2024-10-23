@@ -30,7 +30,7 @@ export class BalanceService {
   /**
    * Récupère les balances actuelles d'une plateforme via API, avec tentatives.
    */
-  static async fetchCurrentBalancesByPlatform(platform: PLATFORM, retries: number = 3): Promise<Omit<MappedBalance, '_id'>[]> {
+  static async fetchCurrentBalancesByPlatform(platform: PLATFORM, retries: number = 3): Promise<MappedBalance[]> {
     try {
       return await retry(async () => {
         const data = await CcxtService.fetchRawBalance(platform);
@@ -70,7 +70,7 @@ export class BalanceService {
           BalanceService.fetchDatabaseBalancesByPlatform(platform)
         ]);
 
-        const differences = ProcessorService.compareBalances(previousBalances, currentBalances);
+        const differences = BalanceService.compareBalances(previousBalances, currentBalances);
         const uniqueDifferences = removeDuplicateDifferences(differences)
 
         if (uniqueDifferences.length > 0) {

@@ -4,7 +4,7 @@ import { MappedStrat } from '@typ/strat';
 import { StrategyService } from '@services/strategyService';
 import { TradeService } from '@services/tradeService';
 import { handleServiceError } from '@utils/errorUtil';
-import { MongodbService } from '@services/mongodbService'
+import { DatabaseService } from '@services/databaseService'
 import { MappedTrade } from '@typ/trade'
 import { config } from '@config/index';
 
@@ -13,7 +13,7 @@ const COLLECTION_NAME = config.collection.swap;
 export class MigrationSwapService {
 
   static async fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
-    return await MongodbService.getData(COLLECTION_NAME) as SwapMigration[];
+    return await DatabaseService.getData(COLLECTION_NAME) as SwapMigration[];
   }
 
   static async updateTrade(trade: MappedTrade, oldAsset: string, newAsset: string, swapMultiplier: number, platform: string): Promise<void> {

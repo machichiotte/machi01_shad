@@ -1,8 +1,8 @@
 // src/repositories/shadRepository.ts
-import { MongodbService } from '@services/mongodbService';
 import { HighestPrices } from '@typ/database';
 import { config } from '@config/index';
 import { mongodbOperations } from '@src/services/mongodbOperationsService';
+import { DatabaseService } from '@src/services/databaseService';
 
 const COLLECTION_NAME = config.collection.highestPrice;
 
@@ -12,7 +12,7 @@ export class HighestPriceRepository {
      * Fetches the highest prices from the database.
      */
     static async fetchHighestPrices(): Promise<HighestPrices[]> {
-        return await MongodbService.getData(COLLECTION_NAME) as HighestPrices[];
+        return await DatabaseService.getData(COLLECTION_NAME) as HighestPrices[];
     }
 
     /**

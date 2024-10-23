@@ -1,5 +1,5 @@
 // src/repositories/orderBalanceRepository.ts
-import { MongodbService } from '@services/mongodbService'
+import { DatabaseService } from '@services/databaseService'
 import { MappedOrder } from '@typ/order'
 import { config } from '@config/index';
 import { PLATFORM } from '@src/types/platform';
@@ -12,13 +12,13 @@ export class OrderBalanceRepository {
      * Fetch all orders from the database.
      */
     static async fetchAll(): Promise<MappedOrder[]> {
-        return await MongodbService.getData(COLLECTION_NAME) as MappedOrder[];
+        return await DatabaseService.getData(COLLECTION_NAME) as MappedOrder[];
     }
 
     /**
      * Save mapped orders to the database.
      */
     static async save(mappedOrders: Omit<MappedOrder, '_id'>[], platform: PLATFORM): Promise<void> {
-        await MongodbService.saveDataAndTimestampToDatabase(mappedOrders, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
+        await DatabaseService.saveDataAndTimestampToDatabase(mappedOrders, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
     }
 }

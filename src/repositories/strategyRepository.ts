@@ -1,5 +1,5 @@
 // src/repositories.strategyRepository.ts
-import { MongodbService } from '@services/mongodbService';
+import { DatabaseService } from '@services/databaseService';
 import { MappedStrat } from '@typ/strat';
 import { config } from '@config/index';
 import { ObjectId } from 'mongodb';
@@ -9,20 +9,20 @@ const COLLECTION_CATEGORY = config.collectionCategory.strat;
 
 export class StrategyRepository {
     static async fetchAll(): Promise<MappedStrat[]> {
-        return await MongodbService.getData(COLLECTION_NAME) as MappedStrat[];
+        return await DatabaseService.getData(COLLECTION_NAME) as MappedStrat[];
     }
 
     static async updateById(mappedData: MappedStrat): Promise<boolean> {
         const { _id, ...mappedStrat } = mappedData;
-        return await MongodbService.updateOneData(COLLECTION_NAME, { _id: new ObjectId(_id) }, { $set: mappedStrat });
+        return await DatabaseService.updateOneData(COLLECTION_NAME, { _id: new ObjectId(_id) }, { $set: mappedStrat });
     }
 
     static async deleteAll(): Promise<void> {
-        await MongodbService.deleteAllData(COLLECTION_NAME);
+        await DatabaseService.deleteAllData(COLLECTION_NAME);
     }
 
     static async saveStrategies(strategies: MappedStrat[]): Promise<void> {
-        //return await MongodbService.insertData(COLLECTION_NAME, strategies);
-        await MongodbService.saveDataAndTimestampToDatabase(strategies, COLLECTION_NAME, COLLECTION_CATEGORY);
+        //return await DatabaseService.insertData(COLLECTION_NAME, strategies);
+        await DatabaseService.saveDataAndTimestampToDatabase(strategies, COLLECTION_NAME, COLLECTION_CATEGORY);
     }
 }
