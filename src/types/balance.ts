@@ -9,3 +9,11 @@ export interface MappedBalance {
     available: number;
     platform: PLATFORM;
 }
+
+export interface BalanceWithDifference {
+    base: string
+    platform: PLATFORM
+    newSymbol?: boolean
+    balanceDifference?: boolean
+    zeroBalance?: boolean
+}

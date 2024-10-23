@@ -4,11 +4,11 @@ import { CcxtService } from '@services/ccxtService';
 import { handleServiceError } from '@utils/errorUtil';
 import { MappingService } from '@services/mappingService';
 import { ProcessorService } from '@services/processorService';
-import { MappedBalance } from '@typ/balance';
+import { MappedBalance, BalanceWithDifference } from '@typ/balance';
 import { retry } from '@utils/retryUtil';
 import { PLATFORM } from '@typ/platform';
 import { executeForPlatforms } from '@utils/cronUtil';
-import { removeDuplicateDifferences } from '@utils/processorUtil';
+import { removeDuplicateDifferences, removeDuplicatesAndStablecoins } from '@utils/processorUtil';
 
 export class BalanceService {
   static async fetchDatabaseBalance(): Promise<MappedBalance[]> {
@@ -88,5 +88,66 @@ export class BalanceService {
 
   static async cronBalance(): Promise<void> {
     await executeForPlatforms('updateBalances', BalanceService.updateBalancesForPlatform)
+  }
+
+  /**
+  * Compares current balances with those from the previous database.
+  */
+  private static compareBalances(lastBalances: MappedBalance[], currentBalances: MappedBalance[]): BalanceWithDifference[] {
+    const differences: BalanceWithDifference[] = []
+
+    // Vérification des balances actuelles par rapport aux balances précédentes
+    currentBalances.forEach((currentBalance) => {
+      const { platform, base, balance: currentBalanceValue } = currentBalance
+
+      const matchedBalance = lastBalances.find(
+        (item) => item.platform === platform && item.base === base
+      )
+
+      if (!matchedBalance) {
+        // Nouveau symbole trouvé
+        differences.push({
+          base,
+          platform,
+          newSymbol: true
+        })
+      } else if (matchedBalance.balance !== currentBalanceValue) {
+        // Différence de balance trouvée
+        differences.push({
+          base,
+          platform,
+          balanceDifference: true
+        })
+      }
+    })
+
+    // Vérification des balances précédentes pour détecter celles qui ne sont plus présentes
+    lastBalances.forEach((lastBalance) => {
+      const { platform, base, balance: lastBalanceValue } = lastBalance
+
+      const matchedBalance = currentBalances.find(
+        (item) => item.platform === platform && item.base === base
+      )
+
+      if (!matchedBalance) {
+        if (lastBalanceValue !== 0) {
+          // Ancien symbole trouvé
+          differences.push({
+            base,
+            platform,
+            zeroBalance: true
+          })
+        }
+      } else if (matchedBalance.balance !== lastBalanceValue) {
+        // Différence de balance trouvée
+        differences.push({
+          base,
+          platform,
+          balanceDifference: true
+        })
+      }
+    })
+
+    return removeDuplicatesAndStablecoins(differences)
   }
 }

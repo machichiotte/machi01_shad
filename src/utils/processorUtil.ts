@@ -1,18 +1,15 @@
 // src/utils/processorUtil.ts
-import { Difference } from '@typ/processor'
 import { STABLECOINS } from '@src/constants'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
-import { MappedBalance } from '@typ/balance'
+import { MappedBalance, BalanceWithDifference } from '@typ/balance'
 import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
 import { AssetMetrics } from '@typ/metrics'
 import { MappedOrder } from '@typ/order'
-/**
- * Removes duplicates from balance differences.
- */
-function removeDuplicateDifferences(differences: Difference[]): Difference[] {
-    const uniqueMap = new Map<string, Difference>()
+
+function removeDuplicateDifferences(differences: BalanceWithDifference[]): BalanceWithDifference[] {
+    const uniqueMap = new Map<string, BalanceWithDifference>()
     differences.forEach((v) => {
         const key = `${v.base}-${v.platform}`
         if (!uniqueMap.has(key)) {
@@ -22,10 +19,7 @@ function removeDuplicateDifferences(differences: Difference[]): Difference[] {
     return Array.from(uniqueMap.values())
 }
 
-/**
- * Logs information based on the type of detected difference.
- */
-function logDifferenceType(difference: Difference): void {
+function logDifferenceType(difference: BalanceWithDifference): void {
     if (difference.newSymbol) {
         console.log(`New symbol detected: ${difference.base}`)
     }
@@ -68,9 +62,9 @@ function isValidAssetMetrics(values: AssetMetrics | null): values is AssetMetric
     return values !== null && typeof values.rank === 'number' && values.rank > 0 && !!values.currentPossession
 }
 
-function removeDuplicatesAndStablecoins(differences: Difference[]): Difference[] {
+function removeDuplicatesAndStablecoins(differences: BalanceWithDifference[]): BalanceWithDifference[] {
     // Utiliser un Map pour supprimer les doublons
-    const uniqueDifferences = new Map<string, Difference>()
+    const uniqueDifferences = new Map<string, BalanceWithDifference>()
 
     differences.forEach((difference) => {
         const key = `${difference.base}-${difference.platform}` // Créez une clé unique en combinant 'base' et 'platform'

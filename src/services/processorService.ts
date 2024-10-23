@@ -7,13 +7,12 @@ import { CmcService } from '@services/cmcService'
 import { OrderBalanceService, } from '@services/orderBalanceService'
 import { StrategyService } from '@services/strategyService'
 import { handleServiceError } from '@utils/errorUtil'
-import { areAllDataValid, isValidAssetMetrics, removeDuplicatesAndStablecoins } from '@utils/processorUtil'
-import { Difference, Balance } from '@typ/processor'
+import { areAllDataValid, isValidAssetMetrics } from '@utils/processorUtil'
 import { STABLECOINS, QUOTE_CURRENCIES } from '@src/constants'
 import { BalanceService } from '@services/balanceService'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
-import { MappedBalance } from '@typ/balance'
+import { MappedBalance, BalanceWithDifference } from '@typ/balance'
 import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
 import { AssetMetrics } from '@typ/metrics'
@@ -28,7 +27,7 @@ export class ProcessorService {
    * corresponding to the detected differences. It also handles new symbols, balance differences,
    * and zero balances.
    */
-  static async processBalanceChanges(platform: PLATFORM, differences: Difference[]): Promise<void> {
+  static async processBalanceChanges(platform: PLATFORM, differences: BalanceWithDifference[]): Promise<void> {
     try {
       await OrderBalanceService.updateOrdersFromServer(platform);
       const newTrades: MappedTrade[] = [];
@@ -46,6 +45,22 @@ export class ProcessorService {
       handleServiceError(error, 'processBalanceChanges', `Error processing balance changes for ${platform}`)
       throw error
     }
+  }
+
+  /**
+ * Processes a specific difference, retrieves trades, and updates the list of new trades.
+ */
+  private static async processDifference(difference: BalanceWithDifference): Promise<MappedTrade[]> {
+    //logDifferenceType(difference) si besoin pour des evolutions futures
+    try {
+      const tradeList = await TradeService.fetchLastTrades(difference.platform, difference.base)
+      if (tradeList && tradeList.length > 0)
+        return MappingService.mapTrades(difference.platform, tradeList, {})
+    } catch (error) {
+      console.warn(`Impossible de récupérer les trades pour ${difference.platform} - ${difference.base} : ${error}`);
+    }
+
+    return []
   }
 
   /**
@@ -79,66 +94,6 @@ export class ProcessorService {
     return allValues
   }
 
-  /**
-   * Compares current balances with those from the previous database.
-   */
-  static compareBalances(lastBalances: Balance[], currentBalances: Balance[]): Difference[] {
-    const differences: Difference[] = []
-
-    // Vérification des balances actuelles par rapport aux balances précédentes
-    currentBalances.forEach((currentBalance) => {
-      const { platform, base, balance: currentBalanceValue } = currentBalance
-
-      const matchedBalance = lastBalances.find(
-        (item) => item.platform === platform && item.base === base
-      )
-
-      if (!matchedBalance) {
-        // Nouveau symbole trouvé
-        differences.push({
-          base,
-          platform,
-          newSymbol: true
-        })
-      } else if (matchedBalance.balance !== currentBalanceValue) {
-        // Différence de balance trouvée
-        differences.push({
-          base,
-          platform,
-          balanceDifference: true
-        })
-      }
-    })
-
-    // Vérification des balances précédentes pour détecter celles qui ne sont plus présentes
-    lastBalances.forEach((lastBalance) => {
-      const { platform, base, balance: lastBalanceValue } = lastBalance
-
-      const matchedBalance = currentBalances.find(
-        (item) => item.platform === platform && item.base === base
-      )
-
-      if (!matchedBalance) {
-        if (lastBalanceValue !== 0) {
-          // Ancien symbole trouvé
-          differences.push({
-            base,
-            platform,
-            zeroBalance: true
-          })
-        }
-      } else if (matchedBalance.balance !== lastBalanceValue) {
-        // Différence de balance trouvée
-        differences.push({
-          base,
-          platform,
-          balanceDifference: true
-        })
-      }
-    })
-
-    return removeDuplicatesAndStablecoins(differences)
-  }
 
 
   /**
@@ -223,19 +178,5 @@ export class ProcessorService {
     )
   }
 
-  /**
-  * Processes a specific difference, retrieves trades, and updates the list of new trades.
-  */
-  private static async processDifference(difference: Difference): Promise<MappedTrade[]> {
-    //logDifferenceType(difference) si besoin pour des evolutions futures
-    try {
-      const tradeList = await TradeService.fetchLastTrades(difference.platform, difference.base)
-      if (tradeList && tradeList.length > 0)
-        return MappingService.mapTrades(difference.platform, tradeList, {})
-    } catch (error) {
-      console.warn(`Impossible de récupérer les trades pour ${difference.platform} - ${difference.base} : ${error}`);
-    }
 
-    return []
-  }
 }
