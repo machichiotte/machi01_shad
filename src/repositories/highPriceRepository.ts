@@ -1,4 +1,4 @@
-// src/repositories/shadRepository.ts
+// src/repositories/highPriceRepository.ts
 import { HighestPrices } from '@typ/database';
 import { config } from '@config/index';
 import { mongodbOperations } from '@src/services/mongodbOperationsService';
