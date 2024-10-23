@@ -38,23 +38,13 @@ export class CcxtService {
 
     //raw
     static async fetchRawBalance(platform: PLATFORM): Promise<PlatformBalances> {
-        console.log('fetchRawBalance', platform)
         const platformInstance = this.createPlatformInstance(platform);
-
-        const feee = await platformInstance.fetchBalance();
-        console.log('fetchRawBalance3', feee.length)
-        console.log('fetchRawBalance4 platform', platform)
-        return feee
+        return await platformInstance.fetchBalance();
     }
 
     static async fetchRawTicker(platform: PLATFORM): Promise<PlatformTickers> {
-        console.log('fetchRawTicker', platform)
         const platformInstance = this.createPlatformInstance(platform);
-
-        const bloum = await platformInstance.fetchTickers();
-        console.log('fetchRawTicker3', bloum.length)
-        console.log('fetchRawTicker4 platform', platform)
-        return bloum
+        return await platformInstance.fetchTickers();
     }
 
     static async fetchRawMarket(platform: PLATFORM): Promise<PlatformMarket[]> {
