@@ -9,7 +9,7 @@ const ENDPOINTS: Record<string, string> = {
   TRADE: '/trade/get',
   ORDER: '/order/get',
   TICKER: '/ticker/get',
-  MACHI: '/shad/get'
+  MACHI: '/machi/get'
 };
 
 // Wrapper functions for fetching different types of data

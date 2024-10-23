@@ -105,7 +105,7 @@ export interface Order {
   price: number
 }
 
-export interface Machi {
+/*export interface Machi {
   _id: {
     $oid: string; // ID de l'objet en format MongoDB ObjectID
   };
@@ -150,7 +150,7 @@ export interface Machi {
   priceTp4: number; // Prix pour le take profit 4
   amountTp5: number; // Quantité pour le take profit 5
   priceTp5: number; // Prix pour le take profit 5
-}
+}*/
 
 export interface Ticker {
   _id: ObjectId;
@@ -160,52 +160,23 @@ export interface Ticker {
   platform: string
 }
 
-/* pour remplacer Shad, mais il faut un autre nom que asset
-interface Asset {
-    base: string; // Symbole de l'actif (ex: "ASSET_SYMBOL")
-    iconUrl: string; // URL de l'icône
-    ticker: string; // Symbole de trading (ex: "TICKER_SYMBOL")
-    name: string; // Nom de l'actif (ex: "ASSET_NAME")
-    cmc: CMC; // Informations CMC
-    strat: Strat; // Stratégie appliquée
-    orders: Orders; // Informations sur les ordres et les trades
-    liveData: LiveData; // Données en direct
-    profit: number; // Profit calculé
-    platform: string; // Plateforme d'échange (ex: "binance")
-  }
-
-  // Interface pour les ordres ouverts
-interface OpenOrder {
-  _id: string; // ID de l'ordre
-  oId: string; // Order ID
-  cId: string; // Client ID
-  platform: string; // Plateforme d'échange (ex: "okx")
-  symbol: string; // Le symbole de la paire d'échange (ex: "DGB/USDT")
-  type: string; // Type d'ordre (ex: "limit")
-  side: string; // Côté de l'ordre (ex: "buy" ou "sell")
-  amount: number; // Quantité
-  price: number; // Prix
-}
-
-// Interface pour les trades
-interface Trade {
-  _id: string; // ID du trade
-  date: string; // Date du trade
-  pair: string; // La paire de trading (ex: "CWAR-USDT")
-  type: string; // Type du trade (ex: "buy" ou "sell")
-  price: number; // Prix du trade
-  amount: number; // Quantité du trade
-  total: number; // Total du trade
-  totalUSDT: number; // Total en USDT
-  fee: number; // Frais de transaction
-  feecoin: string; // Monnaie des frais (ex: "USDT")
-  platform: string; // Plateforme d'échange (ex: "kucoin")
-  base: string; // Actif de base (ex: "CWAR")
-  quote: string; // Actif de contrepartie (ex: "USDT")
+/* pour remplacer Shad, mais il faut un autre nom que asset */
+export interface Asset {
+  base: string; // Symbole de l'actif (ex: "ASSET_SYMBOL")
+  iconUrl: string; // URL de l'icône
+  ticker: string; // Symbole de trading (ex: "TICKER_SYMBOL")
+  name: string; // Nom de l'actif (ex: "ASSET_NAME")
+  type: string[]; // Type de l'actif (ex: ["stablecoin", "defi", "gaming"])
+  cmc: CMC; // Informations CMC
+  strat: AssetStrat; // Stratégie appliquée
+  orders: Orders; // Informations sur les ordres et les trades
+  liveData: LiveData; // Données en direct
+  profit: number; // Profit calculé
+  platform: string; // Plateforme d'échange (ex: "binance")
 }
 
 // Interface pour la stratégie (strat)
-interface Strat {
+interface AssetStrat {
   strategy: string; // Nom de la stratégie
   maxExposition: number; // Exposition maximale
   takeProfits: TakeProfits; // Take profits avec statut
@@ -228,7 +199,7 @@ interface LiveData {
   currentPrice: number; // Prix actuel
   currentPossession: number; // Possession actuelle
 }
-*/
+
 // Interface pour les take profits
 interface TakeProfit {
   price: number; // Prix du TP
@@ -246,13 +217,13 @@ export interface TakeProfits {
   status: number[]; // Statut des TP
 }
 
-/*
+
 // Interface principale pour les ordres (open et trade)
 interface Orders {
   open: {
     nbOpenBuyOrders: number; // Nombre d'ordres d'achat ouverts
     nbOpenSellOrders: number; // Nombre d'ordres de vente ouverts
-    currentOrders: OpenOrder[]; // Liste des ordres ouverts
+    currentOrders: Order[]; // Liste des ordres ouverts
   };
   trade: {
     totalBuy: number; // Total des achats
@@ -261,5 +232,5 @@ interface Orders {
     averageEntryPrice: number; // Prix moyen d'entrée
     trades: Trade[]; // Liste des trades
   };
+
 }
-  */

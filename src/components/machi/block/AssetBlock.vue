@@ -1,16 +1,17 @@
 <!-- src/components/block/AssetBlock.vue -->
 <script setup lang="ts">
+import { Asset } from '../../../types/responseData';
 import BaseBlock from './BaseBlock.vue';
 import InfoLabel from './InfoLabel.vue';
 
 // On définit les props que le composant WalletBlock va recevoir
-const props = defineProps({
-    item: Object // Le parent passe un objet item
-});
+const props = defineProps<{
+    item: Asset // Le parent passe un objet item
+}>();
 </script>
 
 <template>
-    <BaseBlock :title="`#${props?.item?.rank}`">
+    <BaseBlock :title="`#${props?.item?.cmc.rank}`">
         <!-- Conteneur pour aligner horizontalement -->
         <div class="asset-content">
             <img :src="props?.item?.iconUrl" alt="Icon" class="icon" />

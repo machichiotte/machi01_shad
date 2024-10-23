@@ -1,7 +1,7 @@
 <!-- src/components/machi/AssetCard.vue -->
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { Machi, Order } from '../../types/responseData';
+import { Asset, Order } from '../../types/responseData';
 
 import WalletBlock from './block/WalletBlock.vue';
 import CurrentPriceBlock from './block/CurrentPriceBlock.vue';
@@ -15,13 +15,13 @@ import TakeProfitTable from './TakeProfitTable.vue';
 import { getTakeProfitsTargets } from '../../js/strat/common';
 // Déclarer les props
 const props = defineProps<{
-    item: Machi;
+    item: Asset;
     trades: Trade[];
     orders: Order[];
 }>();
 
-const strat = props?.item?.strat || 'shad';  //ce sont lesvaleurs que je veux attribuer 
-const stratExpo = props?.item?.stratExpo || 0;
+const strat = props?.item?.strat.strategy || 'shad';  //ce sont lesvaleurs que je veux attribuer 
+const stratExpo = props?.item?.strat.maxExposition || 0;
 
 // Accès à 'item' via 'props'
 const item = props.item;
@@ -70,31 +70,31 @@ const updateStratExpo = (newSelection: number): void => {
 
 const takeProfits: TakeProfits = {
     tp1: {
-        price: item.priceTp1,
-        amount: item.amountTp1,
-        percentToNextTp: item.percentToNextTp
+        price: item.strat.takeProfits.tp1.price,
+        amount: item.strat.takeProfits.tp1.amount,
+        percentToNextTp: item.strat.takeProfits.tp1.percentToNextTp
     },
     tp2: {
-        price: item.priceTp2,
-        amount: item.amountTp2
+        price: item.strat.takeProfits.tp2.price,
+        amount: item.strat.takeProfits.tp2.amount,
     },
     tp3: {
-        price: item.priceTp3,
-        amount: item.amountTp3
+        price: item.strat.takeProfits.tp3.price,
+        amount: item.strat.takeProfits.tp3.amount,
     },
     tp4: {
-        price: item.priceTp4,
-        amount: item.amountTp4
+        price: item.strat.takeProfits.tp4.price,
+        amount: item.strat.takeProfits.tp4.amount,
     },
     tp5: {
-        price: item.priceTp5,
-        amount: item.amountTp5
+        price: item.strat.takeProfits.tp5.price,
+        amount: item.strat.takeProfits.tp5.amount,
     },
-    status: Array.isArray(item.status) ? item.status : [0] // Garde une structure de tableau pour éviter les conflits
+    status: Array.isArray(item.strat.takeProfits.status) ? item.strat.takeProfits.status : [0, 0, 0, 0, 0] // Garde une structure de tableau pour éviter les conflits
 };
 
-const recupTp1 = props.item.recupTp1
-const currentPrice = props.item.currentPrice
+const recupTp1 = item.strat.takeProfits.tp1.price * item.strat.takeProfits.tp1.amount
+const currentPrice = props.item.liveData.currentPrice
 
 watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
     // Logique pour recalculer les éléments en fonction des nouvelles stratégies.
