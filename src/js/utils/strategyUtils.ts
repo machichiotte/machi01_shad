@@ -20,10 +20,7 @@ export function isVisible(data: Strat[], base: string, platform: string): boolea
     return false;  // Ou lever une exception selon vos besoins
   }
 
-  console.log('bp', data)
-  console.log('bp', base + ' ' + platform)
   const basesFiltered = data.filter((item) => item.base === base)
-  console.log('basesFiltered', basesFiltered)
 
   // Filtrer par la présence du champ 'platform' dans 'strategies' ou 'maxExposure'
   const platformsFiltered = basesFiltered.filter((item) => {
@@ -33,7 +30,6 @@ export function isVisible(data: Strat[], base: string, platform: string): boolea
     );
   });
 
-  console.log('platformsFiltered', platformsFiltered);
 
   // Retourner 'true' si la plateforme est trouvée dans les éléments filtrés
   return platformsFiltered.length > 0;
