@@ -9,8 +9,6 @@ import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
 import { TimestampData } from '@typ/timestamp'
 
-import { AssetMetrics } from '@typ/metrics' //TODO DELETE
-
 import { ObjectId } from 'mongodb';
 
 export interface SwapMigration {
@@ -29,4 +27,4 @@ export interface HighestPrices {
     highestPrice: number
 }
 
-export type MappedData = TimestampData | HighestPrices | Asset | AssetMetrics | MappedMarket | MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrat | SwapMigration;
+export type MappedData = TimestampData | HighestPrices | Asset | MappedMarket | MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrat | SwapMigration;
