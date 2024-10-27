@@ -163,7 +163,7 @@
 import { defineComponent, PropType } from 'vue';
 
 
-import { Machi } from '../../types/responseData';
+import { Asset } from '../../types/responseData';
 import { getPriceThreshold } from '../../js/strat/common';
 import {
     BINANCE_PLATFORM_ID,
@@ -176,11 +176,11 @@ import { updateBaseField } from '../../js/strat/common';
 export default defineComponent({
     props: {
         items: {
-            type: Array as PropType<Machi[]>,
+            type: Array as PropType<Asset[]>,
             required: true
         },
         localSelectedBases: {
-            type: Array as PropType<Machi[]>,
+            type: Array as PropType<Asset[]>,
             default: () => []
         }
     },
@@ -188,15 +188,21 @@ export default defineComponent({
         emitSelection() {
             this.$emit('update:selection', this.localSelectedBases);
         },
-        applyStrategyToRow(items: Machi[], data: any, newStrat: string | Object) {
+        applyStrategyToRow(items: Asset[], data: any, newStrat: string | Object) {
             // Logique pour appliquer la stratégie
             updateBaseField(items, data, 'strat', newStrat)
         },
-        evaluateBaseStatus(data: Machi) {
+        evaluateBaseStatus(data: Asset) {
             // Logique pour évaluer le statut de l'actif
-            const { currentPrice, platform, status, nbOpenSellOrders, priceTp1, priceTp2 } = data
+            const currentPrice = data.liveData.currentPrice
+            const platform = data.platform
+            const type = data.type
+            const status = data.strat.takeProfits.status
+            const nbOpenSellOrders = data.orders.open.nbOpenSellOrders
+            const priceTp1 = data.strat.takeProfits.tp1.price
+            const priceTp2 = data.strat.takeProfits.tp2.price
 
-            if (status === 'stable coin') {
+            if (type.includes('stablecoin')) {
                 return { severity: 'secondary', label: 'stable coin' }
             }
 
@@ -224,7 +230,7 @@ export default defineComponent({
 
             const nextOrder = status.findIndex((value: number) => value === 0)
             if (nextOrder !== -1) {
-                const priceKey = `priceTp${nextOrder + 1}` as keyof Machi;
+                const priceKey = `priceTp${nextOrder + 1}` as keyof Asset;
                 const priceValue = data[priceKey];
                 return priceThreshold < (priceValue as number)
                     ? { severity: 'success', label: 'Max orders placed' }

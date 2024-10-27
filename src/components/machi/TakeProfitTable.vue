@@ -1,10 +1,10 @@
 <!-- src/components/machi/TakeProfitTable.vue -->
 <script setup lang="ts">
-import { Machi, Order } from '../../types/responseData';
+import { Asset, Order } from '../../types/responseData';
 
 // Déclaration des props
 const props = defineProps<{
-    item: Machi;
+    item: Asset;
     orders: Order[];
 }>();
 
@@ -13,11 +13,11 @@ const orders = props.orders;
 
 // Génération des données pour le tableau des Take Profits
 const tpData = [
-    { tp: 'TP1', price: item.priceTp1, amount: item.amountTp1, total: item.recupTp1 },
-    { tp: 'TP2', price: item.priceTp2, amount: item.amountTp2, total: item.recupTpX },
-    { tp: 'TP3', price: item.priceTp3, amount: item.amountTp3, total: item.recupTpX },
-    { tp: 'TP4', price: item.priceTp4, amount: item.amountTp4, total: item.recupTpX },
-    { tp: 'TP5', price: item.priceTp5, amount: item.amountTp5, total: item.recupTpX }
+    { tp: 'TP1', price: item.strat.takeProfits.tp1.price, amount: item.strat.takeProfits.tp1.amount, total: (item.strat.takeProfits.tp1.price * item.strat.takeProfits.tp1.amount) },
+    { tp: 'TP2', price: item.strat.takeProfits.tp2.price, amount: item.strat.takeProfits.tp2.amount, total: (item.strat.takeProfits.tp2.price * item.strat.takeProfits.tp2.amount) },
+    { tp: 'TP3', price: item.strat.takeProfits.tp3.price, amount: item.strat.takeProfits.tp3.amount, total: (item.strat.takeProfits.tp3.price * item.strat.takeProfits.tp3.amount) },
+    { tp: 'TP4', price: item.strat.takeProfits.tp4.price, amount: item.strat.takeProfits.tp4.amount, total: (item.strat.takeProfits.tp4.price * item.strat.takeProfits.tp4.amount) },
+    { tp: 'TP5', price: item.strat.takeProfits.tp5.price, amount: item.strat.takeProfits.tp5.amount, total: (item.strat.takeProfits.tp5.price * item.strat.takeProfits.tp5.amount) }
 ];
 
 // Fonction pour formater le total avec deux décimales

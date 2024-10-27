@@ -24,8 +24,6 @@ const ordersColumns: Column[] = [
 
 const tradesColumns: Column[] = [
   { header: 'Platform', field: 'platform' },
-  { header: 'base', field: 'base' },
-  { header: 'quote', field: 'quote' },
   { header: 'Date', field: 'date' },
   { header: 'Pair', field: 'pair' },
   { header: 'Type', field: 'type' },
@@ -34,8 +32,7 @@ const tradesColumns: Column[] = [
   { header: 'Total', field: 'total' },
   { header: 'Total (USDT)', field: 'totalUSDT' },
   { header: 'Fee', field: 'fee' },
-  { header: 'Feecoin', field: 'feecoin' },
-  { header: 'Explatform', field: 'explatform' }
+  { header: 'Feecoin', field: 'feecoin' }
 ]
 
 const tradesTableColumns: Column[] = [

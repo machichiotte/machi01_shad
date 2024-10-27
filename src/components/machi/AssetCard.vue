@@ -15,24 +15,24 @@ import TakeProfitTable from './TakeProfitTable.vue';
 import { getTakeProfitsTargets } from '../../js/strat/common';
 // Déclarer les props
 const props = defineProps<{
-    item: Asset;
+    assets: Asset;
     trades: Trade[];
     orders: Order[];
 }>();
 
-const strat = props?.item?.strat.strategy || 'shad';  //ce sont lesvaleurs que je veux attribuer 
-const stratExpo = props?.item?.strat.maxExposition || 0;
+const strat = props?.assets?.strat.strategy || 'shad';  //ce sont lesvaleurs que je veux attribuer 
+const stratExpo = props?.assets?.strat.maxExposition || 0;
 
 // Accès à 'item' via 'props'
-const item = props.item;
+const item = props.assets;
 const trades = props.trades;
 const filteredTrades = trades.filter((trade) => {
-    return trade.base === item.base && trade.platform === props.item.platform;
+    return trade.base === item.base && trade.platform === props.assets.platform;
 });
 
 const orders = props.orders;
 const filteredOrders = orders.filter((order) => {
-    return order.symbol.startsWith(item.base + '/') && order.platform === props.item.platform;
+    return order.symbol.startsWith(item.base + '/') && order.platform === props.assets.platform;
 });
 
 const buyOpenOrdersCount = computed(() => filteredOrders.filter(order => order.side === 'buy').length);
@@ -94,7 +94,7 @@ const takeProfits: TakeProfits = {
 };
 
 const recupTp1 = item.strat.takeProfits.tp1.price * item.strat.takeProfits.tp1.amount
-const currentPrice = props.item.liveData.currentPrice
+const currentPrice = props.assets.liveData.currentPrice
 
 watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
     // Logique pour recalculer les éléments en fonction des nouvelles stratégies.

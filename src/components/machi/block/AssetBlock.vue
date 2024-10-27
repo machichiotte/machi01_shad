@@ -11,11 +11,11 @@ const props = defineProps<{
 </script>
 
 <template>
-    <BaseBlock :title="`#${props?.item?.cmc.rank}`">
+    <BaseBlock :title="`#${props.item.cmc.rank}`">
         <!-- Conteneur pour aligner horizontalement -->
         <div class="asset-content">
             <img :src="props?.item?.iconUrl" alt="Icon" class="icon" />
-            <InfoLabel :label="`${props?.item?.base}`" :small="`${props?.item?.base}`" />
+            <InfoLabel :label="`${props.item.base}`" :small="`${props.item.name}`" />
         </div>
     </BaseBlock>
 </template>

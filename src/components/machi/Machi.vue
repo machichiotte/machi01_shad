@@ -4,6 +4,7 @@ import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
 import { useCalculStore } from '../../store/calculStore'; // Import the Pinia store
 import { FilterMatchMode } from 'primevue/api'
 import AssetCard from './AssetCard.vue'
+import BalanceCard from './BalanceCard.vue'
 import SearchBar from './SearchBar.vue'
 
 import PlatformSelector from './PlatformSelector.vue'
@@ -15,10 +16,10 @@ import OrdersTable from '../order/OrdersTable.vue';
 import BuyCalculator from './BuyCalculator.vue';
 
 import { Filter } from '../../types/filter'
-import { Machi } from '../../types/responseData'
+import { Asset } from '../../types/responseData'
 
 // Define the selected bases with proper types
-const selectedBases = ref<Machi[]>([])
+const selectedBases = ref<Asset[]>([])
 
 // Filters with a well-defined structure
 const filters = ref<Filter>({
@@ -36,28 +37,34 @@ const tradesItems = computed(() => calculStore.getTrade);
 const openOrdersItems = computed(() => calculStore.getOrder);
 const machiItems = computed(() => calculStore.getMachi);
 
-// Filtered Machi items by platform
+// Filtered Machi items by platform and search query, ensuring uniqueness of `base`
 const filteredMachiItems = computed(() => {
-  console.log('selectedPlatforms', selectedPlatforms);
-
-  // Vérifiez si un filtre de recherche est appliqué
   const searchValue = filters.value.global.value ? filters.value.global.value.toLowerCase() : '';
 
+  // Utiliser un Set pour garder les éléments uniques
+  const uniqueItems = new Set();
+
   return machiItems.value.filter(item => {
-    // Vérifiez si l'élément correspond à la plateforme sélectionnée
+    // Filtrer par plateforme
     const matchesPlatformFilter = selectedPlatforms.value.includes(item.platform);
 
-    // Vérifiez si l'élément correspond au filtre de recherche
+    // Filtrer par recherche
     const matchesSearchFilter = searchValue
       ? Object.values(item).some(value =>
         String(value).toLowerCase().includes(searchValue)
       )
       : true;
 
-    // Retournez vrai seulement si les deux conditions sont remplies
-    return matchesPlatformFilter && matchesSearchFilter;
+    // Ajouter à l'ensemble si l'élément est unique par `base`
+    const isUnique = !uniqueItems.has(item.base);
+    if (matchesPlatformFilter && matchesSearchFilter && isUnique) {
+      uniqueItems.add(item.base); // Ajouter la `base` unique à l'ensemble
+      return true;
+    }
+    return false;
   });
 });
+
 
 // Function to fetch data from the store asynchronously
 const getData = async (): Promise<void> => {
@@ -89,7 +96,7 @@ const handleDeleteAction = (): void => {
 };
 
 // Function to update selected bases
-const updateSelectedBases = (newSelection: Machi[]): void => {
+const updateSelectedBases = (newSelection: Asset[]): void => {
   selectedBases.value = newSelection
 }
 
@@ -120,21 +127,7 @@ const loading = ref(false);
 // Computed property for paginated items
 const paginatedMachiItems = computed(() => {
   const start = 0; // Commencer à partir du début
-
-  // Utiliser un Set pour éliminer les doublons
-  const uniqueItems = new Set();
-
-  // Filtrer les éléments uniques
-  const uniqueFilteredItems = filteredMachiItems.value.filter(item => {
-    if (!uniqueItems.has(item.base)) {
-      uniqueItems.add(item.base); // Ajouter l'élément au Set
-      return true; // Inclure l'élément dans le résultat
-    }
-    return false; // Ne pas inclure les doublons
-  });
-
-  // Retourner les éléments paginés
-  return uniqueFilteredItems.slice(start, currentPage.value * itemsPerPage);
+  return filteredMachiItems.value.slice(start, currentPage.value * itemsPerPage);
 });
 
 // Check if there are more items to load
@@ -203,9 +196,11 @@ onBeforeUnmount(() => {
         </template>
       </Toolbar>
 
+      <BalanceCard :assets="filteredMachiItems" />
+
       <!-- Conteneur de cartes -->
-      <div class="card-container">
-        <AssetCard v-for="item in paginatedMachiItems" :key="item.base" :item="item" :trades="tradesItems"
+      <div class="asset-card-container">
+        <AssetCard v-for="item in paginatedMachiItems" :key="item.base" :assets="item" :trades="tradesItems"
           :orders="openOrdersItems" @update:selectedBases="updateSelectedBases" />
         <div v-if="loading">Loading more items...</div>
       </div>
@@ -251,7 +246,7 @@ onBeforeUnmount(() => {
   background-color: darkorchid;
 }
 
-.card-container {
+.asset-card-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   /* 2 colonnes */

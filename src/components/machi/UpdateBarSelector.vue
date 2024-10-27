@@ -3,7 +3,7 @@
     <div class="fetch-from-server-selector">
         <Button v-for="(fetchOption, index) in fetchOptions" :key="fetchOption.id" :label="fetchOption.name"
             :loading="loading[index]" :class="['fetch-button', { error: errors[index] }]"
-            @click="() => fetchMyData(fetchOption.fetchFunction as () => Promise<Cmc[] | Balance[] | Trade[] | Ticker[] | Order[] | Strat[] | Machi[]>, index)" />
+            @click="() => fetchMyData(fetchOption.fetchFunction as () => Promise<Cmc[] | Balance[] | Trade[] | Ticker[] | Order[] | Strat[] | Asset[]>, index)" />
     </div>
 </template>
 
@@ -18,7 +18,7 @@ import {
     fetchStrategy,
     fetchMachi
 } from '../../js/server/fetchFromServer'
-import { Balance, Cmc, Machi, Order, Strat, Ticker, Trade } from '../../types/responseData';
+import { Balance, Cmc, Asset, Order, Strat, Ticker, Trade } from '../../types/responseData';
 
 interface FetchOption<T> {
     id: string;
@@ -34,7 +34,7 @@ const fetchOptions: Array<
     FetchOption<Ticker[]> |
     FetchOption<Order[]> |
     FetchOption<Strat[]> |
-    FetchOption<Machi[]>
+    FetchOption<Asset[]>
 > = [
         { id: 'fetchCmc', name: 'Fetch CMC Data', fetchFunction: fetchCmc },
         { id: 'fetchBalances', name: 'Fetch Balances Data', fetchFunction: fetchBalance },

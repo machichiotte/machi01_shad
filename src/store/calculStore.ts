@@ -9,7 +9,7 @@ import {
   fetchTrade,
   fetchTicker
 } from '../js/server/fetchFromServer.js'
-import { TYPES, Balance, Cmc, Order, Machi, Strat, Trade, Ticker } from '../types/responseData.ts'
+import { TYPES, Balance, Cmc, Order, Asset, Strat, Trade, Ticker } from '../types/responseData.ts'
 
 export const useCalculStore = defineStore('calcul', {
   state: () => ({
@@ -18,7 +18,7 @@ export const useCalculStore = defineStore('calcul', {
     order: [] as Order[],
     buyOrder: [] as Order[],
     sellOrder: [] as Order[],
-    machi: [] as Machi[],
+    machi: [] as Asset[],
     strat: [] as Strat[],
     ticker: [] as Ticker[],
     trade: [] as Trade[],
@@ -132,7 +132,7 @@ export const useCalculStore = defineStore('calcul', {
       this.lastFetchTimestamp[type] = timestamp
     },
 
-    setMachi(data: Machi[]) {
+    setMachi(data: Asset[]) {
       this.machi = data
     }
   }

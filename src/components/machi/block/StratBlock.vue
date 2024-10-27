@@ -1,6 +1,6 @@
 <!-- src/components/block/StrategyBlock.vue -->
 <script setup lang="ts">
-import { ref, watch, defineEmits } from 'vue';
+import { ref, watch } from 'vue';
 import BaseBlock from './BaseBlock.vue';
 
 
