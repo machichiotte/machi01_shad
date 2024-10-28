@@ -17,6 +17,7 @@ import BuyCalculator from './BuyCalculator.vue';
 
 import { Filter } from '../../types/filter'
 import { Asset } from '../../types/responseData'
+import StableCoinCard from './StableCoinCard.vue';
 
 // Define the selected bases with proper types
 const selectedBases = ref<Asset[]>([])
@@ -56,7 +57,7 @@ const filteredMachiItems = computed(() => {
       : true;
 
     // Ajouter à l'ensemble si l'élément est unique par `base`
-    const isUnique = !uniqueItems.has(item.base);
+    const isUnique = !uniqueItems.has(`${item.base}-${item.platform}`);
     if (matchesPlatformFilter && matchesSearchFilter && isUnique) {
       uniqueItems.add(item.base); // Ajouter la `base` unique à l'ensemble
       return true;
@@ -197,6 +198,7 @@ onBeforeUnmount(() => {
       </Toolbar>
 
       <BalanceCard :assets="filteredMachiItems" />
+      <StableCoinCard :assets="filteredMachiItems" />
 
       <!-- Conteneur de cartes -->
       <div class="asset-card-container">

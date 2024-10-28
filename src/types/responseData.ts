@@ -166,7 +166,7 @@ export interface Asset {
   iconUrl: string; // URL de l'icône
   ticker: string; // Symbole de trading (ex: "TICKER_SYMBOL")
   name: string; // Nom de l'actif (ex: "ASSET_NAME")
-  type: string[]; // Type de l'actif (ex: ["stablecoin", "defi", "gaming"])
+  tags: string[]; // Type de l'actif (ex: ["stablecoin", "defi", "gaming"])
   cmc: CMC; // Informations CMC
   strat: AssetStrat; // Stratégie appliquée
   orders: Orders; // Informations sur les ordres et les trades
@@ -232,5 +232,4 @@ interface Orders {
     averageEntryPrice: number; // Prix moyen d'entrée
     trades: Trade[]; // Liste des trades
   };
-
 }
