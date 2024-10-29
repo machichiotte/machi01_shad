@@ -1,4 +1,5 @@
 // src/js/strat/common.ts
+import { Asset, TakeProfits } from "../../types/responseData";
 import { getShadTakeProfitsTargets } from "./shad";
 
 // Calculate the price threshold based on the current price and a given threshold.
@@ -63,7 +64,7 @@ export const setMaxExposure = (items: Array<any>, data: any, maxExposition: numb
     updateBaseField(items, data, 'maxExposition', maxExposition)
 }
 
-export function getTakeProfitsTargets(data: any): any {
+export function getTakeProfitsTargets(data: Asset): TakeProfits {
     //TODO ajouter pleins de strategies 
     return getShadTakeProfitsTargets(data)
 }

@@ -196,13 +196,13 @@ export default defineComponent({
             // Logique pour évaluer le statut de l'actif
             const currentPrice = data.liveData.currentPrice
             const platform = data.platform
-            const type = data.type
+            const tags = data.tags
             const status = data.strat.takeProfits.status
             const nbOpenSellOrders = data.orders.open.nbOpenSellOrders
             const priceTp1 = data.strat.takeProfits.tp1.price
             const priceTp2 = data.strat.takeProfits.tp2.price
 
-            if (type.includes('stablecoin')) {
+            if (tags.includes('stablecoin')) {
                 return { severity: 'secondary', label: 'stable coin' }
             }
 

@@ -1,38 +1,38 @@
 <!-- src/components/machi/AssetCard.vue -->
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { Asset, Order } from '../../types/responseData';
+import { ref, computed, watch, reactive } from 'vue';
+import { Asset, Order, Trade } from '../../types/responseData';
 
 import WalletBlock from './block/WalletBlock.vue';
 import CurrentPriceBlock from './block/CurrentPriceBlock.vue';
 import NextTp from './block/NextTp.vue';
 import StratBlock from './block/StratBlock.vue';
 import AssetBlock from './block/AssetBlock.vue';
-import { Trade, TakeProfits } from '../../types/responseData';
 import TradesTable from '../trade/TradesTable.vue';
 import OrdersTable from '../order/OrdersTable.vue';
 import TakeProfitTable from './TakeProfitTable.vue';
 import { getTakeProfitsTargets } from '../../js/strat/common';
+
 // Déclarer les props
 const props = defineProps<{
-    assets: Asset;
+    asset: Asset;
     trades: Trade[];
     orders: Order[];
 }>();
 
-const strat = props?.assets?.strat.strategy || 'shad';  //ce sont lesvaleurs que je veux attribuer 
-const stratExpo = props?.assets?.strat.maxExposition || 0;
+const strat = props.asset.strat.strategy || 'shad';  //ce sont lesvaleurs que je veux attribuer 
+const stratExpo = props.asset.strat.maxExposition || 0;
 
 // Accès à 'item' via 'props'
-const item = props.assets;
+const item = props.asset;
 const trades = props.trades;
 const filteredTrades = trades.filter((trade) => {
-    return trade.base === item.base && trade.platform === props.assets.platform;
+    return trade.base === item.base && trade.platform === props.asset.platform;
 });
 
 const orders = props.orders;
 const filteredOrders = orders.filter((order) => {
-    return order.symbol.startsWith(item.base + '/') && order.platform === props.assets.platform;
+    return order.symbol.startsWith(item.base + '/') && order.platform === props.asset.platform;
 });
 
 const buyOpenOrdersCount = computed(() => filteredOrders.filter(order => order.side === 'buy').length);
@@ -68,74 +68,38 @@ const updateStratExpo = (newSelection: number): void => {
     selectedExpo.value = newSelection
 }
 
-const takeProfits: TakeProfits = {
-    tp1: {
-        price: item.strat.takeProfits.tp1.price,
-        amount: item.strat.takeProfits.tp1.amount,
-        percentToNextTp: item.strat.takeProfits.tp1.percentToNextTp
-    },
-    tp2: {
-        price: item.strat.takeProfits.tp2.price,
-        amount: item.strat.takeProfits.tp2.amount,
-    },
-    tp3: {
-        price: item.strat.takeProfits.tp3.price,
-        amount: item.strat.takeProfits.tp3.amount,
-    },
-    tp4: {
-        price: item.strat.takeProfits.tp4.price,
-        amount: item.strat.takeProfits.tp4.amount,
-    },
-    tp5: {
-        price: item.strat.takeProfits.tp5.price,
-        amount: item.strat.takeProfits.tp5.amount,
-    },
-    status: Array.isArray(item.strat.takeProfits.status) ? item.strat.takeProfits.status : [0, 0, 0, 0, 0] // Garde une structure de tableau pour éviter les conflits
-};
+const ass = reactive(item);
+const reactiveTakeProfits = computed(() => ass.strat.takeProfits);
 
-const recupTp1 = item.strat.takeProfits.tp1.price * item.strat.takeProfits.tp1.amount
-const currentPrice = props.assets.liveData.currentPrice
+const recupTp1 = ass.strat.takeProfits.tp1.price * ass.strat.takeProfits.tp1.amount
+const currentPrice = ass.liveData.currentPrice
 
 watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
     // Logique pour recalculer les éléments en fonction des nouvelles stratégies.
     console.log('Stratégie modifiée', newStrat, newExpo);
     // Recalculer les takeProfits ici si nécessaire.
-    const updatedItem = {
-        ...item,
-        strat: newStrat,
-        maxExposition: newExpo
-    };
 
-    console.log('updatedItem', updatedItem)
+
+    ass.strat.strategy = newStrat;
+    ass.strat.maxExposition = newExpo;
+
+
+    console.log('ass', ass)
 
 
     // Appel à getTakeProfitsTargets avec l'item mis à jour
-    const updatedTakeProfits = getTakeProfitsTargets(updatedItem);
+    const updatedTakeProfits = getTakeProfitsTargets(ass);
     console.log('updatedTakeProfits', updatedTakeProfits)
     // Mise à jour de takeProfits avec les valeurs calculées de updatedTakeProfits
-    takeProfits.tp1.price = updatedTakeProfits.priceTp1;
-    takeProfits.tp1.amount = updatedTakeProfits.amountTp1;
-    takeProfits.tp1.percentToNextTp = updatedTakeProfits.recupTp1; // exemple
-
-    takeProfits.tp2.price = updatedTakeProfits.priceTp2;
-    takeProfits.tp2.amount = updatedTakeProfits.amountTp2;
-
-    takeProfits.tp3.price = updatedTakeProfits.priceTp3;
-    takeProfits.tp3.amount = updatedTakeProfits.amountTp3;
-
-    takeProfits.tp4.price = updatedTakeProfits.priceTp4;
-    takeProfits.tp4.amount = updatedTakeProfits.amountTp4;
-
-    takeProfits.tp5.price = updatedTakeProfits.priceTp5;
-    takeProfits.tp5.amount = updatedTakeProfits.amountTp5;
+    ass.strat.takeProfits = { ...updatedTakeProfits };
+    //Object.assign(tps, updatedTakeProfits);
 
     // Log des nouvelles valeurs pour validation
-    console.log('TakeProfits mis à jour:', takeProfits);
+    console.log('TakeProfits mis à jour:', ass);
 });
 </script>
 
 <template>
-
     <div class="card" v-if="item">
         <div class="card-header">
 
@@ -143,7 +107,7 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
                 <AssetBlock :item=item />
                 <CurrentPriceBlock :item=item />
                 <WalletBlock :item=item />
-                <NextTp :takeProfits=takeProfits :recupTp1=recupTp1 :currentPrice=currentPrice />
+                <NextTp :takeProfits=reactiveTakeProfits :recupTp1=recupTp1 :currentPrice=currentPrice />
                 <StratBlock :strat=strat :stratExpo=stratExpo @update:strat="updateStrat"
                     @update:strat-expo="updateStratExpo" />
             </div>
@@ -161,30 +125,30 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 
         <!-- Détails supplémentaires lorsque le chevron est cliqué -->
         <div class="card-details" v-if="isDetailsVisible">
-            <div class="menubar-container">
-                <!-- Il faudrait centrer le menubar, pour le moment jai limpression quil occupe totue la largeur mais quil a tous ces elements a gauche -->
+
+            <div class="card-details-menu">
                 <Menubar :model="menubarOptions" @command="onMenuSelect" />
             </div>
 
-            <div v-if="selectedMenu === '0'">
-                <div v-if="filteredOrders && filteredOrders.length > 0">
-                    <OrdersTable :items=filteredOrders />
+            <div class="card-details-content">
+                <div v-if="selectedMenu === '0'">
+                    <div v-if="filteredOrders && filteredOrders.length > 0">
+                        <OrdersTable :items=filteredOrders />
+                    </div>
+                    <div v-else>
+                        <p>Pas d'ordres ouverts</p>
+                    </div>
                 </div>
-                <!-- Sinon, afficher un message indiquant que l'historique est vide -->
-                <div v-else>
-                    <p>Pas d'ordres ouverts</p>
+                <div v-if="selectedMenu === '1'">
+                    <TakeProfitTable :takeProfits=reactiveTakeProfits :orders="filteredOrders" />
                 </div>
-            </div>
-            <div v-if="selectedMenu === '1'">
-                <TakeProfitTable :item="item" :orders="filteredOrders" />
-            </div>
-            <div v-if="selectedMenu === '2'">
-                <div v-if="filteredTrades && filteredTrades.length > 0">
-                    <TradesTable :items=filteredTrades />
-                </div>
-                <!-- Sinon, afficher un message indiquant que l'historique est vide -->
-                <div v-else>
-                    <p>Pas d'historique</p>
+                <div v-if="selectedMenu === '2'">
+                    <div v-if="filteredTrades && filteredTrades.length > 0">
+                        <TradesTable :items=filteredTrades />
+                    </div>
+                    <div v-else>
+                        <p>Pas d'historique</p>
+                    </div>
                 </div>
             </div>
 
@@ -198,7 +162,6 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
     </div>
 </template>
 
-
 <style scoped>
 .card {
     border: 1px solid white;
@@ -209,6 +172,8 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
     padding: 0.5rem;
     cursor: pointer;
     background-color: blue;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .card-header {
@@ -218,9 +183,28 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 }
 
 .card-details {
+    overflow-x: auto;
+    max-width: 100%;
     display: grid;
     background-color: darkblue;
     height: fit-content;
+}
+
+.card-details-menu {
+    display: flex;
+    position: sticky;
+    justify-content: center;
+    margin: 0 auto;
+    /* Centre le menu horizontalement */
+    z-index: 10;
+    /* Pour s'assurer que le menu reste au-dessus */
+}
+
+.card-details-content {
+    overflow-x: auto;
+    /* Permet uniquement le défilement horizontal ici */
+    white-space: nowrap;
+    /* Assure que le contenu à l'intérieur ne se déplace pas sur plusieurs lignes */
 }
 
 .icon {
@@ -251,15 +235,7 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
     align-items: center;
 }
 
-.menubar-container {
-    display: flex;
-    justify-content: center;
-}
 
-/* Détails supplémentaires */
-.card-details {
-    margin-top: 1rem;
-}
 
 /* Chevron d'expansion */
 .expand-button .pi-chevron-down {

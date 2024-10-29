@@ -22,7 +22,9 @@ const toggleDetails = (platform: string) => {
 
 // Calcul du solde total
 const totalBalance = computed(() => {
-    return props.assets.reduce((total, asset) => total + asset.liveData.currentPossession, 0);
+    return props.assets
+        .filter(asset => !asset.tags.includes("stablecoin"))
+        .reduce((total, asset) => total + asset.liveData.currentPossession, 0);
 });
 
 // Organisation des possessions par plateforme 

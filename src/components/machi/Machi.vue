@@ -202,7 +202,7 @@ onBeforeUnmount(() => {
 
       <!-- Conteneur de cartes -->
       <div class="asset-card-container">
-        <AssetCard v-for="item in paginatedMachiItems" :key="item.base" :assets="item" :trades="tradesItems"
+        <AssetCard v-for="item in paginatedMachiItems" :key="item.base" :asset="item" :trades="tradesItems"
           :orders="openOrdersItems" @update:selectedBases="updateSelectedBases" />
         <div v-if="loading">Loading more items...</div>
       </div>

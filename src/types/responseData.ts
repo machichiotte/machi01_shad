@@ -176,7 +176,7 @@ export interface Asset {
 }
 
 // Interface pour la stratégie (strat)
-interface AssetStrat {
+export interface AssetStrat {
   strategy: string; // Nom de la stratégie
   maxExposition: number; // Exposition maximale
   takeProfits: TakeProfits; // Take profits avec statut
@@ -228,7 +228,8 @@ interface Orders {
   trade: {
     totalBuy: number; // Total des achats
     totalSell: number; // Total des ventes
-    totalAmountBuySell: number; // Quantité totale achetée et vendue
+    totalAmountBuy: number; // Quantité totale achetée
+    totalAmountSell: number; // Quantité totale vendue
     averageEntryPrice: number; // Prix moyen d'entrée
     trades: Trade[]; // Liste des trades
   };

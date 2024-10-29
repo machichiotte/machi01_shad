@@ -1,24 +1,13 @@
 <!-- src/components/machi/TakeProfitTable.vue -->
 <script setup lang="ts">
-import { Asset, Order } from '../../types/responseData';
+import { computed } from 'vue';
+import { Order, TakeProfits } from '../../types/responseData';
 
 // Déclaration des props
 const props = defineProps<{
-    item: Asset;
+    takeProfits: TakeProfits;
     orders: Order[];
 }>();
-
-const item = props.item;
-const orders = props.orders;
-
-// Génération des données pour le tableau des Take Profits
-const tpData = [
-    { tp: 'TP1', price: item.strat.takeProfits.tp1.price, amount: item.strat.takeProfits.tp1.amount, total: (item.strat.takeProfits.tp1.price * item.strat.takeProfits.tp1.amount) },
-    { tp: 'TP2', price: item.strat.takeProfits.tp2.price, amount: item.strat.takeProfits.tp2.amount, total: (item.strat.takeProfits.tp2.price * item.strat.takeProfits.tp2.amount) },
-    { tp: 'TP3', price: item.strat.takeProfits.tp3.price, amount: item.strat.takeProfits.tp3.amount, total: (item.strat.takeProfits.tp3.price * item.strat.takeProfits.tp3.amount) },
-    { tp: 'TP4', price: item.strat.takeProfits.tp4.price, amount: item.strat.takeProfits.tp4.amount, total: (item.strat.takeProfits.tp4.price * item.strat.takeProfits.tp4.amount) },
-    { tp: 'TP5', price: item.strat.takeProfits.tp5.price, amount: item.strat.takeProfits.tp5.amount, total: (item.strat.takeProfits.tp5.price * item.strat.takeProfits.tp5.amount) }
-];
 
 // Fonction pour formater le total avec deux décimales
 const formatTotal = (total: number) => {
@@ -27,16 +16,20 @@ const formatTotal = (total: number) => {
 
 // Fonction pour déterminer le statut basé sur les ordres
 const getStatus = (tpAmount: number, tpPrice: number) => {
-    const matchingOrder = orders.find(order => order.amount === tpAmount && order.price === tpPrice);
+    const matchingOrder = props.orders.find(order => order.amount === tpAmount && order.price === tpPrice);
     return matchingOrder ? 'OK' : 'NOK';
 };
 
 // Transformation des données avec formatage du total et définition du statut
-const tpDataWithStatus = tpData.map(tp => ({
-    ...tp,
-    total: formatTotal(tp.total), // Formater le total avec deux décimales
-    status: getStatus(tp.amount, tp.price) // Déterminer le statut
-}));
+const tpDataWithStatus = computed(() => {
+    return [
+        { tp: 'TP1', price: props.takeProfits.tp1.price, amount: props.takeProfits.tp1.amount, total: formatTotal(props.takeProfits.tp1.price * props.takeProfits.tp1.amount), status: getStatus(props.takeProfits.tp1.amount, props.takeProfits.tp1.price) },
+        { tp: 'TP2', price: props.takeProfits.tp2.price, amount: props.takeProfits.tp2.amount, total: formatTotal(props.takeProfits.tp2.price * props.takeProfits.tp2.amount), status: getStatus(props.takeProfits.tp2.amount, props.takeProfits.tp2.price) },
+        { tp: 'TP3', price: props.takeProfits.tp3.price, amount: props.takeProfits.tp3.amount, total: formatTotal(props.takeProfits.tp3.price * props.takeProfits.tp3.amount), status: getStatus(props.takeProfits.tp3.amount, props.takeProfits.tp3.price) },
+        { tp: 'TP4', price: props.takeProfits.tp4.price, amount: props.takeProfits.tp4.amount, total: formatTotal(props.takeProfits.tp4.price * props.takeProfits.tp4.amount), status: getStatus(props.takeProfits.tp4.amount, props.takeProfits.tp4.price) },
+        { tp: 'TP5', price: props.takeProfits.tp5.price, amount: props.takeProfits.tp5.amount, total: formatTotal(props.takeProfits.tp5.price * props.takeProfits.tp5.amount), status: getStatus(props.takeProfits.tp5.amount, props.takeProfits.tp5.price) }
+    ];
+});
 </script>
 
 <template>

@@ -1,11 +1,17 @@
 // src/js/strat/shad.ts
-import { calculateRecoveryGap, determineStrategyFactor } from './common';
+import { Asset, TakeProfits } from '../../types/responseData';
+//import { calculateRecoveryGap, determineStrategyFactor } from './common';
+import { determineStrategyFactor } from './common';
 
-const ERROR_ALLOWED = 0.05
+//const ERROR_ALLOWED = 0.05
 
 // Calculate take profit values based on trading data and strategy parameters.
-function getTakeProfitValues(data: any, maxExposition: number, ratioShad: number, averageEntryPrice: number): any {
-  const { totalBuy, totalSell, balance } = data
+function getTakeProfitValues(data: Asset, maxExposition: number, ratioShad: number): TakeProfits {
+  const totalBuy = data.orders.trade.totalBuy
+  const totalSell = data.orders.trade.totalSell
+  const balance = data.liveData.balance
+  const averageEntryPrice = data.orders.trade.averageEntryPrice
+
   // Intermediate calculations
   const recupTpX = getRecupTpX(maxExposition, ratioShad)
   let recupTp1, priceTp1, amountTp1
@@ -41,45 +47,30 @@ function getTakeProfitValues(data: any, maxExposition: number, ratioShad: number
   const priceTp4 = amountTp4 > 0 ? recupTpX / amountTp4 : 0
   const priceTp5 = amountTp5 > 0 ? recupTpX / amountTp5 : 0
 
-  // Return calculated values
-  return {
-    averageEntryPrice,
-    recupTpX,
-    recupTp1,
-    priceTp1,
-    amountTp1,
-    amountTp2,
-    amountTp3,
-    amountTp4,
-    amountTp5,
-    priceTp2,
-    priceTp3,
-    priceTp4,
-    priceTp5
-  }
+  const takeProfits: TakeProfits = {
+    tp1: { price: priceTp1, amount: amountTp1 },
+    tp2: { price: priceTp2, amount: amountTp2 },
+    tp3: { price: priceTp3, amount: amountTp3 },
+    tp4: { price: priceTp4, amount: amountTp4 },
+    tp5: { price: priceTp5, amount: amountTp5 },
+    status: [] // Remplir avec les statuts appropriés
+  };
+
+  return takeProfits;
 }
 
 // Calculate recovery values based on trading strategy and market conditions.
-export function getShadTakeProfitsTargets(data: any): any {
-  const stratExpo = data.maxExposition ?? 0 // Ensure default value
+export function getShadTakeProfitsTargets(asset: Asset): TakeProfits {
+  console.log('getShadTakeProfitsTargets asset', asset)
+
+  const stratExpo = asset.strat.maxExposition ?? 0 // Ensure default value
   const maxExposition = Math.max(0, stratExpo) // Ensure non-negative exposition
-  const ratioShad = determineStrategyFactor(data.strat)
-  const recupShad = calculateRecoveryGap(data.totalBuy, data.totalSell, maxExposition)
-  const averageEntryPrice = data.totalBuy / data.totalAmount
+  const ratioShad = determineStrategyFactor(asset.strat.strategy)
 
-  console.log('getShadTakeProfitsTargets data', data)
-
-  const calculatedValues = getTakeProfitValues(data, maxExposition, ratioShad as number, averageEntryPrice)
-  const totalShad = getDoneShad(data, maxExposition, recupShad, calculatedValues.recupTpX)
+  const calculatedValues = getTakeProfitValues(asset, maxExposition, ratioShad as number)
   console.log('getShadTakeProfitsTargets calculatedValues', calculatedValues)
 
-  return {
-    maxExposition,
-    ratioShad,
-    recupShad,
-    totalShad,
-    ...calculatedValues // Spread calculated values for the final output
-  }
+  return calculatedValues;
 }
 
 // Calculates the recovery value for a Take Profit X (TpX).
@@ -88,6 +79,7 @@ function getRecupTpX(maxExposition: number, ratioShad: number): number {
   return parseFloat(result)
 }
 
+/*
 function getDoneShad(data: any, maxExposition: number, recupShad: number, recupTpX: number): number {
   const { totalBuy, totalSell } = data
   if (
@@ -100,4 +92,4 @@ function getDoneShad(data: any, maxExposition: number, recupShad: number, recupT
   } else {
     return 0
   }
-}
+}*/
