@@ -106,7 +106,7 @@ function detectModelType(data: TradeModel[]): string {
 /**
  * Retrieves the total USDT value from an API based on the deal time, quote, and total.
  */
-async function getTotalUSDTFromAPI(
+async function getEqUSDFromAPI(
   dealTime: string,
   quote: string,
   total: number
@@ -143,7 +143,7 @@ async function convertModelHTX(data: Array<ModelHtx>): Promise<MappedTrade[]> {
         const [base, quote] = item['symbol'].split('/')
         const date = item['deal_time']
         const total = parseFloat(item['amount'])
-        const totalUSDT = await getTotalUSDTFromAPI(date, quote, total)
+        const eqUSD = await getEqUSDFromAPI(date, quote, total)
 
         return {
           base: base,
@@ -151,11 +151,11 @@ async function convertModelHTX(data: Array<ModelHtx>): Promise<MappedTrade[]> {
           date: date,
           timestamp: new Date(date).getTime(),
           pair: item['symbol'],
-          type: item['deal_type'].toLowerCase(),
+          side: item['deal_type'].toLowerCase(),
           price: parseFloat(item['price']),
           amount: parseFloat(item['volume']),
           total: total,
-          totalUSDT: totalUSDT,
+          eqUSD: eqUSD,
           fee: parseFloat(item['fee_amount']),
           feecoin: item['fee_currency'].toUpperCase(),
           platform: 'htx'
@@ -192,7 +192,7 @@ async function convertModelBinance(data: Array<ModelBinance>): Promise<MappedTra
 
         const date = item['Date(UTC)']
         const amount = parseFloat(item['Executed'].replace(base, ''))
-        const totalUSDT = await getTotalUSDTFromAPI(
+        const eqUSD = await getEqUSDFromAPI(
           date,
           quote,
           parseFloat(total)
@@ -209,11 +209,11 @@ async function convertModelBinance(data: Array<ModelBinance>): Promise<MappedTra
           date: date,
           timestamp: new Date(date).getTime(),
           pair: item['Pair'],
-          type: item['Side'].toLowerCase(),
+          side: item['Side'].toLowerCase(),
           price: parseFloat(item['Price']),
           amount: amount,
           total: parseFloat(total),
-          totalUSDT: totalUSDT,
+          eqUSD: eqUSD,
           fee: parseFloat(item['Fee']),
           feecoin: feecoin,
           platform: 'binance'
@@ -238,11 +238,11 @@ async function convertModelKucoin(data: Array<ModelKucoin>): Promise<MappedTrade
           date: item['Order Time(UTC-03:00)'],
           timestamp: new Date(item['Order Time(UTC-03:00)']).getTime(),
           pair: item.Symbol,
-          type: item.Side.toLowerCase(),
+          side: item.Side.toLowerCase(),
           price: parseFloat(item['Avg. Filled Price']),
           amount: parseFloat(item['Filled Amount']),
           total: parseFloat(item['Filled Volume']),
-          totalUSDT: parseFloat(item['Filled Volume (USDT)']),
+          eqUSD: parseFloat(item['Filled Volume (USDT)']),
           fee: parseFloat(item.Fee),
           feecoin: item['Fee Currency'],
           platform: 'kucoin'
@@ -301,7 +301,7 @@ async function convertModelOkx(data: Array<ModelOkx>): Promise<Omit<MappedTrade,
         Object.assign(previousObject, {
           quote: balanceUnit,
           total: amount,
-          totalUSDT: balanceUnit === 'USDT' ? amount : 0
+          eqUSD: balanceUnit === 'USDT' ? amount : 0
         })
       }
 
@@ -312,7 +312,7 @@ async function convertModelOkx(data: Array<ModelOkx>): Promise<Omit<MappedTrade,
 
       processedOrders.set(orderId, previousObject)
     } else {
-      const totalUSDT = await getTotalUSDTFromAPI(date, balanceUnit, parseFloat(amount))
+      const eqUSD = await getEqUSDFromAPI(date, balanceUnit, parseFloat(amount))
 
       processedOrders.set(orderId, {
         base,
@@ -320,11 +320,11 @@ async function convertModelOkx(data: Array<ModelOkx>): Promise<Omit<MappedTrade,
         date: date,
         timestamp: new Date(date).getTime(),
         pair: instrument,
-        type: action.toLowerCase(),
+        side: action.toLowerCase(),
         price: parseFloat(fillPrice),
         amount: parseFloat(balance),
         total: parseFloat(amount),
-        totalUSDT,
+        eqUSD,
         fee: parseFloat(fee),
         feecoin: balanceUnit,
         platform: 'okx'
@@ -347,7 +347,7 @@ async function convertModelOkx(data: Array<ModelOkx>): Promise<Omit<MappedTrade,
 export {
   convertToJSON,
   detectModelType,
-  getTotalUSDTFromAPI,
+  getEqUSDFromAPI,
   convertModelHTX,
   convertModelBinance,
   convertModelKucoin,

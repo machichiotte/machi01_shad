@@ -1,7 +1,7 @@
 // src/services/mappingService.ts
 import { PlatformBalance, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@src/types/platform'
 import { STABLECOINS } from '@src/constants'
-import { getTotalUSDT } from '@utils/mappingUtil'
+import { getEqUSD } from '@utils/mappingUtil'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
 import { MappedBalance } from '@typ/balance'
@@ -48,7 +48,7 @@ export class MappingService {
 
     const [base, quote] = item.symbol?.toUpperCase().split('/') || []
 
-    const totalUSDT = getTotalUSDT(
+    const eqUSD = getEqUSD(
       item.symbol?.toUpperCase() || '',
       item.cost || 0,
       conversionRates
@@ -64,14 +64,14 @@ export class MappingService {
       quote: quote,
       pair: item.symbol?.toUpperCase() || '',
       timestamp: item.timestamp || -1,
-      type: item.side || '',
+      side: item.side || '',
       price: parseFloat(item.price?.toString() || '0'),
       amount: parseFloat(item.amount?.toString() || '0'),
       total: parseFloat(item.cost?.toString() || '0'),
       fee: feeCost,
       feecoin: feeCurrency,
       platform,
-      totalUSDT: totalUSDT || 0
+      eqUSD: eqUSD || 0
     };
 
     return mappedTrade;

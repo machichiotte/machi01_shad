@@ -1,5 +1,4 @@
 // src/utils/processorUtil.ts
-import { STABLECOINS } from '@src/constants'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
 import { MappedBalance, BalanceWithDifference } from '@typ/balance'
@@ -60,11 +59,11 @@ function areAllDataValid(
     return true
 }
 
-function isValidAssetMetrics(values: Asset | null): values is Asset {
-    return values !== null && typeof values.cmc.rank === 'number' && values.cmc.rank > 0 && values.liveData.currentPossession > 0
+function isValidAssetMetrics(asset: Asset | null): boolean {
+    return asset !== null && typeof asset.cmc.rank === 'number' && asset.cmc.rank > 0 && asset?.liveData.currentPossession != undefined && asset?.liveData.currentPossession > 0
 }
 
-function removeDuplicatesAndStablecoins(differences: BalanceWithDifference[]): BalanceWithDifference[] {
+function removeDuplicates(differences: BalanceWithDifference[]): BalanceWithDifference[] {
     // Utiliser un Map pour supprimer les doublons
     const uniqueDifferences = new Map<string, BalanceWithDifference>()
 
@@ -72,7 +71,7 @@ function removeDuplicatesAndStablecoins(differences: BalanceWithDifference[]): B
         const key = `${difference.base}-${difference.platform}` // Créez une clé unique en combinant 'base' et 'platform'
 
         // Vérifiez que 'base' n'est pas un stablecoin et ajoutez-le au Map s'il n'est pas encore présent
-        if (!STABLECOINS.includes(difference.base) && !uniqueDifferences.has(key)) {
+        if (!uniqueDifferences.has(key)) {
             uniqueDifferences.set(key, difference)
         }
     })
@@ -81,5 +80,5 @@ function removeDuplicatesAndStablecoins(differences: BalanceWithDifference[]): B
     return Array.from(uniqueDifferences.values())
 }
 
-export { removeDuplicateDifferences, logDifferenceType, areAllDataValid, isValidAssetMetrics, removeDuplicatesAndStablecoins }
+export { removeDuplicateDifferences, logDifferenceType, areAllDataValid, isValidAssetMetrics, removeDuplicates }
 

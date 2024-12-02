@@ -10,7 +10,7 @@ import { MappedBalance } from '@typ/balance'
 import { MappedOrder } from '@typ/order'
 import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
-import { STABLECOINS } from '@src/constants'
+import { DEPIN, GAMING, STABLECOINS } from '@src/constants'
 import { PLATFORM } from '@typ/platform'
 //import { calculatePercentageChange, calculateProgressPercentage } from '@src/utils/metricsUtil'
 
@@ -21,11 +21,11 @@ import { PLATFORM } from '@typ/platform'
 const DEFAULT_METRICS: Asset = {
   base: 'N/A',
   iconUrl: 'N/A',
-  ticker: 'N/A',
+  ticker: NaN,
   name: 'N/A',
   platform: 'N/A',
   profit: 0,
-  type: [],
+  tags: [],
   cmc: {
     currentCmcPrice: NaN,
     rank: NaN,
@@ -68,21 +68,27 @@ const DEFAULT_METRICS: Asset = {
   },
 };
 
-/**
- * Retrieves the current price of a base from the last tickers.
- */
-function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: string): number {
-  if (!Array.isArray(lastTickers) || !base || !platform) {
-    console.warn('Paramètres invalides pour getCurrentPrice')
-    return -1
-  }
+function getTicker(tickers: MappedTicker[], base: string, platform: string): number {
+  // Filtrer les tickers qui commencent par 'base/' et retourner le dernier prix
 
-  const ticker = lastTickers.find(
+  const ticker = tickers.find(
     (ticker) =>
       ticker?.symbol === `${base}/USDT` && ticker.platform === platform
   )
+  return ticker?.last ?? 0; // Retourne le dernier prix ou undefined si aucun ticker n'est trouvé
+}
 
-  return ticker?.last ?? -1
+/**
+ * Retrieves the current price of a base from the last tickers.
+ */
+function getCurrentPrice(ticker: number, cmcPrice: number | undefined, tags: string[]): number {
+  if (ticker === 0) {
+    console.warn('Paramètres invalides pour getCurrentPrice')
+    if (cmcPrice && tags.includes('stablecoin'))
+      return cmcPrice
+  }
+
+  return ticker
 }
 
 /**
@@ -90,9 +96,8 @@ function getCurrentPrice(lastTickers: MappedTicker[], base: string, platform: st
 - */
 function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: MappedBalance, closestCmc: MappedCmc | null, lastTrades: MappedTrade[], lastOpenOrders: MappedOrder[], strategy: Omit<MappedStrat, '_id'>, lastTickers: MappedTicker[]): Asset {
   const balance = getBalanceBySymbol(base, mappedBalance)
-  const currentPrice = getCurrentPrice(lastTickers, base, platform)
   const cmcValues = closestCmc ?
-    getCmcValues(closestCmc, currentPrice) :
+    getCmcValues(closestCmc) :
     {
       rank: 0,
       name: '',
@@ -118,7 +123,10 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
     lastTrades
   )
 
-  const type = addTypes(base)
+  const tags = addTags(base)
+
+  const ticker = getTicker(lastTickers, base, platform)
+  const currentPrice = getCurrentPrice(ticker, cmcValues.currentCmcPrice, tags)
 
   const baseMetrics: Asset = {
     ...DEFAULT_METRICS,
@@ -126,14 +134,15 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
 
     platform,
     iconUrl: cmcValues.iconUrl,
-    type: type,
+    ticker: ticker,
+    tags: tags,
 
     name: cmcValues.name,
 
     liveData: {
-      balance: balance, // Correctement défini dans liveData
-      currentPrice: currentPrice, // Vous pouvez aussi ajouter d'autres propriétés ici
-      currentPossession: getCurrentPossession(currentPrice, balance), // Calcul de la possession actuelle
+      balance: balance,
+      currentPrice: currentPrice,
+      currentPossession: getCurrentPossession(currentPrice, balance) || 0
     },
     strat: {
       strategy: strategy.strategies[platform],
@@ -170,10 +179,9 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
         trades: lastTrades
       }
     },
-
   }
 
-  if (baseMetrics.type.includes('stablecoin')) {
+  if (baseMetrics.tags.includes('stablecoin')) {
     return { ...baseMetrics }
   }
 
@@ -228,13 +236,23 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
   return finalMetrics;
 }
 
-function addTypes(base: string): string[] {
+function addTags(base: string): string[] {
   // Initialisation des types
   const types: string[] = []
+
+
 
   // Ajout du type "stablecoin"
   if (STABLECOINS.includes(base)) {
     types.push('stablecoin')
+  }
+
+  if (DEPIN.includes(base)) {
+    types.push('depin')
+  }
+
+  if (GAMING.includes(base)) {
+    types.push('gaming')
   }
 
   // Ajout du type "defi"
@@ -247,7 +265,7 @@ function addTypes(base: string): string[] {
     types.push('nft')
   }*/
 
-  return types;;
+  return types;
 }
 
 /**

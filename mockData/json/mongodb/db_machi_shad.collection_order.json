@@ -1,3965 +1,3967 @@
-[{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25b3"
-  },
-  "oId": "474437113589702660",
-  "cId": "DGB4",
-  "platform": "okx",
-  "symbol": "DGB/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 63.332743,
-  "price": 1.57896
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25b4"
-  },
-  "oId": "474437113589702659",
-  "cId": "DGB3",
-  "platform": "okx",
-  "symbol": "DGB/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 126.665486,
-  "price": 0.78948
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25b5"
-  },
-  "oId": "474437113589702658",
-  "cId": "DGB2",
-  "platform": "okx",
-  "symbol": "DGB/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 253.330973,
-  "price": 0.39474
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25b6"
-  },
-  "oId": "474437113589702657",
-  "cId": "DGB1",
-  "platform": "okx",
-  "symbol": "DGB/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 506.661946,
-  "price": 0.19737
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25b7"
-  },
-  "oId": "474437113589702656",
-  "cId": "DGB0",
-  "platform": "okx",
-  "symbol": "DGB/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1013.323893,
-  "price": 0.09868
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25b8"
-  },
-  "oId": "474437113681977355",
-  "cId": "DIA4",
-  "platform": "okx",
-  "symbol": "DIA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.031057,
-  "price": 24.246
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25b9"
-  },
-  "oId": "474437113681977354",
-  "cId": "DIA3",
-  "platform": "okx",
-  "symbol": "DIA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2.062115,
-  "price": 12.123
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25ba"
-  },
-  "oId": "474437113681977353",
-  "cId": "DIA2",
-  "platform": "okx",
-  "symbol": "DIA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 4.12423,
-  "price": 6.061
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25bb"
-  },
-  "oId": "474437113681977352",
-  "cId": "DIA1",
-  "platform": "okx",
-  "symbol": "DIA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 8.24846,
-  "price": 3.03
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25bc"
-  },
-  "oId": "474437113681977351",
-  "cId": "DIA0",
-  "platform": "okx",
-  "symbol": "DIA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 16.496921,
-  "price": 1.515
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25bd"
-  },
-  "oId": "474437274168631304",
-  "cId": "BADGER4",
-  "platform": "okx",
-  "symbol": "BADGER/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.091316,
-  "price": 1095.097
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25be"
-  },
-  "oId": "474437274168631303",
-  "cId": "BADGER3",
-  "platform": "okx",
-  "symbol": "BADGER/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.182632,
-  "price": 547.548
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25bf"
-  },
-  "oId": "474437274168631302",
-  "cId": "BADGER2",
-  "platform": "okx",
-  "symbol": "BADGER/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.365264,
-  "price": 273.774
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25c0"
-  },
-  "oId": "474437274168631301",
-  "cId": "BADGER1",
-  "platform": "okx",
-  "symbol": "BADGER/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.730528,
-  "price": 136.887
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25c1"
-  },
-  "oId": "474437274168631300",
-  "cId": "BADGER0",
-  "platform": "okx",
-  "symbol": "BADGER/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.461056,
-  "price": 34.221
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25c2"
-  },
-  "oId": "474444675626213386",
-  "cId": "BAT4",
-  "platform": "okx",
-  "symbol": "BAT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.155848,
-  "price": 43.2582
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25c3"
-  },
-  "oId": "474444675626213385",
-  "cId": "BAT3",
-  "platform": "okx",
-  "symbol": "BAT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2.311697,
-  "price": 21.6291
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25c4"
-  },
-  "oId": "474444675626213384",
-  "cId": "BAT2",
-  "platform": "okx",
-  "symbol": "BAT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 4.623395,
-  "price": 10.8145
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25c5"
-  },
-  "oId": "474444675626213383",
-  "cId": "BAT1",
-  "platform": "okx",
-  "symbol": "BAT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 9.24679,
-  "price": 5.4072
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25c6"
-  },
-  "oId": "474444675626213380",
-  "cId": "BAT0",
-  "platform": "okx",
-  "symbol": "BAT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 18.493581,
-  "price": 2.7036
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25c7"
-  },
-  "oId": "571817226681454596",
-  "cId": "LET4",
-  "platform": "okx",
-  "symbol": "LET/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 342.3512,
-  "price": 0.014604
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25c8"
-  },
-  "oId": "571817226681454595",
-  "cId": "LET3",
-  "platform": "okx",
-  "symbol": "LET/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 684.7025,
-  "price": 0.007302
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25c9"
-  },
-  "oId": "571817226681454594",
-  "cId": "LET2",
-  "platform": "okx",
-  "symbol": "LET/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1369.4051,
-  "price": 0.003651
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25ca"
-  },
-  "oId": "571817226681454592",
-  "cId": "LET0",
-  "platform": "okx",
-  "symbol": "LET/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 5739.8083,
-  "price": 0.007839
-},
-{
-  "_id": {
-    "$oid": "65a96fb503aef67605ce25cb"
-  },
-  "oId": "571817418843492356",
-  "cId": "MINA1",
-  "platform": "okx",
-  "symbol": "MINA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.710616,
-  "price": 2.922
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b089"
-  },
-  "oId": "364442725101",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "APN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 85.195,
-  "price": 0.0586885
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b08a"
-  },
-  "oId": "364444060403",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "FILDA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 42.763,
-  "price": 0.1169222
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b08b"
-  },
-  "oId": "364444139377",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "FILDA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 224.862,
-  "price": 0.0222358
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b08c"
-  },
-  "oId": "364444185587",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "FILDA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 112.431,
-  "price": 0.0444717
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b08d"
-  },
-  "oId": "364444225608",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "FILDA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 56.215,
-  "price": 0.0889433
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b08e"
-  },
-  "oId": "364444293075",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "GO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 626.316,
-  "price": 0.015966
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b08f"
-  },
-  "oId": "364444329742",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "GO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 313.158,
-  "price": 0.031933
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b090"
-  },
-  "oId": "364444363955",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "GO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 156.579,
-  "price": 0.063865
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b091"
-  },
-  "oId": "364444394793",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "GO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 78.289,
-  "price": 0.127731
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b092"
-  },
-  "oId": "364444446873",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "GO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 39.144,
-  "price": 0.255462
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b093"
-  },
-  "oId": "364444536042",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "HORD/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 74.153,
-  "price": 1.27911
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b094"
-  },
-  "oId": "364444583354",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "HORD/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.954,
-  "price": 2.55822
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b095"
-  },
-  "oId": "364444639788",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "HORD/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.977,
-  "price": 5.11644
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b096"
-  },
-  "oId": "364444674958",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "HORD/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.488,
-  "price": 10.23288
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b097"
-  },
-  "oId": "364444705329",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "HORD/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.244,
-  "price": 20.46576
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b098"
-  },
-  "oId": "530229747353",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "AE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.54,
-  "price": 64.67719
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b099"
-  },
-  "oId": "530229761191",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "AE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 3.08,
-  "price": 8.08465
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b09a"
-  },
-  "oId": "530229826543",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "AE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.77,
-  "price": 129.35439
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b09b"
-  },
-  "oId": "530229838161",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "AE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.54,
-  "price": 64.67719
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b09c"
-  },
-  "oId": "530229904733",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "AE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.38,
-  "price": 258.70878
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b09d"
-  },
-  "oId": "530229928636",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "AE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.77,
-  "price": 129.35439
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b09e"
-  },
-  "oId": "530229996147",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "AE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.19,
-  "price": 517.41756
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b09f"
-  },
-  "oId": "530230040674",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "AE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.38,
-  "price": 258.70878
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0a0"
-  },
-  "oId": "530230127888",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "AE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.19,
-  "price": 517.41756
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0a1"
-  },
-  "oId": "530457125023",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BMON/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.1,
-  "price": 17.068184
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0a2"
-  },
-  "oId": "530457211116",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BMON/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.5,
-  "price": 34.136367
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0a3"
-  },
-  "oId": "530457301477",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BMON/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.2,
-  "price": 68.272735
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0a4"
-  },
-  "oId": "530457373836",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BMON/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.1,
-  "price": 136.545469
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0a5"
-  },
-  "oId": "530863223134",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BEAM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 77.9,
-  "price": 1.27743
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0a6"
-  },
-  "oId": "530863257396",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BEAM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 38.95,
-  "price": 10.21943
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0a7"
-  },
-  "oId": "530863257933",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BEAM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 19.47,
-  "price": 20.43886
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0a8"
-  },
-  "oId": "530863264141",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BEAM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 9.73,
-  "price": 40.87772
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0a9"
-  },
-  "oId": "530863289461",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BEAM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 4.86,
-  "price": 81.75544
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0aa"
-  },
-  "oId": "530863427648",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BTG/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.88,
-  "price": 112.506
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0ab"
-  },
-  "oId": "530863433656",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BTG/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.44,
-  "price": 900.045
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0ac"
-  },
-  "oId": "530863453623",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BTG/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.11,
-  "price": 3600.181
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0ad"
-  },
-  "oId": "530863453702",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BTG/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.05,
-  "price": 7200.362
-},
-{
-  "_id": {
-    "$oid": "6657bbffff0344e77f09b0ae"
-  },
-  "oId": "530863454106",
-  "cId": "apiv4",
-  "platform": "gateio",
-  "symbol": "BTG/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.22,
-  "price": 1800.091
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a66d"
-  },
-  "oId": "772451270891566",
-  "cId": "mdxusdt_1680611935875_3",
-  "platform": "htx",
-  "symbol": "MDX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 75.77,
-  "price": 2.6397
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a66f"
-  },
-  "oId": "772484413591898",
-  "cId": "wiccusdt_1680849780547_5",
-  "platform": "htx",
-  "symbol": "WICC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 3.7511,
-  "price": 5.3317
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a66b"
-  },
-  "oId": "772451270891570",
-  "cId": "mdxusdt_1680611935875_4",
-  "platform": "htx",
-  "symbol": "MDX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 37.88,
-  "price": 5.2794
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a676"
-  },
-  "oId": "772484522873058",
-  "cId": "xyousdt_1680850492616_4",
-  "platform": "htx",
-  "symbol": "XYO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 52.9228,
-  "price": 0.377909
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a679"
-  },
-  "oId": "772485143888604",
-  "cId": "insurusdt_1680854406849_5",
-  "platform": "htx",
-  "symbol": "INSUR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.0305,
-  "price": 10.1892
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a67d"
-  },
-  "oId": "772485143888600",
-  "cId": "insurusdt_1680854406849_1",
-  "platform": "htx",
-  "symbol": "INSUR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 56.7036,
-  "price": 0.7936
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a67e"
-  },
-  "oId": "772485109877584",
-  "cId": "lambusdt_1680854423045_5",
-  "platform": "htx",
-  "symbol": "LAMB/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 21.1092,
-  "price": 0.59216
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a682"
-  },
-  "oId": "772502634726815",
-  "cId": "elausdt_1680948797149_2",
-  "platform": "htx",
-  "symbol": "ELA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.44,
-  "price": 25.0502
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a687"
-  },
-  "oId": "772498196368847",
-  "cId": "ernusdt_1680949042668_3",
-  "platform": "htx",
-  "symbol": "ERN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.1502,
-  "price": 73.2119
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a690"
-  },
-  "oId": "772498204559413",
-  "cId": "lptusdt_1680949149995_2",
-  "platform": "htx",
-  "symbol": "LPT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0525,
-  "price": 209.5447
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a691"
-  },
-  "oId": "772498204559412",
-  "cId": "lptusdt_1680949149995_5",
-  "platform": "htx",
-  "symbol": "LPT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0066,
-  "price": 1676.3576
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a692"
-  },
-  "oId": "772498204559411",
-  "cId": "lptusdt_1680949149995_1",
-  "platform": "htx",
-  "symbol": "LPT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.105,
-  "price": 104.7723
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a69c"
-  },
-  "oId": "772498322031563",
-  "cId": "peopleusdt_1680949973223_3",
-  "platform": "htx",
-  "symbol": "PEOPLE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 14.5423,
-  "price": 0.756412
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6a3"
-  },
-  "oId": "772498322034467",
-  "cId": "trbusdt_1680950011166_4",
-  "platform": "htx",
-  "symbol": "TRB/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0177,
-  "price": 619.8692
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6a4"
-  },
-  "oId": "772498372793268",
-  "cId": "renusdt_1680950077669_3",
-  "platform": "htx",
-  "symbol": "REN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.87,
-  "price": 5.882353
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6a7"
-  },
-  "oId": "772498330288724",
-  "cId": "sandusdt_1680950089543_4",
-  "platform": "htx",
-  "symbol": "SAND/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.1233,
-  "price": 89.193155
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6ad"
-  },
-  "oId": "772584993199727",
-  "cId": "xtmusdt_1681569107791_5",
-  "platform": "htx",
-  "symbol": "XTM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 14.7454,
-  "price": 0.745998
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6af"
-  },
-  "oId": "772658712387588",
-  "cId": "movrusdt_1682095910234_3",
-  "platform": "htx",
-  "symbol": "MOVR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0587,
-  "price": 187.302
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6b0"
-  },
-  "oId": "772658712387587",
-  "cId": "movrusdt_1682095910234_2",
-  "platform": "htx",
-  "symbol": "MOVR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.1175,
-  "price": 93.651
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6b4"
-  },
-  "oId": "791227526388039",
-  "cId": null,
-  "platform": "htx",
-  "symbol": "PUSH/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.6384,
-  "price": 6.7137
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6b7"
-  },
-  "oId": "791236888306320",
-  "cId": "woousdt_1682346116793_2",
-  "platform": "htx",
-  "symbol": "WOO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 4.83,
-  "price": 2.27827
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6b9"
-  },
-  "oId": "791262691557970",
-  "cId": "pyrusdt_1682531096601_1",
-  "platform": "htx",
-  "symbol": "PYR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.6681,
-  "price": 16.4643
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6bb"
-  },
-  "oId": "808156059737321",
-  "cId": null,
-  "platform": "htx",
-  "symbol": "CRU/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2.9484,
-  "price": 6.7833
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6c3"
-  },
-  "oId": "1027455062153496",
-  "cId": "AA03022abcd975b470-5ad1-4034-880d-763db7a4996a",
-  "platform": "htx",
-  "symbol": "POLS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 16.7187,
-  "price": 2.9907
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6c5"
-  },
-  "oId": "1027455062613129",
-  "cId": "AA03022abc7d02ed31-f880-451b-8739-d643805eb819",
-  "platform": "htx",
-  "symbol": "POLS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 8.3593,
-  "price": 5.9813
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6c6"
-  },
-  "oId": "1052992972392756",
-  "cId": "AA03022abcfc9dcc8d-0577-47bc-9c3a-809e29e12358",
-  "platform": "htx",
-  "symbol": "NEST/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 4979.49,
-  "price": 0.010041
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6c9"
-  },
-  "oId": "1060244816560629",
-  "cId": "AA03022abceee927d4-b498-42a6-8947-8f07111c5419",
-  "platform": "htx",
-  "symbol": "VRA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 3889.6675,
-  "price": 0.006414
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6cc"
-  },
-  "oId": "1060469882388902",
-  "cId": "AA03022abcb2500861-0fc3-47a6-bd64-57be6b6804d9",
-  "platform": "htx",
-  "symbol": "ZEN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.1586,
-  "price": 12.9464
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a670"
-  },
-  "oId": "772484413591897",
-  "cId": "wiccusdt_1680849780547_4",
-  "platform": "htx",
-  "symbol": "WICC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 7.5022,
-  "price": 2.6659
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a674"
-  },
-  "oId": "772484522873060",
-  "cId": "xyousdt_1680850492616_1",
-  "platform": "htx",
-  "symbol": "XYO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 423.3824,
-  "price": 0.0248
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a67f"
-  },
-  "oId": "772485109877583",
-  "cId": "lambusdt_1680854423045_3",
-  "platform": "htx",
-  "symbol": "LAMB/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 84.4366,
-  "price": 0.14804
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a68f"
-  },
-  "oId": "772498204559414",
-  "cId": "lptusdt_1680949149995_3",
-  "platform": "htx",
-  "symbol": "LPT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0262,
-  "price": 419.0894
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a693"
-  },
-  "oId": "772498204559410",
-  "cId": "lptusdt_1680949149995_4",
-  "platform": "htx",
-  "symbol": "LPT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0131,
-  "price": 838.1788
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a69a"
-  },
-  "oId": "772498322031565",
-  "cId": "peopleusdt_1680949973223_4",
-  "platform": "htx",
-  "symbol": "PEOPLE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 7.2712,
-  "price": 1.512825
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a69b"
-  },
-  "oId": "772498322031564",
-  "cId": "peopleusdt_1680949973223_2",
-  "platform": "htx",
-  "symbol": "PEOPLE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 29.0847,
-  "price": 0.378206
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a69e"
-  },
-  "oId": "772498330617943",
-  "cId": "polcusdt_1680949977011_3",
-  "platform": "htx",
-  "symbol": "POLC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 3.5951,
-  "price": 3.0597
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6a1"
-  },
-  "oId": "772498330617940",
-  "cId": "polcusdt_1680949977011_2",
-  "platform": "htx",
-  "symbol": "POLC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 7.1902,
-  "price": 1.5299
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6a5"
-  },
-  "oId": "772498372793267",
-  "cId": "renusdt_1680950077669_2",
-  "platform": "htx",
-  "symbol": "REN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 3.74,
-  "price": 2.941176
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6a8"
-  },
-  "oId": "772498330288723",
-  "cId": "sandusdt_1680950089543_3",
-  "platform": "htx",
-  "symbol": "SAND/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.2467,
-  "price": 44.596577
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6a9"
-  },
-  "oId": "772498330288722",
-  "cId": "sandusdt_1680950089543_1",
-  "platform": "htx",
-  "symbol": "SAND/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.9866,
-  "price": 11.149144
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6aa"
-  },
-  "oId": "772498330288721",
-  "cId": "sandusdt_1680950089543_2",
-  "platform": "htx",
-  "symbol": "SAND/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.4933,
-  "price": 22.298289
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6b2"
-  },
-  "oId": "791227560397809",
-  "cId": null,
-  "platform": "htx",
-  "symbol": "PUSH/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 6.5538,
-  "price": 1.6784
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6b5"
-  },
-  "oId": "791227568889837",
-  "cId": null,
-  "platform": "htx",
-  "symbol": "PUSH/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.8192,
-  "price": 13.4273
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6b8"
-  },
-  "oId": "791262691557971",
-  "cId": "pyrusdt_1682531096601_2",
-  "platform": "htx",
-  "symbol": "PYR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.3341,
-  "price": 32.9286
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6bc"
-  },
-  "oId": "1020901847148017",
-  "cId": null,
-  "platform": "htx",
-  "symbol": "WNXM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.3035,
-  "price": 164.7136
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6bd"
-  },
-  "oId": "1020901847117494",
-  "cId": null,
-  "platform": "htx",
-  "symbol": "WNXM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.1517,
-  "price": 329.4272
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6be"
-  },
-  "oId": "1020901864452813",
-  "cId": null,
-  "platform": "htx",
-  "symbol": "WNXM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0758,
-  "price": 658.8545
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6c4"
-  },
-  "oId": "1027455062153509",
-  "cId": "AA03022abca5cb5116-de7b-4c97-9fad-a5cf4e79eb22",
-  "platform": "htx",
-  "symbol": "POLS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 33.4374,
-  "price": 1.4953
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6ca"
-  },
-  "oId": "1060244833440379",
-  "cId": "AA03022abc479b9257-3594-48c6-94fe-5fcfe7ff591e",
-  "platform": "htx",
-  "symbol": "SOFI/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 579.5066,
-  "price": 0.12942
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a671"
-  },
-  "oId": "772484413591896",
-  "cId": "wiccusdt_1680849780547_3",
-  "platform": "htx",
-  "symbol": "WICC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 15.0045,
-  "price": 1.3329
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a678"
-  },
-  "oId": "772484522873056",
-  "cId": "xyousdt_1680850492616_5",
-  "platform": "htx",
-  "symbol": "XYO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 26.4614,
-  "price": 0.755818
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a67b"
-  },
-  "oId": "772485143888602",
-  "cId": "insurusdt_1680854406849_3",
-  "platform": "htx",
-  "symbol": "INSUR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 4.122,
-  "price": 2.5473
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a67c"
-  },
-  "oId": "772485143888601",
-  "cId": "insurusdt_1680854406849_2",
-  "platform": "htx",
-  "symbol": "INSUR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 8.244,
-  "price": 1.2737
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a680"
-  },
-  "oId": "772485109877582",
-  "cId": "lambusdt_1680854423045_4",
-  "platform": "htx",
-  "symbol": "LAMB/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 42.2183,
-  "price": 0.29608
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a681"
-  },
-  "oId": "772485109877581",
-  "cId": "lambusdt_1680854423045_2",
-  "platform": "htx",
-  "symbol": "LAMB/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 168.8733,
-  "price": 0.07402
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a683"
-  },
-  "oId": "772502634726814",
-  "cId": "elausdt_1680948797149_1",
-  "platform": "htx",
-  "symbol": "ELA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.88,
-  "price": 12.5251
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a684"
-  },
-  "oId": "772502634726813",
-  "cId": "elausdt_1680948797149_3",
-  "platform": "htx",
-  "symbol": "ELA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.22,
-  "price": 50.1004
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a685"
-  },
-  "oId": "772502634726812",
-  "cId": "elausdt_1680948797149_4",
-  "platform": "htx",
-  "symbol": "ELA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.11,
-  "price": 100.2008
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a686"
-  },
-  "oId": "772502634726811",
-  "cId": "elausdt_1680948797149_5",
-  "platform": "htx",
-  "symbol": "ELA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.05,
-  "price": 200.4015
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a688"
-  },
-  "oId": "772498196368846",
-  "cId": "ernusdt_1680949042668_5",
-  "platform": "htx",
-  "symbol": "ERN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0376,
-  "price": 292.8474
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a68c"
-  },
-  "oId": "772498297655376",
-  "cId": "flowusdt_1680949049086_2",
-  "platform": "htx",
-  "symbol": "FLOW/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.239,
-  "price": 46.0259
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a696"
-  },
-  "oId": "772498247028427",
-  "cId": "ensusdt_1680949157022_2",
-  "platform": "htx",
-  "symbol": "ENS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.087,
-  "price": 126.4359
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a697"
-  },
-  "oId": "772498247028426",
-  "cId": "ensusdt_1680949157022_3",
-  "platform": "htx",
-  "symbol": "ENS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0435,
-  "price": 252.8718
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a699"
-  },
-  "oId": "772498322031566",
-  "cId": "peopleusdt_1680949973223_1",
-  "platform": "htx",
-  "symbol": "PEOPLE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 58.1693,
-  "price": 0.189103
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a69d"
-  },
-  "oId": "772498330617944",
-  "cId": "polcusdt_1680949977011_5",
-  "platform": "htx",
-  "symbol": "POLC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.8988,
-  "price": 12.2389
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a69f"
-  },
-  "oId": "772498330617942",
-  "cId": "polcusdt_1680949977011_1",
-  "platform": "htx",
-  "symbol": "POLC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 14.3804,
-  "price": 0.7649
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6a0"
-  },
-  "oId": "772498330617941",
-  "cId": "polcusdt_1680949977011_4",
-  "platform": "htx",
-  "symbol": "POLC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.7975,
-  "price": 6.1194
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6a6"
-  },
-  "oId": "772498372793266",
-  "cId": "renusdt_1680950077669_1",
-  "platform": "htx",
-  "symbol": "REN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 7.48,
-  "price": 1.470588
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6ab"
-  },
-  "oId": "772584993199729",
-  "cId": "xtmusdt_1681569107791_4",
-  "platform": "htx",
-  "symbol": "XTM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 29.4907,
-  "price": 0.372999
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6b1"
-  },
-  "oId": "772658712387586",
-  "cId": "movrusdt_1682095910234_4",
-  "platform": "htx",
-  "symbol": "MOVR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0294,
-  "price": 374.604
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6b6"
-  },
-  "oId": "791236888306321",
-  "cId": "woousdt_1682346116793_1",
-  "platform": "htx",
-  "symbol": "WOO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 9.66,
-  "price": 1.13913
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6bf"
-  },
-  "oId": "1020949972324972",
-  "cId": "AA03022abc02c83435-978e-42f3-8fd0-8f3423e4ea60",
-  "platform": "htx",
-  "symbol": "AAC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 105719.68,
-  "price": 0.000427
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6c0"
-  },
-  "oId": "1020949998276359",
-  "cId": "AA03022abcdc5bfc0e-dd62-45ad-9699-2b3150118194",
-  "platform": "htx",
-  "symbol": "AAC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 52859.84,
-  "price": 0.000946
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6c1"
-  },
-  "oId": "1027371327761323",
-  "cId": "AA03022abc430cd744-b841-4334-8f48-1d9de1b44fa4",
-  "platform": "htx",
-  "symbol": "HOTCROSS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 220.5274,
-  "price": 0.09069
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6cd"
-  },
-  "oId": "1060469899755922",
-  "cId": "AA03022abcc1887f52-2d7f-4b5d-adc4-0b8cfad9906b",
-  "platform": "htx",
-  "symbol": "ZEN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.3842,
-  "price": 52.046
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a66c"
-  },
-  "oId": "772451270891568",
-  "cId": "mdxusdt_1680611935875_2",
-  "platform": "htx",
-  "symbol": "MDX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 151.53,
-  "price": 1.3199
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a66e"
-  },
-  "oId": "772451270891565",
-  "cId": "mdxusdt_1680611935875_5",
-  "platform": "htx",
-  "symbol": "MDX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 18.94,
-  "price": 10.5589
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a672"
-  },
-  "oId": "772484413591895",
-  "cId": "wiccusdt_1680849780547_2",
-  "platform": "htx",
-  "symbol": "WICC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 30.009,
-  "price": 0.6665
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a673"
-  },
-  "oId": "772484413591894",
-  "cId": "wiccusdt_1680849780547_1",
-  "platform": "htx",
-  "symbol": "WICC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 89.982,
-  "price": 0.1667
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a675"
-  },
-  "oId": "772484522873059",
-  "cId": "xyousdt_1680850492616_2",
-  "platform": "htx",
-  "symbol": "XYO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 211.6912,
-  "price": 0.094477
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a677"
-  },
-  "oId": "772484522873057",
-  "cId": "xyousdt_1680850492616_3",
-  "platform": "htx",
-  "symbol": "XYO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 105.8456,
-  "price": 0.188954
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a67a"
-  },
-  "oId": "772485143888603",
-  "cId": "insurusdt_1680854406849_4",
-  "platform": "htx",
-  "symbol": "INSUR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2.061,
-  "price": 5.0946
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a689"
-  },
-  "oId": "772498196368845",
-  "cId": "ernusdt_1680949042668_1",
-  "platform": "htx",
-  "symbol": "ERN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.601,
-  "price": 18.303
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a68a"
-  },
-  "oId": "772498196368844",
-  "cId": "ernusdt_1680949042668_2",
-  "platform": "htx",
-  "symbol": "ERN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.3005,
-  "price": 36.6059
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a68b"
-  },
-  "oId": "772498196368843",
-  "cId": "ernusdt_1680949042668_4",
-  "platform": "htx",
-  "symbol": "ERN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0751,
-  "price": 146.4237
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a68d"
-  },
-  "oId": "772498297655375",
-  "cId": "flowusdt_1680949049086_1",
-  "platform": "htx",
-  "symbol": "FLOW/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.478,
-  "price": 23.0129
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a68e"
-  },
-  "oId": "772498297655373",
-  "cId": "flowusdt_1680949049086_3",
-  "platform": "htx",
-  "symbol": "FLOW/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.1195,
-  "price": 92.0517
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a694"
-  },
-  "oId": "772498247028429",
-  "cId": "ensusdt_1680949157022_1",
-  "platform": "htx",
-  "symbol": "ENS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.174,
-  "price": 63.2179
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a695"
-  },
-  "oId": "772498247028428",
-  "cId": "ensusdt_1680949157022_5",
-  "platform": "htx",
-  "symbol": "ENS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0109,
-  "price": 1011.4872
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a698"
-  },
-  "oId": "772498247028425",
-  "cId": "ensusdt_1680949157022_4",
-  "platform": "htx",
-  "symbol": "ENS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0218,
-  "price": 505.7436
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6a2"
-  },
-  "oId": "772498322034471",
-  "cId": "trbusdt_1680950011166_5",
-  "platform": "htx",
-  "symbol": "TRB/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0089,
-  "price": 1239.7383
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6ac"
-  },
-  "oId": "772584993199728",
-  "cId": "xtmusdt_1681569107791_3",
-  "platform": "htx",
-  "symbol": "XTM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 58.9814,
-  "price": 0.186499
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6ae"
-  },
-  "oId": "772658712387589",
-  "cId": "movrusdt_1682095910234_5",
-  "platform": "htx",
-  "symbol": "MOVR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0147,
-  "price": 749.2079
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6b3"
-  },
-  "oId": "791227526453441",
-  "cId": null,
-  "platform": "htx",
-  "symbol": "PUSH/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 3.2769,
-  "price": 3.3568
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6ba"
-  },
-  "oId": "791285341164781",
-  "cId": "epikusdt_1682692732799_3",
-  "platform": "htx",
-  "symbol": "EPIK/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 378.8098,
-  "price": 0.052797
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6c2"
-  },
-  "oId": "1027371318717500",
-  "cId": "AA03022abc365aa801-1163-488f-951d-f88b74e4c2d2",
-  "platform": "htx",
-  "symbol": "HOTCROSS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 441.0548,
-  "price": 0.04535
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6c7"
-  },
-  "oId": "1052992955353767",
-  "cId": "AA03022abcaac86ca8-cbdc-477e-b2d7-6264e9a9b636",
-  "platform": "htx",
-  "symbol": "NEST/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2489.74,
-  "price": 0.020082
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6c8"
-  },
-  "oId": "1052992981142395",
-  "cId": "AA03022abc5a00789c-7577-41d9-9542-c1ae2a87c15e",
-  "platform": "htx",
-  "symbol": "NEST/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 9958.98,
-  "price": 0.005021
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6cb"
-  },
-  "oId": "1060244824527899",
-  "cId": "AA03022abcafb40383-0e61-47a1-85de-3869861b880f",
-  "platform": "htx",
-  "symbol": "SOFI/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1159.0132,
-  "price": 0.06471
-},
-{
-  "_id": {
-    "$oid": "666d0ca625a0e8f28376a6ce"
-  },
-  "oId": "1077534411203215",
-  "cId": "AA03022abc94a060ea-88c4-4437-a6a1-1d553bb01bdd",
-  "platform": "htx",
-  "symbol": "NGL/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 310.7708,
-  "price": 0.14171
-},
-{
-  "_id": {
-    "$oid": "6709c51944fda905323cbc03"
-  },
-  "oId": "66d73dbb422243000771c3e9",
-  "cId": "a3c4a9bf-6ff0-49d9-98ea-133707efa6a1",
-  "platform": "kucoin",
-  "symbol": "CWAR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 87.411,
-  "price": 0.05783
-},
-{
-  "_id": {
-    "$oid": "6709c51944fda905323cbc04"
-  },
-  "oId": "66d73dbb8083b00007ef66c1",
-  "cId": "ce225b93-4fd7-4a42-91a5-d1c6e0a65707",
-  "platform": "kucoin",
-  "symbol": "CWAR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 43.7055,
-  "price": 0.11566
-},
-{
-  "_id": {
-    "$oid": "6709c51944fda905323cbc05"
-  },
-  "oId": "66d73dbe77971f000708571d",
-  "cId": "109636f4-ef2f-4a69-9ac4-e0e7758c3889",
-  "platform": "kucoin",
-  "symbol": "CWAR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 21.8527,
-  "price": 0.23132
-},
-{
-  "_id": {
-    "$oid": "6709c51944fda905323cbc06"
-  },
-  "oId": "66d73dbf422243000771db87",
-  "cId": "a233739b-ef9a-40f8-9c52-7f2262b4dbfc",
-  "platform": "kucoin",
-  "symbol": "CWAR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 10.9263,
-  "price": 0.46265
-},
-{
-  "_id": {
-    "$oid": "6709c51944fda905323cbc07"
-  },
-  "oId": "66d73dc0c26b7a0007747f17",
-  "cId": "556d00ce-dfed-4eb1-b19f-73d3ce4b611f",
-  "platform": "kucoin",
-  "symbol": "CWAR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 5.4631,
-  "price": 0.92529
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcb1"
-  },
-  "oId": "58577637",
-  "cId": "web_965a587ec4184b32a71aeb48387ab694",
-  "platform": "binance",
-  "symbol": "ADX/BTC",
-  "type": "limit",
-  "side": "sell",
-  "amount": 191,
-  "price": 0.00005733
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcb2"
-  },
-  "oId": "296461135",
-  "cId": "web_1a02b43543ee450e93fb551abb439dac",
-  "platform": "binance",
-  "symbol": "IOTA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 29.06,
-  "price": 3.44
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcb3"
-  },
-  "oId": "1722271356",
-  "cId": "web_07f72724b7724e538cb6a6313d0db9a6",
-  "platform": "binance",
-  "symbol": "ETC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2.532,
-  "price": 101.515
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcb4"
-  },
-  "oId": "1147312453",
-  "cId": "web_56475e5e5e3248f9adf2539656fbc5b5",
-  "platform": "binance",
-  "symbol": "XLM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 175.7,
-  "price": 0.50525
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcb5"
-  },
-  "oId": "476056124",
-  "cId": "web_1339ffb248994f0f864aba1103b0d2ad",
-  "platform": "binance",
-  "symbol": "GRT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 104.36,
-  "price": 1.3827
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcb6"
-  },
-  "oId": "2167636727",
-  "cId": "web_24e59612d3b84608bcd85bca3afb986a",
-  "platform": "binance",
-  "symbol": "LTC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.1833,
-  "price": 545.5
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcb7"
-  },
-  "oId": "180099905",
-  "cId": "web_2331715be5df4e2f8d17fe2d552c9f7c",
-  "platform": "binance",
-  "symbol": "LTO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 39,
-  "price": 1.28
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcb8"
-  },
-  "oId": "235217673",
-  "cId": "web_82938953de634d259cd18b3fb2cfa9fe",
-  "platform": "binance",
-  "symbol": "OGN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 30.12,
-  "price": 1.66
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcb9"
-  },
-  "oId": "996424702",
-  "cId": "web_1f8b510e88b54e9f989f971d442541b7",
-  "platform": "binance",
-  "symbol": "DASH/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0556,
-  "price": 449.27
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcba"
-  },
-  "oId": "1288404532",
-  "cId": "web_a6baf635a3c24e8ab170585aa37a8ecc",
-  "platform": "binance",
-  "symbol": "VET/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 172.7,
-  "price": 0.2894
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcbb"
-  },
-  "oId": "290704990",
-  "cId": "web_80a22e4d6e0245b99ca01ce51418237b",
-  "platform": "binance",
-  "symbol": "STMX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 502,
-  "price": 0.0994
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcbc"
-  },
-  "oId": "932446065",
-  "cId": "web_a173d5b37a7a4613a0275471db3cc672",
-  "platform": "binance",
-  "symbol": "ONT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 76,
-  "price": 2.6283
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcbd"
-  },
-  "oId": "302877054",
-  "cId": "web_c61562be3e0049ff996377e8aa1a1ea7",
-  "platform": "binance",
-  "symbol": "WIN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 73507,
-  "price": 0.0013604
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcbe"
-  },
-  "oId": "92931145",
-  "cId": "web_bca92c49ac154981badc10cbe55bd0a2",
-  "platform": "binance",
-  "symbol": "PIVX/BTC",
-  "type": "limit",
-  "side": "sell",
-  "amount": 30,
-  "price": 0.00007646
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcbf"
-  },
-  "oId": "192976787",
-  "cId": "web_c7de71c915bc448e844ab2b9806d4a42",
-  "platform": "binance",
-  "symbol": "TROY/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2362,
-  "price": 0.042331
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcc0"
-  },
-  "oId": "97560370",
-  "cId": "web_89b1f30c63e74d59bc5111e778f00676",
-  "platform": "binance",
-  "symbol": "KMD/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 15,
-  "price": 1.7
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcc1"
-  },
-  "oId": "790948915",
-  "cId": "web_50a5e24bd226495bb6fd8ef97f1a9b91",
-  "platform": "binance",
-  "symbol": "NEO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2.89,
-  "price": 103.58
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcc2"
-  },
-  "oId": "388984308",
-  "cId": "web_044c4cfe22c242dc9b7ee99e56f03db0",
-  "platform": "binance",
-  "symbol": "ALPHA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 29,
-  "price": 1.7517
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcc3"
-  },
-  "oId": "340769623",
-  "cId": "web_498e071c6b464280a68b1da280d3e815",
-  "platform": "binance",
-  "symbol": "DENT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 12685,
-  "price": 0.0158
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcc4"
-  },
-  "oId": "2665850043",
-  "cId": "web_d1577e1be69e47e4b9770fbd69ac25d0",
-  "platform": "binance",
-  "symbol": "EOS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 21.2,
-  "price": 14.118
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcc5"
-  },
-  "oId": "344620532",
-  "cId": "web_b183df32dad34443ab71ff119abc44b1",
-  "platform": "binance",
-  "symbol": "HBAR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 57,
-  "price": 0.5593
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcc6"
-  },
-  "oId": "2753758386",
-  "cId": "web_92e8bb4b58914970b3bd43fe4c6671f2",
-  "platform": "binance",
-  "symbol": "LINK/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 9.35,
-  "price": 76.56
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcc7"
-  },
-  "oId": "72708824",
-  "cId": "web_ff4344c4f628440eb8d27fe7feb92f58",
-  "platform": "binance",
-  "symbol": "POND/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 257.21,
-  "price": 0.1944
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcc8"
-  },
-  "oId": "508025725",
-  "cId": "web_fe2d46fa95974ac2a8a14d915d1be7dd",
-  "platform": "binance",
-  "symbol": "SXP/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 25.5,
-  "price": 9.09
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcc9"
-  },
-  "oId": "403830722",
-  "cId": "web_1e9884a0fee346d3a297474b86f64ee9",
-  "platform": "binance",
-  "symbol": "TFUEL/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 384,
-  "price": 0.5203
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcca"
-  },
-  "oId": "219360790",
-  "cId": "web_6b72661e6a164d5aa1fdd44cc83808ca",
-  "platform": "binance",
-  "symbol": "WAN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 74,
-  "price": 1.3446
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbccb"
-  },
-  "oId": "941282345",
-  "cId": "web_82b4a274c96b479088f63e12c62c2f0a",
-  "platform": "binance",
-  "symbol": "XTZ/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 42.2,
-  "price": 14.211
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbccc"
-  },
-  "oId": "753033356",
-  "cId": "web_eecd0a4d61d44079b98ba457307c2962",
-  "platform": "binance",
-  "symbol": "ALGO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 45,
-  "price": 4.4845
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbccd"
-  },
-  "oId": "408375257",
-  "cId": "web_7a95fc1f829444fda50a4719ea8d5000",
-  "platform": "binance",
-  "symbol": "ALPHA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 14,
-  "price": 3.5749
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcce"
-  },
-  "oId": "184791491",
-  "cId": "web_73266f7bfd194ed98757e587c4bb5bc4",
-  "platform": "binance",
-  "symbol": "ARDR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 131,
-  "price": 0.7604
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbccf"
-  },
-  "oId": "184791495",
-  "cId": "web_a608b9d71cba4b2a9cf2ba577b4f158b",
-  "platform": "binance",
-  "symbol": "ARDR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 66,
-  "price": 1.5209
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcd0"
-  },
-  "oId": "924746759",
-  "cId": "web_c799f4c005ce442693faadd10322777c",
-  "platform": "binance",
-  "symbol": "ATOM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 3.7,
-  "price": 54.09
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcd1"
-  },
-  "oId": "924747007",
-  "cId": "web_0abc026e3c454ccc93b221c3d0122e5b",
-  "platform": "binance",
-  "symbol": "ATOM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.85,
-  "price": 108.19
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcd2"
-  },
-  "oId": "814058724",
-  "cId": "web_f2702ac2fdbb457790e1196987bb2a66",
-  "platform": "binance",
-  "symbol": "BAND/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2.4,
-  "price": 21.055
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcd3"
-  },
-  "oId": "814058750",
-  "cId": "web_0b40125a9e1546868eb94ed5cea2a67a",
-  "platform": "binance",
-  "symbol": "BAND/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.2,
-  "price": 42.111
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcd4"
-  },
-  "oId": "286702260",
-  "cId": "web_47dc7af3aeb1401bbec81e9075a7f5dc",
-  "platform": "binance",
-  "symbol": "BLZ/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 35,
-  "price": 0.7281
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcd5"
-  },
-  "oId": "847864355",
-  "cId": "web_4f41e3c80c49425da1c0a9941dd2d586",
-  "platform": "binance",
-  "symbol": "CHZ/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 97,
-  "price": 1.0213
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcd6"
-  },
-  "oId": "847864471",
-  "cId": "web_642448e176d7493cb061ccecf2c081d3",
-  "platform": "binance",
-  "symbol": "CHZ/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 48,
-  "price": 2.0427
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcd7"
-  },
-  "oId": "431065267",
-  "cId": "web_978e5682e43d40f6bb918e00e77423fe",
-  "platform": "binance",
-  "symbol": "CRV/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 68.7,
-  "price": 8.759
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcd8"
-  },
-  "oId": "431065299",
-  "cId": "web_7b58ac4c25bd40bc8a4d84b53af1078e",
-  "platform": "binance",
-  "symbol": "CRV/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 34.1,
-  "price": 17.549
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcd9"
-  },
-  "oId": "269665222",
-  "cId": "web_a0da1483e4c0401f8bb4f66ad10bdeac",
-  "platform": "binance",
-  "symbol": "CTSI/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 15,
-  "price": 3.4155
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcda"
-  },
-  "oId": "1140794270",
-  "cId": "web_e6ff6b15b79849e5842e7991a4f8d972",
-  "platform": "binance",
-  "symbol": "DASH/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.027,
-  "price": 900.3
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcdb"
-  },
-  "oId": "370175100",
-  "cId": "web_bf593609da44449fb02556e70dda163d",
-  "platform": "binance",
-  "symbol": "DENT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 6342,
-  "price": 0.031532
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcdc"
-  },
-  "oId": "690501058",
-  "cId": "web_60fa944532d2452f88ba738d1eccbd8a",
-  "platform": "binance",
-  "symbol": "ENJ/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 12.2,
-  "price": 8.131
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcdd"
-  },
-  "oId": "2744881079",
-  "cId": "web_54094ca165cf450a86d49eb692fbed75",
-  "platform": "binance",
-  "symbol": "EOS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 35.3,
-  "price": 16.935
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcde"
-  },
-  "oId": "2158271179",
-  "cId": "web_ac198f33bc8d438abd4311b971af3733",
-  "platform": "binance",
-  "symbol": "ETC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.26,
-  "price": 203.2
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcdf"
-  },
-  "oId": "1554184178",
-  "cId": "web_061fa8ea378e4bda9a6ec999b5f1f2ba",
-  "platform": "binance",
-  "symbol": "FIL/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2.04,
-  "price": 146.48
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbce0"
-  },
-  "oId": "1554184662",
-  "cId": "web_92901168f70d43aaadc04ad541b4f0a8",
-  "platform": "binance",
-  "symbol": "FIL/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.02,
-  "price": 292.97
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbce1"
-  },
-  "oId": "68482328",
-  "cId": "web_615ea067a1e4475589e91c25e35263cc",
-  "platform": "binance",
-  "symbol": "FIO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 37,
-  "price": 0.6635
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbce2"
-  },
-  "oId": "818375450",
-  "cId": "web_098ca8acffe3435bad916b3a35ab42d8",
-  "platform": "binance",
-  "symbol": "FTM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 7,
-  "price": 7.1573
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbce3"
-  },
-  "oId": "633856787",
-  "cId": "web_1898935dc1d947fab823417f8368c027",
-  "platform": "binance",
-  "symbol": "GRT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 52,
-  "price": 2.7624
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbce4"
-  },
-  "oId": "373865658",
-  "cId": "web_8ca85f4364a847639b9fb0b545ef3773",
-  "platform": "binance",
-  "symbol": "HBAR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 60,
-  "price": 0.8224
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbce5"
-  },
-  "oId": "733826936",
-  "cId": "web_866867e4b97c470c96ecce89519534a8",
-  "platform": "binance",
-  "symbol": "IOST/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 840,
-  "price": 0.11899
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbce6"
-  },
-  "oId": "733827009",
-  "cId": "web_c740ec0464724f5dac8d265921a0c212",
-  "platform": "binance",
-  "symbol": "IOST/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 420,
-  "price": 0.23799
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbce7"
-  },
-  "oId": "270025191",
-  "cId": "web_70126131e9c547739f4dc3a9864517e1",
-  "platform": "binance",
-  "symbol": "IOTX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 133,
-  "price": 0.37459
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbce8"
-  },
-  "oId": "126696519",
-  "cId": "web_995d62e2959040eab85711c439de653e",
-  "platform": "binance",
-  "symbol": "IRIS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 218.4,
-  "price": 0.22885
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbce9"
-  },
-  "oId": "105015624",
-  "cId": "web_267751d8b4ab49b694a80471469b73ff",
-  "platform": "binance",
-  "symbol": "KMD/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 8,
-  "price": 3.4
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcea"
-  },
-  "oId": "130433133",
-  "cId": "web_8c550d7216434104a9b526289cf365f6",
-  "platform": "binance",
-  "symbol": "LINA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 173.43,
-  "price": 0.14414
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbceb"
-  },
-  "oId": "2856597600",
-  "cId": "web_9adacec847294be2b9a4de15c9ae8ad5",
-  "platform": "binance",
-  "symbol": "LINK/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 4.67,
-  "price": 153.12
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcec"
-  },
-  "oId": "820740945",
-  "cId": "web_f54f617b1ce944c6a11580028ad29992",
-  "platform": "binance",
-  "symbol": "NEO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.44,
-  "price": 207.16
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbced"
-  },
-  "oId": "285317919",
-  "cId": "web_9db987d914dd47068e0473d80334f5ca",
-  "platform": "binance",
-  "symbol": "NKN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 42,
-  "price": 1.1639
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcee"
-  },
-  "oId": "317623134",
-  "cId": "web_5133862a30bd4b0e9dd3ed245946c762",
-  "platform": "binance",
-  "symbol": "OGN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 15,
-  "price": 3.3233
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcef"
-  },
-  "oId": "1045831815",
-  "cId": "web_f4f3b4333e024e8b98ed55970d5a1eef",
-  "platform": "binance",
-  "symbol": "ONT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 38,
-  "price": 5.2573
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcf0"
-  },
-  "oId": "83409792",
-  "cId": "web_49148807c5a74148af53534b951788fc",
-  "platform": "binance",
-  "symbol": "POND/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 128.6,
-  "price": 0.38878
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcf1"
-  },
-  "oId": "729446022",
-  "cId": "web_9c09767b447f47b18ff494df19ff85ec",
-  "platform": "binance",
-  "symbol": "QTUM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 9.2,
-  "price": 32.303
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcf2"
-  },
-  "oId": "729446528",
-  "cId": "web_f523539475824ff9836873f3936a9ca9",
-  "platform": "binance",
-  "symbol": "QTUM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 4.6,
-  "price": 64.824
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcf3"
-  },
-  "oId": "315553217",
-  "cId": "web_6adc39c144644a9f8d8ca8583fd5caea",
-  "platform": "binance",
-  "symbol": "RSR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 646.1,
-  "price": 0.07738
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcf4"
-  },
-  "oId": "315553293",
-  "cId": "web_7c4869a69ad74d8894d2cf3600b38d7e",
-  "platform": "binance",
-  "symbol": "RSR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 323,
-  "price": 0.15476
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcf5"
-  },
-  "oId": "305519891",
-  "cId": "web_fd964312e820495abcb5a541f3f31974",
-  "platform": "binance",
-  "symbol": "SKL/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 68,
-  "price": 0.7306
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcf6"
-  },
-  "oId": "305520078",
-  "cId": "web_8173ba22a25646de8b1e1f0696d51252",
-  "platform": "binance",
-  "symbol": "SKL/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 34,
-  "price": 1.4613
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcf7"
-  },
-  "oId": "361862100",
-  "cId": "web_ccea2f97de884a4eb74b39b011aa13c0",
-  "platform": "binance",
-  "symbol": "STORJ/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 11,
-  "price": 4.4832
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcf8"
-  },
-  "oId": "87870257",
-  "cId": "web_e76d47f8de86436488662465f44cfd7f",
-  "platform": "binance",
-  "symbol": "SUPER/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 23,
-  "price": 4.3053
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcf9"
-  },
-  "oId": "413801809",
-  "cId": "web_f1993406934c4a08ba3d171453784717",
-  "platform": "binance",
-  "symbol": "TFUEL/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 192,
-  "price": 1.0405
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcfa"
-  },
-  "oId": "230907179",
-  "cId": "web_bcd3f95418a9402a848bdb38e772dbf4",
-  "platform": "binance",
-  "symbol": "TLM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 89,
-  "price": 1.1122
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcfb"
-  },
-  "oId": "1486439383",
-  "cId": "web_ff55be7d909b45f8bab8f810665a6ad2",
-  "platform": "binance",
-  "symbol": "VET/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 86.2,
-  "price": 0.57945
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcfc"
-  },
-  "oId": "223416704",
-  "cId": "web_dce2dd765dd04cd2991fde1f22ab44f4",
-  "platform": "binance",
-  "symbol": "WAN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 37,
-  "price": 2.6892
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcfd"
-  },
-  "oId": "344786382",
-  "cId": "web_e3eb4d52f96d4f98b8a91718bf10b1e0",
-  "platform": "binance",
-  "symbol": "WIN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 36716,
-  "price": 0.0027235
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcfe"
-  },
-  "oId": "1333739016",
-  "cId": "web_eb4a24151df74035b5ab8ff11f6b3c4e",
-  "platform": "binance",
-  "symbol": "XLM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 87,
-  "price": 1.0141
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbcff"
-  },
-  "oId": "986495251",
-  "cId": "web_46bd36cff59a44478d692ac4d9b9749d",
-  "platform": "binance",
-  "symbol": "XTZ/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 21.1,
-  "price": 28.422
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd00"
-  },
-  "oId": "31011479",
-  "cId": "web_c675bb0b0b5a484f9ff8c6655529d0f0",
-  "platform": "binance",
-  "symbol": "DEXE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.99,
-  "price": 50.61
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd01"
-  },
-  "oId": "243232870",
-  "cId": "web_01a1f12adf4b4b07b3289ecf4f438998",
-  "platform": "binance",
-  "symbol": "LSK/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 33.4,
-  "price": 14.955
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd02"
-  },
-  "oId": "1440984191",
-  "cId": "web_df1f28561f644caeb9f7a7ca0bc6b779",
-  "platform": "binance",
-  "symbol": "THETA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 14.1,
-  "price": 13.992
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd03"
-  },
-  "oId": "1440984483",
-  "cId": "web_2018ea4b78ff424e95b61699180811e5",
-  "platform": "binance",
-  "symbol": "THETA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 7.1,
-  "price": 27.985
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd04"
-  },
-  "oId": "191255251",
-  "cId": "web_30672b9836a74ace9a40957e161da0b5",
-  "platform": "binance",
-  "symbol": "ORN/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 6.2,
-  "price": 32.195
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd05"
-  },
-  "oId": "311432065",
-  "cId": "web_bb23bcc815584452bd7872a94e52c162",
-  "platform": "binance",
-  "symbol": "SKL/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 136,
-  "price": 1.4652
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd06"
-  },
-  "oId": "886101042",
-  "cId": "web_9f31008e365d415d84261a0e5b81a41e",
-  "platform": "binance",
-  "symbol": "AVAX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.78,
-  "price": 257.97
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd07"
-  },
-  "oId": "886102310",
-  "cId": "web_4f06d984afce4bb9a88126e26759fd29",
-  "platform": "binance",
-  "symbol": "AVAX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.39,
-  "price": 515.94
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd08"
-  },
-  "oId": "167758203",
-  "cId": "web_2f891723d1024feb9a6a7afc28ec45e7",
-  "platform": "binance",
-  "symbol": "HARD/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 50,
-  "price": 4.004
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd09"
-  },
-  "oId": "174926863",
-  "cId": "web_55bf3496a5a043cba43c571edca054bf",
-  "platform": "binance",
-  "symbol": "SLP/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 800,
-  "price": 0.25
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd0a"
-  },
-  "oId": "273363639",
-  "cId": "web_b52ad1f35f134156a0612b7a372d6b3c",
-  "platform": "binance",
-  "symbol": "SC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 5243,
-  "price": 0.05721
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd0b"
-  },
-  "oId": "172810315",
-  "cId": "web_7a9eb7818084407cad2c7f9df5b32bcc",
-  "platform": "binance",
-  "symbol": "TKO/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 35.6,
-  "price": 5.612
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd0c"
-  },
-  "oId": "112231431",
-  "cId": "web_8fd74ec78a4c4908806d4bf8e028b092",
-  "platform": "binance",
-  "symbol": "DUSK/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 74,
-  "price": 1.3475
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd0d"
-  },
-  "oId": "112231926",
-  "cId": "web_839ca4eda3614328ba475b4dba0d86bf",
-  "platform": "binance",
-  "symbol": "DUSK/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 37,
-  "price": 2.7224
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd0e"
-  },
-  "oId": "444157103",
-  "cId": "web_69554fde0b9b448383f2b565e81627ff",
-  "platform": "binance",
-  "symbol": "ICX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 15,
-  "price": 2.527
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd0f"
-  },
-  "oId": "444157110",
-  "cId": "web_792f8c4e43a542b7b1d48ca46012050e",
-  "platform": "binance",
-  "symbol": "ICX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 7.5,
-  "price": 5.054
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd10"
-  },
-  "oId": "51767712",
-  "cId": "web_9d9085e7c0c14c67ae322558594f82e9",
-  "platform": "binance",
-  "symbol": "PHA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 135,
-  "price": 0.7396
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd11"
-  },
-  "oId": "584145059",
-  "cId": "web_9139fae3f9a9466d966daef566853af3",
-  "platform": "binance",
-  "symbol": "KSM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.476,
-  "price": 314.6
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd12"
-  },
-  "oId": "584145143",
-  "cId": "web_3f1c7a125c594994afd79d149b8955ea",
-  "platform": "binance",
-  "symbol": "KSM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.397,
-  "price": 503.4
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd13"
-  },
-  "oId": "1004591221",
-  "cId": "x-R4BD3S82aaee6b934b874fd3963737",
-  "platform": "binance",
-  "symbol": "1INCH/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 71.9,
-  "price": 2.6964
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd14"
-  },
-  "oId": "4531869682",
-  "cId": "x-R4BD3S821fd1d488f3e3409f910f10",
-  "platform": "binance",
-  "symbol": "ADA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 53.9,
-  "price": 1.8548
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd15"
-  },
-  "oId": "4531869752",
-  "cId": "x-R4BD3S824133125b4eea4602a1f46c",
-  "platform": "binance",
-  "symbol": "ADA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 26.9,
-  "price": 3.7096
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd16"
-  },
-  "oId": "801085866",
-  "cId": "x-R4BD3S824d8a8f280d9f42a084c5dd",
-  "platform": "binance",
-  "symbol": "MKR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0009,
-  "price": 7207
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd17"
-  },
-  "oId": "801094232",
-  "cId": "x-R4BD3S8282931689effb42e09cdd5e",
-  "platform": "binance",
-  "symbol": "MKR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.0009,
-  "price": 7207
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd18"
-  },
-  "oId": "976953502",
-  "cId": "x-R4BD3S822cb50929171f4f959ebc3c",
-  "platform": "binance",
-  "symbol": "ANKR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 884.4,
-  "price": 0.11307
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd19"
-  },
-  "oId": "976953702",
-  "cId": "x-R4BD3S8260ad718e544246d2adf383",
-  "platform": "binance",
-  "symbol": "ANKR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 442.2,
-  "price": 0.22613
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd1a"
-  },
-  "oId": "176650950",
-  "cId": "x-R4BD3S822767c25f1ddc487180937c",
-  "platform": "binance",
-  "symbol": "ATM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.82,
-  "price": 11.349
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd1b"
-  },
-  "oId": "166445682",
-  "cId": "x-R4BD3S82d2d22f1da15f438d9b5303",
-  "platform": "binance",
-  "symbol": "AVA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 95.7,
-  "price": 2.047
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd1c"
-  },
-  "oId": "373688803",
-  "cId": "x-R4BD3S82b584a0d87d2d4f6d8b05af",
-  "platform": "binance",
-  "symbol": "CTXC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 56,
-  "price": 1.7731
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd1d"
-  },
-  "oId": "373689035",
-  "cId": "x-R4BD3S828709a13b73b74f4780f9c7",
-  "platform": "binance",
-  "symbol": "CTXC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 112,
-  "price": 0.5758
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd1e"
-  },
-  "oId": "503085944",
-  "cId": "x-R4BD3S820431f7d3648d4ba4be7804",
-  "platform": "binance",
-  "symbol": "UMA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.2,
-  "price": 7.026
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd1f"
-  },
-  "oId": "2155423408",
-  "cId": "x-R4BD3S8279d69a7c75554bbd98aa27",
-  "platform": "binance",
-  "symbol": "UNI/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 3.25,
-  "price": 15.527
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd20"
-  },
-  "oId": "2155423419",
-  "cId": "x-R4BD3S82e692d4a62f794d7784f17d",
-  "platform": "binance",
-  "symbol": "UNI/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.08,
-  "price": 62.746
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd21"
-  },
-  "oId": "2155423449",
-  "cId": "x-R4BD3S82ffc1f1763884421daa6ceb",
-  "platform": "binance",
-  "symbol": "UNI/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.16,
-  "price": 31.373
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd22"
-  },
-  "oId": "184328824",
-  "cId": "x-R4BD3S8224b3bc3609904235b73662",
-  "platform": "binance",
-  "symbol": "ASR/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.4,
-  "price": 10.229
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd23"
-  },
-  "oId": "542173029",
-  "cId": "x-R4BD3S82fc0f7e1054614b0f9cea61",
-  "platform": "binance",
-  "symbol": "BAL/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 14.57,
-  "price": 16.915
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd24"
-  },
-  "oId": "689375929",
-  "cId": "x-R4BD3S82bc5da710192e4d8cb33866",
-  "platform": "binance",
-  "symbol": "CAKE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 16.8,
-  "price": 5.649
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd25"
-  },
-  "oId": "418943724",
-  "cId": "x-R4BD3S82229c23019cf14f9cab034d",
-  "platform": "binance",
-  "symbol": "DATA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 20.6,
-  "price": 0.24454
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd26"
-  },
-  "oId": "418943725",
-  "cId": "x-R4BD3S82ed23e800ef6d45738e53a7",
-  "platform": "binance",
-  "symbol": "DATA/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 370.9,
-  "price": 0.12108
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd27"
-  },
-  "oId": "1167792218",
-  "cId": "x-R4BD3S8259192064d42f4c88b7a25e",
-  "platform": "binance",
-  "symbol": "SNX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 31.9,
-  "price": 7.532
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd28"
-  },
-  "oId": "775665834",
-  "cId": "x-R4BD3S8238e12c86c4f24b3dbb8444",
-  "platform": "binance",
-  "symbol": "CFX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 280,
-  "price": 1.4264
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd29"
-  },
-  "oId": "775665838",
-  "cId": "x-R4BD3S82972bf60ba27a445db52cd3",
-  "platform": "binance",
-  "symbol": "CFX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 560,
-  "price": 0.7135
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd2a"
-  },
-  "oId": "481971462",
-  "cId": "x-R4BD3S82dabfd4176ca8459e9ace0c",
-  "platform": "binance",
-  "symbol": "1000SATS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2685,
-  "price": 0.0018806
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd2b"
-  },
-  "oId": "481971464",
-  "cId": "x-R4BD3S82a83ea9f5fc9544739aa3c7",
-  "platform": "binance",
-  "symbol": "1000SATS/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 5370,
-  "price": 0.0009403
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd2c"
-  },
-  "oId": "1729632473",
-  "cId": "x-R4BD3S82c73c35a9abd645c781f877",
-  "platform": "binance",
-  "symbol": "APE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 33.49,
-  "price": 1.384
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd2d"
-  },
-  "oId": "1729632481",
-  "cId": "x-R4BD3S824aeb2d4b2677430ab56efb",
-  "platform": "binance",
-  "symbol": "APE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.66,
-  "price": 3.024
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd2e"
-  },
-  "oId": "1729632484",
-  "cId": "x-R4BD3S82fa47aacab459404daf6811",
-  "platform": "binance",
-  "symbol": "APE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.83,
-  "price": 6.048
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd2f"
-  },
-  "oId": "321246130",
-  "cId": "x-R4BD3S82c9b2cc5d1b4849f2a09914",
-  "platform": "binance",
-  "symbol": "WING/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.88,
-  "price": 28.19
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd30"
-  },
-  "oId": "321246131",
-  "cId": "x-R4BD3S82c99c02f25af840b992e2b1",
-  "platform": "binance",
-  "symbol": "WING/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1.77,
-  "price": 14.09
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd31"
-  },
-  "oId": "344453752",
-  "cId": "x-R4BD3S8299a1341932374b569d1c8e",
-  "platform": "binance",
-  "symbol": "OXT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 162,
-  "price": 0.1539
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd32"
-  },
-  "oId": "344453754",
-  "cId": "x-R4BD3S820fc0fe0f56064bafb30e73",
-  "platform": "binance",
-  "symbol": "OXT/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 81,
-  "price": 0.3078
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd33"
-  },
-  "oId": "634106315",
-  "cId": "x-R4BD3S821124e2cfef1641dd8867bc",
-  "platform": "binance",
-  "symbol": "GTC/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 44.7,
-  "price": 2.1
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd34"
-  },
-  "oId": "2143490059",
-  "cId": "x-R4BD3S826df78158d32b4b1589d24b",
-  "platform": "binance",
-  "symbol": "AAVE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 0.134,
-  "price": 371.72
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd35"
-  },
-  "oId": "2143490061",
-  "cId": "x-R4BD3S82b71fd67e2eac419b855d59",
-  "platform": "binance",
-  "symbol": "AAVE/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 2.553,
-  "price": 185.86
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd36"
-  },
-  "oId": "830006244",
-  "cId": "x-R4BD3S8273bf3833261d4e3696bd16",
-  "platform": "binance",
-  "symbol": "OM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 21,
-  "price": 2.3457
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd37"
-  },
-  "oId": "830065406",
-  "cId": "x-R4BD3S8231166bbd12a94953987fec",
-  "platform": "binance",
-  "symbol": "OM/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 21,
-  "price": 2.3457
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd38"
-  },
-  "oId": "2576921052",
-  "cId": "x-R4BD3S82efe4209d5bf74a1593047c",
-  "platform": "binance",
-  "symbol": "TRX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 520.2,
-  "price": 0.3848
-},
-{
-  "_id": {
-    "$oid": "6709c51f44fda905323cbd39"
-  },
-  "oId": "2576921054",
-  "cId": "x-R4BD3S82c3c5d14392144cda8f9cd8",
-  "platform": "binance",
-  "symbol": "TRX/USDT",
-  "type": "limit",
-  "side": "sell",
-  "amount": 1033.8,
-  "price": 0.193
-}]
+[
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25b3"
+    },
+    "oId": "474437113589702660",
+    "cId": "DGB4",
+    "platform": "okx",
+    "symbol": "DGB/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 63.332743,
+    "price": 1.57896
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25b4"
+    },
+    "oId": "474437113589702659",
+    "cId": "DGB3",
+    "platform": "okx",
+    "symbol": "DGB/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 126.665486,
+    "price": 0.78948
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25b5"
+    },
+    "oId": "474437113589702658",
+    "cId": "DGB2",
+    "platform": "okx",
+    "symbol": "DGB/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 253.330973,
+    "price": 0.39474
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25b6"
+    },
+    "oId": "474437113589702657",
+    "cId": "DGB1",
+    "platform": "okx",
+    "symbol": "DGB/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 506.661946,
+    "price": 0.19737
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25b7"
+    },
+    "oId": "474437113589702656",
+    "cId": "DGB0",
+    "platform": "okx",
+    "symbol": "DGB/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1013.323893,
+    "price": 0.09868
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25b8"
+    },
+    "oId": "474437113681977355",
+    "cId": "DIA4",
+    "platform": "okx",
+    "symbol": "DIA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.031057,
+    "price": 24.246
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25b9"
+    },
+    "oId": "474437113681977354",
+    "cId": "DIA3",
+    "platform": "okx",
+    "symbol": "DIA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2.062115,
+    "price": 12.123
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25ba"
+    },
+    "oId": "474437113681977353",
+    "cId": "DIA2",
+    "platform": "okx",
+    "symbol": "DIA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 4.12423,
+    "price": 6.061
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25bb"
+    },
+    "oId": "474437113681977352",
+    "cId": "DIA1",
+    "platform": "okx",
+    "symbol": "DIA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 8.24846,
+    "price": 3.03
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25bc"
+    },
+    "oId": "474437113681977351",
+    "cId": "DIA0",
+    "platform": "okx",
+    "symbol": "DIA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 16.496921,
+    "price": 1.515
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25bd"
+    },
+    "oId": "474437274168631304",
+    "cId": "BADGER4",
+    "platform": "okx",
+    "symbol": "BADGER/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.091316,
+    "price": 1095.097
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25be"
+    },
+    "oId": "474437274168631303",
+    "cId": "BADGER3",
+    "platform": "okx",
+    "symbol": "BADGER/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.182632,
+    "price": 547.548
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25bf"
+    },
+    "oId": "474437274168631302",
+    "cId": "BADGER2",
+    "platform": "okx",
+    "symbol": "BADGER/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.365264,
+    "price": 273.774
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25c0"
+    },
+    "oId": "474437274168631301",
+    "cId": "BADGER1",
+    "platform": "okx",
+    "symbol": "BADGER/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.730528,
+    "price": 136.887
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25c1"
+    },
+    "oId": "474437274168631300",
+    "cId": "BADGER0",
+    "platform": "okx",
+    "symbol": "BADGER/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.461056,
+    "price": 34.221
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25c2"
+    },
+    "oId": "474444675626213386",
+    "cId": "BAT4",
+    "platform": "okx",
+    "symbol": "BAT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.155848,
+    "price": 43.2582
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25c3"
+    },
+    "oId": "474444675626213385",
+    "cId": "BAT3",
+    "platform": "okx",
+    "symbol": "BAT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2.311697,
+    "price": 21.6291
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25c4"
+    },
+    "oId": "474444675626213384",
+    "cId": "BAT2",
+    "platform": "okx",
+    "symbol": "BAT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 4.623395,
+    "price": 10.8145
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25c5"
+    },
+    "oId": "474444675626213383",
+    "cId": "BAT1",
+    "platform": "okx",
+    "symbol": "BAT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 9.24679,
+    "price": 5.4072
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25c6"
+    },
+    "oId": "474444675626213380",
+    "cId": "BAT0",
+    "platform": "okx",
+    "symbol": "BAT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 18.493581,
+    "price": 2.7036
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25c7"
+    },
+    "oId": "571817226681454596",
+    "cId": "LET4",
+    "platform": "okx",
+    "symbol": "LET/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 342.3512,
+    "price": 0.014604
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25c8"
+    },
+    "oId": "571817226681454595",
+    "cId": "LET3",
+    "platform": "okx",
+    "symbol": "LET/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 684.7025,
+    "price": 0.007302
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25c9"
+    },
+    "oId": "571817226681454594",
+    "cId": "LET2",
+    "platform": "okx",
+    "symbol": "LET/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1369.4051,
+    "price": 0.003651
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25ca"
+    },
+    "oId": "571817226681454592",
+    "cId": "LET0",
+    "platform": "okx",
+    "symbol": "LET/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 5739.8083,
+    "price": 0.007839
+  },
+  {
+    "_id": {
+      "$oid": "65a96fb503aef67605ce25cb"
+    },
+    "oId": "571817418843492356",
+    "cId": "MINA1",
+    "platform": "okx",
+    "symbol": "MINA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.710616,
+    "price": 2.922
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b089"
+    },
+    "oId": "364442725101",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "APN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 85.195,
+    "price": 0.0586885
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b08a"
+    },
+    "oId": "364444060403",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "FILDA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 42.763,
+    "price": 0.1169222
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b08b"
+    },
+    "oId": "364444139377",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "FILDA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 224.862,
+    "price": 0.0222358
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b08c"
+    },
+    "oId": "364444185587",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "FILDA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 112.431,
+    "price": 0.0444717
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b08d"
+    },
+    "oId": "364444225608",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "FILDA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 56.215,
+    "price": 0.0889433
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b08e"
+    },
+    "oId": "364444293075",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "GO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 626.316,
+    "price": 0.015966
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b08f"
+    },
+    "oId": "364444329742",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "GO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 313.158,
+    "price": 0.031933
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b090"
+    },
+    "oId": "364444363955",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "GO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 156.579,
+    "price": 0.063865
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b091"
+    },
+    "oId": "364444394793",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "GO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 78.289,
+    "price": 0.127731
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b092"
+    },
+    "oId": "364444446873",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "GO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 39.144,
+    "price": 0.255462
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b093"
+    },
+    "oId": "364444536042",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "HORD/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 74.153,
+    "price": 1.27911
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b094"
+    },
+    "oId": "364444583354",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "HORD/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.954,
+    "price": 2.55822
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b095"
+    },
+    "oId": "364444639788",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "HORD/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.977,
+    "price": 5.11644
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b096"
+    },
+    "oId": "364444674958",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "HORD/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.488,
+    "price": 10.23288
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b097"
+    },
+    "oId": "364444705329",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "HORD/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.244,
+    "price": 20.46576
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b098"
+    },
+    "oId": "530229747353",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "AE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.54,
+    "price": 64.67719
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b099"
+    },
+    "oId": "530229761191",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "AE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 3.08,
+    "price": 8.08465
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b09a"
+    },
+    "oId": "530229826543",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "AE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.77,
+    "price": 129.35439
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b09b"
+    },
+    "oId": "530229838161",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "AE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.54,
+    "price": 64.67719
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b09c"
+    },
+    "oId": "530229904733",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "AE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.38,
+    "price": 258.70878
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b09d"
+    },
+    "oId": "530229928636",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "AE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.77,
+    "price": 129.35439
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b09e"
+    },
+    "oId": "530229996147",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "AE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.19,
+    "price": 517.41756
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b09f"
+    },
+    "oId": "530230040674",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "AE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.38,
+    "price": 258.70878
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0a0"
+    },
+    "oId": "530230127888",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "AE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.19,
+    "price": 517.41756
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0a1"
+    },
+    "oId": "530457125023",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BMON/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.1,
+    "price": 17.068184
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0a2"
+    },
+    "oId": "530457211116",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BMON/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.5,
+    "price": 34.136367
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0a3"
+    },
+    "oId": "530457301477",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BMON/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.2,
+    "price": 68.272735
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0a4"
+    },
+    "oId": "530457373836",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BMON/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.1,
+    "price": 136.545469
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0a5"
+    },
+    "oId": "530863223134",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BEAM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 77.9,
+    "price": 1.27743
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0a6"
+    },
+    "oId": "530863257396",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BEAM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 38.95,
+    "price": 10.21943
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0a7"
+    },
+    "oId": "530863257933",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BEAM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 19.47,
+    "price": 20.43886
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0a8"
+    },
+    "oId": "530863264141",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BEAM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 9.73,
+    "price": 40.87772
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0a9"
+    },
+    "oId": "530863289461",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BEAM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 4.86,
+    "price": 81.75544
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0aa"
+    },
+    "oId": "530863427648",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BTG/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.88,
+    "price": 112.506
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0ab"
+    },
+    "oId": "530863433656",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BTG/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.44,
+    "price": 900.045
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0ac"
+    },
+    "oId": "530863453623",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BTG/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.11,
+    "price": 3600.181
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0ad"
+    },
+    "oId": "530863453702",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BTG/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.05,
+    "price": 7200.362
+  },
+  {
+    "_id": {
+      "$oid": "6657bbffff0344e77f09b0ae"
+    },
+    "oId": "530863454106",
+    "cId": "apiv4",
+    "platform": "gateio",
+    "symbol": "BTG/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.22,
+    "price": 1800.091
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a66d"
+    },
+    "oId": "772451270891566",
+    "cId": "mdxusdt_1680611935875_3",
+    "platform": "htx",
+    "symbol": "MDX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 75.77,
+    "price": 2.6397
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a66f"
+    },
+    "oId": "772484413591898",
+    "cId": "wiccusdt_1680849780547_5",
+    "platform": "htx",
+    "symbol": "WICC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 3.7511,
+    "price": 5.3317
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a66b"
+    },
+    "oId": "772451270891570",
+    "cId": "mdxusdt_1680611935875_4",
+    "platform": "htx",
+    "symbol": "MDX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 37.88,
+    "price": 5.2794
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a676"
+    },
+    "oId": "772484522873058",
+    "cId": "xyousdt_1680850492616_4",
+    "platform": "htx",
+    "symbol": "XYO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 52.9228,
+    "price": 0.377909
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a679"
+    },
+    "oId": "772485143888604",
+    "cId": "insurusdt_1680854406849_5",
+    "platform": "htx",
+    "symbol": "INSUR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.0305,
+    "price": 10.1892
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a67d"
+    },
+    "oId": "772485143888600",
+    "cId": "insurusdt_1680854406849_1",
+    "platform": "htx",
+    "symbol": "INSUR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 56.7036,
+    "price": 0.7936
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a67e"
+    },
+    "oId": "772485109877584",
+    "cId": "lambusdt_1680854423045_5",
+    "platform": "htx",
+    "symbol": "LAMB/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 21.1092,
+    "price": 0.59216
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a682"
+    },
+    "oId": "772502634726815",
+    "cId": "elausdt_1680948797149_2",
+    "platform": "htx",
+    "symbol": "ELA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.44,
+    "price": 25.0502
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a687"
+    },
+    "oId": "772498196368847",
+    "cId": "ernusdt_1680949042668_3",
+    "platform": "htx",
+    "symbol": "ERN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.1502,
+    "price": 73.2119
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a690"
+    },
+    "oId": "772498204559413",
+    "cId": "lptusdt_1680949149995_2",
+    "platform": "htx",
+    "symbol": "LPT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0525,
+    "price": 209.5447
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a691"
+    },
+    "oId": "772498204559412",
+    "cId": "lptusdt_1680949149995_5",
+    "platform": "htx",
+    "symbol": "LPT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0066,
+    "price": 1676.3576
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a692"
+    },
+    "oId": "772498204559411",
+    "cId": "lptusdt_1680949149995_1",
+    "platform": "htx",
+    "symbol": "LPT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.105,
+    "price": 104.7723
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a69c"
+    },
+    "oId": "772498322031563",
+    "cId": "peopleusdt_1680949973223_3",
+    "platform": "htx",
+    "symbol": "PEOPLE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 14.5423,
+    "price": 0.756412
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6a3"
+    },
+    "oId": "772498322034467",
+    "cId": "trbusdt_1680950011166_4",
+    "platform": "htx",
+    "symbol": "TRB/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0177,
+    "price": 619.8692
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6a4"
+    },
+    "oId": "772498372793268",
+    "cId": "renusdt_1680950077669_3",
+    "platform": "htx",
+    "symbol": "REN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.87,
+    "price": 5.882353
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6a7"
+    },
+    "oId": "772498330288724",
+    "cId": "sandusdt_1680950089543_4",
+    "platform": "htx",
+    "symbol": "SAND/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.1233,
+    "price": 89.193155
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6ad"
+    },
+    "oId": "772584993199727",
+    "cId": "xtmusdt_1681569107791_5",
+    "platform": "htx",
+    "symbol": "XTM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 14.7454,
+    "price": 0.745998
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6af"
+    },
+    "oId": "772658712387588",
+    "cId": "movrusdt_1682095910234_3",
+    "platform": "htx",
+    "symbol": "MOVR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0587,
+    "price": 187.302
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6b0"
+    },
+    "oId": "772658712387587",
+    "cId": "movrusdt_1682095910234_2",
+    "platform": "htx",
+    "symbol": "MOVR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.1175,
+    "price": 93.651
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6b4"
+    },
+    "oId": "791227526388039",
+    "cId": null,
+    "platform": "htx",
+    "symbol": "PUSH/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.6384,
+    "price": 6.7137
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6b7"
+    },
+    "oId": "791236888306320",
+    "cId": "woousdt_1682346116793_2",
+    "platform": "htx",
+    "symbol": "WOO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 4.83,
+    "price": 2.27827
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6b9"
+    },
+    "oId": "791262691557970",
+    "cId": "pyrusdt_1682531096601_1",
+    "platform": "htx",
+    "symbol": "PYR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.6681,
+    "price": 16.4643
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6bb"
+    },
+    "oId": "808156059737321",
+    "cId": null,
+    "platform": "htx",
+    "symbol": "CRU/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2.9484,
+    "price": 6.7833
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6c3"
+    },
+    "oId": "1027455062153496",
+    "cId": "AA03022abcd975b470-5ad1-4034-880d-763db7a4996a",
+    "platform": "htx",
+    "symbol": "POLS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 16.7187,
+    "price": 2.9907
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6c5"
+    },
+    "oId": "1027455062613129",
+    "cId": "AA03022abc7d02ed31-f880-451b-8739-d643805eb819",
+    "platform": "htx",
+    "symbol": "POLS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 8.3593,
+    "price": 5.9813
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6c6"
+    },
+    "oId": "1052992972392756",
+    "cId": "AA03022abcfc9dcc8d-0577-47bc-9c3a-809e29e12358",
+    "platform": "htx",
+    "symbol": "NEST/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 4979.49,
+    "price": 0.010041
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6c9"
+    },
+    "oId": "1060244816560629",
+    "cId": "AA03022abceee927d4-b498-42a6-8947-8f07111c5419",
+    "platform": "htx",
+    "symbol": "VRA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 3889.6675,
+    "price": 0.006414
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6cc"
+    },
+    "oId": "1060469882388902",
+    "cId": "AA03022abcb2500861-0fc3-47a6-bd64-57be6b6804d9",
+    "platform": "htx",
+    "symbol": "ZEN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.1586,
+    "price": 12.9464
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a670"
+    },
+    "oId": "772484413591897",
+    "cId": "wiccusdt_1680849780547_4",
+    "platform": "htx",
+    "symbol": "WICC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 7.5022,
+    "price": 2.6659
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a674"
+    },
+    "oId": "772484522873060",
+    "cId": "xyousdt_1680850492616_1",
+    "platform": "htx",
+    "symbol": "XYO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 423.3824,
+    "price": 0.0248
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a67f"
+    },
+    "oId": "772485109877583",
+    "cId": "lambusdt_1680854423045_3",
+    "platform": "htx",
+    "symbol": "LAMB/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 84.4366,
+    "price": 0.14804
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a68f"
+    },
+    "oId": "772498204559414",
+    "cId": "lptusdt_1680949149995_3",
+    "platform": "htx",
+    "symbol": "LPT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0262,
+    "price": 419.0894
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a693"
+    },
+    "oId": "772498204559410",
+    "cId": "lptusdt_1680949149995_4",
+    "platform": "htx",
+    "symbol": "LPT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0131,
+    "price": 838.1788
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a69a"
+    },
+    "oId": "772498322031565",
+    "cId": "peopleusdt_1680949973223_4",
+    "platform": "htx",
+    "symbol": "PEOPLE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 7.2712,
+    "price": 1.512825
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a69b"
+    },
+    "oId": "772498322031564",
+    "cId": "peopleusdt_1680949973223_2",
+    "platform": "htx",
+    "symbol": "PEOPLE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 29.0847,
+    "price": 0.378206
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a69e"
+    },
+    "oId": "772498330617943",
+    "cId": "polcusdt_1680949977011_3",
+    "platform": "htx",
+    "symbol": "POLC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 3.5951,
+    "price": 3.0597
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6a1"
+    },
+    "oId": "772498330617940",
+    "cId": "polcusdt_1680949977011_2",
+    "platform": "htx",
+    "symbol": "POLC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 7.1902,
+    "price": 1.5299
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6a5"
+    },
+    "oId": "772498372793267",
+    "cId": "renusdt_1680950077669_2",
+    "platform": "htx",
+    "symbol": "REN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 3.74,
+    "price": 2.941176
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6a8"
+    },
+    "oId": "772498330288723",
+    "cId": "sandusdt_1680950089543_3",
+    "platform": "htx",
+    "symbol": "SAND/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.2467,
+    "price": 44.596577
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6a9"
+    },
+    "oId": "772498330288722",
+    "cId": "sandusdt_1680950089543_1",
+    "platform": "htx",
+    "symbol": "SAND/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.9866,
+    "price": 11.149144
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6aa"
+    },
+    "oId": "772498330288721",
+    "cId": "sandusdt_1680950089543_2",
+    "platform": "htx",
+    "symbol": "SAND/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.4933,
+    "price": 22.298289
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6b2"
+    },
+    "oId": "791227560397809",
+    "cId": null,
+    "platform": "htx",
+    "symbol": "PUSH/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 6.5538,
+    "price": 1.6784
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6b5"
+    },
+    "oId": "791227568889837",
+    "cId": null,
+    "platform": "htx",
+    "symbol": "PUSH/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.8192,
+    "price": 13.4273
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6b8"
+    },
+    "oId": "791262691557971",
+    "cId": "pyrusdt_1682531096601_2",
+    "platform": "htx",
+    "symbol": "PYR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.3341,
+    "price": 32.9286
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6bc"
+    },
+    "oId": "1020901847148017",
+    "cId": null,
+    "platform": "htx",
+    "symbol": "WNXM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.3035,
+    "price": 164.7136
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6bd"
+    },
+    "oId": "1020901847117494",
+    "cId": null,
+    "platform": "htx",
+    "symbol": "WNXM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.1517,
+    "price": 329.4272
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6be"
+    },
+    "oId": "1020901864452813",
+    "cId": null,
+    "platform": "htx",
+    "symbol": "WNXM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0758,
+    "price": 658.8545
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6c4"
+    },
+    "oId": "1027455062153509",
+    "cId": "AA03022abca5cb5116-de7b-4c97-9fad-a5cf4e79eb22",
+    "platform": "htx",
+    "symbol": "POLS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 33.4374,
+    "price": 1.4953
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6ca"
+    },
+    "oId": "1060244833440379",
+    "cId": "AA03022abc479b9257-3594-48c6-94fe-5fcfe7ff591e",
+    "platform": "htx",
+    "symbol": "SOFI/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 579.5066,
+    "price": 0.12942
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a671"
+    },
+    "oId": "772484413591896",
+    "cId": "wiccusdt_1680849780547_3",
+    "platform": "htx",
+    "symbol": "WICC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 15.0045,
+    "price": 1.3329
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a678"
+    },
+    "oId": "772484522873056",
+    "cId": "xyousdt_1680850492616_5",
+    "platform": "htx",
+    "symbol": "XYO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 26.4614,
+    "price": 0.755818
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a67b"
+    },
+    "oId": "772485143888602",
+    "cId": "insurusdt_1680854406849_3",
+    "platform": "htx",
+    "symbol": "INSUR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 4.122,
+    "price": 2.5473
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a67c"
+    },
+    "oId": "772485143888601",
+    "cId": "insurusdt_1680854406849_2",
+    "platform": "htx",
+    "symbol": "INSUR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 8.244,
+    "price": 1.2737
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a680"
+    },
+    "oId": "772485109877582",
+    "cId": "lambusdt_1680854423045_4",
+    "platform": "htx",
+    "symbol": "LAMB/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 42.2183,
+    "price": 0.29608
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a681"
+    },
+    "oId": "772485109877581",
+    "cId": "lambusdt_1680854423045_2",
+    "platform": "htx",
+    "symbol": "LAMB/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 168.8733,
+    "price": 0.07402
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a683"
+    },
+    "oId": "772502634726814",
+    "cId": "elausdt_1680948797149_1",
+    "platform": "htx",
+    "symbol": "ELA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.88,
+    "price": 12.5251
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a684"
+    },
+    "oId": "772502634726813",
+    "cId": "elausdt_1680948797149_3",
+    "platform": "htx",
+    "symbol": "ELA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.22,
+    "price": 50.1004
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a685"
+    },
+    "oId": "772502634726812",
+    "cId": "elausdt_1680948797149_4",
+    "platform": "htx",
+    "symbol": "ELA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.11,
+    "price": 100.2008
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a686"
+    },
+    "oId": "772502634726811",
+    "cId": "elausdt_1680948797149_5",
+    "platform": "htx",
+    "symbol": "ELA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.05,
+    "price": 200.4015
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a688"
+    },
+    "oId": "772498196368846",
+    "cId": "ernusdt_1680949042668_5",
+    "platform": "htx",
+    "symbol": "ERN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0376,
+    "price": 292.8474
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a68c"
+    },
+    "oId": "772498297655376",
+    "cId": "flowusdt_1680949049086_2",
+    "platform": "htx",
+    "symbol": "FLOW/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.239,
+    "price": 46.0259
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a696"
+    },
+    "oId": "772498247028427",
+    "cId": "ensusdt_1680949157022_2",
+    "platform": "htx",
+    "symbol": "ENS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.087,
+    "price": 126.4359
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a697"
+    },
+    "oId": "772498247028426",
+    "cId": "ensusdt_1680949157022_3",
+    "platform": "htx",
+    "symbol": "ENS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0435,
+    "price": 252.8718
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a699"
+    },
+    "oId": "772498322031566",
+    "cId": "peopleusdt_1680949973223_1",
+    "platform": "htx",
+    "symbol": "PEOPLE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 58.1693,
+    "price": 0.189103
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a69d"
+    },
+    "oId": "772498330617944",
+    "cId": "polcusdt_1680949977011_5",
+    "platform": "htx",
+    "symbol": "POLC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.8988,
+    "price": 12.2389
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a69f"
+    },
+    "oId": "772498330617942",
+    "cId": "polcusdt_1680949977011_1",
+    "platform": "htx",
+    "symbol": "POLC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 14.3804,
+    "price": 0.7649
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6a0"
+    },
+    "oId": "772498330617941",
+    "cId": "polcusdt_1680949977011_4",
+    "platform": "htx",
+    "symbol": "POLC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.7975,
+    "price": 6.1194
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6a6"
+    },
+    "oId": "772498372793266",
+    "cId": "renusdt_1680950077669_1",
+    "platform": "htx",
+    "symbol": "REN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 7.48,
+    "price": 1.470588
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6ab"
+    },
+    "oId": "772584993199729",
+    "cId": "xtmusdt_1681569107791_4",
+    "platform": "htx",
+    "symbol": "XTM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 29.4907,
+    "price": 0.372999
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6b1"
+    },
+    "oId": "772658712387586",
+    "cId": "movrusdt_1682095910234_4",
+    "platform": "htx",
+    "symbol": "MOVR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0294,
+    "price": 374.604
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6b6"
+    },
+    "oId": "791236888306321",
+    "cId": "woousdt_1682346116793_1",
+    "platform": "htx",
+    "symbol": "WOO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 9.66,
+    "price": 1.13913
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6bf"
+    },
+    "oId": "1020949972324972",
+    "cId": "AA03022abc02c83435-978e-42f3-8fd0-8f3423e4ea60",
+    "platform": "htx",
+    "symbol": "AAC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 105719.68,
+    "price": 0.000427
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6c0"
+    },
+    "oId": "1020949998276359",
+    "cId": "AA03022abcdc5bfc0e-dd62-45ad-9699-2b3150118194",
+    "platform": "htx",
+    "symbol": "AAC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 52859.84,
+    "price": 0.000946
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6c1"
+    },
+    "oId": "1027371327761323",
+    "cId": "AA03022abc430cd744-b841-4334-8f48-1d9de1b44fa4",
+    "platform": "htx",
+    "symbol": "HOTCROSS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 220.5274,
+    "price": 0.09069
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6cd"
+    },
+    "oId": "1060469899755922",
+    "cId": "AA03022abcc1887f52-2d7f-4b5d-adc4-0b8cfad9906b",
+    "platform": "htx",
+    "symbol": "ZEN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.3842,
+    "price": 52.046
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a66c"
+    },
+    "oId": "772451270891568",
+    "cId": "mdxusdt_1680611935875_2",
+    "platform": "htx",
+    "symbol": "MDX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 151.53,
+    "price": 1.3199
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a66e"
+    },
+    "oId": "772451270891565",
+    "cId": "mdxusdt_1680611935875_5",
+    "platform": "htx",
+    "symbol": "MDX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 18.94,
+    "price": 10.5589
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a672"
+    },
+    "oId": "772484413591895",
+    "cId": "wiccusdt_1680849780547_2",
+    "platform": "htx",
+    "symbol": "WICC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 30.009,
+    "price": 0.6665
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a673"
+    },
+    "oId": "772484413591894",
+    "cId": "wiccusdt_1680849780547_1",
+    "platform": "htx",
+    "symbol": "WICC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 89.982,
+    "price": 0.1667
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a675"
+    },
+    "oId": "772484522873059",
+    "cId": "xyousdt_1680850492616_2",
+    "platform": "htx",
+    "symbol": "XYO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 211.6912,
+    "price": 0.094477
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a677"
+    },
+    "oId": "772484522873057",
+    "cId": "xyousdt_1680850492616_3",
+    "platform": "htx",
+    "symbol": "XYO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 105.8456,
+    "price": 0.188954
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a67a"
+    },
+    "oId": "772485143888603",
+    "cId": "insurusdt_1680854406849_4",
+    "platform": "htx",
+    "symbol": "INSUR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2.061,
+    "price": 5.0946
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a689"
+    },
+    "oId": "772498196368845",
+    "cId": "ernusdt_1680949042668_1",
+    "platform": "htx",
+    "symbol": "ERN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.601,
+    "price": 18.303
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a68a"
+    },
+    "oId": "772498196368844",
+    "cId": "ernusdt_1680949042668_2",
+    "platform": "htx",
+    "symbol": "ERN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.3005,
+    "price": 36.6059
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a68b"
+    },
+    "oId": "772498196368843",
+    "cId": "ernusdt_1680949042668_4",
+    "platform": "htx",
+    "symbol": "ERN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0751,
+    "price": 146.4237
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a68d"
+    },
+    "oId": "772498297655375",
+    "cId": "flowusdt_1680949049086_1",
+    "platform": "htx",
+    "symbol": "FLOW/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.478,
+    "price": 23.0129
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a68e"
+    },
+    "oId": "772498297655373",
+    "cId": "flowusdt_1680949049086_3",
+    "platform": "htx",
+    "symbol": "FLOW/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.1195,
+    "price": 92.0517
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a694"
+    },
+    "oId": "772498247028429",
+    "cId": "ensusdt_1680949157022_1",
+    "platform": "htx",
+    "symbol": "ENS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.174,
+    "price": 63.2179
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a695"
+    },
+    "oId": "772498247028428",
+    "cId": "ensusdt_1680949157022_5",
+    "platform": "htx",
+    "symbol": "ENS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0109,
+    "price": 1011.4872
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a698"
+    },
+    "oId": "772498247028425",
+    "cId": "ensusdt_1680949157022_4",
+    "platform": "htx",
+    "symbol": "ENS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0218,
+    "price": 505.7436
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6a2"
+    },
+    "oId": "772498322034471",
+    "cId": "trbusdt_1680950011166_5",
+    "platform": "htx",
+    "symbol": "TRB/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0089,
+    "price": 1239.7383
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6ac"
+    },
+    "oId": "772584993199728",
+    "cId": "xtmusdt_1681569107791_3",
+    "platform": "htx",
+    "symbol": "XTM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 58.9814,
+    "price": 0.186499
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6ae"
+    },
+    "oId": "772658712387589",
+    "cId": "movrusdt_1682095910234_5",
+    "platform": "htx",
+    "symbol": "MOVR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0147,
+    "price": 749.2079
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6b3"
+    },
+    "oId": "791227526453441",
+    "cId": null,
+    "platform": "htx",
+    "symbol": "PUSH/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 3.2769,
+    "price": 3.3568
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6ba"
+    },
+    "oId": "791285341164781",
+    "cId": "epikusdt_1682692732799_3",
+    "platform": "htx",
+    "symbol": "EPIK/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 378.8098,
+    "price": 0.052797
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6c2"
+    },
+    "oId": "1027371318717500",
+    "cId": "AA03022abc365aa801-1163-488f-951d-f88b74e4c2d2",
+    "platform": "htx",
+    "symbol": "HOTCROSS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 441.0548,
+    "price": 0.04535
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6c7"
+    },
+    "oId": "1052992955353767",
+    "cId": "AA03022abcaac86ca8-cbdc-477e-b2d7-6264e9a9b636",
+    "platform": "htx",
+    "symbol": "NEST/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2489.74,
+    "price": 0.020082
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6c8"
+    },
+    "oId": "1052992981142395",
+    "cId": "AA03022abc5a00789c-7577-41d9-9542-c1ae2a87c15e",
+    "platform": "htx",
+    "symbol": "NEST/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 9958.98,
+    "price": 0.005021
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6cb"
+    },
+    "oId": "1060244824527899",
+    "cId": "AA03022abcafb40383-0e61-47a1-85de-3869861b880f",
+    "platform": "htx",
+    "symbol": "SOFI/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1159.0132,
+    "price": 0.06471
+  },
+  {
+    "_id": {
+      "$oid": "666d0ca625a0e8f28376a6ce"
+    },
+    "oId": "1077534411203215",
+    "cId": "AA03022abc94a060ea-88c4-4437-a6a1-1d553bb01bdd",
+    "platform": "htx",
+    "symbol": "NGL/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 310.7708,
+    "price": 0.14171
+  },
+  {
+    "_id": {
+      "$oid": "6709c51944fda905323cbc03"
+    },
+    "oId": "66d73dbb422243000771c3e9",
+    "cId": "a3c4a9bf-6ff0-49d9-98ea-133707efa6a1",
+    "platform": "kucoin",
+    "symbol": "CWAR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 87.411,
+    "price": 0.05783
+  },
+  {
+    "_id": {
+      "$oid": "6709c51944fda905323cbc04"
+    },
+    "oId": "66d73dbb8083b00007ef66c1",
+    "cId": "ce225b93-4fd7-4a42-91a5-d1c6e0a65707",
+    "platform": "kucoin",
+    "symbol": "CWAR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 43.7055,
+    "price": 0.11566
+  },
+  {
+    "_id": {
+      "$oid": "6709c51944fda905323cbc05"
+    },
+    "oId": "66d73dbe77971f000708571d",
+    "cId": "109636f4-ef2f-4a69-9ac4-e0e7758c3889",
+    "platform": "kucoin",
+    "symbol": "CWAR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 21.8527,
+    "price": 0.23132
+  },
+  {
+    "_id": {
+      "$oid": "6709c51944fda905323cbc06"
+    },
+    "oId": "66d73dbf422243000771db87",
+    "cId": "a233739b-ef9a-40f8-9c52-7f2262b4dbfc",
+    "platform": "kucoin",
+    "symbol": "CWAR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 10.9263,
+    "price": 0.46265
+  },
+  {
+    "_id": {
+      "$oid": "6709c51944fda905323cbc07"
+    },
+    "oId": "66d73dc0c26b7a0007747f17",
+    "cId": "556d00ce-dfed-4eb1-b19f-73d3ce4b611f",
+    "platform": "kucoin",
+    "symbol": "CWAR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 5.4631,
+    "price": 0.92529
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcb1"
+    },
+    "oId": "58577637",
+    "cId": "web_965a587ec4184b32a71aeb48387ab694",
+    "platform": "binance",
+    "symbol": "ADX/BTC",
+    "type": "limit",
+    "side": "sell",
+    "amount": 191,
+    "price": 0.00005733
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcb2"
+    },
+    "oId": "296461135",
+    "cId": "web_1a02b43543ee450e93fb551abb439dac",
+    "platform": "binance",
+    "symbol": "IOTA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 29.06,
+    "price": 3.44
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcb3"
+    },
+    "oId": "1722271356",
+    "cId": "web_07f72724b7724e538cb6a6313d0db9a6",
+    "platform": "binance",
+    "symbol": "ETC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2.532,
+    "price": 101.515
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcb4"
+    },
+    "oId": "1147312453",
+    "cId": "web_56475e5e5e3248f9adf2539656fbc5b5",
+    "platform": "binance",
+    "symbol": "XLM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 175.7,
+    "price": 0.50525
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcb5"
+    },
+    "oId": "476056124",
+    "cId": "web_1339ffb248994f0f864aba1103b0d2ad",
+    "platform": "binance",
+    "symbol": "GRT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 104.36,
+    "price": 1.3827
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcb6"
+    },
+    "oId": "2167636727",
+    "cId": "web_24e59612d3b84608bcd85bca3afb986a",
+    "platform": "binance",
+    "symbol": "LTC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.1833,
+    "price": 545.5
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcb7"
+    },
+    "oId": "180099905",
+    "cId": "web_2331715be5df4e2f8d17fe2d552c9f7c",
+    "platform": "binance",
+    "symbol": "LTO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 39,
+    "price": 1.28
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcb8"
+    },
+    "oId": "235217673",
+    "cId": "web_82938953de634d259cd18b3fb2cfa9fe",
+    "platform": "binance",
+    "symbol": "OGN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 30.12,
+    "price": 1.66
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcb9"
+    },
+    "oId": "996424702",
+    "cId": "web_1f8b510e88b54e9f989f971d442541b7",
+    "platform": "binance",
+    "symbol": "DASH/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0556,
+    "price": 449.27
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcba"
+    },
+    "oId": "1288404532",
+    "cId": "web_a6baf635a3c24e8ab170585aa37a8ecc",
+    "platform": "binance",
+    "symbol": "VET/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 172.7,
+    "price": 0.2894
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcbb"
+    },
+    "oId": "290704990",
+    "cId": "web_80a22e4d6e0245b99ca01ce51418237b",
+    "platform": "binance",
+    "symbol": "STMX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 502,
+    "price": 0.0994
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcbc"
+    },
+    "oId": "932446065",
+    "cId": "web_a173d5b37a7a4613a0275471db3cc672",
+    "platform": "binance",
+    "symbol": "ONT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 76,
+    "price": 2.6283
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcbd"
+    },
+    "oId": "302877054",
+    "cId": "web_c61562be3e0049ff996377e8aa1a1ea7",
+    "platform": "binance",
+    "symbol": "WIN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 73507,
+    "price": 0.0013604
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcbe"
+    },
+    "oId": "92931145",
+    "cId": "web_bca92c49ac154981badc10cbe55bd0a2",
+    "platform": "binance",
+    "symbol": "PIVX/BTC",
+    "type": "limit",
+    "side": "sell",
+    "amount": 30,
+    "price": 0.00007646
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcbf"
+    },
+    "oId": "192976787",
+    "cId": "web_c7de71c915bc448e844ab2b9806d4a42",
+    "platform": "binance",
+    "symbol": "TROY/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2362,
+    "price": 0.042331
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcc0"
+    },
+    "oId": "97560370",
+    "cId": "web_89b1f30c63e74d59bc5111e778f00676",
+    "platform": "binance",
+    "symbol": "KMD/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 15,
+    "price": 1.7
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcc1"
+    },
+    "oId": "790948915",
+    "cId": "web_50a5e24bd226495bb6fd8ef97f1a9b91",
+    "platform": "binance",
+    "symbol": "NEO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2.89,
+    "price": 103.58
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcc2"
+    },
+    "oId": "388984308",
+    "cId": "web_044c4cfe22c242dc9b7ee99e56f03db0",
+    "platform": "binance",
+    "symbol": "ALPHA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 29,
+    "price": 1.7517
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcc3"
+    },
+    "oId": "340769623",
+    "cId": "web_498e071c6b464280a68b1da280d3e815",
+    "platform": "binance",
+    "symbol": "DENT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 12685,
+    "price": 0.0158
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcc4"
+    },
+    "oId": "2665850043",
+    "cId": "web_d1577e1be69e47e4b9770fbd69ac25d0",
+    "platform": "binance",
+    "symbol": "EOS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 21.2,
+    "price": 14.118
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcc5"
+    },
+    "oId": "344620532",
+    "cId": "web_b183df32dad34443ab71ff119abc44b1",
+    "platform": "binance",
+    "symbol": "HBAR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 57,
+    "price": 0.5593
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcc6"
+    },
+    "oId": "2753758386",
+    "cId": "web_92e8bb4b58914970b3bd43fe4c6671f2",
+    "platform": "binance",
+    "symbol": "LINK/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 9.35,
+    "price": 76.56
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcc7"
+    },
+    "oId": "72708824",
+    "cId": "web_ff4344c4f628440eb8d27fe7feb92f58",
+    "platform": "binance",
+    "symbol": "POND/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 257.21,
+    "price": 0.1944
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcc8"
+    },
+    "oId": "508025725",
+    "cId": "web_fe2d46fa95974ac2a8a14d915d1be7dd",
+    "platform": "binance",
+    "symbol": "SXP/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 25.5,
+    "price": 9.09
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcc9"
+    },
+    "oId": "403830722",
+    "cId": "web_1e9884a0fee346d3a297474b86f64ee9",
+    "platform": "binance",
+    "symbol": "TFUEL/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 384,
+    "price": 0.5203
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcca"
+    },
+    "oId": "219360790",
+    "cId": "web_6b72661e6a164d5aa1fdd44cc83808ca",
+    "platform": "binance",
+    "symbol": "WAN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 74,
+    "price": 1.3446
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbccb"
+    },
+    "oId": "941282345",
+    "cId": "web_82b4a274c96b479088f63e12c62c2f0a",
+    "platform": "binance",
+    "symbol": "XTZ/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 42.2,
+    "price": 14.211
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbccc"
+    },
+    "oId": "753033356",
+    "cId": "web_eecd0a4d61d44079b98ba457307c2962",
+    "platform": "binance",
+    "symbol": "ALGO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 45,
+    "price": 4.4845
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbccd"
+    },
+    "oId": "408375257",
+    "cId": "web_7a95fc1f829444fda50a4719ea8d5000",
+    "platform": "binance",
+    "symbol": "ALPHA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 14,
+    "price": 3.5749
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcce"
+    },
+    "oId": "184791491",
+    "cId": "web_73266f7bfd194ed98757e587c4bb5bc4",
+    "platform": "binance",
+    "symbol": "ARDR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 131,
+    "price": 0.7604
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbccf"
+    },
+    "oId": "184791495",
+    "cId": "web_a608b9d71cba4b2a9cf2ba577b4f158b",
+    "platform": "binance",
+    "symbol": "ARDR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 66,
+    "price": 1.5209
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcd0"
+    },
+    "oId": "924746759",
+    "cId": "web_c799f4c005ce442693faadd10322777c",
+    "platform": "binance",
+    "symbol": "ATOM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 3.7,
+    "price": 54.09
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcd1"
+    },
+    "oId": "924747007",
+    "cId": "web_0abc026e3c454ccc93b221c3d0122e5b",
+    "platform": "binance",
+    "symbol": "ATOM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.85,
+    "price": 108.19
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcd2"
+    },
+    "oId": "814058724",
+    "cId": "web_f2702ac2fdbb457790e1196987bb2a66",
+    "platform": "binance",
+    "symbol": "BAND/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2.4,
+    "price": 21.055
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcd3"
+    },
+    "oId": "814058750",
+    "cId": "web_0b40125a9e1546868eb94ed5cea2a67a",
+    "platform": "binance",
+    "symbol": "BAND/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.2,
+    "price": 42.111
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcd4"
+    },
+    "oId": "286702260",
+    "cId": "web_47dc7af3aeb1401bbec81e9075a7f5dc",
+    "platform": "binance",
+    "symbol": "BLZ/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 35,
+    "price": 0.7281
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcd5"
+    },
+    "oId": "847864355",
+    "cId": "web_4f41e3c80c49425da1c0a9941dd2d586",
+    "platform": "binance",
+    "symbol": "CHZ/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 97,
+    "price": 1.0213
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcd6"
+    },
+    "oId": "847864471",
+    "cId": "web_642448e176d7493cb061ccecf2c081d3",
+    "platform": "binance",
+    "symbol": "CHZ/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 48,
+    "price": 2.0427
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcd7"
+    },
+    "oId": "431065267",
+    "cId": "web_978e5682e43d40f6bb918e00e77423fe",
+    "platform": "binance",
+    "symbol": "CRV/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 68.7,
+    "price": 8.759
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcd8"
+    },
+    "oId": "431065299",
+    "cId": "web_7b58ac4c25bd40bc8a4d84b53af1078e",
+    "platform": "binance",
+    "symbol": "CRV/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 34.1,
+    "price": 17.549
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcd9"
+    },
+    "oId": "269665222",
+    "cId": "web_a0da1483e4c0401f8bb4f66ad10bdeac",
+    "platform": "binance",
+    "symbol": "CTSI/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 15,
+    "price": 3.4155
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcda"
+    },
+    "oId": "1140794270",
+    "cId": "web_e6ff6b15b79849e5842e7991a4f8d972",
+    "platform": "binance",
+    "symbol": "DASH/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.027,
+    "price": 900.3
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcdb"
+    },
+    "oId": "370175100",
+    "cId": "web_bf593609da44449fb02556e70dda163d",
+    "platform": "binance",
+    "symbol": "DENT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 6342,
+    "price": 0.031532
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcdc"
+    },
+    "oId": "690501058",
+    "cId": "web_60fa944532d2452f88ba738d1eccbd8a",
+    "platform": "binance",
+    "symbol": "ENJ/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 12.2,
+    "price": 8.131
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcdd"
+    },
+    "oId": "2744881079",
+    "cId": "web_54094ca165cf450a86d49eb692fbed75",
+    "platform": "binance",
+    "symbol": "EOS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 35.3,
+    "price": 16.935
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcde"
+    },
+    "oId": "2158271179",
+    "cId": "web_ac198f33bc8d438abd4311b971af3733",
+    "platform": "binance",
+    "symbol": "ETC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.26,
+    "price": 203.2
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcdf"
+    },
+    "oId": "1554184178",
+    "cId": "web_061fa8ea378e4bda9a6ec999b5f1f2ba",
+    "platform": "binance",
+    "symbol": "FIL/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2.04,
+    "price": 146.48
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbce0"
+    },
+    "oId": "1554184662",
+    "cId": "web_92901168f70d43aaadc04ad541b4f0a8",
+    "platform": "binance",
+    "symbol": "FIL/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.02,
+    "price": 292.97
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbce1"
+    },
+    "oId": "68482328",
+    "cId": "web_615ea067a1e4475589e91c25e35263cc",
+    "platform": "binance",
+    "symbol": "FIO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 37,
+    "price": 0.6635
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbce2"
+    },
+    "oId": "818375450",
+    "cId": "web_098ca8acffe3435bad916b3a35ab42d8",
+    "platform": "binance",
+    "symbol": "FTM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 7,
+    "price": 7.1573
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbce3"
+    },
+    "oId": "633856787",
+    "cId": "web_1898935dc1d947fab823417f8368c027",
+    "platform": "binance",
+    "symbol": "GRT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 52,
+    "price": 2.7624
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbce4"
+    },
+    "oId": "373865658",
+    "cId": "web_8ca85f4364a847639b9fb0b545ef3773",
+    "platform": "binance",
+    "symbol": "HBAR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 60,
+    "price": 0.8224
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbce5"
+    },
+    "oId": "733826936",
+    "cId": "web_866867e4b97c470c96ecce89519534a8",
+    "platform": "binance",
+    "symbol": "IOST/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 840,
+    "price": 0.11899
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbce6"
+    },
+    "oId": "733827009",
+    "cId": "web_c740ec0464724f5dac8d265921a0c212",
+    "platform": "binance",
+    "symbol": "IOST/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 420,
+    "price": 0.23799
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbce7"
+    },
+    "oId": "270025191",
+    "cId": "web_70126131e9c547739f4dc3a9864517e1",
+    "platform": "binance",
+    "symbol": "IOTX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 133,
+    "price": 0.37459
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbce8"
+    },
+    "oId": "126696519",
+    "cId": "web_995d62e2959040eab85711c439de653e",
+    "platform": "binance",
+    "symbol": "IRIS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 218.4,
+    "price": 0.22885
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbce9"
+    },
+    "oId": "105015624",
+    "cId": "web_267751d8b4ab49b694a80471469b73ff",
+    "platform": "binance",
+    "symbol": "KMD/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 8,
+    "price": 3.4
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcea"
+    },
+    "oId": "130433133",
+    "cId": "web_8c550d7216434104a9b526289cf365f6",
+    "platform": "binance",
+    "symbol": "LINA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 173.43,
+    "price": 0.14414
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbceb"
+    },
+    "oId": "2856597600",
+    "cId": "web_9adacec847294be2b9a4de15c9ae8ad5",
+    "platform": "binance",
+    "symbol": "LINK/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 4.67,
+    "price": 153.12
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcec"
+    },
+    "oId": "820740945",
+    "cId": "web_f54f617b1ce944c6a11580028ad29992",
+    "platform": "binance",
+    "symbol": "NEO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.44,
+    "price": 207.16
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbced"
+    },
+    "oId": "285317919",
+    "cId": "web_9db987d914dd47068e0473d80334f5ca",
+    "platform": "binance",
+    "symbol": "NKN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 42,
+    "price": 1.1639
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcee"
+    },
+    "oId": "317623134",
+    "cId": "web_5133862a30bd4b0e9dd3ed245946c762",
+    "platform": "binance",
+    "symbol": "OGN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 15,
+    "price": 3.3233
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcef"
+    },
+    "oId": "1045831815",
+    "cId": "web_f4f3b4333e024e8b98ed55970d5a1eef",
+    "platform": "binance",
+    "symbol": "ONT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 38,
+    "price": 5.2573
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcf0"
+    },
+    "oId": "83409792",
+    "cId": "web_49148807c5a74148af53534b951788fc",
+    "platform": "binance",
+    "symbol": "POND/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 128.6,
+    "price": 0.38878
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcf1"
+    },
+    "oId": "729446022",
+    "cId": "web_9c09767b447f47b18ff494df19ff85ec",
+    "platform": "binance",
+    "symbol": "QTUM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 9.2,
+    "price": 32.303
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcf2"
+    },
+    "oId": "729446528",
+    "cId": "web_f523539475824ff9836873f3936a9ca9",
+    "platform": "binance",
+    "symbol": "QTUM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 4.6,
+    "price": 64.824
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcf3"
+    },
+    "oId": "315553217",
+    "cId": "web_6adc39c144644a9f8d8ca8583fd5caea",
+    "platform": "binance",
+    "symbol": "RSR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 646.1,
+    "price": 0.07738
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcf4"
+    },
+    "oId": "315553293",
+    "cId": "web_7c4869a69ad74d8894d2cf3600b38d7e",
+    "platform": "binance",
+    "symbol": "RSR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 323,
+    "price": 0.15476
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcf5"
+    },
+    "oId": "305519891",
+    "cId": "web_fd964312e820495abcb5a541f3f31974",
+    "platform": "binance",
+    "symbol": "SKL/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 68,
+    "price": 0.7306
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcf6"
+    },
+    "oId": "305520078",
+    "cId": "web_8173ba22a25646de8b1e1f0696d51252",
+    "platform": "binance",
+    "symbol": "SKL/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 34,
+    "price": 1.4613
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcf7"
+    },
+    "oId": "361862100",
+    "cId": "web_ccea2f97de884a4eb74b39b011aa13c0",
+    "platform": "binance",
+    "symbol": "STORJ/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 11,
+    "price": 4.4832
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcf8"
+    },
+    "oId": "87870257",
+    "cId": "web_e76d47f8de86436488662465f44cfd7f",
+    "platform": "binance",
+    "symbol": "SUPER/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 23,
+    "price": 4.3053
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcf9"
+    },
+    "oId": "413801809",
+    "cId": "web_f1993406934c4a08ba3d171453784717",
+    "platform": "binance",
+    "symbol": "TFUEL/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 192,
+    "price": 1.0405
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcfa"
+    },
+    "oId": "230907179",
+    "cId": "web_bcd3f95418a9402a848bdb38e772dbf4",
+    "platform": "binance",
+    "symbol": "TLM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 89,
+    "price": 1.1122
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcfb"
+    },
+    "oId": "1486439383",
+    "cId": "web_ff55be7d909b45f8bab8f810665a6ad2",
+    "platform": "binance",
+    "symbol": "VET/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 86.2,
+    "price": 0.57945
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcfc"
+    },
+    "oId": "223416704",
+    "cId": "web_dce2dd765dd04cd2991fde1f22ab44f4",
+    "platform": "binance",
+    "symbol": "WAN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 37,
+    "price": 2.6892
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcfd"
+    },
+    "oId": "344786382",
+    "cId": "web_e3eb4d52f96d4f98b8a91718bf10b1e0",
+    "platform": "binance",
+    "symbol": "WIN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 36716,
+    "price": 0.0027235
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcfe"
+    },
+    "oId": "1333739016",
+    "cId": "web_eb4a24151df74035b5ab8ff11f6b3c4e",
+    "platform": "binance",
+    "symbol": "XLM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 87,
+    "price": 1.0141
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbcff"
+    },
+    "oId": "986495251",
+    "cId": "web_46bd36cff59a44478d692ac4d9b9749d",
+    "platform": "binance",
+    "symbol": "XTZ/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 21.1,
+    "price": 28.422
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd00"
+    },
+    "oId": "31011479",
+    "cId": "web_c675bb0b0b5a484f9ff8c6655529d0f0",
+    "platform": "binance",
+    "symbol": "DEXE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.99,
+    "price": 50.61
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd01"
+    },
+    "oId": "243232870",
+    "cId": "web_01a1f12adf4b4b07b3289ecf4f438998",
+    "platform": "binance",
+    "symbol": "LSK/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 33.4,
+    "price": 14.955
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd02"
+    },
+    "oId": "1440984191",
+    "cId": "web_df1f28561f644caeb9f7a7ca0bc6b779",
+    "platform": "binance",
+    "symbol": "THETA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 14.1,
+    "price": 13.992
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd03"
+    },
+    "oId": "1440984483",
+    "cId": "web_2018ea4b78ff424e95b61699180811e5",
+    "platform": "binance",
+    "symbol": "THETA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 7.1,
+    "price": 27.985
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd04"
+    },
+    "oId": "191255251",
+    "cId": "web_30672b9836a74ace9a40957e161da0b5",
+    "platform": "binance",
+    "symbol": "ORN/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 6.2,
+    "price": 32.195
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd05"
+    },
+    "oId": "311432065",
+    "cId": "web_bb23bcc815584452bd7872a94e52c162",
+    "platform": "binance",
+    "symbol": "SKL/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 136,
+    "price": 1.4652
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd06"
+    },
+    "oId": "886101042",
+    "cId": "web_9f31008e365d415d84261a0e5b81a41e",
+    "platform": "binance",
+    "symbol": "AVAX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.78,
+    "price": 257.97
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd07"
+    },
+    "oId": "886102310",
+    "cId": "web_4f06d984afce4bb9a88126e26759fd29",
+    "platform": "binance",
+    "symbol": "AVAX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.39,
+    "price": 515.94
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd08"
+    },
+    "oId": "167758203",
+    "cId": "web_2f891723d1024feb9a6a7afc28ec45e7",
+    "platform": "binance",
+    "symbol": "HARD/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 50,
+    "price": 4.004
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd09"
+    },
+    "oId": "174926863",
+    "cId": "web_55bf3496a5a043cba43c571edca054bf",
+    "platform": "binance",
+    "symbol": "SLP/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 800,
+    "price": 0.25
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd0a"
+    },
+    "oId": "273363639",
+    "cId": "web_b52ad1f35f134156a0612b7a372d6b3c",
+    "platform": "binance",
+    "symbol": "SC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 5243,
+    "price": 0.05721
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd0b"
+    },
+    "oId": "172810315",
+    "cId": "web_7a9eb7818084407cad2c7f9df5b32bcc",
+    "platform": "binance",
+    "symbol": "TKO/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 35.6,
+    "price": 5.612
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd0c"
+    },
+    "oId": "112231431",
+    "cId": "web_8fd74ec78a4c4908806d4bf8e028b092",
+    "platform": "binance",
+    "symbol": "DUSK/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 74,
+    "price": 1.3475
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd0d"
+    },
+    "oId": "112231926",
+    "cId": "web_839ca4eda3614328ba475b4dba0d86bf",
+    "platform": "binance",
+    "symbol": "DUSK/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 37,
+    "price": 2.7224
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd0e"
+    },
+    "oId": "444157103",
+    "cId": "web_69554fde0b9b448383f2b565e81627ff",
+    "platform": "binance",
+    "symbol": "ICX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 15,
+    "price": 2.527
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd0f"
+    },
+    "oId": "444157110",
+    "cId": "web_792f8c4e43a542b7b1d48ca46012050e",
+    "platform": "binance",
+    "symbol": "ICX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 7.5,
+    "price": 5.054
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd10"
+    },
+    "oId": "51767712",
+    "cId": "web_9d9085e7c0c14c67ae322558594f82e9",
+    "platform": "binance",
+    "symbol": "PHA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 135,
+    "price": 0.7396
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd11"
+    },
+    "oId": "584145059",
+    "cId": "web_9139fae3f9a9466d966daef566853af3",
+    "platform": "binance",
+    "symbol": "KSM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.476,
+    "price": 314.6
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd12"
+    },
+    "oId": "584145143",
+    "cId": "web_3f1c7a125c594994afd79d149b8955ea",
+    "platform": "binance",
+    "symbol": "KSM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.397,
+    "price": 503.4
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd13"
+    },
+    "oId": "1004591221",
+    "cId": "x-R4BD3S82aaee6b934b874fd3963737",
+    "platform": "binance",
+    "symbol": "1INCH/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 71.9,
+    "price": 2.6964
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd14"
+    },
+    "oId": "4531869682",
+    "cId": "x-R4BD3S821fd1d488f3e3409f910f10",
+    "platform": "binance",
+    "symbol": "ADA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 53.9,
+    "price": 1.8548
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd15"
+    },
+    "oId": "4531869752",
+    "cId": "x-R4BD3S824133125b4eea4602a1f46c",
+    "platform": "binance",
+    "symbol": "ADA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 26.9,
+    "price": 3.7096
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd16"
+    },
+    "oId": "801085866",
+    "cId": "x-R4BD3S824d8a8f280d9f42a084c5dd",
+    "platform": "binance",
+    "symbol": "MKR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0009,
+    "price": 7207
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd17"
+    },
+    "oId": "801094232",
+    "cId": "x-R4BD3S8282931689effb42e09cdd5e",
+    "platform": "binance",
+    "symbol": "MKR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.0009,
+    "price": 7207
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd18"
+    },
+    "oId": "976953502",
+    "cId": "x-R4BD3S822cb50929171f4f959ebc3c",
+    "platform": "binance",
+    "symbol": "ANKR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 884.4,
+    "price": 0.11307
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd19"
+    },
+    "oId": "976953702",
+    "cId": "x-R4BD3S8260ad718e544246d2adf383",
+    "platform": "binance",
+    "symbol": "ANKR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 442.2,
+    "price": 0.22613
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd1a"
+    },
+    "oId": "176650950",
+    "cId": "x-R4BD3S822767c25f1ddc487180937c",
+    "platform": "binance",
+    "symbol": "ATM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.82,
+    "price": 11.349
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd1b"
+    },
+    "oId": "166445682",
+    "cId": "x-R4BD3S82d2d22f1da15f438d9b5303",
+    "platform": "binance",
+    "symbol": "AVA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 95.7,
+    "price": 2.047
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd1c"
+    },
+    "oId": "373688803",
+    "cId": "x-R4BD3S82b584a0d87d2d4f6d8b05af",
+    "platform": "binance",
+    "symbol": "CTXC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 56,
+    "price": 1.7731
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd1d"
+    },
+    "oId": "373689035",
+    "cId": "x-R4BD3S828709a13b73b74f4780f9c7",
+    "platform": "binance",
+    "symbol": "CTXC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 112,
+    "price": 0.5758
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd1e"
+    },
+    "oId": "503085944",
+    "cId": "x-R4BD3S820431f7d3648d4ba4be7804",
+    "platform": "binance",
+    "symbol": "UMA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.2,
+    "price": 7.026
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd1f"
+    },
+    "oId": "2155423408",
+    "cId": "x-R4BD3S8279d69a7c75554bbd98aa27",
+    "platform": "binance",
+    "symbol": "UNI/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 3.25,
+    "price": 15.527
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd20"
+    },
+    "oId": "2155423419",
+    "cId": "x-R4BD3S82e692d4a62f794d7784f17d",
+    "platform": "binance",
+    "symbol": "UNI/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.08,
+    "price": 62.746
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd21"
+    },
+    "oId": "2155423449",
+    "cId": "x-R4BD3S82ffc1f1763884421daa6ceb",
+    "platform": "binance",
+    "symbol": "UNI/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.16,
+    "price": 31.373
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd22"
+    },
+    "oId": "184328824",
+    "cId": "x-R4BD3S8224b3bc3609904235b73662",
+    "platform": "binance",
+    "symbol": "ASR/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.4,
+    "price": 10.229
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd23"
+    },
+    "oId": "542173029",
+    "cId": "x-R4BD3S82fc0f7e1054614b0f9cea61",
+    "platform": "binance",
+    "symbol": "BAL/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 14.57,
+    "price": 16.915
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd24"
+    },
+    "oId": "689375929",
+    "cId": "x-R4BD3S82bc5da710192e4d8cb33866",
+    "platform": "binance",
+    "symbol": "CAKE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 16.8,
+    "price": 5.649
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd25"
+    },
+    "oId": "418943724",
+    "cId": "x-R4BD3S82229c23019cf14f9cab034d",
+    "platform": "binance",
+    "symbol": "DATA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 20.6,
+    "price": 0.24454
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd26"
+    },
+    "oId": "418943725",
+    "cId": "x-R4BD3S82ed23e800ef6d45738e53a7",
+    "platform": "binance",
+    "symbol": "DATA/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 370.9,
+    "price": 0.12108
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd27"
+    },
+    "oId": "1167792218",
+    "cId": "x-R4BD3S8259192064d42f4c88b7a25e",
+    "platform": "binance",
+    "symbol": "SNX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 31.9,
+    "price": 7.532
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd28"
+    },
+    "oId": "775665834",
+    "cId": "x-R4BD3S8238e12c86c4f24b3dbb8444",
+    "platform": "binance",
+    "symbol": "CFX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 280,
+    "price": 1.4264
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd29"
+    },
+    "oId": "775665838",
+    "cId": "x-R4BD3S82972bf60ba27a445db52cd3",
+    "platform": "binance",
+    "symbol": "CFX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 560,
+    "price": 0.7135
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd2a"
+    },
+    "oId": "481971462",
+    "cId": "x-R4BD3S82dabfd4176ca8459e9ace0c",
+    "platform": "binance",
+    "symbol": "1000SATS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2685,
+    "price": 0.0018806
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd2b"
+    },
+    "oId": "481971464",
+    "cId": "x-R4BD3S82a83ea9f5fc9544739aa3c7",
+    "platform": "binance",
+    "symbol": "1000SATS/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 5370,
+    "price": 0.0009403
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd2c"
+    },
+    "oId": "1729632473",
+    "cId": "x-R4BD3S82c73c35a9abd645c781f877",
+    "platform": "binance",
+    "symbol": "APE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 33.49,
+    "price": 1.384
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd2d"
+    },
+    "oId": "1729632481",
+    "cId": "x-R4BD3S824aeb2d4b2677430ab56efb",
+    "platform": "binance",
+    "symbol": "APE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.66,
+    "price": 3.024
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd2e"
+    },
+    "oId": "1729632484",
+    "cId": "x-R4BD3S82fa47aacab459404daf6811",
+    "platform": "binance",
+    "symbol": "APE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.83,
+    "price": 6.048
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd2f"
+    },
+    "oId": "321246130",
+    "cId": "x-R4BD3S82c9b2cc5d1b4849f2a09914",
+    "platform": "binance",
+    "symbol": "WING/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.88,
+    "price": 28.19
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd30"
+    },
+    "oId": "321246131",
+    "cId": "x-R4BD3S82c99c02f25af840b992e2b1",
+    "platform": "binance",
+    "symbol": "WING/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1.77,
+    "price": 14.09
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd31"
+    },
+    "oId": "344453752",
+    "cId": "x-R4BD3S8299a1341932374b569d1c8e",
+    "platform": "binance",
+    "symbol": "OXT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 162,
+    "price": 0.1539
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd32"
+    },
+    "oId": "344453754",
+    "cId": "x-R4BD3S820fc0fe0f56064bafb30e73",
+    "platform": "binance",
+    "symbol": "OXT/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 81,
+    "price": 0.3078
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd33"
+    },
+    "oId": "634106315",
+    "cId": "x-R4BD3S821124e2cfef1641dd8867bc",
+    "platform": "binance",
+    "symbol": "GTC/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 44.7,
+    "price": 2.1
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd34"
+    },
+    "oId": "2143490059",
+    "cId": "x-R4BD3S826df78158d32b4b1589d24b",
+    "platform": "binance",
+    "symbol": "AAVE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 0.134,
+    "price": 371.72
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd35"
+    },
+    "oId": "2143490061",
+    "cId": "x-R4BD3S82b71fd67e2eac419b855d59",
+    "platform": "binance",
+    "symbol": "AAVE/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 2.553,
+    "price": 185.86
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd36"
+    },
+    "oId": "830006244",
+    "cId": "x-R4BD3S8273bf3833261d4e3696bd16",
+    "platform": "binance",
+    "symbol": "OM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 21,
+    "price": 2.3457
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd37"
+    },
+    "oId": "830065406",
+    "cId": "x-R4BD3S8231166bbd12a94953987fec",
+    "platform": "binance",
+    "symbol": "OM/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 21,
+    "price": 2.3457
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd38"
+    },
+    "oId": "2576921052",
+    "cId": "x-R4BD3S82efe4209d5bf74a1593047c",
+    "platform": "binance",
+    "symbol": "TRX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 520.2,
+    "price": 0.3848
+  },
+  {
+    "_id": {
+      "$oid": "6709c51f44fda905323cbd39"
+    },
+    "oId": "2576921054",
+    "cId": "x-R4BD3S82c3c5d14392144cda8f9cd8",
+    "platform": "binance",
+    "symbol": "TRX/USDT",
+    "type": "limit",
+    "side": "sell",
+    "amount": 1033.8,
+    "price": 0.193
+  }
+]

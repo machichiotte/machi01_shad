@@ -8,7 +8,7 @@ import { OrderBalanceService, } from '@services/orderBalanceService'
 import { StrategyService } from '@services/strategyService'
 import { handleServiceError } from '@utils/errorUtil'
 import { areAllDataValid, isValidAssetMetrics } from '@utils/processorUtil'
-import { STABLECOINS, QUOTE_CURRENCIES } from '@src/constants'
+import { QUOTE_CURRENCIES } from '@src/constants'
 import { BalanceService } from '@services/balanceService'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
@@ -82,7 +82,10 @@ export class ProcessorService {
     for (const item of dbBalances) {
       if (typeof item.balance === 'number' && item.balance > 0) {
         const assetMetrics = this.calculateMachiForBalance(item, dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers)
-        if (isValidAssetMetrics(assetMetrics)) {
+
+
+
+        if (assetMetrics && isValidAssetMetrics(assetMetrics)) {
           allValues.push(assetMetrics)
         } else {
           notAddedAssets.push(`${item.base}:${item.platform}`)
@@ -145,23 +148,9 @@ export class ProcessorService {
       closestCmc === null ||
       !assetTrades.length &&
       !assetOrders.length &&
-      !assetTicker.length &&
       !assetStrategy
     ) {
-      if (STABLECOINS.includes(assetBase)) {
-        return calculateAssetMetrics(
-          assetBase,
-          assetPlatform,
-          balance,
-          closestCmc,
-          [],
-          [],
-          { base: '', strategies: {}, maxExposure: {} },
-          assetTicker
-        )
-      } else {
-        return null
-      }
+      return null
     }
 
     return calculateAssetMetrics(

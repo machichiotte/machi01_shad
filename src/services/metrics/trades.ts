@@ -15,13 +15,13 @@ const convertFeeToQuote = (fee: number, price: number): number =>
 
 interface Trade {
   base: string
-  type: string
+  side: string
   fee: string
   price: string
   feecoin: string
   quote: string
   amount: string
-  totalUSDT: string
+  eqUSD: string
 }
 
 interface TotalAmountAndBuy {
@@ -35,24 +35,29 @@ interface TotalAmountAndBuy {
  */
 function getTotalAmountAndBuy(symbol: string, trades: MappedTrade[]): TotalAmountAndBuy {
   const filteredTrades = trades.filter(
-    (trade) => trade.base === symbol && trade.type === 'buy'
+    (trade) => trade.base === symbol && trade.side === 'buy'
   )
 
   return filteredTrades.reduce(
     (acc: TotalAmountAndBuy, trade: MappedTrade) => {
-      const fee = trade.fee
-      const price = trade.price
+      const fee = Number(trade.fee)
+      const price = Number(trade.price)
       const feeInQuote =
         trade.feecoin === trade.quote
           ? fee > 0
             ? fee
             : 0
           : convertFeeToQuote(fee, price)
-      const amount = trade.amount > 0 ? trade.amount : 0
+      const amount = Number(trade.amount) > 0 ? Number(trade.amount) : 0 // Assurez-vous que amount est un nombre
 
-      acc.totalBuy += trade.totalUSDT + feeInQuote
+      acc.totalBuy += trade.eqUSD + feeInQuote
       acc.totalAmount += amount
       acc.averageEntryPrice = acc.totalBuy / acc.totalAmount
+
+      // Formater les valeurs pour avoir 2 chiffres après la virgule
+      acc.totalBuy = parseFloat(acc.totalBuy.toFixed(2));
+      acc.totalAmount = parseFloat(acc.totalAmount.toFixed(2));
+      acc.averageEntryPrice = parseFloat(acc.averageEntryPrice.toFixed(2));
 
       return acc
     },
@@ -65,7 +70,7 @@ function getTotalAmountAndBuy(symbol: string, trades: MappedTrade[]): TotalAmoun
  */
 function getTotalSell(symbol: string, trades: MappedTrade[]): number {
   return trades
-    .filter((trade) => trade.base === symbol && trade.type === 'sell')
+    .filter((trade) => trade.base === symbol && trade.side === 'sell')
     .reduce((total: number, trade: MappedTrade) => {
       const fee = trade.fee
       const price = trade.price
@@ -75,7 +80,7 @@ function getTotalSell(symbol: string, trades: MappedTrade[]): number {
             ? fee
             : 0
           : convertFeeToQuote(fee, price)
-      return total + trade.totalUSDT - feeInQuote
+      return total + trade.eqUSD - feeInQuote
     }, 0)
 }
 

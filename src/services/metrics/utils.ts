@@ -8,10 +8,14 @@ const THRESHOLD = 0.01 // 1% threshold
  */
 function getCurrentPossession(
   currentPrice: number | undefined,
-  balance: number | undefined
+  balance: number | undefined,
 ): number {
-  if (currentPrice === undefined || balance === undefined) return -1
+  if (currentPrice === undefined || balance === undefined)
+    return -1
+
   return Math.round(currentPrice * balance * 100) / 100
+
+  return -1
 }
 
 

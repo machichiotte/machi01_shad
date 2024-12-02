@@ -8,7 +8,7 @@ import { MappedBalance, BalanceWithDifference } from '@typ/balance';
 import { retry } from '@utils/retryUtil';
 import { PLATFORM } from '@typ/platform';
 import { executeForPlatforms } from '@utils/cronUtil';
-import { removeDuplicateDifferences, removeDuplicatesAndStablecoins } from '@utils/processorUtil';
+import { removeDuplicateDifferences, removeDuplicates } from '@utils/processorUtil';
 
 export class BalanceService {
   static async fetchDatabaseBalance(): Promise<MappedBalance[]> {
@@ -148,6 +148,6 @@ export class BalanceService {
       }
     })
 
-    return removeDuplicatesAndStablecoins(differences)
+    return removeDuplicates(differences)
   }
 }

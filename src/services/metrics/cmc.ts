@@ -2,10 +2,11 @@
 import { MappedCmc } from "@typ/cmc"
 
 interface CmcValues {
-  rank: number,
-  name: string,
+  rank: number
+  name: string
   currentCmcPrice: number
   iconUrl: string
+  tags: string[]
   cryptoPercentChange24h: number
   cryptoPercentChange7d: number
   cryptoPercentChange30d: number
@@ -17,22 +18,7 @@ interface CmcValues {
  * Retrieves CoinMarketCap values for a given object.
  */
 //function getCmcValues(cmc: MappedCmc[],currentPrice : number): CmcValues {
-function getCmcValues(cmc: MappedCmc, currentPrice: number | undefined): CmcValues {
-  if (currentPrice === undefined) {
-
-    return {
-      rank: 0,
-      name: '',
-      currentCmcPrice: NaN,
-      iconUrl: '',
-      cryptoPercentChange24h: NaN,
-      cryptoPercentChange7d: NaN,
-      cryptoPercentChange30d: NaN,
-      cryptoPercentChange60d: NaN,
-      cryptoPercentChange90d: NaN
-    }
-  }
-
+function getCmcValues(cmc: MappedCmc): CmcValues {
   const getPercentChange = (value: number | undefined): number =>
     value !== undefined ? value / 100 : NaN
   return {
@@ -42,6 +28,7 @@ function getCmcValues(cmc: MappedCmc, currentPrice: number | undefined): CmcValu
       : NaN,
     iconUrl: cmc.id ? getIconUrl(cmc.id) : '',
     name: cmc.name,
+    tags: cmc.tags,
     cryptoPercentChange24h: getPercentChange(cmc.quote?.USD?.percent_change_24h),
     cryptoPercentChange7d: getPercentChange(cmc.quote?.USD?.percent_change_7d),
     cryptoPercentChange30d: getPercentChange(cmc.quote?.USD?.percent_change_30d),

@@ -6,9 +6,9 @@ import { MappedTrade } from "./trade";
 export interface Asset {
     base: string; // Symbole de l'actif (ex: "ASSET_SYMBOL")
     iconUrl: string; // URL de l'icône
-    ticker: string; // Symbole de trading (ex: "TICKER_SYMBOL")
+    ticker: number; // Symbole de trading (ex: "TICKER_SYMBOL")
     name: string; // Nom de l'actif (ex: "ASSET_NAME")
-    type: string[]; // Type de l'actif (ex: ["stablecoin", "defi", "gaming"])
+    tags: string[]; // Type de l'actif (ex: ["stablecoin", "defi", "gaming"])
     cmc: CMC; // Informations CMC
     strat: Strat; // Stratégie appliquée
     orders: Orders; // Informations sur les ordres et les trades
