@@ -64,7 +64,7 @@ export const setMaxExposure = (items: Array<any>, data: any, maxExposition: numb
     updateBaseField(items, data, 'maxExposition', maxExposition)
 }
 
-export function getTakeProfitsTargets(data: Asset): TakeProfits {
+export function getTakeProfitsTargets(asset: Asset): TakeProfits {
     //TODO ajouter pleins de strategies 
-    return getShadTakeProfitsTargets(data)
+    return getShadTakeProfitsTargets(asset)
 }

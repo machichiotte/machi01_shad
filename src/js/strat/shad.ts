@@ -53,7 +53,7 @@ function getTakeProfitValues(data: Asset, maxExposition: number, ratioShad: numb
     tp3: { price: priceTp3, amount: amountTp3 },
     tp4: { price: priceTp4, amount: amountTp4 },
     tp5: { price: priceTp5, amount: amountTp5 },
-    status: [] // Remplir avec les statuts appropriés
+    status: []
   };
 
   return takeProfits;

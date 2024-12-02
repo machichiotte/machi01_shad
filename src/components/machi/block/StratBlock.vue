@@ -3,12 +3,10 @@
 import { ref, watch } from 'vue';
 import BaseBlock from './BaseBlock.vue';
 
-
 const props = defineProps({
     strat: String,
     stratExpo: Number
 });
-
 
 // Données pour les stratégies
 const valueStrat = ref(props.strat);
@@ -16,7 +14,7 @@ const valueMaxExpo = ref(props.stratExpo);
 
 const strats = ref([{ name: 'SHAD', value: 'shad' }, { name: 'AB/CD', value: 'ab/cd' }, { name: '...' }]); // Exemple de stratégies
 
-const emit = defineEmits(['update:strat', 'update:stratExpo'])
+const emit = defineEmits(['update:strat', 'update:stratExpo', 'save'])
 
 // Émettre les valeurs au parent lorsqu'elles changent
 watch(valueStrat, (newValue) => {
@@ -30,7 +28,7 @@ watch(valueMaxExpo, (newValue) => {
 // Prépare l'appel de la fonction de sauvegarde
 const handleSave = () => {
     // Fonction de sauvegarde à appeler
-    // emit('save', { strat: valueStrat.value, stratExpo: valueMaxExpo.value });
+    emit('save', { strat: valueStrat.value, stratExpo: valueMaxExpo.value });
 };
 </script>
 

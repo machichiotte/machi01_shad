@@ -43,6 +43,8 @@ import Textarea from 'primevue/textarea'
 import ToastService from 'primevue/toastservice'
 import ToggleButton from 'primevue/togglebutton'
 import Toolbar from 'primevue/toolbar'
+import Tooltip from 'primevue/tooltip';
+
 
 import './style.css'
 
@@ -84,5 +86,7 @@ app.component('Tag', Tag)
 app.component('Textarea', Textarea)
 app.component('ToggleButton', ToggleButton)
 app.component('Toolbar', Toolbar)
+
+app.directive('tooltip', Tooltip)
 
 app.mount('#app')

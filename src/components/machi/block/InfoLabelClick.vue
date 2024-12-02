@@ -1,4 +1,3 @@
-<!-- /src/components/machi/InfoLabelClick.vue -->
 <template>
     <div class="label-indice">
         <!-- Le label principal (ex: prix courant) -->
@@ -6,7 +5,10 @@
 
         <!-- Un seul small, qui change de valeur à chaque clic -->
         <small @click="showNextPeriod">
-            {{ currentPeriod.period }}: {{ currentPeriod.value?.toFixed(2) }}%
+            {{ currentPeriod.period }}:
+            <span :class="{ 'positive': currentPeriod.value >= 0, 'negative': currentPeriod.value < 0 }">
+                {{ currentPeriod.value?.toFixed(2) }}%
+            </span>
         </small>
     </div>
 </template>
@@ -48,11 +50,22 @@ const showNextPeriod = () => {
     font-size: 0.9rem;
     margin-left: 10px;
     cursor: pointer;
-    /* Rendre interactif */
     font-weight: bold;
+    transition: color 0.3s;
+    /* Transition fluide */
 }
 
 .label-indice small:hover {
     text-decoration: underline;
+}
+
+/* Classe pour les valeurs positives */
+.label-indice small .positive {
+    color: green;
+}
+
+/* Classe pour les valeurs négatives */
+.label-indice small .negative {
+    color: red;
 }
 </style>

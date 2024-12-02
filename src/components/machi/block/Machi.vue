@@ -1,7 +1,7 @@
 <!-- src/components/machi/Machi.vue -->
 <script setup lang="ts">
 import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
-import { useCalculStore } from '../../store/calculStore'; // Import the Pinia store
+import { useCalculStore } from '../../../store/calculStore'// Import the Pinia store
 import { FilterMatchMode } from 'primevue/api'
 import AssetCard from './AssetCard.vue'
 import BalanceCard from './BalanceCard.vue'
@@ -15,8 +15,8 @@ import TradesTable from '../trade/TradesTable.vue';
 import OrdersTable from '../order/OrdersTable.vue';
 import BuyCalculator from './BuyCalculator.vue';
 
-import { Filter } from '../../types/filter'
-import { Asset } from '../../types/responseData'
+import { Filter } from '../../../types/filter'
+import { Asset } from '../../../types/responseData'
 import StableCoinCard from './StableCoinCard.vue';
 
 // Define the selected bases with proper types
@@ -230,7 +230,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .main-container {
   display: flex;
-  background-color: darkolivegreen;
+  background-color: #ddd;
   flex-direction: column;
   height: 100vh;
 }
@@ -258,7 +258,7 @@ onBeforeUnmount(() => {
   grid-auto-rows: min-content;
   /* Hauteur minimale pour chaque carte */
   align-items: start;
-  background-color: darkseagreen
+  background-color: #ddd
 }
 
 .top-tab-container {

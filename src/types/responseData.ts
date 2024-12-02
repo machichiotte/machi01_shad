@@ -27,14 +27,14 @@ export interface Trade {
   pair: string
   date?: string
   timestamp?: number
-  type: string
+  side: string
   price: number
   amount: number
   total: number
   fee: number
   feecoin: string
   platform: string
-  totalUSDT: number
+  eqUSD: number
 }
 
 export interface Strat {

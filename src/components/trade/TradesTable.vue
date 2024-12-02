@@ -52,11 +52,11 @@ watchEffect(() => {
         quote: item['quote'],
         date: date,
         pair: item['pair'],
-        type: item['type'],
+        side: item['side'],
         price: item['price'],
         amount: item['amount'],
         total: item['total'],
-        totalUSDT: item['totalUSDT'],
+        eqUSD: item['eqUSD'],
         fee: item['fee'],
         feecoin: item['feecoin'],
         platform: item['platform']
