@@ -8,6 +8,7 @@ import TakeProfitTable from './TakeProfitTable.vue';
 import InfoLabelClick from './block/InfoLabelClick.vue';
 import { getTakeProfitsTargets } from '../../js/strat/common';
 import { strategyOptions } from '../../js/strat/strategyOptions';
+import { calculateTakeProfitProgress } from '../../js/utils/takeprofits';
 
 // Props
 const props = defineProps<{
@@ -45,12 +46,21 @@ const toggleDetails = () => (isDetailsVisible.value = !isDetailsVisible.value);
 
 // Menu
 const menubarOptions = ref([
-    { label: `Open Orders (${buyOpenOrdersCount.value}/${sellOpenOrdersCount.value})`, command: () => onMenuSelect('0') },
-    { label: 'Next TP', command: () => onMenuSelect('1') },
-    { label: `Historic (${buyTradesCount.value}/${sellTradesCount.value})`, command: () => onMenuSelect('2') }
+    { label: `Open Orders (${buyOpenOrdersCount.value}/${sellOpenOrdersCount.value})`, command: () => onMenuSelectRight('0') },
+    { label: 'Next TP', command: () => onMenuSelectRight('1') },
+    { label: `Historic (${buyTradesCount.value}/${sellTradesCount.value})`, command: () => onMenuSelectRight('2') }
 ]);
-const selectedMenu = ref('1');
-const onMenuSelect = (menuLabel: string) => (selectedMenu.value = menuLabel);
+
+const menubarLeft = ref([
+    { label: `Strategy`, command: () => onMenuSelectLeft('0') },
+    { label: 'Add 1', command: () => onMenuSelectLeft('1') },
+    { label: `Add 1`, command: () => onMenuSelectLeft('2') }
+]);
+
+const selectedMenuLeft = ref('0');
+const selectedMenuRight = ref('1');
+const onMenuSelectLeft = (menuLabel: string) => (selectedMenuLeft.value = menuLabel);
+const onMenuSelectRight = (menuLabel: string) => (selectedMenuRight.value = menuLabel);
 
 // Formatage des nombres
 const formatNumber = (value: number | null): string => {
@@ -89,31 +99,8 @@ const selectedExpo = ref<number>(props.asset.strat.maxExposition || 0);
 const ass = reactive(item);
 const reactiveTakeProfits = computed(() => ass.strat.takeProfits);
 
-const tpProgress = computed(() => {
-    // Vérification si les données nécessaires sont présentes
-    if (!ass || !ass.strat || !ass.strat.takeProfits || !ass.liveData) {
-        return 0; // Valeur par défaut si les données ne sont pas disponibles
-    }
+const tpProgress = computed(() => calculateTakeProfitProgress(ass.strat.takeProfits, ass.liveData));
 
-    // 1. Calcul du recovery target
-    const recoveryTarget = ass.strat.takeProfits.tp1.price * ass.strat.takeProfits.tp1.amount;
-
-    // 2. Calcul du futur wallet (wallet prévu avec le prix TP1)
-    const futurWallet = ass.liveData.balance * ass.strat.takeProfits.tp1.price;
-
-    // 3. Récupération du currentPossession pour la progression actuelle
-    const currentPossession = ass.liveData.currentPossession;
-
-    // 4. Calcul de la valeur minimale pour la progression
-    const minProgress = futurWallet - recoveryTarget;
-
-    // 5. Calcul du pourcentage de progression
-    // Nous prenons la différence entre currentPossession et minProgress pour déterminer le pourcentage atteint
-    const progressPercentage = ((currentPossession - minProgress) / (futurWallet - recoveryTarget)) * 100;
-
-    // 6. Optionnel : limiter la progression à 100% maximum
-    return Math.min(progressPercentage, 100);
-});
 
 
 // Sauvegarde de la stratégie
@@ -136,12 +123,12 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
             <!-- Ligne 1 -->
             <div class="row line-1">
                 <!-- Colonne gauche -->
-                <div class="left-column">
-                    <div class="icon-wrapper">
+                <div class="item-details">
+                    <div class="item-icon-rank">
                         <img :src="item.iconUrl" alt="Logo" class="logo" />
                         <div class="rank">#{{ item.cmc.rank }}</div>
                     </div>
-                    <div class="info-wrapper">
+                    <div class="item-base-name">
                         <div class="base">{{ item.base }}</div>
                         <div class="name">{{ item.name }}</div>
                     </div>
@@ -183,60 +170,71 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
                                     item.liveData.balance) }}
                                 ({{ (item.strat.takeProfits.tp1.amount / item.liveData.balance * 100).toFixed(2) }}%)
                             </small>
-
                         </div>
                     </div>
-                </div>
 
-                <!-- Colonne droite -->
-                <div class="right-column">
-                    <div class="wallet-possession">Wallet: {{ item.liveData.currentPossession }}</div>
-                    <div class="average-entry-price"
-                        :class="{ positive: item.liveData.currentPrice > Number(formattedTotalBuy), negative: item.liveData.currentPrice < Number(formattedTotalBuy) }">
-                        Avg. Entry: {{ item.orders.trade.averageEntryPrice }}
+                    <div class="item-wallet">
+                        <div class="wallet-possession">Wallet: {{ item.liveData.currentPossession }}</div>
+                        <div class="average-entry-price"
+                            :class="{ positive: item.liveData.currentPrice > Number(formattedTotalBuy), negative: item.liveData.currentPrice < Number(formattedTotalBuy) }">
+                            Avg. Entry: {{ item.orders.trade.averageEntryPrice }}
+                        </div>
+                        <div class="trade-info">
+                            <span style="color: blue;">+{{ formattedTotalBuy }}</span> / <span
+                                style="color: orange;">-{{
+                                    formattedTotalSell }}</span>
+                        </div>
+                        <Button :icon="isDetailsVisible ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+                            class="expand-button" @click="toggleDetails" />
                     </div>
-                    <div class="trade-info">
-                        <span style="color: blue;">+{{ formattedTotalBuy }}</span> / <span style="color: orange;">-{{
-                            formattedTotalSell }}</span>
-                    </div>
-                    <Button :icon="isDetailsVisible ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" class="expand-button"
-                        @click="toggleDetails" />
                 </div>
-            </div>
-
-            <!-- Ligne 2 -->
-            <div class="row line-2">
-                <div class="left-column">
-                    <!-- Dropdown pour la stratégie -->
-                    <Select v-model="selectedStrat" :options="strategyOptions" optionLabel="name" optionValue="value"
-                        placeholder="Select Strategy" />
-                    <!-- Input pour l'exposition maximale -->
-                    <InputNumber v-model="selectedExpo" placeholder="Max Exposure" />
-                    <!-- Bouton de sauvegarde -->
-                    <button class="save-button" @click="saveStratForAsset">Save</button>
-                </div>
-
-
             </div>
 
         </div>
 
         <!-- Détails -->
         <div class="card-details" v-if="isDetailsVisible">
-            <div class="card-details-menu">
-                <Menubar :model="menubarOptions" @command="onMenuSelect" />
+
+            <div class="card-panel">
+                <div class="card-details-menu">
+                    <Menubar :model="menubarLeft" @command="onMenuSelectLeft" />
+                </div>
+                <div class="card-details-content">
+                    <div v-if="selectedMenuLeft === '0'">
+                        <!-- Dropdown pour la stratégie -->
+                        <Select v-model="selectedStrat" :options="strategyOptions" optionLabel="name"
+                            optionValue="value" placeholder="Select Strategy" />
+                        <!-- Input pour l'exposition maximale -->
+                        <InputNumber v-model="selectedExpo" placeholder="Max Exposure" />
+                        <!-- Bouton de sauvegarde -->
+                        <button class="save-button" @click="saveStratForAsset">Save</button>
+                    </div>
+                    <div v-if="selectedMenuLeft === '1'">
+                        <p>A rajouter</p>
+
+                    </div>
+                    <div v-if="selectedMenuLeft === '2'">
+                        <p>A rajouter</p>
+                    </div>
+                </div>
             </div>
-            <div class="card-details-content">
-                <div v-if="selectedMenu === '0'">
-                    <OrdersTable v-if="orders.length" :items="orders" />
-                    <p v-else>Pas d'ordres ouverts</p>
+
+            <div class="card-panel">
+                <div class="card-details-menu">
+                    <Menubar :model="menubarOptions" @command="onMenuSelectRight" />
                 </div>
-                <div v-if="selectedMenu === '1'">
-                    <TakeProfitTable :takeProfits="reactiveTakeProfits" :orders="orders" />
-                </div>
-                <div v-if="selectedMenu === '2'">
-                    <TradesTable v-if="trades.length" :items="trades" />
-                    <p v-else>Pas d'historique</p>
+                <div class="card-details-content">
+                    <div v-if="selectedMenuRight === '0'">
+                        <OrdersTable v-if="orders.length" :items="orders" />
+                        <p v-else>Pas d'ordres ouverts</p>
+                    </div>
+                    <div v-if="selectedMenuRight === '1'">
+                        <TakeProfitTable :takeProfits="reactiveTakeProfits" :orders="orders" />
+                    </div>
+                    <div v-if="selectedMenuRight === '2'">
+                        <TradesTable v-if="trades.length" :items="trades" />
+                        <p v-else>Pas d'historique</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -292,14 +290,14 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 }
 
 /* Colonne gauche */
-.left-column {
+.item-details {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
 
 /* Logo et rang */
-.icon-wrapper {
+.item-icon-rank {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -327,7 +325,7 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 }
 
 /* Informations principales */
-.info-wrapper {
+.item-base-name {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -343,7 +341,7 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 }
 
 /* Colonne droite */
-.right-column {
+.item-wallet {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -431,25 +429,18 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
     background-color: #45a049;
 }
 
-.next-tp {
-    display: block;
-    align-items: center;
-    gap: 1rem;
-    /* Espace entre la barre et le texte */
-}
-
 /* Barre de progression */
 .next-tp-recovery {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     /* Espace entre la barre et le texte */
 }
 
 .progress-bar {
     background-color: #eaeaea;
     /* Couleur de fond */
-    width: 200px;
+    width: 150px;
     /* Largeur fixe de la barre de progression */
     height: 10px;
     /* Hauteur de la barre */
@@ -472,9 +463,9 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 }
 
 .tp-recovery {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    color: #4caf50;
+    color: #636963;
 }
 
 small {

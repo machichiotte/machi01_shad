@@ -194,14 +194,14 @@ interface CMC {
 }
 
 // Interface pour la section "liveData"
-interface LiveData {
+export interface LiveData {
   balance: number; // Solde actuel
   currentPrice: number; // Prix actuel
   currentPossession: number; // Possession actuelle
 }
 
 // Interface pour les take profits
-interface TakeProfit {
+export interface TakeProfit {
   price: number; // Prix du TP
   amount: number; // Montant pour ce TP
   percentToNextTp?: number; // Pourcentage jusqu'au prochain TP (optionnel pour certains TP)

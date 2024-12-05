@@ -2,6 +2,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from './components/Home.vue'
 import Machi from './components/machi/Machi.vue'
+import InvestCalculator from './components/form/InvestmentCalculator.vue'
 import Orders from './components/order/Orders.vue'
 import Cmc from './components/Cmc.vue'
 import Strategy from './components/Strategy.vue'
@@ -10,6 +11,7 @@ import Trades from './components/trade/Trades.vue'
 const routes: Array<RouteRecordRaw> = [
   { path: '/', name: 'machi', component: Machi },
   { path: '/order', name: 'order', component: Orders },
+  { path: '/invest', name: 'invest', component: InvestCalculator },
   { path: '/cmc', name: 'cmc', component: Cmc },
   { path: '/home', name: 'balance', component: Home },
   { path: '/strategy', name: 'strategy', component: Strategy },

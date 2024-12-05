@@ -6,6 +6,7 @@ import { RouterLink, RouterView } from 'vue-router'
   <div class="layout">
     <nav>
       <RouterLink to="/" active-class="selected-link">Machi</RouterLink>
+      <RouterLink to="/invest" active-class="selected-link">Invest</RouterLink>
       <RouterLink to="/order" active-class="selected-link">Order</RouterLink>
       <RouterLink to="/cmc" active-class="selected-link">Cmc</RouterLink>
       <RouterLink to="/home" active-class="selected-link">Balance</RouterLink>
