@@ -49,7 +49,7 @@ export class ProcessorService {
   private static async checkNewTrades(difference: BalanceWithDifference): Promise<MappedTrade[]> {
     //logDifferenceType(difference) si besoin pour des evolutions futures
     try {
-      const tradeList = await TradeService.fetchLastTrades(difference.platform, difference.base)
+      const tradeList = await TradeService.fetchFromApi(difference.platform, difference.base)
       if (tradeList && tradeList.length > 0)
         return MappingService.mapTrades(difference.platform, tradeList, {})
     } catch (error) {
@@ -105,7 +105,7 @@ export class ProcessorService {
     return await Promise.all([
       CmcService.fetchDatabaseCmc(),
       StrategyService.fetchDatabaseStrategies(),
-      TradeService.fetchDatabaseTrades(),
+      TradeService.fetchFromDb(),
       OrderBalanceRepository.fetchAll(),
       TickerService.fetchDatabaseTickers(),
       BalanceService.fetchDatabaseBalance()

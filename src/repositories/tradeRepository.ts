@@ -12,7 +12,7 @@ export class TradeRepository {
         return await DatabaseService.getData(TRADES_COLLECTION) as MappedTrade[]
     }
 
-    static async updateTradeById(updatedTrade: MappedTrade): Promise<boolean> {
+    static async updateById(updatedTrade: MappedTrade): Promise<boolean> {
         const { _id, ...mappedData } = updatedTrade;
         return await DatabaseService.updateOneData(TRADES_COLLECTION, { _id: new ObjectId(_id) }, { $set: mappedData })
     }

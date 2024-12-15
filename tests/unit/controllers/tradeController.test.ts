@@ -10,7 +10,7 @@ describe('Trade Controller', () => {
     it('should handle errors', async () => { });
   });
 
-  describe('updateTradeById', () => {
+  describe('updateById', () => {
     it('should update trade successfully', async () => { });
 
     it('should handle errors', async () => { });

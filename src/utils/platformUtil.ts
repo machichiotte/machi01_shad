@@ -45,10 +45,10 @@ function getMarketSymbolForPlatform(platform: PLATFORM, base: string, quote: str
 
   switch (platform) {
     case 'kucoin':
-      symbol = `${base}-${quote.toUpperCase()}`
+      symbol = `${base.toUpperCase()}-${quote.toUpperCase()}`
       break
     case 'binance':
-      symbol = `${base}${quote.toUpperCase()}`
+      symbol = `${base.toUpperCase()}${quote.toUpperCase()}`
       break
     case 'htx':
       symbol = `${base.toLowerCase()}${quote.toLowerCase()}`
@@ -57,7 +57,7 @@ function getMarketSymbolForPlatform(platform: PLATFORM, base: string, quote: str
       symbol = `${base.toUpperCase()}_${quote.toUpperCase()}`
       break
     case 'okx':
-      symbol = `${base}-${quote.toUpperCase()}`
+      symbol = `${base.toUpperCase()}-${quote.toUpperCase()}`
       break
     default:
       throw new Error(`Unsupported platform: ${platform}`)

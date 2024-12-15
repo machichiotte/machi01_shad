@@ -28,7 +28,7 @@ export class MigrationSwapService {
     };
 
     if (trade._id) {
-      await TradeService.updateTradeById(updatedTrade);
+      await TradeService.updateById(updatedTrade);
       console.info(`Trade swap completed for ${oldAsset} to ${newAsset} on platform ${platform}.`);
     } else {
       console.error('Trade _id is undefined, cannot update trade');
@@ -47,7 +47,7 @@ export class MigrationSwapService {
     try {
       const [swaps, trades, strategies] = await Promise.all([
         this.fetchDatabaseSwapMigration(),
-        TradeService.fetchDatabaseTrades() as Promise<MappedTrade[]>,
+        TradeService.fetchFromDb() as Promise<MappedTrade[]>,
         StrategyService.fetchDatabaseStrategies() as Promise<MappedStrat[]>
       ]);
 

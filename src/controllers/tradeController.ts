@@ -10,7 +10,7 @@ import { MappedTrade } from '@src/types/trade'
  */
 async function getTrades(req: Request, res: Response): Promise<void> {
   try {
-    const data = await TradeService.fetchDatabaseTrades()
+    const data = await TradeService.fetchFromDb()
     res.status(200).json({ status: "success", message: 'Trades récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'getTrades')
@@ -20,7 +20,7 @@ async function getTrades(req: Request, res: Response): Promise<void> {
 /**
  * Met à jour un trade spécifique par son ID.
  */
-async function updateTradeById(req: Request, res: Response): Promise<void> {
+async function updateById(req: Request, res: Response): Promise<void> {
   //TODO modifier front const { tradeId } = req.params
   const updatedTrade = req.body as MappedTrade
   if (!updatedTrade._id) {
@@ -28,10 +28,10 @@ async function updateTradeById(req: Request, res: Response): Promise<void> {
   }
 
   try {
-    const data = await TradeService.updateTradeById(updatedTrade)
+    const data = await TradeService.updateById(updatedTrade)
     res.status(200).json({ status: "success", message: `Trade ${updatedTrade._id} mis à jour`, data })
   } catch (error) {
-    handleControllerError(res, error, 'updateTradeById')
+    handleControllerError(res, error, 'updateById')
   }
 }
 
@@ -71,15 +71,18 @@ async function updateTradesByPlatform(req: Request, res: Response): Promise<void
  * Récupère les derniers trades pour une plateforme et un symbole spécifiques.
  */
 async function fetchLastTrades(req: Request, res: Response): Promise<void> {
-  const { platform, symbol } = req.params
+  const { platform, base } = req.params
 
   if (!isValidPlatform(platform)) {
     res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
     return;
   }
 
+  console.log('platform asset', platform + ' - ' + base)
   try {
-    const data = await TradeService.fetchLastTrades(platform, symbol)
+    const data = await TradeService.fetchFromApi(platform, base)
+    console.log('platform asset', platform + ' - ' + data)
+
     res.status(200).json({ status: "success", message: 'Derniers trades récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'fetchLastTrades')
@@ -113,7 +116,7 @@ async function saveAllTradesToDatabase(req: Request, res: Response): Promise<voi
 }
 
 export {
-  updateTradeById,
+  updateById,
   getTrades,
   insertNewTrades,
   updateTradesByPlatform,

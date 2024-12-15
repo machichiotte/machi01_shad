@@ -15,21 +15,23 @@ import { retry } from '@src/utils/retryUtil'
 const COLLECTION_CATEGORY = config.collectionCategory.trade
 
 export class TradeService {
-  static async fetchDatabaseTrades(): Promise<MappedTrade[]> {
+  static async fetchFromDb(): Promise<MappedTrade[]> {
     return await TradeRepository.fetchAllTrades()
   }
 
-  static async fetchLastTrades(platform: PLATFORM, base: string): Promise<PlatformTrade[]> {
+  static async fetchFromApi(platform: PLATFORM, base: string): Promise<PlatformTrade[]> {
     const markets = await MarketService.getSavedMarkets();
+    console.log('markets', JSON.stringify(markets[0]) + ' -------- ' + base + ' -------- ' + platform)
     const validSymbols = QUOTE_CURRENCIES
       .filter(quote => markets.some(market =>
-        market.base === base && market.quote === quote && market.platform === platform
+        market.base === base.toUpperCase() && market.quote === quote && market.platform === platform
       ))
       .map(quote => getMarketSymbolForPlatform(platform, base, quote));
 
     const trades: PlatformTrade[] = [];
-    const batchSize = 3; // Ajustez selon les limites de l'API
+    const batchSize = 10; // Ajustez selon les limites de l'API
 
+    console.log('validSymbols.length', validSymbols.length)
     for (let i = 0; i < validSymbols.length; i += batchSize) {
       const symbolBatch = validSymbols.slice(i, i + batchSize);
 
@@ -53,15 +55,15 @@ export class TradeService {
     return trades;
   }
 
-  static async updateTradeById(updatedTrade: MappedTrade): Promise<boolean> {
+  static async updateById(updatedTrade: MappedTrade): Promise<boolean> {
     if (!updatedTrade._id) {
       throw new Error(`L'ID du trade est requis`)
     }
 
     try {
-      return await TradeRepository.updateTradeById(updatedTrade)
+      return await TradeRepository.updateById(updatedTrade)
     } catch (error) {
-      handleServiceError(error, 'updateTradeById', `Error updating trade with id ${updatedTrade._id}`)
+      handleServiceError(error, 'updateById', `Error updating trade with id ${updatedTrade._id}`)
       throw error
     }
   }
@@ -90,7 +92,7 @@ export class TradeService {
 
   static async saveTradesToDatabase(newTrades: MappedTrade[]): Promise<void> {
     try {
-      const existingTrades = await this.fetchDatabaseTrades()
+      const existingTrades = await this.fetchFromDb()
       await TradeRepository.insertFilteredTrades(newTrades, existingTrades)
     } catch (error) {
       handleServiceError(error, 'saveTradesToDatabase', 'Error saving trades to database')

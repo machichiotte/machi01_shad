@@ -60,6 +60,7 @@ export class MappingService {
       : 'N/A'
 
     const mappedTrade = {
+      orderid: item.id,
       base: base,
       quote: quote,
       pair: item.symbol?.toUpperCase() || '',

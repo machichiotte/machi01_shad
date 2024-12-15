@@ -242,7 +242,7 @@ async function convertModelKucoin(data: Array<ModelKucoin>): Promise<MappedTrade
           price: parseFloat(item['Avg. Filled Price']),
           amount: parseFloat(item['Filled Amount']),
           total: parseFloat(item['Filled Volume']),
-          eqUSD: parseFloat(item['Filled Volume (USDT)']),
+          eqUSD: parseFloat(item['Filled Volume (USD)']),
           fee: parseFloat(item.Fee),
           feecoin: item['Fee Currency'],
           platform: 'kucoin'

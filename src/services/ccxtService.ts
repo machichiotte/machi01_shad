@@ -55,6 +55,8 @@ export class CcxtService {
 
     static async fetchRawTrade(platform: PLATFORM, symbol?: string, since?: number, limit?: number, params?: Record<string, unknown>): Promise<PlatformTrade[]> {
         const platformInstance = this.createPlatformInstance(platform);
+        console.log('platform', platform)
+        console.log('symbol', symbol)
         return await platformInstance.fetchMyTrades(symbol, since, limit, params);
     }
 
