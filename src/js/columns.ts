@@ -30,7 +30,7 @@ const tradesColumns: Column[] = [
   { header: 'Price', field: 'price' },
   { header: 'Amount', field: 'amount' },
   { header: 'Total', field: 'total' },
-  { header: 'Total (USDT)', field: 'eqUSD' },
+  { header: '~ USD', field: 'eqUSD' },
   { header: 'Fee', field: 'fee' },
   { header: 'Feecoin', field: 'feecoin' }
 ]
@@ -42,7 +42,7 @@ const tradesTableColumns: Column[] = [
   { header: 'Price', field: 'price' },
   { header: 'Amount', field: 'amount' },
   { header: 'Total', field: 'total' },
-  { header: 'Total (USDT)', field: 'eqUSD' },
+  { header: '~ USD', field: 'eqUSD' },
   { header: 'Fee', field: 'fee' },
   { header: 'Platform', field: 'platform' },
   { header: 'Explatform', field: 'explatform' }

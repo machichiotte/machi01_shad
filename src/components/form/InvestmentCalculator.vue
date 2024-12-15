@@ -1,7 +1,7 @@
 <!-- src/components/forms/InvestmentCalculator.vue -->
 <template>
     <div>
-        <!-- Formulaire -->
+        <!-- Formulaire principal avec les anciens champs -->
         <div class="form-container">
             <h2>Investment Calculator</h2>
             <div class="form-group">
@@ -41,6 +41,25 @@
             <button @click="calculateInvestment">Validate</button>
         </div>
 
+        <!-- Nouvelle section pour les champs supplémentaires -->
+        <div class="form-container">
+            <h3>Additional Fields</h3>
+            <div class="form-group">
+                <label for="prevBuyTotal">Previous Total Purchase ($):</label>
+                <input v-model.number="prevBuyTotal" type="number" id="prevBuyTotal"
+                    placeholder="Previous total buy amount" />
+            </div>
+            <div class="form-group">
+                <label for="prevSellTotal">Previous Total Sale ($):</label>
+                <input v-model.number="prevSellTotal" type="number" id="prevSellTotal"
+                    placeholder="Previous total sell amount" />
+            </div>
+            <div class="form-group">
+                <label for="balance">Current Balance ($):</label>
+                <input v-model.number="balance" type="number" id="balance" placeholder="Current balance" />
+            </div>
+        </div>
+
         <!-- Tableau des résultats -->
         <div v-if="investmentTable.length > 0" class="table-container">
             <h3>Investment Table</h3>
@@ -52,7 +71,19 @@
                         <th>Quantity</th>
                         <th>Amount Invested</th>
                         <th>Percentage</th>
-                        <th>Average Purchase</th>
+                        <th>Purchase Average Price</th>
+
+                        <!-- Je veux rajouter ceci, qui affichera la somme des amount invested precedents, jai aussi besoin de modifier le script-->
+                        <th>Cumulated Invest Quantity</th>
+                        <th>Cumulated Invest Amount</th>
+
+                        <!-- Ici on fait somme de la valeur cummulated + valeur input Current Balance-->
+                        <th>Total Invest Quantity</th>
+                        <!-- Ici on fait somme de la valeur cummulated + valeur input totalbuy - valeur input totalsell -->
+                        <th>Total Invest Amount</th>
+
+                        <!-- Ici on fait somme de la valeur Total invest amount / total invest quantity -->
+                        <th>Total Average Entry Price</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,6 +94,11 @@
                         <td>{{ row.amountInvested }}</td>
                         <td>{{ row.percentage }}</td>
                         <td>{{ row.averagePurchase }}</td>
+                        <td>{{ row.cumulatedInvestQuantity }}</td>
+                        <td>{{ row.cumulatedInvestAmount }}</td>
+                        <td>{{ row.totalInvestQuantity }}</td>
+                        <td>{{ row.totalInvestAmount }}</td>
+                        <td>{{ row.totalAverageEntryPrice }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -90,6 +126,10 @@ export default {
             platformOption: "default",
             percentageOption: "average", // "average" or "weighted"
             investmentTable: [],
+            maxWanted: null,
+            prevBuyTotal: null,
+            prevSellTotal: null,
+            balance: null,
         };
     },
     methods: {
@@ -103,56 +143,71 @@ export default {
                 return;
             }
 
-            // Si l'option Binance est sélectionnée, vérifier le montant minimum par ordre
             if (this.platformOption === "binance" && this.totalAmount / this.orderCount < 5) {
                 alert("For Binance, each investment must be at least $5.");
                 return;
             }
 
-            // Adapter les pourcentages en fonction du nombre d'ordres
             let adjustedPercentages = [];
             if (this.percentageOption === "average") {
-                // Pourcentage moyen : repartir uniformément
                 const averagePercentage = 100 / this.orderCount;
                 adjustedPercentages = Array(this.orderCount).fill(averagePercentage);
             } else if (this.percentageOption === "weighted") {
-                // Pourcentage pondéré : utiliser les pourcentages spécifiques en fonction du nombre d'ordres
                 adjustedPercentages = this.percentages[this.orderCount];
             }
 
             const priceRange = this.priceUpper - this.priceLower;
-            let cumulativeAmount = 0;
-            let cumulativeQuantity = 0;
+            let currentPrice = this.priceLower;
 
-            const tableData = adjustedPercentages.map((percent, index) => {
-                const price = this.priceUpper - (index / (adjustedPercentages.length - 1)) * priceRange;
-                let amountInvested = (this.totalAmount * percent) / 100;
+            let cumulativeAmount = 0; // Cumulative invested amount
+            let cumulativeQuantity = 0; // Cumulative invested quantity
 
-                // Si l'option Binance est activée, s'assurer que chaque montant investi est >= 5$
-                if (this.platformOption === "binance" && amountInvested < 5) {
-                    amountInvested = 5;
-                }
+            this.investmentTable = [];
 
-                const quantity = amountInvested / price;
+            for (let i = 0; i < this.orderCount; i++) {
+                const percentage = adjustedPercentages[i];
+                const amountInvested = (this.totalAmount * percentage) / 100;
+                const quantity = amountInvested / currentPrice;
 
                 cumulativeAmount += amountInvested;
                 cumulativeQuantity += quantity;
 
-                const averagePurchase = cumulativeAmount / cumulativeQuantity;
+                const cumulatedInvestQuantity = cumulativeQuantity.toFixed(8);
+                const cumulatedInvestAmount = cumulativeAmount.toFixed(2);
 
-                return {
-                    tradeNumber: index + 1,
-                    price: price.toFixed(2),
-                    quantity: quantity.toFixed(6),
+                const totalInvestQuantity = (
+                    cumulativeQuantity + this.balance
+                ).toFixed(8);
+
+                const totalInvestAmount = (
+                    cumulativeAmount +
+                    (this.prevBuyTotal || 0) -
+                    (this.prevSellTotal || 0)
+                ).toFixed(2);
+
+                const totalAverageEntryPrice = (
+                    totalInvestAmount / totalInvestQuantity
+                ).toFixed(4);
+
+                this.investmentTable.push({
+                    tradeNumber: i + 1,
+                    price: currentPrice.toFixed(4),
+                    quantity: quantity.toFixed(8),
                     amountInvested: amountInvested.toFixed(2),
-                    percentage: `${percent.toFixed(1)}%`,
-                    averagePurchase: averagePurchase.toFixed(2),
-                };
-            });
+                    percentage: percentage.toFixed(1),
+                    averagePurchase: (cumulativeAmount / cumulativeQuantity).toFixed(4),
+                    cumulatedInvestQuantity,
+                    cumulatedInvestAmount,
+                    totalInvestQuantity,
+                    totalInvestAmount,
+                    totalAverageEntryPrice,
+                });
 
-            this.investmentTable = tableData;
+                currentPrice += priceRange / (this.orderCount - 1);
+            }
         },
     },
+
 };
 </script>
 

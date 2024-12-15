@@ -45,7 +45,6 @@ import ToggleButton from 'primevue/togglebutton'
 import Toolbar from 'primevue/toolbar'
 import Tooltip from 'primevue/tooltip';
 
-
 import './style.css'
 
 const app = createApp(App)

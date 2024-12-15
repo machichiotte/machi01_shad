@@ -7,6 +7,7 @@ const ENDPOINTS: Record<string, string> = {
   STRATEGY: '/strategy/get',
   BALANCE: '/balance/get',
   TRADE: '/trade/get',
+  TRADE_BY_BASE: '/trade/fetch',
   ORDER: '/order/get',
   TICKER: '/ticker/get',
   MACHI: '/machi/get'
@@ -21,6 +22,9 @@ const fetchStrategy = (): Promise<Strat[]> => fetchApiData<Strat[]>(ENDPOINTS.ST
 const fetchTicker = (): Promise<Ticker[]> => fetchApiData<Ticker[]>(ENDPOINTS.TICKER);
 const fetchTrade = (): Promise<Trade[]> => fetchApiData<Trade[]>(ENDPOINTS.TRADE);
 
+const fetchTradeBySymbol = (params: { base: string; platform: string }): Promise<any[]> =>
+  fetchApiData<any[]>(`${ENDPOINTS.TRADE_BY_BASE}/${params.platform}/${params.base}`);
+
 export {
   fetchBalance,
   fetchCmc,
@@ -29,4 +33,5 @@ export {
   fetchStrategy,
   fetchTicker,
   fetchTrade,
+  fetchTradeBySymbol
 };

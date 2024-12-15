@@ -12,6 +12,8 @@ import { RouterLink, RouterView } from 'vue-router'
       <RouterLink to="/home" active-class="selected-link">Balance</RouterLink>
       <RouterLink to="/strategy" active-class="selected-link">Strategy</RouterLink>
       <RouterLink to="/trade" active-class="selected-link">Trade</RouterLink>
+      <RouterLink to="/stuff" active-class="selected-link">Stuff</RouterLink>
+
     </nav>
     <main>
       <RouterView />

@@ -1,6 +1,6 @@
 <!-- src/components/trades/TradeActions.vue -->
 <template>
-    <div class="actions-container mb-4">
+    <div class="actions-container">
         <Toolbar>
             <template #start>
                 <Button label="Add a new trade" icon="pi pi-cart-plus" severity="info" class="mr-2"
