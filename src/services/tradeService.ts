@@ -29,7 +29,7 @@ export class TradeService {
       .map(quote => getMarketSymbolForPlatform(platform, base, quote));
 
     const trades: PlatformTrade[] = [];
-    const batchSize = 10; // Ajustez selon les limites de l'API
+    const batchSize = 3; // Ajustez selon les limites de l'API
 
     console.log('validSymbols.length', validSymbols.length)
     for (let i = 0; i < validSymbols.length; i += batchSize) {
