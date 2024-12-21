@@ -121,7 +121,6 @@ export class DatabaseService {
                 return getMockedData(collectionName)
             } else {
                 const data = await DatabaseService.getCacheOrFetchCollection(collectionName)
-                console.log(`${data.length} éléments récupérés depuis ${collectionName}`);
                 return Array.isArray(data) ? data as MappedData[] : []
             }
         } catch (error) {
@@ -144,7 +143,6 @@ export class DatabaseService {
 
     static async fetchAndCacheData(collectionName: string): Promise<Document[]> {
         try {
-            console.log(`Fetching database data for collection: ${collectionName}`);
             const result = await retry(mongodbOperations.find, [collectionName], 'fetchAndCacheData');
             await CacheService.addToCache(collectionName, result as MappedData[]);
             return result;

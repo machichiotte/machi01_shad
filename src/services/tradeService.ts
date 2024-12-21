@@ -21,7 +21,6 @@ export class TradeService {
 
   static async fetchFromApi(platform: PLATFORM, base: string): Promise<PlatformTrade[]> {
     const markets = await MarketService.getSavedMarkets();
-    console.log('markets', JSON.stringify(markets[0]) + ' -------- ' + base + ' -------- ' + platform)
     const validSymbols = QUOTE_CURRENCIES
       .filter(quote => markets.some(market =>
         market.base === base.toUpperCase() && market.quote === quote && market.platform === platform
@@ -29,12 +28,11 @@ export class TradeService {
       .map(quote => getMarketSymbolForPlatform(platform, base, quote));
 
     const trades: PlatformTrade[] = [];
-    const batchSize = 3; // Ajustez selon les limites de l'API
+    const batchSize = 30; // Ajustez selon les limites de l'API
 
-    console.log('validSymbols.length', validSymbols.length)
+    console.log('validSymbols', validSymbols.length + " : " + validSymbols)
     for (let i = 0; i < validSymbols.length; i += batchSize) {
       const symbolBatch = validSymbols.slice(i, i + batchSize);
-
       const batchPromises = symbolBatch.map(symbol =>
         retry(
           async () => CcxtService.fetchRawTrade(platform, symbol),
@@ -42,7 +40,6 @@ export class TradeService {
           `fetchRawTrade(${platform}, ${symbol})`
         )
       );
-
       const batchResults = await Promise.all(batchPromises);
       batchResults.forEach(result => trades.push(...result));
 

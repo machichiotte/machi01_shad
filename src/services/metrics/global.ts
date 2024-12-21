@@ -83,7 +83,7 @@ function getTicker(tickers: MappedTicker[], base: string, platform: string): num
  */
 function getCurrentPrice(ticker: number, cmcPrice: number | undefined, tags: string[]): number {
   if (ticker === 0) {
-    console.warn('Paramètres invalides pour getCurrentPrice')
+    //console.warn('Paramètres invalides pour getCurrentPrice', ticker + " - " + cmcPrice + " - " + tags)
     if (cmcPrice && tags.includes('stablecoin'))
       return cmcPrice
   }

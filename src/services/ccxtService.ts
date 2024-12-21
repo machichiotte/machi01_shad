@@ -20,6 +20,7 @@ export class CcxtService {
         try {
             // Check if the CCXT class exists
             const exchangeClass = ccxt[platform as keyof typeof ccxt] as typeof ccxt.Exchange
+            console.log('exchangeClass', exchangeClass.toString);
 
             const platformParams: ccxt.Exchange['options'] = {
                 apiKey,
@@ -55,9 +56,10 @@ export class CcxtService {
 
     static async fetchRawTrade(platform: PLATFORM, symbol?: string, since?: number, limit?: number, params?: Record<string, unknown>): Promise<PlatformTrade[]> {
         const platformInstance = this.createPlatformInstance(platform);
-        console.log('platform', platform)
-        console.log('symbol', symbol)
-        return await platformInstance.fetchMyTrades(symbol, since, limit, params);
+        const trades = await platformInstance.fetchMyTrades(symbol, 1596823694, limit, params);
+        console.log('platform', platform + " - " + symbol + " : " + trades)
+
+        return trades
     }
 
 

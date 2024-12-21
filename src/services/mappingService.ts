@@ -1,6 +1,6 @@
 // src/services/mappingService.ts
 import { PlatformBalance, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@src/types/platform'
-import { STABLECOINS } from '@src/constants'
+import { QUOTE_CURRENCIES } from '@src/constants'
 import { getEqUSD } from '@utils/mappingUtil'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
@@ -129,7 +129,7 @@ export class MappingService {
   static mapMarkets(platform: PLATFORM, data: PlatformMarket[]): Omit<MappedMarket, '_id'>[] {
     return Object.values(data)
       .filter((item): item is PlatformMarket =>
-        STABLECOINS.some((coin) => item?.quote === coin)
+        QUOTE_CURRENCIES.some((coin) => item?.quote === coin)
       )
       .map((item) => ({
         symbol: item?.id ?? '',

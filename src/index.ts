@@ -16,7 +16,14 @@ async function startApp(): Promise<void> {
     await MongodbService.connectToMongoDB();
 
     // Appeler la fonction updateAll du service dédié
-    await UpdateService.updateAll();
+    try {
+      await UpdateService.updateAll();
+    } catch (error) {
+      console.error(
+        'Erreur lors de l’exécution de updateAll :', error
+      );
+      // Continuer sans arrêter le serveur
+    }
 
     // await MigrationSwapService.handleMigrationSwap();
     await CronTaskService.initializeCronTasks();

@@ -1,64 +1,67 @@
-// src/services/cron/cronTasksService.ts
-import cron from 'node-cron'
-import { handleServiceError } from '@utils/errorUtil'
+// src/services/cronTasksService.ts
+import cron from 'node-cron';
+import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
 
-import { TickerService } from '@services/tickerService'
-import { MarketService } from '@services/marketService'
-import { BalanceService } from '@services/balanceService'
+import { TickerService } from '@services/tickerService';
+import { MarketService } from '@services/marketService';
+import { BalanceService } from '@services/balanceService';
 
 import { Task } from '@src/types/cron';
 import { CmcService } from './cmcService';
 
 export class CronTaskService {
-  /**
-   * Initializes and schedules cron tasks for tickers, markets, and balances.
-   *
-   * This function sets up periodic tasks using node-cron to run at specified intervals.
-   * It initializes tasks for updating tickers, markets, and balances based on the
-   * schedules defined in the configuration.
-   */
   static async initializeCronTasks(): Promise<void> {
     try {
-      console.log('Starting initialization of Cron tasks...')
+      console.log('Starting initialization of Cron tasks...');
 
       const tasks: Task[] = [
         {
           schedule: config.cronSchedules.ticker,
           task: TickerService.cronTicker,
-          name: 'Tickers'
+          name: 'Tickers',
         },
         {
           schedule: config.cronSchedules.market,
           task: MarketService.cronMarket,
-          name: 'Markets'
+          name: 'Markets',
         },
         {
           schedule: config.cronSchedules.balance,
           task: BalanceService.cronBalance,
-          name: 'Balances'
-        },
-        {
-          schedule: config.cronSchedules.balance,
-          task: BalanceService.cronBalance,
-          name: 'Balances'
+          name: 'Balances',
         },
         {
           schedule: config.cronSchedules.cmc,
           task: CmcService.updateCmcData,
-          name: 'Cmc'
-        }
-      ]
+          name: 'Cmc',
+        },
+      ];
 
+      const initializedTasks: string[] = []; // Tâches initialisées avec succès
+      const failedTasks: string[] = []; // Tâches ayant échoué
+
+      // Parcours et planification des tâches
       tasks.forEach(({ schedule, task, name }) => {
-        cron.schedule(schedule, task)
-        console.log(`Cron task initialized: ${name}`)
-      })
+        try {
+          cron.schedule(schedule, task);
+          initializedTasks.push(name);
+        } catch (error) {
+          failedTasks.push(name);
+          handleServiceError(error, `CronTaskService: ${name}`, `Failed to initialize cron task: ${name}`);
+        }
+      });
 
-      console.log('All Cron tasks have been successfully initialized.')
+      // Log des tâches initialisées et des échecs
+      if (initializedTasks.length > 0) {
+        console.log(`Cron Initialized: ${initializedTasks.join(' - ')}`);
+      }
+      if (failedTasks.length > 0) {
+        console.error(`Cron Failed: ${failedTasks.join(' - ')}`);
+      }
     } catch (error) {
-      handleServiceError(error, 'initializeCronTasks', `Error initializing Cron tasks`)
-      throw error
+      handleServiceError(error, 'initializeCronTasks', `Error initializing Cron tasks`);
+      throw error;
     }
   }
 }

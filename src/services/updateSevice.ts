@@ -1,79 +1,40 @@
 // src/services/UpdateService.ts
-
+import { PLATFORMS } from '@src/types/platform';
 import { CmcService } from '@services/cmcService';
-import { BalanceService } from '@services/balanceService';
-import { MarketService } from '@services/marketService';
-import { TickerService } from '@services/tickerService';
+import { PlatformUpdateManager } from '@services/platformUpdateManager';
 import { TimestampService } from '@services/timestampService';
-import { PLATFORM } from '@src/types/platform';
 
 export class UpdateService {
-    // Méthode publique pour gérer toutes les mises à jour
+    // Méthode principale pour gérer toutes les mises à jour
     static async updateAll(): Promise<void> {
-        await this.updateCmcIfNeeded();
-        await this.updateBalancesIfNeeded();
-        await this.updateMarketsIfNeeded();
-        await this.updateTickersIfNeeded();
+        await this.updateCmcIfNeeded(); // Appel pour CMC
+        await this.updatePlatforms();  // Mise à jour des plateformes
     }
 
-    // Mise à jour des données CMC si nécessaire
+    // Mise à jour des données de CoinMarketCap (CMC)
     private static async updateCmcIfNeeded(): Promise<void> {
         const timestamps = await TimestampService.fetchDatabaseTimestamp();
         const cmcUpdateInterval = 24 * 60 * 60 * 1000; // 24 heures
         const lastCmcUpdate = timestamps.cmc.$numberLong || '0';
 
         if (this.hasTimeElapsed(lastCmcUpdate, cmcUpdateInterval)) {
-            console.log('CMC data is outdated, updating now...');
+            console.log('Updating CMC data...');
             await CmcService.updateCmcData();
         }
     }
 
-    // Mise à jour des balances si nécessaire
-    private static async updateBalancesIfNeeded(): Promise<void> {
-        const timestamps = await TimestampService.fetchDatabaseTimestamp();
-        const balanceUpdateInterval = 5 * 60 * 1000; // 5 minutes
-        const balanceTimestamps = timestamps.balance;
+    // Mise à jour des données par plateforme
+    private static async updatePlatforms(): Promise<void> {
+        const platformUpdates = PLATFORMS.map(platform =>
+            PlatformUpdateManager.updatePlatformData(platform)
+        );
 
-        for (const platform in balanceTimestamps) {
-            const lastBalanceUpdate = balanceTimestamps[platform]?.$numberLong || '0';
-            if (this.hasTimeElapsed(lastBalanceUpdate, balanceUpdateInterval)) {
-                console.log(`Balance for ${platform} is outdated, updating now...`);
-                await BalanceService.updateBalancesForPlatform(platform as PLATFORM);
-            }
-        }
+        // Mise à jour parallèle des plateformes
+        await Promise.all(platformUpdates);
+        console.log('All platforms updated successfully.');
     }
 
-    // Mise à jour des marchés si nécessaire
-    private static async updateMarketsIfNeeded(): Promise<void> {
-        const timestamps = await TimestampService.fetchDatabaseTimestamp();
-        const marketUpdateInterval = 24 * 60 * 60 * 1000; // 24 heures
-        const marketTimestamps = timestamps.market;
-
-        for (const platform in marketTimestamps) {
-            const lastMarketUpdate = marketTimestamps[platform]?.$numberLong || '0';
-            if (this.hasTimeElapsed(lastMarketUpdate, marketUpdateInterval)) {
-                console.log(`Market data for ${platform} is outdated, updating now...`);
-                await MarketService.updateMarketsForPlatform(platform as PLATFORM);
-            }
-        }
-    }
-
-    // Mise à jour des tickers si nécessaire
-    private static async updateTickersIfNeeded(): Promise<void> {
-        const timestamps = await TimestampService.fetchDatabaseTimestamp();
-        const tickerUpdateInterval = 1 * 60 * 1000; // 1 minute
-        const tickerTimestamps = timestamps.ticker;
-
-        for (const platform in tickerTimestamps) {
-            const lastTickerUpdate = tickerTimestamps[platform]?.$numberLong || '0';
-            if (this.hasTimeElapsed(lastTickerUpdate, tickerUpdateInterval)) {
-                console.log(`Ticker data for ${platform} is outdated, updating now...`);
-                await TickerService.updateTickersForPlatform(platform as PLATFORM);
-            }
-        }
-    }
-
-    // Méthode pour comparer les timestamps
+    // Vérification du temps écoulé
     private static hasTimeElapsed(lastTimestamp: string, intervalInMs: number): boolean {
         if (isNaN(parseInt(lastTimestamp))) {
             return false;
