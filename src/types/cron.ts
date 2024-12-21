@@ -1,6 +1,8 @@
 // src/types/cron.ts
-export interface Task {
-    schedule: string
-    task: () => void
-    name: string
-}
+import { PLATFORM } from './platform';
+
+export type Task = {
+    schedule: string;
+    task: (() => void) | ((platform: PLATFORM) => Promise<void>); // Support des deux cas
+    name: string;
+};

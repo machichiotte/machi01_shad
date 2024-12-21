@@ -20,7 +20,6 @@ export class CcxtService {
         try {
             // Check if the CCXT class exists
             const exchangeClass = ccxt[platform as keyof typeof ccxt] as typeof ccxt.Exchange
-            console.log('exchangeClass', exchangeClass.toString);
 
             const platformParams: ccxt.Exchange['options'] = {
                 apiKey,

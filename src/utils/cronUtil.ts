@@ -8,7 +8,7 @@ import { retry } from './retryUtil';
 /**
  * Exécute une tâche cron avec gestion des erreurs et mécanisme de retry
  */
-async function executeCronTask(task: () => Promise<void>, isCritical: boolean = false, retries: number = 3): Promise<void> {
+export async function executeCronTask(task: () => Promise<void>, isCritical: boolean = false, retries: number = 3): Promise<void> {
   try {
     // Utilise la fonction retry pour effectuer plusieurs tentatives
     await retry(task, [], `executeCronTask ${task}`, retries);

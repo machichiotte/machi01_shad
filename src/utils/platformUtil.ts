@@ -21,7 +21,7 @@ function checkApiKeys(platform: PLATFORM): boolean {
 
   const { apiKey, secretKey } = platformConfig;
   if (!apiKey || !secretKey) {
-    console.info(`Clés API manquantes pour la plateforme : ${platform}`);
+    //console.info(`Clés API manquantes pour la plateforme : ${platform}`);
     return false;
   }
 

@@ -104,10 +104,14 @@ export class DatabaseService {
     }
 
     static async saveDataAndTimestampToDatabase(data: Omit<MappedData, '_id'>[], collectionName: string, tsCategory: string, platform?: PLATFORM): Promise<void> {
+        const startTime = Date.now();
+
         try {
             await DatabaseService.deleteAndInsertData(collectionName, data, platform)
             await TimestampService.saveTimestampToDatabase(tsCategory, platform)
-            console.log(`Données de ${platform} sauvegardées dans la base de données de ${collectionName}`)
+            const duration = Date.now() - startTime;
+
+            console.log(`Save Bdd : ${collectionName} for ${platform} in ${duration}ms.`)
         } catch (error) {
             handleServiceError(error, 'saveDataAndTimestampToDatabase', 'Erreur lors de la sauvegarde des données dans la base de données')
             throw error

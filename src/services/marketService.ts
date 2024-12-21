@@ -5,7 +5,7 @@ import { MarketRepository } from '@repositories/marketRepository';
 import { MappedMarket } from '@typ/market';
 import { handleServiceError } from '@utils/errorUtil';
 import { PLATFORM } from '@src/types/platform';
-import { executeForPlatforms } from '@src/utils/cronUtil';
+import { executeCronTask } from '@src/utils/cronUtil';
 
 export class MarketService {
   /**
@@ -41,7 +41,8 @@ export class MarketService {
     return await MarketRepository.fetchAll();
   }
 
-  static async cronMarket(): Promise<void> {
-    await executeForPlatforms('updateMarkets', MarketService.updateMarketsForPlatform);
+  static async cronMarket(platform: PLATFORM): Promise<void> {
+    await executeCronTask(() => MarketService.updateMarketsForPlatform(platform), true)
+
   }
 }

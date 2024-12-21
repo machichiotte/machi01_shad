@@ -5,7 +5,7 @@ import { retry } from '@src/utils/retryUtil'
 import { TickerRepository } from '@repositories/tickerRepository'
 import { MappedTicker } from '@typ/ticker'
 import { PLATFORM, PLATFORMS } from '@src/types/platform'
-import { executeForPlatforms } from '@src/utils/cronUtil'
+import { executeCronTask } from '@src/utils/cronUtil'
 import { CcxtService } from '@services/ccxtService'
 
 export class TickerService {
@@ -81,7 +81,8 @@ export class TickerService {
     }
   }
 
-  static async cronTicker(): Promise<void> {
-    await executeForPlatforms('updateTickers', TickerService.updateTickersForPlatform)
+  static async cronTicker(platform: PLATFORM): Promise<void> {
+    await executeCronTask(() => TickerService.updateTickersForPlatform(platform), true)
+
   }
 }

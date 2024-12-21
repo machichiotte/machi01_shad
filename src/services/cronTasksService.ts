@@ -9,13 +9,22 @@ import { BalanceService } from '@services/balanceService';
 
 import { Task } from '@src/types/cron';
 import { CmcService } from './cmcService';
+import { PLATFORMS } from '@src/types/platform';
+import { checkApiKeys } from '@utils/platformUtil';
 
 export class CronTaskService {
   static async initializeCronTasks(): Promise<void> {
     try {
       console.log('Starting initialization of Cron tasks...');
 
-      const tasks: Task[] = [
+      const initializedTasks: string[] = []; // Tâches initialisées avec succès
+      const failedTasks: string[] = []; // Tâches ayant échoué
+
+      // Vérifie les plateformes valides via leurs clés API
+      const validPlatforms = PLATFORMS.filter(platform => checkApiKeys(platform));
+
+      // Tâches basées sur les plateformes
+      const platformTasks: Task[] = [
         {
           schedule: config.cronSchedules.ticker,
           task: TickerService.cronTicker,
@@ -31,6 +40,10 @@ export class CronTaskService {
           task: BalanceService.cronBalance,
           name: 'Balances',
         },
+      ];
+
+      // Tâches non liées aux plateformes (par exemple, CMC)
+      const generalTasks: Task[] = [
         {
           schedule: config.cronSchedules.cmc,
           task: CmcService.updateCmcData,
@@ -38,23 +51,58 @@ export class CronTaskService {
         },
       ];
 
-      const initializedTasks: string[] = []; // Tâches initialisées avec succès
-      const failedTasks: string[] = []; // Tâches ayant échoué
-
-      // Parcours et planification des tâches
-      tasks.forEach(({ schedule, task, name }) => {
+      // Planifie les tâches basées sur les plateformes
+      platformTasks.forEach(({ schedule, task, name }) => {
         try {
-          cron.schedule(schedule, task);
+          validPlatforms.forEach(platform => {
+            cron.schedule(schedule, async () => {
+              const startTime = Date.now();
+
+              try {
+                await task(platform); // Appelle la tâche avec l'argument platform
+                const duration = Date.now() - startTime;
+                console.log(`Platform Task ${name} executed successfully in ${duration}ms.`);
+              } catch (err) {
+                handleServiceError(err, `CronTaskService: ${name}`, `Failed task for platform: ${platform}`);
+              }
+            });
+          });
           initializedTasks.push(name);
         } catch (error) {
           failedTasks.push(name);
-          handleServiceError(error, `CronTaskService: ${name}`, `Failed to initialize cron task: ${name}`);
+          handleServiceError(error, `CronTaskService: ${name}`, `Failed to initialize cron task for platforms: ${name}`);
         }
       });
 
-      // Log des tâches initialisées et des échecs
+      // Planifie les tâches générales
+      generalTasks.forEach(({ schedule, task, name }) => {
+        try {
+          cron.schedule(schedule, async () => {
+            const startTime = Date.now();
+
+            try {
+              if (task.length > 0) {
+                // Si `task` attend des arguments, passez une valeur par défaut ou adaptez ici
+                console.warn(`Task ${name} cannot be executed without arguments.`);
+              } else {
+                await (task as () => void)();
+                const duration = Date.now() - startTime;
+                console.log(`General Task ${name} executed successfully in ${duration}ms.`);
+              }
+            } catch (error) {
+              handleServiceError(error, `CronTaskService: ${name}`, `Error executing task: ${name}`);
+            }
+          });
+          initializedTasks.push(name);
+        } catch (error) {
+          failedTasks.push(name);
+          handleServiceError(error, `CronTaskService: ${name}`, `Failed to initialize general cron task: ${name}`);
+        }
+      });
+
+      // Log des résultats
       if (initializedTasks.length > 0) {
-        console.log(`Cron Initialized: ${initializedTasks.join(' - ')}`);
+        console.log(`Cron Initialized: ${initializedTasks.join(' - ')}, Valid Platforms: ${validPlatforms.join(', ')}`);
       }
       if (failedTasks.length > 0) {
         console.error(`Cron Failed: ${failedTasks.join(' - ')}`);

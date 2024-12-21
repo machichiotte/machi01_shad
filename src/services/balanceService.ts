@@ -7,7 +7,7 @@ import { ProcessorService } from '@services/processorService';
 import { MappedBalance, BalanceWithDifference } from '@typ/balance';
 import { retry } from '@utils/retryUtil';
 import { PLATFORM } from '@typ/platform';
-import { executeForPlatforms } from '@utils/cronUtil';
+import { executeCronTask } from '@utils/cronUtil';
 import { removeDuplicateDifferences, removeDuplicates } from '@utils/processorUtil';
 
 export class BalanceService {
@@ -86,8 +86,9 @@ export class BalanceService {
     }
   }
 
-  static async cronBalance(): Promise<void> {
-    await executeForPlatforms('updateBalances', BalanceService.updateBalancesForPlatform)
+  static async cronBalance(platform: PLATFORM): Promise<void> {
+    await executeCronTask(() => BalanceService.updateBalancesForPlatform(platform), true)
+
   }
 
   /**
