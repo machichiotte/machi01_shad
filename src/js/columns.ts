@@ -32,7 +32,8 @@ const tradesColumns: Column[] = [
   { header: 'Total', field: 'total' },
   { header: '~ USD', field: 'eqUSD' },
   { header: 'Fee', field: 'fee' },
-  { header: 'Feecoin', field: 'feecoin' }
+  { header: 'Feecoin', field: 'feecoin' },
+  { header: 'Order', field: 'orderid' },
 ]
 
 const tradesTableColumns: Column[] = [

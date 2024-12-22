@@ -1,18 +1,73 @@
 <!-- src/components/Stuff.vue -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import { fetchTradeBySymbol } from '../js/server/fetchFromServer'
+import { fetchTradeBySymbol } from '../js/server/fetchFromServer';
+import { STABLECOINS } from '../js/constants';
+
 const base = ref<string>(''); // Champ d'entrée pour `symbol`
 const platform = ref<string>(''); // Champ d'entrée pour `platform`
 const responseJson = ref<object | null>(null); // Stocke la réponse du serveur
+const isLoading = ref<boolean>(false); // Indique si une requête est en cours
 
 const handleClick = async () => {
-    responseJson.value = await fetchTradeBySymbol({
-        base: base.value,
-        platform: platform.value
-    });
+    isLoading.value = true; // Affiche le loader
 
-    console.log('responseJson', responseJson)
+    try {
+        const fetchValue
+            = await fetchTradeBySymbol({
+                base: base.value,
+                platform: platform.value
+            });
+        console.log('responseJson', responseJson);
+
+        const transformedResponse = transformTrades(fetchValue as StuffTrade[], platform.value);
+
+        responseJson.value = transformedResponse
+        console.log("transformedResponse", transformedResponse)
+    } catch (error) {
+        console.error('Erreur lors de la requête :', error);
+        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+    } finally {
+        isLoading.value = false; // Cache le loader une fois la requête terminée
+    }
+};
+
+interface StuffTrade {
+    symbol: string;
+    timestamp: number;
+    order: string;
+    side: string;
+    price: number;
+    amount: number;
+    cost: number;
+    fee: {
+        cost: number;
+        currency: string;
+    };
+}
+
+const transformTrades = (trades: StuffTrade[], platform: string) => {
+    return trades.map((trade: StuffTrade) => {
+        const [base, quote] = trade.symbol.split('/');
+
+        const eqUSD = STABLECOINS.includes(quote) ? parseFloat(trade.cost.toFixed(2)) : -1
+
+        return {
+            timestamp: trade.timestamp,
+            pair: trade.symbol,
+            order: trade.order,
+            side: trade.side,
+            price: trade.price,
+            amount: trade.amount,
+            total: trade.cost,
+            eqUSD: eqUSD, // Arrondi à 2 décimales
+            fee: trade.fee.cost,
+            feecoin: trade.fee.currency,
+            base: base,
+            quote: quote,
+            platform: platform // Ajout de la plateforme en dur
+        };
+    });
 };
 
 const copyToClipboard = () => {
@@ -28,26 +83,26 @@ const copyToClipboard = () => {
     <div class="stuff-container">
         <div class="left-panel">
             <h3>Requêtes au serveur</h3>
-            <!-- Exemple de première requête -->
             <div class="request-block">
                 <div class="header-row">
                     <h4>Obtenir les trades</h4>
-                    <button @click="handleClick">Envoyer la requête</button>
+                    <button @click="handleClick" :disabled="isLoading">
+                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
+                    </button>
                 </div>
                 <div class="input-row">
                     <div class="field">
                         <label for="base">Base:</label>
-                        <input id="base" v-model="base" type="text" placeholder="Entrez la base" />
+                        <input id="base" v-model="base" type="text" placeholder="Entrez la base"
+                            :disabled="isLoading" />
                     </div>
                     <div class="field">
                         <label for="platform">Platform:</label>
-                        <input id="platform" v-model="platform" type="text" placeholder="Entrez la plateforme" />
+                        <input id="platform" v-model="platform" type="text" placeholder="Entrez la plateforme"
+                            :disabled="isLoading" />
                     </div>
                 </div>
             </div>
-
-            <!-- Placeholders pour ajouter d'autres requêtes -->
-            <!-- Ajoutez d'autres blocks de requête ici dans le futur -->
         </div>
 
         <div class="right-panel">
@@ -55,7 +110,10 @@ const copyToClipboard = () => {
                 <h4>Réponse du serveur</h4>
                 <button v-if="responseJson" @click="copyToClipboard">Copier</button>
             </div>
-            <div v-if="responseJson" class="response-block" contenteditable="true">
+            <div v-if="isLoading" class="response-placeholder">
+                Chargement en cours...
+            </div>
+            <div v-else-if="responseJson" class="response-block" contenteditable="true">
                 <pre>{{ JSON.stringify(responseJson, null, 2) }}</pre>
             </div>
             <div v-else class="response-placeholder">
@@ -85,7 +143,6 @@ const copyToClipboard = () => {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Ligne pour le titre et le bouton */
 .header-row {
     display: flex;
     justify-content: space-between;
@@ -94,21 +151,17 @@ const copyToClipboard = () => {
     margin-left: 3rem;
 }
 
-/* Disposition des inputs */
 .input-row {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
 }
 
-/* Champ label + input */
 .field {
     display: flex;
     flex-direction: column;
     flex: 1;
-    /* Rend les champs flexibles pour partager l'espace */
     min-width: 150px;
-    /* Largeur minimale pour les petits écrans */
 }
 
 .field label {
@@ -122,7 +175,6 @@ const copyToClipboard = () => {
     width: 100%;
 }
 
-/* Bouton */
 button {
     background: #007bff;
     color: white;
@@ -132,27 +184,15 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+button:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+button:hover:enabled {
     background: #0056b3;
 }
 
-/* Responsive Design */
-@media (max-width: 600px) {
-    .header-row {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .header-row button {
-        margin-top: 1rem;
-    }
-
-    .input-row {
-        flex-direction: column;
-    }
-}
-
-/* Panneau droit */
 .right-panel {
     flex: 2;
     padding: 1rem;
@@ -161,7 +201,6 @@ button:hover {
     overflow-y: auto;
 }
 
-/* Zone de réponse JSON */
 .response-block {
     white-space: pre-wrap;
     padding: 1rem;
@@ -170,10 +209,8 @@ button:hover {
     max-height: 400px;
     overflow-y: auto;
     user-select: text;
-    /* Facilite la sélection avec Ctrl+A */
 }
 
-/* Placeholder si pas de réponse */
 .response-placeholder {
     color: #999;
     font-style: italic;

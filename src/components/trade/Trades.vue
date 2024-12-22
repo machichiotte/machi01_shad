@@ -7,11 +7,6 @@ import SearchBar from "../machi/SearchBar.vue";
 import TradesTable from "./TradesTable.vue";
 import { Trade } from '../../types/responseData';
 
-// v2
-//import TradesForm from "../forms/TradesForm.vue";
-//import TradesActions from "./TradesActions.vue";
-//const showDialog = ref<boolean>(false);
-
 const filters = ref<{ global: { value: string | null; matchMode: typeof FilterMatchMode[keyof typeof FilterMatchMode] } }>({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
@@ -20,9 +15,15 @@ const totalBuy = ref(0);
 const amountBuy = ref(0);
 const amountSell = ref(0);
 
+const realBalance = ref<number | null>(null); // Balance réelle saisie par l'utilisateur
+const averageBuyPrice = computed(() => {
+  if (realBalance.value === null || realBalance.value === 0) return 0;
+  return (totalSell.value - totalBuy.value) / realBalance.value;
+});
+
 const calculStore = useCalculStore();
 const trades = computed<Trade[]>(() => calculStore.getTrade);
-const filteredTrades = ref<Trade[]>([]); // État réactif pour les trades filtrés
+const filteredTrades = ref<Trade[]>([]);
 
 const getTradesData = async () => {
   try {
@@ -66,7 +67,7 @@ watchEffect(() => {
 
         date = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       } else {
-        date = 'Invalid date'; // Cas où 'timestamp' serait manquant ou invalide
+        date = 'Invalid date';
       }
 
       const eqUsd = item['eqUSD'] !== null ? parseFloat(item['eqUSD'].toFixed(2)) : 0;
@@ -88,7 +89,6 @@ watchEffect(() => {
     });
 
   const sellTrades = filteredTrades.value.filter(item => item.side === 'sell');
-  //console.log('sellTrades', sellTrades)
   totalSell.value = sellTrades.reduce((acc, item) => acc + item.eqUSD, 0);
   amountSell.value = sellTrades.reduce((acc, item) => acc + item.amount, 0);
 
@@ -96,8 +96,6 @@ watchEffect(() => {
   totalBuy.value = buyTrades.reduce((acc, item) => acc + item.eqUSD, 0);
   amountBuy.value = buyTrades.reduce((acc, item) => acc + item.amount, 0);
 });
-
-
 </script>
 
 <template>
@@ -108,16 +106,20 @@ watchEffect(() => {
         <label>Supposed Balance: {{ amountBuy - amountSell }}</label>
         <label>Buy: -{{ totalBuy.toFixed(2) }} / Sell: +{{ totalSell.toFixed(2) }}</label>
         <label>Diff: {{ (totalSell - totalBuy).toFixed(2) }}</label>
+        <div>
+          <!-- Champ pour saisir la balance réelle -->
+          <label>Real Balance:</label>
+          <input type="number" v-model.number="realBalance" placeholder="Enter real balance" />
+        </div>
+        <div>
+          <!-- Affichage de la moyenne d'achat -->
+          <label>Average Buy Price: {{ averageBuyPrice }}</label>
+        </div>
       </div>
-      <!-- ici je veux rajouter a gauche de la barre de recherche des valeurs que je recupere grce a filteredtrade, je veux la somme des trades qui ont un side sell et un autre label avec la somme des trades qui ont un side buy-->
-      <!-- v2 Form for Adding New Trades 
-       <TradesActions @showDialog="showDialog = true" />
-       <TradesForm v-model:visible="showDialog" /> -->
     </div>
 
     <div class="card">
       <TradesTable :items="filteredTrades" />
-
     </div>
   </div>
 </template>
@@ -140,6 +142,5 @@ watchEffect(() => {
   display: flex;
   flex-direction: column;
   margin-right: 1rem;
-  /* Espace entre les labels et la barre de recherche */
 }
 </style>

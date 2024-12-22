@@ -35,6 +35,7 @@ export interface Trade {
   feecoin: string
   platform: string
   eqUSD: number
+  orderid: string
 }
 
 export interface Strat {
