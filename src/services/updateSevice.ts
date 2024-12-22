@@ -3,6 +3,7 @@ import { PLATFORMS } from '@src/types/platform';
 import { GeneralUpdateManager } from '@services/generalUpdateManager';
 import { PlatformUpdateManager } from '@services/platformUpdateManager';
 import { checkApiKeys } from '@utils/platformUtil';
+
 export class UpdateService {
 
     // Méthode principale pour gérer toutes les mises à jour
@@ -35,13 +36,4 @@ export class UpdateService {
         console.log('Mise à jour des plateformes terminée.');
     }
 
-
-    // Vérification du temps écoulé
-    private static hasTimeElapsed(lastTimestamp: string, intervalInMs: number): boolean {
-        if (isNaN(parseInt(lastTimestamp))) {
-            return false;
-        }
-        const currentTime = Date.now();
-        return (currentTime - parseInt(lastTimestamp)) > intervalInMs;
-    }
 }

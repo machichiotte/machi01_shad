@@ -111,7 +111,7 @@ export class DatabaseService {
             await TimestampService.saveTimestampToDatabase(tsCategory, platform)
             const duration = Date.now() - startTime;
 
-            console.log(`Save Bdd : ${collectionName} for ${platform} in ${duration}ms.`)
+            console.log(`${Date.now()} : Save Bdd - ${collectionName} for ${platform} in ${duration}ms.`)
         } catch (error) {
             handleServiceError(error, 'saveDataAndTimestampToDatabase', 'Erreur lors de la sauvegarde des données dans la base de données')
             throw error
