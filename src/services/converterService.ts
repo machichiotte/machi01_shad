@@ -148,7 +148,7 @@ async function convertModelHTX(data: Array<ModelHtx>): Promise<MappedTrade[]> {
         return {
           base: base,
           quote: quote,
-          date: date,
+          dateUTC: date,
           timestamp: new Date(date).getTime(),
           pair: item['symbol'],
           side: item['deal_type'].toLowerCase(),
@@ -206,7 +206,7 @@ async function convertModelBinance(data: Array<ModelBinance>): Promise<MappedTra
         return {
           base: base,
           quote: quote,
-          date: date,
+          dateUTC: date,
           timestamp: new Date(date).getTime(),
           pair: item['Pair'],
           side: item['Side'].toLowerCase(),
@@ -235,7 +235,7 @@ async function convertModelKucoin(data: Array<ModelKucoin>): Promise<MappedTrade
         return {
           base: item.Symbol.split('-')[0],
           quote: item.Symbol.split('-')[1],
-          date: item['Order Time(UTC-03:00)'],
+          dateUTC: item['Order Time(UTC-03:00)'],
           timestamp: new Date(item['Order Time(UTC-03:00)']).getTime(),
           pair: item.Symbol,
           side: item.Side.toLowerCase(),
@@ -291,7 +291,7 @@ async function convertModelOkx(data: Array<ModelOkx>): Promise<Omit<MappedTrade,
       if (base === balanceUnit) {
         Object.assign(previousObject, {
           base,
-          date,
+          dateUTC: date,
           pair: instrument,
           type: action.toLowerCase(),
           price: fillPrice,
@@ -317,7 +317,7 @@ async function convertModelOkx(data: Array<ModelOkx>): Promise<Omit<MappedTrade,
       processedOrders.set(orderId, {
         base,
         quote: balanceUnit,
-        date: date,
+        dateUTC: date,
         timestamp: new Date(date).getTime(),
         pair: instrument,
         side: action.toLowerCase(),

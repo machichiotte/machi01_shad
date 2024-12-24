@@ -72,6 +72,7 @@ export class MappingService {
       fee: feeCost,
       feecoin: feeCurrency,
       platform,
+      dateUTC: item.datetime || '',
       eqUSD: eqUSD || 0
     };
 

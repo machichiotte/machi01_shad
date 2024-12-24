@@ -4,7 +4,7 @@ import { handleServiceError } from '@utils/errorUtil'
 import { config } from '@config/index';
 import { EmailOptions } from '@src/types/email';
 
-const transporter: Transporter = nodemailer.createTransport(config.smtp)
+const transporter: Transporter = nodemailer.createTransport(config.serverConfig.smtp)
 
 export class EmailService {
 

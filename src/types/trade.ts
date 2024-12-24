@@ -11,7 +11,7 @@ export interface MappedTrade {
     base: string
     quote: string
     pair: string
-    date?: string
+    dateUTC?: string
     timestamp?: number
     side: string
     price: number

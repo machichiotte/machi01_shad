@@ -200,7 +200,7 @@ export class DatabaseService {
       const duration = Date.now() - startTime
 
       console.info(
-        `${Date.now()} : Save Bdd - ${collectionName} for ${platform} in ${duration}ms.`
+        `Save Bdd - ${collectionName} for ${platform} in ${duration}ms.`
       )
     } catch (error) {
       handleServiceError(
