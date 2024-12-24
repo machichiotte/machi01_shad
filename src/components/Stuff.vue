@@ -35,6 +35,7 @@ const handleClick = async () => {
 interface StuffTrade {
     symbol: string;
     timestamp: number;
+    dateUTC: string;
     order: string;
     side: string;
     price: number;
@@ -55,6 +56,7 @@ const transformTrades = (trades: StuffTrade[], platform: string) => {
         return {
             timestamp: trade.timestamp,
             pair: trade.symbol,
+            dateUTC: trade.dateUTC,
             order: trade.order,
             side: trade.side,
             price: trade.price,
