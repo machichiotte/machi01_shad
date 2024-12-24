@@ -3,7 +3,7 @@ import { DatabaseService } from '@services/databaseService';
 import { config } from '@config/index';
 import { Asset } from '@src/types/metrics';
 
-const COLLECTION_NAME = config.collection.machi;
+const COLLECTION_NAME = config.databaseConfig.collection.machi;
 
 export class MachiRepository {
     /**

@@ -15,7 +15,7 @@ export class CmcService {
   public static async fetchCurrentCmc(): Promise<MappedCmc[]> {
     let start = this.baseStart;
     const allData: MappedCmc[] = [];
-    if (config.apiKeys.cmc.apiKey)
+    if (config.apiConfig.cmc.apiKey)
       try {
         while (true) {
           const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=${start}&limit=${this.limit}&convert=${this.convert}`;
@@ -23,7 +23,7 @@ export class CmcService {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'X-CMC_PRO_API_KEY': config.apiKeys.cmc.apiKey || '',
+              'X-CMC_PRO_API_KEY': config.apiConfig.cmc.apiKey || '',
             },
           });
 

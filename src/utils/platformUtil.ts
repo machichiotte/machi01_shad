@@ -13,7 +13,7 @@ function isValidPlatform(platform: string): platform is PLATFORM {
      * @returns true si toutes les clés nécessaires sont présentes, false sinon
      */
 function checkApiKeys(platform: PLATFORM): boolean {
-  const platformConfig = config.apiKeys.platform[platform];
+  const platformConfig = config.apiConfig.platform[platform];
   if (!platformConfig) {
     console.info(`Configuration manquante pour la plateforme : ${platform}`);
     return false;

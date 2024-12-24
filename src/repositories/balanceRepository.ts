@@ -4,8 +4,8 @@ import { config } from '@config/index';
 import { PLATFORM } from '@typ/platform'
 import { DatabaseService } from '@src/services/databaseService';
 
-const COLLECTION_NAME = config.collection.balance;
-const COLLECTION_CATEGORY = config.collectionCategory.balance;
+const COLLECTION_NAME = config.databaseConfig.collection.balance;
+const COLLECTION_CATEGORY = config.databaseConfig.category.balance;
 
 export class BalanceRepository {
     /**

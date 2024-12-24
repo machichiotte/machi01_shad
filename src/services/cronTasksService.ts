@@ -26,17 +26,17 @@ export class CronTaskService {
       // Tâches basées sur les plateformes
       const platformTasks: Task[] = [
         {
-          schedule: config.cronSchedules.ticker,
+          schedule: config.serverConfig.cronSchedules.ticker,
           task: TickerService.cronTicker,
           name: 'Tickers',
         },
         {
-          schedule: config.cronSchedules.market,
+          schedule: config.serverConfig.cronSchedules.market,
           task: MarketService.cronMarket,
           name: 'Markets',
         },
         {
-          schedule: config.cronSchedules.balance,
+          schedule: config.serverConfig.cronSchedules.balance,
           task: BalanceService.cronBalance,
           name: 'Balances',
         },
@@ -45,7 +45,7 @@ export class CronTaskService {
       // Tâches non liées aux plateformes (par exemple, CMC)
       const generalTasks: Task[] = [
         {
-          schedule: config.cronSchedules.cmc,
+          schedule: config.serverConfig.cronSchedules.cmc,
           task: CmcService.updateCmcData,
           name: 'Cmc',
         },

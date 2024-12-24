@@ -17,13 +17,12 @@ export async function executeCronTask(task: () => Promise<void>, isCritical: boo
 
     // Si la tâche est critique et que toutes les tentatives échouent
     if (isCritical) {
-      if (!config.smtp) {
+      if (!config.serverConfig.smtp) {
         throw new Error('Configuration SMTP manquante');
       }
 
       // Remplacer par l'envoi d'une notification critique par email ou push
       /*
-      console.log('Rajouter les emails ou notifications push');
       EmailService.sendMail({
         from: config.smtp.auth.user as string,
         to: config.smtp.auth.receiver as string,
@@ -39,7 +38,7 @@ export async function executeCronTask(task: () => Promise<void>, isCritical: boo
  * Executes a given task function for all platforms
  */
 export async function executeForPlatforms(taskName: string, taskFunction: (platform: PLATFORM) => Promise<void>): Promise<void> {
-  console.log(`Exécution de la tâche cron pour ${taskName}...`)
+  console.info(`Exécution de la tâche cron pour ${taskName}...`)
   await Promise.all(
     PLATFORMS.filter(platform => checkApiKeys(platform)).map((platform) =>
       executeCronTask(() => taskFunction(platform), true)

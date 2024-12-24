@@ -14,7 +14,7 @@ async function getMockedData(collectionName: string) {
  */
 function getMockDataPath(collection: string): string {
     // Add logic to return the specific mock name based on the collection
-    const collectionMockName = `${config.database.dbName}.${collection}.json`
+    const collectionMockName = `${config.databaseConfig.collection.dbName}.${collection}.json`
     return path.join('mockData', 'json', 'mongodb', collectionMockName)
 }
 

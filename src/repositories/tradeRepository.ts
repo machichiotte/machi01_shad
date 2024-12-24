@@ -5,7 +5,7 @@ import { config } from '@config/index';
 import { InsertData } from '@typ/trade';
 import { ObjectId } from 'mongodb';
 
-const TRADES_COLLECTION = config.collection.trade
+const TRADES_COLLECTION = config.databaseConfig.collection.trade
 
 export class TradeRepository {
     static async fetchAllTrades(): Promise<MappedTrade[]> {
@@ -14,7 +14,7 @@ export class TradeRepository {
 
     static async updateById(updatedTrade: MappedTrade): Promise<boolean> {
         const { _id, ...mappedData } = updatedTrade;
-        return await DatabaseService.updateOneData(TRADES_COLLECTION, { _id: new ObjectId(_id) }, { $set: mappedData })
+        return await DatabaseService.updateDoc(TRADES_COLLECTION, { _id: new ObjectId(_id) }, { $set: mappedData })
     }
 
     static async insertTrades(tradesData: MappedTrade | MappedTrade[]): Promise<InsertData> {

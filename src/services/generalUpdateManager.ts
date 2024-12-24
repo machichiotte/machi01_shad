@@ -14,7 +14,7 @@ export class GeneralUpdateManager {
         const lastCmcUpdate = timestamps.cmc.$numberLong || '0';
 
         if (hasTimeElapsed(lastCmcUpdate, cmcUpdateInterval)) {
-            console.log('Updating CMC data...');
+            console.info('Updating CMC data...');
             await CmcService.updateCmcData();
         }
     }

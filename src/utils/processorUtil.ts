@@ -22,15 +22,15 @@ function removeDuplicateDifferences(differences: BalanceWithDifference[]): Balan
 
 function logDifferenceType(difference: BalanceWithDifference): void {
     if (difference.newSymbol) {
-        console.log(`New symbol detected: ${difference.base}`)
+        console.info(`New symbol detected: ${difference.base}`)
     }
 
     if (difference.balanceDifference) {
-        console.log(`Balance difference detected for symbol: ${difference.base}`)
+        console.info(`Balance difference detected for symbol: ${difference.base}`)
     }
 
     if (difference.zeroBalance) {
-        console.log(`Zero balance symbol detected: ${difference.base}`)
+        console.info(`Zero balance symbol detected: ${difference.base}`)
     }
 }
 

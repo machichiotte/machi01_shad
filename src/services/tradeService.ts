@@ -12,7 +12,7 @@ import { QUOTE_CURRENCIES } from '@src/constants'
 import { getMarketSymbolForPlatform } from '@utils/platformUtil'
 import { retry } from '@src/utils/retryUtil'
 
-const COLLECTION_CATEGORY = config.collectionCategory.trade
+const COLLECTION_CATEGORY = config.databaseConfig.category.trade
 
 export class TradeService {
   static async fetchFromDb(): Promise<MappedTrade[]> {
@@ -30,7 +30,7 @@ export class TradeService {
     const trades: PlatformTrade[] = [];
     const batchSize = 30; // Ajustez selon les limites de l'API
 
-    console.log('validSymbols', validSymbols.length + " : " + validSymbols)
+    // TODO console.log('validSymbols', validSymbols.length + " : " + validSymbols)
     for (let i = 0; i < validSymbols.length; i += batchSize) {
       const symbolBatch = validSymbols.slice(i, i + batchSize);
       const batchPromises = symbolBatch.map(symbol =>

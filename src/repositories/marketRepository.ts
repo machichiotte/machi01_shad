@@ -4,8 +4,8 @@ import { MappedMarket } from '@typ/market';
 import { config } from '@config/index';
 import { PLATFORM } from '@src/types/platform';
 
-const COLLECTION_NAME = config.collection.market;
-const COLLECTION_CATEGORY = config.collectionCategory.market;
+const COLLECTION_NAME = config.databaseConfig.collection.market;
+const COLLECTION_CATEGORY = config.databaseConfig.category.market;
 
 export class MarketRepository {
 

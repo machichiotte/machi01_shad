@@ -78,10 +78,10 @@ async function fetchLastTrades(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  console.log('platform asset', platform + ' - ' + base)
+  //TODO console.log('platform asset', platform + ' - ' + base)
   try {
     const data = await TradeService.fetchFromApi(platform, base)
-    console.log('platform asset', platform + ' - ' + data)
+    //TODO console.log('platform asset', platform + ' - ' + data)
 
     res.status(200).json({ status: "success", message: 'Derniers trades récupérés', data })
   } catch (error) {

@@ -14,7 +14,7 @@ export class PlatformUpdateManager {
     };
 
     static async updatePlatformData(platform: PLATFORM): Promise<void> {
-        console.log(`Updating data for platform: ${platform}...`);
+        console.log(`Updating data for ${platform}...`);
 
         try {
             await Promise.all([
@@ -38,7 +38,7 @@ export class PlatformUpdateManager {
             const interval = this.UPDATE_INTERVALS[key];
 
             if (hasTimeElapsed(lastUpdate, interval)) {
-                console.log(`Updating ${key} for ${platform}...`);
+                console.info(`Updating ${key} for ${platform}...`);
                 await updateFunction(platform);
             }
         } catch (error) {

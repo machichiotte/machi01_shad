@@ -4,7 +4,7 @@ import { TimestampData } from '@typ/timestamp';
 import { config } from '@config/index';
 import { ObjectId } from 'mongodb';
 
-const COLLECTION_NAME = config.collection.timestamp;
+const COLLECTION_NAME = config.databaseConfig.collection.timestamp;
 
 export class TimestampRepository {
     /**
@@ -38,10 +38,10 @@ export class TimestampRepository {
         const filter = { _id: objectId };
         const update = { $set: mappedData };
 
-        await DatabaseService.updateOneData(COLLECTION_NAME, filter, update);
+        await DatabaseService.updateDoc(COLLECTION_NAME, filter, update);
     }
 
     static async findTimestamp(filter: object): Promise<TimestampData> {
-        return await DatabaseService.findOneData(COLLECTION_NAME, filter) as TimestampData
+        return await DatabaseService.findDoc(COLLECTION_NAME, filter) as TimestampData
     }
 }

@@ -4,8 +4,8 @@ import { MappedTicker } from '@typ/ticker'
 import { config } from '@config/index'
 import { PLATFORM } from '@src/types/platform';
 
-const COLLECTION_NAME = config.collection.ticker
-const COLLECTION_CATEGORY = config.collectionCategory.ticker
+const COLLECTION_NAME = config.databaseConfig.collection.ticker
+const COLLECTION_CATEGORY = config.databaseConfig.category.ticker
 
 export class TickerRepository {
     static async fetchAll(): Promise<MappedTicker[]> {

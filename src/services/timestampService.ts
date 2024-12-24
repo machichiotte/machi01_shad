@@ -23,7 +23,7 @@ export class TimestampService {
     try {
       // Récupération des données actuelles depuis la base de données
       const mappedData: TimestampData = (await this.fetchDatabaseTimestamp())
-      const currentTimestamp = Date.now(); // Utilisation de timestamp en string comme attendu par MongoDB
+      const currentTimestamp = Math.floor(Date.now() / 1000); // Conversion en secondes
       if (!platform) {
         this.updateSimpleType(mappedData, category, currentTimestamp); // Mise à jour d'un champ sans plateforme
       } else {

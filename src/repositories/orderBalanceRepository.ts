@@ -4,8 +4,8 @@ import { MappedOrder } from '@typ/order'
 import { config } from '@config/index';
 import { PLATFORM } from '@src/types/platform';
 
-const COLLECTION_NAME = config.collection.order;
-const COLLECTION_CATEGORY = config.collectionCategory.order;
+const COLLECTION_NAME = config.databaseConfig.collection.order;
+const COLLECTION_CATEGORY = config.databaseConfig.category.order;
 
 export class OrderBalanceRepository {
     /**

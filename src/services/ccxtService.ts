@@ -13,7 +13,7 @@ export class CcxtService {
             throw new Error(`API keys missing for platform: ${platform}`);
         }
 
-        const platformConfig = config.apiKeys.platform[platform];
+        const platformConfig = config.apiConfig.platform[platform];
         const { apiKey, secretKey } = platformConfig
         const passphrase = 'passphrase' in platformConfig ? platformConfig.passphrase : undefined;
 
@@ -30,7 +30,6 @@ export class CcxtService {
             }
             return new exchangeClass(platformParams)
         } catch (error) {
-            console.log(`Error creating platform instance for ${platform}`)
             handleServiceError(error, 'createPlatformInstance', `Error creating platform instance for ${platform}`)
             throw error
         }

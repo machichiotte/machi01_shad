@@ -22,8 +22,8 @@ import { Asset } from '@typ/metrics'
 import { config } from '@config/index';
 import { DatabaseService } from './databaseService'
 
-const COLLECTION_NAME = config.collection.machi;
-const COLLECTION_CATEGORY = config.collectionCategory.machi;
+const COLLECTION_NAME = config.databaseConfig.collection.machi;
+const COLLECTION_CATEGORY = config.databaseConfig.category.machi;
 
 export class ProcessorService {
   static async processBalanceChanges(platform: PLATFORM, differences: BalanceWithDifference[]): Promise<void> {

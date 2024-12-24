@@ -8,7 +8,7 @@ import { DatabaseService } from '@services/databaseService'
 import { MappedTrade } from '@typ/trade'
 import { config } from '@config/index';
 
-const COLLECTION_NAME = config.collection.swap;
+const COLLECTION_NAME = config.databaseConfig.collection.swap;
 
 export class MigrationSwapService {
 

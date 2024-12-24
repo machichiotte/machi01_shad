@@ -4,7 +4,7 @@ import { config } from '@config/index';
 import { mongodbOperations } from '@src/services/mongodbOperationsService';
 import { DatabaseService } from '@src/services/databaseService';
 
-const COLLECTION_NAME = config.collection.highestPrice;
+const COLLECTION_NAME = config.databaseConfig.collection.highestPrice;
 
 export class HighestPriceRepository {
 

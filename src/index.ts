@@ -5,31 +5,37 @@ import { CronTaskService } from '@services/cronTasksService';
 import { UpdateService } from './services/updateSevice';
 import { ProcessorService } from './services/processorService';
 import { ServerConfigService } from './services/serverConfigService';
+import { CacheService } from '@services/cacheService';
+//import { config, loadServerConfig } from '@config/index';
+import {  loadServerConfig } from '@config/index';
 
 async function startApp(): Promise<void> {
-  startServer()
-    .then(() => MongodbService.connectToMongoDB())
-    .then(() =>
-      ServerConfigService.getServerConfig()
-        .then(userConfig => console.log('Configuration utilisateur chargée:', userConfig))
-        .catch(error => console.error('Erreur de chargement de la configuration utilisateur:', error))
-    )
-    .then(() =>
-      UpdateService.updateAll()
-        .catch(error => console.error(`Erreur lors de l'exécution de updateAll :`, error))
-    )
-    .then(() =>
-      CronTaskService.initializeCronTasks()
-        .catch(error => console.error(`Erreur lors de l'exécution de initializeCronTasks :`, error))
-    )
-    .then(() =>
-      ProcessorService.saveMachi()
-        .catch(error => console.error(`Erreur lors de l'exécution de saveMachi :`, error))
-    )
-    .catch(error => {
-      console.error('Erreur fatale:', error);
-      process.exit(1); // Arrêter le processus en cas d'erreur critique
-    });
+  try {
+    // Étape 0 : Vider le cache
+    await CacheService.clearAllCache();
+
+    // Étape 1 : Démarrer MongoDB
+    await MongodbService.connectToMongoDB();
+
+    // Étape 2 : Charger la configuration utilisateur depuis MongoDB
+    const serverConfig = await ServerConfigService.getServerConfig();
+    await loadServerConfig(serverConfig); // Fusionne la configuration de la base
+
+    // Étape 3 : Mettre à jour les services
+    await UpdateService.updateAll();
+
+    // Étape 4 : Initialiser les tâches CRON
+    await CronTaskService.initializeCronTasks();
+
+    // Étape 5 : Exécuter les autres tâches
+    await ProcessorService.saveMachi();
+
+    // Étape 6 : Démarrer le serveur
+    await startServer();
+  } catch (error) {
+    console.error('Erreur fatale lors du démarrage de l\'application :', error);
+    process.exit(1); // Arrête le processus en cas d'erreur critique
+  }
 }
 
 startApp();

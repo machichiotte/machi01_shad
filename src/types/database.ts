@@ -8,6 +8,7 @@ import { MappedMarket } from '@typ/market'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
 import { TimestampData } from '@typ/timestamp'
+import { ServerConfig } from '@config/types'
 
 import { ObjectId } from 'mongodb';
 
@@ -27,4 +28,4 @@ export interface HighestPrices {
     highestPrice: number
 }
 
-export type MappedData = TimestampData | HighestPrices | Asset | MappedMarket | MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrat | SwapMigration;
+export type MappedData = ServerConfig | TimestampData | HighestPrices | Asset | MappedMarket | MappedBalance | MappedOrder | MappedTrade | MappedTicker | MappedCmc | MappedStrat | SwapMigration;

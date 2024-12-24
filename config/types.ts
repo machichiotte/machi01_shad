@@ -1,14 +1,28 @@
 // config/types.ts
 import { PLATFORM } from "@src/types/platform";
-export interface DatabaseConfig {
+
+export interface DatabaseCredentials {
     user: string;
     password: string;
     cluster: string;
     dbName: string;
 }
 
-export interface CollectionConfig {
+export interface DatabaseCollection {
     [key: string]: string;
+}
+
+export interface DatabaseCategory {
+    balance: string;
+    cmc: string;
+    timestamp: string;
+    market: string;
+    order: string;
+    machi: string;
+    strat: string;
+    ticker: string;
+    trade: string;
+    serverConfig: string
 }
 
 export interface CacheExpirationTimes {
@@ -24,18 +38,7 @@ export interface CacheExpirationTimes {
     ticker: number;
     trade: number;
     user: number;
-}
-
-export interface collectionCategoryConfig {
-    balance: string;
-    cmc: string;
-    timestamp: string;
-    market: string;
-    order: string;
-    machi: string;
-    strat: string;
-    ticker: string;
-    trade: string;
+    serverConfig: number;
 }
 
 export interface ApiKeyConfig {
@@ -48,10 +51,6 @@ export type ApiKeysPlatform = {
     [key in PLATFORM]: ApiKeyConfig
 }
 
-export interface ApiKeysConfig {
-    cmc: ApiKeyConfig
-    platform: ApiKeysPlatform;
-}
 
 export interface SmtpAuthConfig {
     user: string | undefined;
@@ -59,38 +58,52 @@ export interface SmtpAuthConfig {
     pass: string | undefined;
 }
 
-export interface SmtpConfig {
+export interface ServerSmtp {
     host: string;
     port: number;
     auth: SmtpAuthConfig;
 }
 
-export interface CronSchedulesConfig {
+export interface ServerCronSchedules {
     machi: string;
     market: string;
     ticker: string;
     balance: string;
+    cmc: string;
 }
 
-export interface LogFilesConfig {
+export interface ServerLog {
     error: string;
     info: string;
 }
 
-export interface SecurityConfig {
+export interface ServerSecurity {
     hashRounds: number;
+}
+
+export interface DatabaseConfig {
+    credentials: DatabaseCredentials;
+    collection: DatabaseCollection;
+    category: DatabaseCategory;
+}
+export interface ApiConfig {
+    cmc: ApiKeyConfig
+    platform: ApiKeysPlatform;
+}
+
+export interface ServerConfig {
+    cacheExpirationTimes: CacheExpirationTimes;
+    smtp: ServerSmtp;
+    cronSchedules: ServerCronSchedules;
+    logFiles: ServerLog;
+    security: ServerSecurity;
+    lastModified?: number;
 }
 
 export interface EnvironmentConfig {
     port: number;
     isOffline: boolean;
-    database: DatabaseConfig;
-    collection: CollectionConfig;
-    cacheExpirationTimes: CacheExpirationTimes;
-    collectionCategory: collectionCategoryConfig;
-    apiKeys: ApiKeysConfig;
-    smtp: SmtpConfig;
-    cronSchedules: CronSchedulesConfig;
-    logFiles: LogFilesConfig;
-    security: SecurityConfig;
+    databaseConfig: DatabaseConfig;
+    apiConfig: ApiConfig;
+    serverConfig: ServerConfig
 }

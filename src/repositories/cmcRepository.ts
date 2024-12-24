@@ -3,8 +3,8 @@ import { DatabaseService } from '@services/databaseService';
 import { MappedCmc } from '@typ/cmc';
 import { config } from '@config/index';
 
-const COLLECTION_NAME = config.collection.cmc;
-const COLLECTION_CATEGORY = config.collectionCategory.cmc;
+const COLLECTION_NAME = config.databaseConfig.collection.cmc;
+const COLLECTION_CATEGORY = config.databaseConfig.category.cmc;
 
 export class CmcRepository {
     /**

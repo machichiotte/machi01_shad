@@ -14,7 +14,7 @@ export class EmailService {
   static async sendMail(options: EmailOptions): Promise<SentMessageInfo> {
     try {
       const info = await transporter.sendMail(options)
-      console.log(`Email sent: ${info.response}`)
+      //console.info(`Email sent: ${info.response}`)
       return info
     } catch (error) {
       handleServiceError(error, 'sendMail', `Error sending email`)

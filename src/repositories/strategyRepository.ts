@@ -4,8 +4,8 @@ import { MappedStrat } from '@typ/strat';
 import { config } from '@config/index';
 import { ObjectId } from 'mongodb';
 
-const COLLECTION_NAME = config.collection.strat;
-const COLLECTION_CATEGORY = config.collectionCategory.strat;
+const COLLECTION_NAME = config.databaseConfig.collection.strat;
+const COLLECTION_CATEGORY = config.databaseConfig.category.strat;
 
 export class StrategyRepository {
     static async fetchAll(): Promise<MappedStrat[]> {
@@ -14,7 +14,7 @@ export class StrategyRepository {
 
     static async updateById(mappedData: MappedStrat): Promise<boolean> {
         const { _id, ...mappedStrat } = mappedData;
-        return await DatabaseService.updateOneData(COLLECTION_NAME, { _id: new ObjectId(_id) }, { $set: mappedStrat });
+        return await DatabaseService.updateDoc(COLLECTION_NAME, { _id: new ObjectId(_id) }, { $set: mappedStrat });
     }
 
     static async deleteAll(): Promise<void> {

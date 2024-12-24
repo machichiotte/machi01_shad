@@ -21,19 +21,19 @@ export class UpdateService {
         }
 
         let completed = 0;
-        console.log(`Début de la mise à jour pour ${validPlatforms.length} plateformes.`);
+        console.info(`Début de la mise à jour pour ${validPlatforms.length} plateforme(s).`);
 
         for (const platform of validPlatforms) {
             try {
                 await PlatformUpdateManager.updatePlatformData(platform);
                 completed++;
-                console.log(`Mise à jour ${completed}/${validPlatforms.length} terminée pour : ${platform}`);
+                console.info(`Mise à jour ${completed}/${validPlatforms.length} terminée pour : ${platform}`);
             } catch (error) {
                 console.error(`Échec de la mise à jour pour : ${platform}`, error);
             }
         }
 
-        console.log('Mise à jour des plateformes terminée.');
+        console.info('Mise à jour des plateformes terminée.');
     }
 
 }

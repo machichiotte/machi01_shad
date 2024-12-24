@@ -2,18 +2,17 @@
 import { MongoClient, ServerApiVersion, Db } from 'mongodb'
 import { retry } from '@utils/retryUtil'
 import { handleServiceError } from '@utils/errorUtil'
-import { config } from '@config/index';
+import { config } from '@config/index'
 
 let mongoInstance: MongoClient | null = null
 let db: Db | null = null
 
 export class MongodbService {
-
   static async getMongoClient(): Promise<MongoClient> {
     if (!mongoInstance) {
-      const uri = `mongodb+srv://${config.database.user}:${config.database.password}@${config.database.cluster}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+      const uri = `mongodb+srv://${config.databaseConfig.credentials.user}:${config.databaseConfig.credentials.password}@${config.databaseConfig.credentials.cluster}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
       try {
-        console.log('Attempting to connect to MongoDB...')
+        console.info('Attempting to connect to MongoDB...')
         mongoInstance = new MongoClient(uri, {
           serverApi: {
             version: ServerApiVersion.v1,
@@ -22,9 +21,13 @@ export class MongodbService {
           }
         })
         await mongoInstance.connect()
-        console.log('Successfully connected to MongoDB')
+        console.info('Successfully connected to MongoDB')
       } catch (error) {
-        handleServiceError(error, 'getMongoClient', 'Error connecting to MongoDB')
+        handleServiceError(
+          error,
+          'getMongoClient',
+          'Error connecting to MongoDB'
+        )
         throw error
       }
     }
@@ -35,7 +38,9 @@ export class MongodbService {
     if (!db) {
       const client = await MongodbService.getMongoClient()
       try {
-        db = client.db(config.database.dbName)
+        console.info('Attempting to get database...')
+        db = client.db(config.databaseConfig.credentials.dbName)
+        console.info('Connecté à ' + config.databaseConfig.credentials.dbName)
       } catch (error) {
         handleServiceError(error, 'getDB', 'Error getting database')
         throw error
@@ -47,23 +52,41 @@ export class MongodbService {
   static async connectToMongoDB(): Promise<void> {
     try {
       await MongodbService.getDB()
-      console.log('Connecté à MongoDB !')
 
-      const collectionsToCreate = Object.values(config.collection ?? {})
-      await Promise.all(collectionsToCreate.map(collectionName =>
-        this.createCollectionIfNotExists(collectionName)
-      ))
+      const collectionsToCreate = Object.values(
+        config.databaseConfig.collection ?? {}
+      )
+
+      await Promise.all(
+        collectionsToCreate.map((collectionName) =>
+          this.createCollectionIfNotExists(collectionName)
+        )
+      )
     } catch (error) {
-      handleServiceError(error, 'connectToMongoDB', 'Erreur de connexion à MongoDB')
+      handleServiceError(
+        error,
+        'connectToMongoDB',
+        'Erreur de connexion à MongoDB'
+      )
       throw error
     }
   }
 
-  static async createCollectionIfNotExists(collectionName: string): Promise<void> {
+  static async createCollectionIfNotExists(
+    collectionName: string
+  ): Promise<void> {
     try {
-      await retry(this.createCollection, [collectionName], 'createCollectionIfNotExists')
+      await retry(
+        this.createCollection,
+        [collectionName],
+        'createCollectionIfNotExists'
+      )
     } catch (error) {
-      handleServiceError(error, 'createCollectionIfNotExists', 'pb createCollectionIfNotExists')
+      handleServiceError(
+        error,
+        'createCollectionIfNotExists',
+        'pb createCollectionIfNotExists'
+      )
     }
   }
 
@@ -75,11 +98,14 @@ export class MongodbService {
         .toArray()
       if (collections.length === 0) {
         await db.createCollection(collectionName)
-        console.log(`Collection ${collectionName} created.`)
+        console.info(`Collection ${collectionName} created.`)
       }
     } catch (error) {
-      handleServiceError(error, 'createCollection', `Error creating collection ${collectionName}`)
+      handleServiceError(
+        error,
+        'createCollection',
+        `Error creating collection ${collectionName}`
+      )
     }
   }
-
 }

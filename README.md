@@ -89,128 +89,288 @@ Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant pr
 
 Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 
-- config/
-- ├── envConfig.ts
-- ├── index.ts
-- ├── types.ts
-- src/
-- ├── models/ # Modèles de données
-- │ ├── dbTypes.ts
-- │ ├── express.d.ts
-- │ ├── processorTypes.ts
-- │ ├── strategyModel.ts
-- ├── controllers/ # Contrôleurs pour gérer les requêtes
-- │ ├── authController.ts
-- │ ├── balanceController.ts
-- │ ├── cmcController.ts
-- │ ├── converterController.ts
-- │ ├── timestampController.ts
-- │ ├── marketController.ts
-- │ ├── orderBalanceController.ts
-- │ ├── orderMarketController.ts
-- │ ├── shadController.ts
-- │ ├── strategyController.ts
-- │ ├── tickerController.ts
-- │ ├── tradeController.ts
-- ├── services/ # Services pour la logique métier
-- │ │ ├─ metrics/
-- │ │ │ ├─ cmc.ts
-- │ │ │ ├─ global.ts
-- │ │ │ ├─ strategies.ts
-- │ │ │ ├─ trades.ts
-- │ │ │ ├─ utils.ts
-- │ ├── cronTasksService.ts
-- │ ├── emailService.ts
-- │ ├── authService.ts
-- │ ├── balanceService.ts
-- │ ├── cmcService.ts
-- │ ├── converterService.ts
-- │ ├── mongodbOperationsService.ts
-- │ ├── timestampService.ts
-- │ ├── mappingService.ts
-- │ ├── marketService.ts
-- │ ├── migrationSwapService.ts
-- │ ├── mongodbService.ts
-- │ ├── orderBalanceService.ts
-- │ ├── orderMarketService.ts
-- │ ├── processorService.ts
-- │ ├── shadService.ts
-- │ ├── strategyService.ts
-- │ ├── tickerService.ts
-- │ ├── tradeService.ts
-- │ ├── trailingStopService.ts
-- ├── routes/ # Définition des routes API
-- │ ├── authRoutes.ts
-- │ ├── balanceRoutes.ts
-- │ ├── cmcRoutes.ts
-- │ ├── converterRoutes.ts
-- │ ├── timestampRoutes.ts
-- │ ├── marketRoutes
-- │ ├── orderRoutes
-- │ ├── shadRoutes
-- │ ├── strategyRoutes
-- │ ├── tickerRoutes
-- │ ├── tradeRoutes
-- ├── middleware/ # Middleware pour l'authentification, etc.
-- │ ├── authMiddleware.ts
-- │ ├── errorMiddleware.ts
-- ├── utils/ # Utilitaires et helpers
-- │ ├── errorUtil.ts
-- │ ├── cronUtil.ts
-- │ ├── loggerUtil.ts
-- │ ├── mappingUtil.ts
-- │ ├── mockUtil.ts
-- │ ├── platformUtil.ts
-- │ ├── processorUtil.ts
-- │ ├── retryUtil.ts
-- ├── constants.ts
-- ├── server.ts
-- └── index.ts
-- tests/
-- ├── unit/
-- │ ├── config.test.ts
-- │ ├── services/
-- │ │ ├── balanceService.test.ts
-- │ │ ├── orderService.test.ts
-- │ │ ├── marketDataService.test.ts
-- │ │ ├── authService.test.ts
-- │ │ ├── strategyService.test.ts
-- │ │ ├── tradeService.test.ts
-- │ │ ├── shadService.test.ts
-- │ │ ├── converterService.test.ts
-- │ ├── controllers/
-- │ │ ├── orderController.test.ts
-- │ │ ├── marketDataController.test.ts
-- │ │ ├── authController.test.ts
-- │ │ ├── strategyController.test.ts
-- │ │ ├── tradeController.test.ts
-- │ │ ├── shadController.test.ts
-- │ │ ├── converterController.test.ts
-- │ ├── models/
-- │ │ ├── userModel.test.ts
-- │ │ ├── orderModel.test.ts
-- │ │ ├── marketDataModel.test.ts
-- │ │ ├── strategyModel.test.ts
-- │ │ ├── tradeModel.test.ts
-- │ │ ├── shadModel.test.ts
-- │ │ ├── converterModel.test.ts
-- ├── integration/
-- │ ├── orderIntegration.test.ts
-- │ ├── marketDataIntegration.test.ts
-- │ ├── authIntegration.test.ts
-- │ ├── strategyIntegration.test.ts
-- │ ├── tradeIntegration.test.ts
-- │ ├── shadIntegration.test.ts
-- │ ├── converterIntegration.test.ts
-- └── **mocks**/
--     ├── config.ts
-- jest.config.js
-- tsconfig.json
-- package.json
-- .env
-- .env.dev
-- .env.prod
-- .env.test
+┣ 📂client
+┃ ┣ 📂public
+┃ ┃ ┗ 📜favicon.ico
+┃ ┣ 📂src
+┃ ┃ ┣ 📂assets
+┃ ┃ ┃ ┣ 📜logo_exchange_binance.svg
+┃ ┃ ┃ ┣ 📜logo_exchange_gateio.svg
+┃ ┃ ┃ ┣ 📜logo_exchange_kucoin.svg
+┃ ┃ ┃ ┣ 📜logo_exchange_okx.svg
+┃ ┃ ┃ ┣ 📜logo_machi.svg
+┃ ┃ ┃ ┣ 📜logo.png
+┃ ┃ ┃ ┗ 📜logo.svg
+┃ ┃ ┣ 📂components
+┃ ┃ ┃ ┣ 📂button
+┃ ┃ ┃ ┃ ┣ 📜MyBunchSellButton.vue
+┃ ┃ ┃ ┃ ┣ 📜MyBuyButton.vue
+┃ ┃ ┃ ┃ ┣ 📜MyDeleteButton.vue
+┃ ┃ ┃ ┃ ┗ 📜MyEmergencySellButton.vue
+┃ ┃ ┃ ┣ 📂form
+┃ ┃ ┃ ┃ ┣ 📜AddBuyOrdersForm.vue
+┃ ┃ ┃ ┃ ┗ 📜InvestmentCalculator.vue
+┃ ┃ ┃ ┣ 📂machi
+┃ ┃ ┃ ┃ ┣ 📂block
+┃ ┃ ┃ ┃ ┃ ┣ 📜BaseBlock.vue
+┃ ┃ ┃ ┃ ┃ ┣ 📜InfoLabel.vue
+┃ ┃ ┃ ┃ ┃ ┣ 📜InfoLabelClick.vue
+┃ ┃ ┃ ┃ ┃ ┣ 📜Machi.vue
+┃ ┃ ┃ ┃ ┃ ┗ 📜StratBlock.vue
+┃ ┃ ┃ ┃ ┣ 📂column
+┃ ┃ ┃ ┃ ┃ ┣ 📜ChangePercentage.vue
+┃ ┃ ┃ ┃ ┃ ┣ 📜PercentageColumn.vue
+┃ ┃ ┃ ┃ ┃ ┣ 📜PriceWithChange.vue
+┃ ┃ ┃ ┃ ┃ ┣ 📜StrategyDropdown.vue
+┃ ┃ ┃ ┃ ┃ ┗ 📜ValueDisplay.vue
+┃ ┃ ┃ ┃ ┣ 📜ActionSelector.vue
+┃ ┃ ┃ ┃ ┣ 📜AssetCard.vue
+┃ ┃ ┃ ┃ ┣ 📜BalanceCard.vue
+┃ ┃ ┃ ┃ ┣ 📜BuyCalculator.vue
+┃ ┃ ┃ ┃ ┣ 📜Machi.vue
+┃ ┃ ┃ ┃ ┣ 📜MachiDataTable.vue
+┃ ┃ ┃ ┃ ┣ 📜NextSellsTable.vue
+┃ ┃ ┃ ┃ ┣ 📜PercentageColumn.vue
+┃ ┃ ┃ ┃ ┣ 📜PlatformSelector.vue
+┃ ┃ ┃ ┃ ┣ 📜SearchBar.vue
+┃ ┃ ┃ ┃ ┣ 📜StableCoinCard.vue
+┃ ┃ ┃ ┃ ┣ 📜TakeProfitTable.vue
+┃ ┃ ┃ ┃ ┗ 📜UpdateBarSelector.vue
+┃ ┃ ┃ ┣ 📂order
+┃ ┃ ┃ ┃ ┣ 📜Orders.vue
+┃ ┃ ┃ ┃ ┗ 📜OrdersTable.vue
+┃ ┃ ┃ ┣ 📂trade
+┃ ┃ ┃ ┃ ┣ 📜Trades.vue
+┃ ┃ ┃ ┃ ┣ 📜TradesActions.vue
+┃ ┃ ┃ ┃ ┗ 📜TradesTable.vue
+┃ ┃ ┃ ┣ 📜Cmc.vue
+┃ ┃ ┃ ┣ 📜Home.vue
+┃ ┃ ┃ ┣ 📜LogoMachi.vue
+┃ ┃ ┃ ┣ 📜Strategy.vue
+┃ ┃ ┃ ┗ 📜Stuff.vue
+┃ ┃ ┣ 📂js
+┃ ┃ ┃ ┣ 📂server
+┃ ┃ ┃ ┃ ┣ 📜common.ts
+┃ ┃ ┃ ┃ ┣ 📜fetchFromServer.ts
+┃ ┃ ┃ ┃ ┣ 📜order.ts
+┃ ┃ ┃ ┃ ┗ 📜strat.ts
+┃ ┃ ┃ ┣ 📂strat
+┃ ┃ ┃ ┃ ┣ 📜common.ts
+┃ ┃ ┃ ┃ ┣ 📜index.ts
+┃ ┃ ┃ ┃ ┣ 📜shad.ts
+┃ ┃ ┃ ┃ ┗ 📜strategyOptions.ts
+┃ ┃ ┃ ┣ 📂utils
+┃ ┃ ┃ ┃ ┣ 📜spinner.ts
+┃ ┃ ┃ ┃ ┣ 📜strategyUtils.ts
+┃ ┃ ┃ ┃ ┗ 📜takeprofits.ts
+┃ ┃ ┃ ┣ 📜columns.ts
+┃ ┃ ┃ ┗ 📜constants.ts
+┃ ┃ ┣ 📂json
+┃ ┃ ┃ ┗ 📜platforms.json
+┃ ┃ ┣ 📂store
+┃ ┃ ┃ ┣ 📜calculStore.ts
+┃ ┃ ┃ ┗ 📜loading.ts
+┃ ┃ ┣ 📂types
+┃ ┃ ┃ ┣ 📜filter.ts
+┃ ┃ ┃ ┣ 📜platform.ts
+┃ ┃ ┃ ┣ 📜response.ts
+┃ ┃ ┃ ┣ 📜responseData.ts
+┃ ┃ ┃ ┗ 📜shims-vue.d.ts
+┃ ┃ ┣ 📜.htaccess
+┃ ┃ ┣ 📜App.vue
+┃ ┃ ┣ 📜main.ts
+┃ ┃ ┣ 📜router.ts
+┃ ┃ ┣ 📜style.css
+┃ ┃ ┗ 📜vite-env.d.ts
+┃ ┣ 📂tests
+┃ ┣ 📜.env
+┃ ┣ 📜.eslintrc.cjs
+┃ ┣ 📜.gitignore
+┃ ┣ 📜.prettierrc.json
+┃ ┣ 📜index.html
+┃ ┣ 📜package.json
+┃ ┣ 📜README.md
+┃ ┣ 📜tsconfig.app.json
+┃ ┣ 📜tsconfig.app.tsbuildinfo
+┃ ┣ 📜tsconfig.json
+┃ ┣ 📜tsconfig.vite.json
+┃ ┣ 📜tsconfig.vite.tsbuildinfo
+┃ ┣ 📜vite.config.ts
+┃ ┣ 📜vitest.config.ts
+┃ ┗ 📜yarn.lock
+┣ 📂config
+┃ ┣ 📜default.ts
+┃ ┣ 📜index.ts
+┃ ┗ 📜types.ts
+┣ 📂mockData
+┃ ┣ 📂json
+┃ ┃ ┗ 📂mongodb
+┃ ┃ ┣ 📜db_machi_shad.collection_balance.json
+┃ ┃ ┣ 📜db_machi_shad.collection_cmc.json
+┃ ┃ ┣ 📜db_machi_shad.collection_highest_price.json
+┃ ┃ ┣ 📜db_machi_shad.collection_machi.json
+┃ ┃ ┣ 📜db_machi_shad.collection_market.json
+┃ ┃ ┣ 📜db_machi_shad.collection_order.json
+┃ ┃ ┣ 📜db_machi_shad.collection_price_btc.json
+┃ ┃ ┣ 📜db_machi_shad.collection_price_eth.json
+┃ ┃ ┣ 📜db_machi_shad.collection_shad.json
+┃ ┃ ┣ 📜db_machi_shad.collection_strategy.json
+┃ ┃ ┣ 📜db_machi_shad.collection_swap.json
+┃ ┃ ┣ 📜db_machi_shad.collection_ticker.json
+┃ ┃ ┣ 📜db_machi_shad.collection_timestamp.json
+┃ ┃ ┣ 📜db_machi_shad.collection_trade.json
+┃ ┃ ┗ 📜db_machi_shad.collection_user.json
+┃ ┗ 📜jsonboubou.json
+┣ 📂src
+┃ ┣ 📂controllers
+┃ ┃ ┣ 📜authController.ts
+┃ ┃ ┣ 📜balanceController.ts
+┃ ┃ ┣ 📜cmcController.ts
+┃ ┃ ┣ 📜converterController.ts
+┃ ┃ ┣ 📜machiController.ts
+┃ ┃ ┣ 📜marketController.ts
+┃ ┃ ┣ 📜orderBalanceController.ts
+┃ ┃ ┣ 📜orderMarketController.ts
+┃ ┃ ┣ 📜strategyController.ts
+┃ ┃ ┣ 📜tickerController.ts
+┃ ┃ ┣ 📜timestampController.ts
+┃ ┃ ┗ 📜tradeController.ts
+┃ ┣ 📂middlewares
+┃ ┃ ┗ 📜fileUploadMiddleware.ts
+┃ ┣ 📂repositories
+┃ ┃ ┣ 📜authRepository.ts
+┃ ┃ ┣ 📜balanceRepository.ts
+┃ ┃ ┣ 📜cmcRepository.ts
+┃ ┃ ┣ 📜highPriceRepository.ts
+┃ ┃ ┣ 📜machiRepository.ts
+┃ ┃ ┣ 📜marketRepository.ts
+┃ ┃ ┣ 📜orderBalanceRepository.ts
+┃ ┃ ┣ 📜serverConfigRepository.ts
+┃ ┃ ┣ 📜strategyRepository.ts
+┃ ┃ ┣ 📜tickerRepository.ts
+┃ ┃ ┣ 📜timestampRepository.ts
+┃ ┃ ┣ 📜tradeRepository.ts
+┃ ┃ ┗ 📜trailingStopRepository.ts
+┃ ┣ 📂routes
+┃ ┃ ┣ 📜authRoutes.ts
+┃ ┃ ┣ 📜balanceRoutes.ts
+┃ ┃ ┣ 📜cmcRoutes.ts
+┃ ┃ ┣ 📜converterRoutes.ts
+┃ ┃ ┣ 📜index.ts
+┃ ┃ ┣ 📜machiRoutes.ts
+┃ ┃ ┣ 📜marketRoutes.ts
+┃ ┃ ┣ 📜orderRoutes.ts
+┃ ┃ ┣ 📜strategyRoutes.ts
+┃ ┃ ┣ 📜tickerRoutes.ts
+┃ ┃ ┣ 📜timestampRoutes.ts
+┃ ┃ ┗ 📜tradeRoutes.ts
+┃ ┣ 📂services
+┃ ┃ ┣ 📂metrics
+┃ ┃ ┃ ┣ 📜cmc.ts
+┃ ┃ ┃ ┣ 📜global.ts
+┃ ┃ ┃ ┣ 📜strategies.ts
+┃ ┃ ┃ ┣ 📜trades.ts
+┃ ┃ ┃ ┗ 📜utils.ts
+┃ ┃ ┣ 📜authService.ts
+┃ ┃ ┣ 📜balanceService.ts
+┃ ┃ ┣ 📜cacheService.ts
+┃ ┃ ┣ 📜ccxtService.ts
+┃ ┃ ┣ 📜cmcService.ts
+┃ ┃ ┣ 📜converterService.ts
+┃ ┃ ┣ 📜cronTasksService.ts
+┃ ┃ ┣ 📜databaseService.ts
+┃ ┃ ┣ 📜emailService.ts
+┃ ┃ ┣ 📜generalUpdateManager.ts
+┃ ┃ ┣ 📜machiService.ts
+┃ ┃ ┣ 📜mappingService.ts
+┃ ┃ ┣ 📜marketService.ts
+┃ ┃ ┣ 📜migrationSwapService.ts
+┃ ┃ ┣ 📜mongodbOperationsService.ts
+┃ ┃ ┣ 📜mongodbService.ts
+┃ ┃ ┣ 📜orderBalanceService.ts
+┃ ┃ ┣ 📜orderMarketService.ts
+┃ ┃ ┣ 📜platformUpdateManager.ts
+┃ ┃ ┣ 📜processorService.ts
+┃ ┃ ┣ 📜serverConfigService.ts
+┃ ┃ ┣ 📜strategyService.ts
+┃ ┃ ┣ 📜tickerService.ts
+┃ ┃ ┣ 📜timestampService.ts
+┃ ┃ ┣ 📜tradeService.ts
+┃ ┃ ┣ 📜trailingStopService.ts
+┃ ┃ ┗ 📜updateSevice.ts
+┃ ┣ 📂types
+┃ ┃ ┣ 📜auth.ts
+┃ ┃ ┣ 📜balance.ts
+┃ ┃ ┣ 📜cache.ts
+┃ ┃ ┣ 📜cmc.ts
+┃ ┃ ┣ 📜cron.ts
+┃ ┃ ┣ 📜database.ts
+┃ ┃ ┣ 📜email.ts
+┃ ┃ ┣ 📜express.d.ts
+┃ ┃ ┣ 📜market.ts
+┃ ┃ ┣ 📜metrics.ts
+┃ ┃ ┣ 📜mongodb.ts
+┃ ┃ ┣ 📜order.ts
+┃ ┃ ┣ 📜platform.ts
+┃ ┃ ┣ 📜routes.ts
+┃ ┃ ┣ 📜strat.ts
+┃ ┃ ┣ 📜ticker.ts
+┃ ┃ ┣ 📜timestamp.ts
+┃ ┃ ┣ 📜trade.ts
+┃ ┃ ┗ 📜trailingStop.ts
+┃ ┣ 📂utils
+┃ ┃ ┣ 📜cronUtil.ts
+┃ ┃ ┣ 📜errorUtil.ts
+┃ ┃ ┣ 📜loggerUtil.ts
+┃ ┃ ┣ 📜mappingUtil.ts
+┃ ┃ ┣ 📜metricsUtil.ts
+┃ ┃ ┣ 📜mockUtil.ts
+┃ ┃ ┣ 📜platformUtil.ts
+┃ ┃ ┣ 📜processorUtil.ts
+┃ ┃ ┣ 📜retryUtil.ts
+┃ ┃ ┗ 📜timeUtil.ts
+┃ ┣ 📜constants.ts
+┃ ┣ 📜index.ts
+┃ ┗ 📜server.ts
+┣ 📂tests
+┃ ┗ 📂unit
+┃ ┣ 📂controllers
+┃ ┃ ┣ 📜authController.test.ts
+┃ ┃ ┣ 📜balanceController.test.ts
+┃ ┃ ┣ 📜cmcController.test.ts
+┃ ┃ ┣ 📜converterController.test.ts
+┃ ┃ ┣ 📜marketController.test.ts
+┃ ┃ ┣ 📜orderBalanceController.test.ts
+┃ ┃ ┣ 📜orderMarketController.test.ts
+┃ ┃ ┣ 📜shadController.test.ts
+┃ ┃ ┣ 📜strategyController.test.ts
+┃ ┃ ┣ 📜tickerController.test.ts
+┃ ┃ ┣ 📜timestampController.test.ts
+┃ ┃ ┗ 📜tradeController.test.ts
+┃ ┗ 📂routes
+┃ ┣ 📜authRoutes.test.ts
+┃ ┣ 📜balanceRoutes.test.ts
+┃ ┣ 📜cmcRoutes.test.ts
+┃ ┣ 📜marketRoutes.test.ts
+┃ ┣ 📜orderRoutes.test.ts
+┃ ┣ 📜shadRoutes.test.ts
+┃ ┣ 📜strategyRoutes.test.ts
+┃ ┣ 📜tickerRoutes.test.ts
+┃ ┣ 📜timestampRoutes.test.ts
+┃ ┗ 📜tradeRoutes.test.ts
+┣ 📜.env.dev
+┣ 📜.gitignore
+┣ 📜.gitmodules
+┣ 📜.prettierignore
+┣ 📜.prettierrc
+┣ 📜eslint.config.mjs
+┣ 📜jest.config.ts
+┣ 📜LICENSE
+┣ 📜machi00-win v1.0.0.exe
+┣ 📜package.json
+┣ 📜README.md
+┣ 📜tsconfig.json
+┗ 📜yarn.lock
 
 ## Sécurité
 
