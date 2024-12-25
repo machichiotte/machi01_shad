@@ -144,7 +144,7 @@ async function convertModelHTX(data: Array<ModelHtx>): Promise<MappedTrade[]> {
         const date = item['deal_time']
         const total = parseFloat(item['amount'])
         const eqUSD = await getEqUSDFromAPI(date, quote, total)
-
+        
         return {
           base: base,
           quote: quote,

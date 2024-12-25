@@ -52,7 +52,7 @@ export class MappingService {
       item.symbol?.toUpperCase() || '',
       item.cost || 0,
       conversionRates
-    )
+    )?.toFixed(2)
 
     const feeCost = item.fee ? parseFloat(item.fee.cost?.toString() || '0') : 0
     const feeCurrency = item.fee
@@ -73,7 +73,7 @@ export class MappingService {
       feecoin: feeCurrency,
       platform,
       dateUTC: item.datetime || '',
-      eqUSD: eqUSD || 0
+      eqUSD: Number(eqUSD) || 0
     };
 
     return mappedTrade;
