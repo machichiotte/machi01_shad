@@ -44,22 +44,8 @@ onMounted(async () => {
   await getTradesData()
 })
 
-// Mettre à jour filteredTrades en fonction des filtres et transformer les données
+//TODO Mettre à jour filteredTrades en fonction des filtres et transformer les données
 watchEffect(() => {
-  console.log('Trades mis à jour:', {
-    nombreTotal: trades.value.length,
-    trades: trades.value.map(trade => ({
-      pair: trade.pair,
-      orderid: trade.orderid,
-      side: trade.side,
-      price: trade.price,
-      amount: trade.amount,
-      total: trade.total,
-      platform: trade.platform,
-      date: trade.dateUTC || new Date(trade.timestamp || 0).toISOString()
-    }))
-  })
-
   filteredTrades.value = trades.value
     .filter((item) => {
       const searchValue = (filters.value.global.value || '').toLowerCase()

@@ -16,7 +16,6 @@ const props = defineProps<{
 }>()
 
 const itemsPerPage = ref<number>(100);
-console.log(props.items);
 const cols = tradesColumns
 
 </script>
