@@ -59,7 +59,8 @@ watchEffect(() => {
       let date: string
 
       if (item['timestamp']) {
-        const timestamp = item['timestamp'].toString().length <= 10 ? item['timestamp'] * 1000 : item['timestamp'];
+        const timestamp =
+          item['timestamp'].toString().length <= 10 ? item['timestamp'] * 1000 : item['timestamp']
         const formattedDate = new Date(timestamp)
         const year = formattedDate.getFullYear()
         const month = String(formattedDate.getMonth() + 1).padStart(2, '0')
@@ -76,7 +77,7 @@ watchEffect(() => {
       }
 
       const eqUsd = item['eqUSD'] !== null ? item['eqUSD'] : 0
-
+      console.log('eqqq: ', eqUsd + " - " + typeof eqUsd)
       return {
         base: item['base'],
         quote: item['quote'],
@@ -93,13 +94,16 @@ watchEffect(() => {
       } as Trade
     })
 
-  const sellTrades = filteredTrades.value.filter((item) => item.side === 'sell')
-  totalSell.value = sellTrades.reduce((acc, item) => acc + item.eqUSD, 0)
-  amountSell.value = sellTrades.reduce((acc, item) => acc + item.amount, 0)
+  const safeSum = (acc: number, value: number) => Number(acc + (value || 0))
 
-  const buyTrades = filteredTrades.value.filter((item) => item.side === 'buy')
-  totalBuy.value = buyTrades.reduce((acc, item) => acc + item.eqUSD, 0)
-  amountBuy.value = buyTrades.reduce((acc, item) => acc + item.amount, 0)
+  const sellTrades = filteredTrades.value.filter((item) => item.side.toLowerCase() === 'sell')
+  totalSell.value = sellTrades.reduce((acc, item) => safeSum(acc, item.eqUSD), 0)
+  
+  amountSell.value = sellTrades.reduce((acc, item) => acc + (item.amount || 0), 0)
+
+  const buyTrades = filteredTrades.value.filter((item) => item.side.toLowerCase() === 'buy')
+  totalBuy.value = buyTrades.reduce((acc, item) => safeSum(acc, item.eqUSD), 0)
+  amountBuy.value = buyTrades.reduce((acc, item) => acc + (item.amount || 0), 0)
 })
 </script>
 
@@ -109,6 +113,7 @@ watchEffect(() => {
       <SearchBar :filters="filters" />
       <div class="trade-sums">
         <label>Supposed Balance: {{ amountBuy - amountSell }}</label>
+        <label>Supposed Avg: {{ (totalSell - totalBuy) / (amountBuy - amountSell) }}</label>
         <label>Buy: -{{ totalBuy.toFixed(2) }} / Sell: +{{ totalSell.toFixed(2) }}</label>
         <label>Diff: {{ (totalSell - totalBuy).toFixed(2) }}</label>
         <div>

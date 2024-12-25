@@ -24,7 +24,7 @@ const cols = tradesColumns
 <template>
   <div class="table-container">
     <DataTable :value="props.items" :rows="itemsPerPage" columnResizeMode="fit" :paginator="true" scrollable
-      :filters="filters" sortField="date" :sortOrder="-1">
+      :filters="filters" sortField="dateUTC" :sortOrder="-1">
       <Column v-for="(col, index) in cols" :key="index" :field="col.field" :header="col.header" sortable></Column>
     </DataTable>
   </div>
