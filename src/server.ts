@@ -43,7 +43,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 function startServer(): Promise<Server> {
   return new Promise((resolve, reject) => {
     const server = app.listen(PORT, () => {
-      console.log(`Serveur démarré sur le port: ${PORT}`)
+      console.info(`Serveur démarré sur le port: ${PORT}`)
       resolve(server)
     })
     server.on('error', reject)

@@ -30,7 +30,6 @@ export class TradeService {
     const trades: PlatformTrade[] = [];
     const batchSize = 30; // Ajustez selon les limites de l'API
 
-    // TODO console.log('validSymbols', validSymbols.length + " : " + validSymbols)
     for (let i = 0; i < validSymbols.length; i += batchSize) {
       const symbolBatch = validSymbols.slice(i, i + batchSize);
       const batchPromises = symbolBatch.map(symbol =>

@@ -17,7 +17,7 @@ export class OrderMarketService {
     static async deleteOrder(platform: PLATFORM, oId: string, symbol: string): Promise<void> {
         try {
             await CcxtService.cancelOneOrder(platform, oId, symbol.replace('/', ''))
-            console.log(`Deleted order ${oId} for ${platform}.`, { symbol })
+            console.info(`Deleted order ${oId} for ${platform}.`, { symbol })
         } catch (error) {
             handleServiceError(error, 'deleteOrder', `Error deleting ${symbol}order with id ${oId} for ${platform}`)
             throw error

@@ -15,7 +15,7 @@ import { checkApiKeys } from '@utils/platformUtil';
 export class CronTaskService {
   static async initializeCronTasks(): Promise<void> {
     try {
-      console.log('Starting initialization of Cron tasks...');
+      console.info('Starting initialization of Cron tasks...');
 
       const initializedTasks: string[] = []; // Tâches initialisées avec succès
       const failedTasks: string[] = []; // Tâches ayant échoué
@@ -61,7 +61,7 @@ export class CronTaskService {
               try {
                 await task(platform); // Appelle la tâche avec l'argument platform
                 const duration = Date.now() - startTime;
-                console.log(`Platform Task ${name} executed successfully in ${duration}ms.`);
+                console.info(`Platform Task ${name} executed successfully in ${duration}ms.`);
               } catch (err) {
                 handleServiceError(err, `CronTaskService: ${name}`, `Failed task for platform: ${platform}`);
               }
@@ -87,7 +87,7 @@ export class CronTaskService {
               } else {
                 await (task as () => void)();
                 const duration = Date.now() - startTime;
-                console.log(`General Task ${name} executed successfully in ${duration}ms.`);
+                console.info(`General Task ${name} executed successfully in ${duration}ms.`);
               }
             } catch (error) {
               handleServiceError(error, `CronTaskService: ${name}`, `Error executing task: ${name}`);
@@ -102,7 +102,7 @@ export class CronTaskService {
 
       // Log des résultats
       if (initializedTasks.length > 0) {
-        console.log(`Cron Initialized: ${initializedTasks.join(' - ')}, Valid Platforms: ${validPlatforms.join(', ')}`);
+        console.info(`Cron Initialized: ${initializedTasks.join(' - ')}, Valid Platforms: ${validPlatforms.join(', ')}`);
       }
       if (failedTasks.length > 0) {
         console.error(`Cron Failed: ${failedTasks.join(' - ')}`);

@@ -78,11 +78,8 @@ async function fetchLastTrades(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  //TODO console.log('platform asset', platform + ' - ' + base)
   try {
     const data = await TradeService.fetchFromApi(platform, base)
-    //TODO console.log('platform asset', platform + ' - ' + data)
-
     res.status(200).json({ status: "success", message: 'Derniers trades récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'fetchLastTrades')

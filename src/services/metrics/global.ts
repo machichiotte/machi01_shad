@@ -232,7 +232,6 @@ function calculateAssetMetrics(base: string, platform: PLATFORM, mappedBalance: 
     },
   }
 
-  //console.log(`Métriques finales calculées pour ${base}:`, finalMetrics);
   return finalMetrics;
 }
 

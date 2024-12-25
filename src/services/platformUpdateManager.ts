@@ -14,7 +14,7 @@ export class PlatformUpdateManager {
     };
 
     static async updatePlatformData(platform: PLATFORM): Promise<void> {
-        console.log(`Updating data for ${platform}...`);
+        console.info(`Updating data for ${platform}...`);
 
         try {
             await Promise.all([

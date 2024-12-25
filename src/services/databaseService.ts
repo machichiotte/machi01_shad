@@ -215,7 +215,7 @@ export class DatabaseService {
   static async getData(collectionName: string): Promise<MappedData[]> {
     try {
       if (config.isOffline) {
-        console.log('offline')
+        console.info('offline')
         return getMockedData(collectionName)
       } else {
         const data = await DatabaseService.getCacheOrFetchCollection(collectionName)

@@ -28,7 +28,7 @@ export class MarketService {
     try {
       const currentMarkets = await MarketService.fetchCurrentMarkets(platform);
       await MarketRepository.save(currentMarkets, platform);
-      console.log(`Données de marché pour ${platform} mises à jour dans la base de données. Total des enregistrements : ${currentMarkets.length}.`);
+      console.info(`Données de marché pour ${platform} mises à jour dans la base de données. Total des enregistrements : ${currentMarkets.length}.`);
     } catch (error) {
       handleServiceError(error, 'updateMarketsForPlatform', `Erreur lors de la mise à jour des marchés pour ${platform}`);
     }

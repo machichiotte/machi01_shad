@@ -90,7 +90,7 @@ export class TrailingStopService {
                             orderCount += platform === 'binance' ? 1 : 0;
                         }
                     } else {
-                        console.log(`Prix actuel non défini pour ${base} sur ${platform}`);
+                       // console.info(`Prix actuel non défini pour ${base} sur ${platform}`);
                     }
                 }
             }
@@ -113,7 +113,7 @@ export class TrailingStopService {
 
             if (rateLimitReached) {
                 const waitTime = Math.max(0, (platform === 'kucoin' ? this.rateLimits.kucoin.period : this.rateLimits.binance.period) - timeSinceLastReset);
-                console.log(`Limite atteinte pour ${platform}. Pause de ${waitTime}ms.`);
+                console.info(`Limite atteinte pour ${platform}. Pause de ${waitTime}ms.`);
                 await new Promise(resolve => setTimeout(resolve, waitTime));
             }
         } catch (error) {
@@ -128,7 +128,7 @@ export class TrailingStopService {
                 await TrailingStopRepository.cancelAllOrdersByBunch(platform, base);
                 await TrailingStopRepository.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
                 await TrailingStopRepository.updateHighestPrice(platform, base, currentPrice);
-                console.log(`Ordre de trailing stop créé pour ${base}`);
+                console.info(`Ordre de trailing stop créé pour ${base}`);
                 return { base, platform };
             }
 
@@ -137,7 +137,7 @@ export class TrailingStopService {
                 await TrailingStopRepository.cancelAllOrdersByBunch(platform, base);
                 await TrailingStopRepository.createOrUpdateStopLossOrder(platform, stopLossPrice, base, balance);
                 await TrailingStopRepository.updateHighestPrice(platform, base, currentPrice);
-                console.log(`Ordre de trailing stop mis à jour pour ${base}`);
+                console.info(`Ordre de trailing stop mis à jour pour ${base}`);
                 return { base, platform };
             }
         } catch (error) {
