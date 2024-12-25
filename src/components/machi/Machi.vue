@@ -75,9 +75,11 @@ const getData = async (): Promise<void> => {
     await calculStore.loadOrder();
     await calculStore.loadMachi();
 
-    console.log("Trades data retrieved:", tradesItems.value.length)
-    console.log("Orders data retrieved:", openOrdersItems.value.length)
-    console.log("Machi data retrieved:", machiItems.value.length)
+    console.info("Data retrieved:", {
+      trades: tradesItems.value.length,
+      orders: openOrdersItems.value.length,
+      machi: machiItems.value.length,
+    });
 
   } catch (error) {
     console.error("An error occurred while retrieving data:", error)
@@ -91,7 +93,7 @@ onMounted(async () => {
 
 // Function to handle action deletion
 const handleDeleteAction = (): void => {
-  console.log('Delete action received from grandchild component');
+ // console.info('Delete action received from grandchild component');
   // Perform the delete action here
   //TODO faire focntionner ca
   //deleteProductsDialog.value = true

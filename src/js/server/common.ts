@@ -10,7 +10,7 @@ const handleApiResponse = async <T>(response: Response): Promise<ApiResponse<T>>
         throw new Error(jsonResponse.error || `Failed request with status ${response.status}`);
     }
 
-    console.log('handleApiResponse', jsonResponse.message) //IMPORTANT POUR LES BUGS
+    console.info('handleApiResponse', jsonResponse.message) //IMPORTANT POUR LES BUGS
 
     return jsonResponse;
 };

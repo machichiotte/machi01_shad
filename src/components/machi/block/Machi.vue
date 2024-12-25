@@ -1,7 +1,7 @@
 <!-- src/components/machi/Machi.vue -->
 <script setup lang="ts">
 import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
-import { useCalculStore } from '../../../store/calculStore'// Import the Pinia store
+import { useCalculStore } from '../../../store/calculStore' // Import the Pinia store
 import { FilterMatchMode } from 'primevue/api'
 import AssetCard from './AssetCard.vue'
 import BalanceCard from './BalanceCard.vue'
@@ -11,13 +11,13 @@ import PlatformSelector from './PlatformSelector.vue'
 import UpdateBarSelector from './UpdateBarSelector.vue'
 import ActionSelector from './ActionSelector.vue'
 
-import TradesTable from '../trade/TradesTable.vue';
-import OrdersTable from '../order/OrdersTable.vue';
-import BuyCalculator from './BuyCalculator.vue';
+import TradesTable from '../trade/TradesTable.vue'
+import OrdersTable from '../order/OrdersTable.vue'
+import BuyCalculator from './BuyCalculator.vue'
 
 import { Filter } from '../../../types/filter'
 import { Asset } from '../../../types/responseData'
-import StableCoinCard from './StableCoinCard.vue';
+import StableCoinCard from './StableCoinCard.vue'
 
 // Define the selected bases with proper types
 const selectedBases = ref<Asset[]>([])
@@ -31,56 +31,54 @@ const filters = ref<Filter>({
 const selectedPlatforms = ref(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
 
 // Access the Pinia store
-const calculStore = useCalculStore();
+const calculStore = useCalculStore()
 
 // Computed properties with appropriate types
-const tradesItems = computed(() => calculStore.getTrade);
-const openOrdersItems = computed(() => calculStore.getOrder);
-const machiItems = computed(() => calculStore.getMachi);
+const tradesItems = computed(() => calculStore.getTrade)
+const openOrdersItems = computed(() => calculStore.getOrder)
+const machiItems = computed(() => calculStore.getMachi)
 
 // Filtered Machi items by platform and search query, ensuring uniqueness of `base`
 const filteredMachiItems = computed(() => {
-  const searchValue = filters.value.global.value ? filters.value.global.value.toLowerCase() : '';
+  const searchValue = filters.value.global.value ? filters.value.global.value.toLowerCase() : ''
 
   // Utiliser un Set pour garder les éléments uniques
-  const uniqueItems = new Set();
+  const uniqueItems = new Set()
 
-  return machiItems.value.filter(item => {
+  return machiItems.value.filter((item) => {
     // Filtrer par plateforme
-    const matchesPlatformFilter = selectedPlatforms.value.includes(item.platform);
+    const matchesPlatformFilter = selectedPlatforms.value.includes(item.platform)
 
     // Filtrer par recherche
     const matchesSearchFilter = searchValue
-      ? Object.values(item).some(value =>
-        String(value).toLowerCase().includes(searchValue)
-      )
-      : true;
+      ? Object.values(item).some((value) => String(value).toLowerCase().includes(searchValue))
+      : true
 
     // Ajouter à l'ensemble si l'élément est unique par `base`
-    const isUnique = !uniqueItems.has(`${item.base}-${item.platform}`);
+    const isUnique = !uniqueItems.has(`${item.base}-${item.platform}`)
 
     if (matchesPlatformFilter && matchesSearchFilter && isUnique) {
-      uniqueItems.add(item.base); // Ajouter la `base` unique à l'ensemble
-      return true;
+      uniqueItems.add(item.base) // Ajouter la `base` unique à l'ensemble
+      return true
     }
-    return false;
-  });
-});
-
+    return false
+  })
+})
 
 // Function to fetch data from the store asynchronously
 const getData = async (): Promise<void> => {
   try {
-    await calculStore.loadTrade();
-    await calculStore.loadOrder();
-    await calculStore.loadMachi();
+    await calculStore.loadTrade()
+    await calculStore.loadOrder()
+    await calculStore.loadMachi()
 
-    console.log("Trades data retrieved:", tradesItems.value.length)
-    console.log("Orders data retrieved:", openOrdersItems.value.length)
-    console.log("Machi data retrieved:", machiItems.value.length)
-
+    console.info('Data retrieved:', {
+      trades: tradesItems.value.length,
+      orders: openOrdersItems.value.length,
+      machi: machiItems.value.length
+    })
   } catch (error) {
-    console.error("An error occurred while retrieving data:", error)
+    console.error('An error occurred while retrieving data:', error)
   }
 }
 
@@ -91,11 +89,10 @@ onMounted(async () => {
 
 // Function to handle action deletion
 const handleDeleteAction = (): void => {
-  console.log('Delete action received from grandchild component');
   // Perform the delete action here
   //TODO faire focntionner ca
   //deleteProductsDialog.value = true
-};
+}
 
 // Function to update selected bases
 const updateSelectedBases = (newSelection: Asset[]): void => {
@@ -122,47 +119,47 @@ const toggleTopExpandCollapse = (): void => {
   isTopExpanded.value = !isTopExpanded.value
 }
 
-const itemsPerPage = 10; // Number of items to display per page
-const currentPage = ref(1);
-const loading = ref(false);
+const itemsPerPage = 10 // Number of items to display per page
+const currentPage = ref(1)
+const loading = ref(false)
 
 // Computed property for paginated items
 const paginatedMachiItems = computed(() => {
-  const start = 0; // Commencer à partir du début
-  return filteredMachiItems.value.slice(start, currentPage.value * itemsPerPage);
-});
+  const start = 0 // Commencer à partir du début
+  return filteredMachiItems.value.slice(start, currentPage.value * itemsPerPage)
+})
 
 // Check if there are more items to load
 const hasMoreItems = computed(() => {
-  return currentPage.value * itemsPerPage < filteredMachiItems.value.length;
-});
+  return currentPage.value * itemsPerPage < filteredMachiItems.value.length
+})
 
 // Function to load more items
 const loadMore = () => {
   if (!loading.value && hasMoreItems.value) {
-    loading.value = true;
-    currentPage.value++;
-    loading.value = false;
+    loading.value = true
+    currentPage.value++
+    loading.value = false
   }
-};
+}
 
 const handleScroll = () => {
-  const scrollPosition = window.innerHeight + window.scrollY;
-  const threshold = document.body.offsetHeight - 200; // Seuil pour charger plus d'éléments
+  const scrollPosition = window.innerHeight + window.scrollY
+  const threshold = document.body.offsetHeight - 200 // Seuil pour charger plus d'éléments
   if (scrollPosition >= threshold) {
-    loadMore();
+    loadMore()
   }
-};
+}
 
 // Ajouter l'écouteur d'événements lors du montage
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-});
+  window.addEventListener('scroll', handleScroll)
+})
 
 // Nettoyer l'écouteur d'événements lors de la destruction
 onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll);
-});
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <template>
@@ -171,31 +168,48 @@ onBeforeUnmount(() => {
     <div class="top-tab-container" :class="{ expanded: isTopExpanded }">
       <div class="tab-header">
         <div class="tab_menu">
-          <Button label="Platform Selector" @click="activeTopTab = 'platforms'"
-            :class="{ active: activeTopTab === 'platforms' }" />
-          <Button label="Update data" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
-          <Button label="Actions" @click="activeTopTab = 'action'" :class="{ active: activeTopTab === 'action' }" />
-          <Button icon="pi pi-chevron-down" @click="toggleTopExpandCollapse" class="expand-collapse-button" />
-
+          <Button
+            label="Platform Selector"
+            @click="activeTopTab = 'platforms'"
+            :class="{ active: activeTopTab === 'platforms' }"
+          />
+          <Button
+            label="Update data"
+            @click="activeTopTab = 'fetch'"
+            :class="{ active: activeTopTab === 'fetch' }"
+          />
+          <Button
+            label="Actions"
+            @click="activeTopTab = 'action'"
+            :class="{ active: activeTopTab === 'action' }"
+          />
+          <Button
+            icon="pi pi-chevron-down"
+            @click="toggleTopExpandCollapse"
+            class="expand-collapse-button"
+          />
         </div>
         <SearchBar :filters="filters" />
-
       </div>
       <div class="tab-content">
-        <PlatformSelector v-if="activeTopTab === 'platforms'" :initialSelectedPlatforms="selectedPlatforms"
-          @update:selectedPlatforms="updateSelectedPlatforms" />
+        <PlatformSelector
+          v-if="activeTopTab === 'platforms'"
+          :initialSelectedPlatforms="selectedPlatforms"
+          @update:selectedPlatforms="updateSelectedPlatforms"
+        />
         <UpdateBarSelector v-if="activeTopTab === 'fetch'" />
-        <ActionSelector v-if="activeTopTab === 'action'" :selectedBases="selectedBases" :filters="filters"
-          @delete:action="handleDeleteAction" />
-
+        <ActionSelector
+          v-if="activeTopTab === 'action'"
+          :selectedBases="selectedBases"
+          :filters="filters"
+          @delete:action="handleDeleteAction"
+        />
       </div>
     </div>
 
     <div class="content-container">
       <Toolbar class="mb-4">
-        <template #end>
-
-        </template>
+        <template #end> </template>
       </Toolbar>
 
       <BalanceCard :assets="filteredMachiItems" />
@@ -203,8 +217,14 @@ onBeforeUnmount(() => {
 
       <!-- Conteneur de cartes -->
       <div class="asset-card-container">
-        <AssetCard v-for="item in paginatedMachiItems" :key="item.base" :asset="item" :trades="tradesItems"
-          :orders="openOrdersItems" @update:selectedBases="updateSelectedBases" />
+        <AssetCard
+          v-for="item in paginatedMachiItems"
+          :key="item.base"
+          :asset="item"
+          :trades="tradesItems"
+          :orders="openOrdersItems"
+          @update:selectedBases="updateSelectedBases"
+        />
         <div v-if="loading">Loading more items...</div>
       </div>
     </div>
@@ -212,11 +232,26 @@ onBeforeUnmount(() => {
     <!-- Fixed Bottom Tab Container -->
     <div class="bottom-tab-container" :class="{ expanded: isBottomExpanded }">
       <div class="tab-header">
-        <Button label="Trades" @click="activeTab = 'trades'" :class="{ active: activeTab === 'trades' }" />
-        <Button label="Orders" @click="activeTab = 'orders'" :class="{ active: activeTab === 'orders' }" />
-        <Button label="Buy Calculator" @click="activeTab = 'buyCalculator'"
-          :class="{ active: activeTab === 'buyCalculator' }" />
-        <Button icon="pi pi-chevron-up" @click="toggleExpandCollapse" class="expand-collapse-button" />
+        <Button
+          label="Trades"
+          @click="activeTab = 'trades'"
+          :class="{ active: activeTab === 'trades' }"
+        />
+        <Button
+          label="Orders"
+          @click="activeTab = 'orders'"
+          :class="{ active: activeTab === 'orders' }"
+        />
+        <Button
+          label="Buy Calculator"
+          @click="activeTab = 'buyCalculator'"
+          :class="{ active: activeTab === 'buyCalculator' }"
+        />
+        <Button
+          icon="pi pi-chevron-up"
+          @click="toggleExpandCollapse"
+          class="expand-collapse-button"
+        />
       </div>
       <div class="tab-content">
         <TradesTable v-if="activeTab === 'trades'" :items="tradesItems" :filters="filters" />
@@ -258,7 +293,7 @@ onBeforeUnmount(() => {
   grid-auto-rows: min-content;
   /* Hauteur minimale pour chaque carte */
   align-items: start;
-  background-color: #ddd
+  background-color: #ddd;
 }
 
 .top-tab-container {

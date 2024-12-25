@@ -105,7 +105,7 @@ const tpProgress = computed(() => calculateTakeProfitProgress(ass.strat.takeProf
 
 // Sauvegarde de la stratégie
 const saveStratForAsset = (): void => {
-    console.log('Saving strategy for asset:', ass.strat.strategy, ass.strat.maxExposition);
+    console.info('Saving strategy for asset:', ass.strat.strategy, ass.strat.maxExposition);
 };
 
 watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
@@ -113,7 +113,6 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
     ass.strat.maxExposition = newExpo;
     const updatedTakeProfits = getTakeProfitsTargets(ass);
     Object.assign(ass.strat.takeProfits, updatedTakeProfits);
-    console.log('TakeProfits mis à jour:', ass.strat.takeProfits);
 });
 </script>
 

@@ -54,7 +54,7 @@ async function fetchMyData<T>(fetchFunction: () => Promise<T>, index: number): P
     try {
         loading.value[index] = true
         const result: T = await fetchFunction()// Résultat du type T (ex: Balance[], Strat[], etc.)
-        console.log(`${fetchOptions[index].name} fetched successfully`, result)
+        console.info(`${fetchOptions[index].name} fetched successfully`, result)
     } catch (error) {
         console.error(`Error fetching ${fetchOptions[index].name}:`, error)
         errors.value[index] = true

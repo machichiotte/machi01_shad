@@ -20,7 +20,7 @@ const orders = computed(() => calculStore.getOrder);
 const getOrdersData = async (): Promise<void> => {
   try {
     await calculStore.loadOrder(); // Call Pinia action to fetch data
-    console.log("Orders data retrieved:", orders.value.length);
+    console.info("Orders data retrieved:", orders.value.length);
   } catch (error) {
     console.error("An error occurred while fetching data:", error);
     // Display an error message to the user if necessary

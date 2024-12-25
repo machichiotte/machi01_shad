@@ -18,12 +18,10 @@ const handleClick = async () => {
                 base: base.value,
                 platform: platform.value
             });
-        console.log('responseJson', responseJson);
 
         const transformedResponse = transformTrades(fetchValue as StuffTrade[], platform.value);
 
         responseJson.value = transformedResponse
-        console.log("transformedResponse", transformedResponse)
     } catch (error) {
         console.error('Erreur lors de la requête :', error);
         responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };

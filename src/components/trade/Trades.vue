@@ -33,7 +33,7 @@ const filteredTrades = ref<Trade[]>([])
 const getTradesData = async () => {
   try {
     await calculStore.loadTrade()
-    console.log('Trade data retrieved:', trades.value.length)
+    console.info('Trade data retrieved:', trades.value.length)
   } catch (error) {
     console.error('An error occurred while retrieving data:', error)
   }
@@ -77,7 +77,6 @@ watchEffect(() => {
       }
 
       const eqUsd = item['eqUSD'] !== null ? item['eqUSD'] : 0
-      console.log('eqqq: ', eqUsd + " - " + typeof eqUsd)
       return {
         base: item['base'],
         quote: item['quote'],

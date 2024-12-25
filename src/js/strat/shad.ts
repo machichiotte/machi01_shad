@@ -61,15 +61,10 @@ function getTakeProfitValues(data: Asset, maxExposition: number, ratioShad: numb
 
 // Calculate recovery values based on trading strategy and market conditions.
 export function getShadTakeProfitsTargets(asset: Asset): TakeProfits {
-  console.log('getShadTakeProfitsTargets asset', asset)
-
   const stratExpo = asset.strat.maxExposition ?? 0 // Ensure default value
   const maxExposition = Math.max(0, stratExpo) // Ensure non-negative exposition
   const ratioShad = determineStrategyFactor(asset.strat.strategy)
-
   const calculatedValues = getTakeProfitValues(asset, maxExposition, ratioShad as number)
-  console.log('getShadTakeProfitsTargets calculatedValues', calculatedValues)
-
   return calculatedValues;
 }
 
