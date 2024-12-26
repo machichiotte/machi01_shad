@@ -15,6 +15,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
+    "mongodb": "^6.12.0",
     "pinia": "^2.2.4",
     "primeicons": "^7.0.0",
     "primevue": "^3.48.1",
