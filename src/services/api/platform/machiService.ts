@@ -1,9 +1,9 @@
 // src/services/machiService.ts
 import { MachiRepository } from '@repositories/machiRepository';
+import { HighestPriceRepository } from '@repositories/highPriceRepository';
 import { HighestPrices } from '@typ/database';
-import { PLATFORM } from '@src/types/platform';
-import { HighestPriceRepository } from '@src/repositories/highPriceRepository';
-import { Asset } from '@src/types/metrics';
+import { PLATFORM } from '@typ/platform';
+import { Asset } from '@typ/metrics';
 
 export class MachiService {
   /**

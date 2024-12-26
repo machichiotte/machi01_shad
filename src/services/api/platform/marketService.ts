@@ -1,11 +1,11 @@
 // src/services/marketService.ts
-import { CcxtService } from '@services/ccxtService';
-import { MappingService } from '@services/mappingService';
+import { CcxtService } from '@services/api/platform/ccxtService';
+import { MappingService } from '@src/services/api/platform/platformMapping';
 import { MarketRepository } from '@repositories/marketRepository';
 import { MappedMarket } from '@typ/market';
+import { PLATFORM } from '@typ/platform';
 import { handleServiceError } from '@utils/errorUtil';
-import { PLATFORM } from '@src/types/platform';
-import { executeCronTask } from '@src/utils/cronUtil';
+import { executeCronTask } from '@utils/cronUtil';
 
 export class MarketService {
   /**

@@ -2,7 +2,7 @@ import { MappedBalance } from '@typ/balance';
 import { Asset, HighestPrice, UpdatedOrder } from '@typ/trailingStop';
 import { TrailingStopRepository } from '@repositories/trailingStopRepository';
 import { handleServiceError } from '@utils/errorUtil';
-import { PLATFORM } from '@src/types/platform';
+import { PLATFORM } from '@typ/platform';
 
 export class TrailingStopService {
     private static readonly PERCENTAGE_TO_LOSE = 0.01;

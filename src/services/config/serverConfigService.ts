@@ -1,6 +1,6 @@
 // src/services/serverConfigService.ts
+import { ServerConfigRepository } from '@repositories/serverConfigRepository';
 import { ServerConfig } from '@config/types';
-import { ServerConfigRepository } from '@src/repositories/serverConfigRepository';
 
 export class ServerConfigService {
 

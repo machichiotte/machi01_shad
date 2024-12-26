@@ -1,13 +1,12 @@
 // src/repositories/trailingStopRepository.ts
-import { BalanceService } from '@services/balanceService';
-import { MachiService } from '@src/services/machiService';
-import { TickerService } from '@services/tickerService';
-import { OrderMarketService } from '@services/orderMarketService';
+import { BalanceService } from '@services/api/platform/balanceService';
+import { MachiService } from '@services/api/platform/machiService';
+import { TickerService } from '@services/api/platform/tickerService';
+import { OrderMarketService } from '@services/api/platform/orderMarketService';
 import { MappedBalance } from '@typ/balance';
 import { HighestPrice } from '@typ/trailingStop';
+import { PLATFORM } from '@typ/platform';
 import { handleServiceError } from '@utils/errorUtil';
-import { PLATFORM } from '@src/types/platform';
-
 
 export class TrailingStopRepository {
     static async fetchBalanceAndHighestPrices(): Promise<[MappedBalance[], HighestPrice[]]> {

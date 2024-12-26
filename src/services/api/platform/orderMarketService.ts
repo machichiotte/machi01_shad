@@ -1,9 +1,9 @@
 // src/services/orderMarketService.ts
 import { getMarketSymbolForPlatform } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
-import { PLATFORM } from '@src/types/platform'
-import { CcxtService } from '@services/ccxtService'
-import { OrderBalanceService } from './orderBalanceService'
+import { PLATFORM } from '@typ/platform'
+import { CcxtService } from '@services/api/platform/ccxtService'
+import { OrderBalanceService } from '@services/api/platform/orderBalanceService'
 
 export class OrderMarketService {
 

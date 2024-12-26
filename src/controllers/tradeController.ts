@@ -1,9 +1,9 @@
 // src/controllers/tradeController.ts
 import { Request, Response } from 'express'
-import { TradeService } from '@services/tradeService'
+import { TradeService } from '@services/api/platform/tradeService'
 import { handleControllerError } from '@utils/errorUtil'
-import { isValidPlatform } from '@src/utils/platformUtil'
-import { MappedTrade } from '@src/types/trade'
+import { isValidPlatform } from '@utils/platformUtil'
+import { MappedTrade } from '@typ/trade'
 
 /**
  * Récupère tous les trades de la base de données.

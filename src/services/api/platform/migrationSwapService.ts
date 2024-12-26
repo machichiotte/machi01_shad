@@ -1,11 +1,11 @@
 // src/services/migrationSwapService.ts
 import { SwapMigration } from '@typ/database';
 import { MappedStrat } from '@typ/strat';
-import { StrategyService } from '@services/strategyService';
-import { TradeService } from '@services/tradeService';
-import { handleServiceError } from '@utils/errorUtil';
-import { DatabaseService } from '@services/databaseService'
 import { MappedTrade } from '@typ/trade'
+import { DatabaseService } from '@src/services/api/database/databaseService'
+import { StrategyService } from '@src/services/api/database/strategyService';
+import { TradeService } from '@services/api/platform/tradeService';
+import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
 
 const COLLECTION_NAME = config.databaseConfig.collection.swap;

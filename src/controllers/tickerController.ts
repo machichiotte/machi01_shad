@@ -1,8 +1,8 @@
 // src/controllers/tickerController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { TickerService } from '@services/tickerService'
-import { isValidPlatform } from '@src/utils/platformUtil'
+import { TickerService } from '@services/api/platform/tickerService'
+import { isValidPlatform } from '@utils/platformUtil'
 
 /**
  * Récupère tous les tickers de la base de données.

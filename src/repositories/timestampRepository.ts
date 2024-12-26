@@ -1,5 +1,5 @@
 // src/repositories/timestampRepository.ts
-import { DatabaseService } from '@services/databaseService';
+import { DatabaseService } from '@src/services/api/database/databaseService';
 import { TimestampData } from '@typ/timestamp';
 import { config } from '@config/index';
 import { ObjectId } from 'mongodb';

@@ -10,9 +10,9 @@ import { MappedBalance } from '@typ/balance'
 import { MappedOrder } from '@typ/order'
 import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
-import { DEPIN, GAMING, STABLECOINS } from '@src/constants'
+import { DEPIN, GAMING, STABLECOINS } from '@src/constants/coins'
 import { PLATFORM } from '@typ/platform'
-//import { calculatePercentageChange, calculateProgressPercentage } from '@src/utils/metricsUtil'
+//import { calculatePercentageChange, calculateProgressPercentage } from '@utils/metricsUtil'
 
 /**
  * Default metrics object with initial values set to "N/A".

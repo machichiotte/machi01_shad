@@ -1,5 +1,5 @@
 // src/repositories.strategyRepository.ts
-import { DatabaseService } from '@services/databaseService';
+import { DatabaseService } from '@src/services/api/database/databaseService';
 import { MappedStrat } from '@typ/strat';
 import { config } from '@config/index';
 import { ObjectId } from 'mongodb';

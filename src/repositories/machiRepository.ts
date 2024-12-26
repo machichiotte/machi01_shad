@@ -1,7 +1,7 @@
 // src/repositories/machiRepository.ts
-import { DatabaseService } from '@services/databaseService';
+import { DatabaseService } from '@src/services/api/database/databaseService';
 import { config } from '@config/index';
-import { Asset } from '@src/types/metrics';
+import { Asset } from '@typ/metrics';
 
 const COLLECTION_NAME = config.databaseConfig.collection.machi;
 

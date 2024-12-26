@@ -1,8 +1,8 @@
 // src/repositories/serverConfigRepository.ts
 import { config } from '@config/index'
 import { ServerConfig } from '@config/types'
-import { DatabaseService } from '@src/services/databaseService'
-import { MappedData } from '@src/types/database'
+import { DatabaseService } from '@src/services/api/database/databaseService'
+import { MappedData } from '@typ/database'
 import { DEFAULT_SERVER_CONFIG } from '@config/default'
 
 const COLLECTION_NAME = config.databaseConfig.collection.serverConfig

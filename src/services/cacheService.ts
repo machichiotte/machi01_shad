@@ -1,8 +1,9 @@
 // src/services/cacheService.ts
 import { config } from '@config/index'
 import { DEFAULT_CACHE_EXPIRATION_TIMES } from '@config/default'
-import { CacheItem } from '@src/types/cache'
-import { MappedData } from '@src/types/database'
+import { CacheItem } from '@typ/cache'
+import { MappedData } from '@typ/database'
+import { BALANCE, CMC, MACHI, MARKET, ORDER, STRAT, TICKER, TRADE, USER, SERVER_CONFIG, HIGHEST_PRICE, SWAP, TIMESTAMP } from '@src/constants/collection'
 
 type CacheKey = keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES
 
@@ -63,31 +64,31 @@ export class CacheService {
   ): keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES {
     switch (collectionName) {
       case config.databaseConfig.collection.balance:
-        return 'balance'
+        return BALANCE
       case config.databaseConfig.collection.cmc:
-        return 'cmc'
+        return CMC
       case config.databaseConfig.collection.highestPrice:
-        return 'highestPrice'
+        return HIGHEST_PRICE
       case config.databaseConfig.collection.timestamp:
-        return 'timestamp'
+        return TIMESTAMP
       case config.databaseConfig.collection.market:
-        return 'market'
+        return MARKET
       case config.databaseConfig.collection.order:
-        return 'order'
+        return ORDER
       case config.databaseConfig.collection.machi:
-        return 'machi'
+        return MACHI
       case config.databaseConfig.collection.strat:
-        return 'strat'
+        return STRAT
       case config.databaseConfig.collection.swap:
-        return 'swap'
+        return SWAP
       case config.databaseConfig.collection.ticker:
-        return 'ticker'
+        return TICKER
       case config.databaseConfig.collection.trade:
-        return 'trade'
+        return TRADE
       case config.databaseConfig.collection.user:
-        return 'user'
+        return USER
       case config.databaseConfig.collection.serverConfig:
-        return 'serverConfig'
+        return SERVER_CONFIG
       default:
         throw new Error(`Collection non reconnue: ${collectionName}`)
     }

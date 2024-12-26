@@ -1,5 +1,5 @@
 import { MappedTrade } from "@typ/trade"
-import { STABLECOINS } from "@src/constants"
+import { STABLECOINS } from "@src/constants/coins"
 
 /**
  * Converts input data to JSON format based on the detected model type.

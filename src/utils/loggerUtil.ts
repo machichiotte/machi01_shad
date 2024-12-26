@@ -9,7 +9,7 @@ const errorLogger = winston.createLogger({
     winston.format.json()
   ),
   transports: [
-    new winston.transports.File({ filename: config.logFiles.error })
+    new winston.transports.File({ filename: config.serverConfig.logFiles.error })
   ]
 });
 
@@ -20,7 +20,7 @@ const infoLogger = winston.createLogger({
     winston.format.json()
   ),
   transports: [
-    new winston.transports.File({ filename: config.logFiles.info })
+    new winston.transports.File({ filename: config.serverConfig.logFiles.info })
   ]
 });
 

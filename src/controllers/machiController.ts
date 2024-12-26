@@ -1,7 +1,7 @@
 // src/controllers/machiController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { MachiService } from '@src/services/machiService'
+import { MachiService } from '@services/api/platform/machiService'
 import { TrailingStopService } from '@services/trailingStopService'
 
 /**

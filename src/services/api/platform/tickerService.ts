@@ -1,12 +1,12 @@
 // src/services/tickerService.ts
-import { MappingService } from '@services/mappingService'
-import { handleServiceError } from '@utils/errorUtil'
-import { retry } from '@src/utils/retryUtil'
 import { TickerRepository } from '@repositories/tickerRepository'
+import { CcxtService } from '@services/api/platform/ccxtService'
+import { MappingService } from '@src/services/api/platform/platformMapping'
+import { handleServiceError } from '@utils/errorUtil'
+import { executeCronTask } from '@utils/cronUtil'
+import { retry } from '@utils/retryUtil'
 import { MappedTicker } from '@typ/ticker'
-import { PLATFORM, PLATFORMS } from '@src/types/platform'
-import { executeCronTask } from '@src/utils/cronUtil'
-import { CcxtService } from '@services/ccxtService'
+import { PLATFORM, PLATFORMS } from '@typ/platform'
 
 export class TickerService {
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {

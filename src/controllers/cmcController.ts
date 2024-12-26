@@ -1,8 +1,7 @@
 // src/controllers/cmcController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { CmcService } from '@services/cmcService'
-
+import { CmcService } from '@services/api/cmcService'
 
 /**
  * Récupère les dernières données CoinMarketCap de la base de données.

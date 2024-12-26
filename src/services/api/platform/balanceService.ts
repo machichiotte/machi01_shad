@@ -1,12 +1,12 @@
 // src/services/balanceService.ts
 import { BalanceRepository } from '@repositories/balanceRepository';
-import { CcxtService } from '@services/ccxtService';
-import { handleServiceError } from '@utils/errorUtil';
-import { MappingService } from '@services/mappingService';
+import { CcxtService } from '@services/api/platform/ccxtService';
+import { MappingService } from '@src/services/api/platform/platformMapping';
 import { ProcessorService } from '@services/processorService';
 import { MappedBalance, BalanceWithDifference } from '@typ/balance';
-import { retry } from '@utils/retryUtil';
 import { PLATFORM } from '@typ/platform';
+import { retry } from '@utils/retryUtil';
+import { handleServiceError } from '@utils/errorUtil';
 import { executeCronTask } from '@utils/cronUtil';
 import { removeDuplicateDifferences, removeDuplicates } from '@utils/processorUtil';
 

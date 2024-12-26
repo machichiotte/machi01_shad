@@ -1,5 +1,5 @@
 // src/utils/mappingUtil.ts
-import { STABLECOINS, MAJOR_CRYPTO_PAIRS } from '@src/constants'
+import { STABLECOINS, MAJOR_CRYPTO_PAIRS } from '@src/constants/coins'
 
 /**
  * Checks if a given symbol is a stablecoin.

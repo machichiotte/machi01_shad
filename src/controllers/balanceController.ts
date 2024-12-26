@@ -1,7 +1,7 @@
 // src/controllers/balanceController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { BalanceService } from '@services/balanceService'
+import { BalanceService } from '@services/api/platform/balanceService'
 import { PLATFORM, PLATFORMS } from '@typ/platform'
 /**
  * Récupère le dernier solde enregistré dans la base de données.

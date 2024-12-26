@@ -1,10 +1,10 @@
 // src/index.ts
 import { startServer } from '@src/server';
-import { MongodbService } from '@services/mongodbService';
+import { MongodbService } from '@src/services/api/database/mongodbService';
 import { CronTaskService } from '@services/cronTasksService';
-import { UpdateService } from './services/updateSevice';
+import { UpdateService } from './services/update/updateSevice';
 import { ProcessorService } from './services/processorService';
-import { ServerConfigService } from './services/serverConfigService';
+import { ServerConfigService } from './services/config/serverConfigService';
 import { CacheService } from '@services/cacheService';
 //import { config, loadServerConfig } from '@config/index';
 import {  loadServerConfig } from '@config/index';

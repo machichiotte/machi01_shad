@@ -1,11 +1,12 @@
 // src/services/GeneralUpdateManager.ts
-import { TimestampService } from '@services/timestampService';
-import { CmcService } from '@services/cmcService';
-import { hasTimeElapsed } from '@src/utils/timeUtil';
+import { TimestampService } from '@src/services/api/database/timestampService';
+import { CmcService } from '@services/api/cmcService';
+import { hasTimeElapsed } from '@utils/timeUtil';
+import { config } from '@config/index';
 
 export class GeneralUpdateManager {
     private static readonly UPDATE_INTERVALS = {
-        cmc: 24 * 60 * 60 * 1000, // 24 hours
+        cmc: config.serverConfig.cacheExpirationTimes.cmc
     };
 
     static async updateCmcIfNeeded(): Promise<void> {

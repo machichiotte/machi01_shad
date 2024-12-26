@@ -1,8 +1,8 @@
 // src/repositories/userRepository.ts
-import { DatabaseService } from '@services/databaseService';
+import { DatabaseService } from '@src/services/api/database/databaseService';
 import { config } from '@config/index';
 import { User } from '@typ/auth';
-import { handleServiceError } from '@src/utils/errorUtil';
+import { handleServiceError } from '@utils/errorUtil';
 
 const COLLECTION_NAME = config.databaseConfig.collection.user;
 

@@ -1,8 +1,8 @@
 // src/controllers/strategyController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { StrategyService } from '@services/strategyService'
-import { MappedStrat } from '@src/types/strat'
+import { StrategyService } from '@src/services/api/database/strategyService'
+import { MappedStrat } from '@typ/strat'
 
 /**
  * Récupère les stratégies de la base de données.

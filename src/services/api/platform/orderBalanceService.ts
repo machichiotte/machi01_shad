@@ -1,10 +1,10 @@
 // src/services/orderBalanceService.ts
-import { CcxtService } from '@services/ccxtService';
-import { MappingService } from '@services/mappingService';
-import { MappedOrder } from '@typ/order';
-import { handleServiceError } from '@utils/errorUtil';
-import { PLATFORM } from '@src/types/platform';
 import { OrderBalanceRepository } from '@repositories/orderBalanceRepository';
+import { CcxtService } from '@services/api/platform/ccxtService';
+import { MappingService } from '@src/services/api/platform/platformMapping';
+import { handleServiceError } from '@utils/errorUtil';
+import { PLATFORM } from '@typ/platform';
+import { MappedOrder } from '@typ/order';
 
 export class OrderBalanceService {
 

@@ -2,7 +2,7 @@
 import { MappedBalance } from '@typ/balance';
 import { config } from '@config/index';
 import { PLATFORM } from '@typ/platform'
-import { DatabaseService } from '@src/services/databaseService';
+import { DatabaseService } from '@src/services/api/database/databaseService';
 
 const COLLECTION_NAME = config.databaseConfig.collection.balance;
 const COLLECTION_CATEGORY = config.databaseConfig.category.balance;

@@ -1,8 +1,8 @@
 // src/repositories/marketRepository.ts
-import { DatabaseService } from '@services/databaseService';
+import { DatabaseService } from '@src/services/api/database/databaseService';
 import { MappedMarket } from '@typ/market';
 import { config } from '@config/index';
-import { PLATFORM } from '@src/types/platform';
+import { PLATFORM } from '@typ/platform';
 
 const COLLECTION_NAME = config.databaseConfig.collection.market;
 const COLLECTION_CATEGORY = config.databaseConfig.category.market;

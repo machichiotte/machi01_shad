@@ -1,6 +1,6 @@
 // src/controllers/orderBalanceController.ts
 import { Request, Response } from 'express'
-import { OrderBalanceService } from '@services/orderBalanceService'
+import { OrderBalanceService } from '@services/api/platform/orderBalanceService'
 import { handleControllerError } from '@utils/errorUtil'
 import { isValidPlatform } from '@utils/platformUtil'
 

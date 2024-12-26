@@ -1,8 +1,8 @@
 // src/repositories/orderBalanceRepository.ts
-import { DatabaseService } from '@services/databaseService'
+import { DatabaseService } from '@src/services/api/database/databaseService'
 import { MappedOrder } from '@typ/order'
 import { config } from '@config/index';
-import { PLATFORM } from '@src/types/platform';
+import { PLATFORM } from '@typ/platform';
 
 const COLLECTION_NAME = config.databaseConfig.collection.order;
 const COLLECTION_CATEGORY = config.databaseConfig.category.order;

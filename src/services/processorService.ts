@@ -1,15 +1,15 @@
 // src/services/cron/processorService.ts
 import { calculateAssetMetrics } from '@services/metrics/global'
-import { MappingService } from '@services/mappingService'
-import { TradeService } from '@services/tradeService'
-import { TickerService } from '@services/tickerService'
-import { CmcService } from '@services/cmcService'
-import { OrderBalanceService, } from '@services/orderBalanceService'
-import { StrategyService } from '@services/strategyService'
+import { MappingService } from '@src/services/api/platform/platformMapping'
+import { TradeService } from '@services/api/platform/tradeService'
+import { TickerService } from '@services/api/platform/tickerService'
+import { CmcService } from '@services/api/cmcService'
+import { OrderBalanceService, } from '@services/api/platform/orderBalanceService'
+import { StrategyService } from '@src/services/api/database/strategyService'
 import { handleServiceError } from '@utils/errorUtil'
 import { areAllDataValid, isValidAssetMetrics } from '@utils/processorUtil'
-import { QUOTE_CURRENCIES } from '@src/constants'
-import { BalanceService } from '@services/balanceService'
+import { QUOTE_CURRENCIES } from '@src/constants/coins'
+import { BalanceService } from '@services/api/platform/balanceService'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
 import { MappedBalance, BalanceWithDifference } from '@typ/balance'
@@ -20,7 +20,7 @@ import { PLATFORM } from '@typ/platform'
 import { OrderBalanceRepository } from '@repositories/orderBalanceRepository'
 import { Asset } from '@typ/metrics'
 import { config } from '@config/index';
-import { DatabaseService } from './databaseService'
+import { DatabaseService } from './api/database/databaseService'
 
 const COLLECTION_NAME = config.databaseConfig.collection.machi;
 const COLLECTION_CATEGORY = config.databaseConfig.category.machi;
@@ -44,19 +44,6 @@ export class ProcessorService {
       handleServiceError(error, 'processBalanceChanges', `Error processing balance changes for ${platform}`)
       throw error
     }
-  }
-
-  private static async checkNewTrades(difference: BalanceWithDifference): Promise<MappedTrade[]> {
-    //logDifferenceType(difference) si besoin pour des evolutions futures
-    try {
-      const tradeList = await TradeService.fetchFromApi(difference.platform, difference.base)
-      if (tradeList && tradeList.length > 0)
-        return MappingService.mapTrades(difference.platform, tradeList, {})
-    } catch (error) {
-      console.warn(`Impossible de récupérer les trades pour ${difference.platform} - ${difference.base} : ${error}`);
-    }
-
-    return []
   }
 
   static async saveMachi(): Promise<void> {
@@ -96,6 +83,19 @@ export class ProcessorService {
     }
 
     return allValues.sort((a, b) => a.cmc.rank - b.cmc.rank)
+  }
+
+  private static async checkNewTrades(difference: BalanceWithDifference): Promise<MappedTrade[]> {
+    //logDifferenceType(difference) si besoin pour des evolutions futures
+    try {
+      const tradeList = await TradeService.fetchFromApi(difference.platform, difference.base)
+      if (tradeList && tradeList.length > 0)
+        return MappingService.mapTrades(difference.platform, tradeList, {})
+    } catch (error) {
+      console.warn(`Impossible de récupérer les trades pour ${difference.platform} - ${difference.base} : ${error}`);
+    }
+
+    return []
   }
 
   /**

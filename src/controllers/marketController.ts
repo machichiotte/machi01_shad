@@ -1,7 +1,7 @@
 // src/controllers/marketController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { MarketService } from '@services/marketService'
+import { MarketService } from '@services/api/platform/marketService'
 
 /**
  * Récupère les données de marché sauvegardées.

@@ -1,13 +1,11 @@
 // src/utils/processorUtil.ts
+import { MappedBalance, BalanceWithDifference } from '@typ/balance'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
-import { MappedBalance, BalanceWithDifference } from '@typ/balance'
 import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
 import { MappedOrder } from '@typ/order'
-
 import { Asset } from '@typ/metrics'
-
 
 function removeDuplicateDifferences(differences: BalanceWithDifference[]): BalanceWithDifference[] {
     const uniqueMap = new Map<string, BalanceWithDifference>()

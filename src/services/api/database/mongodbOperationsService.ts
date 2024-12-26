@@ -1,6 +1,6 @@
 // src/services/mongodbOperationsService.ts
 import { Collection, Document, InsertOneResult, InsertManyResult, UpdateResult, AggregateOptions, AnyBulkWriteOperation, FindOptions, BulkWriteResult } from 'mongodb';
-import { MongodbService } from '@services/mongodbService';
+import { MongodbService } from '@src/services/api/database/mongodbService';
 
 interface MongodbOperations {
     insertOne: (collectionName: string, document: Document) => Promise<InsertOneResult>;

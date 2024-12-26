@@ -1,13 +1,12 @@
 // src/services/mappingService.ts
-import { PlatformBalance, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@src/types/platform'
-import { QUOTE_CURRENCIES } from '@src/constants'
-import { getEqUSD } from '@utils/mappingUtil'
+import { PLATFORM, PlatformBalance, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@typ/platform'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
 import { MappedBalance } from '@typ/balance'
 import { MappedOrder } from '@typ/order'
 import { MappedMarket } from '@typ/market'
-import { PLATFORM } from '@src/types/platform';
+import { QUOTE_CURRENCIES } from '@src/constants/coins'
+import { getEqUSD } from '@utils/mappingUtil'
 
 export class MappingService {
   /**

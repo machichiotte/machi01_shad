@@ -1,16 +1,16 @@
 // src/services/tradeService.ts
-import { handleServiceError } from '@utils/errorUtil'
-import { TimestampService } from '@services/timestampService'
-import { MappingService } from '@services/mappingService'
 import { TradeRepository } from '@repositories/tradeRepository'
 import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ/trade'
-import { config } from '@config/index';
 import { PLATFORM, PlatformTrade } from '@typ/platform'
-import { CcxtService } from '@services/ccxtService'
-import { MarketService } from './marketService'
-import { QUOTE_CURRENCIES } from '@src/constants'
+import { TimestampService } from '@src/services/api/database/timestampService'
+import { MappingService } from '@src/services/api/platform/platformMapping'
+import { CcxtService } from '@services/api/platform/ccxtService'
+import { MarketService } from '@services/api/platform/marketService'
 import { getMarketSymbolForPlatform } from '@utils/platformUtil'
-import { retry } from '@src/utils/retryUtil'
+import { handleServiceError } from '@utils/errorUtil'
+import { retry } from '@utils/retryUtil'
+import { QUOTE_CURRENCIES } from '@src/constants/coins'
+import { config } from '@config/index';
 
 const COLLECTION_CATEGORY = config.databaseConfig.category.trade
 

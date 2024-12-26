@@ -1,8 +1,8 @@
 // src/repositories/highPriceRepository.ts
 import { HighestPrices } from '@typ/database';
 import { config } from '@config/index';
-import { mongodbOperations } from '@src/services/mongodbOperationsService';
-import { DatabaseService } from '@src/services/databaseService';
+import { mongodbOperations } from '@src/services/api/database/mongodbOperationsService';
+import { DatabaseService } from '@src/services/api/database/databaseService';
 
 const COLLECTION_NAME = config.databaseConfig.collection.highestPrice;
 

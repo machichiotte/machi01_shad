@@ -1,6 +1,6 @@
 // src/services/metrics/strategies.ts
 import { MappedStrat } from "@typ/strat"
-import { PLATFORM } from '@src/types/platform';
+import { PLATFORM } from '@typ/platform';
 
 /**
  * Constants for error margin and maximum exposure

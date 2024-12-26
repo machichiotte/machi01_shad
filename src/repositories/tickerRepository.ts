@@ -1,8 +1,8 @@
 // src/repositories/tickerRepository.ts
-import { DatabaseService } from '@services/databaseService'
+import { DatabaseService } from '@src/services/api/database/databaseService'
 import { MappedTicker } from '@typ/ticker'
 import { config } from '@config/index'
-import { PLATFORM } from '@src/types/platform';
+import { PLATFORM } from '@typ/platform';
 
 const COLLECTION_NAME = config.databaseConfig.collection.ticker
 const COLLECTION_CATEGORY = config.databaseConfig.category.ticker

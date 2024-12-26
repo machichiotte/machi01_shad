@@ -2,7 +2,7 @@
 import nodemailer, { Transporter, SentMessageInfo } from 'nodemailer'
 import { handleServiceError } from '@utils/errorUtil'
 import { config } from '@config/index';
-import { EmailOptions } from '@src/types/email';
+import { EmailOptions } from '@typ/email';
 
 const transporter: Transporter = nodemailer.createTransport(config.serverConfig.smtp)
 
