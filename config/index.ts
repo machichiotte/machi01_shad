@@ -5,10 +5,11 @@ import path from 'path';
 import {
     DEFAULT_MONGODB_COLLECTION,
     DEFAULT_DATABASE_CATEGORY,
-    DEFAULT_SERVER_CONFIG
+    DEFAULT_SERVER_CONFIG,
+    DEFAULT_APICONFIG
 } from './default';
 
-import { EnvironmentConfig, ServerConfig } from './types';
+import { ApiConfig, EnvironmentConfig, ServerConfig } from './types';
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 switch (process.env.NODE_ENV) {
@@ -65,7 +66,8 @@ export const config: EnvironmentConfig = {
 
     apiConfig: {
         cmc: {
-            apiKey: process.env.APIKEY_CMC || ''
+            url: DEFAULT_APICONFIG.cmc.url || '',
+            apiKey: DEFAULT_APICONFIG.cmc.apiKey || ''
         },
         platform: {
             binance: {
@@ -100,4 +102,8 @@ export const config: EnvironmentConfig = {
 // Fonction pour fusionner la configuration de base avec celle de la base de données
 export async function loadServerConfig(serverConfig: ServerConfig): Promise<void> {
     config.serverConfig = serverConfig
+};
+
+export async function loadApiConfig(apiConfig: ApiConfig): Promise<void> {
+    config.apiConfig = apiConfig
 };

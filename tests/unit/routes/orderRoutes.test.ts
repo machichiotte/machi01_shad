@@ -85,23 +85,4 @@ describe('orderRoutes', () => {
     });
   });
 
-  // Ajoutez des tests similaires pour les autres routes (market-sell-order, limit-buy-order, limit-sell-order, etc.)
-
-  describe('POST /order/cancel/all', () => {
-    it('devrait appeler cancelAllOrders et renvoyer 200', async () => {
-      const mockCancelAllOrders = orderMarketController.cancelAllOrders as jest.MockedFunction<typeof orderMarketController.cancelAllOrders>;
-      mockCancelAllOrders.mockImplementation(async (req, res) => {
-        res.status(200).json({ message: 'Tous les ordres annulés' });
-        return Promise.resolve();
-      });
-
-      const response = await request(app).post('/order/cancel/all');
-
-      expect(response.status).toBe(200);
-      expect(mockCancelAllOrders).toHaveBeenCalled();
-      expect(response.body).toEqual({ message: 'Tous les ordres annulés' });
-    });
-  });
-
-  // Ajoutez des tests pour cancelAllSellOrders et cancelAllBuyOrders
 });

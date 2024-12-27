@@ -41,17 +41,6 @@ export interface CacheExpirationTimes {
     serverConfig: number;
 }
 
-export interface ApiKeyConfig {
-    apiKey: string;
-    secretKey?: string;
-    passphrase?: string;
-}
-
-export type ApiKeysPlatform = {
-    [key in PLATFORM]: ApiKeyConfig
-}
-
-
 export interface SmtpAuthConfig {
     user: string | undefined;
     receiver: string | undefined;
@@ -87,8 +76,22 @@ export interface DatabaseConfig {
     category: DatabaseCategory;
 }
 export interface ApiConfig {
-    cmc: ApiKeyConfig
+    cmc: CmcConfig
     platform: ApiKeysPlatform;
+}
+
+export interface ApiKeyConfig {
+    apiKey: string;
+    secretKey?: string;
+    passphrase?: string;
+}
+
+export type ApiKeysPlatform = {
+    [key in PLATFORM]: ApiKeyConfig
+}
+export interface CmcConfig {
+    apiKey: string
+    url: string;
 }
 
 export interface ServerConfig {

@@ -1,17 +1,17 @@
 import express from 'express';
 import request from 'supertest';
-import shadRoutes from '../../../src/routes/shadRoutes';
-import * as shadController from '../../../src/controllers/shadController';
+import machiRoutes from '../../../src/routes/machiRoutes';
+import * as machiController from '../../../src/controllers/machiController';
 
 // Mock du contrôleur Shad
-jest.mock('../../../src/controllers/shadController');
+jest.mock('../../../src/controllers/machiController');
 
 describe('shadRoutes', () => {
     let app: express.Application;
 
     beforeEach(() => {
         app = express();
-        app.use('/shad', shadRoutes);
+        app.use('/shad', machiRoutes);
     });
 
     afterEach(() => {
@@ -20,7 +20,7 @@ describe('shadRoutes', () => {
 
     describe('GET /shad/get', () => {
         it('devrait appeler getShad et renvoyer 200', async () => {
-            const mockGetShad = shadController.getShad as jest.MockedFunction<typeof shadController.getShad>;
+            const mockGetShad = machiController.getMachi as jest.MockedFunction<typeof machiController.getMachi>;
             mockGetShad.mockImplementation(async (req, res) => {
                 res.status(200).json({ message: 'Données Shad récupérées' });
                 return Promise.resolve();
@@ -36,7 +36,7 @@ describe('shadRoutes', () => {
 
     describe('POST /shad/trailing', () => {
         it('devrait appeler handleTrailingStopHedge et renvoyer 200', async () => {
-            const mockHandleTrailingStopHedge = shadController.handleTrailingStopHedge as jest.MockedFunction<typeof shadController.handleTrailingStopHedge>;
+            const mockHandleTrailingStopHedge = machiController.handleTrailingStopHedge as jest.MockedFunction<typeof machiController.handleTrailingStopHedge>;
             mockHandleTrailingStopHedge.mockImplementation(async (req, res) => {
                 res.status(200).json({ message: 'Trailing stop hedge traité' });
                 return Promise.resolve();

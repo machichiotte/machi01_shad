@@ -1,7 +1,7 @@
 // src/services/UpdateService.ts
 import { PLATFORMS } from '@typ/platform';
-import { GeneralUpdateManager } from '@services/generalUpdateManager';
-import { PlatformUpdateManager } from '@services/api/platform/platformUpdateManager';
+import { GeneralUpdateManager } from '@src/services/update/generalUpdateManager';
+import { PlatformUpdateManager } from '@src/services/update/platformUpdateManager';
 import { checkApiKeys } from '@utils/platformUtil';
 
 export class UpdateService {

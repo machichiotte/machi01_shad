@@ -11,6 +11,7 @@ export class MongodbService {
   static async getMongoClient(): Promise<MongoClient> {
     if (!mongoInstance) {
       const uri = `mongodb+srv://${config.databaseConfig.credentials.user}:${config.databaseConfig.credentials.password}@${config.databaseConfig.credentials.cluster}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+      console.log('MongoDB connection URI:', uri); // Log the connection URI being used
       try {
         console.info('Attempting to connect to MongoDB...')
         mongoInstance = new MongoClient(uri, {

@@ -18,7 +18,7 @@ export class CmcService {
     if (config.apiConfig.cmc.apiKey)
       try {
         while (true) {
-          const URL = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=${start}&limit=${this.limit}&convert=${this.convert}`;
+          const URL = `${config.apiConfig.cmc.url}?start=${start}&limit=${this.limit}&convert=${this.convert}`;
           const response = await fetch(URL, {
             method: 'GET',
             headers: {

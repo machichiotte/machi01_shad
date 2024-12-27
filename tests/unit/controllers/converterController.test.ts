@@ -1,87 +1,84 @@
-import { Request, Response } from 'express'
-import { getConvertedCsv } from '../../../src/controllers/converterController'
-import * as ConverterService from '../../../src/services/converterService'
-import Papa from 'papaparse'
+import { Request, Response } from 'express';
+import { getConvertedCsv } from '../../../src/controllers/converterController';
+import * as ConverterService from '../../../src/services/converterService';
+import Papa from 'papaparse';
+import { handleControllerError } from '../../../src/utils/errorUtil';
 
-jest.mock('../../../src/services/converterService')
-jest.mock('papaparse')
+jest.mock('../../../src/services/converterService');
+jest.mock('papaparse');
+jest.mock('../../../src/utils/errorUtil');
 
 describe('converterController', () => {
   describe('getConvertedCsv', () => {
-    let mockRequest: Partial<Request>
-    let mockResponse: Partial<Response>
-    let mockJson: jest.Mock
-    let mockStatus: jest.Mock
+    let mockRequest: Partial<Request>;
+    let mockResponse: Partial<Response>;
+    let mockJson: jest.Mock;
+    let mockStatus: jest.Mock;
 
     beforeEach(() => {
-      mockJson = jest.fn()
-      mockStatus = jest.fn().mockReturnThis()
+      mockJson = jest.fn();
+      mockStatus = jest.fn().mockReturnThis();
       mockResponse = {
         json: mockJson,
-        status: mockStatus
-      }
-      mockRequest = {
-        file: {
-          buffer: Buffer.from('nom,age\nAlice,30\nBob,25'),
-          fieldname: 'file',
-          originalname: 'test.csv',
-          encoding: '7bit',
-          mimetype: 'text/csv',
-          size: 25
-          // Ajoutez d'autres propriétés si nécessaire
-        } as Express.Multer.File
-      }
-    })
+        status: mockStatus,
+      };
+      mockRequest = {};
+      jest.clearAllMocks();
+    });
 
-    it('devrait convertir avec succès un fichier CSV en JSON', async () => {
-      const mockParsedData = [
-        { nom: 'Alice', age: '30' },
-        { nom: 'Bob', age: '25' }
-      ]
-      const mockJsonData = [
-        { name: 'Alice', age: 30 },
-        { name: 'Bob', age: 25 }
-      ]
+    it('should convert a CSV file to JSON successfully', async () => {
+      // Mock request file
+      const mockFileBuffer = Buffer.from('base,balance,available,platform\nBTC,100,50,BINANCE');
+      mockRequest.file = { buffer: mockFileBuffer } as Express.Multer.File;
 
-        ; (Papa.parse as jest.Mock).mockImplementation((_, options) => {
-          options.complete({ data: mockParsedData })
-        })
+      // Mock PapaParse parsing result
+      const mockParseResult = {
+        data: [{ base: 'BTC', balance: '100', available: '50', platform: 'BINANCE' }],
+      };
+      (Papa.parse as jest.Mock).mockImplementation((_, options) => {
+        options.complete(mockParseResult);
+      });
 
-        ; (ConverterService.convertToJSON as jest.Mock).mockResolvedValue(
-          mockJsonData
-        )
+      // Mock convertToJSON
+      const mockConvertedData = [{ base: 'BTC', balance: 100, available: 50, platform: 'BINANCE' }];
+      (ConverterService.convertToJSON as jest.Mock).mockResolvedValue(mockConvertedData);
 
-      await getConvertedCsv(mockRequest as Request, mockResponse as Response)
+      await getConvertedCsv(mockRequest as Request, mockResponse as Response);
 
-      expect(mockJson).toHaveBeenCalledWith({ message: 'CSV converted to JSON', data: mockJsonData })
-    })
+      expect(Papa.parse).toHaveBeenCalledWith(expect.any(String), expect.any(Object));
+      expect(ConverterService.convertToJSON).toHaveBeenCalledWith(mockParseResult.data);
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        status: 'success',
+        message: 'CSV converted to JSON',
+        data: mockConvertedData,
+      });
+    });
 
-    it("devrait renvoyer une erreur 400 si aucun fichier n'est téléchargé", async () => {
-      mockRequest.file = undefined
+    it('should return an error if no file is uploaded', async () => {
+      await getConvertedCsv(mockRequest as Request, mockResponse as Response);
 
-      await getConvertedCsv(mockRequest as Request, mockResponse as Response)
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        status: 'error',
+        message: 'No file uploaded',
+      });
+    });
 
-      expect(mockStatus).toHaveBeenCalledWith(400)
-      expect(mockJson).toHaveBeenCalledWith({
-        message: 'No file uploaded'
-      })
-    })
+    it('should handle CSV parsing error', async () => {
+      // Mock request file 
+      const mockFileBuffer = Buffer.from('invalid,csv');
+      mockRequest.file = { buffer: mockFileBuffer } as Express.Multer.File;
 
-    it('devrait gérer les erreurs de parsing CSV', async () => {
-      const mockError = new Error('Erreur de parsing CSV');
+      // Mock PapaParse error
+      const mockError = new Error('Parse error');
       (Papa.parse as jest.Mock).mockImplementation((_, options) => {
         options.error(mockError);
       });
 
       await getConvertedCsv(mockRequest as Request, mockResponse as Response);
 
-      expect(mockStatus).toHaveBeenCalledWith(500);
-      expect(mockJson).toHaveBeenCalledWith({
-        message: 'Error in papaParse',
-        error: 'Erreur de parsing CSV',
-      });
+      expect(handleControllerError).toHaveBeenCalledWith(mockResponse, mockError, 'papaParse');
     });
-
-    // Ajoutez d'autres tests si nécessaire
-  })
-})
+  });
+});
