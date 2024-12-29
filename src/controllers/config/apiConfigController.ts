@@ -37,11 +37,9 @@ export const updateApiConfig = async (req: Request, res: Response): Promise<void
 };
 
 export const updateApiKey = async (req: Request, res: Response): Promise<void> => {
-  console.log('updateApiKey')
   try {
     const { type, platform, apiKey, secretKey, passphrase } = req.body;
 
-    console.log('updateApiKey bodyyyy',req.body)
     // Validation des données entrantes
     if (!type || !apiKey) {
       res.status(400).json({
