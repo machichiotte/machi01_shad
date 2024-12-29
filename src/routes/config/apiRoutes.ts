@@ -8,5 +8,4 @@ router.get('/get', getApiConfig)
 router.post('/update', updateApiConfig)
 router.post('/update/key', updateApiKey)
 
-
 export default router
