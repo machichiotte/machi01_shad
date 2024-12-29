@@ -12,6 +12,7 @@ import tradeRoutes from './tradeRoutes';
 import tickerRoutes from './tickerRoutes';
 import timestampRoutes from './timestampRoutes';
 import machiRoutes from './machiRoutes';
+import apiRoutes from './config/apiRoutes';
 
 const router = Router();
 
@@ -27,5 +28,6 @@ router.use('/trade', tradeRoutes);
 router.use('/ticker', tickerRoutes);
 router.use('/timestamp', timestampRoutes);
 router.use('/machi', machiRoutes);
+router.use('/api', apiRoutes);
 
 export default router;
