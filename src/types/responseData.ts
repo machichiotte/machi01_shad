@@ -106,53 +106,6 @@ export interface Order {
   price: number
 }
 
-/*export interface Machi {
-  _id: {
-    $oid: string; // ID de l'objet en format MongoDB ObjectID
-  };
-  iconUrl: string; // URL de l'icône
-  base: string; // Nom de l'actif (ex: LIT)
-  status: number[] | string; // Tableau de statuts (la structure reste la même pour éviter tout conflit avec la base de données)
-  strat: string; // Stratégie appliquée (ex: Shad)
-  ratioShad: number; // Ratio Shad
-  totalShad: number; // Total Shad
-  rank: number; // Classement de l'actif
-  averageEntryPrice: number; // Prix moyen d'entrée
-  totalBuy: number; // Total des achats
-  maxExposition: number; // Exposition maximale
-  percentageDifference: number; // Différence en pourcentage
-  currentPrice: number; // Prix actuel
-  currentPossession: number; // Quantité actuelle en possession
-  profit: number; // Profit réalisé
-  totalSell: number; // Total des ventes
-  recupShad: number; // Récupération de Shad
-  nbOpenBuyOrders: number; // Nombre d'ordres d'achat ouverts
-  nbOpenSellOrders: number; // Nombre d'ordres de vente ouverts
-  totalAmount: number; // Quantité totale
-  balance: number; // Solde
-  recupTp1: number; // Récupération du premier take profit
-  recupTpX: number; // Récupération de Shad pour le take profit X
-  percentToNextTp: number; // Pourcentage jusqu'au prochain take profit
-  platform: string; // Plateforme utilisée (ex: binance)
-  currentCmcPrice: number; // Prix actuel sur CoinMarketCap
-  cryptoPercentChange24h: number; // Variation du prix sur 24 heures
-  cryptoPercentChange7d: number; // Variation du prix sur 7 jours
-  cryptoPercentChange30d: number; // Variation du prix sur 30 jours
-  cryptoPercentChange60d: number; // Variation du prix sur 60 jours
-  cryptoPercentChange90d: number; // Variation du prix sur 90 jours
-  stratExpo: number; // Exposition stratégique
-  amountTp1: number; // Quantité pour le take profit 1
-  priceTp1: number; // Prix pour le take profit 1
-  amountTp2: number; // Quantité pour le take profit 2
-  priceTp2: number; // Prix pour le take profit 2
-  amountTp3: number; // Quantité pour le take profit 3
-  priceTp3: number; // Prix pour le take profit 3
-  amountTp4: number; // Quantité pour le take profit 4
-  priceTp4: number; // Prix pour le take profit 4
-  amountTp5: number; // Quantité pour le take profit 5
-  priceTp5: number; // Prix pour le take profit 5
-}*/
-
 export interface Ticker {
   _id: ObjectId;
   symbol: string
@@ -217,7 +170,6 @@ export interface TakeProfits {
   tp5: TakeProfit;
   status: number[]; // Statut des TP
 }
-
 
 // Interface principale pour les ordres (open et trade)
 interface Orders {

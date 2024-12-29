@@ -1,4 +1,5 @@
 // src/js/server/common.ts
+import { API_REQUEST_PAYLOAD } from '../../types';
 import { ApiResponse } from '../../types/response';
 
 const serverHost: string = import.meta.env.VITE_SERVER_HOST as string; // Centralisation de serverHost
@@ -18,7 +19,7 @@ const handleApiResponse = async <T>(response: Response): Promise<ApiResponse<T>>
 // Fonction pour envoyer une requête HTTP (POST)
 const executeApiRequest = async <T>(
     endpoint: string,
-    requestBody: Record<string, unknown>,  // Plus précis que "Object"
+    requestBody: API_REQUEST_PAYLOAD,  // Plus précis que "Object"
     method: string = 'POST'
 ): Promise<T> => {
     try {

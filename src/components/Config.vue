@@ -1,5 +1,6 @@
 // src/components/Config.vue
 <script>
+import { updateApiConfig , updateKey, updateCmcApiKey  } from 'src/js/server/config.ts'
 export default {
   data() {
     return {
@@ -19,10 +20,30 @@ export default {
     }
   },
   methods: {
-    submitConfig() {
-      // Logique pour envoyer les données au serveur
-      console.log(this.payload);
-      // Ici, vous pouvez utiliser axios ou fetch pour envoyer les données
+    async sendKeyToServer() {
+      const payload = {
+        type: this.payload.type,
+        platform: this.payload.platform,
+        apiKey: this.payload.apiKey,
+        secretKey: this.payload.secretKey,
+        passphrase: this.payload.passphrase
+      };
+
+      try {
+        const response = await updateKey(payload);
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorText}`);
+        }
+
+        const result = await response.json();
+
+        alert(result.message);
+      } catch (error) {
+        console.error('Error updating API key:', error);
+        alert('An error occurred while updating the API key: ' + error.message);
+      }
     }
   }
 };
@@ -31,7 +52,7 @@ export default {
 <template>
   <div>
     <h1>Configuration</h1>
-    <form @submit.prevent="submitConfig">
+    <form @submit.prevent="updateKey">
       <div>
         <label for="type">Type:</label>
         <select v-model="payload.type">
