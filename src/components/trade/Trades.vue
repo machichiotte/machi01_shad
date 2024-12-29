@@ -97,12 +97,16 @@ watchEffect(() => {
 
   const safeSum = (acc: number, value: number) => Number(acc + (value || 0))
 
-  const sellTrades = filteredTrades.value.filter((item) => item.side.toLowerCase() === 'sell')
+  const sellTrades = filteredTrades.value.filter((item) => {
+    return item.side && item.side.toLowerCase() === 'sell';
+  });
   totalSell.value = sellTrades.reduce((acc, item) => safeSum(acc, item.eqUSD), 0)
   
   amountSell.value = sellTrades.reduce((acc, item) => acc + (item.amount || 0), 0)
 
-  const buyTrades = filteredTrades.value.filter((item) => item.side.toLowerCase() === 'buy')
+  const buyTrades = filteredTrades.value.filter((item) => {
+    return item.side && item.side.toLowerCase() === 'buy';
+  });
   totalBuy.value = buyTrades.reduce((acc, item) => safeSum(acc, item.eqUSD), 0)
   amountBuy.value = buyTrades.reduce((acc, item) => acc + (item.amount || 0), 0)
 })

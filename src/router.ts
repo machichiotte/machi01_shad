@@ -8,6 +8,7 @@ import Cmc from './components/Cmc.vue'
 import Strategy from './components/Strategy.vue'
 import Trades from './components/trade/Trades.vue'
 import Stuff from './components/Stuff.vue'
+import Config from './components/Config.vue'
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', name: 'machi', component: Machi },
@@ -18,6 +19,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/strategy', name: 'strategy', component: Strategy },
   { path: '/trade', name: 'trade', component: Trades },
   { path: '/stuff', name: 'stuff', component: Stuff },
+  { path: '/config', name: 'config', component: Config },
 ]
 
 const router = createRouter({

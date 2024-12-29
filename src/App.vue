@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink } from 'vue-router'
 </script>
 
 <template>
@@ -13,8 +13,9 @@ import { RouterLink, RouterView } from 'vue-router'
       <RouterLink to="/strategy" active-class="selected-link">Strategy</RouterLink>
       <RouterLink to="/trade" active-class="selected-link">Trade</RouterLink>
       <RouterLink to="/stuff" active-class="selected-link">Stuff</RouterLink>
-
+      <RouterLink to="/config" active-class="selected-link">Configuration</RouterLink>
     </nav>
+
     <main>
       <RouterView />
     </main>
