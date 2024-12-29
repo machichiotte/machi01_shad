@@ -15,7 +15,7 @@ async function getBalances(req: Request, res: Response): Promise<void> {
       data: data
     })
   } catch (error) {
-    handleControllerError(res, error, 'getBalances')
+    handleControllerError(res, error, getBalances.name)
   }
 }
 
@@ -40,7 +40,7 @@ async function updateCurrentBalance(req: Request, res: Response): Promise<void> 
       data: data
     })
   } catch (error) {
-    handleControllerError(res, error, 'updateCurrentBalance')
+    handleControllerError(res, error, updateCurrentBalance.name)
   }
 }
 

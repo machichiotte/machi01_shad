@@ -40,7 +40,7 @@ async function getConvertedCsv(req: Request, res: Response): Promise<void> {
       }
     } as Papa.ParseConfig<unknown[]>)
   } catch (error) {
-    handleControllerError(res, error, 'getConvertedCsv')
+    handleControllerError(res, error, getConvertedCsv.name)
   }
 }
 

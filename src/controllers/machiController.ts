@@ -12,7 +12,7 @@ async function getMachi(req: Request, res: Response): Promise<void> {
     const data = await MachiService.fetchMachiInDatabase()
     res.status(200).json({ status: "success", message: 'Données Machi récupérées', data })
   } catch (error) {
-    handleControllerError(res, error, 'getMachi')
+    handleControllerError(res, error, getMachi.name)
   }
 }
 
@@ -26,7 +26,7 @@ async function handleTrailingStopHedge(req: Request, res: Response): Promise<voi
     const data = await TrailingStopService.handleTrailingStopHedge(simplifiedSelectedBases);
     res.status(200).json({ status: "success", message: 'Mise à jour des ordres de trailing stop terminée', data });
   } catch (error) {
-    handleControllerError(res, error, 'handleTrailingStopHedge');
+    handleControllerError(res, error, handleTrailingStopHedge.name);
   }
 }
 

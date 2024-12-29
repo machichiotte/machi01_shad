@@ -18,3 +18,4 @@ export const TIMESTAMP = 'timestamp';
 export const SERVER_CONFIG = 'serverConfig';
 export const USER = 'user';
 export const HIGHEST_PRICE = 'highestPrice';
+export const API_CONFIG = 'apiConfig';

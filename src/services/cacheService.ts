@@ -3,7 +3,24 @@ import { config } from '@config/index'
 import { DEFAULT_CACHE_EXPIRATION_TIMES } from '@config/default'
 import { CacheItem } from '@typ/cache'
 import { MappedData } from '@typ/database'
-import { BALANCE, CMC, MACHI, MARKET, ORDER, STRAT, TICKER, TRADE, USER, SERVER_CONFIG, HIGHEST_PRICE, SWAP, TIMESTAMP } from '@src/constants/collection'
+import { API_CONFIG, BALANCE, CMC, MACHI, MARKET, ORDER, STRAT, TICKER, TRADE, USER, SERVER_CONFIG, HIGHEST_PRICE, SWAP, TIMESTAMP } from '@src/constants/collection'
+
+export type CacheExpirationTimes = {
+  cmc: number;
+  balance: number;
+  highestPrice: number;
+  timestamp: number;
+  market: number;
+  order: number;
+  machi: number;
+  strat: number;
+  swap: number;
+  ticker: number;
+  trade: number;
+  user: number;
+  serverConfig: number;
+  apiConfig: number;
+};
 
 type CacheKey = keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES
 
@@ -29,7 +46,7 @@ export class CacheService {
     return Promise.resolve().then(() => {
       const cacheItem = CacheService.cache[key]
       const expirationTime =
-        config.serverConfig?.cacheExpirationTimes?.[key] ||
+        (config.serverConfig?.cacheExpirationTimes as CacheExpirationTimes)[key] ||
         DEFAULT_CACHE_EXPIRATION_TIMES[key] ||
         0
 
@@ -42,7 +59,7 @@ export class CacheService {
   }
 
   /**
-   * Clears cache for a specific key.
+   * Clears cache for a specific key. 
    */
   static async clearCache(key: CacheKey): Promise<void> {
     return Promise.resolve().then(() => {
@@ -89,6 +106,8 @@ export class CacheService {
         return USER
       case config.databaseConfig.collection.serverConfig:
         return SERVER_CONFIG
+        case config.databaseConfig.collection.apiConfig:
+        return API_CONFIG
       default:
         throw new Error(`Collection non reconnue: ${collectionName}`)
     }

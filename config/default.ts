@@ -15,7 +15,8 @@ export const DEFAULT_MONGODB_COLLECTION = {
   ticker: 'collection_ticker',
   trade: 'collection_trade',
   user: 'collection_user',
-  serverConfig: 'collection_serverconfig'
+  serverConfig: 'collection_serverconfig',
+  apiConfig: 'collection_apiconfig'
 }
 
 export const DEFAULT_DATABASE_CATEGORY = {
@@ -31,7 +32,8 @@ export const DEFAULT_DATABASE_CATEGORY = {
   ticker: 'ticker',
   trade: 'trade',
   user: 'user',
-  serverConfig: 'serverConfig'
+  serverConfig: 'serverConfig',
+  apiConfig: 'apiConfig'
 }
 
 export const DEFAULT_MONGODB_CREDENTIALS = {
@@ -50,30 +52,36 @@ export const DEFAULT_DATABASE_CONFIG = {
 export const DEFAULT_APICONFIG = {
   cmc: {
     url: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+    iv: '',
     apiKey: ''
   },
   platform: {
     binance: {
       apiKey: '',
-      secretKey: ''
+      secretKey: '',
+      iv: ''
     },
     kucoin: {
       apiKey: '',
       secretKey: '',
-      passphrase: ''
+      passphrase: '',
+      iv: ''
     },
     htx: {
       apiKey: '',
-      secretKey: ''
+      secretKey: '',
+      iv: ''
     },
     okx: {
       apiKey: '',
       secretKey: '',
-      passphrase: ''
+      passphrase: '',
+      iv: ''
     },
     gateio: {
       apiKey: '',
-      secretKey: ''
+      secretKey: '',
+      iv: ''
     }
   }
 }
@@ -91,7 +99,8 @@ export const DEFAULT_CACHE_EXPIRATION_TIMES = {
   ticker: 111,
   trade: 111,
   user: 111,
-  serverConfig: 111
+  serverConfig: 111,
+  apiConfig: 111,
 }
 
 export const DEFAULT_SMTP = {

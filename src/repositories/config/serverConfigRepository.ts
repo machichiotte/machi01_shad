@@ -1,7 +1,7 @@
 // src/repositories/serverConfigRepository.ts
 import { config } from '@config/index'
 import { ServerConfig } from '@config/types'
-import { DatabaseService } from '@src/services/api/database/databaseService'
+import { DatabaseService } from '@services/api/database/databaseService'
 import { MappedData } from '@typ/database'
 import { DEFAULT_SERVER_CONFIG } from '@config/default'
 
@@ -13,7 +13,7 @@ export class ServerConfigRepository {
    * Si aucune configuration n'existe, crée une configuration par défaut.
    */
   static async fetchServerConfig(): Promise<ServerConfig> {
-    const data = await DatabaseService.getData(COLLECTION_NAME)
+    const data = await DatabaseService.getData(COLLECTION_NAME) as ServerConfig[]
     if (!data || data.length === 0) {
       // Create default server config if none exists
       await DatabaseService.insertData(COLLECTION_NAME, DEFAULT_SERVER_CONFIG)

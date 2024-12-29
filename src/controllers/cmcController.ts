@@ -15,7 +15,7 @@ async function getCmc(req: Request, res: Response): Promise<void> {
       data
     })
   } catch (error) {
-    handleControllerError(res, error, 'getCmc')
+    handleControllerError(res, error, getCmc.name)
   }
 }
 
@@ -31,7 +31,7 @@ async function updateCmc(req: Request, res: Response): Promise<void> {
       data,
     })
   } catch (error) {
-    handleControllerError(res, error, 'updateCmc')
+    handleControllerError(res, error, updateCmc.name)
   }
 }
 

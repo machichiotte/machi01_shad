@@ -42,7 +42,7 @@ async function handleOrder(req: Request, res: Response, orderType: OrderType): P
     const message = getResponseMessage(orderType, base, platform)
     res.status(200).json({ status: "success", message, data })
   } catch (error) {
-    handleControllerError(res, error, `handleOrder (${orderType})`)
+    handleControllerError(res, error, `${handleOrder.name} (${orderType})`)
   }
 }
 

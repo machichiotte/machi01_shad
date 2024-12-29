@@ -12,7 +12,7 @@ async function getStrat(req: Request, res: Response): Promise<void> {
     const data = await StrategyService.fetchDatabaseStrategies()
     res.status(200).json({ status: "success", message: 'Stratégies récupérées', data })
   } catch (error) {
-    handleControllerError(res, error, 'getStrat')
+    handleControllerError(res, error, getStrat.name)
   }
 }
 
@@ -25,7 +25,7 @@ async function updateStrat(req: Request, res: Response): Promise<void> {
     const data = await StrategyService.updateStrategies(strat)
     res.status(200).json({ status: "success", message: 'Stratégies mises à jour', data })
   } catch (error) {
-    handleControllerError(res, error, 'updateStrat')
+    handleControllerError(res, error, updateStrat.name)
   }
 }
 
@@ -40,7 +40,7 @@ async function updateStrategyById(req: Request, res: Response): Promise<void> {
     const data = await StrategyService.updateStrategyById(updatedStrategy)
     res.json({ status: "success", message: `La strategie de ${updatedStrategy.base} a été mise à jour`, data })
   } catch (error) {
-    handleControllerError(res, error, 'updateStrategyById')
+    handleControllerError(res, error, updateStrategyById.name)
   }
 }
 
@@ -56,7 +56,7 @@ async function updateStrategyByIds(req: Request, res: Response): Promise<void> {
       const result = await StrategyService.updateStrategyById(strategy);
       results.push(result);
     } catch (error) {
-      handleControllerError(res, error, 'updateStrategyById');
+      handleControllerError(res, error, updateStrategyById.name);
       return;
     }
   }

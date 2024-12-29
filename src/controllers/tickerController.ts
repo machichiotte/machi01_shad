@@ -10,48 +10,66 @@ import { isValidPlatform } from '@utils/platformUtil'
 async function getAllTickers(req: Request, res: Response): Promise<void> {
   try {
     const data = await TickerService.fetchDatabaseTickers()
-    res.status(200).json({ status: "success", message: 'Tickers récupérés', data })
+    res
+      .status(200)
+      .json({ status: 'success', message: 'Tickers récupérés', data })
   } catch (error) {
-    handleControllerError(res, error, 'getAllTickers')
+    handleControllerError(res, error, getAllTickers.name)
   }
 }
 
 /**
  * Récupère tous les tickers pour une plateforme spécifique.
  */
-async function getAllTickersByPlatform(req: Request, res: Response): Promise<void> {
+async function getAllTickersByPlatform(
+  req: Request,
+  res: Response
+): Promise<void> {
   const { platform } = req.params
 
-
   if (!isValidPlatform(platform)) {
-    res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
-    return;
+    res
+      .status(400)
+      .json({ message: `La plateforme '${platform}' n'est pas valide.` })
+    return
   }
 
   try {
     const data = await TickerService.getAllTickersByPlatform(platform)
-    res.status(200).json({ status: "success", message: 'Tickers récupérés', data })
+    res
+      .status(200)
+      .json({ status: 'success', message: 'Tickers récupérés', data })
   } catch (error) {
-    handleControllerError(res, error, 'getAllTickersByPlatform')
+    handleControllerError(res, error, getAllTickersByPlatform.name)
   }
 }
 
 /**
  * Récupère tous les tickers pour un symbole spécifique d'une plateforme spécifique.
  */
-async function getAllTickersBySymbolFromPlatform(req: Request, res: Response): Promise<void> {
+async function getAllTickersBySymbolFromPlatform(
+  req: Request,
+  res: Response
+): Promise<void> {
   const { platform, symbol } = req.params
 
   if (!isValidPlatform(platform)) {
-    res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
-    return;
+    res
+      .status(400)
+      .json({ message: `La plateforme '${platform}' n'est pas valide.` })
+    return
   }
 
   try {
-    const data = await TickerService.getAllTickersBySymbolFromPlatform(platform, symbol)
-    res.status(200).json({ status: "success", message: 'Tickers récupérés', data })
+    const data = await TickerService.getAllTickersBySymbolFromPlatform(
+      platform,
+      symbol
+    )
+    res
+      .status(200)
+      .json({ status: 'success', message: 'Tickers récupérés', data })
   } catch (error) {
-    handleControllerError(res, error, 'getAllTickersBySymbolFromPlatform')
+    handleControllerError(res, error, getAllTickersBySymbolFromPlatform.name)
   }
 }
 
@@ -61,9 +79,11 @@ async function getAllTickersBySymbolFromPlatform(req: Request, res: Response): P
 async function updateAllTickers(req: Request, res: Response): Promise<void> {
   try {
     const data = await TickerService.updateAllTickers()
-    res.status(200).json({ status: "success", message: 'Tickers mis à jour', data })
+    res
+      .status(200)
+      .json({ status: 'success', message: 'Tickers mis à jour', data })
   } catch (error) {
-    handleControllerError(res, error, 'updateAllTickers')
+    handleControllerError(res, error, updateAllTickers.name)
   }
 }
 

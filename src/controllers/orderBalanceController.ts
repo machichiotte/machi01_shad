@@ -15,7 +15,7 @@ async function getOrders(req: Request, res: Response): Promise<void> {
       message: 'Ordres récupérés', data
     })
   } catch (error) {
-    handleControllerError(res, error, 'getOrders')
+    handleControllerError(res, error, getOrders.name)
   }
 }
 
@@ -35,7 +35,7 @@ async function updateOrders(req: Request, res: Response): Promise<void> {
     const data = await OrderBalanceService.updateOrdersFromServer(platform)
     res.status(200).json({ status: "success", message: 'Ordres mis à jour', data })
   } catch (error) {
-    handleControllerError(res, error, 'updateOrders')
+    handleControllerError(res, error, updateOrders.name)
   }
 
 }

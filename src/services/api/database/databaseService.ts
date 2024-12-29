@@ -8,11 +8,11 @@ import { mongodbOperations } from '@src/services/api/database/mongodbOperationsS
 import { CacheService } from '@services/cacheService'
 import { InsertData } from '@typ/trade'
 import { PLATFORM } from '@typ/platform'
-import { MappedData } from '@typ/database'
+import { MappedData } from '@typ/database' 
 import { CacheItem } from '@typ/mongodb'
 
 import { config } from '@config/index'
-
+ 
 export class DatabaseService {
   static async insertData(
     collectionName: string,
@@ -219,6 +219,7 @@ export class DatabaseService {
         console.info('offline')
         return getMockedData(collectionName)
       } else {
+        console.log('online', collectionName)
         const data = await DatabaseService.getCacheOrFetchCollection(collectionName)
         return Array.isArray(data) ? (data as MappedData[]) : []
       }

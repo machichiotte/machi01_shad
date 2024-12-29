@@ -43,6 +43,7 @@ export const config: EnvironmentConfig = {
             order: process.env.MONGODB_COLLECTION_ORDER || DEFAULT_MONGODB_COLLECTION.order,
             machi: process.env.MONGODB_COLLECTION_MACHI || DEFAULT_MONGODB_COLLECTION.machi,
             serverConfig: process.env.MONGODB_COLLECTION_SERVER_CONFIG || DEFAULT_MONGODB_COLLECTION.serverConfig,
+            apiConfig: process.env.MONGODB_COLLECTION_API_CONFIG || DEFAULT_MONGODB_COLLECTION.apiConfig,
             strat: process.env.MONGODB_COLLECTION_STRAT || DEFAULT_MONGODB_COLLECTION.strat,
             swap: process.env.MONGODB_COLLECTION_SWAP || DEFAULT_MONGODB_COLLECTION.swap,
             ticker: process.env.MONGODB_COLLECTION_TICKER || DEFAULT_MONGODB_COLLECTION.ticker,
@@ -60,35 +61,42 @@ export const config: EnvironmentConfig = {
             strat: process.env.COLLECTION_CATEGORY_STRAT || DEFAULT_DATABASE_CATEGORY.strat,
             ticker: process.env.COLLECTION_CATEGORY_TICKER || DEFAULT_DATABASE_CATEGORY.ticker,
             trade: process.env.COLLECTION_CATEGORY_TRADE || DEFAULT_DATABASE_CATEGORY.trade,
-            serverConfig: process.env.COLLECTION_CATEGORY_SERVER_CONFIG || DEFAULT_DATABASE_CATEGORY.serverConfig
+            serverConfig: process.env.COLLECTION_CATEGORY_SERVER_CONFIG || DEFAULT_DATABASE_CATEGORY.serverConfig,
+            apiConfig: process.env.COLLECTION_CATEGORY_API_CONFIG || DEFAULT_DATABASE_CATEGORY.apiConfig
         }, 
     },
 
     apiConfig: {
         cmc: {
             url: DEFAULT_APICONFIG.cmc.url || '',
+            iv: DEFAULT_APICONFIG.cmc.iv || '',
             apiKey: DEFAULT_APICONFIG.cmc.apiKey || ''
         },
         platform: {
             binance: {
+                iv: '',
                 apiKey: process.env.APIKEY_BINANCE || '',
                 secretKey: process.env.SECRETKEY_BINANCE || ''
             },
             kucoin: {
+                iv: '',
                 apiKey: process.env.APIKEY_KUCOIN || '',
                 secretKey: process.env.SECRETKEY_KUCOIN || '',
                 passphrase: process.env.PASSPHRASE_KUCOIN || ''
             },
             htx: {
+                iv: '',
                 apiKey: process.env.APIKEY_HTX || '',
                 secretKey: process.env.SECRETKEY_HTX || '',
             },
             okx: {
+                iv: '',
                 apiKey: process.env.APIKEY_OKX || '',
                 secretKey: process.env.SECRETKEY_OKX || '',
                 passphrase: process.env.PASSPHRASE_OKX || ''
             },
             gateio: {
+                iv: '',
                 apiKey: process.env.APIKEY_GATEIO || '',
                 secretKey: process.env.SECRETKEY_GATEIO || '',
             },

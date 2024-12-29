@@ -11,7 +11,7 @@ export class TimestampRepository {
      * Récupère les informations de dernière mise à jour depuis la base de données.
      */
     static async fetchTimestamp(): Promise<TimestampData> {
-        const data = await DatabaseService.getData(COLLECTION_NAME);
+        const data = await DatabaseService.getData(COLLECTION_NAME) as TimestampData[];
         if (!data || data.length === 0) {
             throw new Error('No timestamp data found');
         }
