@@ -7,9 +7,12 @@ export class EncryptionService {
   static encrypt(
     iv: string,
     text: string
-  ): { iv: string; encryptedData: string } { 
-    const cipher = createCipheriv(ALGORITHM, Buffer.from(ENCRYPTION_KEY), iv)
-
+  ): { iv: string; encryptedData: string } {
+    const cipher = createCipheriv(
+      ALGORITHM,
+      Buffer.from(ENCRYPTION_KEY),
+      Buffer.from(iv, 'hex')
+    )
     let encrypted = cipher.update(text)
     encrypted = Buffer.concat([encrypted, cipher.final()])
 

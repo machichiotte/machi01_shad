@@ -19,7 +19,6 @@ export class ApiConfigRepository {
     }
 
     const encryptedConfig = data[0] as ApiConfig
-    console.log('encryptedConfig', encryptedConfig)
     // Décrypter CMC
     const decryptedCmc = {
       ...encryptedConfig.cmc,
@@ -30,14 +29,10 @@ export class ApiConfigRepository {
           )
         : ''
     }
-    console.log('decryptedCmc', decryptedCmc)
     // Décrypter les clés de plateforme
     const decryptedPlatform: { [key in PLATFORM]: ApiKeyConfig } = {} as {
       [key in PLATFORM]: ApiKeyConfig
     }
-
-    console.log('encryptedConfig.platform', encryptedConfig.platform)
-    console.log('decryptedPlatform1', decryptedPlatform)
 
     Object.entries(encryptedConfig.platform).forEach(([platform, config]) => {
       const iv = config.iv
@@ -52,7 +47,6 @@ export class ApiConfigRepository {
         // Handle the case where IV is missing (e.g., set to undefined or a default value)
       }
     })
-    console.log('decryptedPlatform2', decryptedPlatform)
 
     return {
       ...encryptedConfig,
@@ -122,24 +116,20 @@ export class ApiConfigRepository {
   static async updatePlatformApiKey(
     platform: PLATFORM,
     apiKey: string,
-    secretKey?: string,
+    secretKey: string,
     passphrase?: string
   ): Promise<void> {
     const rd = randomBytes(16) // Générer un IV aléatoire
     const iv = rd.toString('hex')
 
     // Chiffrement des données
-    const { encryptedData: encryptedApiKey } = EncryptionService.encrypt(
-      iv,
-      apiKey
-    )
+    const encryptedApiKey = EncryptionService.encrypt(iv, apiKey).encryptedData
     const encryptedSecretKey = secretKey
       ? EncryptionService.encrypt(iv, secretKey).encryptedData
       : undefined
     const encryptedPassphrase = passphrase
       ? EncryptionService.encrypt(iv, passphrase).encryptedData
       : undefined
-
     // Récupérer la configuration actuelle
     const currentConfig = await this.fetchApiConfig()
 

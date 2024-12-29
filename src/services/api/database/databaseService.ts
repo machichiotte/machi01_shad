@@ -219,7 +219,6 @@ export class DatabaseService {
         console.info('offline')
         return getMockedData(collectionName)
       } else {
-        console.log('online', collectionName)
         const data = await DatabaseService.getCacheOrFetchCollection(collectionName)
         return Array.isArray(data) ? (data as MappedData[]) : []
       }

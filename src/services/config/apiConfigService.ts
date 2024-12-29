@@ -5,7 +5,6 @@ import { ApiConfig } from '@config/types';
 export class ApiConfigService {
 
   static async getApiConfig(): Promise<ApiConfig> {
-    
     console.log('Fetching API config...');
     const result = await ApiConfigRepository.fetchApiConfig();
     return result;
