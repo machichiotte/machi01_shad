@@ -1,6 +1,8 @@
 // src/components/Config.vue
 <script>
-import { updateApiConfig , updateKey, updateCmcApiKey  } from 'src/js/server/config.ts'
+import { updateKey } from '../js/server/config';
+import { PLATFORMS } from '../types/platform';
+
 export default {
   data() {
     return {
@@ -11,7 +13,7 @@ export default {
         secretKey: '',
         passphrase: ''
       },
-      PLATFORMS: ['kucoin', 'htx', 'binance', 'okx', 'gateio']
+      PLATFORMS: PLATFORMS
     };
   },
   computed: {
@@ -31,15 +33,7 @@ export default {
 
       try {
         const response = await updateKey(payload);
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorText}`);
-        }
-
-        const result = await response.json();
-
-        alert(result.message);
+        alert(response.message);
       } catch (error) {
         console.error('Error updating API key:', error);
         alert('An error occurred while updating the API key: ' + error.message);
@@ -52,7 +46,7 @@ export default {
 <template>
   <div>
     <h1>Configuration</h1>
-    <form @submit.prevent="updateKey">
+    <form @submit.prevent="sendKeyToServer">
       <div>
         <label for="type">Type:</label>
         <select v-model="payload.type">
