@@ -43,7 +43,7 @@ export interface CacheExpirationTimes {
   apiConfig: number
 }
 
-export interface SmtpAuthConfig {
+export interface SmtpAuth {
   user: string | undefined
   receiver: string | undefined
   pass: string | undefined
@@ -52,7 +52,7 @@ export interface SmtpAuthConfig {
 export interface ServerSmtp {
   host: string
   port: number
-  auth: SmtpAuthConfig
+  auth: SmtpAuth
 }
 
 export interface ServerCronSchedules {
@@ -72,33 +72,33 @@ export interface ServerSecurity {
   hashRounds: number
 }
 
-export interface DatabaseConfig {
+export interface Database {
   credentials: DatabaseCredentials
   collection: DatabaseCollection
   category: DatabaseCategory
 }
-export interface ApiConfig {
-  cmc: CmcConfig
-  platform: ApiKeysPlatform
+export interface Api {
+  cmc: ApiCmc
+  platform: ApiPlatforms
 }
 
-export interface ApiKeyConfig {
+export interface ApiPlatform {
   iv: string
   apiKey: string 
   secretKey?: string
   passphrase?: string
 }
 
-export type ApiKeysPlatform = {
-  [key in PLATFORM]: ApiKeyConfig
+export type ApiPlatforms = {
+  [key in PLATFORM]: ApiPlatform
 }
-export interface CmcConfig {
+export interface ApiCmc {
   apiKey: string
   iv: string
   url: string
 }
 
-export interface ServerConfig {
+export interface Server {
   cacheExpirationTimes: CacheExpirationTimes
   smtp: ServerSmtp
   cronSchedules: ServerCronSchedules
@@ -107,10 +107,10 @@ export interface ServerConfig {
   lastModified?: number
 }
 
-export interface EnvironmentConfig {
+export interface Environment {
   port: number
   isOffline: boolean
-  databaseConfig: DatabaseConfig
-  apiConfig: ApiConfig
-  serverConfig: ServerConfig
+  databaseConfig: Database
+  apiConfig: Api
+  serverConfig: Server
 }

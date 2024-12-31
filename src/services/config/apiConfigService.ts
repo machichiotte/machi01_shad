@@ -1,10 +1,10 @@
 // src/services/apiConfigService.ts
 import { ApiConfigRepository } from '@repositories/config/apiConfigRepository';
-import { ApiConfig } from '@config/types';
+import { Api } from '@config/types';
 
 export class ApiConfigService {
 
-  static async getApiConfig(): Promise<ApiConfig> {
+  static async getApiConfig(): Promise<Api> {
     console.log('Fetching API config...');
     const result = await ApiConfigRepository.fetchApiConfig();
     return result;
@@ -13,7 +13,7 @@ export class ApiConfigService {
   /**
    * Met à jour la configuration server et met à jour le cache.
    */
-  static async updateApiConfig(updatedConfig: ApiConfig): Promise<void> {
-    await ApiConfigRepository.updateApiConfig(updatedConfig);
+  static async updateApiConfig(updatedConfig: Api): Promise<void> {
+    await ApiConfigRepository.updateConfigApi(updatedConfig);
   }
 }

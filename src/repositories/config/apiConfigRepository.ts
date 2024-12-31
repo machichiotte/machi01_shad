@@ -1,7 +1,7 @@
 // src/repositories/apiConfigRepository.ts
 import { config } from '@config/index'
 import { DEFAULT_APICONFIG } from '@config/default'
-import { ApiConfig, ApiKeyConfig } from '@config/types'
+import { Api, ApiPlatform, ApiCmc } from '@config/types'
 import { DatabaseService } from '@services/api/database/databaseService'
 import { MappedData } from '@typ/database'
 import { PLATFORM } from '@typ/platform'
@@ -11,42 +11,18 @@ import { randomBytes } from 'crypto'
 const COLLECTION_NAME = config.databaseConfig.collection.apiConfig
 
 export class ApiConfigRepository {
-  static async fetchApiConfig(): Promise<ApiConfig> {
-    const data = (await DatabaseService.getData(COLLECTION_NAME)) as ApiConfig[]
-    if (!data || data.length === 0) {
-      await DatabaseService.insertData(COLLECTION_NAME, DEFAULT_APICONFIG)
-      return DEFAULT_APICONFIG
-    }
+  static async fetchApiConfig(): Promise<Api> {
+    return await this.fetchOrCreateConfig()
+  }
 
-    const encryptedConfig = data[0] as ApiConfig
-    // Décrypter CMC
-    const decryptedCmc = {
-      ...encryptedConfig.cmc,
-      apiKey: encryptedConfig.cmc.apiKey
-        ? EncryptionService.decrypt(
-            encryptedConfig.cmc.iv,
-            encryptedConfig.cmc.apiKey
-          )
-        : ''
-    }
-    // Décrypter les clés de plateforme
-    const decryptedPlatform: { [key in PLATFORM]: ApiKeyConfig } = {} as {
-      [key in PLATFORM]: ApiKeyConfig
-    }
+  static async fetchDecryptedApiConfig(): Promise<Api> {
+    const encryptedConfig = await this.fetchOrCreateConfig()
 
-    Object.entries(encryptedConfig.platform).forEach(([platform, config]) => {
-      const iv = config.iv
-      if (iv) {
-        decryptedPlatform[platform as PLATFORM] = this.decryptApiKeyConfig(
-          config as ApiKeyConfig & { iv: string }
-        )
-      } else {
-        console.warn(
-          `No IV provided for platform: ${platform}. Skipping decryption.`
-        )
-        // Handle the case where IV is missing (e.g., set to undefined or a default value)
-      }
-    })
+    const decryptedCmc = this.decryptConfigCmc(encryptedConfig.cmc)
+
+    const decryptedPlatform = this.decryptConfigPlatforms(
+      encryptedConfig.platform
+    )
 
     return {
       ...encryptedConfig,
@@ -55,49 +31,61 @@ export class ApiConfigRepository {
     }
   }
 
-  static async updateApiConfig(config: ApiConfig): Promise<void> {
-    const rd = randomBytes(16) // Generate a random IV
-    const iv = rd.toString('hex')
-    const { encryptedData: encryptedCmcKey } = EncryptionService.encrypt(
-      iv,
-      config.cmc.apiKey
-    )
-    const encryptedCmc = {
-      ...config.cmc,
-      apiKey: encryptedCmcKey
+  private static async fetchOrCreateConfig(): Promise<Api> {
+    const data = (await DatabaseService.getData(COLLECTION_NAME)) as Api[]
+    if (!data || data.length === 0) {
+      await DatabaseService.insertData(COLLECTION_NAME, DEFAULT_APICONFIG)
+      return DEFAULT_APICONFIG
+    }
+    return data[0]
+  }
+
+  private static decryptConfigCmc(cmcConfig: ApiCmc): ApiCmc {
+    if (!cmcConfig || !cmcConfig.apiKey) {
+      console.warn('CMC API key is null.')
+      return cmcConfig || { apiKey: '', iv: '' }
     }
 
-    // Crypter les clés de plateforme
-    const encryptedPlatform: {
-      [key in PLATFORM]: ApiKeyConfig
-    } = {} as { [key in PLATFORM]: ApiKeyConfig }
-    Object.entries(config.platform).forEach(([platform, platformConfig]) => {
-      encryptedPlatform[platform as PLATFORM] =
-        this.encryptApiKeyConfig(platformConfig)
+    const decryptedApiKey = EncryptionService.decrypt(
+      cmcConfig.iv,
+      cmcConfig.apiKey
+    )
+    return { ...cmcConfig, apiKey: decryptedApiKey }
+  }
+
+  private static decryptConfigPlatforms(platformConfigs: {
+    [key in PLATFORM]: ApiPlatform
+  }): { [key in PLATFORM]: ApiPlatform } {
+    const decryptedPlatform: { [key in PLATFORM]: ApiPlatform } = {} as {
+      [key in PLATFORM]: ApiPlatform
+    }
+
+    Object.entries(platformConfigs).forEach(([platform, config]) => {
+      if (!config.iv) {
+        console.warn(
+          `No IV provided for platform: ${platform}. Skipping decryption.`
+        )
+        return
+      }
+
+      decryptedPlatform[platform as PLATFORM] = this.decryptApiKeyConfig(config)
     })
 
-    const encryptedConfig = {
-      ...config,
-      cmc: encryptedCmc,
-      platform: encryptedPlatform
-    }
+    return decryptedPlatform
+  }
 
+  static async updateConfigApi(config: Api): Promise<void> {
     await DatabaseService.deleteAndInsertData(COLLECTION_NAME, [
-      encryptedConfig
+      config
     ] as MappedData[])
   }
 
-  /**
-   * Updates the CMC API key with encryption.
-   */
-  static async updateCmcApiKey(apiKey: string): Promise<void> {
+  static async encryptApiKeyCmc(apiKey: string): Promise<void> {
     const rd = randomBytes(16) // Générer un IV aléatoire
     const iv = rd.toString('hex')
-    const { encryptedData: encryptedKey } = EncryptionService.encrypt(
-      iv,
-      apiKey
-    )
+    const encryptedKey = EncryptionService.encrypt(iv, apiKey).encryptedData
 
+    console.log('apiKey iv encryptedKey', apiKey, iv, encryptedKey)
     // Récupérer la configuration actuelle
     const currentConfig = await this.fetchApiConfig()
     currentConfig.cmc = {
@@ -107,13 +95,10 @@ export class ApiConfigRepository {
     }
 
     // Sauvegarder la nouvelle configuration
-    await this.updateApiConfig(currentConfig)
+    await this.updateConfigApi(currentConfig)
   }
 
-  /**
-   * Updates a platform-specific API key with encryption.
-   */
-  static async updatePlatformApiKey(
+  static async encryptApiKeyPlatform(
     platform: PLATFORM,
     apiKey: string,
     secretKey: string,
@@ -133,6 +118,15 @@ export class ApiConfigRepository {
     // Récupérer la configuration actuelle
     const currentConfig = await this.fetchApiConfig()
 
+    console.log(
+      'encryptUpdatePlatformApiKey',
+      currentConfig,
+      encryptedApiKey,
+      encryptedSecretKey,
+      encryptedPassphrase,
+      platform
+    )
+
     // Mettre à jour la configuration pour la plateforme spécifique
     currentConfig.platform[platform] = {
       iv,
@@ -142,44 +136,29 @@ export class ApiConfigRepository {
     }
 
     // Sauvegarder la nouvelle configuration
-    await this.updateApiConfig(currentConfig)
+    await this.updateConfigApi(currentConfig)
   }
 
-  private static encryptApiKeyConfig(config: ApiKeyConfig): ApiKeyConfig {
-    const rd = randomBytes(16) // Generate a random IV
-    const iv = rd.toString('hex')
-    const { encryptedData: encryptedKey } = EncryptionService.encrypt(
-      iv,
-      config.apiKey
-    )
-    const encryptedSecret = config.secretKey
-      ? EncryptionService.encrypt(iv, config.secretKey).encryptedData
-      : undefined
-    const encryptedPassphrase = config.passphrase
-      ? EncryptionService.encrypt(iv, config.passphrase).encryptedData
-      : undefined
+  private static decryptApiKeyConfig(config: ApiPlatform): ApiPlatform {
+    console.log('config iv', config)
 
-    return {
-      iv,
-      apiKey: encryptedKey,
-      secretKey: encryptedSecret,
-      passphrase: encryptedPassphrase
-    }
-  }
-
-  private static decryptApiKeyConfig(
-    config: ApiKeyConfig & { iv: string }
-  ): ApiKeyConfig {
     const iv = config.iv
+    const apiKey = EncryptionService.decrypt(config.iv, config.apiKey)
+    console.log('apiKey', apiKey)
+    const secretKey = config.secretKey
+      ? EncryptionService.decrypt(config.iv, config.secretKey)
+      : undefined
+    console.log('secretKey', secretKey)
+    const passphrase = config.passphrase
+      ? EncryptionService.decrypt(config.iv, config.passphrase)
+      : undefined
+    console.log('passphrase', passphrase)
+
     return {
       iv,
-      apiKey: EncryptionService.decrypt(iv, config.apiKey),
-      secretKey: config.secretKey
-        ? EncryptionService.decrypt(iv, config.secretKey)
-        : undefined,
-      passphrase: config.passphrase
-        ? EncryptionService.decrypt(iv, config.passphrase)
-        : undefined
+      apiKey,
+      secretKey,
+      passphrase
     }
   }
 }

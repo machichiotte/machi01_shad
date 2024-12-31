@@ -1,10 +1,10 @@
 // src/services/serverConfigService.ts
 import { ServerConfigRepository } from '@src/repositories/config/serverConfigRepository';
-import { ServerConfig } from '@config/types';
+import { Server } from '@config/types';
 
 export class ServerConfigService {
 
-  static async getServerConfig(): Promise<ServerConfig> {
+  static async getServerConfig(): Promise<Server> {
     const result = await ServerConfigRepository.fetchServerConfig();
     return result;
   }
@@ -12,7 +12,7 @@ export class ServerConfigService {
   /**
    * Met à jour la configuration server et met à jour le cache.
    */
-  static async updateServerConfig(updatedConfig: ServerConfig): Promise<void> {
+  static async updateServerConfig(updatedConfig: Server): Promise<void> {
     await ServerConfigRepository.updateServerConfig(updatedConfig);
   }
 }

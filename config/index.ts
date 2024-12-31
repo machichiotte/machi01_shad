@@ -9,7 +9,7 @@ import {
     DEFAULT_APICONFIG
 } from './default';
 
-import { ApiConfig, EnvironmentConfig, ServerConfig } from './types';
+import { Api, Environment, Server } from './types';
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 switch (process.env.NODE_ENV) {
@@ -22,7 +22,7 @@ switch (process.env.NODE_ENV) {
 }
 
 // Configuration minimale pour la connexion initiale à MongoDB
-export const config: EnvironmentConfig = {
+export const config: Environment = {
     port: Number(process.env.PORT),
     isOffline: process.env.OFFLINE_MODE === "true",
 
@@ -108,10 +108,10 @@ export const config: EnvironmentConfig = {
 };
 
 // Fonction pour fusionner la configuration de base avec celle de la base de données
-export async function loadServerConfig(serverConfig: ServerConfig): Promise<void> {
+export async function loadServerConfig(serverConfig: Server): Promise<void> {
     config.serverConfig = serverConfig
 };
 
-export async function loadApiConfig(apiConfig: ApiConfig): Promise<void> {
+export async function loadApiConfig(apiConfig: Api): Promise<void> {
     config.apiConfig = apiConfig
 };

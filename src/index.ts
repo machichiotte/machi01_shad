@@ -2,7 +2,7 @@
 import { startServer } from '@src/server'
 import { MongodbService } from '@src/services/api/database/mongodbService'
 import { CronTaskService } from '@services/cronTasksService'
-import { UpdateService } from './services/update/updateSevice'
+//import { UpdateService } from './services/update/updateSevice'
 import { ProcessorService } from './services/processorService'
 import { ServerConfigService } from './services/config/serverConfigService'
 import { ApiConfigService } from './services/config/apiConfigService'
@@ -26,7 +26,7 @@ async function startApp(): Promise<void> {
     await loadApiConfig(apiConfig)
 
     // Étape 3 : Mettre à jour les services
-    await UpdateService.updateAll()
+    // await UpdateService.updateAll()
 
     // Étape 4 : Initialiser les tâches CRON
     await CronTaskService.initializeCronTasks()
