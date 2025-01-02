@@ -1,4 +1,4 @@
-// src/repo/userRepository.ts
+// src/repo/repoAuth.ts
 import { DatabaseService } from '@src/services/api/database/databaseService';
 import { config } from '@config/index';
 import { User } from '@typ/auth';
@@ -6,7 +6,7 @@ import { handleServiceError } from '@utils/errorUtil';
 
 const COLLECTION_NAME = config.databaseConfig.collection.user;
 
-export class AuthRepository {
+export class RepoAuth {
     public static async insertUser(user: User): Promise<void> {
         try {
             await DatabaseService.insertData(COLLECTION_NAME, user);

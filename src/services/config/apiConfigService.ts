@@ -1,16 +1,16 @@
 // src/services/apiConfigService.ts
-import { ApiConfigRepository } from '@repo/config/apiConfigRepository';
+import { RepoConfigApi } from '@src/repo/config/repoConfigApi';
 import { Api } from '@config/types';
 
 export class ApiConfigService {
 
   static async getApiConfig(): Promise<Api> {
-    const result = await ApiConfigRepository.fetchApiConfig();
+    const result = await RepoConfigApi.fetchApiConfig();
     return result;
   }
 
   static async getDecryptedApiConfig(): Promise<Api> {
-    const result = await ApiConfigRepository.fetchDecryptedApiConfig();
+    const result = await RepoConfigApi.fetchDecryptedApiConfig();
     return result;
   }
 
@@ -18,6 +18,6 @@ export class ApiConfigService {
    * Met à jour la configuration server et met à jour le cache.
    */
   static async updateApiConfig(updatedConfig: Api): Promise<void> {
-    await ApiConfigRepository.updateConfigApi(updatedConfig);
+    await RepoConfigApi.updateConfigApi(updatedConfig);
   }
 }

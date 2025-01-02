@@ -1,9 +1,9 @@
-// src/routes/balanceRoutes.ts
+// src/routes/routeBalance.ts
 import express from 'express'
 import {
   getBalances,
   updateCurrentBalance
-} from '@ctrl/balanceController'
+} from '@src/ctrl/ctrlBalance'
 
 const router = express.Router()
 

@@ -1,5 +1,5 @@
 // src/services/tradeService.ts
-import { TradeRepository } from '@repo/tradeRepository'
+import { RepoTrade } from '@src/repo/repoTrade'
 import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ/trade'
 import { PLATFORM, PlatformTrade } from '@typ/platform'
 import { TimestampService } from '@src/services/api/database/timestampService'
@@ -16,7 +16,7 @@ const COLLECTION_CATEGORY = config.databaseConfig.category.trade
 
 export class TradeService {
   static async fetchFromDb(): Promise<MappedTrade[]> {
-    return await TradeRepository.fetchAllTrades()
+    return await RepoTrade.fetchAllTrades()
   }
 
   static async fetchFromApi(platform: PLATFORM, base: string): Promise<PlatformTrade[]> {
@@ -57,7 +57,7 @@ export class TradeService {
     }
 
     try {
-      return await TradeRepository.updateById(updatedTrade)
+      return await RepoTrade.updateById(updatedTrade)
     } catch (error) {
       handleServiceError(error, 'updateById', `Error updating trade with id ${updatedTrade._id}`)
       throw error
@@ -67,7 +67,7 @@ export class TradeService {
   static async updateTrades(platform: PLATFORM): Promise<TradeServiceResult> {
     try {
       const mappedData = await this.fetchPlatformTrades(platform)
-      await TradeRepository.insertTrades(mappedData)
+      await RepoTrade.insertTrades(mappedData)
       await TimestampService.saveTimestampToDatabase(COLLECTION_CATEGORY, platform)
       return { data: mappedData }
     } catch (error) {
@@ -78,7 +78,7 @@ export class TradeService {
 
   static async insertNewTrades(tradesData: MappedTrade | MappedTrade[]): Promise<ManualTradeAdditionResult> {
     try {
-      const savedTrade = await TradeRepository.insertTrades(tradesData)
+      const savedTrade = await RepoTrade.insertTrades(tradesData)
       return { data: savedTrade }
     } catch (error) {
       handleServiceError(error, 'insertNewTrades', 'Error adding trades manually')
@@ -89,7 +89,7 @@ export class TradeService {
   static async saveTradesToDatabase(newTrades: MappedTrade[]): Promise<void> {
     try {
       const existingTrades = await this.fetchFromDb()
-      await TradeRepository.insertFilteredTrades(newTrades, existingTrades)
+      await RepoTrade.insertFilteredTrades(newTrades, existingTrades)
     } catch (error) {
       handleServiceError(error, 'saveTradesToDatabase', 'Error saving trades to database')
       throw error

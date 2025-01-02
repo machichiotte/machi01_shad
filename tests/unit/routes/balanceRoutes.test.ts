@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'supertest';
-import balanceRoutes from '../../../src/routes/balanceRoutes';
-import * as balanceController from '../../../src/ctrl/balanceController';
+import balanceRoutes from '../../../src/routes/routeBalance';
+import * as balanceController from '../../../src/ctrl/ctrlBalance';
 
 // Mock du contrôleur de balance
 jest.mock('../../../src/ctrl/balanceController');

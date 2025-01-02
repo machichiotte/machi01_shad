@@ -1,4 +1,4 @@
-// src/repo/trailingStopRepository.ts
+// src/repo/repoTrailingStop.ts
 import { BalanceService } from '@services/api/platform/balanceService';
 import { MachiService } from '@services/api/platform/machiService';
 import { TickerService } from '@services/api/platform/tickerService';
@@ -8,7 +8,7 @@ import { HighestPrice } from '@typ/trailingStop';
 import { PLATFORM } from '@typ/platform';
 import { handleServiceError } from '@utils/errorUtil';
 
-export class TrailingStopRepository {
+export class RepoTrailingStop {
     static async fetchBalanceAndHighestPrices(): Promise<[MappedBalance[], HighestPrice[]]> {
         try {
             return await Promise.all([

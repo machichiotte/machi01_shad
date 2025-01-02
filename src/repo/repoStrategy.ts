@@ -1,4 +1,4 @@
-// src/repo.strategyRepository.ts
+// src/repo/repoStrategy.ts
 import { DatabaseService } from '@src/services/api/database/databaseService';
 import { MappedStrat } from '@typ/strat';
 import { config } from '@config/index';
@@ -7,7 +7,7 @@ import { ObjectId } from 'mongodb';
 const COLLECTION_NAME = config.databaseConfig.collection.strat;
 const COLLECTION_CATEGORY = config.databaseConfig.category.strat;
 
-export class StrategyRepository {
+export class RepoStrategy {
     static async fetchAll(): Promise<MappedStrat[]> {
         return await DatabaseService.getData(COLLECTION_NAME) as MappedStrat[];
     }

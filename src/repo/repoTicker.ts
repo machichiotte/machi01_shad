@@ -1,4 +1,4 @@
-// src/repo/tickerRepository.ts
+// src/repo/repoTicker.ts
 import { DatabaseService } from '@src/services/api/database/databaseService'
 import { MappedTicker } from '@typ/ticker'
 import { config } from '@config/index'
@@ -7,7 +7,7 @@ import { PLATFORM } from '@typ/platform';
 const COLLECTION_NAME = config.databaseConfig.collection.ticker
 const COLLECTION_CATEGORY = config.databaseConfig.category.ticker
 
-export class TickerRepository {
+export class RepoTicker {
     static async fetchAll(): Promise<MappedTicker[]> {
         return await DatabaseService.getData(COLLECTION_NAME) as MappedTicker[]
     }

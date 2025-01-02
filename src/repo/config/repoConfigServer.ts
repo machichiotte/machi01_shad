@@ -1,4 +1,4 @@
-// src/repo/serverConfigRepository.ts
+// src/repo/repoConfigServer.ts
 import { config } from '@config/index'
 import { Server } from '@config/types'
 import { DatabaseService } from '@services/api/database/databaseService'
@@ -7,7 +7,7 @@ import { DEFAULT_SERVER_CONFIG } from '@config/default'
 
 const COLLECTION_NAME = config.databaseConfig.collection.serverConfig
 
-export class ServerConfigRepository {
+export class RepoConfigServer {
   /**
    * Récupère la configuration server depuis la base de données.
    * Si aucune configuration n'existe, crée une configuration par défaut.

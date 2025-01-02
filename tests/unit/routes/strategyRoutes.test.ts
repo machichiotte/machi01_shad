@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'supertest';
-import strategyRoutes from '../../../src/routes/strategyRoutes';
-import * as strategyController from '../../../src/ctrl/strategyController';
+import strategyRoutes from '../../../src/routes/routeStrat';
+import * as strategyController from '../../../src/ctrl/ctrlStrategy';
 
 // Mock du contrôleur Strategy
 jest.mock('../../../src/ctrl/strategyController');

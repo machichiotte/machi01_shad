@@ -1,6 +1,6 @@
-// src/ctrl/config/apiConfigController.ts
+// src/ctrl/config/ctrlConfigApi.ts
 import { Request, Response } from 'express';
-import { ApiConfigRepository } from '@repo/config/apiConfigRepository';
+import { RepoConfigApi } from '@src/repo/config/repoConfigApi';
 import { Api } from '@config/types';
 import { handleControllerError } from '@src/utils/errorUtil';
 
@@ -9,7 +9,7 @@ import { handleControllerError } from '@src/utils/errorUtil';
  */
 export const getApiConfig = async (req: Request, res: Response): Promise<void> => {
   try {
-    const apiConfig = await ApiConfigRepository.fetchDecryptedApiConfig();
+    const apiConfig = await RepoConfigApi.fetchDecryptedApiConfig();
     res.status(200).json({
       status: 'success',
       message: 'API configuration retrieved successfully',
@@ -26,7 +26,7 @@ export const getApiConfig = async (req: Request, res: Response): Promise<void> =
 export const updateApiConfig = async (req: Request, res: Response): Promise<void> => {
   try {
     const config: Api = req.body; // Assuming the body contains the new config
-    await ApiConfigRepository.updateConfigApi(config);
+    await RepoConfigApi.updateConfigApi(config);
     res.status(200).json({
       status: 'success',
       message: 'API configuration updated successfully',
@@ -51,11 +51,11 @@ export const updateApiKey = async (req: Request, res: Response): Promise<void> =
 
     // Cas CMC
     if (type === 'cmc') {
-      await ApiConfigRepository.encryptConfigCmc(apiKey);
+      await RepoConfigApi.encryptConfigCmc(apiKey);
     } 
     // Cas Platform
     else if (type === 'platform' && platform) {
-      await ApiConfigRepository.encryptConfigPlatform(platform, apiKey, secretKey, passphrase);
+      await RepoConfigApi.encryptConfigPlatform(platform, apiKey, secretKey, passphrase);
     } else {
       res.status(400).json({
         status: 'error',

@@ -2,7 +2,7 @@
 import { TimestampService } from '@src/services/api/database/timestampService'
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { TimestampRepository } from '@repo/timestampRepository'
+import { RepoTimestamp } from '@src/repo/repoTimestamp'
 
 /**
  * Récupère l'enregistrement de dernière mise à jour unique pour une plateforme et un type donnés.
@@ -12,7 +12,7 @@ async function getUniqueTimestamp(req: Request, res: Response): Promise<void> {
     const { platform, type } = req.params
     const filter = { platform, type }
 
-    const timestampData = await TimestampRepository.findTimestamp(filter)
+    const timestampData = await RepoTimestamp.findTimestamp(filter)
 
     if (timestampData) {
       res.status(200).json({

@@ -1,6 +1,6 @@
-// src/routes/tickerRoutes.ts
+// src/routes/routeTicker.ts
 import express from 'express'
-import { getAllTickers, updateAllTickers } from '@ctrl/tickerController'
+import { getAllTickers, updateAllTickers } from '@src/ctrl/ctrlTicker'
 
 const router = express.Router()
 

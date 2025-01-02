@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'supertest';
-import machiRoutes from '../../../src/routes/machiRoutes';
-import * as machiController from '../../../src/ctrl/machiController';
+import machiRoutes from '../../../src/routes/routeMachi';
+import * as machiController from '../../../src/ctrl/ctrlMachi';
 
 // Mock du contrôleur Machi
 jest.mock('../../../src/ctrl/machiController');

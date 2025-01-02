@@ -1,5 +1,5 @@
 // src/services/cmcService.ts
-import { CmcRepository } from '@repo/cmcRepository'
+import { RepoCmc } from '@src/repo/repoCmc'
 import { handleServiceError } from '@utils/errorUtil'
 import { MappedCmc, FetchResponse } from '@typ/cmc'
 import { config } from '@config/index'
@@ -62,7 +62,7 @@ export class CmcService {
    */
   public static async fetchDatabaseCmc(): Promise<MappedCmc[]> {
     try {
-      return await CmcRepository.fetchAll()
+      return await RepoCmc.fetchAll()
     } catch (error) {
       handleServiceError(
         error,
@@ -80,8 +80,8 @@ export class CmcService {
     data: MappedCmc[]
   ): Promise<object> {
     try {
-      const deleteResult = await CmcRepository.deleteAll()
-      const saveResult = await CmcRepository.save(data)
+      const deleteResult = await RepoCmc.deleteAll()
+      const saveResult = await RepoCmc.save(data)
 
       return {
         status: true,

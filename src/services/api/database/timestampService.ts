@@ -1,5 +1,5 @@
 // src/services/timestampService.ts
-import { TimestampRepository } from '@repo/timestampRepository';
+import { RepoTimestamp } from '@src/repo/repoTimestamp';
 import { TimestampData } from '@typ/timestamp';
 import { handleServiceError } from '@utils/errorUtil';
 
@@ -9,7 +9,7 @@ export class TimestampService {
    */
   static async fetchDatabaseTimestamp(): Promise<TimestampData> {
     try {
-      return await TimestampRepository.fetchTimestamp();
+      return await RepoTimestamp.fetchTimestamp();
     } catch (error) {
       handleServiceError(error, 'fetchDatabaseTimestamp', 'Erreur lors de la récupération des dernières mises à jour');
       throw error;
@@ -29,7 +29,7 @@ export class TimestampService {
       } else {
         this.updateForPlatformType(mappedData, category, platform, currentTimestamp); // Mise à jour d'un champ dépendant d'une plateforme
       }
-      await TimestampRepository.updateTimestamp(mappedData);
+      await RepoTimestamp.updateTimestamp(mappedData);
     } catch (error) {
       throw error as Error
     }

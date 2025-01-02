@@ -1,5 +1,5 @@
 // src/services/orderBalanceService.ts
-import { OrderBalanceRepository } from '@repo/orderBalanceRepository';
+import { RepoOrderBalance } from '@src/repo/repoOrderBalance';
 import { CcxtService } from '@services/api/platform/ccxtService';
 import { MappingService } from '@src/services/api/platform/platformMapping';
 import { handleServiceError } from '@utils/errorUtil';
@@ -9,14 +9,14 @@ import { MappedOrder } from '@typ/order';
 export class OrderBalanceService {
 
   static async fetchDatabase(): Promise<MappedOrder[]> {
-    return await OrderBalanceRepository.fetchAll()
+    return await RepoOrderBalance.fetchAll()
   }
 
   /**
    * Get all orders for a specific symbol.
    */
   static async getOrdersBySymbol(symbol: string): Promise<MappedOrder[]> {
-    const orders = await OrderBalanceRepository.fetchAll();
+    const orders = await RepoOrderBalance.fetchAll();
     return orders.filter(order => order.symbol === symbol);
   }
 
@@ -24,7 +24,7 @@ export class OrderBalanceService {
    * Get all orders for a specific platform.
    */
   static async getOrdersByPlatform(platform: string): Promise<MappedOrder[]> {
-    const orders = await OrderBalanceRepository.fetchAll();
+    const orders = await RepoOrderBalance.fetchAll();
     return orders.filter(order => order.platform === platform);
   }
 
@@ -32,7 +32,7 @@ export class OrderBalanceService {
    * Get all orders by side (buy or sell).
    */
   static async getOrdersBySide(side: string): Promise<MappedOrder[]> {
-    const orders = await OrderBalanceRepository.fetchAll();
+    const orders = await RepoOrderBalance.fetchAll();
     return orders.filter(order => order.side?.toLowerCase() === side.toLowerCase());
   }
 
@@ -40,7 +40,7 @@ export class OrderBalanceService {
    * Get all orders by type (limit, market, etc.).
    */
   static async getOrdersByType(type: string): Promise<MappedOrder[]> {
-    const orders = await OrderBalanceRepository.fetchAll();
+    const orders = await RepoOrderBalance.fetchAll();
     return orders.filter(order => order.type?.toLowerCase() === type.toLowerCase());
   }
 
@@ -48,7 +48,7 @@ export class OrderBalanceService {
    * Get all orders for a specific platform and symbol.
    */
   static async getOrdersByPlatformAndSymbol(platform: string, symbol: string): Promise<MappedOrder[]> {
-    const orders = await OrderBalanceRepository.fetchAll();
+    const orders = await RepoOrderBalance.fetchAll();
     return orders.filter(order => order.platform === platform && order.symbol === symbol);
   }
 
@@ -73,7 +73,7 @@ export class OrderBalanceService {
   static async updateOrdersFromServer(platform: PLATFORM): Promise<void> {
     try {
       const mappedData = await this.fetchAndMapOrders(platform);
-      await OrderBalanceRepository.save(mappedData, platform);
+      await RepoOrderBalance.save(mappedData, platform);
       console.info(`Updated orders from server for ${platform}.`, { count: mappedData.length });
     } catch (error) {
       handleServiceError(error, 'updateOrdersFromServer', `Error updating orders from server for ${platform}`);

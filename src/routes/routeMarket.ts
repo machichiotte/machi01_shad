@@ -1,6 +1,6 @@
-// src/routes/marketRoutes.ts
+// src/routes/rotueMarket.ts
 import express from 'express'
-import { getMarkets } from '@ctrl/marketController'
+import { getMarkets } from '@src/ctrl/ctrlMarket'
 
 const router = express.Router()
 

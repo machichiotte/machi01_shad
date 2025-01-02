@@ -5,7 +5,7 @@ import { PLATFORM, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTick
 import { handleServiceError } from '@utils/errorUtil';
 import { checkApiKeys } from '@utils/platformUtil';
 import { ObjectId } from 'mongodb';
-import { ApiConfigRepository } from '@src/repo/config/apiConfigRepository';
+import { RepoConfigApi } from '@src/repo/config/repoConfigApi';
 
 export class CcxtService {
 
@@ -16,7 +16,7 @@ export class CcxtService {
 
         const encryptedPlatformConfig = config.apiConfig.platform[platform];
 
-        const decryptedPlatformConfig = ApiConfigRepository.decryptConfigPlatform(encryptedPlatformConfig)
+        const decryptedPlatformConfig = RepoConfigApi.decryptConfigPlatform(encryptedPlatformConfig)
         const { apiKey, secretKey } = decryptedPlatformConfig
         const passphrase = 'passphrase' in decryptedPlatformConfig ? decryptedPlatformConfig.passphrase : undefined;
 

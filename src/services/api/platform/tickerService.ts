@@ -1,5 +1,5 @@
 // src/services/tickerService.ts
-import { TickerRepository } from '@repo/tickerRepository'
+import { RepoTicker } from '@src/repo/repoTicker'
 import { CcxtService } from '@services/api/platform/ccxtService'
 import { MappingService } from '@src/services/api/platform/platformMapping'
 import { handleServiceError } from '@utils/errorUtil'
@@ -10,7 +10,7 @@ import { PLATFORM, PLATFORMS } from '@typ/platform'
 
 export class TickerService {
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {
-    return await TickerRepository.fetchAll()
+    return await RepoTicker.fetchAll()
   }
 
   static async getFilteredTickers(platform: PLATFORM, additionalFilter?: (ticker: MappedTicker) => boolean): Promise<MappedTicker[]> {
@@ -54,7 +54,7 @@ export class TickerService {
     for (const platform of PLATFORMS) {
       const data = await CcxtService.fetchRawTicker(platform)
       tickersData.push(...MappingService.mapTickers(platform, data))
-      await TickerRepository.saveTickers(platform, tickersData)
+      await RepoTicker.saveTickers(platform, tickersData)
     }
     return tickersData
   }
@@ -62,7 +62,7 @@ export class TickerService {
   static async updateTickersForPlatform(platform: PLATFORM): Promise<void> {
     try {
       const currentTickers = await TickerService.fetchCurrentTickers(platform)
-      await TickerRepository.saveTickers(platform, currentTickers)
+      await RepoTicker.saveTickers(platform, currentTickers)
     } catch (error) {
       handleServiceError(error, 'updateTickersForPlatform', `Erreur lors de la mise à jour des tickers pour ${platform}`)
     }

@@ -1,7 +1,7 @@
 // src/services/authService.ts
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
-import { AuthRepository } from '@repo/authRepository';
+import { RepoAuth } from '@src/repo/repoAuth';
 import { handleServiceError } from '@utils/errorUtil';
 import { User } from '@typ/auth';
 import { config } from '@config/index';
@@ -23,7 +23,7 @@ export class AuthService {
       const hashedPassword = await bcrypt.hash(userDetails.password, HASH_ROUNDS);
       const newUser = { ...userDetails, password: hashedPassword };
 
-      await AuthRepository.insertUser(newUser);
+      await RepoAuth.insertUser(newUser);
       return true;
     } catch (error) {
       handleServiceError(error, 'createUserDBService', 'Erreur lors de la création de l\'utilisateur');
@@ -33,7 +33,7 @@ export class AuthService {
 
   public static async findUserByEmail(email: string): Promise<User | null> {
     try {
-      return await AuthRepository.findUserByEmail(email);
+      return await RepoAuth.findUserByEmail(email);
     } catch (error) {
       handleServiceError(error, 'findUserByEmail', 'Erreur lors de la recherche de l\'utilisateur');
       return null;

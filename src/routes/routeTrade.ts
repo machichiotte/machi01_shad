@@ -1,11 +1,11 @@
-// src/routes/tradeRoutes.ts
+// src/routes/routeTrade.ts
 import express from 'express'
 import {
   getTrades,
   insertNewTrades,
   updateTradesByPlatform,
   fetchLastTrades
-} from '@ctrl/tradeController'
+} from '@src/ctrl/ctrlTrade'
 
 const router = express.Router()
 

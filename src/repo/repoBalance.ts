@@ -7,7 +7,7 @@ import { DatabaseService } from '@src/services/api/database/databaseService';
 const COLLECTION_NAME = config.databaseConfig.collection.balance;
 const COLLECTION_CATEGORY = config.databaseConfig.category.balance;
 
-export class BalanceRepository {
+export class RepoBalance {
     /**
      * Récupère toutes les données de solde de la base de données.
      */

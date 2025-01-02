@@ -1,18 +1,18 @@
 // src/routes/index.ts
 import { Router } from 'express';
 
-import converterRoutes from './converterRoutes';
-import authRoutes from './authRoutes';
-import balanceRoutes from './balanceRoutes';
-import cmcRoutes from './cmcRoutes';
-import strategyRoutes from './strategyRoutes';
-import orderRoutes from './orderRoutes';
-import marketRoutes from './marketRoutes';
-import tradeRoutes from './tradeRoutes';
-import tickerRoutes from './tickerRoutes';
-import timestampRoutes from './timestampRoutes';
-import machiRoutes from './machiRoutes';
-import apiRoutes from './config/apiRoutes';
+import converterRoutes from './routeConverter';
+import authRoutes from './routeAuth';
+import balanceRoutes from './routeBalance';
+import cmcRoutes from './routeCmc';
+import strategyRoutes from './routeStrat';
+import orderRoutes from './routeOrder';
+import marketRoutes from './routeMarket';
+import tradeRoutes from './routeTrade';
+import tickerRoutes from './routeTicker';
+import timestampRoutes from './routeTimestamp';
+import machiRoutes from './routeMachi';
+import apiRoutes from './config/routeApi';
 
 const router = Router();
 

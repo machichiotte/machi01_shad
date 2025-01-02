@@ -1,4 +1,4 @@
-// src/repo/timestampRepository.ts
+// src/repo/repoTimestamp.ts
 import { DatabaseService } from '@src/services/api/database/databaseService';
 import { TimestampData } from '@typ/timestamp';
 import { config } from '@config/index';
@@ -6,7 +6,7 @@ import { ObjectId } from 'mongodb';
 
 const COLLECTION_NAME = config.databaseConfig.collection.timestamp;
 
-export class TimestampRepository {
+export class RepoTimestamp {
     /**
      * Récupère les informations de dernière mise à jour depuis la base de données.
      */

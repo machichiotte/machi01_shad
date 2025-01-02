@@ -1,9 +1,9 @@
-// src/routes/orderRoutes.ts
+// src/routes/routeOrder.ts
 import express from 'express'
 import {
   getOrders,
   updateOrders,
-} from '@ctrl/orderBalanceController'
+} from '@src/ctrl/ctrlOrderBalance'
 
 import {
   deleteOrder,
@@ -14,7 +14,7 @@ import {
   cancelAllOrders,
   cancelAllSellOrders,
   cancelAllBuyOrders
-} from '@ctrl/orderMarketController'
+} from '@src/ctrl/ctrlOrderMarket'
 
 const router = express.Router()
 

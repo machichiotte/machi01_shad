@@ -1,4 +1,4 @@
-// src/repo/orderBalanceRepository.ts
+// src/repo/repoOrderBalance.ts
 import { DatabaseService } from '@src/services/api/database/databaseService'
 import { MappedOrder } from '@typ/order'
 import { config } from '@config/index';
@@ -7,7 +7,7 @@ import { PLATFORM } from '@typ/platform';
 const COLLECTION_NAME = config.databaseConfig.collection.order;
 const COLLECTION_CATEGORY = config.databaseConfig.category.order;
 
-export class OrderBalanceRepository {
+export class RepoOrderBalance {
     /**
      * Fetch all orders from the database.
      */

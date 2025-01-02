@@ -1,6 +1,6 @@
-// src/routes/cmcRoutes.ts
+// src/routes/routeCmc.ts
 import express from 'express'
-import { getCmc, updateCmc } from '@ctrl/cmcController'
+import { getCmc, updateCmc } from '@src/ctrl/ctrlCmc'
 
 const router = express.Router()
 

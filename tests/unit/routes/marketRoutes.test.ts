@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'supertest';
-import marketRoutes from '../../../src/routes/marketRoutes';
-import * as marketController from '../../../src/ctrl/marketController';
+import marketRoutes from '../../../src/routes/routeMarket';
+import * as marketController from '../../../src/ctrl/ctrlMarket';
 
 // Mock du contrôleur Market
 jest.mock('../../../src/ctrl/marketController');

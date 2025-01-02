@@ -1,4 +1,4 @@
-// src/repo/highPriceRepository.ts
+// src/repo/repoHighPrice.ts
 import { HighestPrices } from '@typ/database';
 import { config } from '@config/index';
 import { mongodbOperations } from '@src/services/api/database/mongodbOperationsService';
@@ -6,7 +6,7 @@ import { DatabaseService } from '@src/services/api/database/databaseService';
 
 const COLLECTION_NAME = config.databaseConfig.collection.highestPrice;
 
-export class HighestPriceRepository {
+export class RepoHighPrice {
 
     /**
      * Fetches the highest prices from the database.

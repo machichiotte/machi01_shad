@@ -1,10 +1,10 @@
-// src/routes/timestampRoutes.ts
+// src/routes/ruoteTimestamp.ts
 import express from 'express'
 import {
   getTimestamp,
   getUniqueTimestamp,
   updateTimestampByType
-} from '@ctrl/timestampController'
+} from '@src/ctrl/ctrlTimestamp'
 
 const router = express.Router()
 

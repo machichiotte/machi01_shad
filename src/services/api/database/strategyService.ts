@@ -1,7 +1,7 @@
 // src/services/strategyService.ts
 import { MappedStrat } from '@typ/strat';
 import { handleServiceError } from '@utils/errorUtil';
-import { StrategyRepository } from '@repo/strategyRepository';
+import { RepoStrategy } from '@src/repo/repoStrategy';
 
 export class StrategyService {
   /**
@@ -9,7 +9,7 @@ export class StrategyService {
    */
   static async fetchDatabaseStrategies(): Promise<MappedStrat[]> {
     try {
-      return await StrategyRepository.fetchAll();
+      return await RepoStrategy.fetchAll();
     } catch (error) {
       handleServiceError(error, 'fetchDatabaseStrategies', 'Error fetching strategies');
       throw error;
@@ -25,7 +25,7 @@ export class StrategyService {
     }
 
     try {
-      return await StrategyRepository.updateById(updatedStrategy);
+      return await RepoStrategy.updateById(updatedStrategy);
     } catch (error) {
       handleServiceError(error, 'updateStrategyById', `Error updating strategy with id ${updatedStrategy._id}`);
       throw error;
@@ -37,8 +37,8 @@ export class StrategyService {
    */
   static async updateStrategies(strategies: MappedStrat[]): Promise<void> {
     try {
-      await StrategyRepository.deleteAll();
-      await StrategyRepository.saveStrategies(strategies);
+      await RepoStrategy.deleteAll();
+      await RepoStrategy.saveStrategies(strategies);
     } catch (error) {
       handleServiceError(error, 'updateStrategies', 'Error updating strategies');
       throw error;

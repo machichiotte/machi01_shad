@@ -1,11 +1,11 @@
-// src/repo/machiRepository.ts
+// src/repo/repoMachi.ts
 import { DatabaseService } from '@src/services/api/database/databaseService';
 import { config } from '@config/index';
 import { Asset } from '@typ/metrics';
 
 const COLLECTION_NAME = config.databaseConfig.collection.machi;
 
-export class MachiRepository {
+export class RepoMachi {
     /**
      * Fetches the most recent SHAD data from the database.
      */

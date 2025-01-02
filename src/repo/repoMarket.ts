@@ -1,4 +1,4 @@
-// src/repo/marketRepository.ts
+// src/repo/repoMarket.ts
 import { DatabaseService } from '@src/services/api/database/databaseService';
 import { MappedMarket } from '@typ/market';
 import { config } from '@config/index';
@@ -7,7 +7,7 @@ import { PLATFORM } from '@typ/platform';
 const COLLECTION_NAME = config.databaseConfig.collection.market;
 const COLLECTION_CATEGORY = config.databaseConfig.category.market;
 
-export class MarketRepository {
+export class RepoMarket {
 
     static async fetchAll(): Promise<MappedMarket[]> {
         return await DatabaseService.getData(COLLECTION_NAME) as MappedMarket[];

@@ -1,4 +1,4 @@
-// src/repo/tradeRepository.ts
+// src/repo/repoTrade.ts
 import { DatabaseService } from '@src/services/api/database/databaseService'
 import { MappedTrade } from '@typ/trade'
 import { config } from '@config/index';
@@ -7,7 +7,7 @@ import { ObjectId } from 'mongodb';
 
 const TRADES_COLLECTION = config.databaseConfig.collection.trade
 
-export class TradeRepository {
+export class RepoTrade {
     static async fetchAllTrades(): Promise<MappedTrade[]> {
         return await DatabaseService.getData(TRADES_COLLECTION) as MappedTrade[]
     }

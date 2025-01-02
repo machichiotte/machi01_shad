@@ -1,6 +1,6 @@
 import { MappedBalance } from '@typ/balance';
 import { Asset, HighestPrice, UpdatedOrder } from '@typ/trailingStop';
-import { TrailingStopRepository } from '@repo/trailingStopRepository';
+import { RepoTrailingStop } from '@src/repo/repoTrailingStop';
 import { handleServiceError } from '@utils/errorUtil';
 import { PLATFORM } from '@typ/platform';
 
@@ -13,7 +13,7 @@ export class TrailingStopService {
 
     static async handleTrailingStopHedge(simplifiedSelectedAssets?: Asset[]): Promise<UpdatedOrder[]> {
         try {
-            const [balanceFromDb, highestPrices] = await TrailingStopRepository.fetchBalanceAndHighestPrices();
+            const [balanceFromDb, highestPrices] = await RepoTrailingStop.fetchBalanceAndHighestPrices();
 
             const balanceFromDbFiltered = simplifiedSelectedAssets
                 ? this.filterBalances(balanceFromDb, simplifiedSelectedAssets)
@@ -66,7 +66,7 @@ export class TrailingStopService {
             for (const [platform, symbolsAndBalances] of Object.entries(symbolsAndBalanceByPlatform)) {
                 if (kucoinOnly && platform !== 'kucoin') continue;
 
-                const platformTickers = await TrailingStopRepository.fetchCurrentTickers(platform as PLATFORM);
+                const platformTickers = await RepoTrailingStop.fetchCurrentTickers(platform as PLATFORM);
                 let requestWeight = 0;
                 let orderCount = 0;
                 const lastResetTime = Date.now();
@@ -125,18 +125,18 @@ export class TrailingStopService {
         try {
             if (!highestPrice && currentPrice) {
                 const stopPrice = currentPrice * (1 - this.PERCENTAGE_TO_LOSE);
-                await TrailingStopRepository.cancelAllOrdersByBunch(platform, base);
-                await TrailingStopRepository.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
-                await TrailingStopRepository.updateHighestPrice(platform, base, currentPrice);
+                await RepoTrailingStop.cancelAllOrdersByBunch(platform, base);
+                await RepoTrailingStop.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
+                await RepoTrailingStop.updateHighestPrice(platform, base, currentPrice);
                 console.info(`Ordre de trailing stop créé pour ${base}`);
                 return { base, platform };
             }
 
             if (highestPrice && currentPrice && currentPrice > highestPrice) {
                 const stopLossPrice = Math.max(highestPrice, currentPrice) * (1 - this.PERCENTAGE_TO_LOSE);
-                await TrailingStopRepository.cancelAllOrdersByBunch(platform, base);
-                await TrailingStopRepository.createOrUpdateStopLossOrder(platform, stopLossPrice, base, balance);
-                await TrailingStopRepository.updateHighestPrice(platform, base, currentPrice);
+                await RepoTrailingStop.cancelAllOrdersByBunch(platform, base);
+                await RepoTrailingStop.createOrUpdateStopLossOrder(platform, stopLossPrice, base, balance);
+                await RepoTrailingStop.updateHighestPrice(platform, base, currentPrice);
                 console.info(`Ordre de trailing stop mis à jour pour ${base}`);
                 return { base, platform };
             }

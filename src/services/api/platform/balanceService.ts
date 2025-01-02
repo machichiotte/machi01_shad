@@ -1,5 +1,5 @@
 // src/services/balanceService.ts
-import { BalanceRepository } from '@repo/balanceRepository';
+import { RepoBalance } from '@src/repo/repoBalance';
 import { CcxtService } from '@services/api/platform/ccxtService';
 import { MappingService } from '@src/services/api/platform/platformMapping';
 import { ProcessorService } from '@services/processorService';
@@ -12,7 +12,7 @@ import { removeDuplicateDifferences, removeDuplicates } from '@utils/processorUt
 
 export class BalanceService {
   static async fetchDatabaseBalance(): Promise<MappedBalance[]> {
-    return await BalanceRepository.fetchAll()
+    return await RepoBalance.fetchAll()
   }
   /**
    * Récupère les données de solde de la base de données pour une plateforme spécifique avec tentatives.
@@ -20,7 +20,7 @@ export class BalanceService {
   static async fetchDatabaseBalancesByPlatform(platform: PLATFORM, retries: number = 3): Promise<MappedBalance[]> {
 
     try {
-      return await retry(() => BalanceRepository.fetchByPlatform(platform), [], 'fetchDatabaseBalancesByPlatform', retries);
+      return await retry(() => RepoBalance.fetchByPlatform(platform), [], 'fetchDatabaseBalancesByPlatform', retries);
     } catch (error) {
       handleServiceError(error, 'fetchDatabaseBalancesByPlatform', `Erreur lors de la récupération des données de solde pour la plateforme ${platform}`);
       throw error;
@@ -49,7 +49,7 @@ export class BalanceService {
     try {
       return await retry(async () => {
         const currentBalances = await this.fetchCurrentBalancesByPlatform(platform);
-        await BalanceRepository.saveBalances(platform, currentBalances);
+        await RepoBalance.saveBalances(platform, currentBalances);
         //rajouter timestamp
         return currentBalances;
       }, [], 'updateBalanceForPlatform', 3)
@@ -75,7 +75,7 @@ export class BalanceService {
 
         if (uniqueDifferences.length > 0) {
           await Promise.all([
-            BalanceRepository.saveBalances(platform, currentBalances),
+            RepoBalance.saveBalances(platform, currentBalances),
             ProcessorService.processBalanceChanges(platform, uniqueDifferences)
           ]);
         }

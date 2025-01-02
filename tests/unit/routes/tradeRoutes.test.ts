@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'supertest';
-import tradeRoutes from '../../../src/routes/tradeRoutes';
-import * as tradeController from '../../../src/ctrl/tradeController';
+import tradeRoutes from '../../../src/routes/routeTrade';
+import * as tradeController from '../../../src/ctrl/ctrlTrade';
 
 // Mock du contrôleur Trade
 jest.mock('../../../src/ctrl/tradeController');

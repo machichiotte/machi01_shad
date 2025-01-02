@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'supertest';
-import timestampRoutes from '../../../src/routes/timestampRoutes';
-import * as timestampController from '../../../src/ctrl/timestampController';
+import timestampRoutes from '../../../src/routes/routeTimestamp';
+import * as timestampController from '../../../src/ctrl/ctrlTimestamp';
 
 // Mock du contrôleur Timestamp
 jest.mock('../../../src/ctrl/timestampController');

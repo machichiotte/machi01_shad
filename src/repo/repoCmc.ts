@@ -6,7 +6,7 @@ import { config } from '@config/index';
 const COLLECTION_NAME = config.databaseConfig.collection.cmc;
 const COLLECTION_CATEGORY = config.databaseConfig.category.cmc;
 
-export class CmcRepository {
+export class RepoCmc {
     /**
      * Récupère les données CMC depuis la base de données.
      */

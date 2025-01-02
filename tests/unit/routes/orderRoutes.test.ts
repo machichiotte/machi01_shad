@@ -1,8 +1,8 @@
 import express from 'express';
 import request from 'supertest';
-import orderRoutes from '../../../src/routes/orderRoutes';
-import * as orderBalanceController from '../../../src/ctrl/orderBalanceController';
-import * as orderMarketController from '../../../src/ctrl/orderMarketController';
+import orderRoutes from '../../../src/routes/routeOrder';
+import * as orderBalanceController from '../../../src/ctrl/ctrlOrderBalance';
+import * as orderMarketController from '../../../src/ctrl/ctrlOrderMarket';
 
 // Mock des contrôleurs
 jest.mock('../../../src/ctrl/orderBalanceController');

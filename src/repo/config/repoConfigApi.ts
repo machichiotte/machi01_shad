@@ -1,4 +1,4 @@
-// src/repo/apiConfigRepository.ts
+// src/repo/repoConfigApi.ts
 import { config } from '@config/index'
 import { DEFAULT_APICONFIG } from '@config/default'
 import { Api, ApiPlatform, ApiCmc } from '@config/types'
@@ -10,7 +10,7 @@ import { randomBytes } from 'crypto'
 
 const COLLECTION_NAME = config.databaseConfig.collection.apiConfig
 
-export class ApiConfigRepository {
+export class RepoConfigApi {
   static async fetchApiConfig(): Promise<Api> {
     return await this.fetchOrCreateConfig()
   }
