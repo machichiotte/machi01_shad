@@ -100,7 +100,9 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 ┃ ┃ ┃ ┣ 📜logo_exchange_okx.svg
 ┃ ┃ ┃ ┣ 📜logo_machi.svg
 ┃ ┃ ┃ ┣ 📜logo.png
-┃ ┃ ┃ ┗ 📜logo.svg
+┃ ┃ ┃ ┣ 📜logo.svg
+┃ ┃ ┃ ┣ 📜spinner.svg
+┃ ┃ ┃ ┗ 📜spinner.svg
 ┃ ┃ ┣ 📂components
 ┃ ┃ ┃ ┣ 📂button
 ┃ ┃ ┃ ┃ ┣ 📜MyBunchSellButton.vue
@@ -223,47 +225,46 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 ┃ ┗ 📜jsonboubou.json
 ┣ 📂src
 ┃ ┣ 📂ctrl
-┃ ┃ ┣ 📜authController.ts
-┃ ┃ ┣ 📜balanceController.ts
-┃ ┃ ┣ 📜cmcController.ts
-┃ ┃ ┣ 📜converterController.ts
-┃ ┃ ┣ 📜machiController.ts
-┃ ┃ ┣ 📜marketController.ts
-┃ ┃ ┣ 📜orderBalanceController.ts
-┃ ┃ ┣ 📜orderMarketController.ts
-┃ ┃ ┣ 📜strategyController.ts
-┃ ┃ ┣ 📜tickerController.ts
-┃ ┃ ┣ 📜timestampController.ts
-┃ ┃ ┗ 📜tradeController.ts
+┃ ┃ ┣ 📜ctrlAuth.ts
+┃ ┃ ┣ 📜ctrlBalance.ts
+┃ ┃ ┣ 📜ctrlCmc.ts
+┃ ┃ ┣ 📜ctrlConverter.ts
+┃ ┃ ┣ 📜ctrlMachi.ts
+┃ ┃ ┣ 📜ctrlMarket.ts
+┃ ┃ ┣ 📜ctrlOrderBalance.ts
+┃ ┃ ┣ 📜ctrlOrderMarket.ts
+┃ ┃ ┣ 📜ctrlStrategy.ts
+┃ ┃ ┣ 📜ctrlTicker.ts
+┃ ┃ ┣ 📜ctrlTimestamp.ts
+┃ ┃ ┗ 📜ctrlTrade.ts
 ┃ ┣ 📂middlewares
 ┃ ┃ ┗ 📜fileUploadMiddleware.ts
 ┃ ┣ 📂repo
-┃ ┃ ┣ 📜authRepository.ts
-┃ ┃ ┣ 📜balanceRepository.ts
-┃ ┃ ┣ 📜cmcRepository.ts
-┃ ┃ ┣ 📜highPriceRepository.ts
-┃ ┃ ┣ 📜machiRepository.ts
-┃ ┃ ┣ 📜marketRepository.ts
-┃ ┃ ┣ 📜orderBalanceRepository.ts
-┃ ┃ ┣ 📜serverConfigRepository.ts
-┃ ┃ ┣ 📜strategyRepository.ts
-┃ ┃ ┣ 📜tickerRepository.ts
-┃ ┃ ┣ 📜timestampRepository.ts
-┃ ┃ ┣ 📜tradeRepository.ts
-┃ ┃ ┗ 📜trailingStopRepository.ts
+┃ ┃ ┣ 📜repoAuth.ts
+┃ ┃ ┣ 📜repoBalance.ts
+┃ ┃ ┣ 📜repoCmc.ts
+┃ ┃ ┣ 📜repoHighPrice.ts
+┃ ┃ ┣ 📜repoMachi.ts
+┃ ┃ ┣ 📜repoMarket.ts
+┃ ┃ ┣ 📜repoOrderBalance.ts
+┃ ┃ ┣ 📜repoServerConfig.ts
+┃ ┃ ┣ 📜repoStrategy.ts
+┃ ┃ ┣ 📜repoTicker.ts
+┃ ┃ ┣ 📜repoTimestamp.ts
+┃ ┃ ┣ 📜repoTrade.ts
+┃ ┃ ┗ 📜repoTrailingStop.ts
 ┃ ┣ 📂routes
-┃ ┃ ┣ 📜authRoutes.ts
-┃ ┃ ┣ 📜balanceRoutes.ts
-┃ ┃ ┣ 📜cmcRoutes.ts
-┃ ┃ ┣ 📜converterRoutes.ts
-┃ ┃ ┣ 📜index.ts
-┃ ┃ ┣ 📜machiRoutes.ts
-┃ ┃ ┣ 📜marketRoutes.ts
-┃ ┃ ┣ 📜orderRoutes.ts
-┃ ┃ ┣ 📜strategyRoutes.ts
-┃ ┃ ┣ 📜tickerRoutes.ts
-┃ ┃ ┣ 📜timestampRoutes.ts
-┃ ┃ ┗ 📜tradeRoutes.ts
+┃ ┃ ┣ 📜routeAuth.ts
+┃ ┃ ┣ 📜routeBalance.ts
+┃ ┃ ┣ 📜routeCmc.ts
+┃ ┃ ┣ 📜routeConverter.ts
+┃ ┃ ┣ 📜routeMachi.ts
+┃ ┃ ┣ 📜routeMarket.ts
+┃ ┃ ┣ 📜routeOrder.ts
+┃ ┃ ┣ 📜routeStrategy.ts
+┃ ┃ ┣ 📜routeTicker.ts
+┃ ┃ ┣ 📜routeTimestamp.ts
+┃ ┃ ┗ 📜routeTrade.ts
 ┃ ┣ 📂services
 ┃ ┃ ┣ 📂metrics
 ┃ ┃ ┃ ┣ 📜cmc.ts

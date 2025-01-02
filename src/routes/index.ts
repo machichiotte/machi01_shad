@@ -5,7 +5,7 @@ import converterRoutes from './routeConverter';
 import authRoutes from './routeAuth';
 import balanceRoutes from './routeBalance';
 import cmcRoutes from './routeCmc';
-import strategyRoutes from './routeStrat';
+import strategyRoutes from './routeStrategy';
 import orderRoutes from './routeOrder';
 import marketRoutes from './routeMarket';
 import tradeRoutes from './routeTrade';

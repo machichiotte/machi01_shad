@@ -1,4 +1,4 @@
-// src/repo/cmcRepository.ts
+// src/repo/repoCmc.ts
 import { DatabaseService } from '@src/services/api/database/databaseService';
 import { MappedCmc } from '@typ/cmc';
 import { config } from '@config/index';

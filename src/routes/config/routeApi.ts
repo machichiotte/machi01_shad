@@ -1,6 +1,6 @@
-// src/routes/config/apiRoutes.ts
+// src/routes/config/routeApi.ts
 import express from 'express'
-import { getApiConfig, updateApiConfig, updateApiKey } from '@src/ctrl/config/apiConfigController'
+import { getApiConfig, updateApiConfig, updateApiKey } from '@src/ctrl/config/ctrlConfigApi'
 
 const router = express.Router()
 
@@ -8,4 +8,4 @@ router.get('/get', getApiConfig)
 router.post('/update', updateApiConfig)
 router.post('/update/key', updateApiKey)
 
-export default router
+export default router 
