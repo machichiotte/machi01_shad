@@ -1,4 +1,4 @@
-// src/controllers/tickerController.ts
+// src/ctrl/tickerController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { TickerService } from '@services/api/platform/tickerService'

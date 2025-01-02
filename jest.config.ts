@@ -11,8 +11,8 @@ const config: Config = {
   moduleNameMapper: {
     "^@src/(.*)$": "<rootDir>/src/$1", // Alias pour les chemins @src
     "^@config/(.*)$": "<rootDir>/config/$1", // Alias pour @config
-    "^@controllers/(.*)$": "<rootDir>/src/controllers/$1", // Alias pour @controllers
-    "^@repositories/(.*)$": "<rootDir>/src/repositories/$1", // Alias pour @repositories
+    "^@ctrl/(.*)$": "<rootDir>/src/ctrl/$1", // Alias pour @ctrl
+    "^@repo/(.*)$": "<rootDir>/src/repo/$1", // Alias pour @repo
     "^@routes/(.*)$": "<rootDir>/src/routes/$1", // Alias pour @routes
     "^@services/(.*)$": "<rootDir>/src/services/$1", // Alias pour @services
     "^@typ/(.*)$": "<rootDir>/src/types/$1", // Alias pour @types

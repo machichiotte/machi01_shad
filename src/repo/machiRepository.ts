@@ -1,4 +1,4 @@
-// src/repositories/machiRepository.ts
+// src/repo/machiRepository.ts
 import { DatabaseService } from '@src/services/api/database/databaseService';
 import { config } from '@config/index';
 import { Asset } from '@typ/metrics';

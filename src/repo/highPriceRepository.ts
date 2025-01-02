@@ -1,4 +1,4 @@
-// src/repositories/highPriceRepository.ts
+// src/repo/highPriceRepository.ts
 import { HighestPrices } from '@typ/database';
 import { config } from '@config/index';
 import { mongodbOperations } from '@src/services/api/database/mongodbOperationsService';

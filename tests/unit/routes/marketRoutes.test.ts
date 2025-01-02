@@ -1,10 +1,10 @@
 import express from 'express';
 import request from 'supertest';
 import marketRoutes from '../../../src/routes/marketRoutes';
-import * as marketController from '../../../src/controllers/marketController';
+import * as marketController from '../../../src/ctrl/marketController';
 
 // Mock du contrôleur Market
-jest.mock('../../../src/controllers/marketController');
+jest.mock('../../../src/ctrl/marketController');
 
 describe('marketRoutes', () => {
     let app: express.Application;

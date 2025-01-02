@@ -222,7 +222,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 ┃ ┃ ┗ 📜db_machi_shad.collection_user.json
 ┃ ┗ 📜jsonboubou.json
 ┣ 📂src
-┃ ┣ 📂controllers
+┃ ┣ 📂ctrl
 ┃ ┃ ┣ 📜authController.ts
 ┃ ┃ ┣ 📜balanceController.ts
 ┃ ┃ ┣ 📜cmcController.ts
@@ -237,7 +237,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 ┃ ┃ ┗ 📜tradeController.ts
 ┃ ┣ 📂middlewares
 ┃ ┃ ┗ 📜fileUploadMiddleware.ts
-┃ ┣ 📂repositories
+┃ ┣ 📂repo
 ┃ ┃ ┣ 📜authRepository.ts
 ┃ ┃ ┣ 📜balanceRepository.ts
 ┃ ┃ ┣ 📜cmcRepository.ts
@@ -334,7 +334,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 ┃ ┗ 📜server.ts
 ┣ 📂tests
 ┃ ┗ 📂unit
-┃ ┣ 📂controllers
+┃ ┣ 📂ctrl
 ┃ ┃ ┣ 📜authController.test.ts
 ┃ ┃ ┣ 📜balanceController.test.ts
 ┃ ┃ ┣ 📜cmcController.test.ts

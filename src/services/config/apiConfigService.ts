@@ -1,12 +1,16 @@
 // src/services/apiConfigService.ts
-import { ApiConfigRepository } from '@repositories/config/apiConfigRepository';
+import { ApiConfigRepository } from '@repo/config/apiConfigRepository';
 import { Api } from '@config/types';
 
 export class ApiConfigService {
 
   static async getApiConfig(): Promise<Api> {
-    console.log('Fetching API config...');
     const result = await ApiConfigRepository.fetchApiConfig();
+    return result;
+  }
+
+  static async getDecryptedApiConfig(): Promise<Api> {
+    const result = await ApiConfigRepository.fetchDecryptedApiConfig();
     return result;
   }
 

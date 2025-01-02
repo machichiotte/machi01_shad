@@ -1,4 +1,4 @@
-// src/constants/collection.ts
+// src/constants/collection.ts 
 export const CMC = 'cmc';
 export const MARKET = 'market';
 export const MARKETS = 'markets';

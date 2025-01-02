@@ -1,4 +1,4 @@
-// src/controllers/strategyController.ts
+// src/ctrl/strategyController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { StrategyService } from '@src/services/api/database/strategyService'

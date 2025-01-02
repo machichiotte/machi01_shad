@@ -1,7 +1,7 @@
 // src/services/marketService.ts
 import { CcxtService } from '@services/api/platform/ccxtService';
 import { MappingService } from '@src/services/api/platform/platformMapping';
-import { MarketRepository } from '@repositories/marketRepository';
+import { MarketRepository } from '@repo/marketRepository';
 import { MappedMarket } from '@typ/market';
 import { PLATFORM } from '@typ/platform';
 import { handleServiceError } from '@utils/errorUtil';

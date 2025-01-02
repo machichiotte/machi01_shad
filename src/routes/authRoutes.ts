@@ -1,6 +1,6 @@
 // src/routes/authRoutes.ts
 import express from 'express'
-import { loginUser, registerUser } from '@controllers/authController'
+import { loginUser, registerUser } from '@ctrl/authController'
 
 const router = express.Router()
 

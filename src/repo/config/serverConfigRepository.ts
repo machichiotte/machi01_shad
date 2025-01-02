@@ -1,4 +1,4 @@
-// src/repositories/serverConfigRepository.ts
+// src/repo/serverConfigRepository.ts
 import { config } from '@config/index'
 import { Server } from '@config/types'
 import { DatabaseService } from '@services/api/database/databaseService'

@@ -1,4 +1,4 @@
-// src/repositories/balanceRepository.ts
+// src/repo/balanceRepository.ts
 import { MappedBalance } from '@typ/balance';
 import { config } from '@config/index';
 import { PLATFORM } from '@typ/platform'

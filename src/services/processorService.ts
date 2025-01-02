@@ -17,7 +17,7 @@ import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
 import { MappedOrder } from '@typ/order'
 import { PLATFORM } from '@typ/platform'
-import { OrderBalanceRepository } from '@repositories/orderBalanceRepository'
+import { OrderBalanceRepository } from '@repo/orderBalanceRepository'
 import { Asset } from '@typ/metrics'
 import { config } from '@config/index';
 import { DatabaseService } from './api/database/databaseService'

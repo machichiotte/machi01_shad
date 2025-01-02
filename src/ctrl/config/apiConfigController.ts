@@ -1,6 +1,6 @@
-// src/controllers/config/apiConfigController.ts
+// src/ctrl/config/apiConfigController.ts
 import { Request, Response } from 'express';
-import { ApiConfigRepository } from '@repositories/config/apiConfigRepository';
+import { ApiConfigRepository } from '@repo/config/apiConfigRepository';
 import { Api } from '@config/types';
 import { handleControllerError } from '@src/utils/errorUtil';
 
@@ -32,7 +32,7 @@ export const updateApiConfig = async (req: Request, res: Response): Promise<void
       message: 'API configuration updated successfully',
     });
   } catch (error) {
-    handleControllerError(res, error, updateApiConfig.name);
+    handleControllerError(res, error, updateApiConfig.name); 
   }
 };
 
@@ -40,13 +40,6 @@ export const updateApiKey = async (req: Request, res: Response): Promise<void> =
   try {
     const { type, platform, apiKey, secretKey, passphrase } = req.body;
 
-    console.log("type", type)
-    console.log("platform", platform)
-    console.log("apiKey", apiKey)
-    console.log("secretKey", secretKey)
-    console.log("passphrase", passphrase)
-
-    console.log('updateApiKey:', type, platform, apiKey, secretKey, passphrase);
     // Validation des données entrantes
     if (!type || !apiKey) {
       res.status(400).json({
@@ -58,11 +51,11 @@ export const updateApiKey = async (req: Request, res: Response): Promise<void> =
 
     // Cas CMC
     if (type === 'cmc') {
-      await ApiConfigRepository.encryptApiKeyCmc(apiKey);
+      await ApiConfigRepository.encryptConfigCmc(apiKey);
     } 
     // Cas Platform
     else if (type === 'platform' && platform) {
-      await ApiConfigRepository.encryptApiKeyPlatform(platform, apiKey, secretKey, passphrase);
+      await ApiConfigRepository.encryptConfigPlatform(platform, apiKey, secretKey, passphrase);
     } else {
       res.status(400).json({
         status: 'error',

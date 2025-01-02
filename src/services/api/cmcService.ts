@@ -1,5 +1,5 @@
 // src/services/cmcService.ts
-import { CmcRepository } from '@repositories/cmcRepository'
+import { CmcRepository } from '@repo/cmcRepository'
 import { handleServiceError } from '@utils/errorUtil'
 import { MappedCmc, FetchResponse } from '@typ/cmc'
 import { config } from '@config/index'
@@ -13,10 +13,9 @@ export class CmcService {
    * Récupère les données CMC actuelles via l'API CoinMarketCap.
    */
   public static async fetchCurrentCmc(): Promise<MappedCmc[]> {
-    console.log('Fetching current CMC data...')
+    console.info('Fetching current CMC data...')
     let start = this.baseStart
     const allData: MappedCmc[] = []
-    console.log('API key:', config.apiConfig.cmc.apiKey)
     if (config.apiConfig.cmc.apiKey) {
       try {
         while (true) {
@@ -31,14 +30,11 @@ export class CmcService {
 
           // Log the raw response for debugging
           const rawResponse = await response.text()
-          console.log('Raw response from CoinMarketCap API:', rawResponse)
 
           if (!response.ok)
             throw new Error(
               `Échec de la récupération des données CoinMarketCap: ${response.statusText}`
             )
-
-          console.log('Raw response before parsing:', rawResponse)
 
           const { data, status }: FetchResponse = JSON.parse(rawResponse)
           if (data.length === 0) break

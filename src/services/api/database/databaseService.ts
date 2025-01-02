@@ -8,11 +8,11 @@ import { mongodbOperations } from '@src/services/api/database/mongodbOperationsS
 import { CacheService } from '@services/cacheService'
 import { InsertData } from '@typ/trade'
 import { PLATFORM } from '@typ/platform'
-import { MappedData } from '@typ/database' 
+import { MappedData } from '@typ/database'
 import { CacheItem } from '@typ/mongodb'
 
 import { config } from '@config/index'
- 
+
 export class DatabaseService {
   static async insertData(
     collectionName: string,
@@ -193,16 +193,15 @@ export class DatabaseService {
     tsCategory: string,
     platform?: PLATFORM
   ): Promise<void> {
-    const startTime = Date.now()
-
     try {
       await DatabaseService.deleteAndInsertData(collectionName, data, platform)
       await TimestampService.saveTimestampToDatabase(tsCategory, platform)
+      /*
+      const startTime = Date.now()
       const duration = Date.now() - startTime
-
       console.info(
         `Save Bdd - ${collectionName} for ${platform} in ${duration}ms.`
-      )
+      )*/
     } catch (error) {
       handleServiceError(
         error,
@@ -219,7 +218,8 @@ export class DatabaseService {
         console.info('offline')
         return getMockedData(collectionName)
       } else {
-        const data = await DatabaseService.getCacheOrFetchCollection(collectionName)
+        const data =
+          await DatabaseService.getCacheOrFetchCollection(collectionName)
         return Array.isArray(data) ? (data as MappedData[]) : []
       }
     } catch (error) {

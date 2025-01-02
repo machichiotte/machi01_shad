@@ -32,8 +32,8 @@
     "paths": {
       "@config/*": ["config/*"],
       "@src/*": ["src/*"],
-      "@controllers/*": ["src/controllers/*"],
-      "@repositories/*": ["src/repositories/*"],
+      "@ctrl/*": ["src/ctrl/*"],
+      "@repo/*": ["src/repo/*"],
       "@routes/*": ["src/routes/*"],
       "@services/*": ["src/services/*"],
       "@typ/*": ["src/types/*"],

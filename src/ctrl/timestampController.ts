@@ -1,8 +1,8 @@
-// src/controllers/timestampController.ts
+// src/ctrl/timestampController.ts
 import { TimestampService } from '@src/services/api/database/timestampService'
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { TimestampRepository } from '@repositories/timestampRepository'
+import { TimestampRepository } from '@repo/timestampRepository'
 
 /**
  * Récupère l'enregistrement de dernière mise à jour unique pour une plateforme et un type donnés.

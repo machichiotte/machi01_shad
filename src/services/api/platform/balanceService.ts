@@ -1,5 +1,5 @@
 // src/services/balanceService.ts
-import { BalanceRepository } from '@repositories/balanceRepository';
+import { BalanceRepository } from '@repo/balanceRepository';
 import { CcxtService } from '@services/api/platform/ccxtService';
 import { MappingService } from '@src/services/api/platform/platformMapping';
 import { ProcessorService } from '@services/processorService';

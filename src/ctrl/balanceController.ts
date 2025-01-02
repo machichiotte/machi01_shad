@@ -1,9 +1,9 @@
-// src/controllers/balanceController.ts
+// src/ctrl/balanceController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { BalanceService } from '@services/api/platform/balanceService'
 import { PLATFORM, PLATFORMS } from '@typ/platform'
-/**
+/** 
  * Récupère le dernier solde enregistré dans la base de données.
  */
 async function getBalances(req: Request, res: Response): Promise<void> {

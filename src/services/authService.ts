@@ -1,7 +1,7 @@
 // src/services/authService.ts
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
-import { AuthRepository } from '@repositories/authRepository';
+import { AuthRepository } from '@repo/authRepository';
 import { handleServiceError } from '@utils/errorUtil';
 import { User } from '@typ/auth';
 import { config } from '@config/index';

@@ -15,15 +15,15 @@ The backend project consists of the following key directories and files:
 ### 2. Source Code
 - **src/**: Contains the main source code with various subdirectories:
   - **constants/**: Constant values used throughout the application.
-  - **controllers/**: Manages incoming requests and responses.
+  - **ctrl/**: Manages incoming requests and responses.
   - **middlewares/**: Middleware functions for request processing.
-  - **repositories/**: Data access and manipulation.
+  - **repo/**: Data access and manipulation.
   - **routes/**: Route definitions for API endpoints.
   - **services/**: Business logic implementation.
   - **types/**: Type definitions for TypeScript.
   - **utils/**: Utility functions and classes.
 
-### 3. Repositories
+### 3. repo
 - **authRepository.ts**: User authentication data access.
 - **balanceRepository.ts**: User balance operations.
 - **cmcRepository.ts**: CoinMarketCap data access.

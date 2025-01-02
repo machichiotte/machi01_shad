@@ -1,4 +1,4 @@
-// src/repositories/tickerRepository.ts
+// src/repo/tickerRepository.ts
 import { DatabaseService } from '@src/services/api/database/databaseService'
 import { MappedTicker } from '@typ/ticker'
 import { config } from '@config/index'

@@ -3,7 +3,7 @@ import express from 'express'
 import {
   getOrders,
   updateOrders,
-} from '@controllers/orderBalanceController'
+} from '@ctrl/orderBalanceController'
 
 import {
   deleteOrder,
@@ -14,7 +14,7 @@ import {
   cancelAllOrders,
   cancelAllSellOrders,
   cancelAllBuyOrders
-} from '@controllers/orderMarketController'
+} from '@ctrl/orderMarketController'
 
 const router = express.Router()
 

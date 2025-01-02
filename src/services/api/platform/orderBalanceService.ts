@@ -1,5 +1,5 @@
 // src/services/orderBalanceService.ts
-import { OrderBalanceRepository } from '@repositories/orderBalanceRepository';
+import { OrderBalanceRepository } from '@repo/orderBalanceRepository';
 import { CcxtService } from '@services/api/platform/ccxtService';
 import { MappingService } from '@src/services/api/platform/platformMapping';
 import { handleServiceError } from '@utils/errorUtil';

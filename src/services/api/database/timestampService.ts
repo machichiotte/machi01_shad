@@ -1,5 +1,5 @@
 // src/services/timestampService.ts
-import { TimestampRepository } from '@repositories/timestampRepository';
+import { TimestampRepository } from '@repo/timestampRepository';
 import { TimestampData } from '@typ/timestamp';
 import { handleServiceError } from '@utils/errorUtil';
 

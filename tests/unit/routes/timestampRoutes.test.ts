@@ -1,10 +1,10 @@
 import express from 'express';
 import request from 'supertest';
 import timestampRoutes from '../../../src/routes/timestampRoutes';
-import * as timestampController from '../../../src/controllers/timestampController';
+import * as timestampController from '../../../src/ctrl/timestampController';
 
 // Mock du contrôleur Timestamp
-jest.mock('../../../src/controllers/timestampController');
+jest.mock('../../../src/ctrl/timestampController');
 
 describe('Timestamp Routes', () => {
   let app: express.Application;

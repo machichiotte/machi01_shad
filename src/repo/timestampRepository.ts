@@ -1,4 +1,4 @@
-// src/repositories/timestampRepository.ts
+// src/repo/timestampRepository.ts
 import { DatabaseService } from '@src/services/api/database/databaseService';
 import { TimestampData } from '@typ/timestamp';
 import { config } from '@config/index';

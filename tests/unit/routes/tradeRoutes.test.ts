@@ -1,10 +1,10 @@
 import express from 'express';
 import request from 'supertest';
 import tradeRoutes from '../../../src/routes/tradeRoutes';
-import * as tradeController from '../../../src/controllers/tradeController';
+import * as tradeController from '../../../src/ctrl/tradeController';
 
 // Mock du contrôleur Trade
-jest.mock('../../../src/controllers/tradeController');
+jest.mock('../../../src/ctrl/tradeController');
 
 describe('tradeRoutes', () => {
   let app: express.Application;

@@ -1,9 +1,9 @@
 import request from 'supertest';
 import express from 'express';
 import authRoutes from '../../../src/routes/authRoutes';
-import * as authController from '../../../src/controllers/authController';
+import * as authController from '../../../src/ctrl/authController';
 
-jest.mock('../../../src/controllers/authController');
+jest.mock('../../../src/ctrl/authController');
 
 describe('authRoutes', () => {
     let app: express.Application;

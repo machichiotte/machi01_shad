@@ -1,4 +1,4 @@
-// src/controllers/tradeController.ts
+// src/ctrl/tradeController.ts
 import { Request, Response } from 'express'
 import { TradeService } from '@services/api/platform/tradeService'
 import { handleControllerError } from '@utils/errorUtil'

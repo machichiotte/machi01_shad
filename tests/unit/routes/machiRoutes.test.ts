@@ -1,10 +1,10 @@
 import express from 'express';
 import request from 'supertest';
 import machiRoutes from '../../../src/routes/machiRoutes';
-import * as machiController from '../../../src/controllers/machiController';
+import * as machiController from '../../../src/ctrl/machiController';
 
 // Mock du contrôleur Machi
-jest.mock('../../../src/controllers/machiController');
+jest.mock('../../../src/ctrl/machiController');
 
 describe('machiRoutes', () => {
     let app: express.Application;

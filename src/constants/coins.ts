@@ -1,4 +1,4 @@
-// src/constants/coins.ts
+// src/constants/coins.ts  
 export const STABLECOINS: string[] = ['USDT', 'USDC', 'BUSD'];
 //export const STABLECOINS: string[] = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'PAX', 'GUSD', 'HUSD', 'USDN'];
 export const MAJOR_CRYPTO_PAIRS: string[] = ['BTC', 'ETH'];

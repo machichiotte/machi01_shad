@@ -1,4 +1,4 @@
-// src/controllers/cmcController.ts
+// src/ctrl/cmcController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { CmcService } from '@services/api/cmcService'
@@ -9,7 +9,7 @@ import { CmcService } from '@services/api/cmcService'
 async function getCmc(req: Request, res: Response): Promise<void> {
   try {
     const data = await CmcService.fetchDatabaseCmc()
-    res.status(200).json({
+    res.status(200).json({ 
       status: "success",
       message: 'Données CMC récupérées avec succès',
       data

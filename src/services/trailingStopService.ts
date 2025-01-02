@@ -1,6 +1,6 @@
 import { MappedBalance } from '@typ/balance';
 import { Asset, HighestPrice, UpdatedOrder } from '@typ/trailingStop';
-import { TrailingStopRepository } from '@repositories/trailingStopRepository';
+import { TrailingStopRepository } from '@repo/trailingStopRepository';
 import { handleServiceError } from '@utils/errorUtil';
 import { PLATFORM } from '@typ/platform';
 

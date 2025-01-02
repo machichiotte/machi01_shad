@@ -1,5 +1,5 @@
 // src/services/tradeService.ts
-import { TradeRepository } from '@repositories/tradeRepository'
+import { TradeRepository } from '@repo/tradeRepository'
 import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ/trade'
 import { PLATFORM, PlatformTrade } from '@typ/platform'
 import { TimestampService } from '@src/services/api/database/timestampService'

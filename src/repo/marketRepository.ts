@@ -1,4 +1,4 @@
-// src/repositories/marketRepository.ts
+// src/repo/marketRepository.ts
 import { DatabaseService } from '@src/services/api/database/databaseService';
 import { MappedMarket } from '@typ/market';
 import { config } from '@config/index';

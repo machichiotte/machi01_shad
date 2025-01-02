@@ -1,9 +1,9 @@
 import express from 'express';
 import request from 'supertest';
 import tickerRoutes from '../../../src/routes/tickerRoutes';
-import * as tickerController from '../../../src/controllers/tickerController';
+import * as tickerController from '../../../src/ctrl/tickerController';
 
-jest.mock('@src/controllers/tickerController');
+jest.mock('@src/ctrl/tickerController');
 
 describe('Ticker Routes', () => {
     let app: express.Application;

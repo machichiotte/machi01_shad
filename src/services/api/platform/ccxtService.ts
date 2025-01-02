@@ -5,6 +5,7 @@ import { PLATFORM, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTick
 import { handleServiceError } from '@utils/errorUtil';
 import { checkApiKeys } from '@utils/platformUtil';
 import { ObjectId } from 'mongodb';
+import { ApiConfigRepository } from '@src/repo/config/apiConfigRepository';
 
 export class CcxtService {
 
@@ -13,9 +14,11 @@ export class CcxtService {
             throw new Error(`API keys missing for platform: ${platform}`);
         }
 
-        const platformConfig = config.apiConfig.platform[platform];
-        const { apiKey, secretKey } = platformConfig
-        const passphrase = 'passphrase' in platformConfig ? platformConfig.passphrase : undefined;
+        const encryptedPlatformConfig = config.apiConfig.platform[platform];
+
+        const decryptedPlatformConfig = ApiConfigRepository.decryptConfigPlatform(encryptedPlatformConfig)
+        const { apiKey, secretKey } = decryptedPlatformConfig
+        const passphrase = 'passphrase' in decryptedPlatformConfig ? decryptedPlatformConfig.passphrase : undefined;
 
         try {
             // Check if the CCXT class exists
@@ -58,8 +61,6 @@ export class CcxtService {
         console.info(`[${platform}] Fetched ${trades.length} trades for ${symbol || 'all symbols'}`);
         return trades
     }
-
-
 
     // orders
     // fetch

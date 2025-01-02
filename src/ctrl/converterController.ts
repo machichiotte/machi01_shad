@@ -1,4 +1,4 @@
-// src/controllers/converterController.ts
+// src/ctrl/converterController.ts
 import Papa from 'papaparse'
 import { Request, Response } from 'express'
 import { convertToJSON, TradeModel } from '@services/converterService'

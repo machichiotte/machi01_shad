@@ -1,10 +1,10 @@
-// src/controllers/authController.ts
+// src/ctrl/authController.ts
 import { Request, Response } from 'express'
 import { AuthService } from '@services/authService'
 import { handleControllerError } from '@utils/errorUtil'
 
 /**
- * Registers a new user.
+ * Registers a new user. 
  */
 async function registerUser(req: Request, res: Response): Promise<void> {
   try {

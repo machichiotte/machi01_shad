@@ -3,7 +3,7 @@ import express from 'express'
 import {
   getBalances,
   updateCurrentBalance
-} from '@controllers/balanceController'
+} from '@ctrl/balanceController'
 
 const router = express.Router()
 

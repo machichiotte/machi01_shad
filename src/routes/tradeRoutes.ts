@@ -5,7 +5,7 @@ import {
   insertNewTrades,
   updateTradesByPlatform,
   fetchLastTrades
-} from '@controllers/tradeController'
+} from '@ctrl/tradeController'
 
 const router = express.Router()
 

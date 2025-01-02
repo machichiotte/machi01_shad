@@ -1,7 +1,7 @@
 // src/services/strategyService.ts
 import { MappedStrat } from '@typ/strat';
 import { handleServiceError } from '@utils/errorUtil';
-import { StrategyRepository } from '@repositories/strategyRepository';
+import { StrategyRepository } from '@repo/strategyRepository';
 
 export class StrategyService {
   /**

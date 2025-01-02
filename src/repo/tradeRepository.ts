@@ -1,4 +1,4 @@
-// src/repositories/tradeRepository.ts
+// src/repo/tradeRepository.ts
 import { DatabaseService } from '@src/services/api/database/databaseService'
 import { MappedTrade } from '@typ/trade'
 import { config } from '@config/index';

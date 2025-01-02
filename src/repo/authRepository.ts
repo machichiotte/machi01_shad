@@ -1,4 +1,4 @@
-// src/repositories/userRepository.ts
+// src/repo/userRepository.ts
 import { DatabaseService } from '@src/services/api/database/databaseService';
 import { config } from '@config/index';
 import { User } from '@typ/auth';

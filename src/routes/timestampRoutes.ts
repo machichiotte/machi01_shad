@@ -4,7 +4,7 @@ import {
   getTimestamp,
   getUniqueTimestamp,
   updateTimestampByType
-} from '@controllers/timestampController'
+} from '@ctrl/timestampController'
 
 const router = express.Router()
 

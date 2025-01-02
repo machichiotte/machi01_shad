@@ -1,5 +1,5 @@
 // src/services/tickerService.ts
-import { TickerRepository } from '@repositories/tickerRepository'
+import { TickerRepository } from '@repo/tickerRepository'
 import { CcxtService } from '@services/api/platform/ccxtService'
 import { MappingService } from '@src/services/api/platform/platformMapping'
 import { handleServiceError } from '@utils/errorUtil'

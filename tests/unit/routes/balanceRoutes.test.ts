@@ -1,10 +1,10 @@
 import express from 'express';
 import request from 'supertest';
 import balanceRoutes from '../../../src/routes/balanceRoutes';
-import * as balanceController from '../../../src/controllers/balanceController';
+import * as balanceController from '../../../src/ctrl/balanceController';
 
 // Mock du contrôleur de balance
-jest.mock('../../../src/controllers/balanceController');
+jest.mock('../../../src/ctrl/balanceController');
 
 describe('balanceRoutes', () => {
     let app: express.Application;
