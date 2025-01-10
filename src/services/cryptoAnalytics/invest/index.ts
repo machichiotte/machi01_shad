@@ -6,7 +6,7 @@ import { PLATFORM } from '@typ/platform'
 import {
   calculateAmountsAndPricesForShad,
   calculateRecupsShad,
-  RecupsShad
+  RecupsShad 
 } from './shad'
 import { AmountsAndPrices } from '@typ/cryptoAnalytics'
 import { PLATFORM_FEES } from '@src/constants/platform'
@@ -22,7 +22,7 @@ export interface Recup {
   stratTps: StratTps
 }
 
-type StratTps = RecupsShad | { buySignals: number[], sellSignals: number[], rsi: number } | { upper: number[], lower: number[], middle: number[] };
+type StratTps = RecupsShad
 
 /**
  * Calculates various recovery amounts and strategy parameters
