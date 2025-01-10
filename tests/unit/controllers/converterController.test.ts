@@ -4,7 +4,7 @@ import * as ConverterService from '../../../src/services/serviceConverter';
 import Papa from 'papaparse';
 import { handleControllerError } from '../../../src/utils/errorUtil';
 
-jest.mock('../../../src/services/converterService');
+jest.mock('../../../src/services/serviceConverter');
 jest.mock('papaparse');
 jest.mock('../../../src/utils/errorUtil');
 

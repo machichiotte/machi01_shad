@@ -4,7 +4,7 @@ import marketRoutes from '../../../src/routes/routeMarket';
 import * as marketController from '../../../src/ctrl/ctrlMarket';
 
 // Mock du contrôleur Market
-jest.mock('../../../src/ctrl/marketController');
+jest.mock('../../../src/ctrl/ctrlMarket');
 
 describe('marketRoutes', () => {
     let app: express.Application;

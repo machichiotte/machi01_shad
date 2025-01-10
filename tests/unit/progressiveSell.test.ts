@@ -1,4 +1,4 @@
-import { calculateProgressiveSell } from '../src/services/cryptoAnalytics/invest/progressiveSell';
+import { calculateProgressiveSell } from '../../src/services/cryptoAnalytics/invest/progressiveSell';
 
 describe('calculateProgressiveSell', () => {
     it('should return correct amounts to sell based on percentage', () => {

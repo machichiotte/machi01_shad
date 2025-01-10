@@ -3,7 +3,7 @@ import express from 'express';
 import authRoutes from '../../../src/routes/routeAuth';
 import * as authController from '../../../src/ctrl/ctrlAuth';
 
-jest.mock('../../../src/ctrl/authController');
+jest.mock('../../../src/ctrl/ctrlAuth');
 
 describe('authRoutes', () => {
     let app: express.Application;

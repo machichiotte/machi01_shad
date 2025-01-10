@@ -1,4 +1,4 @@
-import { calculateTieredSell } from '../src/services/cryptoAnalytics/invest/tieredSell';
+import { calculateTieredSell } from '../../src/services/cryptoAnalytics/invest/tieredSell';
 
 describe('calculateTieredSell', () => {
     it('should return correct amounts to sell based on tiered amounts', () => {

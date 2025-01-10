@@ -1,4 +1,4 @@
-import { calculateThresholdSell } from '../src/services/cryptoAnalytics/invest/thresholdSell';
+import { calculateThresholdSell } from '../../src/services/cryptoAnalytics/invest/thresholdSell';
 
 describe('calculateThresholdSell', () => {
     it('should return total amount if current price meets or exceeds threshold', () => {

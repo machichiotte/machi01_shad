@@ -3,7 +3,7 @@ import request from 'supertest';
 import tickerRoutes from '../../../src/routes/routeTicker';
 import * as tickerController from '../../../src/ctrl/ctrlTicker';
 
-jest.mock('@ctrl/tickerController');
+jest.mock('../../../src/ctrl/ctrlTicker');
 
 describe('Ticker Routes', () => {
     let app: express.Application;

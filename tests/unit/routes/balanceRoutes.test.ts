@@ -4,7 +4,7 @@ import balanceRoutes from '../../../src/routes/routeBalance';
 import * as balanceController from '../../../src/ctrl/ctrlBalance';
 
 // Mock du contrôleur de balance
-jest.mock('../../../src/ctrl/balanceController');
+jest.mock('../../../src/ctrl/ctrlBalance');
 
 describe('balanceRoutes', () => {
     let app: express.Application;

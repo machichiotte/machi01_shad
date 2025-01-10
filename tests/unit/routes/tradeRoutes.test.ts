@@ -4,7 +4,7 @@ import tradeRoutes from '../../../src/routes/routeTrade';
 import * as tradeController from '../../../src/ctrl/ctrlTrade';
 
 // Mock du contrôleur Trade
-jest.mock('../../../src/ctrl/tradeController');
+jest.mock('../../../src/ctrl/ctrlTrade');
 
 describe('tradeRoutes', () => {
   let app: express.Application;

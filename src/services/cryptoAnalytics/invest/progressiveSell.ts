@@ -7,12 +7,10 @@
  */
 export function calculateProgressiveSell(totalAmount: number, sellPercentage: number, steps: number): number[] {
     const sellAmounts: number[] = [];
-    let remainingAmount = totalAmount;
+    const fixedAmount = totalAmount * (sellPercentage / 100); // Calculate fixed amount based on totalAmount and sellPercentage
 
     for (let i = 0; i < steps; i++) {
-        const amountToSell = remainingAmount * (sellPercentage / 100);
-        sellAmounts.push(amountToSell);
-        remainingAmount -= amountToSell;
+        sellAmounts.push(fixedAmount); // Push the fixed amount for each step
     }
 
     return sellAmounts;

@@ -4,7 +4,7 @@ import cmcRoutes from '../../../src/routes/routeCmc';
 import * as cmcController from '../../../src/ctrl/ctrlCmc';
 
 // Mock du contrôleur CMC
-jest.mock('../../../src/ctrl/cmcController');
+jest.mock('../../../src/ctrl/ctrlCmc');
 
 describe('CMC Routes', () => {
     let app: express.Application;

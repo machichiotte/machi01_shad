@@ -4,7 +4,7 @@ import timestampRoutes from '../../../src/routes/routeTimestamp';
 import * as timestampController from '../../../src/ctrl/ctrlTimestamp';
 
 // Mock du contrôleur Timestamp
-jest.mock('../../../src/ctrl/timestampController');
+jest.mock('../../../src/ctrl/ctrlTimestamp');
 
 describe('Timestamp Routes', () => {
   let app: express.Application;

@@ -1,4 +1,4 @@
-import { calculateBollingerBands } from './bollingerBands';
+import { calculateBollingerBands } from '../../src/services/cryptoAnalytics/indicator/bollingerBands';
 
 test('calculates Bollinger Bands', () => {
     const prices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

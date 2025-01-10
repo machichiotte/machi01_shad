@@ -4,7 +4,7 @@ import machiRoutes from '../../../src/routes/routeMachi';
 import * as machiController from '../../../src/ctrl/ctrlMachi';
 
 // Mock du contrôleur Machi
-jest.mock('../../../src/ctrl/machiController');
+jest.mock('../../../src/ctrl/ctrlMachi');
 
 describe('machiRoutes', () => {
     let app: express.Application;

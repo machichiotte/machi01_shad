@@ -4,7 +4,7 @@ import strategyRoutes from '../../../src/routes/routeStrategy';
 import * as strategyController from '../../../src/ctrl/ctrlStrategy';
 
 // Mock du contrôleur Strategy
-jest.mock('../../../src/ctrl/strategyController');
+jest.mock('../../../src/ctrl/ctrlStrategy');
 
 describe('strategyRoutes', () => {
     let app: express.Application;

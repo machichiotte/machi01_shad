@@ -5,8 +5,8 @@ import * as orderBalanceController from '../../../src/ctrl/ctrlOrderBalance';
 import * as orderMarketController from '../../../src/ctrl/ctrlOrderMarket';
 
 // Mock des contrôleurs
-jest.mock('../../../src/ctrl/orderBalanceController');
-jest.mock('../../../src/ctrl/orderMarketController');
+jest.mock('../../../src/ctrl/ctrlOrderBalance');
+jest.mock('../../../src/ctrl/ctrlOrderMarket');
 
 describe('orderRoutes', () => {
   let app: express.Application;
