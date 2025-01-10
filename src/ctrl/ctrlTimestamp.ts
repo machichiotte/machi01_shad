@@ -1,8 +1,8 @@
 // src/ctrl/timestampController.ts
-import { TimestampService } from '@src/services/api/database/timestampService'
+import { ServiceTimestamp } from '@services/api/database/serviceTimestamp'
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { RepoTimestamp } from '@src/repo/repoTimestamp'
+import { RepoTimestamp } from '@repo/repoTimestamp'
 
 /**
  * Récupère l'enregistrement de dernière mise à jour unique pour une plateforme et un type donnés.
@@ -43,7 +43,7 @@ async function getUniqueTimestamp(req: Request, res: Response): Promise<void> {
  */
 async function getTimestamp(req: Request, res: Response): Promise<void> {
   try {
-    const data = await TimestampService.fetchDatabaseTimestamp()
+    const data = await ServiceTimestamp.fetchDatabaseTimestamp()
     res.status(200).json({ status: "success", message: 'Dernières mises à jour récupérées', data })
   } catch (error) {
     handleControllerError(res, error, 'getTimestamp')
@@ -56,7 +56,7 @@ async function getTimestamp(req: Request, res: Response): Promise<void> {
 async function updateTimestampByType(req: Request, res: Response): Promise<void> {
   try {
     const { platform, type } = req.params
-    await TimestampService.saveTimestampToDatabase(type, platform)
+    await ServiceTimestamp.saveTimestampToDatabase(type, platform)
     const timestamp = new Date().toISOString()
     res.status(200).json({ status: "success", message: 'Dernière mise à jour mise à jour', data: { platform, type, timestamp } })
   } catch (error) {

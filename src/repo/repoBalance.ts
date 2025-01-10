@@ -2,7 +2,7 @@
 import { MappedBalance } from '@typ/balance';
 import { config } from '@config/index';
 import { PLATFORM } from '@typ/platform'
-import { DatabaseService } from '@src/services/api/database/databaseService';
+import { ServiceDatabase } from '@services/api/database/serviceDatabase';
 
 const COLLECTION_NAME = config.databaseConfig.collection.balance;
 const COLLECTION_CATEGORY = config.databaseConfig.category.balance;
@@ -12,7 +12,7 @@ export class RepoBalance {
      * Récupère toutes les données de solde de la base de données.
      */
     static async fetchAll(): Promise<MappedBalance[]> {
-        return await DatabaseService.getData(COLLECTION_NAME) as MappedBalance[];
+        return await ServiceDatabase.getData(COLLECTION_NAME) as MappedBalance[];
     }
 
     /**
@@ -27,6 +27,6 @@ export class RepoBalance {
      * Enregistre les données de solde dans la base de données pour une plateforme.
      */
     static async saveBalances(platform: PLATFORM, mappedData: Omit<MappedBalance, '_id'>[]): Promise<void> {
-        await DatabaseService.saveDataAndTimestampToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
+        await ServiceDatabase.saveDataAndTimestampToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
     }
 }

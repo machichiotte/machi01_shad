@@ -1,6 +1,6 @@
 // src/routes/routeStrat.ts
 import express from 'express'
-import { getStrat, updateStrat, updateStrategyById, updateStrategyByIds } from '@src/ctrl/ctrlStrategy'
+import { getStrat, updateStrat, updateStrategyById, updateStrategyByIds } from '@ctrl/ctrlStrategy'
 
 const router = express.Router()
 

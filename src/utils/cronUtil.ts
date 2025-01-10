@@ -2,9 +2,11 @@
 //import { EmailService } from './emailService'
 import { handleServiceError } from '@utils/errorUtil'
 import { config } from '@config/index';
-import { PLATFORM, PLATFORMS } from '@typ/platform'
+import { PLATFORM } from '@typ/platform'
 import { checkApiKeys } from './platformUtil';
 import { retry } from './retryUtil';
+import { PLATFORMS } from '@src/constants/platform'
+
 /**
  * Exécute une tâche cron avec gestion des erreurs et mécanisme de retry
  */

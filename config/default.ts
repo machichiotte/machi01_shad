@@ -52,6 +52,7 @@ export const DEFAULT_DATABASE_CONFIG = {
 export const DEFAULT_APICONFIG = {
   cmc: {
     url: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+    base_url_icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/',
     iv: '',
     apiKey: ''
   },

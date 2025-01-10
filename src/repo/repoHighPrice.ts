@@ -1,8 +1,8 @@
 // src/repo/repoHighPrice.ts
 import { HighestPrices } from '@typ/database';
 import { config } from '@config/index';
-import { mongodbOperations } from '@src/services/api/database/mongodbOperationsService';
-import { DatabaseService } from '@src/services/api/database/databaseService';
+import { mongodbOperations } from '@services/api/database/serviceMongodbOperations';
+import { ServiceDatabase } from '@services/api/database/serviceDatabase';
 
 const COLLECTION_NAME = config.databaseConfig.collection.highestPrice;
 
@@ -12,7 +12,7 @@ export class RepoHighPrice {
      * Fetches the highest prices from the database.
      */
     static async fetchHighestPrices(): Promise<HighestPrices[]> {
-        return await DatabaseService.getData(COLLECTION_NAME) as HighestPrices[];
+        return await ServiceDatabase.getData(COLLECTION_NAME) as HighestPrices[];
     }
 
     /**

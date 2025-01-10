@@ -1,7 +1,7 @@
 // src/ctrl/strategyController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { StrategyService } from '@src/services/api/database/strategyService'
+import { ServiceStrategy } from '@services/api/database/serviceStrategy'
 import { MappedStrat } from '@typ/strat'
 
 /**
@@ -9,7 +9,7 @@ import { MappedStrat } from '@typ/strat'
  */
 async function getStrat(req: Request, res: Response): Promise<void> {
   try {
-    const data = await StrategyService.fetchDatabaseStrategies()
+    const data = await ServiceStrategy.fetchDatabaseStrategies()
     res.status(200).json({ status: "success", message: 'Stratégies récupérées', data })
   } catch (error) {
     handleControllerError(res, error, getStrat.name)
@@ -22,7 +22,7 @@ async function getStrat(req: Request, res: Response): Promise<void> {
 async function updateStrat(req: Request, res: Response): Promise<void> {
   try {
     const strat = req.body
-    const data = await StrategyService.updateStrategies(strat)
+    const data = await ServiceStrategy.updateStrategies(strat)
     res.status(200).json({ status: "success", message: 'Stratégies mises à jour', data })
   } catch (error) {
     handleControllerError(res, error, updateStrat.name)
@@ -37,7 +37,7 @@ async function updateStrategyById(req: Request, res: Response): Promise<void> {
   //const { strategyId } = req.params
   const updatedStrategy = req.body.data as MappedStrat
   try {
-    const data = await StrategyService.updateStrategyById(updatedStrategy)
+    const data = await ServiceStrategy.updateStrategyById(updatedStrategy)
     res.json({ status: "success", message: `La strategie de ${updatedStrategy.base} a été mise à jour`, data })
   } catch (error) {
     handleControllerError(res, error, updateStrategyById.name)
@@ -53,7 +53,7 @@ async function updateStrategyByIds(req: Request, res: Response): Promise<void> {
 
   for (const strategy of updatedStrategies) {
     try {
-      const result = await StrategyService.updateStrategyById(strategy);
+      const result = await ServiceStrategy.updateStrategyById(strategy);
       results.push(result);
     } catch (error) {
       handleControllerError(res, error, updateStrategyById.name);

@@ -1,5 +1,5 @@
 // config/types.ts
-import { PLATFORM } from '@src/types/platform'
+import { PLATFORM } from '@typ//platform'
 
 export interface DatabaseCredentials {
   user: string
@@ -94,6 +94,7 @@ export type ApiPlatforms = {
 }
 export interface ApiCmc {
   apiKey: string
+  base_url_icon: string
   iv: string
   url: string
 }

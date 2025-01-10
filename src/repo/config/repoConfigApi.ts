@@ -2,7 +2,7 @@
 import { config } from '@config/index'
 import { DEFAULT_APICONFIG } from '@config/default'
 import { Api, ApiPlatform, ApiCmc } from '@config/types'
-import { DatabaseService } from '@services/api/database/databaseService'
+import { ServiceDatabase } from '@services/api/database/serviceDatabase'
 import { MappedData } from '@typ/database'
 import { PLATFORM } from '@typ/platform'
 import { EncryptionService } from '@utils/encryption'
@@ -11,11 +11,11 @@ import { randomBytes } from 'crypto'
 const COLLECTION_NAME = config.databaseConfig.collection.apiConfig
 
 export class RepoConfigApi {
-  static async fetchApiConfig(): Promise<Api> {
+  static async fetchConfig(): Promise<Api> {
     return await this.fetchOrCreateConfig()
   }
 
-  static async fetchDecryptedApiConfig(): Promise<Api> {
+  static async fetchDecryptedConfig(): Promise<Api> {
     const encryptedConfig = await this.fetchOrCreateConfig()
 
     const decryptedCmc = this.decryptConfigCmc(encryptedConfig.cmc)
@@ -32,9 +32,9 @@ export class RepoConfigApi {
   }
 
   private static async fetchOrCreateConfig(): Promise<Api> {
-    const data = (await DatabaseService.getData(COLLECTION_NAME)) as Api[]
+    const data = (await ServiceDatabase.getData(COLLECTION_NAME)) as Api[]
     if (!data || data.length === 0) {
-      await DatabaseService.insertData(COLLECTION_NAME, DEFAULT_APICONFIG)
+      await ServiceDatabase.insertData(COLLECTION_NAME, DEFAULT_APICONFIG)
       return DEFAULT_APICONFIG
     }
     return data[0]
@@ -45,7 +45,7 @@ export class RepoConfigApi {
   
 
   static async updateConfigApi(config: Api): Promise<void> {
-    await DatabaseService.deleteAndInsertData(COLLECTION_NAME, [
+    await ServiceDatabase.deleteAndInsertData(COLLECTION_NAME, [
       config
     ] as MappedData[])
   }
@@ -56,7 +56,7 @@ export class RepoConfigApi {
     const encryptedKey = EncryptionService.encrypt(iv, apiKey).encryptedData
 
     // Récupérer la configuration actuelle
-    const currentConfig = await this.fetchApiConfig()
+    const currentConfig = await this.fetchConfig()
     currentConfig.cmc = {
       ...currentConfig.cmc,
       apiKey: encryptedKey,
@@ -85,7 +85,7 @@ export class RepoConfigApi {
       ? EncryptionService.encrypt(iv, passphrase).encryptedData
       : undefined
     // Récupérer la configuration actuelle
-    const currentConfig = await this.fetchApiConfig()
+    const currentConfig = await this.fetchConfig()
 
     // Mettre à jour la configuration pour la plateforme spécifique
     currentConfig.platform[platform] = {

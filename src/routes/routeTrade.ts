@@ -5,7 +5,7 @@ import {
   insertNewTrades,
   updateTradesByPlatform,
   fetchLastTrades
-} from '@src/ctrl/ctrlTrade'
+} from '@ctrl/ctrlTrade'
 
 const router = express.Router()
 

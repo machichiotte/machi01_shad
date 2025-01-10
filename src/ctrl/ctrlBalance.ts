@@ -1,14 +1,16 @@
 // src/ctrl/balanceController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { BalanceService } from '@services/api/platform/balanceService'
-import { PLATFORM, PLATFORMS } from '@typ/platform'
+import { ServiceBalance } from '@services/api/platform/serviceBalance'
+import { PLATFORM } from '@typ/platform'
+import { PLATFORMS } from '@src/constants/platform'
+
 /** 
  * Récupère le dernier solde enregistré dans la base de données.
  */
 async function getBalances(req: Request, res: Response): Promise<void> {
   try {
-    const data = await BalanceService.fetchDatabaseBalance()
+    const data = await ServiceBalance.fetchDatabaseBalance()
     res.status(200).json({
       status: "success",
       message: 'Le solde en base de données a été récupéré avec succès.',
@@ -33,7 +35,7 @@ async function updateCurrentBalance(req: Request, res: Response): Promise<void> 
   }
 
   try {
-    const data = await BalanceService.updateBalanceForPlatform(platform)
+    const data = await ServiceBalance.updateBalanceForPlatform(platform)
     res.status(200).json({
       status: "success",
       message: 'Le solde actuel a été mis à jour avec succès.',

@@ -1,5 +1,5 @@
 // src/repo/repoMarket.ts
-import { DatabaseService } from '@src/services/api/database/databaseService';
+import { ServiceDatabase } from '@services/api/database/serviceDatabase';
 import { MappedMarket } from '@typ/market';
 import { config } from '@config/index';
 import { PLATFORM } from '@typ/platform';
@@ -10,10 +10,10 @@ const COLLECTION_CATEGORY = config.databaseConfig.category.market;
 export class RepoMarket {
 
     static async fetchAll(): Promise<MappedMarket[]> {
-        return await DatabaseService.getData(COLLECTION_NAME) as MappedMarket[];
+        return await ServiceDatabase.getData(COLLECTION_NAME) as MappedMarket[];
     }
 
     static async save(mappedData: Omit<MappedMarket, '_id'>[], platform: PLATFORM): Promise<void> {
-        await DatabaseService.saveDataAndTimestampToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
+        await ServiceDatabase.saveDataAndTimestampToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
     }
 }

@@ -7,7 +7,7 @@ import { MappedMarket } from '@typ/market'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
 import { TimestampData } from '@typ/timestamp'
-import { Asset } from '@typ/metrics'
+import { Asset } from '@src/types/cryptoAnalytics'
 import { Api, Server } from '@config/types'
 
 import { ObjectId } from 'mongodb';

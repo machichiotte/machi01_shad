@@ -1,38 +1,38 @@
 // src/index.ts
 import { startServer } from '@src/server'
-import { MongodbService } from '@src/services/api/database/mongodbService'
-import { CronTaskService } from '@services/cronTasksService'
+import { ServiceMongodb } from '@services/api/database/serviceMongodb'
+import { ServiceCron } from '@services/serviceCron'
 //import { UpdateService } from './services/update/updateSevice'
-import { ProcessorService } from './services/processorService'
-import { ServerConfigService } from './services/config/serverConfigService'
-import { ApiConfigService } from './services/config/apiConfigService'
-import { CacheService } from '@services/cacheService'
+import { ServiceProcessor } from './services/serviceProcessor'
+import { ServiceConfigServer } from './services/config/serviceConfigServer'
+import { ServiceConfigApi } from './services/config/serviceConfigApi'
+import { ServiceCache } from '@services/serviceCache'
 //import { config, loadServerConfig } from '@config/index';
 import { loadServerConfig, loadApiConfig } from '@config/index'
 
 async function startApp(): Promise<void> {
   try {
     // Étape 0 : Vider le cache
-    await CacheService.clearAllCache()
+    await ServiceCache.clearAllCache()
 
     // Étape 1 : Démarrer MongoDB
-    await MongodbService.connectToMongoDB()
+    await ServiceMongodb.connectToMongoDB()
 
-    // Étape 2 : Charger la configuration utilisateur depuis MongoDB
-    const serverConfig = await ServerConfigService.getServerConfig()
+    // Étape 2 : Charger la configuration utilisateur + server depuis MongoDB
+    const serverConfig = await ServiceConfigServer.getConfig()
     await loadServerConfig(serverConfig) // Fusionne la configuration de la base
 
-    const apiConfig = await ApiConfigService.getApiConfig()
+    const apiConfig = await ServiceConfigApi.getConfig()
     await loadApiConfig(apiConfig)
 
     // Étape 3 : Mettre à jour les services
     // await UpdateService.updateAll()
 
     // Étape 4 : Initialiser les tâches CRON
-    await CronTaskService.initializeCronTasks()
+    await ServiceCron.initializeCronTasks()
 
     // Étape 5 : Exécuter les autres tâches
-    await ProcessorService.saveMachi()
+    await ServiceProcessor.saveMachi()
 
     // Étape 6 : Démarrer le serveur
     await startServer()

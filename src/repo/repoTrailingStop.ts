@@ -1,8 +1,8 @@
 // src/repo/repoTrailingStop.ts
-import { BalanceService } from '@services/api/platform/balanceService';
-import { MachiService } from '@services/api/platform/machiService';
-import { TickerService } from '@services/api/platform/tickerService';
-import { OrderMarketService } from '@services/api/platform/orderMarketService';
+import { ServiceBalance } from '@services/api/platform/serviceBalance';
+import { ServiceMachi } from '@services/api/platform/serviceMachi';
+import { ServiceTicker } from '@services/api/platform/serviceTicker';
+import { ServiceOrderMarket } from '@services/api/platform/serviceOrderMarket';
 import { MappedBalance } from '@typ/balance';
 import { HighestPrice } from '@typ/trailingStop';
 import { PLATFORM } from '@typ/platform';
@@ -12,8 +12,8 @@ export class RepoTrailingStop {
     static async fetchBalanceAndHighestPrices(): Promise<[MappedBalance[], HighestPrice[]]> {
         try {
             return await Promise.all([
-                BalanceService.fetchDatabaseBalance(),
-                MachiService.getHighestPrices()
+                ServiceBalance.fetchDatabaseBalance(),
+                ServiceMachi.getHighestPrices()
             ]);
         } catch (error) {
             handleServiceError(error, 'fetchBalanceAndHighestPrices', 'Error fetching balance and highest prices');
@@ -23,7 +23,7 @@ export class RepoTrailingStop {
 
     static async fetchCurrentTickers(platform: PLATFORM) {
         try {
-            return await TickerService.fetchCurrentTickers(platform);
+            return await ServiceTicker.fetchCurrentTickers(platform);
         } catch (error) {
             handleServiceError(error, 'fetchCurrentTickers', `Error fetching current tickers for ${platform}`);
             return [];
@@ -32,7 +32,7 @@ export class RepoTrailingStop {
 
     static async cancelAllOrdersByBunch(platform: PLATFORM, base: string): Promise<void> {
         try {
-            await OrderMarketService.cancelAllOrdersByBunch(platform, base);
+            await ServiceOrderMarket.cancelAllOrdersByBunch(platform, base);
         } catch (error) {
             handleServiceError(error, 'cancelAllOrdersByBunch', `Error cancelling orders for ${base} on ${platform}`);
         }
@@ -40,7 +40,7 @@ export class RepoTrailingStop {
 
     static async createOrUpdateStopLossOrder(platform: PLATFORM, stopPrice: number, base: string, balance: number): Promise<void> {
         try {
-            await OrderMarketService.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
+            await ServiceOrderMarket.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
         } catch (error) {
             handleServiceError(error, 'createOrUpdateStopLossOrder', `Error creating/updating stop loss order for ${base} on ${platform}`);
         }
@@ -48,7 +48,7 @@ export class RepoTrailingStop {
 
     static async updateHighestPrice(platform: PLATFORM, base: string, price: number): Promise<void> {
         try {
-            await MachiService.updateHighestPrice(platform, base, price);
+            await ServiceMachi.updateHighestPrice(platform, base, price);
         } catch (error) {
             handleServiceError(error, 'updateHighestPrice', `Error updating highest price for ${base} on ${platform}`);
         }

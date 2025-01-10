@@ -1,7 +1,7 @@
 // src/ctrl/converterController.ts
 import Papa from 'papaparse'
 import { Request, Response } from 'express'
-import { convertToJSON, TradeModel } from '@services/converterService'
+import { convertToJSON, TradeModel } from '@services/serviceConverter'
 import { handleControllerError } from '@utils/errorUtil'
 
 /**

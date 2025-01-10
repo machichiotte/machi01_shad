@@ -69,6 +69,7 @@ export const config: Environment = {
     apiConfig: {
         cmc: {
             url: DEFAULT_APICONFIG.cmc.url || '',
+            base_url_icon: DEFAULT_APICONFIG.cmc.base_url_icon || '',
             iv: DEFAULT_APICONFIG.cmc.iv || '',
             apiKey: DEFAULT_APICONFIG.cmc.apiKey || ''
         },

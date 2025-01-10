@@ -1,15 +1,15 @@
 // src/ctrl/config/ctrlConfigApi.ts
 import { Request, Response } from 'express';
-import { RepoConfigApi } from '@src/repo/config/repoConfigApi';
+import { RepoConfigApi } from '@repo/config/repoConfigApi';
 import { Api } from '@config/types';
-import { handleControllerError } from '@src/utils/errorUtil';
+import { handleControllerError } from '@utils/errorUtil';
 
 /**
  * Retrieves the current API configuration.
  */
 export const getApiConfig = async (req: Request, res: Response): Promise<void> => {
   try {
-    const apiConfig = await RepoConfigApi.fetchDecryptedApiConfig();
+    const apiConfig = await RepoConfigApi.fetchDecryptedConfig();
     res.status(200).json({
       status: 'success',
       message: 'API configuration retrieved successfully',

@@ -1,6 +1,6 @@
 // src/routes/routeMachi.ts
 import express from 'express'
-import { getMachi, handleTrailingStopHedge } from '@src/ctrl/ctrlMachi'
+import { getMachi, handleTrailingStopHedge } from '@ctrl/ctrlMachi'
 
 const router = express.Router()
 

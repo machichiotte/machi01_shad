@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { getConvertedCsv } from '../../../src/ctrl/ctrlConverter';
-import * as ConverterService from '../../../src/services/converterService';
+import * as ConverterService from '../../../src/services/serviceConverter';
 import Papa from 'papaparse';
 import { handleControllerError } from '../../../src/utils/errorUtil';
 

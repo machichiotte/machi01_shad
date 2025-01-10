@@ -1,6 +1,6 @@
 // src/routes/config/routeApi.ts
 import express from 'express'
-import { getApiConfig, updateApiConfig, updateApiKey } from '@src/ctrl/config/ctrlConfigApi'
+import { getApiConfig, updateApiConfig, updateApiKey } from '@ctrl/config/ctrlConfigApi'
 
 const router = express.Router()
 

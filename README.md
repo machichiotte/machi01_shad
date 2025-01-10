@@ -291,7 +291,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 ┃ ┃ ┣ 📜orderBalanceService.ts
 ┃ ┃ ┣ 📜orderMarketService.ts
 ┃ ┃ ┣ 📜platformUpdateManager.ts
-┃ ┃ ┣ 📜processorService.ts
+┃ ┃ ┣ 📜serviceProcessor.ts
 ┃ ┃ ┣ 📜serverConfigService.ts
 ┃ ┃ ┣ 📜strategyService.ts
 ┃ ┃ ┣ 📜tickerService.ts

@@ -1,6 +1,6 @@
 // src/ctrl/tradeController.ts
 import { Request, Response } from 'express'
-import { TradeService } from '@services/api/platform/tradeService'
+import { ServiceTrade } from '@services/api/platform/serviceTrade'
 import { handleControllerError } from '@utils/errorUtil'
 import { isValidPlatform } from '@utils/platformUtil'
 import { MappedTrade } from '@typ/trade'
@@ -10,7 +10,7 @@ import { MappedTrade } from '@typ/trade'
  */
 async function getTrades(req: Request, res: Response): Promise<void> {
   try {
-    const data = await TradeService.fetchFromDb()
+    const data = await ServiceTrade.fetchFromDb()
     res.status(200).json({ status: "success", message: 'Trades récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'getTrades')
@@ -28,7 +28,7 @@ async function updateById(req: Request, res: Response): Promise<void> {
   }
 
   try {
-    const data = await TradeService.updateById(updatedTrade)
+    const data = await ServiceTrade.updateById(updatedTrade)
     res.status(200).json({ status: "success", message: `Trade ${updatedTrade._id} mis à jour`, data })
   } catch (error) {
     handleControllerError(res, error, 'updateById')
@@ -41,7 +41,7 @@ async function updateById(req: Request, res: Response): Promise<void> {
 async function insertNewTrades(req: Request, res: Response): Promise<void> {
   const tradesData = req.body.trades_data
   try {
-    const data = await TradeService.insertNewTrades(tradesData)
+    const data = await ServiceTrade.insertNewTrades(tradesData)
     res.status(200).json({ status: "success", message: 'Trades ajoutés', data })
   } catch (error) {
     handleControllerError(res, error, 'insertNewTrades')
@@ -60,7 +60,7 @@ async function updateTradesByPlatform(req: Request, res: Response): Promise<void
   }
 
   try {
-    const data = await TradeService.updateTrades(platform)
+    const data = await ServiceTrade.updateTrades(platform)
     res.status(200).json({ status: "success", message: 'Trades mis à jour', data })
   } catch (error) {
     handleControllerError(res, error, 'updateTrades')
@@ -79,7 +79,7 @@ async function fetchLastTrades(req: Request, res: Response): Promise<void> {
   }
 
   try {
-    const data = await TradeService.fetchFromApi(platform, base)
+    const data = await ServiceTrade.fetchFromApi(platform, base)
     res.status(200).json({ status: "success", message: 'Derniers trades récupérés', data })
   } catch (error) {
     handleControllerError(res, error, 'fetchLastTrades')
@@ -92,7 +92,7 @@ async function fetchLastTrades(req: Request, res: Response): Promise<void> {
 async function saveTradesToDatabase(req: Request, res: Response): Promise<void> {
   const { newTrades } = req.body
   try {
-    await TradeService.saveTradesToDatabase(newTrades)
+    await ServiceTrade.saveTradesToDatabase(newTrades)
     res.status(200).json({ status: "success", message: 'Trades sauvegardés avec succès' })
   } catch (error) {
     handleControllerError(res, error, 'saveTradesToDatabase')
@@ -105,7 +105,7 @@ async function saveTradesToDatabase(req: Request, res: Response): Promise<void> 
 async function saveAllTradesToDatabase(req: Request, res: Response): Promise<void> {
   const { newTrades } = req.body
   try {
-    await TradeService.saveTradesToDatabase(newTrades)
+    await ServiceTrade.saveTradesToDatabase(newTrades)
     res.status(200).json({ status: "success", message: 'Tous les trades sauvegardés avec succès' })
   } catch (error) {
     handleControllerError(res, error, 'saveAllTradesToDatabase')

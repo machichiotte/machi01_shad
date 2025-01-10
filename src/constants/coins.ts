@@ -1,4 +1,4 @@
-// src/constants/coins.ts  
+// src/constants/coins.ts
 export const STABLECOINS: string[] = ['USDT', 'USDC', 'BUSD'];
 //export const STABLECOINS: string[] = ['USDT', 'USDC', 'BUSD', 'DAI', 'TUSD', 'PAX', 'GUSD', 'HUSD', 'USDN'];
 export const MAJOR_CRYPTO_PAIRS: string[] = ['BTC', 'ETH'];
@@ -345,3 +345,24 @@ export const GAMING: string[] = [
     "ZOO",
     "XWG"
 ];
+
+export const MEMES : string[] = [];
+export const AI : string[] = [];
+export const RWA : string[] = [];
+export const MUSIC : string[] = [];
+export const LAYER1 : string[] = [];
+export const LAYER2 : string[] = [];
+export const SPORTS : string[] = [];
+export const IOT : string[] = [];
+export const NFT : string[] = [];
+export const DEFI : string[] = [];
+export const DAO : string[] = [];
+export const BITCOIN_ECO : string[] = [];
+export const ETHEREUM_ECO : string[] = [];
+export const POLKADOT_ECO : string[] = [];
+export const SOLANA_ECO : string[] = [];
+export const SMART_CONTRACTS : string[] = [];
+export const CENTRALIZED_EXCHANGE : string[] = [];
+export const DECENTRALIZED_EXCHANGE : string[] = [];
+
+export const ASSET_CATEGORIES = [...DEPIN, ...GAMING, ...MEMES, ...AI, ...RWA, ...MUSIC, ...LAYER1, ...LAYER2, ...SPORTS, ...IOT, ...NFT, ...DEFI, ...DAO, ...BITCOIN_ECO, ...ETHEREUM_ECO, ...POLKADOT_ECO, ...SOLANA_ECO, ...SMART_CONTRACTS, ...CENTRALIZED_EXCHANGE, ...DECENTRALIZED_EXCHANGE];

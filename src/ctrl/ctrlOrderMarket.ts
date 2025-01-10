@@ -1,6 +1,6 @@
 // src/ctrl/orderMarketController.ts
 import { Request, Response } from 'express'
-import { OrderMarketService } from '@services/api/platform/orderMarketService';
+import { ServiceOrderMarket } from '@services/api/platform/serviceOrderMarket';
 import { handleControllerError } from '@utils/errorUtil'
 
 enum OrderType {
@@ -21,21 +21,21 @@ async function handleOrder(req: Request, res: Response, orderType: OrderType): P
     switch (orderType) {
       case OrderType.LIMIT_BUY:
       case OrderType.LIMIT_SELL:
-        data = await OrderMarketService.createLimitOrder(platform, base, amount, orderType.includes('Buy') ? 'buy' : 'sell', price)
+        data = await ServiceOrderMarket.createLimitOrder(platform, base, amount, orderType.includes('Buy') ? 'buy' : 'sell', price)
         break
       case OrderType.MARKET_BUY:
       case OrderType.MARKET_SELL:
-        data = await OrderMarketService.createMarketOrder(platform, base, amount, orderType.includes('Buy') ? 'buy' : 'sell')
+        data = await ServiceOrderMarket.createMarketOrder(platform, base, amount, orderType.includes('Buy') ? 'buy' : 'sell')
         break
       case OrderType.CANCEL_ALL:
-        data = await OrderMarketService.cancelAllOrdersByBunch(platform, base)
+        data = await ServiceOrderMarket.cancelAllOrdersByBunch(platform, base)
         break
       case OrderType.CANCEL_BUY:
       case OrderType.CANCEL_SELL:
-        data = await OrderMarketService.cancelAllOrdersNoBunch(platform, base, orderType.includes('Buy') ? 'buy' : 'sell')
+        data = await ServiceOrderMarket.cancelAllOrdersNoBunch(platform, base, orderType.includes('Buy') ? 'buy' : 'sell')
         break
       case OrderType.DELETE:
-        await OrderMarketService.deleteOrder(platform, oId, symbol)
+        await ServiceOrderMarket.deleteOrder(platform, oId, symbol)
         break
     }
 

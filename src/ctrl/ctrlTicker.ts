@@ -1,7 +1,7 @@
 // src/ctrl/tickerController.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { TickerService } from '@services/api/platform/tickerService'
+import { ServiceTicker } from '@services/api/platform/serviceTicker'
 import { isValidPlatform } from '@utils/platformUtil'
 
 /**
@@ -9,7 +9,7 @@ import { isValidPlatform } from '@utils/platformUtil'
  */
 async function getAllTickers(req: Request, res: Response): Promise<void> {
   try {
-    const data = await TickerService.fetchDatabaseTickers()
+    const data = await ServiceTicker.fetchDatabaseTickers()
     res
       .status(200)
       .json({ status: 'success', message: 'Tickers récupérés', data })
@@ -35,7 +35,7 @@ async function getAllTickersByPlatform(
   }
 
   try {
-    const data = await TickerService.getAllTickersByPlatform(platform)
+    const data = await ServiceTicker.getAllTickersByPlatform(platform)
     res
       .status(200)
       .json({ status: 'success', message: 'Tickers récupérés', data })
@@ -61,7 +61,7 @@ async function getAllTickersBySymbolFromPlatform(
   }
 
   try {
-    const data = await TickerService.getAllTickersBySymbolFromPlatform(
+    const data = await ServiceTicker.getAllTickersBySymbolFromPlatform(
       platform,
       symbol
     )
@@ -78,7 +78,7 @@ async function getAllTickersBySymbolFromPlatform(
  */
 async function updateAllTickers(req: Request, res: Response): Promise<void> {
   try {
-    const data = await TickerService.updateAllTickers()
+    const data = await ServiceTicker.updateAllTickers()
     res
       .status(200)
       .json({ status: 'success', message: 'Tickers mis à jour', data })

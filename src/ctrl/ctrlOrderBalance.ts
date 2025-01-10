@@ -1,6 +1,6 @@
 // src/ctrl/orderBalanceController.ts
 import { Request, Response } from 'express'
-import { OrderBalanceService } from '@services/api/platform/orderBalanceService'
+import { ServiceOrderBalance } from '@services/api/platform/serviceOrderBalance'
 import { handleControllerError } from '@utils/errorUtil'
 import { isValidPlatform } from '@utils/platformUtil'
 
@@ -9,7 +9,7 @@ import { isValidPlatform } from '@utils/platformUtil'
  */
 async function getOrders(req: Request, res: Response): Promise<void> {
   try {
-    const data = await OrderBalanceService.fetchDatabase()
+    const data = await ServiceOrderBalance.fetchDatabase()
     res.status(200).json({
       status: "success",
       message: 'Ordres récupérés', data
@@ -32,7 +32,7 @@ async function updateOrders(req: Request, res: Response): Promise<void> {
   }
 
   try {
-    const data = await OrderBalanceService.updateOrdersFromServer(platform)
+    const data = await ServiceOrderBalance.updateOrdersFromServer(platform)
     res.status(200).json({ status: "success", message: 'Ordres mis à jour', data })
   } catch (error) {
     handleControllerError(res, error, updateOrders.name)

@@ -1,6 +1,7 @@
 // src/utils/platformUtil.ts
 import { config } from '@config/index';
-import { PLATFORM, PLATFORMS } from '@typ/platform'
+import { PLATFORM } from '@typ/platform'
+import { PLATFORMS } from '@src/constants/platform'
 
 // Fonction utilitaire pour valider la plateforme
 function isValidPlatform(platform: string): platform is PLATFORM {
