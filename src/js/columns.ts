@@ -9,7 +9,8 @@ const cmcColumns: Column[] = [
   { header: 'Rank', field: 'rank', numeric: true },
   { header: 'Name', field: 'name' },
   { header: 'Symbol', field: 'symbol' },
-  { header: 'Price', field: 'price' }
+  { header: 'Price', field: 'price' },
+  { header: 'Tags', field: 'tags' },
 ]
 
 const ordersColumns: Column[] = [

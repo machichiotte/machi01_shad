@@ -29,7 +29,7 @@ export default {
         apiKey: this.payload.apiKey,
         secretKey: this.payload.secretKey,
         passphrase: this.payload.passphrase
-      };
+      }; 
 
       try {
         const response = await updateKey(payload);
