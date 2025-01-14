@@ -1,16 +1,16 @@
 import express from 'express';
 import request from 'supertest';
-import tickerRoutes from '../../../src/routes/routeTicker';
+import routeTicker from '../../../src/routes/routeTicker';
 import * as tickerController from '../../../src/ctrl/ctrlTicker';
 
 jest.mock('../../../src/ctrl/ctrlTicker');
 
-describe('Ticker Routes', () => {
+describe('routeTicker', () => {
     let app: express.Application;
 
     beforeEach(() => {
         app = express();
-        app.use('/api/tickers', tickerRoutes);
+        app.use('/api/tickers', routeTicker);
     });
 
     afterEach(() => {

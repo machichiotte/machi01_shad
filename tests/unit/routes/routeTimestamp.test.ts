@@ -1,17 +1,17 @@
 import express from 'express';
 import request from 'supertest';
-import timestampRoutes from '../../../src/routes/routeTimestamp';
+import routeTimestamp from '../../../src/routes/routeTimestamp';
 import * as timestampController from '../../../src/ctrl/ctrlTimestamp';
 
 // Mock du contrôleur Timestamp
 jest.mock('../../../src/ctrl/ctrlTimestamp');
 
-describe('Timestamp Routes', () => {
+describe('routeTimestamp', () => {
   let app: express.Application;
 
   beforeEach(() => {
     app = express();
-    app.use('/timestamp', timestampRoutes);
+    app.use('/timestamp', routeTimestamp);
   });
 
   afterEach(() => {

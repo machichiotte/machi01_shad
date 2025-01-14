@@ -1,17 +1,17 @@
 import express from 'express';
 import request from 'supertest';
-import balanceRoutes from '../../../src/routes/routeBalance';
+import routeBalance from '../../../src/routes/routeBalance';
 import * as balanceController from '../../../src/ctrl/ctrlBalance';
 
 // Mock du contrôleur de balance
 jest.mock('../../../src/ctrl/ctrlBalance');
 
-describe('balanceRoutes', () => {
+describe('routeBalance', () => {
     let app: express.Application;
 
     beforeEach(() => {
         app = express();
-        app.use('/balance', balanceRoutes);
+        app.use('/balance', routeBalance);
     });
 
     afterEach(() => {

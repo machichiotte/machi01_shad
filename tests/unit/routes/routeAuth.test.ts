@@ -1,17 +1,17 @@
 import request from 'supertest';
 import express from 'express';
-import authRoutes from '../../../src/routes/routeAuth';
+import routeAuth from '../../../src/routes/routeAuth';
 import * as authController from '../../../src/ctrl/ctrlAuth';
 
 jest.mock('../../../src/ctrl/ctrlAuth');
 
-describe('authRoutes', () => {
+describe('routeAuth', () => {
     let app: express.Application;
 
     beforeEach(() => {
         app = express();
         app.use(express.json());
-        app.use('/auth', authRoutes);
+        app.use('/auth', routeAuth);
     });
 
     it('should call loginUser controller for POST /auth/login', async () => {

@@ -1,17 +1,17 @@
 import express from 'express';
 import request from 'supertest';
-import strategyRoutes from '../../../src/routes/routeStrategy';
+import routeStrategy from '../../../src/routes/routeStrategy';
 import * as strategyController from '../../../src/ctrl/ctrlStrategy';
 
 // Mock du contrôleur Strategy
 jest.mock('../../../src/ctrl/ctrlStrategy');
 
-describe('strategyRoutes', () => {
+describe('routeStrategy', () => {
     let app: express.Application;
 
     beforeEach(() => {
         app = express();
-        app.use('/strategy', strategyRoutes);
+        app.use('/strategy', routeStrategy);
     });
 
     afterEach(() => {

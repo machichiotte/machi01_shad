@@ -1,17 +1,17 @@
 import express from 'express';
 import request from 'supertest';
-import cmcRoutes from '../../../src/routes/routeCmc';
+import routeCmc from '../../../src/routes/routeCmc';
 import * as cmcController from '../../../src/ctrl/ctrlCmc';
 
 // Mock du contrôleur CMC
 jest.mock('../../../src/ctrl/ctrlCmc');
 
-describe('CMC Routes', () => {
+describe('routeCmc', () => {
     let app: express.Application;
 
     beforeEach(() => {
         app = express();
-        app.use('/cmc', cmcRoutes);
+        app.use('/cmc', routeCmc);
     });
 
     afterEach(() => {

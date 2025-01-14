@@ -1,17 +1,17 @@
 import express from 'express';
 import request from 'supertest';
-import tradeRoutes from '../../../src/routes/routeTrade';
+import routeTrade from '../../../src/routes/routeTrade';
 import * as tradeController from '../../../src/ctrl/ctrlTrade';
 
 // Mock du contrôleur Trade
 jest.mock('../../../src/ctrl/ctrlTrade');
 
-describe('tradeRoutes', () => {
+describe('routeTrade', () => {
   let app: express.Application;
 
   beforeEach(() => {
     app = express();
-    app.use('/trade', tradeRoutes);
+    app.use('/trade', routeTrade);
   });
 
   afterEach(() => {

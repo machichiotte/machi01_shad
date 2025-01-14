@@ -8,7 +8,7 @@ jest.mock('../../../src/services/serviceConverter');
 jest.mock('papaparse');
 jest.mock('../../../src/utils/errorUtil');
 
-describe('converterController', () => {
+describe('ctrlConverter', () => {
   describe('getConvertedCsv', () => {
     let mockRequest: Partial<Request>;
     let mockResponse: Partial<Response>;

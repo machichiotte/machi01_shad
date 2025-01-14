@@ -1,4 +1,4 @@
-describe('authController', () => {
+describe('ctrlAuth', () => {
     beforeEach(() => {
     })
 

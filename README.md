@@ -1,10 +1,10 @@
-# Machi GPT Shad Server
+# Machi00 Server
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-Backend pour l'application Machi GPT Shad, gérant les ordres de trading et les données de marché.
+Backend pour l'application Machi00, gérant les ordres de trading et les données de marché.
 
 ## Table des matières
 
@@ -376,7 +376,6 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 ## Sécurité
 
 - Utilisation de bcrypt pour le hachage des mots de passe
-- Implémentation de JWT (JSON Web Tokens) pour l'authentification
 - Protection contre les attaques CSRF et XSS grâce à Helmet
 - Validation des entrées utilisateur
 - Gestion sécurisée des clés API et des secrets via les variables d'environnement
