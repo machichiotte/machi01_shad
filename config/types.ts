@@ -1,5 +1,5 @@
 // config/types.ts
-import { PLATFORM } from '@typ//platform'
+import { PLATFORM } from '@typ/platform'
 
 export interface DatabaseCredentials {
   user: string
@@ -23,7 +23,8 @@ export interface DatabaseCategory {
   ticker: string
   trade: string
   serverConfig: string
-  apiConfig: string
+  apiConfig: string,
+  alarm: string
 }
 
 export interface CacheExpirationTimes {
@@ -41,6 +42,7 @@ export interface CacheExpirationTimes {
   user: number
   serverConfig: number
   apiConfig: number
+  alarm: number
 }
 
 export interface SmtpAuth {

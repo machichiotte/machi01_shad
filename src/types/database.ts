@@ -11,7 +11,25 @@ import { Asset } from '@src/types/cryptoAnalytics'
 import { Api, Server } from '@config/types'
 
 import { ObjectId } from 'mongodb';
+export interface AlarmInput {
+    price: number;
+    oldPrice: number; // Prix lors de la création de l'alarme
+    base: string;
+    platform: string;
+    status?: string; // Optionnel pour permettre de définir le statut de l'alarme
+    createdAt?: Date;
+    updatedAt?: Date;
+}
 
+export interface AlarmFilter {
+    status?: string;
+    base?: string;
+    platform?: string;
+}
+
+export interface DbAlarm extends AlarmInput {
+    _id: ObjectId; // L'ID MongoDB de l'alarme
+}
 export interface SwapMigration {
     _id?: ObjectId;
     oldBase: string

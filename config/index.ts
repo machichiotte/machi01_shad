@@ -35,6 +35,7 @@ export const config: Environment = {
         },
 
         collection: {
+            alarm: process.env.MONGODB_COLLECTION_ALARM || DEFAULT_MONGODB_COLLECTION.alarm,
             balance: process.env.MONGODB_COLLECTION_BALANCE || DEFAULT_MONGODB_COLLECTION.balance,
             cmc: process.env.MONGODB_COLLECTION_CMC || DEFAULT_MONGODB_COLLECTION.cmc,
             highestPrice: process.env.MONGODB_COLLECTION_HIGHEST_PRICE || DEFAULT_MONGODB_COLLECTION.highestPrice,
@@ -52,6 +53,7 @@ export const config: Environment = {
         },
 
         category: {
+            alarm: process.env.COLLECTION_CATEGORY_ALARM || DEFAULT_DATABASE_CATEGORY.alarm,
             balance: process.env.COLLECTION_CATEGORY_BALANCE || DEFAULT_DATABASE_CATEGORY.balance,
             cmc: process.env.COLLECTION_CATEGORY_CMC || DEFAULT_DATABASE_CATEGORY.cmc,
             timestamp: process.env.COLLECTION_CATEGORY_TIMESTAMP || DEFAULT_DATABASE_CATEGORY.timestamp,

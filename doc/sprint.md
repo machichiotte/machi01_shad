@@ -57,13 +57,13 @@ Stockage alarmes sur mongodb possible : {price, base, platform, createdAt, updat
 # Liste des Tâches à Effectuer (Modifiable)
 ## Étape 1 : Gestion des Alarmes
 ### 1.1 Création de la structure de base pour les alarmes
-- [ ] Créer un fichier serviceAlarm.ts dans le répertoire backend/src/services. 
-- [ ] Ajouter une fonction createAlarm(data: AlarmInput) pour enregistrer une alarme dans MongoDB.
+- [x] Créer un fichier serviceAlarm.ts dans le répertoire backend/src/services. 
+- [x] Ajouter une fonction createAlarm(data: AlarmInput) pour enregistrer une alarme dans MongoDB.
       - Données attendues : {price, base, platform}.
-- [ ] Ajouter une fonction getAlarms(filter?: AlarmFilter) pour récupérer les alarmes existantes.
+- [x] Ajouter une fonction getAlarms(filter?: AlarmFilter) pour récupérer les alarmes existantes.
       - Paramètres : Possibilité de filtrer par status, base, ou platform.
-- [ ] Ajouter une fonction updateAlarm(id: string, updates: Partial<AlarmInput>) pour modifier une alarme existante.
-- [ ] Ajouter une fonction deleteAlarm(id: string) pour supprimer une alarme.
+- [x] Ajouter une fonction updateAlarm(id: string, updates: Partial<AlarmInput>) pour modifier une alarme existante.
+- [x] Ajouter une fonction deleteAlarm(id: string) pour supprimer une alarme.
 
 ### 1.2 Intégration avec le cron existant
 - [ ] Dans le fichier de cron (nom actuel à confirmer), ajouter l'import de serviceAlarm.ts.
@@ -73,6 +73,8 @@ Stockage alarmes sur mongodb possible : {price, base, platform, createdAt, updat
 
 ### 1.3 Tests unitaires et validations
 - [ ] Créer un fichier serviceAlarm.test.ts dans le répertoire backend/tests/services.
+- [ ] Créer un fichier ctrlAlarm.test.ts dans le répertoire backend/tests/ctrl.
+- [ ] Créer un fichier repoAlarm.test.ts dans le répertoire backend/tests/repo.
 - [ ] Écrire des tests pour les fonctions suivantes :
       - createAlarm, getAlarms, updateAlarm, deleteAlarm.
       - checkAndTriggerAlarms : Tester le déclenchement d'une alarme avec des données simulées.

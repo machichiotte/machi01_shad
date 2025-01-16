@@ -16,7 +16,8 @@ export const DEFAULT_MONGODB_COLLECTION = {
   trade: 'collection_trade',
   user: 'collection_user',
   serverConfig: 'collection_serverconfig',
-  apiConfig: 'collection_apiconfig'
+  apiConfig: 'collection_apiconfig',
+  alarm: 'collection_alarm',
 }
 
 export const DEFAULT_DATABASE_CATEGORY = {
@@ -33,7 +34,8 @@ export const DEFAULT_DATABASE_CATEGORY = {
   trade: 'trade',
   user: 'user',
   serverConfig: 'serverConfig',
-  apiConfig: 'apiConfig'
+  apiConfig: 'apiConfig',
+  alarm: 'alarm'
 }
 
 export const DEFAULT_MONGODB_CREDENTIALS = {
@@ -102,6 +104,7 @@ export const DEFAULT_CACHE_EXPIRATION_TIMES = {
   user: 111,
   serverConfig: 111,
   apiConfig: 111,
+  alarm: 111
 }
 
 export const DEFAULT_SMTP = {

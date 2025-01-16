@@ -8,6 +8,7 @@ import { retry } from '@utils/retryUtil'
 import { MappedTicker } from '@typ/ticker'
 import { PLATFORM } from '@typ/platform'
 import { PLATFORMS } from '@src/constants/platform'
+import { ServiceAlarm } from '@src/services/serviceAlarm'
  
 export class ServiceTicker {
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {
@@ -85,5 +86,7 @@ export class ServiceTicker {
   static async cronTicker(platform: PLATFORM): Promise<void> {
     await executeCronTask(() => ServiceTicker.updateTickersForPlatform(platform), true)
 
+    //ici il faut rajouter la mise à jour des alarmes
+    await ServiceAlarm.checkAndTriggerAlarms();
   }
 }
