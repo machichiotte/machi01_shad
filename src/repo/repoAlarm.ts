@@ -4,7 +4,7 @@ import { config } from '@config/index';
 import { mongodbOperations } from '@services/api/database/serviceMongodbOperations';
 import { ObjectId } from 'mongodb';
 
-const COLLECTION_NAME = config.databaseConfig.collection.alarms;
+const COLLECTION_NAME = config.databaseConfig.collection.alarm;
 
 export class RepoAlarm {
     /**
@@ -13,6 +13,7 @@ export class RepoAlarm {
      * @returns A list of alarms matching the filter.
      */
     static async fetchAlarms(filter: Partial<DbAlarm> = {}): Promise<DbAlarm[]> {
+        console.log('alarm ou pas', filter)
         return await mongodbOperations.find(COLLECTION_NAME, filter) as DbAlarm[];
     }
 
