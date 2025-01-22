@@ -133,7 +133,7 @@ Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant pr
 
 ## Architecture
 
-Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) : `./doc/tree.md`.
+Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) : [Documentation Architecture MVC](./doc/tree.md).
 
 ## Sécurité
 
