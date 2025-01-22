@@ -58,9 +58,9 @@ Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments 
 ## Démarrage rapide
 
 1. Clonez le dépôt
-2. Installez les dépendances : `npm install` / `yarn install`
+2. Installez les dépendances : `yarn install`
 3. Configurez les variables d'environnement dans `.env`
-4. Lancez le serveur : `npm run dev` / `yarn dev`
+4. Lancez le serveur : `yarn dev`
 
 Le serveur sera accessible à `http://localhost:10000`.
 
@@ -133,7 +133,7 @@ Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant pr
 
 ## Architecture
 
-Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) : [Documentation Architecture MVC](./doc/tree.md).
+Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) : [./doc/tree.md](./doc/tree.md).
 
 ## Sécurité
 
@@ -144,7 +144,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) : [Documentation 
 
 ## Points d'API
 
-Le backend expose les points d'API dans le fichier suivant  : `./doc/routes.md`.
+Le backend expose les points d'API dans le fichier suivant  : [./doc/routes.md](./doc/routes.md).
 
 ## Dépendances
 
