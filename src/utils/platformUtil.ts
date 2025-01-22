@@ -42,6 +42,7 @@ function checkApiKeys(platform: PLATFORM): boolean {
  */
 function getMarketSymbolForPlatform(platform: PLATFORM, base: string, quote: string = 'USDT'
 ): string {
+  console.log('getMarketSymbolForPlatform', platform, base, quote)
   let symbol: string
 
   switch (platform) {
@@ -63,7 +64,7 @@ function getMarketSymbolForPlatform(platform: PLATFORM, base: string, quote: str
     default:
       throw new Error(`Unsupported platform: ${platform}`)
   }
-
+console.log('symbol', symbol)
   return symbol
 }
 

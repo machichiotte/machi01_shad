@@ -10,32 +10,50 @@ Backend pour l'application Machi00, gérant les ordres de trading et les donnée
 
 - [Description](#description)
 - [Fonctionnalités principales](#fonctionnalités-principales)
+- [Fonctionnalités secondaires](#fonctionnalités-secondaires)
 - [Démarrage rapide](#démarrage-rapide)
+- [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Utilisation](#utilisation)
 - [Architecture](#architecture)
-- [API](#api)
 - [Sécurité](#sécurité)
+- [Points d'API](#points-dapi)
+- [Dépendances](#dependances)
 - [Tests](#tests)
 - [Déploiement](#déploiement)
+- [Surveillance et journalisation](#surveillance-et-journalisation)
+- [Roadmap](#roadmap)
 - [Contribution](#contribution)
 - [Licence](#licence)
 - [Contact](#contact)
 
 ## Description
 
-Le backend Machi GPT Shad Server est construit avec Node.js et Express.js. Il gère les ordres de trading en temps réel, récupère et met à jour les données de marché, et s'intègre à plusieurs plateformes d'échange de cryptomonnaies.
+Machi00 Server est le backend du projet Machi00, construit avec Node.js et Express.js et TypeScript.
 
 ## Fonctionnalités principales
 
 - 🚀 Gestion des ordres de trading en temps réel
 - 📊 Récupération et mise à jour des données de marché
-- 🔗 Intégration avec plusieurs plateformes d'échange
+- 🔗 Intégration avec plusieurs plateformes d'échange de cryptomonnaies
 - 🔒 Système d'authentification sécurisé
 - 📈 Gestion des stratégies de trading
-- 🔄 Conversion de fichiers CSV pour l'importation de données
-- ⏱️ Planification de tâches automatisées
+- 📋 Planification de tâches automatisées
+- ⏱️ Gestion des alarmes
+
+## Fonctionnalités secondaires
+
+- 🔄 Conversion de fichiers CSV pour l'importation de données historiques
+
+## Prérequis
+
+Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments suivants installés sur votre système :
+
+- Node.js (>=14)
+- yarn
+- MongoDB
+- Git
 
 ## Démarrage rapide
 
@@ -50,9 +68,9 @@ Le serveur sera accessible à `http://localhost:10000`.
 
 Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments suivants installés sur votre système :
 
-- Node.js (version 14 ou supérieure recommandée)
-- npm ou yarn
-- MongoDB (installé localement ou accès à une instance distante)
+- Node.js (>=14)
+- yarn
+- MongoDB
 - Git
 
 ## Installation
@@ -64,314 +82,58 @@ git clone https://github.com/machichiotte/machi-shad-backend.git
 ```
 
 2. Installez les dépendances :
-   `npm install` / `yarn install`
+   `yarn install`
 
 ## Configuration
 
 Avant d'exécuter le backend, assurez-vous de configurer les variables d'environnement. Créez un fichier `.env` dans le répertoire racine du backend avec le contenu suivant :
 
-- `MONGODB_URI=votre_chaine_de_connexion_mongodb`
-- `APIKEY_CMC=votre_cle_api_coinmarketcap`
-- `MONGODB_COLLECTION_CMC=nom_de_votre_collection_cmc`
-- `COLLECTION_CATEGORY_CMC=COLLECTION_CATEGORY_de_donnees_cmc`
+- `PORT=`
 - `OFFLINE_MODE=true_ou_false`
+
+### Connect MongoDb
+- `MONGODB_USER=`
+- `MONGODB_PASSWORD=`
+- `MONGODB_CLUSTER=`
+- `MONGODB_DATABASE=`
+
+### Collections MongoDb
+- `MONGODB_COLLECTION_BALANCE=`
+- `MONGODB_COLLECTION_CMC=`
+- `MONGODB_COLLECTION_TIMESTAMP=`
+- `MONGODB_COLLECTION_MACHI=`
+- `MONGODB_COLLECTION_MARKET=`
+- `MONGODB_COLLECTION_ORDER=`
+- `MONGODB_COLLECTION_STRAT=`
+- `MONGODB_COLLECTION_SWAP=`
+- `MONGODB_COLLECTION_TRADE=`
+- `MONGODB_COLLECTION_TICKER=`
+- `MONGODB_COLLECTION_USER=`
+- `MONGODB_COLLECTION_HIGHEST_PRICE=`
+- `MONGODB_COLLECTION_PRICE_BTC=`
+- `MONGODB_COLLECTION_PRICE_ETH=`
+- `MONGODB_COLLECTION_SERVER_CONFIG=`
+- `MONGODB_COLLECTION_API_CONFIG=`
+- `MONGODB_COLLECTION_ALARM=`
+
+### ApiKeys
+- `ENCRYPTION_KEY=`
+- `APIKEY_CMC=`
+- `APIKEY_BINANCE=`
+- `SECRETKEY_BINANCE=`
 
 Remplacez les valeurs par vos propres paramètres.
 
 ## Utilisation
 
 Pour démarrer le serveur backend, exécutez la commande suivante :
-`npm run dev` ou `yarn dev`
+`yarn dev`
 
 Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant prêt à traiter les requêtes entrantes.
 
 ## Architecture
 
-Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
-
-┣ 📂client
-┃ ┣ 📂public
-┃ ┃ ┗ 📜favicon.ico
-┃ ┣ 📂src
-┃ ┃ ┣ 📂assets
-┃ ┃ ┃ ┣ 📜logo_exchange_binance.svg
-┃ ┃ ┃ ┣ 📜logo_exchange_gateio.svg
-┃ ┃ ┃ ┣ 📜logo_exchange_kucoin.svg
-┃ ┃ ┃ ┣ 📜logo_exchange_okx.svg
-┃ ┃ ┃ ┣ 📜logo_machi.svg
-┃ ┃ ┃ ┣ 📜logo.png
-┃ ┃ ┃ ┣ 📜logo.svg
-┃ ┃ ┃ ┣ 📜spinner.svg
-┃ ┃ ┃ ┗ 📜spinner.svg
-┃ ┃ ┣ 📂components
-┃ ┃ ┃ ┣ 📂button
-┃ ┃ ┃ ┃ ┣ 📜MyBunchSellButton.vue
-┃ ┃ ┃ ┃ ┣ 📜MyBuyButton.vue
-┃ ┃ ┃ ┃ ┣ 📜MyDeleteButton.vue
-┃ ┃ ┃ ┃ ┗ 📜MyEmergencySellButton.vue
-┃ ┃ ┃ ┣ 📂form
-┃ ┃ ┃ ┃ ┣ 📜AddBuyOrdersForm.vue
-┃ ┃ ┃ ┃ ┗ 📜InvestmentCalculator.vue
-┃ ┃ ┃ ┣ 📂machi
-┃ ┃ ┃ ┃ ┣ 📂block
-┃ ┃ ┃ ┃ ┃ ┣ 📜BaseBlock.vue
-┃ ┃ ┃ ┃ ┃ ┣ 📜InfoLabel.vue
-┃ ┃ ┃ ┃ ┃ ┣ 📜InfoLabelClick.vue
-┃ ┃ ┃ ┃ ┃ ┣ 📜Machi.vue
-┃ ┃ ┃ ┃ ┃ ┗ 📜StratBlock.vue
-┃ ┃ ┃ ┃ ┣ 📂column
-┃ ┃ ┃ ┃ ┃ ┣ 📜ChangePercentage.vue
-┃ ┃ ┃ ┃ ┃ ┣ 📜PercentageColumn.vue
-┃ ┃ ┃ ┃ ┃ ┣ 📜PriceWithChange.vue
-┃ ┃ ┃ ┃ ┃ ┣ 📜StrategyDropdown.vue
-┃ ┃ ┃ ┃ ┃ ┗ 📜ValueDisplay.vue
-┃ ┃ ┃ ┃ ┣ 📜ActionSelector.vue
-┃ ┃ ┃ ┃ ┣ 📜AssetCard.vue
-┃ ┃ ┃ ┃ ┣ 📜BalanceCard.vue
-┃ ┃ ┃ ┃ ┣ 📜BuyCalculator.vue
-┃ ┃ ┃ ┃ ┣ 📜Machi.vue
-┃ ┃ ┃ ┃ ┣ 📜MachiDataTable.vue
-┃ ┃ ┃ ┃ ┣ 📜NextSellsTable.vue
-┃ ┃ ┃ ┃ ┣ 📜PercentageColumn.vue
-┃ ┃ ┃ ┃ ┣ 📜PlatformSelector.vue
-┃ ┃ ┃ ┃ ┣ 📜SearchBar.vue
-┃ ┃ ┃ ┃ ┣ 📜StableCoinCard.vue
-┃ ┃ ┃ ┃ ┣ 📜TakeProfitTable.vue
-┃ ┃ ┃ ┃ ┗ 📜UpdateBarSelector.vue
-┃ ┃ ┃ ┣ 📂order
-┃ ┃ ┃ ┃ ┣ 📜Orders.vue
-┃ ┃ ┃ ┃ ┗ 📜OrdersTable.vue
-┃ ┃ ┃ ┣ 📂trade
-┃ ┃ ┃ ┃ ┣ 📜Trades.vue
-┃ ┃ ┃ ┃ ┣ 📜TradesActions.vue
-┃ ┃ ┃ ┃ ┗ 📜TradesTable.vue
-┃ ┃ ┃ ┣ 📜Cmc.vue
-┃ ┃ ┃ ┣ 📜Home.vue
-┃ ┃ ┃ ┣ 📜LogoMachi.vue
-┃ ┃ ┃ ┣ 📜Strategy.vue
-┃ ┃ ┃ ┗ 📜Stuff.vue
-┃ ┃ ┣ 📂js
-┃ ┃ ┃ ┣ 📂server
-┃ ┃ ┃ ┃ ┣ 📜common.ts
-┃ ┃ ┃ ┃ ┣ 📜fetchFromServer.ts
-┃ ┃ ┃ ┃ ┣ 📜order.ts
-┃ ┃ ┃ ┃ ┗ 📜strat.ts
-┃ ┃ ┃ ┣ 📂strat
-┃ ┃ ┃ ┃ ┣ 📜common.ts
-┃ ┃ ┃ ┃ ┣ 📜index.ts
-┃ ┃ ┃ ┃ ┣ 📜shad.ts
-┃ ┃ ┃ ┃ ┗ 📜strategyOptions.ts
-┃ ┃ ┃ ┣ 📂utils
-┃ ┃ ┃ ┃ ┣ 📜spinner.ts
-┃ ┃ ┃ ┃ ┣ 📜strategyUtils.ts
-┃ ┃ ┃ ┃ ┗ 📜takeprofits.ts
-┃ ┃ ┃ ┣ 📜columns.ts
-┃ ┃ ┃ ┗ 📜constants.ts
-┃ ┃ ┣ 📂json
-┃ ┃ ┃ ┗ 📜platforms.json
-┃ ┃ ┣ 📂store
-┃ ┃ ┃ ┣ 📜calculStore.ts
-┃ ┃ ┃ ┗ 📜loading.ts
-┃ ┃ ┣ 📂types
-┃ ┃ ┃ ┣ 📜filter.ts
-┃ ┃ ┃ ┣ 📜platform.ts
-┃ ┃ ┃ ┣ 📜response.ts
-┃ ┃ ┃ ┣ 📜responseData.ts
-┃ ┃ ┃ ┗ 📜shims-vue.d.ts
-┃ ┃ ┣ 📜.htaccess
-┃ ┃ ┣ 📜App.vue
-┃ ┃ ┣ 📜main.ts
-┃ ┃ ┣ 📜router.ts
-┃ ┃ ┣ 📜style.css
-┃ ┃ ┗ 📜vite-env.d.ts
-┃ ┣ 📂tests
-┃ ┣ 📜.env
-┃ ┣ 📜.eslintrc.cjs
-┃ ┣ 📜.gitignore
-┃ ┣ 📜.prettierrc.json
-┃ ┣ 📜index.html
-┃ ┣ 📜package.json
-┃ ┣ 📜README.md
-┃ ┣ 📜tsconfig.app.json
-┃ ┣ 📜tsconfig.app.tsbuildinfo
-┃ ┣ 📜tsconfig.json
-┃ ┣ 📜tsconfig.vite.json
-┃ ┣ 📜tsconfig.vite.tsbuildinfo
-┃ ┣ 📜vite.config.ts
-┃ ┣ 📜vitest.config.ts
-┃ ┗ 📜yarn.lock
-┣ 📂config
-┃ ┣ 📜default.ts
-┃ ┣ 📜index.ts
-┃ ┗ 📜types.ts
-┣ 📂mockData
-┃ ┣ 📂json
-┃ ┃ ┗ 📂mongodb
-┃ ┃ ┣ 📜db_machi_shad.collection_balance.json
-┃ ┃ ┣ 📜db_machi_shad.collection_cmc.json
-┃ ┃ ┣ 📜db_machi_shad.collection_highest_price.json
-┃ ┃ ┣ 📜db_machi_shad.collection_machi.json
-┃ ┃ ┣ 📜db_machi_shad.collection_market.json
-┃ ┃ ┣ 📜db_machi_shad.collection_order.json
-┃ ┃ ┣ 📜db_machi_shad.collection_price_btc.json
-┃ ┃ ┣ 📜db_machi_shad.collection_price_eth.json
-┃ ┃ ┣ 📜db_machi_shad.collection_shad.json
-┃ ┃ ┣ 📜db_machi_shad.collection_strategy.json
-┃ ┃ ┣ 📜db_machi_shad.collection_swap.json
-┃ ┃ ┣ 📜db_machi_shad.collection_ticker.json
-┃ ┃ ┣ 📜db_machi_shad.collection_timestamp.json
-┃ ┃ ┣ 📜db_machi_shad.collection_trade.json
-┃ ┃ ┗ 📜db_machi_shad.collection_user.json
-┃ ┗ 📜jsonboubou.json
-┣ 📂src
-┃ ┣ 📂ctrl
-┃ ┃ ┣ 📜ctrlAuth.ts
-┃ ┃ ┣ 📜ctrlBalance.ts
-┃ ┃ ┣ 📜ctrlCmc.ts
-┃ ┃ ┣ 📜ctrlConverter.ts
-┃ ┃ ┣ 📜ctrlMachi.ts
-┃ ┃ ┣ 📜ctrlMarket.ts
-┃ ┃ ┣ 📜ctrlOrderBalance.ts
-┃ ┃ ┣ 📜ctrlOrderMarket.ts
-┃ ┃ ┣ 📜ctrlStrategy.ts
-┃ ┃ ┣ 📜ctrlTicker.ts
-┃ ┃ ┣ 📜ctrlTimestamp.ts
-┃ ┃ ┗ 📜ctrlTrade.ts
-┃ ┣ 📂middlewares
-┃ ┃ ┗ 📜fileUploadMiddleware.ts
-┃ ┣ 📂repo
-┃ ┃ ┣ 📜repoAuth.ts
-┃ ┃ ┣ 📜repoBalance.ts
-┃ ┃ ┣ 📜repoCmc.ts
-┃ ┃ ┣ 📜repoHighPrice.ts
-┃ ┃ ┣ 📜repoMachi.ts
-┃ ┃ ┣ 📜repoMarket.ts
-┃ ┃ ┣ 📜repoOrderBalance.ts
-┃ ┃ ┣ 📜repoServerConfig.ts
-┃ ┃ ┣ 📜repoStrategy.ts
-┃ ┃ ┣ 📜repoTicker.ts
-┃ ┃ ┣ 📜repoTimestamp.ts
-┃ ┃ ┣ 📜repoTrade.ts
-┃ ┃ ┗ 📜repoTrailingStop.ts
-┃ ┣ 📂routes
-┃ ┃ ┣ 📜routeAuth.ts
-┃ ┃ ┣ 📜routeBalance.ts
-┃ ┃ ┣ 📜routeCmc.ts
-┃ ┃ ┣ 📜routeConverter.ts
-┃ ┃ ┣ 📜routeMachi.ts
-┃ ┃ ┣ 📜routeMarket.ts
-┃ ┃ ┣ 📜routeOrder.ts
-┃ ┃ ┣ 📜routeStrategy.ts
-┃ ┃ ┣ 📜routeTicker.ts
-┃ ┃ ┣ 📜routeTimestamp.ts
-┃ ┃ ┗ 📜routeTrade.ts
-┃ ┣ 📂services
-┃ ┃ ┣ 📂metrics
-┃ ┃ ┃ ┣ 📜cmc.ts
-┃ ┃ ┃ ┣ 📜global.ts
-┃ ┃ ┃ ┣ 📜strategies.ts
-┃ ┃ ┃ ┣ 📜trades.ts
-┃ ┃ ┃ ┗ 📜utils.ts
-┃ ┃ ┣ 📜authService.ts
-┃ ┃ ┣ 📜balanceService.ts
-┃ ┃ ┣ 📜cacheService.ts
-┃ ┃ ┣ 📜ccxtService.ts
-┃ ┃ ┣ 📜cmcService.ts
-┃ ┃ ┣ 📜converterService.ts
-┃ ┃ ┣ 📜cronTasksService.ts
-┃ ┃ ┣ 📜databaseService.ts
-┃ ┃ ┣ 📜emailService.ts
-┃ ┃ ┣ 📜generalUpdateManager.ts
-┃ ┃ ┣ 📜machiService.ts
-┃ ┃ ┣ 📜mappingService.ts
-┃ ┃ ┣ 📜marketService.ts
-┃ ┃ ┣ 📜migrationSwapService.ts
-┃ ┃ ┣ 📜mongodbOperationsService.ts
-┃ ┃ ┣ 📜mongodbService.ts
-┃ ┃ ┣ 📜orderBalanceService.ts
-┃ ┃ ┣ 📜orderMarketService.ts
-┃ ┃ ┣ 📜platformUpdateManager.ts
-┃ ┃ ┣ 📜serviceProcessor.ts
-┃ ┃ ┣ 📜serverConfigService.ts
-┃ ┃ ┣ 📜strategyService.ts
-┃ ┃ ┣ 📜tickerService.ts
-┃ ┃ ┣ 📜timestampService.ts
-┃ ┃ ┣ 📜tradeService.ts
-┃ ┃ ┣ 📜trailingStopService.ts
-┃ ┃ ┗ 📜updateSevice.ts
-┃ ┣ 📂types
-┃ ┃ ┣ 📜auth.ts
-┃ ┃ ┣ 📜balance.ts
-┃ ┃ ┣ 📜cache.ts
-┃ ┃ ┣ 📜cmc.ts
-┃ ┃ ┣ 📜cron.ts
-┃ ┃ ┣ 📜database.ts
-┃ ┃ ┣ 📜email.ts
-┃ ┃ ┣ 📜express.d.ts
-┃ ┃ ┣ 📜market.ts
-┃ ┃ ┣ 📜metrics.ts
-┃ ┃ ┣ 📜mongodb.ts
-┃ ┃ ┣ 📜order.ts
-┃ ┃ ┣ 📜platform.ts
-┃ ┃ ┣ 📜routes.ts
-┃ ┃ ┣ 📜strat.ts
-┃ ┃ ┣ 📜ticker.ts
-┃ ┃ ┣ 📜timestamp.ts
-┃ ┃ ┣ 📜trade.ts
-┃ ┃ ┗ 📜trailingStop.ts
-┃ ┣ 📂utils
-┃ ┃ ┣ 📜cronUtil.ts
-┃ ┃ ┣ 📜errorUtil.ts
-┃ ┃ ┣ 📜loggerUtil.ts
-┃ ┃ ┣ 📜mappingUtil.ts
-┃ ┃ ┣ 📜metricsUtil.ts
-┃ ┃ ┣ 📜mockUtil.ts
-┃ ┃ ┣ 📜platformUtil.ts
-┃ ┃ ┣ 📜processorUtil.ts
-┃ ┃ ┣ 📜retryUtil.ts
-┃ ┃ ┗ 📜timeUtil.ts
-┃ ┣ 📜constants.ts
-┃ ┣ 📜index.ts
-┃ ┗ 📜server.ts
-┣ 📂tests
-┃ ┗ 📂unit
-┃ ┣ 📂ctrl
-┃ ┃ ┣ 📜authController.test.ts
-┃ ┃ ┣ 📜balanceController.test.ts
-┃ ┃ ┣ 📜cmcController.test.ts
-┃ ┃ ┣ 📜converterController.test.ts
-┃ ┃ ┣ 📜marketController.test.ts
-┃ ┃ ┣ 📜orderBalanceController.test.ts
-┃ ┃ ┣ 📜orderMarketController.test.ts
-┃ ┃ ┣ 📜shadController.test.ts
-┃ ┃ ┣ 📜strategyController.test.ts
-┃ ┃ ┣ 📜tickerController.test.ts
-┃ ┃ ┣ 📜timestampController.test.ts
-┃ ┃ ┗ 📜tradeController.test.ts
-┃ ┗ 📂routes
-┃ ┣ 📜authRoutes.test.ts
-┃ ┣ 📜balanceRoutes.test.ts
-┃ ┣ 📜cmcRoutes.test.ts
-┃ ┣ 📜marketRoutes.test.ts
-┃ ┣ 📜orderRoutes.test.ts
-┃ ┣ 📜shadRoutes.test.ts
-┃ ┣ 📜strategyRoutes.test.ts
-┃ ┣ 📜tickerRoutes.test.ts
-┃ ┣ 📜timestampRoutes.test.ts
-┃ ┗ 📜tradeRoutes.test.ts
-┣ 📜.env.dev
-┣ 📜.gitignore
-┣ 📜.gitmodules
-┣ 📜.prettierignore
-┣ 📜.prettierrc
-┣ 📜eslint.config.mjs
-┣ 📜jest.config.ts
-┣ 📜LICENSE
-┣ 📜machi00-win v1.0.0.exe
-┣ 📜package.json
-┣ 📜README.md
-┣ 📜tsconfig.json
-┗ 📜yarn.lock
+Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) : `./doc/tree.md`.
 
 ## Sécurité
 
@@ -382,49 +144,7 @@ Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) :
 
 ## Points d'API
 
-Le backend expose les points d'API suivants :
-
-### Données de marché et CMC
-
-- `GET /api/cmc/get`: Obtenir les données CMC
-- `GET /api/cmc/update`: Mettre à jour les données CMC
-- `GET /api/market/get`: Obtenir les données de marché
-- `GET /api/prices/get/history/btc`: Obtenir l'historique des prix BTC
-- `GET /api/prices/get/history/eth`: Obtenir l'historique des prix ETH
-- `GET /api/tickers/get`: Obtenir tous les tickers
-- `GET /api/tickers/update`: Mettre à jour tous les tickers
-
-### Données de trading
-
-- `GET /api/balance/get`: Obtenir le solde du compte
-- `GET /api/balance/update/:platform`: Mettre à jour le solde actuel pour une plateforme spécifique
-- `GET /api/orders/get`: Obtenir les ordres de trading actifs
-- `GET /api/orders/update/:platform`: Mettre à jour les ordres pour une plateforme spécifique
-- `GET /api/strategy/get`: Obtenir les données de stratégie
-- `POST /api/strategy/update`: Mettre à jour les données de stratégie
-- `GET /api/trades/get`: Obtenir les trades historiques
-- `POST /api/trades/add`: Ajouter des trades manuellement
-- `GET /api/trades/update/:platform`: Mettre à jour les trades pour une plateforme spécifique
-- `GET /api/shad/get`: Obtenir les données SHAD
-
-### Gestion des ordres
-
-- `POST /api/orders/cancel`: Annuler un ordre spécifique
-- `POST /api/orders/cancel/all`: Annuler tous les ordres
-- `POST /api/orders/cancel/all/sell`: Annuler tous les ordres de vente
-- `POST /api/orders/market-buy-order`: Créer un ordre d'achat au marché
-- `POST /api/orders/market-sell-order`: Créer un ordre de vente au marché
-- `POST /api/orders/bunch-limit-buy-orders`: Créer plusieurs ordres d'achat limites
-- `POST /api/orders/bunch-limit-sell-orders`: Créer plusieurs ordres de vente limites
-
-### Autres
-
-- `POST /api/converter/post`: Convertir un fichier CSV
-- `POST /api/auth/login`: Connexion utilisateur
-- `POST /api/auth/register`: Inscription utilisateur
-- `GET /api/timestamp/get`: Obtenir la dernière mise à jour
-- `GET /api/timestamp/get/:type/:platform`: Obtenir une mise à jour spécifique
-- `GET /api/timestamp/update/:type`: Mettre à jour par type
+Le backend expose les points d'API dans le fichier suivant  : `./doc/routes.md`.
 
 ## Dépendances
 
@@ -448,12 +168,6 @@ Le backend utilise les packages Node.js suivants :
 ## Tests
 
 Pour exécuter les tests, utilisez la commande suivante :
-
-```bash
-npm test
-```
-
-ou si vous utilisez yarn :
 
 ```bash
 yarn test

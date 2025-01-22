@@ -27,11 +27,15 @@ const COLLECTION_CATEGORY = config.databaseConfig.category.machi;
 
 export class ServiceProcessor {
   static async processBalanceChanges(platform: PLATFORM, differences: BalanceWithDifference[]): Promise<void> {
+   console.log(`Processing balance changes for ${platform} and ${differences.length} differences`)
     try {
       await ServiceOrderBalance.updateOrdersFromServer(platform);
       const newTrades: MappedTrade[] = [];
       for (const difference of differences) {
+        console.log('difference', difference)
         const trades = await this.checkNewTrades(difference);
+        
+        console.log('trades', trades)
         if (Array.isArray(trades) && trades.length > 0) {
           newTrades.push(...trades);
         }
@@ -87,6 +91,8 @@ export class ServiceProcessor {
     //logDifferenceType(difference) si besoin pour des evolutions futures
     try {
       const tradeList = await ServiceTrade.fetchFromApi(difference.platform, difference.base)
+      
+      console.log('tradeList', tradeList)
       if (tradeList && tradeList.length > 0)
         return MappingPlatform.mapTrades(difference.platform, tradeList, {})
     } catch (error) {

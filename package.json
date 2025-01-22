@@ -36,6 +36,7 @@
     "nodemailer": "^6.7.2",
     "papaparse": "^5.4.1",
     "pkg": "^5.8.1",
+    "web-push": "^3.6.7",
     "winston": "^3.3.3"
   },
   "devDependencies": {

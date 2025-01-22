@@ -21,6 +21,9 @@ export class ServiceTrade {
 
   static async fetchFromApi(platform: PLATFORM, base: string): Promise<PlatformTrade[]> {
     const markets = await ServiceMarket.getSavedMarkets();
+    
+    console.log('fetchFromApi base', base)
+    console.log('fetchFromApi markets', markets)
     const validSymbols = QUOTE_CURRENCIES
       .filter(quote => markets.some(market =>
         market.base === base.toUpperCase() && market.quote === quote && market.platform === platform
@@ -30,6 +33,7 @@ export class ServiceTrade {
     const trades: PlatformTrade[] = [];
     const batchSize = 30; // Ajustez selon les limites de l'API
 
+    console.log(`Fetch ${validSymbols} trades for ${platform} ${base}`)
     for (let i = 0; i < validSymbols.length; i += batchSize) {
       const symbolBatch = validSymbols.slice(i, i + batchSize);
       const batchPromises = symbolBatch.map(symbol =>

@@ -55,63 +55,29 @@ Stockage alarmes sur mongodb possible : {price, base, platform, createdAt, updat
 
 ---
 # Liste des Tâches à Effectuer (Modifiable)
-## Étape 1 : Gestion des Alarmes
-### 1.1 Création de la structure de base pour les alarmes
-- [x] Créer un fichier serviceAlarm.ts dans le répertoire backend/src/services. 
-- [x] Ajouter une fonction createAlarm(data: AlarmInput) pour enregistrer une alarme dans MongoDB.
-      - Données attendues : {price, base, platform}.
-- [x] Ajouter une fonction getAlarms(filter?: AlarmFilter) pour récupérer les alarmes existantes.
-      - Paramètres : Possibilité de filtrer par status, base, ou platform.
-- [x] Ajouter une fonction updateAlarm(id: string, updates: Partial<AlarmInput>) pour modifier une alarme existante.
-- [x] Ajouter une fonction deleteAlarm(id: string) pour supprimer une alarme.
+## Étape 1 : Gestion des Notifications
 
-### 1.2 Intégration avec le cron existant
-- [ ] Dans le fichier de cron (nom actuel à confirmer), ajouter l'import de serviceAlarm.ts.
-- [ ] Ajouter une fonction checkAndTriggerAlarms() dans serviceAlarm.ts :
-      - Comparer les données des tickers récupérés avec les alarmes stockées.
-      - Déclencher un événement en cas de condition remplie (price atteint).
-
-### 1.3 Tests unitaires et validations
-- [ ] Créer un fichier serviceAlarm.test.ts dans le répertoire backend/tests/services.
-- [ ] Créer un fichier ctrlAlarm.test.ts dans le répertoire backend/tests/ctrl.
-- [ ] Créer un fichier repoAlarm.test.ts dans le répertoire backend/tests/repo.
-- [ ] Écrire des tests pour les fonctions suivantes :
-      - createAlarm, getAlarms, updateAlarm, deleteAlarm.
-      - checkAndTriggerAlarms : Tester le déclenchement d'une alarme avec des données simulées.
-
-### 1.4 Documentation et validation finale
-- [ ] Mettre à jour les fichiers suivants :
-      - routes.md : Ajouter les routes pour la gestion des alarmes.
-      - tests.md : Détails des tests écrits pour serviceAlarm.
-      - error.md : Documenter les erreurs possibles.
-- [ ] Vérifier que tous les tests passent et qu'il n'y a pas d'erreurs dans error.md.
-
-### 1.5 Commit
-- [ ] Créer un commit dédié pour la gestion des alarmes avec une description claire.
-
-## Étape 2 : Gestion des Notifications
-
-### 2.1 Création de la structure de base pour les notifications
+### 1.1 Création de la structure de base pour les notifications
 - [ ] Créer un fichier serviceNotification.ts dans le répertoire backend/src/services.
 - [ ] Ajouter une fonction sendPushNotification(data: NotificationInput) pour envoyer des notifications push.
-      - Données attendues : {title, message, platform, targetDevice}.
+      - Données attendues : {title, message, platform}.
 - [ ] Ajouter une fonction logNotification(data: NotificationLog) pour enregistrer les notifications envoyées.
 
-### 2.2 Intégration avec la gestion des alarmes
+### 1.2 Intégration avec la gestion des alarmes
 - [ ] Modifier la fonction checkAndTriggerAlarms pour appeler sendPushNotification en cas de déclenchement d'alarme.
 
-### 2.3 Tests unitaires et validations
+### 1.3 Tests unitaires et validations
 - [ ] Créer un fichier serviceNotification.test.ts dans le répertoire tests/services.
 - [ ] Écrire des tests pour les fonctions suivantes :
       - sendPushNotification : Valider l'envoi pour différentes plateformes (web, android).
       - logNotification : Vérifier la création correcte des logs.
 
-### 2.4 Documentation et validation finale
+### 1.4 Documentation et validation finale
 - [ ] Mettre à jour les fichiers suivants :
       - tests.md : Détails des tests pour serviceNotification.
       - error.md : Documenter les erreurs possibles liées aux notifications.
 - [ ] Vérifier que tous les tests passent et qu'il n'y a pas d'erreurs dans error.md.
 
-### 2.5 Commit
+### 1.5 Commit
 - [ ] Créer un commit dédié pour la gestion des notifications avec une description claire.
 # FIN

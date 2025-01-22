@@ -13,7 +13,6 @@ export class RepoAlarm {
      * @returns A list of alarms matching the filter.
      */
     static async fetchAlarms(filter: Partial<DbAlarm> = {}): Promise<DbAlarm[]> {
-        console.log('alarm ou pas', filter)
         return await mongodbOperations.find(COLLECTION_NAME, filter) as DbAlarm[];
     }
 

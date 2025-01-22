@@ -1,4 +1,4 @@
-// doc/tree.md
+# doc/tree.md
 ┣ 📂config
 ┃ ┣ 📜default.ts
 ┃ ┣ 📜index.ts

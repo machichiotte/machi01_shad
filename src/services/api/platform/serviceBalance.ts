@@ -63,6 +63,8 @@ export class ServiceBalance {
    * Compare les balances actuelles et celles de la base de données, puis traite les différences.
    */
   static async updateBalancesForPlatform(platform: PLATFORM): Promise<void> {
+    
+    console.log(`Mise à jour des balances pour la plateforme ${platform}`)
     try {
       return await retry(async () => {
         const [currentBalances, previousBalances] = await Promise.all([
@@ -71,8 +73,11 @@ export class ServiceBalance {
         ]);
 
         const differences = ServiceBalance.compareBalances(previousBalances, currentBalances);
+        
+        console.log(`Mise à jour des balances pour la plateforme ${platform} : ${differences.length} nouvelles differences`)
         const uniqueDifferences = removeDuplicateDifferences(differences)
 
+        console.log(`Mise à jour des balances pour la plateforme ${platform} : ${uniqueDifferences.length} nouvelles differences`)
         if (uniqueDifferences.length > 0) {
           await Promise.all([
             RepoBalance.saveBalances(platform, currentBalances),
