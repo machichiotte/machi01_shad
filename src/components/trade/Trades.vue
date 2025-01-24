@@ -48,8 +48,11 @@ onMounted(async () => {
 watchEffect(() => {
   filteredTrades.value = trades.value
     .filter((item) => {
-      const searchValue = (filters.value.global.value || '').toLowerCase()
+      const searchValue = filters.value.global.value?.toLowerCase() || ''
+      console.log('item.base', item.base)
+      console.log('item', item)
       const matchesPair = item.pair.toLowerCase().startsWith(searchValue)
+      console.log('matchesPair', matchesPair)
       const matchesBase = item.base.toLowerCase().startsWith(searchValue)
       const matchesQuote = item.quote.toLowerCase().startsWith(searchValue)
       const matchesPlatform = item.platform.toLowerCase().startsWith(searchValue)
