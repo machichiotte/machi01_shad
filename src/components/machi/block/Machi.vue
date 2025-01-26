@@ -3,8 +3,8 @@
 import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
 import { useCalculStore } from '../../../store/calculStore' // Import the Pinia store
 import { FilterMatchMode } from 'primevue/api'
-import AssetCard from './AssetCard.vue'
-import BalanceCard from './BalanceCard.vue'
+import CardAsset from './card/CardAsset.vue'
+import CardBalance from './card/CardBalance.vue'
 import SearchBar from './SearchBar.vue'
 
 import PlatformSelector from './PlatformSelector.vue'
@@ -17,7 +17,7 @@ import BuyCalculator from './BuyCalculator.vue'
 
 import { Filter } from '../../../types/filter'
 import { Asset } from '../../../types/responseData'
-import StableCoinCard from './StableCoinCard.vue'
+import CardStableCoin from './card/CardStableCoin.vue'
 
 // Define the selected bases with proper types
 const selectedBases = ref<Asset[]>([])
@@ -212,12 +212,12 @@ onBeforeUnmount(() => {
         <template #end> </template>
       </Toolbar>
 
-      <BalanceCard :assets="filteredMachiItems" />
-      <StableCoinCard :assets="filteredMachiItems" />
+      <CardBalance :assets="filteredMachiItems" />
+      <CardStableCoin :assets="filteredMachiItems" />
 
       <!-- Conteneur de cartes -->
       <div class="asset-card-container">
-        <AssetCard
+        <CardAsset
           v-for="item in paginatedMachiItems"
           :key="item.base"
           :asset="item"

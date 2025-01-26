@@ -1495,6 +1495,11 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
+swapy@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/swapy/-/swapy-1.0.5.tgz#f280c568800c0a74112c25e91bbe987bb142a367"
+  integrity sha512-XEzy5HCw7yESb7QajKTBJ+NA/BL0kAKlE7XhSMPZawF740X4ws/5CFtXRsVDQ+EztISC759a9+DJM9mxjz4hXg==
+
 sweetalert2@11.4.4:
   version "11.4.4"
   resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.4.4.tgz#49b8db39f00a699224bb6aabcd1185b5a4fea739"
