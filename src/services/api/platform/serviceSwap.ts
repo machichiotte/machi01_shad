@@ -7,6 +7,7 @@ import { ServiceStrategy } from '@services/api/database/serviceStrategy';
 import { ServiceTrade } from '@services/api/platform/serviceTrade';
 import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
+import { PLATFORM } from '@src/types/platform';
 
 const COLLECTION_NAME = config.databaseConfig.collection.swap;
 
@@ -35,7 +36,7 @@ export class ServiceSwap {
     }
   }
 
-  static async updateStrategy(strategy: MappedStrat, newAsset: string, platform: string): Promise<void> {
+  static async updateStrategy(strategy: MappedStrat, newAsset: string, platform: PLATFORM): Promise<void> {
     const updatedStrategy = { ...strategy, base: newAsset };
     if (strategy._id && updatedStrategy) {
       await ServiceStrategy.updateStrategyById(updatedStrategy);

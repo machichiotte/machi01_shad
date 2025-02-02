@@ -19,6 +19,15 @@ Machi00 Server est le backend du projet Machi00, construit avec Node.js et Expre
 ## Fonctionnalités secondaires
 - 🔄 Conversion de fichiers CSV pour l'importation de données historiques
 
+## Prérequis
+
+Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments suivants installés sur votre système :
+
+- Node.js (>=14)
+- yarn
+- MongoDB
+- Git
+
 ## Démarrage rapide
 
 1. Clonez le dépôt
@@ -27,13 +36,24 @@ Machi00 Server est le backend du projet Machi00, construit avec Node.js et Expre
 4. Lancez le serveur : `yarn dev`
 Le serveur sera accessible à `http://localhost:10000`.
 
+## Installation
+
+1. Clonez le dépôt depuis GitHub :
+
+```bash
+git clone https://github.com/machichiotte/machi-shad-backend.git
+```
+
+2. Installez les dépendances :
+   `yarn install`
+   
 ## Architecture
 
-Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) : `./tree.md`.
+Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) : `./doc/tree.md`.
 
 ## Points d'API
 
-Le backend expose les points d'API dans le fichier suivant  : `./routes.md`.
+Le backend expose les points d'API dans le fichier suivant  : `./doc/routes.md`.
 
 ## Dépendances
 

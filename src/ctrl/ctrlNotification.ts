@@ -1,12 +1,12 @@
 // src/ctrl/ctrlNotification.ts
 import webPush from 'web-push'
+import { Request, Response } from 'express'
 
 // Clés VAPID (remplacez par les vôtres)
 // const vapidKeys = {
 //   publicKey: '<YOUR_PUBLIC_KEY>',
 //   privateKey: '<YOUR_PRIVATE_KEY>'
 // }
-
 
 const vapidKeys = webPush.generateVAPIDKeys()
 
