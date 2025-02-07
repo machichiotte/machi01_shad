@@ -63,6 +63,7 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 
 <template>
     <div class="card-details">
+        <!-- Menu supérieur gauche -->
         <div class="card-panel">
             <div class="card-details-menu">
                 <Menubar :model="menubarLeft" @command="onMenuSelectLeft" />
@@ -79,7 +80,6 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
                 </div>
                 <div v-if="selectedMenuLeft === '1'">
                     <p>A rajouter</p>
-
                 </div>
                 <div v-if="selectedMenuLeft === '2'">
                     <p>A rajouter</p>
@@ -87,11 +87,12 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
             </div>
         </div>
 
+        <!-- Menu supérieur droit -->
         <div class="card-panel">
             <div class="card-details-menu">
                 <Menubar :model="menubarRight" @command="onMenuSelectRight" />
             </div>
-            <div class="card-details-content">
+            <div class="card-details-content table-container">
                 <div v-if="selectedMenuRight === '0'">
                     <OrdersTable v-if="orders.length" :items="orders" />
                     <p v-else>Pas d'ordres ouverts</p>
@@ -109,36 +110,53 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 </template>
 
 <style scoped>
-.menubar {
+.card-details {
+    background-color: #ddd;
+    padding: 1rem;
+    max-width: 100%;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+}
+
+/* Menus fixes */
+.card-details-menu {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    z-index: 10;
     background-color: #f4f4f4;
     padding: 0.5rem;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.card-details {
-    background-color: #ddd;
-    padding: 1rem;
-    overflow-x: auto;
-    max-width: 100%;
-    display: grid;
-}
-
-.card-details-menu {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-    z-index: 10;
-}
-
+/* Contenu avec défilement */
 .card-details-content {
-    overflow-x: auto;
-    white-space: nowrap;
     max-width: 100%;
+    overflow-x: auto; /* Défilement horizontal uniquement pour le contenu large */
+    white-space: nowrap; /* Empêche le texte de se découper */
 }
 
+/* Conteneur des tableaux */
+.table-container {
+    overflow-x: auto; /* Conteneur pour les tableaux avec défilement horizontal */
+    white-space: nowrap;
+}
+
+/* Défilement personnalisé pour une meilleure apparence */
+.card-details-content::-webkit-scrollbar,
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+.card-details-content::-webkit-scrollbar-thumb,
+.table-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+.card-details-content::-webkit-scrollbar-track,
+.table-container::-webkit-scrollbar-track {
+    background: #f4f4f4;
+}
 
 /* Bouton de sauvegarde */
 .save-button {

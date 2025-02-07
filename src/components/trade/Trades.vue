@@ -49,10 +49,7 @@ watchEffect(() => {
   filteredTrades.value = trades.value
     .filter((item) => {
       const searchValue = filters.value.global.value?.toLowerCase() || ''
-      console.log('item.base', item.base)
-      console.log('item', item)
       const matchesPair = item.pair.toLowerCase().startsWith(searchValue)
-      console.log('matchesPair', matchesPair)
       const matchesBase = item.base.toLowerCase().startsWith(searchValue)
       const matchesQuote = item.quote.toLowerCase().startsWith(searchValue)
       const matchesPlatform = item.platform.toLowerCase().startsWith(searchValue)
@@ -104,7 +101,7 @@ watchEffect(() => {
     return item.side && item.side.toLowerCase() === 'sell';
   });
   totalSell.value = sellTrades.reduce((acc, item) => safeSum(acc, item.eqUSD), 0)
-  
+
   amountSell.value = sellTrades.reduce((acc, item) => acc + (item.amount || 0), 0)
 
   const buyTrades = filteredTrades.value.filter((item) => {
