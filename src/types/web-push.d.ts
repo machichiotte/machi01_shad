@@ -32,6 +32,7 @@ declare module 'web-push' {
         privateKey: string;
       };
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any>;
 
   function setVapidDetails(
