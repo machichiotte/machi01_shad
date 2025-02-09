@@ -141,6 +141,7 @@ const copyToClipboard = () => {
     padding: 1rem;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #333;
 }
 
 .header-row {
@@ -199,6 +200,7 @@ button:hover:enabled {
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
+    background-color: #333;
 }
 
 .response-block {
