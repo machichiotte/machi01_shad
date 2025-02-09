@@ -29,7 +29,7 @@ export default {
         apiKey: this.payload.apiKey,
         secretKey: this.payload.secretKey,
         passphrase: this.payload.passphrase
-      }; 
+      };
 
       try {
         const response = await updateKey(payload);
@@ -44,35 +44,110 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="config-container">
     <h1>Configuration</h1>
-    <form @submit.prevent="sendKeyToServer">
-      <div>
-        <label for="type">Type:</label>
-        <select v-model="payload.type">
-          <option value="cmc">CMC</option>
-          <option value="platform">Platform</option>
-        </select>
-      </div>
-      <div v-if="payload.type === 'cmc'">
-        <label for="apiKey">API Key:</label>
-        <input type="text" v-model="payload.apiKey" required />
-      </div>
-      <div v-if="payload.type === 'platform'">
-        <label for="platform">Platform:</label>
-        <select v-model="payload.platform">
-          <option v-for="platform in PLATFORMS" :key="platform" :value="platform">{{ platform }}</option>
-        </select>
-        <label for="apiKey">API Key:</label>
-        <input type="text" v-model="payload.apiKey" required />
-        <label for="secretKey">Secret Key:</label>
-        <input type="text" v-model="payload.secretKey" required />
-        <div v-if="isPassphraseRequired">
-          <label for="passphrase">Passphrase:</label>
-          <input type="text" id="passphrase" v-model="payload.passphrase" required />
+
+    <div class="config-section">
+      <h2>Configuration CoinMarketCap</h2>
+      <form @submit.prevent="payload.type = 'cmc'; sendKeyToServer()">
+        <div class="form-group">
+          <label for="cmcApiKey">Clé API CoinMarketCap:</label>
+          <input type="text" id="cmcApiKey" v-model="payload.apiKey" required placeholder="Entrez votre clé API CMC" />
         </div>
-      </div>
-      <button type="submit">Envoyer</button>
-    </form>
+        <button type="submit">Mettre à jour la clé CMC</button>
+      </form>
+    </div>
+
+    <div class="config-section">
+      <h2>Configuration Plateforme d'Échange</h2>
+      <form @submit.prevent="payload.type = 'platform'; sendKeyToServer()">
+        <div class="form-group">
+          <label for="platform">Plateforme:</label>
+          <select id="platform" v-model="payload.platform" required>
+            <option value="" disabled selected>Sélectionnez une plateforme</option>
+            <option v-for="platform in PLATFORMS" :key="platform" :value="platform">
+              {{ platform }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="platformApiKey">Clé API:</label>
+          <input type="text" id="platformApiKey" v-model="payload.apiKey" required placeholder="Entrez votre clé API" />
+        </div>
+        <div class="form-group">
+          <label for="secretKey">Clé Secrète:</label>
+          <input type="text" id="secretKey" v-model="payload.secretKey" required
+            placeholder="Entrez votre clé secrète" />
+        </div>
+        <div v-if="isPassphraseRequired" class="form-group">
+          <label for="passphrase">Passphrase:</label>
+          <input type="text" id="passphrase" v-model="payload.passphrase" required
+            placeholder="Entrez votre passphrase" />
+        </div>
+        <button type="submit">Mettre à jour la configuration plateforme</button>
+      </form>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.config-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.config-section {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 1.2em;
+}
+
+.form-group {
+  margin-bottom: 4px;
+}
+
+label {
+  display: block;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 1px;
+  font-weight: bold;
+  color: #333;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 6px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+</style>
