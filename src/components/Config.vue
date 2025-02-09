@@ -98,10 +98,11 @@ export default {
 }
 
 .config-section {
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 5px;
+  padding: 1rem;
   margin-bottom: 15px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  background-color: #333;
 }
 
 h1 {
@@ -110,7 +111,6 @@ h1 {
 }
 
 h2 {
-  color: #333;
   margin-bottom: 8px;
   font-size: 1.2em;
 }
@@ -125,21 +125,22 @@ label {
   padding: 0;
   margin-bottom: 1px;
   font-weight: bold;
-  color: #333;
 }
 
 input,
 select {
   width: 100%;
   padding: 6px;
-  border: 1px solid #ddd;
+  color: #ccc;
+  border: 1px solid #ccc;
   border-radius: 4px;
+  background-color: #333;
 }
 
 button {
-  background-color: #4CAF50;
+  background-color: #007bff;
   color: white;
-  padding: 8px 12px;
+  padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -148,6 +149,6 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #007bff;
 }
 </style>
