@@ -150,42 +150,67 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+/* Style for the DataTable container */
 .p-datatable {
   max-width: 100%;
   width: 90%;
-  /* Ajuste la largeur pour centrer */
   overflow-x: auto;
-  /* Permet le scroll horizontal si nécessaire */
+  background-color: #333;
+  /* Background set to dark gray (#333) */
+  border: 1px solid #222;
+  /* Border color set to #222 */
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  color: #ccc;
+  /* Default text color set to #ccc */
 }
 
-/* Ajoutez cette classe pour styliser les lignes du tableau */
+/* Style for the table header */
+.p-datatable thead {
+  background-color: #333;
+  /* Header background matching the DataTable */
+  color: #ccc;
+  /* Header text color set to #ccc */
+}
+
+/* Style for table rows */
 .p-datatable tbody tr {
-  border-bottom: 1px solid #ccc;
-  /* Couleur de la bordure */
+  border-bottom: 1px solid #222;
+  /* Row bottom border set to #222 */
+  color: #ccc;
+  /* Row text color set to #ccc */
 }
 
+/* Remove border for the last table row */
 .p-datatable tbody tr:last-child {
   border-bottom: none;
-  /* Enlever la bordure sur la dernière ligne */
 }
 
+/* Additional styling for other components */
 .button-container {
   margin: 20px 0;
+}
+
+button {
+  background: #007bff;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .text-align-left {
   display: flex;
   justify-content: center;
-  /* Centre les deux selects */
   gap: 20px;
-  /* Ajuste l'espace entre les selects */
   margin-bottom: 20px;
 }
 
 .select-container {
   display: flex;
   justify-content: center;
-  /* Centre les selects dans chaque colonne */
   gap: 10px;
 }
 
@@ -193,7 +218,6 @@ onMounted(async () => {
   text-align: center;
 }
 
-/* Centrer et gérer la largeur du tableau */
 .data-table-wrapper {
   display: flex;
   justify-content: center;
