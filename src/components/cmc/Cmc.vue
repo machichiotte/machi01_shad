@@ -1,13 +1,12 @@
-<!-- src/components/Cmc.vue -->
+<!-- src/components/cmc/Cmc.vue -->
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useCalculStore } from '../store/calculStore';
-import { cmcColumns } from '../js/columns.ts'
+import { useCalculStore } from '../../store/calculStore.ts';
 import { FilterMatchMode } from 'primevue/api'
-import SearchBar from "./machi/SearchBar.vue";
-import { Cmc } from '../types/responseData'
+import SearchBar from "../machi/SearchBar.vue";
+import CmcTable from "./CmcTable.vue";
+import { Cmc } from '../../types/responseData.ts'
 const itemsPerPage = ref(100)
-const cols = ref(cmcColumns)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
@@ -72,10 +71,7 @@ onMounted(async () => {
     <h1>CMC</h1>
     <SearchBar :filters="filters" />
     <div id="table">
-      <DataTable :value="rows" :rows="itemsPerPage" :paginator="true" scrollable columnResizeMode="fit"
-        :filters="filters">
-        <Column v-for="(col, index) in cols" :key="index" :field="col.field" :header="col.header"></Column>
-      </DataTable>
+      <CmcTable :rows="rows" :globalFilter="filters.global.value || ''" :itemsPerPage="itemsPerPage" />
     </div>
   </div>
 </template>
@@ -83,10 +79,5 @@ onMounted(async () => {
 <style scoped>
 .page {
   overflow-x: auto;
-}
-
-#table {
-  height: 700px;
-  width: auto;
 }
 </style>
