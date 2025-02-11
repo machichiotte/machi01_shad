@@ -1,12 +1,13 @@
-<!-- src/components/Strategy.vue -->
+<!-- src/components/strat/Strategy.vue -->
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { successSpin, errorSpin } from '../js/utils/spinner';
-import { strategies } from '../js/strat/index';
-import { useCalculStore } from '../store/calculStore';
+import { successSpin, errorSpin } from '../../js/utils/spinner';
+import { strategies } from '../../js/strat/index';
+import { useCalculStore } from '../../store/calculStore';
 import { FilterMatchMode } from 'primevue/api'
-import SearchBar from "./machi/SearchBar.vue";
-import { getSelectedStrategy, setSelectedStrategy, isVisible, getSelectedMaxExposure, setSelectedMaxExposure } from '../js/utils/strategyUtils';
+import SearchBar from "../machi/SearchBar.vue";
+import StrategyTable from "./StrategyTable.vue";
+import { getSelectedStrategy, setSelectedStrategy, isVisible, getSelectedMaxExposure, setSelectedMaxExposure } from '../../js/utils/strategyUtils';
 
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 
@@ -94,11 +95,11 @@ onMounted(async () => {
 
 <template>
   <div>
-    <div class="button-container">
-      <button @click="updateStrat">Save</button>
-    </div>
+
 
     <div class="text-align-left">
+      <SearchBar :filters="filters" />
+
       <select v-model="selectedStrategy" @change="updateAllStrats">
         <option value="">Select a strategy</option>
         <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
@@ -112,38 +113,16 @@ onMounted(async () => {
           {{ exposure }}
         </option>
       </select>
+
+      <button @click="updateStrat">Save</button>
     </div>
 
-    <SearchBar :filters="filters" />
 
     <!-- Wrap the table in a div to apply the centering -->
     <div class="data-table-wrapper">
-      <DataTable :value="tableData" :columns="columns" :paginator="true" :rows="500" scrollable columnResizeMode="fit"
-        :filters="filters" showGridlines>
-        <Column field="base" header="Base" class="centered-column" />
-        <Column v-for="platform in platforms" :key="platform" :field="platform" :header="platform"
-          class="centered-column">
-          <template #body="slotProps">
-            <div class="select-container">
-              <select v-if="slotProps.data[platform].isVisible" :value="slotProps.data[platform].strategy"
-                @input="setSelectedStrategy(strat, slotProps.data.base, platform, $event.target.value)">
-                <option value=""></option>
-                <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
-                  {{ strategy }}
-                </option>
-              </select>
-
-              <select v-if="slotProps.data[platform].isVisible" :value="slotProps.data[platform].maxExposure"
-                @input="setSelectedMaxExposure(strat, slotProps.data.base, platform, $event.target.value)">
-                <option value=""></option>
-                <option v-for="exposure in exposures" :key="exposure" :value="exposure">
-                  {{ exposure }}
-                </option>
-              </select>
-            </div>
-          </template>
-        </Column>
-      </DataTable>
+      <StrategyTable :tableData="tableData" :platforms="platforms" :strategyLabels="strategyLabels"
+        :exposures="exposures" :setSelectedStrategy="setSelectedStrategy"
+        :setSelectedMaxExposure="setSelectedMaxExposure" :globalFilter="filters.global.value" />
     </div>
   </div>
 
@@ -185,11 +164,6 @@ onMounted(async () => {
 /* Remove border for the last table row */
 .p-datatable tbody tr:last-child {
   border-bottom: none;
-}
-
-/* Additional styling for other components */
-.button-container {
-  margin: 20px 0;
 }
 
 button {
