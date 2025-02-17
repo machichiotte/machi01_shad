@@ -1,7 +1,7 @@
 <!-- src/components/machi/StrategyTable.vue -->
 <script setup lang="ts">
 // 1: Importation des fonctions nécessaires depuis Vue
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 
 // 2: Définition de l'interface pour les données d'une plateforme dans une ligne du tableau
 interface PlatformData {

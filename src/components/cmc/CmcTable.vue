@@ -3,7 +3,7 @@
 import { cmcColumns } from '../../js/columns.ts'
 
 // 1: Importation des fonctions réactives de Vue
-import { computed, defineProps, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 // 2: Définition de l'interface pour une ligne de données CMC
 interface CmcRow {
