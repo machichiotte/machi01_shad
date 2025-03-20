@@ -15,7 +15,6 @@ export class ServiceCcxt {
         }
 
         const encryptedPlatformConfig = config.apiConfig.platform[platform];
-
         const decryptedPlatformConfig = RepoConfigApi.decryptConfigPlatform(encryptedPlatformConfig)
         const { apiKey, secretKey } = decryptedPlatformConfig
         const passphrase = 'passphrase' in decryptedPlatformConfig ? decryptedPlatformConfig.passphrase : undefined;
@@ -23,13 +22,13 @@ export class ServiceCcxt {
         try {
             // Check if the CCXT class exists
             const exchangeClass = ccxt[platform as keyof typeof ccxt] as typeof ccxt.Exchange
-
             const platformParams: ccxt.Exchange['options'] = {
                 apiKey,
                 secret: secretKey,
                 ...(passphrase && { password: passphrase }),
                 timeout: 20000, // Timeout for requests
-                enableRateLimit: true // Enable rate limiting
+                enableRateLimit: true, // Enable rate limiting
+                adjustForTimeDifference: true
             }
             return new exchangeClass(platformParams)
         } catch (error) {
@@ -45,14 +44,23 @@ export class ServiceCcxt {
     }
 
     static async fetchRawTicker(platform: PLATFORM): Promise<PlatformTickers> {
-        const platformInstance = this.createPlatformInstance(platform);
-        return await platformInstance.fetchTickers();
+        try {
+            const platformInstance = this.createPlatformInstance(platform);
+            return await platformInstance.fetchTickers();
+        } catch (error) {
+            // Vérifie si l'erreur provient de CCXT et affiche son message détaillé
+            if (error instanceof Error) {
+                console.error(`fetchRawTicker error on platform ${platform}:`, error.message);
+            } else {
+                console.error(`fetchRawTicker unknown error on platform ${platform}:`, error);
+            }
+            throw error; // Relance l'erreur pour être gérée plus haut dans la chaîne d'appel
+        }
     }
 
     static async fetchRawMarket(platform: PLATFORM): Promise<PlatformMarket[]> {
         const platformInstance = this.createPlatformInstance(platform);
-        const markets = await platformInstance.fetchMarkets()
-        return markets;
+        return await platformInstance.fetchMarkets()
     }
 
     static async fetchRawTrade(platform: PLATFORM, symbol?: string, since?: number, limit?: number, params?: Record<string, unknown>): Promise<PlatformTrade[]> {
@@ -107,10 +115,8 @@ export class ServiceCcxt {
             if (orders.length < pageSize) {
                 break
             }
-
             currentPage++
         }
-
         return allOrders
     }
 
@@ -123,7 +129,6 @@ export class ServiceCcxt {
             const platformInstance = this.createPlatformInstance(platform)
             await platformInstance.cancelAllOrders(symbol)
         }
-
     }
 
     static async cancelAllOrdersRecursively(platform: PLATFORM, symbol: string, orderIds: ObjectId[]) {
