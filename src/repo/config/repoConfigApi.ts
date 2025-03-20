@@ -40,10 +40,6 @@ export class RepoConfigApi {
     return data[0]
   }
 
- 
-
-  
-
   static async updateConfigApi(config: Api): Promise<void> {
     await ServiceDatabase.deleteAndInsertData(COLLECTION_NAME, [
       config

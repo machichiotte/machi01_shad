@@ -77,7 +77,7 @@ export class ServiceTrailingStop {
 
                     await this.handleRateLimiting(platform, requestWeight, orderCount, lastResetTime);
 
-                    const ticker = platformTickers.find(t => t.symbol === `${base}/USDT`);
+                    const ticker = platformTickers.find(t => t.symbol === `${base}/USDC`);
                     if (!ticker) continue;
 
                     const { last: currentPrice } = ticker;
@@ -91,7 +91,7 @@ export class ServiceTrailingStop {
                             orderCount += platform === 'binance' ? 1 : 0;
                         }
                     } else {
-                       // console.info(`Prix actuel non défini pour ${base} sur ${platform}`);
+                        // console.info(`Prix actuel non défini pour ${base} sur ${platform}`);
                     }
                 }
             }

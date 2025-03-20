@@ -30,6 +30,7 @@ export class MappingPlatform {
         available: Number(data.free) || 0,
         platform
       }));
+
     return balances;
   }
 

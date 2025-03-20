@@ -29,7 +29,7 @@ export interface CompactMappedCmc {
 }
 
 export interface TotalAmountAndBuy {
-  totalAmount: number
+  totalAmountBuy: number
   totalBuy: number
   averageEntryPrice: number
 }
@@ -100,7 +100,7 @@ interface Orders {
   trade: {
     totalBuy: number // Total des achats
     totalSell: number // Total des ventes
-    totalAmountBuySell: number // Quantité totale achetée et vendue
+    totalAmountBuy: number // Quantité totale achetée et vendue
     averageEntryPrice: number // Prix moyen d'entrée
     trades: MappedTrade[] // Liste des trades
   }

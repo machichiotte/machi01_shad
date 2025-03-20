@@ -40,7 +40,7 @@ function checkApiKeys(platform: PLATFORM): boolean {
 /**
  * Get the symbol format for a specific platform
  */
-function getMarketSymbolForPlatform(platform: PLATFORM, base: string, quote: string = 'USDT'
+function getMarketSymbolForPlatform(platform: PLATFORM, base: string, quote: string = 'USDC'
 ): string {
   console.log('getMarketSymbolForPlatform', platform, base, quote)
   let symbol: string

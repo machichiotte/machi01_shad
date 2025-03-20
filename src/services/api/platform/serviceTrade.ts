@@ -21,9 +21,7 @@ export class ServiceTrade {
 
   static async fetchFromApi(platform: PLATFORM, base: string): Promise<PlatformTrade[]> {
     const markets = await ServiceMarket.getSavedMarkets();
-    
-    console.log('fetchFromApi base', base)
-    console.log('fetchFromApi markets', markets)
+
     const validSymbols = QUOTE_CURRENCIES
       .filter(quote => markets.some(market =>
         market.base === base.toUpperCase() && market.quote === quote && market.platform === platform

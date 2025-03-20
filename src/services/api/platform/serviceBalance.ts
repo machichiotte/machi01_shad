@@ -14,6 +14,7 @@ export class ServiceBalance {
   static async fetchDatabaseBalance(): Promise<MappedBalance[]> {
     return await RepoBalance.fetchAll()
   }
+
   /**
    * Récupère les données de solde de la base de données pour une plateforme spécifique avec tentatives.
    */
@@ -63,7 +64,7 @@ export class ServiceBalance {
    * Compare les balances actuelles et celles de la base de données, puis traite les différences.
    */
   static async updateBalancesForPlatform(platform: PLATFORM): Promise<void> {
-    
+
     console.log(`Mise à jour des balances pour la plateforme ${platform}`)
     try {
       return await retry(async () => {
@@ -73,7 +74,7 @@ export class ServiceBalance {
         ]);
 
         const differences = ServiceBalance.compareBalances(previousBalances, currentBalances);
-        
+
         console.log(`Mise à jour des balances pour la plateforme ${platform} : ${differences.length} nouvelles differences`)
         const uniqueDifferences = removeDuplicateDifferences(differences)
 

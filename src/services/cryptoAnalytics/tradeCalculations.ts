@@ -35,17 +35,17 @@ export function getTotalAmountAndBuy(symbol: string, trades: MappedTrade[]): Tot
       const amount = Number(trade.amount) > 0 ? Number(trade.amount) : 0 // Assurez-vous que amount est un nombre
 
       acc.totalBuy += trade.eqUSD + feeInQuote
-      acc.totalAmount += amount
-      acc.averageEntryPrice = acc.totalBuy / acc.totalAmount
+      acc.totalAmountBuy += amount
+      acc.averageEntryPrice = acc.totalBuy / acc.totalAmountBuy
 
       // Formater les valeurs pour avoir 2 chiffres après la virgule
       acc.totalBuy = parseFloat(acc.totalBuy.toFixed(2));
-      acc.totalAmount = parseFloat(acc.totalAmount.toFixed(2));
+      acc.totalAmountBuy = parseFloat(acc.totalAmountBuy.toFixed(2));
       acc.averageEntryPrice = parseFloat(acc.averageEntryPrice.toFixed(2));
 
       return acc
     },
-    { totalAmount: 0, totalBuy: 0, averageEntryPrice: 0 }
+    { totalAmountBuy: 0, totalBuy: 0, averageEntryPrice: 0 }
   )
 }
 

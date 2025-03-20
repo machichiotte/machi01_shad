@@ -4,6 +4,7 @@ import { handleControllerError } from '@utils/errorUtil'
 import { ServiceBalance } from '@services/api/platform/serviceBalance'
 import { PLATFORM } from '@typ/platform'
 import { PLATFORMS } from '@src/constants/platform'
+import { isValidPlatform } from '@utils/platformUtil'
 
 /** 
  * Récupère le dernier solde enregistré dans la base de données.
@@ -46,4 +47,24 @@ async function updateCurrentBalance(req: Request, res: Response): Promise<void> 
   }
 }
 
-export { getBalances, updateCurrentBalance }
+/**
+ * Récupère les derniers trades pour une plateforme et un symbole spécifiques.
+ */
+async function fetchLastBalances(req: Request, res: Response): Promise<void> {
+  const { platform } = req.params
+
+  if (!isValidPlatform(platform)) {
+    res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
+    return;
+  }
+
+  try {
+    const data = await ServiceBalance.fetchCurrentBalancesByPlatform(platform, 1)
+    res.status(200).json({ status: "success", message: 'Derniers trades récupérés', data })
+  } catch (error) {
+    handleControllerError(res, error, 'fetchLastTrades')
+  }
+}
+
+
+export { getBalances, updateCurrentBalance, fetchLastBalances }

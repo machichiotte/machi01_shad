@@ -9,7 +9,7 @@ import { MappedTicker } from '@typ/ticker'
 import { PLATFORM } from '@typ/platform'
 import { PLATFORMS } from '@src/constants/platform'
 import { ServiceAlarm } from '@src/services/serviceAlarm'
- 
+
 export class ServiceTicker {
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {
     return await RepoTicker.fetchAll()

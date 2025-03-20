@@ -16,7 +16,7 @@ function isMajorCryptoPair(symbol: string): boolean {
 }
 
 /**
- * Calculates the total value in USDT for a given symbol and cost.
+ * Calculates the total value in USDC for a given symbol and cost.
  */
 function getEqUSD(symbol: string, cost: number, conversionRates: Record<string, number> = {}): number | null {
   const [baseAsset, quoteAsset] = symbol.split('/')

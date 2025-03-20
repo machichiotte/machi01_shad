@@ -55,16 +55,16 @@ export function calculateAssetMetrics(
   const cmcValues = closestCmc
     ? getCmcValues(closestCmc)
     : {
-        rank: 0,
-        name: '',
-        currentCmcPrice: 0,
-        iconUrl: '',
-        cryptoPercentChange24h: 0,
-        cryptoPercentChange7d: 0,
-        cryptoPercentChange30d: 0,
-        cryptoPercentChange60d: 0,
-        cryptoPercentChange90d: 0
-      }
+      rank: 0,
+      name: '',
+      currentCmcPrice: 0,
+      iconUrl: '',
+      cryptoPercentChange24h: 0,
+      cryptoPercentChange7d: 0,
+      cryptoPercentChange30d: 0,
+      cryptoPercentChange60d: 0,
+      cryptoPercentChange90d: 0
+    }
 
   const totalSell = getTotalSell(base, lastTrades)
 
@@ -74,7 +74,7 @@ export function calculateAssetMetrics(
     base
   )
 
-  const { totalAmount, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(
+  const { totalAmountBuy, totalBuy, averageEntryPrice } = getTotalAmountAndBuy(
     base,
     lastTrades
   )
@@ -128,10 +128,10 @@ export function calculateAssetMetrics(
         currentOrders: lastOpenOrders
       },
       trade: {
-        totalBuy: totalBuy,
-        totalSell: totalSell,
-        totalAmountBuySell: totalAmount,
-        averageEntryPrice: averageEntryPrice,
+        totalBuy,
+        totalSell,
+        totalAmountBuy,
+        averageEntryPrice,
         trades: lastTrades
       }
     }
@@ -231,7 +231,7 @@ function getTicker(
   // Filtrer les tickers qui commencent par 'base/' et retourner le dernier prix
   const ticker = tickers.find(
     (ticker) =>
-      ticker?.symbol === `${base}/USDT` && ticker.platform === platform
+      ticker?.symbol === `${base}/USDC` && ticker.platform === platform
   )
   return ticker?.last ?? 0 // Retourne le dernier prix ou undefined si aucun ticker n'est trouvé
 }
