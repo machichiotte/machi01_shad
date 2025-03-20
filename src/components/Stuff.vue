@@ -10,7 +10,7 @@ const balance_platform = ref<string>(''); // Champ d'entrée pour `platform`
 const responseJson = ref<object | null>(null); // Stocke la réponse du serveur
 const isLoading = ref<boolean>(false); // Indique si une requête est en cours
 
-const handleClick = async () => {
+const fetchTradeBySymbolAndPlatform = async () => {
     isLoading.value = true; // Affiche le loader
 
     try {
@@ -111,7 +111,7 @@ const copyToClipboard = () => {
             <div class="request-block">
                 <div class="header-row">
                     <h4>Obtenir les trades</h4>
-                    <button @click="handleClick" :disabled="isLoading">
+                    <button @click="fetchTradeBySymbolAndPlatform" :disabled="isLoading">
                         {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
                     </button>
                 </div>
