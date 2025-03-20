@@ -6,10 +6,14 @@ import { PLATFORMS } from '../types/platform';
 export default {
   data() {
     return {
-      payload: {
+      payloadCMC: {
         type: 'cmc',
-        apiKey: '',
+        apiKey: ''
+      },
+      payloadPlatform: {
+        type: 'platform',
         platform: '',
+        apiKey: '',
         secretKey: '',
         passphrase: ''
       },
@@ -18,19 +22,11 @@ export default {
   },
   computed: {
     isPassphraseRequired() {
-      return this.payload.platform === 'kucoin' || this.payload.platform === 'htx';
+      return this.payloadPlatform.platform === 'kucoin' || this.payloadPlatform.platform === 'htx';
     }
   },
   methods: {
-    async sendKeyToServer() {
-      const payload = {
-        type: this.payload.type,
-        platform: this.payload.platform,
-        apiKey: this.payload.apiKey,
-        secretKey: this.payload.secretKey,
-        passphrase: this.payload.passphrase
-      };
-
+    async sendKeyToServer(payload) {
       try {
         const response = await updateKey(payload);
         alert(response.message);
@@ -47,23 +43,26 @@ export default {
   <div class="config-container">
     <h1>Configuration</h1>
 
+    <!-- Configuration CoinMarketCap -->
     <div class="config-section">
       <h2>Configuration CoinMarketCap</h2>
-      <form @submit.prevent="payload.type = 'cmc'; sendKeyToServer()">
+      <form @submit.prevent="sendKeyToServer(payloadCMC)">
         <div class="form-group">
           <label for="cmcApiKey">Clé API CoinMarketCap:</label>
-          <input type="text" id="cmcApiKey" v-model="payload.apiKey" required placeholder="Entrez votre clé API CMC" />
+          <input type="text" id="cmcApiKey" v-model="payloadCMC.apiKey" required
+            placeholder="Entrez votre clé API CMC" />
         </div>
         <button type="submit">Mettre à jour la clé CMC</button>
       </form>
     </div>
 
+    <!-- Configuration Plateforme d'Échange -->
     <div class="config-section">
       <h2>Configuration Plateforme d'Échange</h2>
-      <form @submit.prevent="payload.type = 'platform'; sendKeyToServer()">
+      <form @submit.prevent="sendKeyToServer(payloadPlatform)">
         <div class="form-group">
           <label for="platform">Plateforme:</label>
-          <select id="platform" v-model="payload.platform" required>
+          <select id="platform" v-model="payloadPlatform.platform" required>
             <option value="" disabled selected>Sélectionnez une plateforme</option>
             <option v-for="platform in PLATFORMS" :key="platform" :value="platform">
               {{ platform }}
@@ -72,16 +71,17 @@ export default {
         </div>
         <div class="form-group">
           <label for="platformApiKey">Clé API:</label>
-          <input type="text" id="platformApiKey" v-model="payload.apiKey" required placeholder="Entrez votre clé API" />
+          <input type="text" id="platformApiKey" v-model="payloadPlatform.apiKey" required
+            placeholder="Entrez votre clé API" />
         </div>
         <div class="form-group">
           <label for="secretKey">Clé Secrète:</label>
-          <input type="text" id="secretKey" v-model="payload.secretKey" required
+          <input type="text" id="secretKey" v-model="payloadPlatform.secretKey" required
             placeholder="Entrez votre clé secrète" />
         </div>
         <div v-if="isPassphraseRequired" class="form-group">
           <label for="passphrase">Passphrase:</label>
-          <input type="text" id="passphrase" v-model="payload.passphrase" required
+          <input type="text" id="passphrase" v-model="payloadPlatform.passphrase" required
             placeholder="Entrez votre passphrase" />
         </div>
         <button type="submit">Mettre à jour la configuration plateforme</button>

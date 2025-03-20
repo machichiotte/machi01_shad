@@ -1,11 +1,12 @@
 <!-- src/components/Stuff.vue -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import { fetchTradeBySymbol } from '../js/server/fetchFromServer';
+import { fetchTradeBySymbol, fetchBalanceByPlatform } from '../js/server/fetchFromServer';
 import { STABLECOINS } from '../js/constants';
 
 const base = ref<string>(''); // Champ d'entrée pour `symbol`
 const platform = ref<string>(''); // Champ d'entrée pour `platform`
+const balance_platform = ref<string>(''); // Champ d'entrée pour `platform`
 const responseJson = ref<object | null>(null); // Stocke la réponse du serveur
 const isLoading = ref<boolean>(false); // Indique si une requête est en cours
 
@@ -22,6 +23,30 @@ const handleClick = async () => {
         const transformedResponse = transformTrades(fetchValue as StuffTrade[], platform.value);
 
         responseJson.value = transformedResponse
+    } catch (error) {
+        console.error('Erreur lors de la requête :', error);
+        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+    } finally {
+        isLoading.value = false; // Cache le loader une fois la requête terminée
+    }
+};
+
+const fetchBalance = async () => {
+    isLoading.value = true; // Affiche le loader
+
+    try {
+        const fetchValue
+            = await fetchBalanceByPlatform({
+                platform: platform.value
+            });
+
+        console.log('valvalval', fetchValue)
+        /*
+    const transformedResponse = transformBalances(fetchValue as StuffBalance[], platform.value);
+
+    responseJson.value = transformedResponse*/
+
+        responseJson.value = fetchValue
     } catch (error) {
         console.error('Erreur lors de la requête :', error);
         responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
@@ -99,6 +124,23 @@ const copyToClipboard = () => {
                     <div class="field">
                         <label for="platform">Platform:</label>
                         <input id="platform" v-model="platform" type="text" placeholder="Entrez la plateforme"
+                            :disabled="isLoading" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="request-block">
+                <div class="header-row">
+                    <h4>Obtenir la balance</h4>
+                    <button @click="fetchBalance" :disabled="isLoading">
+                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
+                    </button>
+                </div>
+                <div class="input-row">
+
+                    <div class="field">
+                        <label for="platform">Platform:</label>
+                        <input id="platform" v-model="balance_platform" type="text" placeholder="Entrez la plateforme"
                             :disabled="isLoading" />
                     </div>
                 </div>

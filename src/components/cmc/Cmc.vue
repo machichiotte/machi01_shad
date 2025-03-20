@@ -6,6 +6,7 @@ import { FilterMatchMode } from 'primevue/api'
 import SearchBar from "../machi/SearchBar.vue";
 import CmcTable from "./CmcTable.vue";
 import { Cmc } from '../../types/responseData.ts'
+
 const itemsPerPage = ref(100)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }

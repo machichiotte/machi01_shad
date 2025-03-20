@@ -20,7 +20,7 @@ const executeApiRequest = async <T>(
   requestBody: API_REQUEST_PAYLOAD, // Plus précis que "Object"
   method: string = 'POST'
 ): Promise<T> => {
-  try { 
+  try {
     const response = await fetch(`${serverHost}${endpoint}`, {
       method,
       headers: { 'Content-Type': 'application/json' },
@@ -34,22 +34,22 @@ const executeApiRequest = async <T>(
 }
 
 const pleaseApiUpdate = async <T>(
-    endpoint: string,
-    requestBody: API_REQUEST_PAYLOAD, // Plus précis que "Object"
-    method: string = 'POST'
-  ): Promise<T> => {
-    try { 
-      const response = await fetch(`${serverHost}${endpoint}`, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-      })
-      const jsonResponse = await handleApiResponse<T>(response) // Réutilisation de handleApiResponse
-      return jsonResponse as T
-    } catch (error) {
-      throw new Error(`Error during ${method} request to ${serverHost}${endpoint}: ${error}`)
-    }
+  endpoint: string,
+  requestBody: API_REQUEST_PAYLOAD, // Plus précis que "Object"
+  method: string = 'POST'
+): Promise<T> => {
+  try {
+    const response = await fetch(`${serverHost}${endpoint}`, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    })
+    const jsonResponse = await handleApiResponse<T>(response) // Réutilisation de handleApiResponse
+    return jsonResponse as T
+  } catch (error) {
+    throw new Error(`Error during ${method} request to ${serverHost}${endpoint}: ${error}`)
   }
+}
 
 // Fonction générique pour récupérer les données (GET)
 const fetchApiData = async <T>(endpoint: string): Promise<T> => {

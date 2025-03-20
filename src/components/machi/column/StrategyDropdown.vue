@@ -26,12 +26,11 @@ interface DataItem {
     // Ajoutez d'autres propriétés si nécessaire
 }
 
-interface Props {
+const props = defineProps<{
     data: DataItem;
     strategiesList: Strategy[];
-}
+}>();
 
-const props = defineProps<Props>();
 const emit = defineEmits<{
     (e: 'apply-strategy', strategy: string, row: DataItem): void;
     (e: 'set-max-exposure', maxExposure: number, row: DataItem): void;

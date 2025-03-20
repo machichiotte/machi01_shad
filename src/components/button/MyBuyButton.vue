@@ -15,12 +15,10 @@
 import { ref } from 'vue'
 import AddBuyOrdersForm from '../form/AddBuyOrdersForm.vue'
 
-// Define an interface for the props
-interface Props {
-    selectedBases: Record<string, any>; // Define the prop type as an object
-}
-
-const props = defineProps<Props>() // Use the interface with defineProps
+//todo degager le any
+const props = defineProps<{
+    selectedBases: Record<string, any>;
+}>()
 
 const showBuyOrdersForm = ref(false)
 </script>

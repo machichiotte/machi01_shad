@@ -9,12 +9,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-interface Props {
+const props = defineProps<{
     price: number;
     change: number;
-}
-
-const props = defineProps<Props>();
+}>();
 
 const formattedPrice = computed(() => {
     return props.price !== undefined && props.price !== null ? props.price.toFixed(2) : NaN;

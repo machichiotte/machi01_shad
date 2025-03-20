@@ -8,11 +8,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-interface Props {
+const props = defineProps<{
     percentage: number;
-}
-
-const props = defineProps<Props>();
+}>();
 
 const formattedPercentage = computed(() => {
     return props.percentage !== undefined && props.percentage !== null ? (props.percentage * 100).toFixed(2) : '0.00';

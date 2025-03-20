@@ -26,24 +26,13 @@ const toggleDetails = () => (isDetailsVisible.value = !isDetailsVisible.value);
 
 <template>
     <div class="card">
-        <CardAssetHeader
-            :asset="asset"
-            :orders="orders"
-            :trades="trades"
-            :is-details-visible="isDetailsVisible"
-            @toggle-details="toggleDetails"
-        />
-        <CardAssetDetail
-            v-if="isDetailsVisible"
-            :asset="asset"
-            :orders="orders"
-            :trades="trades"
-        />
+        <CardAssetHeader :asset="asset" :orders="orders" :trades="trades" :is-details-visible="isDetailsVisible"
+            @toggle-details="toggleDetails" />
+        <CardAssetDetail v-if="isDetailsVisible" :asset="asset" :orders="orders" :trades="trades" />
     </div>
 </template>
 
 <style scoped>
-
 /* Variables CSS pour des couleurs et styles réutilisables */
 :root {
     --primary-bg: #f4f4f4;
@@ -76,5 +65,4 @@ small {
     font-size: 0.8rem;
     color: #777;
 }
-
 </style>

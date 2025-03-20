@@ -8,11 +8,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-interface Props {
+const props = defineProps<{
     value: number | null | undefined;
-}
-
-const props = defineProps<Props>();
+}>();
 
 const formattedValue = computed(() => {
     if (typeof props.value === 'number') {

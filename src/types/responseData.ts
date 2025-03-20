@@ -114,17 +114,16 @@ export interface Ticker {
   platform: string
 }
 
-/* pour remplacer Shad, mais il faut un autre nom que asset */
 export interface Asset {
   base: string; // Symbole de l'actif (ex: "ASSET_SYMBOL")
   iconUrl: string; // URL de l'icône
   ticker: string; // Symbole de trading (ex: "TICKER_SYMBOL")
   name: string; // Nom de l'actif (ex: "ASSET_NAME")
   tags: string[]; // Type de l'actif (ex: ["stablecoin", "defi", "gaming"])
-  cmc: CMC; // Informations CMC
+  cmc: AssetCmc; // Informations CMC
   strat: AssetStrat; // Stratégie appliquée
-  orders: Orders; // Informations sur les ordres et les trades
-  liveData: LiveData; // Données en direct
+  orders: AssetOrders; // Informations sur les ordres et les trades
+  liveData: AssetLiveData; // Données en direct
   profit: number; // Profit calculé
   platform: string; // Plateforme d'échange (ex: "binance")
 }
@@ -137,7 +136,7 @@ export interface AssetStrat {
 }
 
 // Interface pour les informations de CMC
-interface CMC {
+interface AssetCmc {
   currentCmcPrice: number; // Prix actuel selon CMC
   rank: number; // Rang CMC
   cryptoPercentChange24h: number; // Changement sur 24 heures
@@ -148,7 +147,7 @@ interface CMC {
 }
 
 // Interface pour la section "liveData"
-export interface LiveData {
+export interface AssetLiveData {
   balance: number; // Solde actuel
   currentPrice: number; // Prix actuel
   currentPossession: number; // Possession actuelle
@@ -172,7 +171,7 @@ export interface TakeProfits {
 }
 
 // Interface principale pour les ordres (open et trade)
-interface Orders {
+interface AssetOrders {
   open: {
     nbOpenBuyOrders: number; // Nombre d'ordres d'achat ouverts
     nbOpenSellOrders: number; // Nombre d'ordres de vente ouverts
