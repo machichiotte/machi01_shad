@@ -1,6 +1,7 @@
 // src/routes/routeOrder.ts
 import express from 'express'
 import {
+  fetchLastOpenOrders,
   getOrders,
   updateOrders,
 } from '@ctrl/ctrlOrderBalance'
@@ -19,6 +20,7 @@ import {
 const router = express.Router()
 
 router.get('/get', getOrders)
+router.get('/fetch/:platform', fetchLastOpenOrders)
 router.get('/update/:platform', updateOrders)
 
 router.post('/cancel', deleteOrder)

@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { ServiceOrderBalance } from '@services/api/platform/serviceOrderBalance'
 import { handleControllerError } from '@utils/errorUtil'
 import { isValidPlatform } from '@utils/platformUtil'
+import { ServiceCcxt } from '@src/services/api/platform/serviceCcxt'
 
 /**
  * Récupère toutes les commandes de la base de données.
@@ -40,7 +41,27 @@ async function updateOrders(req: Request, res: Response): Promise<void> {
 
 }
 
+/**
+ * Récupère les derniers open orders pour une plateforme spécifiques.
+ */
+async function fetchLastOpenOrders(req: Request, res: Response): Promise<void> {
+  const { platform } = req.params
+
+  if (!isValidPlatform(platform)) {
+    res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
+    return;
+  }
+
+  try {
+    const data = await ServiceCcxt.fetchOpenOrdersByPlatform(platform)
+    res.status(200).json({ status: "success", message: 'Derniers ordres ouverts récupérés', data })
+  } catch (error) {
+    handleControllerError(res, error, 'fetchLastOpenOrders')
+  }
+}
+
 export {
   getOrders,
   updateOrders,
+  fetchLastOpenOrders
 }

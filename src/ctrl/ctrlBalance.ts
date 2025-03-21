@@ -48,7 +48,7 @@ async function updateCurrentBalance(req: Request, res: Response): Promise<void> 
 }
 
 /**
- * Récupère les derniers trades pour une plateforme et un symbole spécifiques.
+ * Récupère les dernières balances pour une plateforme spécifiques.
  */
 async function fetchLastBalances(req: Request, res: Response): Promise<void> {
   const { platform } = req.params
@@ -60,9 +60,9 @@ async function fetchLastBalances(req: Request, res: Response): Promise<void> {
 
   try {
     const data = await ServiceBalance.fetchCurrentBalancesByPlatform(platform, 1)
-    res.status(200).json({ status: "success", message: 'Derniers trades récupérés', data })
+    res.status(200).json({ status: "success", message: 'Dernières balances récupérées', data })
   } catch (error) {
-    handleControllerError(res, error, 'fetchLastTrades')
+    handleControllerError(res, error, 'fetchLastBalances')
   }
 }
 

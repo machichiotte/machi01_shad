@@ -87,9 +87,29 @@ async function updateAllTickers(req: Request, res: Response): Promise<void> {
   }
 }
 
+/**
+ * Récupère les derniers tickers pour une plateforme spécifiques.
+ */
+async function fetchLastTickers(req: Request, res: Response): Promise<void> {
+  const { platform } = req.params
+
+  if (!isValidPlatform(platform)) {
+    res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
+    return;
+  }
+
+  try {
+    const data = await ServiceTicker.fetchCurrentTickers(platform)
+    res.status(200).json({ status: "success", message: 'Derniers tickers récupérés', data })
+  } catch (error) {
+    handleControllerError(res, error, 'fetchLastBalances')
+  }
+}
+
 export {
   getAllTickers,
   getAllTickersByPlatform,
   getAllTickersBySymbolFromPlatform,
-  updateAllTickers
+  updateAllTickers,
+  fetchLastTickers
 }
