@@ -4,6 +4,7 @@ import { Balance, Cmc, Asset, Order, Strat, Ticker, Trade } from "../../types/re
 
 const ENDPOINTS: Record<string, string> = {
   CMC: '/cmc/get',
+  CMC_API: '/cmc/fetch',
   STRATEGY: '/strategy/get',
   BALANCE: '/balance/get',
   BALANCE_BY_PLATFORM: '/balance/fetch',
@@ -23,6 +24,9 @@ const fetchStrategy = (): Promise<Strat[]> => fetchApiData<Strat[]>(ENDPOINTS.ST
 const fetchTicker = (): Promise<Ticker[]> => fetchApiData<Ticker[]>(ENDPOINTS.TICKER);
 const fetchTrade = (): Promise<Trade[]> => fetchApiData<Trade[]>(ENDPOINTS.TRADE);
 
+const fetchCmcApi = (): Promise<any[]> =>
+  fetchApiData<any[]>(`${ENDPOINTS.CMC_API}`);
+
 const fetchTradeBySymbol = (params: { base: string; platform: string }): Promise<any[]> =>
   fetchApiData<any[]>(`${ENDPOINTS.TRADE_BY_BASE}/${params.platform}/${params.base}`);
 
@@ -38,5 +42,6 @@ export {
   fetchTicker,
   fetchTrade,
   fetchTradeBySymbol,
-  fetchBalanceByPlatform
+  fetchBalanceByPlatform,
+  fetchCmcApi
 };

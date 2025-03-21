@@ -1,28 +1,25 @@
 <!-- src/components/Stuff.vue -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import { fetchTradeBySymbol, fetchBalanceByPlatform } from '../js/server/fetchFromServer';
+import { fetchTradeBySymbol, fetchBalanceByPlatform, fetchCmcApi } from '../js/server/fetchFromServer';
 import { STABLECOINS } from '../js/constants';
 
-const base = ref<string>(''); // Champ d'entrée pour `symbol`
-const platform = ref<string>(''); // Champ d'entrée pour `platform`
-const balance_platform = ref<string>(''); // Champ d'entrée pour `platform`
 const responseJson = ref<object | null>(null); // Stocke la réponse du serveur
 const isLoading = ref<boolean>(false); // Indique si une requête est en cours
 
-const fetchTradeBySymbolAndPlatform = async () => {
+const trade_base = ref<string>('');
+const trade_platform = ref<string>('');
+
+const balance_platform = ref<string>('');
+
+const fetchCmc = async () => {
     isLoading.value = true; // Affiche le loader
 
     try {
         const fetchValue
-            = await fetchTradeBySymbol({
-                base: base.value,
-                platform: platform.value
-            });
+            = await fetchCmcApi();
 
-        const transformedResponse = transformTrades(fetchValue as StuffTrade[], platform.value);
-
-        responseJson.value = transformedResponse
+        responseJson.value = fetchValue
     } catch (error) {
         console.error('Erreur lors de la requête :', error);
         responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
@@ -31,22 +28,19 @@ const fetchTradeBySymbolAndPlatform = async () => {
     }
 };
 
-const fetchBalance = async () => {
+const fetchTradeBySymbolAndPlatform = async () => {
     isLoading.value = true; // Affiche le loader
 
     try {
         const fetchValue
-            = await fetchBalanceByPlatform({
-                platform: platform.value
+            = await fetchTradeBySymbol({
+                base: trade_base.value,
+                platform: trade_platform.value
             });
 
-        console.log('valvalval', fetchValue)
-        /*
-    const transformedResponse = transformBalances(fetchValue as StuffBalance[], platform.value);
+        const transformedResponse = transformTrades(fetchValue as StuffTrade[], trade_platform.value);
 
-    responseJson.value = transformedResponse*/
-
-        responseJson.value = fetchValue
+        responseJson.value = transformedResponse
     } catch (error) {
         console.error('Erreur lors de la requête :', error);
         responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
@@ -95,6 +89,26 @@ const transformTrades = (trades: StuffTrade[], platform: string) => {
     });
 };
 
+const fetchBalance = async () => {
+    isLoading.value = true; // Affiche le loader
+
+    try {
+        const fetchValue
+            = await fetchBalanceByPlatform({
+                platform: balance_platform.value
+            });
+
+        const sortedBalances = fetchValue.sort((a, b) => a.base.localeCompare(b.base));
+
+        responseJson.value = sortedBalances
+    } catch (error) {
+        console.error('Erreur lors de la requête :', error);
+        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+    } finally {
+        isLoading.value = false; // Cache le loader une fois la requête terminée
+    }
+};
+
 const copyToClipboard = () => {
     const jsonContent = JSON.stringify(responseJson.value, null, 2);
     navigator.clipboard.writeText(jsonContent).then(
@@ -110,6 +124,15 @@ const copyToClipboard = () => {
             <h3>Requêtes au serveur</h3>
             <div class="request-block">
                 <div class="header-row">
+                    <h4>Obtenir données CMC</h4>
+                    <button @click="fetchCmc" :disabled="isLoading">
+                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
+                    </button>
+                </div>
+            </div>
+
+            <div class="request-block">
+                <div class="header-row">
                     <h4>Obtenir les trades</h4>
                     <button @click="fetchTradeBySymbolAndPlatform" :disabled="isLoading">
                         {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
@@ -117,14 +140,14 @@ const copyToClipboard = () => {
                 </div>
                 <div class="input-row">
                     <div class="field">
-                        <label for="base">Base:</label>
-                        <input id="base" v-model="base" type="text" placeholder="Entrez la base"
+                        <label for="base_trade">Base:</label>
+                        <input id="base_trade" v-model="trade_base" type="text" placeholder="Entrez la base"
                             :disabled="isLoading" />
                     </div>
                     <div class="field">
-                        <label for="platform">Platform:</label>
-                        <input id="platform" v-model="platform" type="text" placeholder="Entrez la plateforme"
-                            :disabled="isLoading" />
+                        <label for="platform_trade">Platform:</label>
+                        <input id="platform_trade" v-model="trade_platform" type="text"
+                            placeholder="Entrez la plateforme" :disabled="isLoading" />
                     </div>
                 </div>
             </div>
@@ -139,9 +162,9 @@ const copyToClipboard = () => {
                 <div class="input-row">
 
                     <div class="field">
-                        <label for="platform">Platform:</label>
-                        <input id="platform" v-model="balance_platform" type="text" placeholder="Entrez la plateforme"
-                            :disabled="isLoading" />
+                        <label for="balance_platform">Platform:</label>
+                        <input id="balance_platform" v-model="balance_platform" type="text"
+                            placeholder="Entrez la plateforme" :disabled="isLoading" />
                     </div>
                 </div>
             </div>
