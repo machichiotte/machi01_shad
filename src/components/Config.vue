@@ -1,4 +1,4 @@
-// src/components/Config.vue
+<!-- src/components/Config.vue -->
 <script>
 import { updateKey } from '../js/server/config';
 import { PLATFORMS } from '../types/platform';
@@ -115,28 +115,34 @@ h2 {
   font-size: 1.2em;
 }
 
+/* Nouveau style pour afficher label et input/select sur la même ligne */
 .form-group {
-  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 8px;
 }
 
-label {
-  display: block;
+.form-group label {
+  width: 180px;
   margin: 0;
-  padding: 0;
-  margin-bottom: 1px;
   font-weight: bold;
+  text-align: right;
+  font-size: 0.9rem;
 }
 
-input,
-select {
-  width: 100%;
+.form-group input,
+.form-group select {
+  flex: 1;
   padding: 6px;
   color: #ccc;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #333;
+  font-size: 0.9rem;
 }
 
+/* Bouton s'étend sur toute la largeur du formulaire */
 button {
   background-color: #007bff;
   color: white;
