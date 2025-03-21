@@ -95,7 +95,7 @@ export class RepoConfigApi {
     await this.updateConfigApi(currentConfig)
   }
 
-  private static decryptConfigCmc(cmcConfig: ApiCmc): ApiCmc {
+  static decryptConfigCmc(cmcConfig: ApiCmc): ApiCmc {
     if (!cmcConfig || !cmcConfig.apiKey) {
       console.warn('CMC API key is null.')
       return cmcConfig || { apiKey: '', iv: '' }

@@ -42,7 +42,6 @@ function checkApiKeys(platform: PLATFORM): boolean {
  */
 function getMarketSymbolForPlatform(platform: PLATFORM, base: string, quote: string = 'USDC'
 ): string {
-  console.log('getMarketSymbolForPlatform', platform, base, quote)
   let symbol: string
 
   switch (platform) {

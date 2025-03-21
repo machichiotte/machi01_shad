@@ -3,6 +3,7 @@ import { RepoCmc } from '@repo/repoCmc'
 import { handleServiceError } from '@utils/errorUtil'
 import { MappedCmc, FetchResponse } from '@typ/cmc'
 import { config } from '@config/index'
+import { RepoConfigApi } from '@src/repo/config/repoConfigApi'
 
 export class ServiceCmc {
   private static readonly limit = 5000
@@ -16,7 +17,11 @@ export class ServiceCmc {
     console.info('Fetching current CMC data...')
     let start = this.baseStart
     const allData: MappedCmc[] = []
-    if (config.apiConfig.cmc.apiKey) {
+    if (config.apiConfig.cmc && config.apiConfig.cmc.iv && config.apiConfig.cmc.apiKey) {
+      const encryptedPlatformConfig = config.apiConfig.cmc;
+      const decryptedPlatformConfig = RepoConfigApi.decryptConfigCmc(encryptedPlatformConfig)
+
+
       try {
         while (true) {
           const URL = `${config.apiConfig.cmc.url}?start=${start}&limit=${this.limit}&convert=${this.convert}`
@@ -24,17 +29,19 @@ export class ServiceCmc {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'X-CMC_PRO_API_KEY': config.apiConfig.cmc.apiKey || ''
+              'X-CMC_PRO_API_KEY': decryptedPlatformConfig.apiKey || ''
             }
           })
 
-          // Log the raw response for debugging
-          const rawResponse = await response.text()
 
           if (!response.ok)
             throw new Error(
               `Échec de la récupération des données CoinMarketCap: ${response.statusText}`
             )
+
+
+          // Log the raw response for debugging
+          const rawResponse = await response.text()
 
           const { data, status }: FetchResponse = JSON.parse(rawResponse)
           if (data.length === 0) break

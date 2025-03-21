@@ -23,15 +23,18 @@ export class ServiceTrade {
     const markets = await ServiceMarket.getSavedMarkets();
 
     const validSymbols = QUOTE_CURRENCIES
-      .filter(quote => markets.some(market =>
-        market.base === base.toUpperCase() && market.quote === quote && market.platform === platform
-      ))
+      .filter(quote => {
+        // ici il peut y avoir un manque selon lexcchange, par exemple sur binance, les paires avec USDT ont ete supprimees, donc pas dans markets, alors que je voudrais quand meme quon recherche avec la quote usdt
+        return markets.some(market =>
+          market.base === base.toUpperCase() && market.quote === quote && market.platform === platform
+        );
+      })
       .map(quote => getMarketSymbolForPlatform(platform, base, quote));
 
     const trades: PlatformTrade[] = [];
-    const batchSize = 30; // Ajustez selon les limites de l'API
+    const batchSize = 30;
 
-    console.log(`Fetch ${validSymbols} trades for ${platform} ${base}`)
+    console.log(`Fetch ${validSymbols} trades for ${platform} ${base}`);
     for (let i = 0; i < validSymbols.length; i += batchSize) {
       const symbolBatch = validSymbols.slice(i, i + batchSize);
       const batchPromises = symbolBatch.map(symbol =>
@@ -44,14 +47,14 @@ export class ServiceTrade {
       const batchResults = await Promise.all(batchPromises);
       batchResults.forEach(result => trades.push(...result));
 
-      // Ajoutez un délai entre les lots pour respecter les limites de taux
       if (i + batchSize < validSymbols.length) {
-        await new Promise(resolve => setTimeout(resolve, 2000)); // 2 secondes de délai
+        await new Promise(resolve => setTimeout(resolve, 2000));
       }
     }
 
     return trades;
   }
+
 
   static async updateById(updatedTrade: MappedTrade): Promise<boolean> {
     if (!updatedTrade._id) {

@@ -9,7 +9,7 @@ import { ServiceCmc } from '@services/api/serviceCmc'
 async function getCmc(req: Request, res: Response): Promise<void> {
   try {
     const data = await ServiceCmc.fetchDatabaseCmc()
-    res.status(200).json({ 
+    res.status(200).json({
       status: "success",
       message: 'Données CMC récupérées avec succès',
       data
@@ -35,4 +35,17 @@ async function updateCmc(req: Request, res: Response): Promise<void> {
   }
 }
 
-export { getCmc, updateCmc }
+/**
+ * Récupère le dernier cmc.
+ */
+async function fetchLastCmc(req: Request, res: Response): Promise<void> {
+
+  try {
+    const data = await ServiceCmc.fetchCurrentCmc()
+    res.status(200).json({ status: "success", message: 'Données Cmc récupérées', data })
+  } catch (error) {
+    handleControllerError(res, error, 'fetchLastTrades')
+  }
+}
+
+export { getCmc, updateCmc, fetchLastCmc }

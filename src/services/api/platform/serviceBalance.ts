@@ -94,7 +94,6 @@ export class ServiceBalance {
 
   static async cronBalance(platform: PLATFORM): Promise<void> {
     await executeCronTask(() => ServiceBalance.updateBalancesForPlatform(platform), true)
-
   }
 
   /**
