@@ -11,6 +11,7 @@ const ENDPOINTS: Record<string, string> = {
   TRADE: '/trade/get',
   TRADE_BY_BASE: '/trade/fetch',
   ORDER: '/order/get',
+  ORDER_API: '/order/fetch',
   TICKER: '/ticker/get',
   MACHI: '/machi/get'
 };
@@ -33,6 +34,9 @@ const fetchTradeBySymbol = (params: { base: string; platform: string }): Promise
 const fetchBalanceByPlatform = (params: { platform: string }): Promise<any[]> =>
   fetchApiData<any[]>(`${ENDPOINTS.BALANCE_BY_PLATFORM}/${params.platform}`);
 
+const fetchOpenOrdersByPlatform = (params: { platform: string }): Promise<any[]> =>
+  fetchApiData<any[]>(`${ENDPOINTS.ORDER_API}/${params.platform}`);
+
 export {
   fetchBalance,
   fetchCmc,
@@ -43,5 +47,6 @@ export {
   fetchTrade,
   fetchTradeBySymbol,
   fetchBalanceByPlatform,
-  fetchCmcApi
+  fetchCmcApi,
+  fetchOpenOrdersByPlatform
 };

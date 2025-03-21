@@ -1,7 +1,7 @@
 <!-- src/components/Stuff.vue -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import { fetchTradeBySymbol, fetchBalanceByPlatform, fetchCmcApi } from '../js/server/fetchFromServer';
+import { fetchTradeBySymbol, fetchBalanceByPlatform, fetchCmcApi, fetchOpenOrdersByPlatform } from '../js/server/fetchFromServer';
 import { STABLECOINS } from '../js/constants';
 
 const responseJson = ref<object | null>(null); // Stocke la réponse du serveur
@@ -12,14 +12,13 @@ const trade_platform = ref<string>('');
 
 const balance_platform = ref<string>('');
 
+const openorders_platform = ref<string>('');
+
 const fetchCmc = async () => {
     isLoading.value = true; // Affiche le loader
-
     try {
-        const fetchValue
-            = await fetchCmcApi();
-
-        responseJson.value = fetchValue
+        const fetchValue = await fetchCmcApi();
+        responseJson.value = fetchValue;
     } catch (error) {
         console.error('Erreur lors de la requête :', error);
         responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
@@ -30,17 +29,13 @@ const fetchCmc = async () => {
 
 const fetchTradeBySymbolAndPlatform = async () => {
     isLoading.value = true; // Affiche le loader
-
     try {
-        const fetchValue
-            = await fetchTradeBySymbol({
-                base: trade_base.value,
-                platform: trade_platform.value
-            });
-
+        const fetchValue = await fetchTradeBySymbol({
+            base: trade_base.value,
+            platform: trade_platform.value
+        });
         const transformedResponse = transformTrades(fetchValue as StuffTrade[], trade_platform.value);
-
-        responseJson.value = transformedResponse
+        responseJson.value = transformedResponse;
     } catch (error) {
         console.error('Erreur lors de la requête :', error);
         responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
@@ -67,9 +62,7 @@ interface StuffTrade {
 const transformTrades = (trades: StuffTrade[], platform: string) => {
     return trades.map((trade: StuffTrade) => {
         const [base, quote] = trade.symbol.split('/');
-
-        const eqUSD = STABLECOINS.includes(quote) ? parseFloat(trade.cost.toFixed(2)) : -1
-
+        const eqUSD = STABLECOINS.includes(quote) ? parseFloat(trade.cost.toFixed(2)) : -1;
         return {
             timestamp: trade.timestamp,
             pair: trade.symbol,
@@ -91,16 +84,27 @@ const transformTrades = (trades: StuffTrade[], platform: string) => {
 
 const fetchBalance = async () => {
     isLoading.value = true; // Affiche le loader
-
     try {
-        const fetchValue
-            = await fetchBalanceByPlatform({
-                platform: balance_platform.value
-            });
-
+        const fetchValue = await fetchBalanceByPlatform({
+            platform: balance_platform.value
+        });
         const sortedBalances = fetchValue.sort((a, b) => a.base.localeCompare(b.base));
+        responseJson.value = sortedBalances;
+    } catch (error) {
+        console.error('Erreur lors de la requête :', error);
+        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+    } finally {
+        isLoading.value = false; // Cache le loader une fois la requête terminée
+    }
+};
 
-        responseJson.value = sortedBalances
+const fetchOpenOrders = async () => {
+    isLoading.value = true; // Affiche le loader
+    try {
+        const fetchValue = await fetchOpenOrdersByPlatform({
+            platform: openorders_platform.value
+        });
+        responseJson.value = fetchValue;
     } catch (error) {
         console.error('Erreur lors de la requête :', error);
         responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
@@ -139,15 +143,16 @@ const copyToClipboard = () => {
                     </button>
                 </div>
                 <div class="input-row">
-                    <div class="field">
+                    <!-- Champs en ligne pour gagner de la place -->
+                    <div class="inline-field">
                         <label for="base_trade">Base:</label>
-                        <input id="base_trade" v-model="trade_base" type="text" placeholder="Entrez la base"
+                        <input id="base_trade" v-model="trade_base" type="text" placeholder="Ex: BTC"
                             :disabled="isLoading" />
                     </div>
-                    <div class="field">
+                    <div class="inline-field">
                         <label for="platform_trade">Platform:</label>
-                        <input id="platform_trade" v-model="trade_platform" type="text"
-                            placeholder="Entrez la plateforme" :disabled="isLoading" />
+                        <input id="platform_trade" v-model="trade_platform" type="text" placeholder="Ex: binance"
+                            :disabled="isLoading" />
                     </div>
                 </div>
             </div>
@@ -160,11 +165,26 @@ const copyToClipboard = () => {
                     </button>
                 </div>
                 <div class="input-row">
-
-                    <div class="field">
+                    <div class="inline-field">
                         <label for="balance_platform">Platform:</label>
-                        <input id="balance_platform" v-model="balance_platform" type="text"
-                            placeholder="Entrez la plateforme" :disabled="isLoading" />
+                        <input id="balance_platform" v-model="balance_platform" type="text" placeholder="Ex: binance"
+                            :disabled="isLoading" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="request-block">
+                <div class="header-row">
+                    <h4>Obtenir les ordres ouverts</h4>
+                    <button @click="fetchOpenOrders" :disabled="isLoading">
+                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
+                    </button>
+                </div>
+                <div class="input-row">
+                    <div class="inline-field">
+                        <label for="openorders_platform">Platform:</label>
+                        <input id="openorders_platform" v-model="openorders_platform" type="text"
+                            placeholder="Ex: binance" :disabled="isLoading" />
                     </div>
                 </div>
             </div>
@@ -195,6 +215,7 @@ const copyToClipboard = () => {
     padding: 1rem;
 }
 
+/* Left Panel */
 .left-panel {
     flex: 1;
     display: flex;
@@ -214,7 +235,6 @@ const copyToClipboard = () => {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    margin-left: 3rem;
 }
 
 .input-row {
@@ -223,24 +243,29 @@ const copyToClipboard = () => {
     gap: 1rem;
 }
 
-.field {
+/* Nouveau style pour les champs en ligne */
+.inline-field {
     display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 150px;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.field label {
-    margin-bottom: 0.5rem;
+.inline-field label {
+    width: 70px;
+    margin: 0;
+    font-size: 0.9rem;
+    text-align: right;
 }
 
-.field input {
-    padding: 0.5rem;
+.inline-field input {
+    width: 120px;
+    padding: 0.3rem 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 100%;
+    font-size: 0.9rem;
 }
 
+/* Boutons */
 button {
     background: #007bff;
     color: white;
@@ -259,6 +284,7 @@ button:hover:enabled {
     background: #0056b3;
 }
 
+/* Right Panel */
 .right-panel {
     flex: 2;
     padding: 1rem;
