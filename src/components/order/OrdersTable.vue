@@ -25,12 +25,15 @@ watchEffect(() => {
   if (Array.isArray(props.items)) {
     // Computing rows based on orders prop
     filteredItems.value = props.items.map((item: Order) => {
+
+      const total = item['amount'] * item['price']
       return {
         platform: item['platform'],
         symbol: item['symbol'],
         side: item['side'],
         amount: item['amount'],
         price: item['price'],
+        total,
         _id: item['_id'], // Ajout de la propriété _id
         oId: item['oId'], // Ajout de la propriété oId
         cId: item['cId'], // Ajout de la propriété cId
