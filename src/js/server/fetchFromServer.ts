@@ -13,7 +13,10 @@ const ENDPOINTS: Record<string, string> = {
   ORDER: '/order/get',
   ORDER_API: '/order/fetch',
   TICKER: '/ticker/get',
-  MACHI: '/machi/get'
+  TICKER_API: '/ticker/fetch',
+  MACHI: '/machi/get',
+  MARKET: '/market/get',
+  MARKET_API: '/market/fetch'
 };
 
 // Wrapper functions for fetching different types of data
@@ -21,6 +24,7 @@ const fetchBalance = (): Promise<Balance[]> => fetchApiData<Balance[]>(ENDPOINTS
 const fetchCmc = (): Promise<Cmc[]> => fetchApiData<Cmc[]>(ENDPOINTS.CMC);
 const fetchOrder = (): Promise<Order[]> => fetchApiData<Order[]>(ENDPOINTS.ORDER);
 const fetchMachi = (): Promise<Asset[]> => fetchApiData<Asset[]>(ENDPOINTS.MACHI);
+const fetchMarket = (): Promise<Asset[]> => fetchApiData<Asset[]>(ENDPOINTS.MARKET);
 const fetchStrategy = (): Promise<Strat[]> => fetchApiData<Strat[]>(ENDPOINTS.STRATEGY);
 const fetchTicker = (): Promise<Ticker[]> => fetchApiData<Ticker[]>(ENDPOINTS.TICKER);
 const fetchTrade = (): Promise<Trade[]> => fetchApiData<Trade[]>(ENDPOINTS.TRADE);
@@ -37,16 +41,25 @@ const fetchBalanceByPlatform = (params: { platform: string }): Promise<any[]> =>
 const fetchOpenOrdersByPlatform = (params: { platform: string }): Promise<any[]> =>
   fetchApiData<any[]>(`${ENDPOINTS.ORDER_API}/${params.platform}`);
 
+const fetchMarketsByPlatform = (params: { platform: string }): Promise<any[]> =>
+  fetchApiData<any[]>(`${ENDPOINTS.MARKET_API}/${params.platform}`);
+
+const fetchTickersByPlatform = (params: { platform: string }): Promise<any[]> =>
+  fetchApiData<any[]>(`${ENDPOINTS.TICKER_API}/${params.platform}`);
+
 export {
   fetchBalance,
   fetchCmc,
   fetchOrder,
   fetchMachi,
+  fetchMarket,
   fetchStrategy,
   fetchTicker,
   fetchTrade,
   fetchTradeBySymbol,
   fetchBalanceByPlatform,
   fetchCmcApi,
-  fetchOpenOrdersByPlatform
+  fetchOpenOrdersByPlatform,
+  fetchMarketsByPlatform,
+  fetchTickersByPlatform
 };

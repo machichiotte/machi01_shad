@@ -1,7 +1,7 @@
 <!-- src/components/Stuff.vue -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import { fetchTradeBySymbol, fetchBalanceByPlatform, fetchCmcApi, fetchOpenOrdersByPlatform } from '../js/server/fetchFromServer';
+import { fetchTradeBySymbol, fetchBalanceByPlatform, fetchCmcApi, fetchOpenOrdersByPlatform, fetchMarketsByPlatform } from '../js/server/fetchFromServer';
 import { STABLECOINS } from '../js/constants';
 
 const responseJson = ref<object | null>(null); // Stocke la réponse du serveur
@@ -13,6 +13,10 @@ const trade_platform = ref<string>('');
 const balance_platform = ref<string>('');
 
 const openorders_platform = ref<string>('');
+
+const markets_platform = ref<string>('');
+
+const tickers_platform = ref<string>('');
 
 const fetchCmc = async () => {
     isLoading.value = true; // Affiche le loader
@@ -113,6 +117,37 @@ const fetchOpenOrders = async () => {
     }
 };
 
+const fetchMarkets = async () => {
+    isLoading.value = true; // Affiche le loader
+    try {
+        const fetchValue = await fetchMarketsByPlatform({
+            platform: markets_platform.value
+        });
+        responseJson.value = fetchValue;
+    } catch (error) {
+        console.error('Erreur lors de la requête :', error);
+        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+    } finally {
+        isLoading.value = false; // Cache le loader une fois la requête terminée
+    }
+};
+
+const fetchTickers = async () => {
+    isLoading.value = true; // Affiche le loader
+    try {
+        const fetchValue = await fetchMarketsByPlatform({
+            platform: tickers_platform.value
+        });
+        responseJson.value = fetchValue;
+    } catch (error) {
+        console.error('Erreur lors de la requête :', error);
+        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+    } finally {
+        isLoading.value = false; // Cache le loader une fois la requête terminée
+    }
+};
+
+
 const copyToClipboard = () => {
     const jsonContent = JSON.stringify(responseJson.value, null, 2);
     navigator.clipboard.writeText(jsonContent).then(
@@ -185,6 +220,38 @@ const copyToClipboard = () => {
                         <label for="openorders_platform">Platform:</label>
                         <input id="openorders_platform" v-model="openorders_platform" type="text"
                             placeholder="Ex: binance" :disabled="isLoading" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="request-block">
+                <div class="header-row">
+                    <h4>Obtenir les markets</h4>
+                    <button @click="fetchMarkets" :disabled="isLoading">
+                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
+                    </button>
+                </div>
+                <div class="input-row">
+                    <div class="inline-field">
+                        <label for="markets_platform">Platform:</label>
+                        <input id="markets_platform" v-model="markets_platform" type="text" placeholder="Ex: binance"
+                            :disabled="isLoading" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="request-block">
+                <div class="header-row">
+                    <h4>Obtenir les tickers</h4>
+                    <button @click="fetchTickers" :disabled="isLoading">
+                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
+                    </button>
+                </div>
+                <div class="input-row">
+                    <div class="inline-field">
+                        <label for="tickers_platform">Platform:</label>
+                        <input id="tickers_platform" v-model="tickers_platform" type="text" placeholder="Ex: binance"
+                            :disabled="isLoading" />
                     </div>
                 </div>
             </div>
