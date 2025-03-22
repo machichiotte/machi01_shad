@@ -122,24 +122,51 @@ const onMaxExposureChange = (base: string, platform: string, event: Event) => {
     margin-top: 1rem;
 }
 
-/* 22: Style de la table */
+/* 22: On applique un layout fixe pour le tableau */
 .strategy-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
-/* 23: Style des en-têtes et des cellules */
+/* 23: Définition de largeurs fixes pour chaque colonne */
+/* La première colonne (base) */
+.strategy-table th:first-child,
+.strategy-table td:first-child {
+    width: 100px;
+}
+
+/* Pour les colonnes des plateformes, nous attribuons une largeur fixe.
+   Vous pouvez ajuster ces valeurs selon vos besoins :
+   - Les colonnes "strategy" et "maxExposure" sont contenues dans un même TD, 
+     donc chaque colonne de plateforme aura par exemple 200px. */
+.strategy-table th:not(:first-child),
+.strategy-table td:not(:first-child) {
+    width: 200px;
+}
+
+/* 24: Style des en-têtes et des cellules */
 .strategy-table th,
 .strategy-table td {
     border: 1px solid #ccc;
     padding: 0.5rem;
     text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
-/* 24: Style du conteneur pour les sélecteurs */
+/* 25: Style du conteneur pour les sélecteurs */
 .select-container {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 5px;
+}
+
+/* Optionnel : Si vous souhaitez fixer la largeur des sélecteurs pour garantir un alignement constant */
+.select-container select {
+    width: 90px;
+    padding: 2px;
+    font-size: 0.9rem;
 }
 </style>

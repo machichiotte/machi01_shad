@@ -8,11 +8,10 @@ import OrdersTable from "./OrdersTable.vue";
 
 const calculStore = useCalculStore();
 
-// Reactive variables
+const itemsPerPage = ref(20)
 const filters = ref<{ global: { value: string; matchMode: typeof FilterMatchMode[keyof typeof FilterMatchMode] } }>({
   global: { value: '', matchMode: FilterMatchMode.CONTAINS }
 });
-
 // Access orders from Pinia store
 const orders = computed(() => calculStore.getOrder);
 
@@ -37,7 +36,7 @@ onMounted(async () => {
     <h1>Current Orders List</h1>
     <div class="card">
       <SearchBar :filters="filters" />
-      <OrdersTable :items="orders" :filters="filters" />
+      <OrdersTable :rows="orders" :globalFilter="filters.global.value || ''" :itemsPerPage="itemsPerPage" />
     </div>
   </div>
 </template>

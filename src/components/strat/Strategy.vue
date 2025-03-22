@@ -129,39 +129,28 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-/* Style for the DataTable container */
 .p-datatable {
   max-width: 100%;
   width: 90%;
   overflow-x: auto;
   background-color: #333;
-  /* Background set to dark gray (#333) */
   border: 1px solid #222;
-  /* Border color set to #222 */
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   color: #ccc;
-  /* Default text color set to #ccc */
 }
 
-/* Style for the table header */
 .p-datatable thead {
   background-color: #333;
-  /* Header background matching the DataTable */
   color: #ccc;
-  /* Header text color set to #ccc */
 }
 
-/* Style for table rows */
 .p-datatable tbody tr {
   border-bottom: 1px solid #222;
-  /* Row bottom border set to #222 */
   color: #ccc;
-  /* Row text color set to #ccc */
 }
 
-/* Remove border for the last table row */
 .p-datatable tbody tr:last-child {
   border-bottom: none;
 }
@@ -169,10 +158,11 @@ onMounted(async () => {
 button {
   background: #007bff;
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 0.7rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .text-align-left {

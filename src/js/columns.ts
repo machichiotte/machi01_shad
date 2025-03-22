@@ -57,6 +57,10 @@ const openOrdersTableColumns: Column[] = [
   { header: 'Amount', field: 'amount' },
   { header: 'Price', field: 'price' },
   { header: 'Total', field: 'total' },
+  { header: 'ID', field: '_id' },
+  { header: 'oID', field: 'oId' },
+  { header: 'cID', field: 'cId' },
+  { header: 'type', field: 'type' },
 ]
 
 export { cmcColumns, ordersColumns, tradesColumns, tradesTableColumns, openOrdersTableColumns }
