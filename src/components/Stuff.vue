@@ -1,50 +1,44 @@
 <!-- src/components/Stuff.vue -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import { fetchTradeBySymbol, fetchBalanceByPlatform, fetchCmcApi, fetchOpenOrdersByPlatform, fetchMarketsByPlatform } from '../js/server/fetchFromServer';
+import { fetchTradeBySymbol, fetchTickersByPlatform, fetchBalanceByPlatform, fetchCmcApi, fetchOpenOrdersByPlatform, fetchMarketsByPlatform } from '../js/server/fetchFromServer';
 import { STABLECOINS } from '../js/constants';
 
-const responseJson = ref<object | null>(null); // Stocke la réponse du serveur
-const isLoading = ref<boolean>(false); // Indique si une requête est en cours
+const responseJson = ref<object | null>(null);
+const isLoading = ref<boolean>(false);
 
+// Champs de saisie
 const trade_base = ref<string>('');
 const trade_platform = ref<string>('');
+const simple_platform = ref<string>(''); // pour les actions ne nécessitant que la plateforme
 
-const balance_platform = ref<string>('');
-
-const openorders_platform = ref<string>('');
-
-const markets_platform = ref<string>('');
-
-const tickers_platform = ref<string>('');
-
+// Requête CMC (aucun champ requis)
 const fetchCmc = async () => {
-    isLoading.value = true; // Affiche le loader
+    isLoading.value = true;
     try {
-        const fetchValue = await fetchCmcApi();
-        responseJson.value = fetchValue;
+        responseJson.value = await fetchCmcApi();
     } catch (error) {
-        console.error('Erreur lors de la requête :', error);
-        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+        console.error(error);
+        responseJson.value = { error: 'Erreur lors de la requête CMC.' };
     } finally {
-        isLoading.value = false; // Cache le loader une fois la requête terminée
+        isLoading.value = false;
     }
 };
 
-const fetchTradeBySymbolAndPlatform = async () => {
-    isLoading.value = true; // Affiche le loader
+// Requête Trades (base + platform)
+const fetchTrades = async () => {
+    isLoading.value = true;
     try {
         const fetchValue = await fetchTradeBySymbol({
             base: trade_base.value,
             platform: trade_platform.value
         });
-        const transformedResponse = transformTrades(fetchValue as StuffTrade[], trade_platform.value);
-        responseJson.value = transformedResponse;
+        responseJson.value = transformTrades(fetchValue as StuffTrade[], trade_platform.value);
     } catch (error) {
-        console.error('Erreur lors de la requête :', error);
-        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+        console.error(error);
+        responseJson.value = { error: 'Erreur lors de la requête Trades.' };
     } finally {
-        isLoading.value = false; // Cache le loader une fois la requête terminée
+        isLoading.value = false;
     }
 };
 
@@ -57,96 +51,65 @@ interface StuffTrade {
     price: number;
     amount: number;
     cost: number;
-    fee: {
-        cost: number;
-        currency: string;
-    };
+    fee: { cost: number; currency: string; };
 }
-
 const transformTrades = (trades: StuffTrade[], platform: string) => {
-    return trades.map((trade: StuffTrade) => {
+    return trades.map(trade => {
         const [base, quote] = trade.symbol.split('/');
         const eqUSD = STABLECOINS.includes(quote) ? parseFloat(trade.cost.toFixed(2)) : -1;
-        return {
-            timestamp: trade.timestamp,
-            pair: trade.symbol,
-            dateUTC: trade.dateUTC,
-            order: trade.order,
-            side: trade.side,
-            price: trade.price,
-            amount: trade.amount,
-            total: trade.cost,
-            eqUSD: eqUSD, // Arrondi à 2 décimales
-            fee: trade.fee.cost,
-            feecoin: trade.fee.currency,
-            base: base,
-            quote: quote,
-            platform: platform // Ajout de la plateforme en dur
-        };
+        return { timestamp: trade.timestamp, pair: trade.symbol, dateUTC: trade.dateUTC, order: trade.order, side: trade.side, price: trade.price, amount: trade.amount, total: trade.cost, eqUSD, fee: trade.fee.cost, feecoin: trade.fee.currency, base, quote, platform };
     });
 };
 
+// Requêtes nécessitant uniquement la plateforme
 const fetchBalance = async () => {
-    isLoading.value = true; // Affiche le loader
+    isLoading.value = true;
     try {
-        const fetchValue = await fetchBalanceByPlatform({
-            platform: balance_platform.value
-        });
-        const sortedBalances = fetchValue.sort((a, b) => a.base.localeCompare(b.base));
-        responseJson.value = sortedBalances;
+        const fetchValue = await fetchBalanceByPlatform({ platform: simple_platform.value });
+        responseJson.value = fetchValue.sort((a, b) => a.base.localeCompare(b.base));
     } catch (error) {
-        console.error('Erreur lors de la requête :', error);
-        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+        console.error(error);
+        responseJson.value = { error: 'Erreur lors de la requête Balance.' };
     } finally {
-        isLoading.value = false; // Cache le loader une fois la requête terminée
+        isLoading.value = false;
     }
 };
 
 const fetchOpenOrders = async () => {
-    isLoading.value = true; // Affiche le loader
+    isLoading.value = true;
     try {
-        const fetchValue = await fetchOpenOrdersByPlatform({
-            platform: openorders_platform.value
-        });
-        responseJson.value = fetchValue;
+        responseJson.value = await fetchOpenOrdersByPlatform({ platform: simple_platform.value });
     } catch (error) {
-        console.error('Erreur lors de la requête :', error);
-        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+        console.error(error);
+        responseJson.value = { error: 'Erreur lors de la requête Open Orders.' };
     } finally {
-        isLoading.value = false; // Cache le loader une fois la requête terminée
+        isLoading.value = false;
     }
 };
 
 const fetchMarkets = async () => {
-    isLoading.value = true; // Affiche le loader
+    isLoading.value = true;
     try {
-        const fetchValue = await fetchMarketsByPlatform({
-            platform: markets_platform.value
-        });
-        responseJson.value = fetchValue;
+        responseJson.value = await fetchMarketsByPlatform({ platform: simple_platform.value });
     } catch (error) {
-        console.error('Erreur lors de la requête :', error);
-        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+        console.error(error);
+        responseJson.value = { error: 'Erreur lors de la requête Markets.' };
     } finally {
-        isLoading.value = false; // Cache le loader une fois la requête terminée
+        isLoading.value = false;
     }
 };
 
 const fetchTickers = async () => {
-    isLoading.value = true; // Affiche le loader
+    isLoading.value = true;
     try {
-        const fetchValue = await fetchMarketsByPlatform({
-            platform: tickers_platform.value
-        });
-        responseJson.value = fetchValue;
+        responseJson.value = await fetchTickersByPlatform({ platform: simple_platform.value });
     } catch (error) {
-        console.error('Erreur lors de la requête :', error);
-        responseJson.value = { error: 'Une erreur s\'est produite lors de la requête.' };
+        console.error(error);
+        responseJson.value = { error: 'Erreur lors de la requête Tickers.' };
     } finally {
-        isLoading.value = false; // Cache le loader une fois la requête terminée
+        isLoading.value = false;
     }
 };
-
 
 const copyToClipboard = () => {
     const jsonContent = JSON.stringify(responseJson.value, null, 2);
@@ -158,221 +121,179 @@ const copyToClipboard = () => {
 </script>
 
 <template>
-    <div class="stuff-container">
-        <div class="left-panel">
-            <h3>Requêtes au serveur</h3>
-            <div class="request-block">
-                <div class="header-row">
-                    <h4>Obtenir données CMC</h4>
-                    <button @click="fetchCmc" :disabled="isLoading">
-                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
-                    </button>
-                </div>
+    <div class="container">
+        <!-- Actions de requêtes -->
+        <section class="actions">
+            <div class="card">
+                <h4>CMC</h4>
+                <button @click="fetchCmc" :disabled="isLoading">
+                    {{ isLoading ? 'Chargement...' : 'Envoyer' }}
+                </button>
             </div>
-
-            <div class="request-block">
-                <div class="header-row">
-                    <h4>Obtenir les trades</h4>
-                    <button @click="fetchTradeBySymbolAndPlatform" :disabled="isLoading">
-                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
-                    </button>
+            <div class="card">
+                <h4>Trades</h4>
+                <div class="field">
+                    <label for="trade_base">Base:</label>
+                    <input id="trade_base" v-model="trade_base" type="text" placeholder="BTC" :disabled="isLoading" />
                 </div>
-                <div class="input-row">
-                    <!-- Champs en ligne pour gagner de la place -->
-                    <div class="inline-field">
-                        <label for="base_trade">Base:</label>
-                        <input id="base_trade" v-model="trade_base" type="text" placeholder="Ex: BTC"
-                            :disabled="isLoading" />
-                    </div>
-                    <div class="inline-field">
-                        <label for="platform_trade">Platform:</label>
-                        <input id="platform_trade" v-model="trade_platform" type="text" placeholder="Ex: binance"
-                            :disabled="isLoading" />
-                    </div>
+                <div class="field">
+                    <label for="trade_platform">Platform:</label>
+                    <input id="trade_platform" v-model="trade_platform" type="text" placeholder="binance"
+                        :disabled="isLoading" />
                 </div>
+                <button @click="fetchTrades" :disabled="isLoading">
+                    {{ isLoading ? 'Chargement...' : 'Envoyer' }}
+                </button>
             </div>
-
-            <div class="request-block">
-                <div class="header-row">
-                    <h4>Obtenir la balance</h4>
+            <div class="card">
+                <h4>Autres (Balance, Open Orders, Markets, Tickers)</h4>
+                <div class="field">
+                    <label for="simple_platform">Platform:</label>
+                    <input id="simple_platform" v-model="simple_platform" type="text" placeholder="binance"
+                        :disabled="isLoading" />
+                </div>
+                <div class="btn-group">
                     <button @click="fetchBalance" :disabled="isLoading">
-                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
+                        Balance
                     </button>
-                </div>
-                <div class="input-row">
-                    <div class="inline-field">
-                        <label for="balance_platform">Platform:</label>
-                        <input id="balance_platform" v-model="balance_platform" type="text" placeholder="Ex: binance"
-                            :disabled="isLoading" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="request-block">
-                <div class="header-row">
-                    <h4>Obtenir les ordres ouverts</h4>
                     <button @click="fetchOpenOrders" :disabled="isLoading">
-                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
+                        Open Orders
                     </button>
-                </div>
-                <div class="input-row">
-                    <div class="inline-field">
-                        <label for="openorders_platform">Platform:</label>
-                        <input id="openorders_platform" v-model="openorders_platform" type="text"
-                            placeholder="Ex: binance" :disabled="isLoading" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="request-block">
-                <div class="header-row">
-                    <h4>Obtenir les markets</h4>
                     <button @click="fetchMarkets" :disabled="isLoading">
-                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
+                        Markets
                     </button>
-                </div>
-                <div class="input-row">
-                    <div class="inline-field">
-                        <label for="markets_platform">Platform:</label>
-                        <input id="markets_platform" v-model="markets_platform" type="text" placeholder="Ex: binance"
-                            :disabled="isLoading" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="request-block">
-                <div class="header-row">
-                    <h4>Obtenir les tickers</h4>
                     <button @click="fetchTickers" :disabled="isLoading">
-                        {{ isLoading ? 'Chargement...' : 'Envoyer la requête' }}
+                        Tickers
                     </button>
                 </div>
-                <div class="input-row">
-                    <div class="inline-field">
-                        <label for="tickers_platform">Platform:</label>
-                        <input id="tickers_platform" v-model="tickers_platform" type="text" placeholder="Ex: binance"
-                            :disabled="isLoading" />
-                    </div>
-                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="right-panel">
-            <div class="header-row">
+        <!-- Zone de réponse -->
+        <section class="response">
+            <div class="header">
                 <h4>Réponse du serveur</h4>
                 <button v-if="responseJson" @click="copyToClipboard">Copier</button>
             </div>
-            <div v-if="isLoading" class="response-placeholder">
-                Chargement en cours...
-            </div>
-            <div v-else-if="responseJson" class="response-block" contenteditable="true">
+            <div v-if="isLoading" class="placeholder">Chargement en cours...</div>
+            <div v-else-if="responseJson" class="content" contenteditable="true">
                 <pre>{{ JSON.stringify(responseJson, null, 2) }}</pre>
             </div>
-            <div v-else class="response-placeholder">
-                Aucune réponse reçue pour l'instant.
-            </div>
-        </div>
+            <div v-else class="placeholder">Aucune réponse reçue.</div>
+        </section>
     </div>
 </template>
 
 <style scoped>
-.stuff-container {
+.container {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
     padding: 1rem;
+    font-family: sans-serif;
+    color: #eee;
+    background-color: #222;
 }
 
-/* Left Panel */
-.left-panel {
+/* Actions */
+.actions {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-.request-block {
+.card {
+    background: #333;
     padding: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    background-color: #333;
+    border-radius: 4px;
 }
 
-.header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+.card h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
 }
 
-.input-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-/* Nouveau style pour les champs en ligne */
-.inline-field {
+.field {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.inline-field label {
+.field label {
     width: 70px;
-    margin: 0;
-    font-size: 0.9rem;
     text-align: right;
-}
-
-.inline-field input {
-    width: 120px;
-    padding: 0.3rem 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
     font-size: 0.9rem;
 }
 
-/* Boutons */
+.field input {
+    flex: 1;
+    padding: 0.3rem;
+    font-size: 0.9rem;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background: #444;
+    color: #eee;
+}
+
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.btn-group button {
+    flex: 1;
+    padding: 0.4rem;
+    font-size: 0.9rem;
+    background: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+}
+
+/* Réponse */
+.response {
+    flex: 2;
+    background: #333;
+    padding: 1rem;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.response .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.response .content {
+    background: #222;
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-y: auto;
+    max-height: 400px;
+}
+
+.placeholder {
+    font-style: italic;
+    color: #aaa;
+}
+
 button {
     background: #007bff;
-    color: white;
-    padding: 0.5rem 1rem;
+    color: #fff;
     border: none;
+    padding: 0.5rem 0.8rem;
     border-radius: 4px;
     cursor: pointer;
 }
 
 button:disabled {
-    background: #6c757d;
+    background: #666;
     cursor: not-allowed;
-}
-
-button:hover:enabled {
-    background: #0056b3;
-}
-
-/* Right Panel */
-.right-panel {
-    flex: 2;
-    padding: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    background-color: #333;
-}
-
-.response-block {
-    white-space: pre-wrap;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    max-height: 400px;
-    overflow-y: auto;
-    user-select: text;
-}
-
-.response-placeholder {
-    color: #999;
-    font-style: italic;
 }
 </style>
