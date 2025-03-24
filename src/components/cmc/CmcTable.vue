@@ -1,7 +1,7 @@
 <!-- src/components/machi/CmcTable.vue -->
 <script setup lang="ts">
 import { cmcColumns } from '../../js/columns.ts'
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue'
 
 interface CmcRow {
     rank: number;
@@ -11,56 +11,40 @@ interface CmcRow {
     tags: string;
 }
 
+const currentPage = ref(1)
 const cols = ref(cmcColumns)
 
 const props = defineProps<{
     rows: CmcRow[];
-    globalFilter?: string;
     itemsPerPage?: number;
-}>();
+}>()
 
-const itemsPerPage = computed(() => props.itemsPerPage ?? 100);
+const itemsPerPage = computed(() => props.itemsPerPage ?? 100)
 
-const filteredRows = computed(() => {
-    if (!props.globalFilter || props.globalFilter.trim() === '') {
-        return props.rows;
-    }
-    const filterText = props.globalFilter.toLowerCase();
-    return props.rows.filter(row => {
-        return Object.values(row).some(value =>
-            String(value).toLowerCase().includes(filterText)
-        );
-    });
-});
+const totalPages = computed(() => Math.ceil(props.rows.length / itemsPerPage.value) || 1)
 
-const currentPage = ref(1);
-
-const totalPages = computed(() => {
-    return Math.ceil(filteredRows.value.length / itemsPerPage.value) || 1;
-});
-
-watch(filteredRows, () => {
+watch(() => props.rows, () => {
     if (currentPage.value > totalPages.value) {
-        currentPage.value = 1;
+        currentPage.value = 1
     }
-});
+})
 
 const paginatedRows = computed(() => {
-    const start = (currentPage.value - 1) * itemsPerPage.value;
-    return filteredRows.value.slice(start, start + itemsPerPage.value);
-});
+    const start = (currentPage.value - 1) * itemsPerPage.value
+    return props.rows.slice(start, start + itemsPerPage.value)
+})
 
 const prevPage = () => {
     if (currentPage.value > 1) {
-        currentPage.value -= 1;
+        currentPage.value -= 1
     }
-};
+}
 
 const nextPage = () => {
     if (currentPage.value < totalPages.value) {
-        currentPage.value += 1;
+        currentPage.value += 1
     }
-};
+}
 </script>
 
 <template>
@@ -81,7 +65,6 @@ const nextPage = () => {
                 </tr>
             </tbody>
         </table>
-
         <div class="pagination">
             <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
             <span>Page {{ currentPage }} of {{ totalPages }}</span>
@@ -95,20 +78,12 @@ const nextPage = () => {
     margin-top: 1rem;
 }
 
-/* Mise en page fixe du tableau */
 .cmc-table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
 }
 
-/* Définition des largeurs fixes pour chaque colonne :
-   - 1ère colonne (rank) : 50px
-   - 2ème colonne (name) : 150px
-   - 3ème colonne (symbol) : 50px
-   - 4ème colonne (price) : 100px
-   - 5ème colonne (tags) : 200px
-*/
 .cmc-table th:nth-child(1),
 .cmc-table td:nth-child(1) {
     width: 30px;
@@ -131,7 +106,7 @@ const nextPage = () => {
 
 .cmc-table th:nth-child(5),
 .cmc-table td:nth-child(5) {
-    width: 200px;
+    width: 150px;
 }
 
 .cmc-table th,

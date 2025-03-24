@@ -6,14 +6,10 @@ import { useCalculStore } from '../../store/calculStore'
 import SearchBar from '../machi/SearchBar.vue'
 import TradesTable from './TradesTable.vue'
 import { Trade } from '../../types/responseData'
+import { ObjectId } from 'mongodb'
 
-const filters = ref<{
-  global: {
-    value: string | null
-    matchMode: (typeof FilterMatchMode)[keyof typeof FilterMatchMode]
-  }
-}>({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+const filters = ref<{ global: { value: string; matchMode: typeof FilterMatchMode[keyof typeof FilterMatchMode] } }>({
+  global: { value: '', matchMode: FilterMatchMode.CONTAINS }
 })
 const totalSell = ref(0)
 const totalBuy = ref(0)
@@ -44,7 +40,26 @@ onMounted(async () => {
   await getTradesData()
 })
 
-//TODO Mettre à jour filteredTrades en fonction des filtres et transformer les données
+export interface TradeT {
+  _id: ObjectId;
+  base: string
+  quote: string
+  pair: string
+  dateUTC?: string
+  timestamp?: number
+  side: string
+  price: number
+  amount: number
+  total: number
+  fee: number
+  feecoin: string
+  platform: string
+  eqUSD: number
+  orderid: string
+  timestampVal: number
+}
+
+// Mise à jour de filteredTrades en fonction des filtres, transformation et tri par timestamp décroissant
 watchEffect(() => {
   filteredTrades.value = trades.value
     .filter((item) => {
@@ -53,30 +68,27 @@ watchEffect(() => {
       const matchesBase = item.base.toLowerCase().startsWith(searchValue)
       const matchesQuote = item.quote.toLowerCase().startsWith(searchValue)
       const matchesPlatform = item.platform.toLowerCase().startsWith(searchValue)
-
       return matchesPair || matchesBase || matchesQuote || matchesPlatform
     })
     .map((item: Trade) => {
       let date: string
-
+      let timestampVal = 0
       if (item['timestamp']) {
-        const timestamp =
+        timestampVal =
           item['timestamp'].toString().length <= 10 ? item['timestamp'] * 1000 : item['timestamp']
-        const formattedDate = new Date(timestamp)
+        const formattedDate = new Date(timestampVal)
         const year = formattedDate.getFullYear()
         const month = String(formattedDate.getMonth() + 1).padStart(2, '0')
         const day = String(formattedDate.getDate()).padStart(2, '0')
         const hours = String(formattedDate.getHours()).padStart(2, '0')
         const minutes = String(formattedDate.getMinutes()).padStart(2, '0')
         const seconds = String(formattedDate.getSeconds()).padStart(2, '0')
-
         date = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
       } else if (typeof item['dateUTC'] === 'string') {
         date = item['dateUTC']
       } else {
         date = 'Invalid date'
       }
-
       const eqUsd = item['eqUSD'] !== null ? item['eqUSD'] : 0
       return {
         base: item['base'],
@@ -91,21 +103,22 @@ watchEffect(() => {
         eqUSD: eqUsd,
         fee: item['fee'],
         feecoin: item['feecoin'],
-        platform: item['platform']
-      } as Trade
+        platform: item['platform'],
+        timestampVal // propriété utilisée pour le tri
+      } as TradeT
     })
+    .sort((a, b) => b.timestampVal - a.timestampVal) // Tri décroissant
 
   const safeSum = (acc: number, value: number) => Number(acc + (value || 0))
 
   const sellTrades = filteredTrades.value.filter((item) => {
-    return item.side && item.side.toLowerCase() === 'sell';
+    return item.side && item.side.toLowerCase() === 'sell'
   });
   totalSell.value = sellTrades.reduce((acc, item) => safeSum(acc, item.eqUSD), 0)
-
   amountSell.value = sellTrades.reduce((acc, item) => acc + (item.amount || 0), 0)
 
   const buyTrades = filteredTrades.value.filter((item) => {
-    return item.side && item.side.toLowerCase() === 'buy';
+    return item.side && item.side.toLowerCase() === 'buy'
   });
   totalBuy.value = buyTrades.reduce((acc, item) => safeSum(acc, item.eqUSD), 0)
   amountBuy.value = buyTrades.reduce((acc, item) => acc + (item.amount || 0), 0)
@@ -122,19 +135,16 @@ watchEffect(() => {
         <label>Buy: -{{ totalBuy.toFixed(2) }} / Sell: +{{ totalSell.toFixed(2) }}</label>
         <label>Diff: {{ (totalSell - totalBuy).toFixed(2) }}</label>
         <div>
-          <!-- Champ pour saisir la balance réelle -->
           <label>Real Balance:</label>
           <input type="number" v-model.number="realBalance" placeholder="Enter real balance" />
         </div>
         <div>
-          <!-- Affichage de la moyenne d'achat -->
           <label>Average Buy Price: {{ averageBuyPrice }}</label>
         </div>
       </div>
     </div>
-
     <div class="card">
-      <TradesTable :items="filteredTrades" />
+      <TradesTable :rows="filteredTrades" />
     </div>
   </div>
 </template>

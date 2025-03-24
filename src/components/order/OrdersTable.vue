@@ -1,80 +1,43 @@
 <!-- src/components/order/OrdersTable.vue -->
 <script setup lang="ts">
-import { watch, computed, ref } from 'vue';
-import { openOrdersTableColumns } from '../../js/columns';
-import { Order } from '../../types/responseData';
+import { computed, ref, watch } from 'vue'
+import { openOrdersTableColumns } from '../../js/columns'
+import { Order } from '../../types/responseData'
 
-const currentPage = ref(1);
+const currentPage = ref(1)
 const cols = ref(openOrdersTableColumns)
 
 const props = defineProps<{
   rows: Order[];
-  globalFilter?: string;
   itemsPerPage?: number;
 }>()
 
-const itemsPerPage = computed(() => props.itemsPerPage ?? 20);
+const itemsPerPage = computed(() => props.itemsPerPage ?? 20)
 
-const filteredRows = computed(() => {
-  // On transforme toujours les rows pour calculer le total
-  const transformedRows = props.rows.map((item: Order) => {
-    const total = (item.amount * item.price).toFixed(2);
-    return {
-      platform: item.platform,
-      symbol: item.symbol,
-      side: item.side,
-      amount: item.amount,
-      price: item.price,
-      total,
-      _id: item._id,
-      oId: item.oId,
-      cId: item.cId,
-      type: item.type
-    };
-  }).reverse();
+const totalPages = computed(() => Math.ceil(props.rows.length / itemsPerPage.value) || 1)
 
-  // Si aucun filtre global n'est appliqué, on renvoie directement le tableau transformé
-  if (!props.globalFilter || props.globalFilter.trim() === '') {
-    return transformedRows;
-  }
-
-  // Sinon, on applique le filtre sur le tableau transformé
-  const filterText = props.globalFilter.toLowerCase();
-  return transformedRows.filter(row =>
-    Object.values(row).some(value =>
-      String(value).toLowerCase().includes(filterText)
-    )
-  );
-});
-
-
-const totalPages = computed(() => {
-  return Math.ceil(filteredRows.value.length / itemsPerPage.value) || 1;
-});
-
-watch(filteredRows, () => {
+watch(() => props.rows, () => {
   if (currentPage.value > totalPages.value) {
-    currentPage.value = 1;
+    currentPage.value = 1
   }
-});
+})
 
 const paginatedRows = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value;
-  return filteredRows.value.slice(start, start + itemsPerPage.value);
-});
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  return props.rows.slice(start, start + itemsPerPage.value)
+})
 
 const prevPage = () => {
   if (currentPage.value > 1) {
-    currentPage.value -= 1;
+    currentPage.value -= 1
   }
-};
+}
 
 const nextPage = () => {
   if (currentPage.value < totalPages.value) {
-    currentPage.value += 1;
+    currentPage.value += 1
   }
-};
-
+}
 </script>
 
 <template>
@@ -95,7 +58,6 @@ const nextPage = () => {
         </tr>
       </tbody>
     </table>
-
     <div class="pagination">
       <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
@@ -109,7 +71,6 @@ const nextPage = () => {
   margin-top: 1rem;
 }
 
-/* Mise en page fixe du tableau */
 .orders-table {
   width: 100%;
   border-collapse: collapse;

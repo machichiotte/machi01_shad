@@ -1,42 +1,74 @@
 <!-- src/components/order/Orders.vue -->
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { useCalculStore } from '../../store/calculStore';
-import { FilterMatchMode } from 'primevue/api';
-import SearchBar from "../machi/SearchBar.vue";
-import OrdersTable from "./OrdersTable.vue";
+import { ref, onMounted, computed } from 'vue'
+import { useCalculStore } from '../../store/calculStore'
+import { FilterMatchMode } from 'primevue/api'
+import SearchBar from "../machi/SearchBar.vue"
+import OrdersTable from "./OrdersTable.vue"
+import { Order } from '../../types/responseData'
 
-const calculStore = useCalculStore();
+const calculStore = useCalculStore()
 
 const itemsPerPage = ref(20)
-const filters = ref<{ global: { value: string; matchMode: typeof FilterMatchMode[keyof typeof FilterMatchMode] } }>({
+const filters = ref({
   global: { value: '', matchMode: FilterMatchMode.CONTAINS }
-});
-// Access orders from Pinia store
-const orders = computed(() => calculStore.getOrder);
+})
 
-// Function to fetch order data using Pinia store
+// Récupération des orders depuis le store Pinia
+const orders = computed(() => calculStore.getOrder)
+
+// Transformation des orders (calcul du total, inversion du tableau, etc.)
+const transformedOrders = computed(() => {
+  return orders.value.map((item: Order) => {
+    const total = (item.amount * item.price).toFixed(2)
+    return {
+      platform: item.platform,
+      symbol: item.symbol,
+      side: item.side,
+      amount: item.amount,
+      price: item.price,
+      total,
+      _id: item._id,
+      oId: item.oId,
+      cId: item.cId,
+      type: item.type
+    }
+  }).reverse()
+})
+
+// Application du filtre global dans le parent
+const filteredOrders = computed(() => {
+  if (!filters.value.global.value.trim()) {
+    return transformedOrders.value
+  }
+  const filterText = filters.value.global.value.toLowerCase()
+  return transformedOrders.value.filter(row =>
+    Object.values(row).some(value =>
+      String(value).toLowerCase().includes(filterText)
+    )
+  )
+})
+
 const getOrdersData = async (): Promise<void> => {
   try {
-    await calculStore.loadOrder(); // Call Pinia action to fetch data
-    console.info("Orders data retrieved:", orders.value.length);
+    await calculStore.loadOrder()
+    console.info("Orders data retrieved:", orders.value.length)
   } catch (error) {
-    console.error("An error occurred while fetching data:", error);
-    // Display an error message to the user if necessary
+    console.error("An error occurred while fetching data:", error)
   }
-};
+}
 
 onMounted(async () => {
-  await getOrdersData();
-});
+  await getOrdersData()
+})
 </script>
 
 <template>
   <div class="page">
-    <h1>Current Orders List</h1>
+    <h2>Current Orders List</h2>
     <div class="card">
       <SearchBar :filters="filters" />
-      <OrdersTable :rows="orders" :globalFilter="filters.global.value || ''" :itemsPerPage="itemsPerPage" />
+      <OrdersTable :rows="filteredOrders" :itemsPerPage="itemsPerPage" />
     </div>
   </div>
 </template>
@@ -47,10 +79,5 @@ onMounted(async () => {
   flex-direction: column;
   align-items: center;
   padding: 1rem;
-}
-
-#table {
-  height: 700px;
-  width: auto;
 }
 </style>

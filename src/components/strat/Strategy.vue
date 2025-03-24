@@ -25,7 +25,6 @@ const exposures = ref([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 
 const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
 
 const balance = computed(() => calculStore.getBalance);
-
 const strat = computed(() => calculStore.getStrat);
 
 const platforms = computed(() => [...new Set(balance.value.map((item) => item.platform))].sort());
