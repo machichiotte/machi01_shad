@@ -1,21 +1,27 @@
 <!-- src/components/cmc/Cmc.vue -->
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useCalculStore } from '../../store/calculStore.ts'
+import { useCalculStore } from '../../store/calculStore'
 import { FilterMatchMode } from 'primevue/api'
 import SearchBar from "../machi/SearchBar.vue"
 import CmcTable from "./CmcTable.vue"
-import { Cmc } from '../../types/responseData.ts'
+import { Cmc } from '../../types/responseData'
+import { applyGlobalFilter } from '../../utils/filter'
 
+// Nombre d'éléments par page
 const itemsPerPage = ref(100)
+
+// Définition des filtres avec une valeur globale vide par défaut
 const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+  global: { value: '', matchMode: FilterMatchMode.CONTAINS }
 })
 
 const calculStore = useCalculStore()
 
+// Récupération des données depuis le store
 const cmcItems = computed(() => calculStore.getCmc)
 
+// Transformation des données CMC en ligne pour la table
 const rows = computed(() => {
   return cmcItems.value.map(item => {
     const types = addTags(item)
@@ -29,18 +35,15 @@ const rows = computed(() => {
   }).sort((a, b) => a.rank - b.rank)
 })
 
+// Application du filtre global en utilisant l'utilitaire
 const filteredRows = computed(() => {
-  if (!filters.value.global || !filters.value.global.value) {
-    return rows.value
-  }
-  const filterText = String(filters.value.global.value).toLowerCase()
-  return rows.value.filter(row =>
-    Object.values(row).some(value =>
-      String(value).toLowerCase().includes(filterText)
-    )
-  )
+  const filterText = filters.value.global.value
+  return filterText.trim() === ''
+    ? rows.value
+    : applyGlobalFilter(rows.value, filterText)
 })
 
+// Fonction pour extraire les tags pertinents de l'objet CMC
 function addTags(cmc: Cmc | null): string[] {
   const types: string[] = []
   const tagsToCheck = [
@@ -52,16 +55,15 @@ function addTags(cmc: Cmc | null): string[] {
     'solana-ecosystem', 'smart-contracts',
     'centralized-exchange', 'decentralized-exchange-dex-token'
   ]
-
   tagsToCheck.forEach(tag => {
     if (cmc?.tags.includes(tag)) {
       types.push(tag)
     }
   })
-
   return types
 }
 
+// Récupération des données CMC au montage du composant
 const getCmcData = async () => {
   try {
     await calculStore.loadCmc()
@@ -71,11 +73,7 @@ const getCmcData = async () => {
 }
 
 onMounted(async () => {
-  try {
-    await getCmcData()
-  } catch (error) {
-    console.error("An error occurred while retrieving data:", error)
-  }
+  await getCmcData()
 })
 </script>
 

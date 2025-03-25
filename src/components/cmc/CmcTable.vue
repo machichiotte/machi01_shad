@@ -1,8 +1,10 @@
-<!-- src/components/machi/CmcTable.vue -->
+<!-- src/components/cmc/CmcTable.vue -->
 <script setup lang="ts">
-import { cmcColumns } from '../../js/columns.ts'
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
+import { cmcColumns } from '../../js/columns'
+import { usePagination } from '../../composables/usePagination'
 
+// Définition de l'interface pour une ligne de données CMC
 interface CmcRow {
     rank: number;
     name: string;
@@ -11,40 +13,27 @@ interface CmcRow {
     tags: string;
 }
 
-const currentPage = ref(1)
-const cols = ref(cmcColumns)
-
+// Déclaration des props attendues
 const props = defineProps<{
     rows: CmcRow[];
     itemsPerPage?: number;
 }>()
 
-const itemsPerPage = computed(() => props.itemsPerPage ?? 100)
+// Les colonnes de la table
+const cols = computed(() => cmcColumns)
 
-const totalPages = computed(() => Math.ceil(props.rows.length / itemsPerPage.value) || 1)
+// Création d'un getter pour les lignes afin de les passer au composable
+const rowsForPagination = computed(() => props.rows)
 
-watch(() => props.rows, () => {
-    if (currentPage.value > totalPages.value) {
-        currentPage.value = 1
-    }
-})
-
-const paginatedRows = computed(() => {
-    const start = (currentPage.value - 1) * itemsPerPage.value
-    return props.rows.slice(start, start + itemsPerPage.value)
-})
-
-const prevPage = () => {
-    if (currentPage.value > 1) {
-        currentPage.value -= 1
-    }
-}
-
-const nextPage = () => {
-    if (currentPage.value < totalPages.value) {
-        currentPage.value += 1
-    }
-}
+// Utilisation du composable de pagination en passant la fonction de récupération
+// On ne destructure que les propriétés nécessaires
+const {
+    currentPage,
+    totalPages,
+    paginatedItems: paginatedRows,
+    prevPage,
+    nextPage
+} = usePagination(() => rowsForPagination.value, props.itemsPerPage ?? 100)
 </script>
 
 <template>
