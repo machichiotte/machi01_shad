@@ -6,15 +6,18 @@ import { FilterMatchMode } from 'primevue/api'
 import SearchBar from "../machi/SearchBar.vue"
 import OrdersTable from "./OrdersTable.vue"
 import { Order } from '../../types/responseData'
+import { applyGlobalFilter } from '../../utils/filter'
 
+// Récupération du store
 const calculStore = useCalculStore()
 
+// Configuration du nombre d'éléments par page et des filtres globaux
 const itemsPerPage = ref(20)
 const filters = ref({
   global: { value: '', matchMode: FilterMatchMode.CONTAINS }
 })
 
-// Récupération des orders depuis le store Pinia
+// Récupération des orders depuis le store
 const orders = computed(() => calculStore.getOrder)
 
 // Transformation des orders (calcul du total, inversion du tableau, etc.)
@@ -36,19 +39,15 @@ const transformedOrders = computed(() => {
   }).reverse()
 })
 
-// Application du filtre global dans le parent
+// Application du filtre global via l'utilitaire
 const filteredOrders = computed(() => {
-  if (!filters.value.global.value.trim()) {
-    return transformedOrders.value
-  }
-  const filterText = filters.value.global.value.toLowerCase()
-  return transformedOrders.value.filter(row =>
-    Object.values(row).some(value =>
-      String(value).toLowerCase().includes(filterText)
-    )
-  )
+  const filterText = filters.value.global.value
+  return filterText.trim() === ''
+    ? transformedOrders.value
+    : applyGlobalFilter(transformedOrders.value, filterText)
 })
 
+// Chargement des orders depuis le store
 const getOrdersData = async (): Promise<void> => {
   try {
     await calculStore.loadOrder()

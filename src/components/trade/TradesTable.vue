@@ -1,42 +1,31 @@
 <!-- src/components/trades/TradesTable.vue -->
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { computed } from 'vue'
 import { tradesColumns } from '../../js/columns'
-import { Trade } from '../../types/responseData'
+import { TradeTransformed } from '../../types/responseData'
+import { usePagination } from '../../composables/usePagination'
 
+
+// Déclaration des props attendues
 const props = defineProps<{
-  rows: Trade[];      // Les trades déjà filtrés et triés
+  rows: TradeTransformed[];      // Les trades déjà filtrés et triés
   itemsPerPage?: number;
 }>()
 
-const currentPage = ref(1)
-const itemsPerPage = computed(() => props.itemsPerPage ?? 100)
-const cols = tradesColumns
+// Les colonnes à afficher dans la table
+const cols = computed(() => tradesColumns)
 
-// Calcul du nombre total de pages
-const totalPages = computed(() => {
-  return Math.ceil(props.rows.length / itemsPerPage.value) || 1
-})
+// Création d'une computed property pour fournir les lignes au composable
+const rowsForPagination = computed(() => props.rows)
 
-// Réinitialise la page courante si les données changent et que la page actuelle n'existe plus
-watch(() => props.rows, () => {
-  if (currentPage.value > totalPages.value) {
-    currentPage.value = 1
-  }
-})
-
-// Extraction des éléments pour la page courante
-const paginatedRows = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  return props.rows.slice(start, start + itemsPerPage.value)
-})
-
-const prevPage = () => {
-  if (currentPage.value > 1) currentPage.value--
-}
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) currentPage.value++
-}
+// Utilisation du composable de pagination
+const {
+  currentPage,
+  totalPages,
+  paginatedItems: paginatedRows,
+  prevPage,
+  nextPage
+} = usePagination(() => rowsForPagination.value, props.itemsPerPage ?? 100)
 </script>
 
 <template>
@@ -52,7 +41,7 @@ const nextPage = () => {
       <tbody>
         <tr v-for="(row, index) in paginatedRows" :key="index">
           <td v-for="(col, idx) in cols" :key="idx">
-            {{ row[col.field as keyof Trade] }}
+            {{ row[col.field as keyof TradeTransformed] }}
           </td>
         </tr>
       </tbody>
@@ -85,7 +74,7 @@ const nextPage = () => {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: small
+  font-size: small;
 }
 
 /* Exemple de largeur fixe pour chaque colonne (à adapter selon tradesColumns) */

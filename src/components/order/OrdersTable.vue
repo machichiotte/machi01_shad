@@ -1,43 +1,30 @@
 <!-- src/components/order/OrdersTable.vue -->
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 import { openOrdersTableColumns } from '../../js/columns'
 import { Order } from '../../types/responseData'
+import { usePagination } from '../../composables/usePagination'
 
-const currentPage = ref(1)
-const cols = ref(openOrdersTableColumns)
-
+// Déclaration des props attendues
 const props = defineProps<{
   rows: Order[];
   itemsPerPage?: number;
 }>()
 
-const itemsPerPage = computed(() => props.itemsPerPage ?? 20)
+// Les colonnes de la table
+const cols = computed(() => openOrdersTableColumns)
 
-const totalPages = computed(() => Math.ceil(props.rows.length / itemsPerPage.value) || 1)
+// Création d'une computed property pour fournir les lignes au composable
+const rowsForPagination = computed(() => props.rows)
 
-watch(() => props.rows, () => {
-  if (currentPage.value > totalPages.value) {
-    currentPage.value = 1
-  }
-})
-
-const paginatedRows = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  return props.rows.slice(start, start + itemsPerPage.value)
-})
-
-const prevPage = () => {
-  if (currentPage.value > 1) {
-    currentPage.value -= 1
-  }
-}
-
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value += 1
-  }
-}
+// Utilisation du composable de pagination en passant la fonction qui retourne les lignes
+const {
+  currentPage,
+  totalPages,
+  paginatedItems: paginatedRows,
+  prevPage,
+  nextPage
+} = usePagination(() => rowsForPagination.value, props.itemsPerPage ?? 20)
 </script>
 
 <template>
@@ -75,6 +62,16 @@ const nextPage = () => {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
+}
+
+.orders-table th,
+.orders-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .orders-table th:nth-child(1),
@@ -125,16 +122,6 @@ const nextPage = () => {
 .orders-table th:nth-child(10),
 .orders-table td:nth-child(10) {
   width: 40px;
-}
-
-.orders-table th,
-.orders-table td {
-  border: 1px solid #ccc;
-  padding: 0.5rem;
-  text-align: center;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 .pagination {
