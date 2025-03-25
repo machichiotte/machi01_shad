@@ -33,7 +33,7 @@ const {
     paginatedItems: paginatedRows,
     prevPage,
     nextPage
-} = usePagination(() => rowsForPagination.value, props.itemsPerPage ?? 100)
+} = usePagination(() => rowsForPagination.value, props.itemsPerPage ?? 10)
 </script>
 
 <template>

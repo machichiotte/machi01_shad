@@ -38,6 +38,11 @@ export interface Trade {
   orderid: string
 }
 
+export interface TradeTransformed extends Omit<Trade, '_id'> {
+  _id?: ObjectId
+  timestampVal: number
+}
+
 export interface Strat {
   _id: ObjectId;
   base: string
