@@ -1,53 +1,74 @@
-<!-- src/components/strat/Strategy.vue -->
-<script setup>
+<!-- Chemin du fichier : src/components/strat/Strategy.vue -->
+<script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { successSpin, errorSpin } from '../../js/utils/spinner';
 import { strategies } from '../../js/strat/index';
 import { useCalculStore } from '../../store/calculStore';
-import { FilterMatchMode } from 'primevue/api'
+import { FilterMatchMode } from 'primevue/api';
 import SearchBar from "../machi/SearchBar.vue";
 import StrategyTable from "./StrategyTable.vue";
-import { getSelectedStrategy, setSelectedStrategy, isVisible, getSelectedMaxExposure, setSelectedMaxExposure } from '../../js/utils/strategyUtils';
+import {
+  getSelectedStrategy,
+  setSelectedStrategy,
+  isVisible,
+  getSelectedMaxExposure,
+  setSelectedMaxExposure
+} from '../../js/utils/strategyUtils';
 
-const serverHost = import.meta.env.VITE_SERVER_HOST;
+// Interface pour définir la structure d'une stratégie
+interface Strategy {
+  label: string;
+  // Vous pouvez ajouter d'autres propriétés si nécessaire
+}
 
-const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-})
+// Interface pour un item de solde
+interface BalanceItem {
+  platform: string;
+  base: string;
+  // Ajoutez d'autres propriétés en fonction de vos données
+}
+
+// Interface pour une ligne du tableau dynamique
+interface TableRow {
+  base: string;
+  // Propriétés dynamiques pour chaque plateforme
+  [platform: string]: any;
+}
+
+// Référence pour le filtre global avec valeur initiale ''
+const filters = ref<{ global: { value: string; matchMode: string } }>({
+  global: { value: '', matchMode: FilterMatchMode.CONTAINS }
+});
 
 const calculStore = useCalculStore();
 
-const selectedStrategy = ref('');
-const selectedMaxExposure = ref('');
+// Liste des stratégies et expositions disponibles
+const strategiesList = ref<Strategy[]>(strategies);
+const exposures = ref<(number | string)[]>([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000]);
 
-const strategiesList = ref(strategies);
-const exposures = ref([5, 10, 15, 20, 25, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000]);
-const strategyLabels = computed(() => strategiesList.value.map(strategy => strategy.label));
+// Extraction des labels pour les stratégies
+const strategyLabels = computed<string[]>(() => strategiesList.value.map(strategy => strategy.label));
 
-const balance = computed(() => calculStore.getBalance);
-const strat = computed(() => calculStore.getStrat);
+// Récupération des données du store
+const balance = computed<BalanceItem[]>(() => calculStore.getBalance);
+const strat = computed<any>(() => calculStore.getStrat); // Typage à affiner si possible
 
-const platforms = computed(() => [...new Set(balance.value.map((item) => item.platform))].sort());
-const bases = computed(() => [...new Set(balance.value.map((item) => item.base))].sort());
-const columns = computed(() => {
-  return [
-    { field: 'base', header: 'Base' },
-    ...platforms.value.map(platform => ({ field: platform, header: platform }))
-  ];
+// Extraction et tri des plateformes et bases depuis le solde
+const platforms = computed<string[]>(() => {
+  return [...new Set(balance.value.map(item => item.platform))].sort();
+});
+const bases = computed<string[]>(() => {
+  return [...new Set(balance.value.map(item => item.base))].sort();
 });
 
-const tableData = computed(() => {
+// Construction des données du tableau
+const tableData = computed<TableRow[]>(() => {
   if (!bases.value.length) {
     console.error('Aucune base trouvée');
     return [];
   }
-
   return bases.value.map(base => {
-
-    const row = { base };
-
+    const row: TableRow = { base };
     platforms.value.forEach(platform => {
-
       row[platform] = {
         strategy: getSelectedStrategy(strat.value, base, platform),
         maxExposure: getSelectedMaxExposure(strat.value, base, platform),
@@ -58,7 +79,20 @@ const tableData = computed(() => {
   });
 });
 
-const getStrategyData = async () => {
+// Wrapper pour adapter la signature attendue par StrategyTable
+const handleSetSelectedStrategy = (base: string, platform: string, value: string): void => {
+  // Utilise strat.value pour passer la valeur supplémentaire attendue par la fonction d'origine
+  setSelectedStrategy(strat.value, base, platform, value);
+};
+
+const handleSetSelectedMaxExposure = (base: string, platform: string, value: number | string): void => {
+  // Conversion de value en number si nécessaire
+  const numericValue = typeof value === 'string' ? Number(value) : value;
+  setSelectedMaxExposure(strat.value, base, platform, numericValue);
+};
+
+// Chargement asynchrone des données
+const getStrategyData = async (): Promise<void> => {
   try {
     await calculStore.loadStrat();
     await calculStore.loadBalance();
@@ -67,26 +101,6 @@ const getStrategyData = async () => {
   }
 };
 
-async function updateAllStrats() {
-  successSpin('Saving strategies...');
-  try {
-    await updateStrategies(strat.value)
-    successSpin('Strategies saved successfully!');
-  } catch (error) {
-    errorSpin('Error saving strategies: ', error.message);
-  }
-}
-
-async function updateAllMaxExposure() {
-  successSpin('Updating max exposure...');
-  try {
-    await updateMaxExposure(strat.value)
-    successSpin('Max exposure updated successfully!');
-  } catch (error) {
-    errorSpin('Error updating max exposure: ', error.message);
-  }
-}
-
 onMounted(async () => {
   await getStrategyData();
 });
@@ -94,67 +108,20 @@ onMounted(async () => {
 
 <template>
   <div>
-
-
     <div class="text-align-left">
       <SearchBar :filters="filters" />
-
-      <select v-model="selectedStrategy" @change="updateAllStrats">
-        <option value="">Select a strategy</option>
-        <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
-          {{ strategy }}
-        </option>
-      </select>
-
-      <select v-model="selectedMaxExposure" @change="updateAllMaxExposure">
-        <option value="">Select max exposure</option>
-        <option v-for="exposure in exposures" :key="exposure" :value="exposure">
-          {{ exposure }}
-        </option>
-      </select>
-
-      <button @click="updateStrat">Save</button>
     </div>
-
-
-    <!-- Wrap the table in a div to apply the centering -->
+    <!-- Wrapper pour centrer le tableau -->
     <div class="data-table-wrapper">
       <StrategyTable :tableData="tableData" :platforms="platforms" :strategyLabels="strategyLabels"
-        :exposures="exposures" :setSelectedStrategy="setSelectedStrategy"
-        :setSelectedMaxExposure="setSelectedMaxExposure" :globalFilter="filters.global.value" />
+        :exposures="exposures" :setSelectedStrategy="handleSetSelectedStrategy"
+        :setSelectedMaxExposure="handleSetSelectedMaxExposure" :globalFilter="filters.global.value" />
     </div>
   </div>
-
 </template>
 
 <style scoped>
-.p-datatable {
-  max-width: 100%;
-  width: 90%;
-  overflow-x: auto;
-  background-color: #333;
-  border: 1px solid #222;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  color: #ccc;
-}
-
-.p-datatable thead {
-  background-color: #333;
-  color: #ccc;
-}
-
-.p-datatable tbody tr {
-  border-bottom: 1px solid #222;
-  color: #ccc;
-}
-
-.p-datatable tbody tr:last-child {
-  border-bottom: none;
-}
-
-button {
+.button {
   background: #007bff;
   color: white;
   padding: 0.3rem 0.7rem;
@@ -164,6 +131,7 @@ button {
   font-size: 0.9rem;
 }
 
+/* Style pour centrer le SearchBar */
 .text-align-left {
   display: flex;
   justify-content: center;
@@ -171,16 +139,7 @@ button {
   margin-bottom: 20px;
 }
 
-.select-container {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.centered-column {
-  text-align: center;
-}
-
+/* Style pour centrer le tableau */
 .data-table-wrapper {
   display: flex;
   justify-content: center;

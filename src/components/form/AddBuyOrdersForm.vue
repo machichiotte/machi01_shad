@@ -1,121 +1,123 @@
 <!-- src/components/forms/AddBuyOrdersForm.vue -->
-<template>
-    <div>
-        <!-- Dropdown with selected bases -->
-        <Dropdown :options="baseOptions" optionLabel="base" placeholder="Select Base" v-model="selectedBase"
-            class="mb-3" />
-
-        <!-- Buy order lines -->
-        <div v-for="(order, index) in buyOrders" :key="index" class="order-row">
-            <InputNumber v-model="order.price" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8"
-                placeholder="Price" @input="updateCalculatedValues(index)" />
-            <InputNumber v-model="order.quantity" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8"
-                placeholder="Quantity" @input="updateCalculatedValues(index)" />
-            <span class="calculated-value">Calculated Total: {{ calculateTotal(index) }}</span>
-            <InputNumber v-model="order.total" inputId="minmaxfraction" :minFractionDigits="2" :maxFractionDigits="8"
-                placeholder="Total" @input="updateCalculatedValues(index)" />
-            <span class="calculated-value">Calculated Quantity: {{ calculateQuantity(index) }}</span>
-            <Button icon="pi pi-times" class="p-button-danger" @click="removeOrder(index)" />
-            <span v-if="!isValidOrder(order)" class="error-message">Invalid order: Price and Quantity must be positive
-                numbers.</span>
-        </div>
-        <!-- Button to add an order line -->
-        <Button label="Add Line" @click="addOrder" :disabled="buyOrders.length >= 10" />
-        <!-- Button to submit orders -->
-        <Button label="Submit" class="p-button-success" @click="submitOrders" />
-    </div>
-</template>
-
-<script setup>
-import { ref, computed } from 'vue'
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
 import { successSpinHtml } from '../../js/utils/spinner'
 import { addLimitBuyOrder } from '../../js/server/order'
+import type { ApiResponse } from '../../types/response';
 
-const props = defineProps({
-    bases: Object,
-    visible: Boolean,
-    selectedBases: Object,
-    onClose: Function
-})
-
-const selectedBase = ref(null)
-
-const buyOrders = ref([{ price: null, quantity: null, total: null }])
-
-/**
- * @param {Object} order
- * @returns {boolean}
- */
-const isValidOrder = (order) => {
-    return order.price > 0 && order.quantity > 0;
+interface BaseOption {
+    base: string;
+    platform: string;
 }
 
+interface BuyOrder {
+    price: number | null;
+    quantity: number | null;
+    total: number | null;
+}
+
+interface Props {
+    bases: Record<string, any>;
+    visible: boolean;
+    selectedBases: BaseOption[];
+    onClose: () => void;
+}
+
+const props = defineProps<Props>();
+
+const selectedBase = ref<BaseOption | null>(null);
+const buyOrders = ref<BuyOrder[]>([{ price: null, quantity: null, total: null }]);
+
 /**
- * @returns {void}
+ * Vérifie si une ligne d'achat est valide.
  */
-const addOrder = () => {
+const isValidOrder = (order: BuyOrder): boolean => {
+    return (order.price ?? 0) > 0 && (order.quantity ?? 0) > 0;
+};
+
+/**
+ * Ajoute une ligne d'achat si le maximum de 10 n'est pas atteint.
+ */
+const addOrder = (): void => {
     if (buyOrders.value.length < 10) {
         buyOrders.value.push({ price: null, quantity: null, total: null });
     }
-}
+};
 
 /**
- * @param {number} index
- * @returns {void}
+ * Supprime une ligne d'achat.
  */
-const removeOrder = (index) => {
-    buyOrders.value.splice(index, 1)
-}
+const removeOrder = (index: number): void => {
+    buyOrders.value.splice(index, 1);
+};
 
 /**
- * @param {number} index
- * @returns {void}
+ * Met à jour les valeurs calculées.
  */
-const updateCalculatedValues = (index) => {
-    calculateTotal(index)
-    calculateQuantity(index)
-}
+const updateCalculatedValues = (index: number): void => {
+    buyOrders.value[index].total = calculateTotal(index);
+    buyOrders.value[index].quantity = calculateQuantity(index);
+};
 
 /**
- * @param {number} index
- * @returns {number|null}
+ * Calcule le total d'une ligne d'achat.
  */
-const calculateTotal = (index) => {
-    const order = buyOrders.value[index]
-    if (order.price != null && order.quantity != null) {
-        return parseFloat((order.price * order.quantity).toFixed(8))
+const calculateTotal = (index: number): number | null => {
+    const order = buyOrders.value[index];
+    return order.price !== null && order.quantity !== null
+        ? parseFloat((order.price * order.quantity).toFixed(8))
+        : null;
+};
+
+/**
+ * Calcule la quantité basée sur le total et le prix.
+ */
+const calculateQuantity = (index: number): number | null => {
+    const order = buyOrders.value[index];
+    return order.total !== null && order.price !== null
+        ? parseFloat((order.total / order.price).toFixed(8))
+        : null;
+};
+
+/**
+ * Envoie les ordres d'achat.
+ */
+const submitBuyOrders = async (): Promise<void> => {
+    if (!selectedBase.value) {
+        alert('Please select a base before submitting orders.');
+        return;
     }
-    return null
-}
 
-/**
- * @param {number} index
- * @returns {number|null}
- */
-const calculateQuantity = (index) => {
-    const order = buyOrders.value[index]
-    if (order.total != null && order.price != null) {
-        return parseFloat((order.total / order.price).toFixed(8))
-    }
-    return null
-}
-
-/**
- * @returns {Promise<void>}
- */
-const submitOrders = async () => {
     if (buyOrders.value.some(order => !isValidOrder(order))) {
         alert('Please ensure all orders have valid price and quantity.');
         return;
     }
 
+    const { platform, base } = selectedBase.value; // ✅ On extrait ici pour éviter le problème
+
     const orderPlacementResults = await Promise.all(buyOrders.value.map(async (order) => {
         try {
-            const result = await addLimitBuyOrder(selectedBase.value.platform, selectedBase.value.base, order.quantity, order.price);
+            if (order.quantity === null || order.price === null) {
+                throw new Error("Order values cannot be null.");
+            }
+
+            const result: ApiResponse<unknown> = await addLimitBuyOrder(
+                platform, // ✅ `selectedBase.value` est forcément défini ici
+                base,
+                order.quantity,
+                order.price
+            );
             return result;
         } catch (error) {
             console.error('Error placing order:', error);
-            return `Error placing order: ${error.message}`;
+
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+            return {
+                status: 'error',
+                message: `Error placing order: ${errorMessage}`,
+                timestamp: Date.now()
+            } as ApiResponse<null>;
         }
     }));
 
@@ -123,6 +125,7 @@ const submitOrders = async () => {
         const formattedResults = orderPlacementResults.map(result => {
             return `Status: ${result.status} - ${JSON.stringify(result.message)}`;
         });
+
         successSpinHtml('Save completed', formattedResults.join('<br>'), true, true);
     } else {
         successSpinHtml('NOTHING', 'No buy order', true, true);
@@ -131,21 +134,55 @@ const submitOrders = async () => {
     props.onClose();
 };
 
-const baseOptions = computed(() => {
+/**
+ * Génère les options de sélection des bases.
+ */
+const baseOptions = computed<BaseOption[]>(() => {
     const bases = props.selectedBases.map(row => ({
         base: row.base,
         platform: row.platform
     }));
 
-    const uniqueBases = Array.from(new Set(bases.map(a => a.base)))
-        .map(base => {
-            return bases.find(a => a.base === base);
-        });
+    return Array.from(new Set(bases.map(a => a.base))).map(base => bases.find(a => a.base === base)!);
+});
 
-    return uniqueBases;
+// Réinitialiser selectedBase si elle ne fait plus partie des options disponibles
+watch(baseOptions, (newOptions) => {
+    if (!newOptions.some(option => option.base === selectedBase.value?.base)) {
+        selectedBase.value = null;
+    }
 });
 
 </script>
+
+<template>
+    <div>
+        <!-- Sélection d'une base -->
+        <Dropdown v-model="selectedBase" :options="baseOptions" optionLabel="base" placeholder="Select Base"
+            class="mb-3" />
+
+        <!-- Lignes d'ordre d'achat -->
+        <div v-for="(order, index) in buyOrders" :key="index" class="order-row">
+            <InputNumber v-model="order.price" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Price"
+                @input="updateCalculatedValues(index)" />
+            <InputNumber v-model="order.quantity" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Quantity"
+                @input="updateCalculatedValues(index)" />
+            <span class="calculated-value">Calculated Total: {{ calculateTotal(index) }}</span>
+            <InputNumber v-model="order.total" :minFractionDigits="2" :maxFractionDigits="8" placeholder="Total"
+                @input="updateCalculatedValues(index)" />
+            <span class="calculated-value">Calculated Quantity: {{ calculateQuantity(index) }}</span>
+            <Button icon="pi pi-times" class="p-button-danger" @click="removeOrder(index)" />
+            <span v-if="!isValidOrder(order)" class="error-message">Invalid order: Price and Quantity must be positive
+                numbers.</span>
+        </div>
+
+        <!-- Bouton pour ajouter une ligne -->
+        <Button label="Add Line" @click="addOrder" :disabled="buyOrders.length >= 10" />
+
+        <!-- Bouton pour soumettre les ordres -->
+        <Button label="Submit" class="p-button-success" @click="submitBuyOrders" />
+    </div>
+</template>
 
 <style scoped>
 .order-row {
