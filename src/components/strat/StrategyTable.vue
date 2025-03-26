@@ -1,23 +1,26 @@
-<!-- src/components/machi/StrategyTable.vue -->
 <script setup lang="ts">
-// 1: Importation des fonctions nécessaires depuis Vue
+/**
+ * File Path: src/components/strat/StrategyTable.vue
+ * This component renders the strategy table.
+ * It displays a row per base and a column per platform, with dropdowns for strategy and maxExposure when applicable.
+ */
 import { computed } from 'vue';
 
-// 2: Définition de l'interface pour les données d'une plateforme dans une ligne du tableau
+// Define the structure for a platform cell in the table
 interface PlatformData {
     strategy: string;
     maxExposure: number | string;
     isVisible: boolean;
 }
 
-// 3: Définition de l'interface pour une ligne de tableau (chaque ligne représente une "base")
+// Define the structure for a table row (each row corresponds to a base)
 interface TableRow {
     base: string;
-    // 4: Clés dynamiques pour chaque plateforme contenant un objet PlatformData
+    // Dynamic keys for each platform holding PlatformData
     [platform: string]: PlatformData | string;
 }
 
-// 5: Déclaration des props du composant
+// Declare component props
 const props = defineProps<{
     tableData: TableRow[];
     platforms: string[];
@@ -25,21 +28,21 @@ const props = defineProps<{
     exposures: Array<number | string>;
     setSelectedStrategy: (base: string, platform: string, value: string) => void;
     setSelectedMaxExposure: (base: string, platform: string, value: number | string) => void;
-    globalFilter?: string; // 6: Prop optionnelle pour le filtre global
+    globalFilter?: string;
 }>();
 
-// 7: Propriété calculée pour filtrer les données selon la valeur du filtre global
+// Filter the table rows based on the global filter value
 const filteredTableData = computed(() => {
     if (!props.globalFilter || props.globalFilter.trim() === '') {
         return props.tableData;
     }
     const filterText = props.globalFilter.toLowerCase();
     return props.tableData.filter(row => {
-        // 8: On filtre sur le champ 'base'
+        // Filter on the 'base' field
         if (row.base.toLowerCase().includes(filterText)) {
             return true;
         }
-        // 9: On filtre également sur les valeurs des plateformes (strategy et maxExposure)
+        // Also filter on the values of each platform (strategy and maxExposure)
         return props.platforms.some(platform => {
             const cell = row[platform] as PlatformData;
             if (cell && cell.isVisible) {
@@ -51,7 +54,9 @@ const filteredTableData = computed(() => {
     });
 });
 
-// 10: Gestionnaire d'événement pour la modification de la stratégie
+/**
+ * Event handler for when the strategy dropdown changes.
+ */
 const onStrategyChange = (base: string, platform: string, event: Event) => {
     const target = event.target as HTMLSelectElement | null;
     if (target) {
@@ -59,7 +64,9 @@ const onStrategyChange = (base: string, platform: string, event: Event) => {
     }
 };
 
-// 11: Gestionnaire d'événement pour la modification du maxExposure
+/**
+ * Event handler for when the maxExposure dropdown changes.
+ */
 const onMaxExposureChange = (base: string, platform: string, event: Event) => {
     const target = event.target as HTMLSelectElement | null;
     if (target) {
@@ -69,26 +76,23 @@ const onMaxExposureChange = (base: string, platform: string, event: Event) => {
 </script>
 
 <template>
-    <!-- 12: Conteneur du tableau -->
+    <!-- Container for the strategy table -->
     <div class="table-container">
-        <!-- 13: Début du tableau -->
         <table class="strategy-table">
-            <!-- 14: En-tête du tableau -->
             <thead>
                 <tr>
                     <th>Base</th>
-                    <!-- 15: Création dynamique des colonnes pour chaque plateforme -->
+                    <!-- Dynamic creation of columns for each platform -->
                     <th v-for="platform in props.platforms" :key="platform">{{ platform }}</th>
                 </tr>
             </thead>
-            <!-- 16: Corps du tableau utilisant les données filtrées -->
             <tbody>
                 <tr v-for="(row, rowIndex) in filteredTableData" :key="rowIndex">
                     <td>{{ row.base }}</td>
                     <td v-for="platform in props.platforms" :key="platform">
-                        <!-- 17: Si les données de la plateforme sont visibles, on affiche les sélecteurs -->
+                        <!-- If the cell is visible, display dropdowns -->
                         <div v-if="(row[platform] as PlatformData)?.isVisible" class="select-container">
-                            <!-- 18: Sélecteur pour la stratégie -->
+                            <!-- Dropdown for strategy selection -->
                             <select :value="(row[platform] as PlatformData).strategy"
                                 @change="(e) => onStrategyChange(row.base, platform, e)">
                                 <option value=""></option>
@@ -96,7 +100,7 @@ const onMaxExposureChange = (base: string, platform: string, event: Event) => {
                                     {{ strategy }}
                                 </option>
                             </select>
-                            <!-- 19: Sélecteur pour le maxExposure -->
+                            <!-- Dropdown for maxExposure selection -->
                             <select :value="(row[platform] as PlatformData).maxExposure"
                                 @change="(e) => onMaxExposureChange(row.base, platform, e)">
                                 <option value=""></option>
@@ -105,7 +109,7 @@ const onMaxExposureChange = (base: string, platform: string, event: Event) => {
                                 </option>
                             </select>
                         </div>
-                        <!-- 20: Si les données ne sont pas visibles, affichage d'un indicateur -->
+                        <!-- Otherwise, display an indicator -->
                         <div v-else>
                             -
                         </div>
@@ -117,35 +121,31 @@ const onMaxExposureChange = (base: string, platform: string, event: Event) => {
 </template>
 
 <style scoped>
-/* 21: Style du conteneur du tableau */
+/* Container styling for the table */
 .table-container {
     margin-top: 1rem;
 }
 
-/* 22: On applique un layout fixe pour le tableau */
+/* Fixed layout for the table */
 .strategy-table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
 }
 
-/* 23: Définition de largeurs fixes pour chaque colonne */
-/* La première colonne (base) */
+/* Fixed width for the first column (base) */
 .strategy-table th:first-child,
 .strategy-table td:first-child {
     width: 100px;
 }
 
-/* Pour les colonnes des plateformes, nous attribuons une largeur fixe.
-   Vous pouvez ajuster ces valeurs selon vos besoins :
-   - Les colonnes "strategy" et "maxExposure" sont contenues dans un même TD, 
-     donc chaque colonne de plateforme aura par exemple 200px. */
+/* Fixed width for platform columns */
 .strategy-table th:not(:first-child),
 .strategy-table td:not(:first-child) {
     width: 200px;
 }
 
-/* 24: Style des en-têtes et des cellules */
+/* Styling for table headers and cells */
 .strategy-table th,
 .strategy-table td {
     border: 1px solid #ccc;
@@ -156,14 +156,14 @@ const onMaxExposureChange = (base: string, platform: string, event: Event) => {
     text-overflow: ellipsis;
 }
 
-/* 25: Style du conteneur pour les sélecteurs */
+/* Styling for the container of dropdown selectors */
 .select-container {
     display: flex;
     justify-content: center;
     gap: 5px;
 }
 
-/* Optionnel : Si vous souhaitez fixer la largeur des sélecteurs pour garantir un alignement constant */
+/* Fixed width for dropdowns to ensure consistent alignment */
 .select-container select {
     width: 90px;
     padding: 2px;
