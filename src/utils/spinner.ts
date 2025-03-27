@@ -1,4 +1,4 @@
-// src/spinner.ts
+// src/utils/spinner.ts
 import Swal from 'sweetalert2';
 
 /**

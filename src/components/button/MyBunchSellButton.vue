@@ -1,7 +1,7 @@
 <!-- src/components/MyBunchSellButton.vue -->
 <script setup lang="ts">
-import { addLimitSellOrder, cancelAllSellOrders } from '../../js/server/order'
-import { loadingSpin, successSpinHtml } from '../../js/utils/spinner'
+import { addLimitSellOrder, cancelAllSellOrders } from '../../server/order'
+import { loadingSpin, successSpinHtml } from '../../utils/spinner'
 
 // Définir les types pour les props
 interface SelectedBase {

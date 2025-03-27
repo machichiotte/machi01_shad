@@ -1,4 +1,5 @@
-import { Strat } from "../../types/responseData";
+// src/utils/strategyUtils.ts
+import { Strat } from "../types/responseData";
 
 // src/js/utils/strategyUtils.ts
 export function getSelectedStrategy(strat: Strat[], base: string, platform: string): string {

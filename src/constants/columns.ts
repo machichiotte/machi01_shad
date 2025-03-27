@@ -1,4 +1,4 @@
-// src/js/columns.ts
+// src/constants/columns.ts
 type Column = {
   header: string;
   field: string;

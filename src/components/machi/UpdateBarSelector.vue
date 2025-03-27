@@ -9,7 +9,7 @@ import {
     fetchOrder,
     fetchStrategy,
     fetchMachi
-} from '../../js/server/fetchFromServer'
+} from '../../server/fetchFromServer'
 import { Balance, Cmc, Asset, Order, Strat, Ticker, Trade } from '../../types/responseData';
 
 interface FetchOption<T> {

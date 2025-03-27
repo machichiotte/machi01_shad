@@ -1,18 +1,18 @@
 <!-- src/components/machi/card/CardAssetDetail.vue -->
 <script setup lang="ts">
-import { Asset, Order, Trade } from '../../../types/responseData';
+import { Asset, Order, TradeTransformed } from '../../../types/responseData';
 import OrdersTable from '../../order/OrdersTable.vue';
 import TradesTable from '../../trade/TradesTable.vue';
 import TakeProfitTable from '../TakeProfitTable.vue';
 import { ref, computed, reactive, watch } from 'vue';
-import { getTakeProfitsTargets } from '../../../js/strat/common';
-import { strategyOptions } from '../../../js/strat/strategyOptions';
+import { getTakeProfitsTargets } from '../../../strat/common';
+import { strategyOptions } from '../../../strat/strategyOptions';
 
 // Props
 const props = defineProps<{
     asset: Asset;
     orders: Order[];
-    trades: Trade[];
+    trades: TradeTransformed[];
 }>();
 
 // Calculs réactifs
@@ -34,7 +34,7 @@ const menubarLeft = ref([
     { label: 'Add 1', command: () => onMenuSelectLeft('1') },
     { label: `Add 1`, command: () => onMenuSelectLeft('2') }
 ]);
- 
+
 const selectedMenuLeft = ref('0');
 const selectedMenuRight = ref('1');
 const onMenuSelectLeft = (menuLabel: string) => (selectedMenuLeft.value = menuLabel);
@@ -71,8 +71,8 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
             <div class="card-details-content">
                 <div v-if="selectedMenuLeft === '0'">
                     <!-- Dropdown pour la stratégie -->
-                    <Select v-model="selectedStrat" :options="strategyOptions" optionLabel="name"
-                        optionValue="value" placeholder="Select Strategy" />
+                    <Select v-model="selectedStrat" :options="strategyOptions" optionLabel="name" optionValue="value"
+                        placeholder="Select Strategy" />
                     <!-- Input pour l'exposition maximale -->
                     <InputNumber v-model="selectedExpo" placeholder="Max Exposure" />
                     <!-- Bouton de sauvegarde -->
@@ -94,14 +94,14 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
             </div>
             <div class="card-details-content table-container">
                 <div v-if="selectedMenuRight === '0'">
-                    <OrdersTable v-if="orders.length" :items="orders" />
+                    <OrdersTable v-if="orders.length" :rows="orders" />
                     <p v-else>Pas d'ordres ouverts</p>
                 </div>
                 <div v-if="selectedMenuRight === '1'">
                     <TakeProfitTable :takeProfits="reactiveTakeProfits" :orders="orders" />
                 </div>
                 <div v-if="selectedMenuRight === '2'">
-                    <TradesTable v-if="trades.length" :items="trades" />
+                    <TradesTable v-if="trades.length" :rows="trades" />
                     <p v-else>Pas d'historique</p>
                 </div>
             </div>
@@ -133,13 +133,16 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 /* Contenu avec défilement */
 .card-details-content {
     max-width: 100%;
-    overflow-x: auto; /* Défilement horizontal uniquement pour le contenu large */
-    white-space: nowrap; /* Empêche le texte de se découper */
+    overflow-x: auto;
+    /* Défilement horizontal uniquement pour le contenu large */
+    white-space: nowrap;
+    /* Empêche le texte de se découper */
 }
 
 /* Conteneur des tableaux */
 .table-container {
-    overflow-x: auto; /* Conteneur pour les tableaux avec défilement horizontal */
+    overflow-x: auto;
+    /* Conteneur pour les tableaux avec défilement horizontal */
     white-space: nowrap;
 }
 
@@ -148,11 +151,13 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 .table-container::-webkit-scrollbar {
     height: 8px;
 }
+
 .card-details-content::-webkit-scrollbar-thumb,
 .table-container::-webkit-scrollbar-thumb {
     background: #ccc;
     border-radius: 4px;
 }
+
 .card-details-content::-webkit-scrollbar-track,
 .table-container::-webkit-scrollbar-track {
     background: #f4f4f4;

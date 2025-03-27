@@ -1,5 +1,5 @@
-// src/js/strat/shad.ts
-import { Asset, TakeProfits } from '../../types/responseData';
+// src/strat/shad.ts
+import { Asset, TakeProfits } from '../types/responseData';
 //import { calculateRecoveryGap, determineStrategyFactor } from './common';
 import { determineStrategyFactor } from './common';
 

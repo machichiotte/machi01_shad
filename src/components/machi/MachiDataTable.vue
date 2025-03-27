@@ -4,14 +4,14 @@ import { defineComponent, PropType } from 'vue';
 
 
 import { Asset } from '../../types/responseData';
-import { getPriceThreshold } from '../../js/strat/common';
+import { getPriceThreshold } from '../../strat/common';
 import {
     BINANCE_PLATFORM_ID,
     BINANCE_THRESHOLD,
     HTX_THRESHOLD
-} from '../../js/constants'
+} from '../../constants/exchanges'
 
-import { updateBaseField } from '../../js/strat/common';
+import { updateBaseField } from '../../strat/common';
 
 export default defineComponent({
     props: {

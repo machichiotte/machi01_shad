@@ -1,7 +1,7 @@
 <!-- src/components/cmc/CmcTable.vue -->
 <script setup lang="ts">
 import { computed } from 'vue'
-import { cmcColumns } from '../../js/columns'
+import { cmcColumns } from '../../constants/columns'
 import { usePagination } from '../../composables/usePagination'
 
 // Définition de l'interface pour une ligne de données CMC

@@ -1,6 +1,6 @@
-// src/js/server/common.ts
-import { API_REQUEST_PAYLOAD } from '../../types'
-import { ApiResponse } from '../../types/response'
+// src/server/common.ts
+import { API_REQUEST_PAYLOAD } from '../types'
+import { ApiResponse } from '../types/response'
 
 const serverHost: string = import.meta.env.VITE_SERVER_HOST as string // Centralisation de serverHost
 

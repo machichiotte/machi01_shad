@@ -1,6 +1,6 @@
-// src/js/server/fetchFromServer
+// src/server/fetchFromServer
 import { fetchApiData } from './common';  // Import de fetchApiData depuis common.ts
-import { Balance, Cmc, Asset, Order, Strat, Ticker, Trade } from "../../types/responseData";
+import { Balance, Cmc, Asset, Order, Strat, Ticker, Trade } from "../types/responseData";
 
 const ENDPOINTS: Record<string, string> = {
   CMC: '/cmc/get',

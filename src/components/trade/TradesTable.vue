@@ -1,7 +1,7 @@
 <!-- src/components/trades/TradesTable.vue -->
 <script setup lang="ts">
 import { computed } from 'vue'
-import { tradesColumns } from '../../js/columns'
+import { tradesColumns } from '../../constants/columns'
 import { TradeTransformed } from '../../types/responseData'
 import { usePagination } from '../../composables/usePagination'
 

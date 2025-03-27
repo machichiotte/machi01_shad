@@ -1,6 +1,6 @@
-// src/js/server/order.ts
+// src/server/order.ts
 import { executeApiRequest } from './common';  // Plus besoin de serverHost ici
-import { ApiResponse } from '../../types/response';
+import { ApiResponse } from '../types/response';
 
 const cancelAllOrders = <T>(platform: string, asset: string): Promise<ApiResponse<T>> => {
   return executeApiRequest('/order/cancel-all', { platform, asset });

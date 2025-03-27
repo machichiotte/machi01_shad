@@ -1,7 +1,7 @@
-// src/js/server/strat.ts
+// src/server/strat.ts
 import { executeApiRequest } from './common';
-import { ApiResponse } from '../../types/response';
-import { Strat } from '../../types/responseData';
+import { ApiResponse } from '../types/response';
+import { Strat } from '../types/responseData';
 
 const updateStrategies = async <T>(strategies: any): Promise<ApiResponse<T>> => {
     return executeApiRequest('/strategy/update', { strategies });

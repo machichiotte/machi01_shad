@@ -1,7 +1,7 @@
 <!-- src/components/buttons/MyEmergencySellButton.vue -->
 <script setup lang="ts">
-import { addMarketSellOrder, cancelAllSellOrders } from '../../js/server/order'
-import { loadingSpin, successSpinHtml } from '../../js/utils/spinner'
+import { addMarketSellOrder, cancelAllSellOrders } from '../../server/order'
+import { loadingSpin, successSpinHtml } from '../../utils/spinner'
 
 interface selectedBase {
   platform: string;

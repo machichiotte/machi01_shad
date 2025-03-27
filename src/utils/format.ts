@@ -1,4 +1,4 @@
-// src/js/utils/format.ts
+// src/utils/format.ts
 export const formatNumberWithDynamicPrecision = (
   value: number | null,
   referenceValue: number
@@ -16,9 +16,9 @@ export const formatNumberWithDynamicPrecision = (
 }
 
 export const formatPrice = (value: number | null): string => {
-    if (value === null || value === undefined) {
-        return '0'; // Retourne un format par défaut ou une valeur vide
-    }
+  if (value === null || value === undefined) {
+    return '0'; // Retourne un format par défaut ou une valeur vide
+  }
 
-    return value.toFixed(2); // Formatte avec 2 décimales
+  return value.toFixed(2); // Formatte avec 2 décimales
 }

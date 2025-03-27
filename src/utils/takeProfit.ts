@@ -1,6 +1,6 @@
-import { TakeProfits, AssetLiveData } from "../../types/responseData";
-
 // src/utils/takeProfit.ts
+import { TakeProfits, AssetLiveData } from "../types/responseData";
+
 export const calculateTakeProfitProgress = (takeProfits: TakeProfits, liveData: AssetLiveData): number => {
     if (!takeProfits || !liveData) return 0;
 

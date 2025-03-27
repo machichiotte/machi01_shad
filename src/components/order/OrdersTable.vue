@@ -1,7 +1,7 @@
 <!-- src/components/order/OrdersTable.vue -->
 <script setup lang="ts">
 import { computed } from 'vue'
-import { openOrdersTableColumns } from '../../js/columns'
+import { openOrdersTableColumns } from '../../constants/columns'
 import { Order } from '../../types/responseData'
 import { usePagination } from '../../composables/usePagination'
 

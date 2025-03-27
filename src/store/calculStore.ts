@@ -8,7 +8,7 @@ import {
   fetchStrategy,
   fetchTrade,
   fetchTicker
-} from '../js/server/fetchFromServer.js'
+} from '../server/fetchFromServer.js'
 import { TYPES, Balance, Cmc, Order, Asset, Strat, Trade, Ticker } from '../types/responseData.ts'
 
 export const useCalculStore = defineStore('calcul', {

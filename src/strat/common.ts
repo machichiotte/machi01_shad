@@ -1,5 +1,5 @@
-// src/js/strat/common.ts
-import { Asset, TakeProfits } from "../../types/responseData";
+// src/strat/common.ts
+import { Asset, TakeProfits } from "../types/responseData";
 import { getShadTakeProfitsTargets } from "./shad";
 
 // Calculate the price threshold based on the current price and a given threshold.

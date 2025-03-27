@@ -8,7 +8,7 @@ import { useStrategyData } from '../../composables/useStrategyData';
 import {
   setSelectedStrategy,
   setSelectedMaxExposure
-} from '../../js/utils/strategyUtils';
+} from '../../utils/strategyUtils';
 import { FilterMatchMode } from 'primevue/api';
 
 // Global filter for the SearchBar component

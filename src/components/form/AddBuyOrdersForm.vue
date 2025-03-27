@@ -1,8 +1,8 @@
 <!-- src/components/forms/AddBuyOrdersForm.vue -->
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { successSpinHtml } from '../../js/utils/spinner'
-import { addLimitBuyOrder } from '../../js/server/order'
+import { successSpinHtml } from '../../utils/spinner'
+import { addLimitBuyOrder } from '../../server/order'
 import type { ApiResponse } from '../../types/response';
 
 interface BaseOption {

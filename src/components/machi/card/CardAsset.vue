@@ -1,8 +1,8 @@
 <!-- src/components/machi/card/CardAsset.vue -->
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Asset, Order, Trade } from '../../../types/responseData';
-import { filterOrdersByAsset, filterTradesByAsset } from '../../../js/utils/filter';
+import { computed, ref } from 'vue';
+import { Asset, Order, Trade, TradeTransformed } from '../../../types/responseData';
+import { filterOrdersByAsset, filterTradesByAsset } from '../../../utils/filter';
 import CardAssetHeader from './CardAssetHeader.vue';
 import CardAssetDetail from './CardAssetDetail.vue';
 
@@ -22,13 +22,57 @@ const orders = filterOrdersByAsset(props.orders, asset.base, asset.platform);
 const isDetailsVisible = ref(false);
 const toggleDetails = () => (isDetailsVisible.value = !isDetailsVisible.value);
 
+// Transformation des trades en TradeTransformed
+const transformedTrades = computed<TradeTransformed[]>(() => {
+    return trades
+        .map((item: Trade) => {
+            let date: string;
+            let timestampVal = 0;
+            if (item.timestamp) {
+                // Si le timestamp est en secondes, le convertir en millisecondes
+                timestampVal =
+                    item.timestamp.toString().length <= 10 ? item.timestamp * 1000 : item.timestamp;
+                const formattedDate = new Date(timestampVal);
+                const year = formattedDate.getFullYear();
+                const month = String(formattedDate.getMonth() + 1).padStart(2, '0');
+                const day = String(formattedDate.getDate()).padStart(2, '0');
+                const hours = String(formattedDate.getHours()).padStart(2, '0');
+                const minutes = String(formattedDate.getMinutes()).padStart(2, '0');
+                const seconds = String(formattedDate.getSeconds()).padStart(2, '0');
+                date = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            } else if (typeof item.dateUTC === 'string') {
+                date = item.dateUTC;
+            } else {
+                date = 'Invalid date';
+            }
+            const eqUsd = item.eqUSD !== null ? item.eqUSD : 0;
+            return {
+                base: item.base,
+                quote: item.quote,
+                dateUTC: date,
+                orderid: item.orderid,
+                pair: item.pair,
+                side: item.side,
+                price: item.price,
+                amount: item.amount,
+                total: item.total,
+                eqUSD: eqUsd,
+                fee: item.fee,
+                feecoin: item.feecoin,
+                platform: item.platform,
+                timestampVal // propriété utilisée pour le tri
+            } as TradeTransformed;
+        })
+        .sort((a, b) => b.timestampVal - a.timestampVal); // Tri décroissant
+});
+
 </script>
 
 <template>
     <div class="card">
         <CardAssetHeader :asset="asset" :orders="orders" :trades="trades" :is-details-visible="isDetailsVisible"
             @toggle-details="toggleDetails" />
-        <CardAssetDetail v-if="isDetailsVisible" :asset="asset" :orders="orders" :trades="trades" />
+        <CardAssetDetail v-if="isDetailsVisible" :asset="asset" :orders="orders" :trades="transformedTrades" />
     </div>
 </template>
 

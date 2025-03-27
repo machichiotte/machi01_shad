@@ -8,7 +8,7 @@
  */
 
 import { ref, computed } from 'vue';
-import { updateKey } from '../js/server/config';
+import { updateKey } from '../server/config';
 import { PLATFORMS } from '../types/platform';
 
 // Déclaration réactive de l'objet pour la configuration CoinMarketCap

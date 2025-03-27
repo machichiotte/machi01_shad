@@ -1,8 +1,8 @@
 <!-- src/components/Stuff.vue -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import { fetchTradeBySymbol, fetchTickersByPlatform, fetchBalanceByPlatform, fetchCmcApi, fetchOpenOrdersByPlatform, fetchMarketsByPlatform } from '../js/server/fetchFromServer';
-import { STABLECOINS } from '../js/constants';
+import { fetchTradeBySymbol, fetchTickersByPlatform, fetchBalanceByPlatform, fetchCmcApi, fetchOpenOrdersByPlatform, fetchMarketsByPlatform } from '../server/fetchFromServer';
+import { STABLECOINS } from '../constants/assets';
 
 const responseJson = ref<object | null>(null);
 const isLoading = ref<boolean>(false);

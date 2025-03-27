@@ -4,9 +4,9 @@
  * It extracts the available platforms, bases, and constructs the rows to be displayed.
  */
 import { ref, computed } from 'vue';
-import { strategies } from '../js/strat/index';
+import { strategies } from '../strat/index';
 import { useCalculStore } from '../store/calculStore';
-import { getSelectedStrategy, getSelectedMaxExposure, isVisible } from '../js/utils/strategyUtils';
+import { getSelectedStrategy, getSelectedMaxExposure, isVisible } from '../utils/strategyUtils';
 
 // Interface declarations for better type-checking
 interface Strategy {
