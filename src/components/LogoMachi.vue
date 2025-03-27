@@ -1,4 +1,13 @@
 <!-- src/components/LogoMachi.vue -->
+<script setup lang="ts">
+const props = defineProps({
+  color: {
+    type: String,
+    required: true
+  }
+});
+</script>
+
 <template>
   <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
     xmlns:svgjs="http://svgjs.dev/svgjs" width="300" height="150" viewBox="250 250 500 500">
@@ -83,12 +92,3 @@
     </g>
   </svg>
 </template>
-
-<script setup lang="ts">
-const props = defineProps({
-  color: {
-    type: String,
-    required: true
-  }
-});
-</script>

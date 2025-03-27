@@ -1,4 +1,88 @@
 <!-- src/components/machi/MachiDataTable.vue -->
+<script lang="ts">
+import { defineComponent, PropType } from 'vue';
+
+
+import { Asset } from '../../types/responseData';
+import { getPriceThreshold } from '../../js/strat/common';
+import {
+    BINANCE_PLATFORM_ID,
+    BINANCE_THRESHOLD,
+    HTX_THRESHOLD
+} from '../../js/constants'
+
+import { updateBaseField } from '../../js/strat/common';
+
+export default defineComponent({
+    props: {
+        items: {
+            type: Array as PropType<Asset[]>,
+            required: true
+        },
+        localSelectedBases: {
+            type: Array as PropType<Asset[]>,
+            default: () => []
+        }
+    },
+    methods: {
+        emitSelection() {
+            this.$emit('update:selection', this.localSelectedBases);
+        },
+        applyStrategyToRow(items: Asset[], data: any, newStrat: string | Object) {
+            // Logique pour appliquer la stratégie
+            updateBaseField(items, data, 'strat', newStrat)
+        },
+        evaluateBaseStatus(data: Asset) {
+            // Logique pour évaluer le statut de l'actif
+            const currentPrice = data.liveData.currentPrice
+            const platform = data.platform
+            const tags = data.tags
+            const status = data.strat.takeProfits.status
+            const nbOpenSellOrders = data.orders.open.nbOpenSellOrders
+            const priceTp1 = data.strat.takeProfits.tp1.price
+            const priceTp2 = data.strat.takeProfits.tp2.price
+
+            if (tags.includes('stablecoin')) {
+                return { severity: 'secondary', label: 'stable coin' }
+            }
+
+            if (!Array.isArray(status)) {
+                console.warn('data.status is not an array:', status)
+                return { severity: 'warning', label: `STATUS ERROR` }
+            }
+
+            const totalOrders = status.reduce((acc: number, val: number) => acc + val, 0)
+
+            if (nbOpenSellOrders === 0) {
+                return { severity: 'danger', label: "No open orders" }
+            } else if (currentPrice > priceTp1) {
+                return priceTp1 < priceTp2
+                    ? { severity: 'info', label: 'You can sell for a while' }
+                    : { severity: 'danger', label: 'tp2 < tp1' }
+            }
+
+            if (totalOrders === 5) {
+                return { severity: 'success', label: '5 orders placed' }
+            }
+
+            const platformThreshold = platform === BINANCE_PLATFORM_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD
+            const priceThreshold = getPriceThreshold(currentPrice, platformThreshold)
+
+            const nextOrder = status.findIndex((value: number) => value === 0)
+            if (nextOrder !== -1) {
+                const priceKey = `priceTp${nextOrder + 1}` as keyof Asset;
+                const priceValue = data[priceKey];
+                return priceThreshold < (priceValue as number)
+                    ? { severity: 'success', label: 'Max orders placed' }
+                    : { severity: 'warning', label: `Order ${nextOrder + 1} can be placed` }
+            }
+
+            return { severity: 'warning', label: `STATUS ERROR` }
+        }
+    }
+});
+</script>
+
 <template>
     <DataTable class="mt-4 custom-data-table" :value="items" :rows="10" paginator stripedRows scrollable
         scroll-height="530px" v-model:selection="localSelectedBases" @update:selection="emitSelection"
@@ -158,90 +242,6 @@
 
     </DataTable>
 </template>
-
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-
-
-import { Asset } from '../../types/responseData';
-import { getPriceThreshold } from '../../js/strat/common';
-import {
-    BINANCE_PLATFORM_ID,
-    BINANCE_THRESHOLD,
-    HTX_THRESHOLD
-} from '../../js/constants'
-
-import { updateBaseField } from '../../js/strat/common';
-
-export default defineComponent({
-    props: {
-        items: {
-            type: Array as PropType<Asset[]>,
-            required: true
-        },
-        localSelectedBases: {
-            type: Array as PropType<Asset[]>,
-            default: () => []
-        }
-    },
-    methods: {
-        emitSelection() {
-            this.$emit('update:selection', this.localSelectedBases);
-        },
-        applyStrategyToRow(items: Asset[], data: any, newStrat: string | Object) {
-            // Logique pour appliquer la stratégie
-            updateBaseField(items, data, 'strat', newStrat)
-        },
-        evaluateBaseStatus(data: Asset) {
-            // Logique pour évaluer le statut de l'actif
-            const currentPrice = data.liveData.currentPrice
-            const platform = data.platform
-            const tags = data.tags
-            const status = data.strat.takeProfits.status
-            const nbOpenSellOrders = data.orders.open.nbOpenSellOrders
-            const priceTp1 = data.strat.takeProfits.tp1.price
-            const priceTp2 = data.strat.takeProfits.tp2.price
-
-            if (tags.includes('stablecoin')) {
-                return { severity: 'secondary', label: 'stable coin' }
-            }
-
-            if (!Array.isArray(status)) {
-                console.warn('data.status is not an array:', status)
-                return { severity: 'warning', label: `STATUS ERROR` }
-            }
-
-            const totalOrders = status.reduce((acc: number, val: number) => acc + val, 0)
-
-            if (nbOpenSellOrders === 0) {
-                return { severity: 'danger', label: "No open orders" }
-            } else if (currentPrice > priceTp1) {
-                return priceTp1 < priceTp2
-                    ? { severity: 'info', label: 'You can sell for a while' }
-                    : { severity: 'danger', label: 'tp2 < tp1' }
-            }
-
-            if (totalOrders === 5) {
-                return { severity: 'success', label: '5 orders placed' }
-            }
-
-            const platformThreshold = platform === BINANCE_PLATFORM_ID ? BINANCE_THRESHOLD : HTX_THRESHOLD
-            const priceThreshold = getPriceThreshold(currentPrice, platformThreshold)
-
-            const nextOrder = status.findIndex((value: number) => value === 0)
-            if (nextOrder !== -1) {
-                const priceKey = `priceTp${nextOrder + 1}` as keyof Asset;
-                const priceValue = data[priceKey];
-                return priceThreshold < (priceValue as number)
-                    ? { severity: 'success', label: 'Max orders placed' }
-                    : { severity: 'warning', label: `Order ${nextOrder + 1} can be placed` }
-            }
-
-            return { severity: 'warning', label: `STATUS ERROR` }
-        }
-    }
-});
-</script>
 
 <style scoped>
 .bold-row {

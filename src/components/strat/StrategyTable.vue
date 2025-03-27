@@ -1,9 +1,5 @@
+<!-- src/components/strat/StrategyTable.vue -->
 <script setup lang="ts">
-/**
- * File Path: src/components/strat/StrategyTable.vue
- * This component renders the strategy table.
- * It displays a row per base and a column per platform, with dropdowns for strategy and maxExposure when applicable.
- */
 import { computed } from 'vue';
 
 // Define the structure for a platform cell in the table

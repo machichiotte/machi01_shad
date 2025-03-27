@@ -1,17 +1,4 @@
 <!-- src/components/machi/column/StrategyDropdown.vue -->
-<template>
-    <div>
-        <select v-model="selectedStrategy" @change="onStrategyChange">
-            <option value=""></option>
-            <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
-                {{ strategy }}
-            </option>
-        </select>
-        <input type="number" v-model.number="maxExposure" @input="onMaxExposureChange" @blur="onMaxExposureChange"
-            placeholder="Max Exposure" />
-    </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
@@ -49,3 +36,16 @@ function onMaxExposureChange() {
     emit('set-max-exposure', maxExposure.value, props.data);
 }
 </script>
+
+<template>
+    <div>
+        <select v-model="selectedStrategy" @change="onStrategyChange">
+            <option value=""></option>
+            <option v-for="strategy in strategyLabels" :key="strategy" :value="strategy">
+                {{ strategy }}
+            </option>
+        </select>
+        <input type="number" v-model.number="maxExposure" @input="onMaxExposureChange" @blur="onMaxExposureChange"
+            placeholder="Max Exposure" />
+    </div>
+</template>

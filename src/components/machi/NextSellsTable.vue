@@ -1,4 +1,18 @@
 <!-- src/components/machi/NextSellsTable.vue -->
+<script setup lang="ts">
+interface NextSell {
+  amount: number;
+  price: number;
+  total: number;
+}
+
+const props = defineProps<{
+  data: NextSell[];
+}>()
+
+export { props }
+</script>
+
 <template>
   <table class="my-table">
     <thead>
@@ -17,20 +31,6 @@
     </tbody>
   </table>
 </template>
-
-<script setup lang="ts">
-interface NextSell {
-  amount: number;
-  price: number;
-  total: number;
-}
-
-const props = defineProps<{
-  data: NextSell[];
-}>()
-
-export { props }
-</script>
 
 <style scoped>
 .my-table {

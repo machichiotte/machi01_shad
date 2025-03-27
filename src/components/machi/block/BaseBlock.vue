@@ -1,4 +1,13 @@
 <!-- src/components/block/BaseBlock.vue -->
+<script setup lang="ts">
+const props = defineProps({
+    title: {
+        type: String,
+        default: 'DEFAULT TITLE'
+    }
+});
+</script>
+
 <template>
     <div class="custom-view">
         <!-- Zone tout en haut à gauche avec un titre configurable -->
@@ -14,15 +23,6 @@
         </div>
     </div>
 </template>
-
-<script setup lang="ts">
-const props = defineProps({
-    title: {
-        type: String,
-        default: 'DEFAULT TITLE'
-    }
-});
-</script>
 
 <style scoped>
 /* Conteneur global de la vue */

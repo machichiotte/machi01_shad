@@ -1,12 +1,4 @@
 <!-- src/components/UpdateBarSelector.vue -->
-<template>
-    <div class="fetch-from-server-selector">
-        <Button v-for="(fetchOption, index) in fetchOptions" :key="fetchOption.id" :label="fetchOption.name"
-            :loading="loading[index]" :class="['fetch-button', { error: errors[index] }]"
-            @click="() => fetchMyData(fetchOption.fetchFunction as () => Promise<Cmc[] | Balance[] | Trade[] | Ticker[] | Order[] | Strat[] | Asset[]>, index)" />
-    </div>
-</template>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import {
@@ -63,6 +55,14 @@ async function fetchMyData<T>(fetchFunction: () => Promise<T>, index: number): P
     }
 }
 </script>
+
+<template>
+    <div class="fetch-from-server-selector">
+        <Button v-for="(fetchOption, index) in fetchOptions" :key="fetchOption.id" :label="fetchOption.name"
+            :loading="loading[index]" :class="['fetch-button', { error: errors[index] }]"
+            @click="() => fetchMyData(fetchOption.fetchFunction as () => Promise<Cmc[] | Balance[] | Trade[] | Ticker[] | Order[] | Strat[] | Asset[]>, index)" />
+    </div>
+</template>
 
 <style scoped>
 .fetch-from-server-selector {

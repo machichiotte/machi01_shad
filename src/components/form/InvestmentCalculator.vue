@@ -1,4 +1,109 @@
 <!-- src/components/forms/InvestmentCalculator.vue -->
+<script>
+export default {
+    data() {
+        return {
+            // Pourcentages pondérés pour chaque configuration de nombre d'ordres
+            percentages: {
+                5: [10.3, 14.8, 19.3, 23.9, 31.7],
+                10: [4.6, 5.7, 6.8, 8.0, 9.1, 10.2, 11.4, 12.5, 13.6, 18.1],
+                15: [2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 15.0],
+                20: [1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5, 10.0, 10.0, 10.0],
+                25: [1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5, 10.0, 10.5, 11.0, 11.5, 12.0, 12.5, 13.0, 13.0],
+                50: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.4],
+            },
+            totalAmount: null,
+            priceLower: null,
+            priceUpper: null,
+            orderCount: 10, // Nombre d'ordres par défaut
+            platformOption: "default",
+            percentageOption: "average", // "average" or "weighted"
+            investmentTable: [],
+            maxWanted: null,
+            prevBuyTotal: null,
+            prevSellTotal: null,
+            balance: null,
+        };
+    },
+    methods: {
+        calculateInvestment() {
+            if (
+                this.totalAmount === null ||
+                this.priceLower === null ||
+                this.priceUpper === null
+            ) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            if (this.platformOption === "binance" && this.totalAmount / this.orderCount < 5) {
+                alert("For Binance, each investment must be at least $5.");
+                return;
+            }
+
+            let adjustedPercentages = [];
+            if (this.percentageOption === "average") {
+                const averagePercentage = 100 / this.orderCount;
+                adjustedPercentages = Array(this.orderCount).fill(averagePercentage);
+            } else if (this.percentageOption === "weighted") {
+                adjustedPercentages = this.percentages[this.orderCount];
+            }
+
+            const priceRange = this.priceUpper - this.priceLower;
+            let currentPrice = this.priceLower;
+
+            let cumulativeAmount = 0; // Cumulative invested amount
+            let cumulativeQuantity = 0; // Cumulative invested quantity
+
+            this.investmentTable = [];
+
+            for (let i = 0; i < this.orderCount; i++) {
+                const percentage = adjustedPercentages[i];
+                const amountInvested = (this.totalAmount * percentage) / 100;
+                const quantity = amountInvested / currentPrice;
+
+                cumulativeAmount += amountInvested;
+                cumulativeQuantity += quantity;
+
+                const cumulatedInvestQuantity = cumulativeQuantity.toFixed(8);
+                const cumulatedInvestAmount = cumulativeAmount.toFixed(2);
+
+                const totalInvestQuantity = (
+                    cumulativeQuantity + this.balance
+                ).toFixed(8);
+
+                const totalInvestAmount = (
+                    cumulativeAmount +
+                    (this.prevBuyTotal || 0) -
+                    (this.prevSellTotal || 0)
+                ).toFixed(2);
+
+                const totalAverageEntryPrice = (
+                    totalInvestAmount / totalInvestQuantity
+                ).toFixed(4);
+
+                this.investmentTable.push({
+                    tradeNumber: i + 1,
+                    price: currentPrice.toFixed(4),
+                    quantity: quantity.toFixed(8),
+                    amountInvested: amountInvested.toFixed(2),
+                    percentage: percentage.toFixed(1),
+                    averagePurchase: (cumulativeAmount / cumulativeQuantity).toFixed(4),
+                    cumulatedInvestQuantity,
+                    cumulatedInvestAmount,
+                    totalInvestQuantity,
+                    totalInvestAmount,
+                    totalAverageEntryPrice,
+                });
+
+                currentPrice += priceRange / (this.orderCount - 1);
+            }
+        },
+    },
+
+};
+</script>
+
 <template>
     <div>
         <!-- Formulaire principal avec les anciens champs -->
@@ -105,111 +210,6 @@
         </div>
     </div>
 </template>
-
-<script>
-export default {
-    data() {
-        return {
-            // Pourcentages pondérés pour chaque configuration de nombre d'ordres
-            percentages: {
-                5: [10.3, 14.8, 19.3, 23.9, 31.7],
-                10: [4.6, 5.7, 6.8, 8.0, 9.1, 10.2, 11.4, 12.5, 13.6, 18.1],
-                15: [2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 15.0],
-                20: [1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5, 10.0, 10.0, 10.0],
-                25: [1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5, 10.0, 10.5, 11.0, 11.5, 12.0, 12.5, 13.0, 13.0],
-                50: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.4],
-            },
-            totalAmount: null,
-            priceLower: null,
-            priceUpper: null,
-            orderCount: 10, // Nombre d'ordres par défaut
-            platformOption: "default",
-            percentageOption: "average", // "average" or "weighted"
-            investmentTable: [],
-            maxWanted: null,
-            prevBuyTotal: null,
-            prevSellTotal: null,
-            balance: null,
-        };
-    },
-    methods: {
-        calculateInvestment() {
-            if (
-                this.totalAmount === null ||
-                this.priceLower === null ||
-                this.priceUpper === null
-            ) {
-                alert("Please fill in all fields.");
-                return;
-            }
-
-            if (this.platformOption === "binance" && this.totalAmount / this.orderCount < 5) {
-                alert("For Binance, each investment must be at least $5.");
-                return;
-            }
-
-            let adjustedPercentages = [];
-            if (this.percentageOption === "average") {
-                const averagePercentage = 100 / this.orderCount;
-                adjustedPercentages = Array(this.orderCount).fill(averagePercentage);
-            } else if (this.percentageOption === "weighted") {
-                adjustedPercentages = this.percentages[this.orderCount];
-            }
-
-            const priceRange = this.priceUpper - this.priceLower;
-            let currentPrice = this.priceLower;
-
-            let cumulativeAmount = 0; // Cumulative invested amount
-            let cumulativeQuantity = 0; // Cumulative invested quantity
-
-            this.investmentTable = [];
-
-            for (let i = 0; i < this.orderCount; i++) {
-                const percentage = adjustedPercentages[i];
-                const amountInvested = (this.totalAmount * percentage) / 100;
-                const quantity = amountInvested / currentPrice;
-
-                cumulativeAmount += amountInvested;
-                cumulativeQuantity += quantity;
-
-                const cumulatedInvestQuantity = cumulativeQuantity.toFixed(8);
-                const cumulatedInvestAmount = cumulativeAmount.toFixed(2);
-
-                const totalInvestQuantity = (
-                    cumulativeQuantity + this.balance
-                ).toFixed(8);
-
-                const totalInvestAmount = (
-                    cumulativeAmount +
-                    (this.prevBuyTotal || 0) -
-                    (this.prevSellTotal || 0)
-                ).toFixed(2);
-
-                const totalAverageEntryPrice = (
-                    totalInvestAmount / totalInvestQuantity
-                ).toFixed(4);
-
-                this.investmentTable.push({
-                    tradeNumber: i + 1,
-                    price: currentPrice.toFixed(4),
-                    quantity: quantity.toFixed(8),
-                    amountInvested: amountInvested.toFixed(2),
-                    percentage: percentage.toFixed(1),
-                    averagePurchase: (cumulativeAmount / cumulativeQuantity).toFixed(4),
-                    cumulatedInvestQuantity,
-                    cumulatedInvestAmount,
-                    totalInvestQuantity,
-                    totalInvestAmount,
-                    totalAverageEntryPrice,
-                });
-
-                currentPrice += priceRange / (this.orderCount - 1);
-            }
-        },
-    },
-
-};
-</script>
 
 <style>
 .form-container {

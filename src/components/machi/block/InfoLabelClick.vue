@@ -1,18 +1,4 @@
-<template>
-    <div class="label-indice">
-        <!-- Le label principal (ex: prix courant) -->
-        <label>{{ label }}</label>
-
-        <!-- Un seul small, qui change de valeur à chaque clic -->
-        <small @click="showNextPeriod">
-            {{ currentPeriod.period }}:
-            <span :class="{ 'positive': currentPeriod.value >= 0, 'negative': currentPeriod.value < 0 }">
-                {{ currentPeriod.value?.toFixed(2) }}%
-            </span>
-        </small>
-    </div>
-</template>
-
+<!-- src/components/machi/block/InfoLabelClick.vue -->
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
@@ -33,6 +19,21 @@ const showNextPeriod = () => {
     currentPeriodIndex.value = (currentPeriodIndex.value + 1) % props.periods.length; // Cycle à travers les périodes
 };
 </script>
+
+<template>
+    <div class="label-indice">
+        <!-- Le label principal (ex: prix courant) -->
+        <label>{{ label }}</label>
+
+        <!-- Un seul small, qui change de valeur à chaque clic -->
+        <small @click="showNextPeriod">
+            {{ currentPeriod.period }}:
+            <span :class="{ 'positive': currentPeriod.value >= 0, 'negative': currentPeriod.value < 0 }">
+                {{ currentPeriod.value?.toFixed(2) }}%
+            </span>
+        </small>
+    </div>
+</template>
 
 <style scoped>
 .label-indice {

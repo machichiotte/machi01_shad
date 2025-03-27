@@ -1,9 +1,5 @@
+<!-- src/components/strat/Strategy.vue -->
 <script setup lang="ts">
-/**
- * File Path: src/components/strat/Strategy.vue
- * This component is responsible for loading the strategy and balance data,
- * and for providing the filtered strategy table data to the child component.
- */
 import { ref, onMounted } from 'vue';
 import { useCalculStore } from '../../store/calculStore';
 import SearchBar from "../machi/SearchBar.vue";

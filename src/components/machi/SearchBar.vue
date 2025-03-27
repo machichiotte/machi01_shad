@@ -1,13 +1,4 @@
 <!-- src/components/machi/SearchBar.vue -->
-<template>
-    <div class="search-container">
-        <span class="p-input-icon-left">
-            <i class="pi pi-search" />
-            <InputText v-model="props.filters.global.value" placeholder="Rechercher..." class="search-input" />
-        </span>
-    </div>
-</template>
-
 <script setup lang="ts">
 
 interface Filters {
@@ -20,6 +11,15 @@ const props = defineProps<{
     filters: Filters;
 }>();
 </script>
+
+<template>
+    <div class="search-container">
+        <span class="p-input-icon-left">
+            <i class="pi pi-search" />
+            <InputText v-model="props.filters.global.value" placeholder="Rechercher..." class="search-input" />
+        </span>
+    </div>
+</template>
 
 <style scoped>
 .search-container {

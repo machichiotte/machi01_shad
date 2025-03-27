@@ -1,11 +1,4 @@
 <!-- src/components/machi/column/PriceWithChange.vue -->
-<template>
-    <div class="price-container">
-        <div class="main-text">{{ formattedPrice }}</div>
-        <div :class="percentageClass + ' percentage-text'">{{ formattedChange }}%</div>
-    </div>
-</template>
-
 <script setup lang="ts">
 import { computed } from 'vue';
 
@@ -28,6 +21,13 @@ const percentageClass = computed(() => {
     return '';
 });
 </script>
+
+<template>
+    <div class="price-container">
+        <div class="main-text">{{ formattedPrice }}</div>
+        <div :class="percentageClass + ' percentage-text'">{{ formattedChange }}%</div>
+    </div>
+</template>
 
 <style scoped>
 .price-container {

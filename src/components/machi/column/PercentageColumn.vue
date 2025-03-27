@@ -1,10 +1,4 @@
 <!-- src/components/machi/column/PercentageColumn.vue -->
-<template>
-    <span :class="percentageClass">
-        {{ formattedPercentage }}%
-    </span>
-</template>
-
 <script>
 export default {
     name: 'PercentageColumn',
@@ -30,6 +24,12 @@ export default {
     }
 };
 </script>
+
+<template>
+    <span :class="percentageClass">
+        {{ formattedPercentage }}%
+    </span>
+</template>
 
 <style scoped>
 .text-green {

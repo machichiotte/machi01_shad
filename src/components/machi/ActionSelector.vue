@@ -1,18 +1,4 @@
 <!-- src/components/machi/ActionSelector.vue -->
-<template>
-    <div class="action-selector">
-        <p v-if="!selectedBases || selectedBases.length === 0" class="no-bases-message">
-            No Base selected. Please select base to display available actions.
-        </p>
-        <!-- Action buttons -->
-        <MyBunchSellButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases" />
-        <MyEmergencySellButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases" />
-        <MyBuyButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases" />
-        <MyDeleteButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases"
-            @delete:clicked="onDeleteClicked" />
-    </div>
-</template>
-
 <script setup lang="ts">
 import MyBunchSellButton from '../button/MyBunchSellButton.vue'
 import MyEmergencySellButton from '../button/MyEmergencySellButton.vue'
@@ -35,6 +21,20 @@ const onDeleteClicked = () => {
     emit('delete:action'); // Émettre l'événement "delete-action"
 };
 </script>
+
+<template>
+    <div class="action-selector">
+        <p v-if="!selectedBases || selectedBases.length === 0" class="no-bases-message">
+            No Base selected. Please select base to display available actions.
+        </p>
+        <!-- Action buttons -->
+        <MyBunchSellButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases" />
+        <MyEmergencySellButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases" />
+        <MyBuyButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases" />
+        <MyDeleteButton v-if="selectedBases && selectedBases.length > 0" :selectedBases="selectedBases"
+            @delete:clicked="onDeleteClicked" />
+    </div>
+</template>
 
 <style scoped>
 .action-selector {

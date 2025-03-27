@@ -1,9 +1,4 @@
 <!-- src/components/buttons/MyEmergencySellButton.vue -->
-<template>
-  <Button label="Emergency Sell" icon="pi pi-exclamation-triangle" severity="danger" class="mr-2"
-    @click="emergencySellClicked"> </Button>
-</template>
-
 <script setup lang="ts">
 import { addMarketSellOrder, cancelAllSellOrders } from '../../js/server/order'
 import { loadingSpin, successSpinHtml } from '../../js/utils/spinner'
@@ -78,3 +73,8 @@ const emergencySellClicked = async (): Promise<void> => {
   }
 };
 </script>
+
+<template>
+  <Button label="Emergency Sell" icon="pi pi-exclamation-triangle" severity="danger" class="mr-2"
+    @click="emergencySellClicked"> </Button>
+</template>

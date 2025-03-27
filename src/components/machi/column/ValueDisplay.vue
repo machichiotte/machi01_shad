@@ -1,10 +1,4 @@
 <!-- src/components/machi/column/ValueDisplay.vue -->
-<template>
-    <span>
-        {{ formattedValue }}
-    </span>
-</template>
-
 <script setup lang="ts">
 import { computed } from 'vue';
 
@@ -20,3 +14,9 @@ const formattedValue = computed(() => {
     }
 });
 </script>
+
+<template>
+    <span>
+        {{ formattedValue }}
+    </span>
+</template>

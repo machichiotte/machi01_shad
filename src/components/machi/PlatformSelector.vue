@@ -1,11 +1,4 @@
-<template>
-  <div class="platform-selector">
-    <Button v-for="platform in platformOptions" :key="platform.id" :label="platform.name"
-      :class="['platform-button', { selected: selectedPlatforms.includes(platform.id) }]"
-      @click="togglePlatform(platform.id)" />
-  </div>
-</template>
-
+<!-- src/components/machi/PlatformSelector.vue -->
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 
@@ -54,6 +47,14 @@ watch(
   }
 );
 </script>
+
+<template>
+  <div class="platform-selector">
+    <Button v-for="platform in platformOptions" :key="platform.id" :label="platform.name"
+      :class="['platform-button', { selected: selectedPlatforms.includes(platform.id) }]"
+      @click="togglePlatform(platform.id)" />
+  </div>
+</template>
 
 <style scoped>
 .platform-selector {

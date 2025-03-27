@@ -5,7 +5,6 @@ import { tradesColumns } from '../../js/columns'
 import { TradeTransformed } from '../../types/responseData'
 import { usePagination } from '../../composables/usePagination'
 
-
 // Déclaration des props attendues
 const props = defineProps<{
   rows: TradeTransformed[];      // Les trades déjà filtrés et triés

@@ -1,10 +1,4 @@
 <!-- src/components/machi/column/ChangePercentage.vue -->
-<template>
-    <span :class="percentageClass">
-        {{ formattedPercentage }}%
-    </span>
-</template>
-
 <script setup lang="ts">
 import { computed } from 'vue';
 
@@ -22,6 +16,12 @@ const percentageClass = computed(() => {
     return '';
 });
 </script>
+
+<template>
+    <span :class="percentageClass">
+        {{ formattedPercentage }}%
+    </span>
+</template>
 
 <style scoped>
 .text-green {
