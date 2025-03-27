@@ -1,40 +1,47 @@
 <!-- src/components/Config.vue -->
-<script>
+<script setup lang="ts">
+/*
+ * File: src/components/Config.vue
+ * Description: Vue 3 component using <script setup> en TypeScript for configuring API keys
+ *              for CoinMarketCap and exchange platforms. This component is designed with
+ *              best practices and security in mind for a crypto-related project.
+ */
+
+import { ref, computed } from 'vue';
 import { updateKey } from '../js/server/config';
 import { PLATFORMS } from '../types/platform';
 
-export default {
-  data() {
-    return {
-      payloadCMC: {
-        type: 'cmc',
-        apiKey: ''
-      },
-      payloadPlatform: {
-        type: 'platform',
-        platform: '',
-        apiKey: '',
-        secretKey: '',
-        passphrase: ''
-      },
-      PLATFORMS: PLATFORMS
-    };
-  },
-  computed: {
-    isPassphraseRequired() {
-      return this.payloadPlatform.platform === 'kucoin' || this.payloadPlatform.platform === 'htx';
-    }
-  },
-  methods: {
-    async sendKeyToServer(payload) {
-      try {
-        const response = await updateKey(payload);
-        alert(response.message);
-      } catch (error) {
-        console.error('Error updating API key:', error);
-        alert('An error occurred while updating the API key: ' + error.message);
-      }
-    }
+// Déclaration réactive de l'objet pour la configuration CoinMarketCap
+const payloadCMC = ref({
+  type: 'cmc',
+  apiKey: ''
+});
+
+// Déclaration réactive de l'objet pour la configuration de la plateforme d'échange
+const payloadPlatform = ref({
+  type: 'platform',
+  platform: '',
+  apiKey: '',
+  secretKey: '',
+  passphrase: ''
+});
+
+// Liste des plateformes disponibles importée du module de types
+const platforms = PLATFORMS;
+
+// Propriété calculée pour déterminer si une passphrase est requise
+const isPassphraseRequired = computed(() => {
+  return payloadPlatform.value.platform === 'kucoin' || payloadPlatform.value.platform === 'htx';
+});
+
+// Fonction asynchrone pour envoyer la configuration au serveur
+const sendKeyToServer = async (payload: any) => {
+  try {
+    const response = await updateKey(payload);
+    alert(response.message);
+  } catch (error: any) {
+    console.error('Error updating API key:', error);
+    alert('An error occurred while updating the API key: ' + error.message);
   }
 };
 </script>
@@ -64,7 +71,7 @@ export default {
           <label for="platform">Plateforme:</label>
           <select id="platform" v-model="payloadPlatform.platform" required>
             <option value="" disabled selected>Sélectionnez une plateforme</option>
-            <option v-for="platform in PLATFORMS" :key="platform" :value="platform">
+            <option v-for="platform in platforms" :key="platform" :value="platform">
               {{ platform }}
             </option>
           </select>
