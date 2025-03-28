@@ -74,6 +74,7 @@ const {
   text-overflow: ellipsis;
 }
 
+/* Largeurs optimisées des colonnes */
 .orders-table th:nth-child(1),
 .orders-table td:nth-child(1) {
   width: 50px;
@@ -85,23 +86,17 @@ const {
 }
 
 .orders-table th:nth-child(3),
-.orders-table td:nth-child(3) {
+.orders-table td:nth-child(3),
+.orders-table th:nth-child(6),
+.orders-table td:nth-child(6) {
   width: 40px;
 }
 
 .orders-table th:nth-child(4),
-.orders-table td:nth-child(4) {
-  width: 50px;
-}
-
+.orders-table td:nth-child(4),
 .orders-table th:nth-child(5),
 .orders-table td:nth-child(5) {
   width: 50px;
-}
-
-.orders-table th:nth-child(6),
-.orders-table td:nth-child(6) {
-  width: 40px;
 }
 
 .orders-table th:nth-child(7),
@@ -110,10 +105,7 @@ const {
 }
 
 .orders-table th:nth-child(8),
-.orders-table td:nth-child(8) {
-  width: 100px;
-}
-
+.orders-table td:nth-child(8),
 .orders-table th:nth-child(9),
 .orders-table td:nth-child(9) {
   width: 100px;
