@@ -85,7 +85,6 @@ onMounted(async () => {
 .text-align-left {
   display: flex;
   justify-content: center;
-  gap: 20px;
   margin-bottom: 20px;
 }
 
@@ -93,6 +92,5 @@ onMounted(async () => {
 .data-table-wrapper {
   display: flex;
   justify-content: center;
-  margin: 0 auto;
 }
 </style>

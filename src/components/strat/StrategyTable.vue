@@ -163,6 +163,5 @@ const onMaxExposureChange = (base: string, platform: string, event: Event) => {
 .select-container select {
     width: 90px;
     padding: 2px;
-    font-size: 0.9rem;
 }
 </style>
