@@ -12,7 +12,7 @@ const trade_base = ref<string>('');
 const trade_platform = ref<string>('');
 const simple_platform = ref<string>(''); // pour les actions ne nécessitant que la plateforme
 
-// Requête CMC (aucun champ requis)
+// Requête CMC 
 const fetchCmc = async () => {
     isLoading.value = true;
     try {
@@ -189,12 +189,10 @@ const copyToClipboard = () => {
     display: flex;
     gap: 1rem;
     padding: 1rem;
-    font-family: sans-serif;
     color: #eee;
     background-color: #222;
 }
 
-/* Actions */
 .actions {
     flex: 1;
     display: flex;
@@ -210,7 +208,6 @@ const copyToClipboard = () => {
 
 .card h4 {
     margin-bottom: 0.5rem;
-    font-size: 1rem;
 }
 
 .field {
@@ -223,13 +220,11 @@ const copyToClipboard = () => {
 .field label {
     width: 70px;
     text-align: right;
-    font-size: 0.9rem;
 }
 
 .field input {
     flex: 1;
     padding: 0.3rem;
-    font-size: 0.9rem;
     border: 1px solid #555;
     border-radius: 4px;
     background: #444;
@@ -242,18 +237,20 @@ const copyToClipboard = () => {
     gap: 0.5rem;
 }
 
-.btn-group button {
-    flex: 1;
-    padding: 0.4rem;
-    font-size: 0.9rem;
+button {
     background: #007bff;
+    color: #fff;
     border: none;
+    padding: 0.5rem 0.8rem;
     border-radius: 4px;
     cursor: pointer;
-    color: #fff;
 }
 
-/* Réponse */
+button:disabled {
+    background: #666;
+    cursor: not-allowed;
+}
+
 .response {
     flex: 2;
     background: #333;
@@ -281,19 +278,5 @@ const copyToClipboard = () => {
 .placeholder {
     font-style: italic;
     color: #aaa;
-}
-
-button {
-    background: #007bff;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:disabled {
-    background: #666;
-    cursor: not-allowed;
 }
 </style>
