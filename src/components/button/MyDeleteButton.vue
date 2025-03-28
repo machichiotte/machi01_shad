@@ -1,6 +1,5 @@
 <!-- src/components/buttons/MyDeleteButton.vue -->
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
 
 defineProps<{
     selectedBases?: any[];

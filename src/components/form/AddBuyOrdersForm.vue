@@ -16,14 +16,10 @@ interface BuyOrder {
     total: number | null;
 }
 
-interface Props {
-    bases: Record<string, any>;
-    visible: boolean;
+const props = defineProps<{
     selectedBases: BaseOption[];
     onClose: () => void;
-}
-
-const props = defineProps<Props>();
+}>();
 
 const selectedBase = ref<BaseOption | null>(null);
 const buyOrders = ref<BuyOrder[]>([{ price: null, quantity: null, total: null }]);

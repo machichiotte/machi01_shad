@@ -1,145 +1,172 @@
-<!-- src/components/machi/Machi.vue -->
+<!-- File: src/components/machi/Machi.vue -->
 <script setup lang="ts">
 import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
-import { useCalculStore } from '../../store/calculStore'; // Import the Pinia store
+import { useCalculStore } from '../../store/calculStore'
 import { FilterMatchMode } from 'primevue/api'
 import CardAsset from './card/CardAsset.vue'
 import CardBalance from './card/CardBalance.vue'
-import CardStableCoin from './card/CardStableCoin.vue';
+import CardStableCoin from './card/CardStableCoin.vue'
 import SearchBar from './SearchBar.vue'
 
 import PlatformSelector from './PlatformSelector.vue'
 import UpdateBarSelector from './UpdateBarSelector.vue'
 import ActionSelector from './ActionSelector.vue'
 
-import TradesTable from '../trade/TradesTable.vue';
-import OrdersTable from '../order/OrdersTable.vue';
-import BuyCalculator from './BuyCalculator.vue';
+import TradesTable from '../trade/TradesTable.vue'
+import OrdersTable from '../order/OrdersTable.vue'
 
 import { Filter } from '../../types/filter'
-import { Asset } from '../../types/responseData'
+import { Asset, Trade, TradeTransformed } from '../../types/responseData'
 
-// Define the selected bases with proper types
+// Définition des bases sélectionnées avec les types appropriés
 const selectedBases = ref<Asset[]>([])
 
-// Filters with a well-defined structure
+// Définition des filtres avec une structure bien définie
 const filters = ref<Filter>({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
 
-// Define the platforms array with string types
+// Définition du tableau de plateformes
 const selectedPlatforms = ref(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
 
-// Access the Pinia store
-const calculStore = useCalculStore();
+// Accès au store Pinia
+const calculStore = useCalculStore()
 
-// Computed properties with appropriate types
-const tradesItems = computed(() => calculStore.getTrade);
-const openOrdersItems = computed(() => calculStore.getOrder);
-const machiItems = computed(() => calculStore.getMachi);
+// Propriétés calculées pour récupérer les données du store
+const tradesItems = computed(() => calculStore.getTrade)
+const openOrdersItems = computed(() => calculStore.getOrder)
+const machiItems = computed(() => calculStore.getMachi)
 
-// Filtered Machi items by platform and search query, ensuring uniqueness of `base`
+// Transformation des trades en TradeTransformed pour le tableau des trades
+const filteredTrades = computed<TradeTransformed[]>(() => {
+  return tradesItems.value
+    .filter(item => {
+      const searchValue = filters.value.global.value ? filters.value.global.value.toLowerCase() : ''
+      return item.pair.toLowerCase().startsWith(searchValue) ||
+        item.base.toLowerCase().startsWith(searchValue) ||
+        item.quote.toLowerCase().startsWith(searchValue) ||
+        item.platform.toLowerCase().startsWith(searchValue)
+    })
+    .map((item: Trade) => {
+      let date: string
+      let timestampVal = 0
+      if (item.timestamp) {
+        // Si le timestamp est en secondes, le convertir en millisecondes
+        timestampVal = item.timestamp.toString().length <= 10 ? item.timestamp * 1000 : item.timestamp
+        const formattedDate = new Date(timestampVal)
+        const year = formattedDate.getFullYear()
+        const month = String(formattedDate.getMonth() + 1).padStart(2, '0')
+        const day = String(formattedDate.getDate()).padStart(2, '0')
+        const hours = String(formattedDate.getHours()).padStart(2, '0')
+        const minutes = String(formattedDate.getMinutes()).padStart(2, '0')
+        const seconds = String(formattedDate.getSeconds()).padStart(2, '0')
+        date = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+      } else if (typeof item.dateUTC === 'string') {
+        date = item.dateUTC
+      } else {
+        date = 'Invalid date'
+      }
+      const eqUsd = item.eqUSD !== null ? item.eqUSD : 0
+      return {
+        base: item.base,
+        quote: item.quote,
+        dateUTC: date,
+        orderid: item.orderid,
+        pair: item.pair,
+        side: item.side,
+        price: item.price,
+        amount: item.amount,
+        total: item.total,
+        eqUSD: eqUsd,
+        fee: item.fee,
+        feecoin: item.feecoin,
+        platform: item.platform,
+        timestampVal // utilisé pour le tri
+      } as TradeTransformed
+    })
+    .sort((a, b) => b.timestampVal - a.timestampVal) // Tri décroissant
+})
+
+// Filtrage des Machi items par plateforme et recherche (unicité sur base et plateforme)
 const filteredMachiItems = computed(() => {
   const searchValue = filters.value.global.value ? filters.value.global.value.toLowerCase() : '';
-
-  // Utiliser un Set pour garder les éléments uniques
   const uniqueItems = new Set();
-
   return machiItems.value.filter(item => {
-    // Filtrer par plateforme
     const matchesPlatformFilter = selectedPlatforms.value.includes(item.platform);
-
-    // Filtrer par recherche
     const matchesSearchFilter = searchValue
-      ? Object.values(item).some(value =>
-        String(value).toLowerCase().includes(searchValue)
-      )
+      ? Object.values(item).some(value => String(value).toLowerCase().includes(searchValue))
       : true;
-
-    // Ajouter à l'ensemble si l'élément est unique par `base`
-    const isUnique = !uniqueItems.has(`${item.base}-${item.platform}`);
-
+    // Utiliser la combinaison base-platform pour garantir l'unicité
+    const uniqueKey = `${item.base}-${item.platform}`;
+    const isUnique = !uniqueItems.has(uniqueKey);
     if (matchesPlatformFilter && matchesSearchFilter && isUnique) {
-      uniqueItems.add(item.base); // Ajouter la `base` unique à l'ensemble
+      uniqueItems.add(uniqueKey);
       return true;
     }
     return false;
   });
 });
 
-
-// Function to fetch data from the store asynchronously
+// Fonction pour récupérer les données du store de façon asynchrone
 const getData = async (): Promise<void> => {
   try {
     await calculStore.loadTrade();
     await calculStore.loadOrder();
     await calculStore.loadMachi();
-
     console.info("Data retrieved:", {
       trades: tradesItems.value.length,
       orders: openOrdersItems.value.length,
       machi: machiItems.value.length,
     });
-
   } catch (error) {
     console.error("An error occurred while retrieving data:", error)
   }
 }
 
-// Call data fetching function when component is mounted
+// Chargement des données lors du montage du composant
 onMounted(async () => {
   await getData()
 })
 
-// Function to handle action deletion
+// Gestion de l'action de suppression (à implémenter)
 const handleDeleteAction = (): void => {
- // console.info('Delete action received from grandchild component');
-  // Perform the delete action here
-  //TODO faire focntionner ca
-  //deleteProductsDialog.value = true
+  // TODO: Implémenter la suppression
 };
 
-// Function to update selected bases
+// Mise à jour des bases sélectionnées
 const updateSelectedBases = (newSelection: Asset[]): void => {
   selectedBases.value = newSelection
 }
 
-// Function to update selected platforms
+// Mise à jour des plateformes sélectionnées
 const updateSelectedPlatforms = (newPlatforms: string[]): void => {
   selectedPlatforms.value = newPlatforms
 }
 
-// Handling expand/collapse states with boolean types
+// Gestion de l'expansion/repli des sections
 const isBottomExpanded = ref<boolean>(false)
 const activeTab = ref<'trades' | 'orders' | 'buyCalculator'>('trades')
-
 const toggleExpandCollapse = (): void => {
   isBottomExpanded.value = !isBottomExpanded.value
 }
 
 const isTopExpanded = ref<boolean>(false)
 const activeTopTab = ref<'platforms' | 'fetch' | 'action'>('platforms')
-
 const toggleTopExpandCollapse = (): void => {
   isTopExpanded.value = !isTopExpanded.value
 }
 
-const itemsPerPage = 10; // Number of items to display per page
+// Pagination des Machi items
+const itemsPerPage = 10;
 const currentPage = ref(1);
 const loading = ref(false);
-
-// Computed property for paginated items
 const paginatedMachiItems = computed(() => {
-  const start = 0; // Commencer à partir du début
+  const start = 0;
   return filteredMachiItems.value.slice(start, currentPage.value * itemsPerPage);
 });
-
-// Check if there are more items to load
 const hasMoreItems = computed(() => {
   return currentPage.value * itemsPerPage < filteredMachiItems.value.length;
 });
-
-// Function to load more items
 const loadMore = () => {
   if (!loading.value && hasMoreItems.value) {
     loading.value = true;
@@ -150,18 +177,16 @@ const loadMore = () => {
 
 const handleScroll = () => {
   const scrollPosition = window.innerHeight + window.scrollY;
-  const threshold = document.body.offsetHeight - 200; // Seuil pour charger plus d'éléments
+  const threshold = document.body.offsetHeight - 200;
   if (scrollPosition >= threshold) {
     loadMore();
   }
 };
 
-// Ajouter l'écouteur d'événements lors du montage
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
 });
 
-// Nettoyer l'écouteur d'événements lors de la destruction
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
 });
@@ -178,10 +203,8 @@ onBeforeUnmount(() => {
           <Button label="Update data" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
           <Button label="Actions" @click="activeTopTab = 'action'" :class="{ active: activeTopTab === 'action' }" />
           <Button icon="pi pi-chevron-down" @click="toggleTopExpandCollapse" class="expand-collapse-button" />
-
         </div>
         <SearchBar :filters="filters" />
-
       </div>
       <div class="tab-content">
         <PlatformSelector v-if="activeTopTab === 'platforms'" :initialSelectedPlatforms="selectedPlatforms"
@@ -189,14 +212,13 @@ onBeforeUnmount(() => {
         <UpdateBarSelector v-if="activeTopTab === 'fetch'" />
         <ActionSelector v-if="activeTopTab === 'action'" :selectedBases="selectedBases" :filters="filters"
           @delete:action="handleDeleteAction" />
-
       </div>
     </div>
 
     <div class="content-container">
       <Toolbar class="mb-4">
         <template #end>
-
+          <!-- Boutons ou éléments supplémentaires -->
         </template>
       </Toolbar>
 
@@ -205,8 +227,8 @@ onBeforeUnmount(() => {
 
       <!-- Conteneur de cartes -->
       <div class="asset-card-container">
-        <CardAsset v-for="item in paginatedMachiItems" :key="item.base" :asset="item" :trades="tradesItems"
-          :orders="openOrdersItems" @update:selectedBases="updateSelectedBases" />
+        <CardAsset v-for="item in paginatedMachiItems" :key="`${item.base}-${item.platform}`" :asset="item"
+          :trades="tradesItems" :orders="openOrdersItems" @update:selectedBases="updateSelectedBases" />
         <div v-if="loading">Loading more items...</div>
       </div>
     </div>
@@ -216,14 +238,12 @@ onBeforeUnmount(() => {
       <div class="tab-header">
         <Button label="Trades" @click="activeTab = 'trades'" :class="{ active: activeTab === 'trades' }" />
         <Button label="Orders" @click="activeTab = 'orders'" :class="{ active: activeTab === 'orders' }" />
-        <Button label="Buy Calculator" @click="activeTab = 'buyCalculator'"
-          :class="{ active: activeTab === 'buyCalculator' }" />
         <Button icon="pi pi-chevron-up" @click="toggleExpandCollapse" class="expand-collapse-button" />
       </div>
       <div class="tab-content">
-        <TradesTable v-if="activeTab === 'trades'" :items="tradesItems" :filters="filters" />
-        <OrdersTable v-if="activeTab === 'orders'" :items="openOrdersItems" :filters="filters" />
-        <BuyCalculator v-if="activeTab === 'buyCalculator'" :selectedBases="selectedBases" />
+        <!-- Passage de TradeTransformed au composant TradesTable -->
+        <TradesTable v-if="activeTab === 'trades'" :rows="filteredTrades" :filters="filters" />
+        <OrdersTable v-if="activeTab === 'orders'" :rows="openOrdersItems" :filters="filters" />
       </div>
     </div>
   </div>
@@ -239,14 +259,11 @@ onBeforeUnmount(() => {
 
 .content-container {
   background: var(--surface-card);
-  padding: 0rem;
+  padding: 0;
   border-radius: 4px;
   flex-grow: 1;
   overflow-y: auto;
-
-  /* Adjust height dynamically based on top and bottom containers' expansion */
   height: calc(100vh - 60px - 44px);
-  /* Default height when both are collapsed */
   transition: height 0.3s ease;
   background-color: darkorchid;
 }
@@ -254,13 +271,10 @@ onBeforeUnmount(() => {
 .asset-card-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  /* 2 colonnes */
   gap: 1rem;
-  /* Espace entre les cartes */
   grid-auto-rows: min-content;
-  /* Hauteur minimale pour chaque carte */
   align-items: start;
-  background-color: darkseagreen
+  background-color: darkseagreen;
 }
 
 .top-tab-container {
@@ -288,25 +302,18 @@ onBeforeUnmount(() => {
 
 .tab-header {
   display: flex;
-  /* Ajoute flexbox pour organiser les éléments */
   align-items: center;
-  /* Aligne verticalement les éléments au centre */
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding: 4px 0;
 }
 
 .tab_menu {
   display: flex;
-  /* Utiliser flexbox pour la mise en page */
   justify-content: center;
-  /* Centre horizontalement les éléments du menu */
   flex-grow: 1;
-  /* Permet au menu de prendre tout l'espace disponible */
 }
 
 .search-bar {
   margin-left: auto;
-  /* Pousse la barre de recherche tout à droite */
 }
 
 .tab-content {

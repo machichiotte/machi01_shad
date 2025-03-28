@@ -3,10 +3,14 @@
 import { ref } from 'vue'
 import AddBuyOrdersForm from '../form/AddBuyOrdersForm.vue'
 
-//todo degager le any
+interface BaseOption {
+    base: string;
+    platform: string;
+}
+
 const props = defineProps<{
-    selectedBases: Record<string, any>;
-}>()
+    selectedBases: BaseOption[];
+}>();
 
 const showBuyOrdersForm = ref(false)
 </script>
