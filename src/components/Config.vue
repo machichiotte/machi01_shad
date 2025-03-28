@@ -101,20 +101,19 @@ const sendKeyToServer = async (payload: any) => {
 .config-container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 1rem;
 }
 
 .config-section {
-  border-radius: 5px;
   padding: 1rem;
-  margin-bottom: 15px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  border-radius: 4px;
   background-color: #333;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
 h2 {
@@ -122,43 +121,38 @@ h2 {
   font-size: 1.2em;
 }
 
-/* Nouveau style pour afficher label et input/select sur la même ligne */
 .form-group {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .form-group label {
   width: 180px;
-  margin: 0;
-  font-weight: bold;
   text-align: right;
-  font-size: 0.9rem;
+  font-weight: bold;
 }
 
 .form-group input,
 .form-group select {
   flex: 1;
-  padding: 6px;
-  color: #ccc;
-  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border: 1px solid #555;
   border-radius: 4px;
   background-color: #333;
-  font-size: 0.9rem;
+  color: #ccc;
 }
 
-/* Bouton s'étend sur toute la largeur du formulaire */
 button {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
   background-color: #007bff;
   color: white;
-  padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width: 100%;
-  margin-top: 6px;
 }
 
 button:hover {
