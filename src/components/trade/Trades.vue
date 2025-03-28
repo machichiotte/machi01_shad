@@ -144,7 +144,6 @@ onMounted(async () => {
 .page {
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 1rem;
 }
 
@@ -153,11 +152,12 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 .trade-sums {
   display: flex;
   flex-direction: column;
-  margin-right: 1rem;
+  gap: 0.5rem;
 }
 </style>

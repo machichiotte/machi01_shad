@@ -76,66 +76,71 @@ const {
   font-size: small;
 }
 
-/* Exemple de largeur fixe pour chaque colonne (à adapter selon tradesColumns) */
+/* Largeurs des colonnes optimisées */
 .trades-table th:nth-child(1),
 .trades-table td:nth-child(1) {
   width: 30px;
 }
 
+/* ID */
 .trades-table th:nth-child(2),
 .trades-table td:nth-child(2) {
   width: 70px;
 }
 
+/* Date */
 .trades-table th:nth-child(3),
 .trades-table td:nth-child(3) {
   width: 50px;
 }
 
+/* Symbol */
 .trades-table th:nth-child(4),
-.trades-table td:nth-child(4) {
-  width: 30px;
-}
-
+.trades-table td:nth-child(4),
 .trades-table th:nth-child(5),
 .trades-table td:nth-child(5) {
   width: 30px;
 }
 
+/* Side, Type */
 .trades-table th:nth-child(6),
 .trades-table td:nth-child(6) {
   width: 40px;
 }
 
+/* Price */
 .trades-table th:nth-child(7),
-.trades-table td:nth-child(7) {
-  width: 60px;
-}
-
+.trades-table td:nth-child(7),
 .trades-table th:nth-child(8),
 .trades-table td:nth-child(8) {
   width: 60px;
 }
 
+/* Amount, Total */
 .trades-table th:nth-child(9),
 .trades-table td:nth-child(9) {
   width: 30px;
 }
 
+/* Fee */
 .trades-table th:nth-child(10),
 .trades-table td:nth-child(10) {
   width: 60px;
 }
 
+/* Fee Currency */
 .trades-table th:nth-child(11),
 .trades-table td:nth-child(11) {
   width: 30px;
 }
 
+/* Status */
 .trades-table th:nth-child(12),
 .trades-table td:nth-child(12) {
   width: 100px;
 }
+
+/* Actions */
 
 .pagination {
   margin-top: 1rem;
