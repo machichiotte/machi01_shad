@@ -1,6 +1,6 @@
 <!-- File: src/components/machi/Machi.vue -->
 <script setup lang="ts">
-import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
+import { ref, onMounted, computed, onBeforeUnmount, shallowRef } from 'vue'
 import { useCalculStore } from '../../store/calculStore'
 import { FilterMatchMode } from 'primevue/api'
 import CardAsset from './card/CardAsset.vue'
@@ -17,9 +17,10 @@ import OrdersTable from '../order/OrdersTable.vue'
 
 import { Filter } from '../../types/filter'
 import { Asset, Trade, TradeTransformed } from '../../types/responseData'
+import { debounce } from 'lodash-es'
 
 // Définition des bases sélectionnées avec les types appropriés
-const selectedBases = ref<Asset[]>([])
+const selectedBases = shallowRef<Asset[]>([])
 
 // Définition des filtres avec une structure bien définie
 const filters = ref<Filter>({
@@ -27,7 +28,7 @@ const filters = ref<Filter>({
 })
 
 // Définition du tableau de plateformes
-const selectedPlatforms = ref(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
+const selectedPlatforms = shallowRef(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
 
 // Accès au store Pinia
 const calculStore = useCalculStore()
@@ -89,18 +90,19 @@ const filteredTrades = computed<TradeTransformed[]>(() => {
 
 // Filtrage des Machi items par plateforme et recherche (unicité sur base et plateforme)
 const filteredMachiItems = computed(() => {
-  const searchValue = filters.value.global.value ? filters.value.global.value.toLowerCase() : '';
-  const uniqueItems = new Set();
+  const searchValue = filters.value.global.value?.toLowerCase() ?? '';
+  const uniqueItems = new Map(); // Utiliser Map au lieu de Set pour de meilleures performances
+
   return machiItems.value.filter(item => {
-    const matchesPlatformFilter = selectedPlatforms.value.includes(item.platform);
-    const matchesSearchFilter = searchValue
-      ? Object.values(item).some(value => String(value).toLowerCase().includes(searchValue))
-      : true;
-    // Utiliser la combinaison base-platform pour garantir l'unicité
     const uniqueKey = `${item.base}-${item.platform}`;
-    const isUnique = !uniqueItems.has(uniqueKey);
-    if (matchesPlatformFilter && matchesSearchFilter && isUnique) {
-      uniqueItems.add(uniqueKey);
+    if (uniqueItems.has(uniqueKey)) return false;
+
+    const matchesPlatform = selectedPlatforms.value.includes(item.platform);
+    const matchesSearch = !searchValue ||
+      Object.values(item).some(value => String(value).toLowerCase().includes(searchValue));
+
+    if (matchesPlatform && matchesSearch) {
+      uniqueItems.set(uniqueKey, true);
       return true;
     }
     return false;
@@ -175,13 +177,16 @@ const loadMore = () => {
   }
 };
 
-const handleScroll = () => {
+const handleScroll = debounce(() => {
+  if (loading.value) return;
+
   const scrollPosition = window.innerHeight + window.scrollY;
   const threshold = document.body.offsetHeight - 200;
-  if (scrollPosition >= threshold) {
+
+  if (scrollPosition >= threshold && hasMoreItems.value) {
     loadMore();
   }
-};
+}, 200);
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
@@ -270,11 +275,10 @@ onBeforeUnmount(() => {
 
 .asset-card-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem;
-  grid-auto-rows: min-content;
-  align-items: start;
-  background-color: darkseagreen;
+  padding: 1rem;
+  background-color: var(--surface-ground);
 }
 
 .top-tab-container {
@@ -337,5 +341,15 @@ onBeforeUnmount(() => {
 
 .bottom-tab-container:not(.expanded) {
   height: 40px;
+}
+
+@media (max-width: 768px) {
+  .asset-card-container {
+    grid-template-columns: 1fr;
+  }
+
+  .top-tab-container.expanded {
+    height: 150px;
+  }
 }
 </style>
