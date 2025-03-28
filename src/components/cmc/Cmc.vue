@@ -79,7 +79,6 @@ onMounted(async () => {
 
 <template>
   <div class="page">
-    <h2>CMC</h2>
     <div id="card">
       <SearchBar :filters="filters" />
       <CmcTable :rows="filteredRows" :itemsPerPage="itemsPerPage" />

@@ -48,8 +48,6 @@ const sendKeyToServer = async (payload: any) => {
 
 <template>
   <div class="config-container">
-    <h1>Configuration</h1>
-
     <!-- Configuration CoinMarketCap -->
     <div class="config-section">
       <h2>Configuration CoinMarketCap</h2>
@@ -109,11 +107,6 @@ const sendKeyToServer = async (payload: any) => {
   margin-bottom: 1rem;
   border-radius: 4px;
   background-color: #333;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 1rem;
 }
 
 h2 {

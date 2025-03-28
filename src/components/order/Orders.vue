@@ -64,7 +64,6 @@ onMounted(async () => {
 
 <template>
   <div class="page">
-    <h2>Current Orders List</h2>
     <div class="card">
       <SearchBar :filters="filters" />
       <OrdersTable :rows="filteredOrders" :itemsPerPage="itemsPerPage" />
