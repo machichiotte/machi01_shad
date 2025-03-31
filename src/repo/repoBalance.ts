@@ -12,7 +12,7 @@ export class RepoBalance {
      * Récupère toutes les données de solde de la base de données.
      */
     static async fetchAll(): Promise<MappedBalance[]> {
-        return await ServiceDatabase.getData(COLLECTION_NAME) as MappedBalance[];
+        return await ServiceDatabase.getCollectionDocuments(COLLECTION_NAME) as MappedBalance[];
     }
 
     /**
@@ -27,6 +27,6 @@ export class RepoBalance {
      * Enregistre les données de solde dans la base de données pour une plateforme.
      */
     static async saveBalances(platform: PLATFORM, mappedData: Omit<MappedBalance, '_id'>[]): Promise<void> {
-        await ServiceDatabase.saveDataAndTimestampToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
+        await ServiceDatabase.saveDocumentsWithTimestamp(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
     }
 }

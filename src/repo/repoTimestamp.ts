@@ -11,7 +11,7 @@ export class RepoTimestamp {
      * Récupère les informations de dernière mise à jour depuis la base de données.
      */
     static async fetchTimestamp(): Promise<TimestampData> {
-        const data = await ServiceDatabase.getData(COLLECTION_NAME) as TimestampData[];
+        const data = await ServiceDatabase.getCollectionDocuments(COLLECTION_NAME) as TimestampData[];
         if (!data || data.length === 0) {
             throw new Error('No timestamp data found');
         }
@@ -38,10 +38,10 @@ export class RepoTimestamp {
         const filter = { _id: objectId };
         const update = { $set: mappedData };
 
-        await ServiceDatabase.updateDoc(COLLECTION_NAME, filter, update);
+        await ServiceDatabase.updateDocument(COLLECTION_NAME, filter, update);
     }
 
     static async findTimestamp(filter: object): Promise<TimestampData> {
-        return await ServiceDatabase.findDoc(COLLECTION_NAME, filter) as TimestampData
+        return await ServiceDatabase.findSingleDocument(COLLECTION_NAME, filter) as TimestampData
     }
 }

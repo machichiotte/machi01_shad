@@ -13,10 +13,10 @@ export class RepoConfigServer {
    * Si aucune configuration n'existe, crée une configuration par défaut.
    */
   static async fetchServerConfig(): Promise<Server> {
-    const data = await ServiceDatabase.getData(COLLECTION_NAME) as Server[]
+    const data = await ServiceDatabase.getCollectionDocuments(COLLECTION_NAME) as Server[]
     if (!data || data.length === 0) {
       // Create default server config if none exists
-      await ServiceDatabase.insertData(COLLECTION_NAME, DEFAULT_SERVER_CONFIG)
+      await ServiceDatabase.insertDocuments(COLLECTION_NAME, DEFAULT_SERVER_CONFIG)
       return DEFAULT_SERVER_CONFIG
     }
     return data[0] as Server
@@ -26,7 +26,7 @@ export class RepoConfigServer {
    * Met à jour la configuration server dans la base de données.
    */
   static async updateServerConfig(updatedConfig: Server): Promise<void> {
-    await ServiceDatabase.deleteAndInsertData(COLLECTION_NAME, [
+    await ServiceDatabase.replaceDocuments(COLLECTION_NAME, [
       updatedConfig
     ] as MappedData[])
   }

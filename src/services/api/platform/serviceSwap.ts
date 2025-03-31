@@ -14,7 +14,7 @@ const COLLECTION_NAME = config.databaseConfig.collection.swap;
 export class ServiceSwap {
 
   static async fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
-    return await ServiceDatabase.getData(COLLECTION_NAME) as SwapMigration[];
+    return await ServiceDatabase.getCollectionDocuments(COLLECTION_NAME) as SwapMigration[];
   }
 
   static async updateTrade(trade: MappedTrade, oldAsset: string, newAsset: string, swapMultiplier: number, platform: string): Promise<void> {

@@ -12,7 +12,7 @@ export class RepoHighPrice {
      * Fetches the highest prices from the database.
      */
     static async fetchHighestPrices(): Promise<HighestPrices[]> {
-        return await ServiceDatabase.getData(COLLECTION_NAME) as HighestPrices[];
+        return await ServiceDatabase.getCollectionDocuments(COLLECTION_NAME) as HighestPrices[];
     }
 
     /**

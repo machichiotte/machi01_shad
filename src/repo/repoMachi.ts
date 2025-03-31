@@ -10,6 +10,6 @@ export class RepoMachi {
      * Fetches the most recent SHAD data from the database.
      */
     static async fetchAll(): Promise<Asset[]> {
-        return await ServiceDatabase.getData(COLLECTION_NAME) as Asset[];
+        return await ServiceDatabase.getCollectionDocuments(COLLECTION_NAME) as Asset[];
     }
 }

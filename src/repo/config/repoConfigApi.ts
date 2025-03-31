@@ -32,16 +32,16 @@ export class RepoConfigApi {
   }
 
   private static async fetchOrCreateConfig(): Promise<Api> {
-    const data = (await ServiceDatabase.getData(COLLECTION_NAME)) as Api[]
+    const data = (await ServiceDatabase.getCollectionDocuments(COLLECTION_NAME)) as Api[]
     if (!data || data.length === 0) {
-      await ServiceDatabase.insertData(COLLECTION_NAME, DEFAULT_APICONFIG)
+      await ServiceDatabase.insertDocuments(COLLECTION_NAME, DEFAULT_APICONFIG)
       return DEFAULT_APICONFIG
     }
     return data[0]
   }
 
   static async updateConfigApi(config: Api): Promise<void> {
-    await ServiceDatabase.deleteAndInsertData(COLLECTION_NAME, [
+    await ServiceDatabase.replaceDocuments(COLLECTION_NAME, [
       config
     ] as MappedData[])
   }

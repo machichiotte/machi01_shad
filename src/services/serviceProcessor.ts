@@ -50,7 +50,7 @@ export class ServiceProcessor {
 
   static async saveMachi(): Promise<void> {
     const data = await this.calculateAllMachi();
-    await ServiceDatabase.saveDataAndTimestampToDatabase(data, COLLECTION_NAME, COLLECTION_CATEGORY);
+    await ServiceDatabase.saveDocumentsWithTimestamp(data, COLLECTION_NAME, COLLECTION_CATEGORY);
   }
 
   /**

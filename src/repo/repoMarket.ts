@@ -10,10 +10,10 @@ const COLLECTION_CATEGORY = config.databaseConfig.category.market;
 export class RepoMarket {
 
     static async fetchAll(): Promise<MappedMarket[]> {
-        return await ServiceDatabase.getData(COLLECTION_NAME) as MappedMarket[];
+        return await ServiceDatabase.getCollectionDocuments(COLLECTION_NAME) as MappedMarket[];
     }
 
     static async save(mappedData: Omit<MappedMarket, '_id'>[], platform: PLATFORM): Promise<void> {
-        await ServiceDatabase.saveDataAndTimestampToDatabase(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
+        await ServiceDatabase.saveDocumentsWithTimestamp(mappedData, COLLECTION_NAME, COLLECTION_CATEGORY, platform);
     }
 }

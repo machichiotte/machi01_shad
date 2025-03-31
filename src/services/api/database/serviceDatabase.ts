@@ -14,7 +14,7 @@ import { CacheItem } from '@typ/mongodb'
 import { config } from '@config/index'
 
 export class ServiceDatabase {
-  static async insertData(
+  static async insertDocuments(
     collectionName: string,
     data: object[] | object
   ): Promise<InsertData> {
@@ -27,43 +27,43 @@ export class ServiceDatabase {
         return await retry(
           mongodbOperations.insertMany,
           [collectionName, data],
-          'insertData'
+          'insertDocuments'
         )
       } else {
         return await retry(
           mongodbOperations.insertOne,
           [collectionName, data],
-          'insertData'
+          'insertDocuments'
         )
       }
     } catch (error) {
       handleServiceError(
         error,
-        'insertData',
-        `Error saving data in ${collectionName}`
+        'insertDocuments',
+        `Error insertDocuments in ${collectionName}`
       )
       throw error
     }
   }
 
-  static async findData(collectionName: string): Promise<Document[]> {
+  static async findAllDocuments(collectionName: string): Promise<Document[]> {
     try {
       return await retry(
         mongodbOperations.find,
         [collectionName, {}],
-        'findData'
+        'findAllDocuments'
       )
     } catch (error) {
       handleServiceError(
         error,
-        'findOneData',
-        `Error findData in ${collectionName}`
+        'findAllDocuments',
+        `Error findAllDocuments in ${collectionName}`
       )
       throw error
     }
   }
 
-  static async findDoc(
+  static async findSingleDocument(
     collectionName: string,
     query: object
   ): Promise<Document | null> {
@@ -71,20 +71,20 @@ export class ServiceDatabase {
       return await retry(
         mongodbOperations.findOne,
         [collectionName, query],
-        'findOneData'
+        'findSingleDocument'
       )
     } catch (error) {
       handleServiceError(
         error,
-        'findOneData',
-        `Error findOneData in ${collectionName}`
+        'findSingleDocument',
+        `Error findSingleDocument in ${collectionName}`
       )
 
       throw error
     }
   }
 
-  static async deleteDoc(
+  static async deleteSingleDocument(
     collectionName: string,
     filter: object
   ): Promise<boolean> {
@@ -92,19 +92,19 @@ export class ServiceDatabase {
       return await retry(
         mongodbOperations.deleteOne,
         [collectionName, filter],
-        'deleteOneData'
+        'deleteSingleDocument'
       )
     } catch (error) {
       handleServiceError(
         error,
-        'deleteOneData',
-        `Error deleteOneData data from ${collectionName}`
+        'deleteSingleDocument',
+        `Error deleteSingleDocument data from ${collectionName}`
       )
       throw error
     }
   }
 
-  static async deleteData(
+  static async deleteDocuments(
     collectionName: string,
     filter: object
   ): Promise<number> {
@@ -112,36 +112,36 @@ export class ServiceDatabase {
       return await retry(
         mongodbOperations.deleteMany,
         [collectionName, filter],
-        'deleteMultipleData'
+        'deleteDocuments'
       )
     } catch (error) {
       handleServiceError(
         error,
-        'deleteMultipleData',
-        `Error deleteMultipleData data from ${collectionName}`
+        'deleteDocuments',
+        `Error deleteDocuments data from ${collectionName}`
       )
       throw error
     }
   }
 
-  static async deleteAllData(collectionName: string): Promise<number> {
+  static async deleteAllDocuments(collectionName: string): Promise<number> {
     try {
       return await retry(
         mongodbOperations.deleteMany,
         [collectionName, {}],
-        'deleteAllData'
+        'deleteAllDocuments'
       )
     } catch (error) {
       handleServiceError(
         error,
-        'deleteAllData',
-        `Error deleteAllData data from ${collectionName}`
+        'deleteAllDocuments',
+        `Error deleteAllDocuments data from ${collectionName}`
       )
       throw error
     }
   }
 
-  static async updateDoc(
+  static async updateDocument(
     collectionName: string,
     filter: Document,
     update: Document
@@ -150,19 +150,19 @@ export class ServiceDatabase {
       return await retry(
         mongodbOperations.updateOne,
         [collectionName, filter, update],
-        'updateOneData'
+        'updateDocument'
       )
     } catch (error) {
       handleServiceError(
         error,
-        'updateOneData',
+        'updateDocument',
         `Erreur lors de la mise à jour des données dans ${collectionName}`
       )
       throw error
     }
   }
 
-  static async deleteAndInsertData(
+  static async replaceDocuments(
     collectionName: string,
     mapData: Omit<MappedData, '_id'>[],
     platform?: PLATFORM
@@ -170,31 +170,31 @@ export class ServiceDatabase {
     try {
       if (mapData && mapData.length > 0) {
         if (!platform) {
-          await ServiceDatabase.deleteAllData(collectionName)
+          await ServiceDatabase.deleteAllDocuments(collectionName)
         } else {
           const deleteParam = { platform }
-          await ServiceDatabase.deleteData(collectionName, deleteParam)
+          await ServiceDatabase.deleteDocuments(collectionName, deleteParam)
         }
-        await ServiceDatabase.insertData(collectionName, mapData)
+        await ServiceDatabase.insertDocuments(collectionName, mapData)
       }
     } catch (error) {
       handleServiceError(
         error,
-        'deleteAndInsertData',
+        'replaceDocuments',
         `Error processing data in ${collectionName}`
       )
       throw error
     }
   }
 
-  static async saveDataAndTimestampToDatabase(
+  static async saveDocumentsWithTimestamp(
     data: Omit<MappedData, '_id'>[],
     collectionName: string,
     tsCategory: string,
     platform?: PLATFORM
   ): Promise<void> {
     try {
-      await ServiceDatabase.deleteAndInsertData(collectionName, data, platform)
+      await ServiceDatabase.replaceDocuments(collectionName, data, platform)
       await ServiceTimestamp.saveTimestampToDatabase(tsCategory, platform)
       /*
       const startTime = Date.now()
@@ -205,34 +205,34 @@ export class ServiceDatabase {
     } catch (error) {
       handleServiceError(
         error,
-        'saveDataAndTimestampToDatabase',
+        'saveDocumentsWithTimestamp',
         'Erreur lors de la sauvegarde des données dans la base de données'
       )
       throw error
     }
   }
 
-  static async getData(collectionName: string): Promise<MappedData[]> {
+  static async getCollectionDocuments(collectionName: string): Promise<MappedData[]> {
     try {
       if (config.isOffline) {
         console.info('offline')
         return getMockedData(collectionName)
       } else {
         const data =
-          await ServiceDatabase.getCacheOrFetchCollection(collectionName)
+          await ServiceDatabase.getCachedOrFetchedDocuments(collectionName)
         return Array.isArray(data) ? (data as MappedData[]) : []
       }
     } catch (error) {
       handleServiceError(
         error,
-        'getData',
+        'getCollectionDocuments',
         `Failed to get data from collection ${collectionName}`
       )
       throw error
     }
   }
 
-  static async getDoc(
+  static async getDocumentByFilter(
     collectionName: string,
     filter: Document
   ): Promise<MappedData | null> {
@@ -242,7 +242,7 @@ export class ServiceDatabase {
         return mockedData.length > 0 ? mockedData[0] : null
       } else {
         const data =
-          await ServiceDatabase.getCacheOrFetchCollection(collectionName)
+          await ServiceDatabase.getCachedOrFetchedDocuments(collectionName)
         if (!Array.isArray(data)) return null
         const filteredData = data.find((doc) =>
           Object.entries(filter).every(([key, value]) => doc[key] === value)
@@ -252,14 +252,14 @@ export class ServiceDatabase {
     } catch (error) {
       handleServiceError(
         error,
-        'getDoc',
+        'getDocumentByFilter',
         `Failed to get document from collection ${collectionName}`
       )
       throw error
     }
   }
 
-  static async getCacheOrFetchCollection(
+  static async getCachedOrFetchedDocuments(
     collectionName: string
   ): Promise<CacheItem[] | Document[]> {
     // Déterminer la clé de cache appropriée
@@ -269,22 +269,22 @@ export class ServiceDatabase {
     if (cachedData) return cachedData
 
     // Récupérer de nouvelles données si le cache est expiré
-    return this.fetchAndCacheData(collectionName)
+    return this.fetchAndCacheDocuments(collectionName)
   }
 
-  static async fetchAndCacheData(collectionName: string): Promise<Document[]> {
+  static async fetchAndCacheDocuments(collectionName: string): Promise<Document[]> {
     try {
       const result = await retry(
         mongodbOperations.find,
         [collectionName],
-        'fetchAndCacheData'
+        'fetchAndCacheDocuments'
       )
       await ServiceCache.addToCache(collectionName, result as MappedData[])
       return result
     } catch (error) {
       handleServiceError(
         error,
-        'fetchAndCacheData',
+        'fetchAndCacheDocuments',
         `Error fetching data from ${collectionName}`
       )
       return []
