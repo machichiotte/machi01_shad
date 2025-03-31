@@ -1,5 +1,5 @@
 // src/services/update/updateManager.ts
-import { PLATFORMS } from '@typ/platform';
+import { PLATFORMS } from '@src/constants/platform';
 import { UpdateManagerGeneral } from '@services/update/updateManagerGeneral';
 import { UpdateManagerPlatform } from '@services/update/updateManagerPlatform';
 import { checkApiKeys } from '@utils/platformUtil';

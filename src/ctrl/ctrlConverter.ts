@@ -4,12 +4,8 @@ import { Request, Response } from 'express'
 import { convertToJSON, TradeModel } from '@services/serviceConverter'
 import { handleControllerError } from '@utils/errorUtil'
 
-/**
- * Convert a CSV file to JSON format.
- */
-async function getConvertedCsv(req: Request, res: Response): Promise<void> {
+async function convertCsvFileToJson(req: Request, res: Response): Promise<void> {
   try {
-    // Ensure the file is defined and of the correct type
     if (!req.file) {
       res.status(400).json({
         status: "error",
@@ -40,8 +36,8 @@ async function getConvertedCsv(req: Request, res: Response): Promise<void> {
       }
     } as Papa.ParseConfig<unknown[]>)
   } catch (error) {
-    handleControllerError(res, error, getConvertedCsv.name)
+    handleControllerError(res, error, convertCsvFileToJson.name)
   }
 }
 
-export { getConvertedCsv }
+export { convertCsvFileToJson }

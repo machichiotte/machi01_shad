@@ -1,12 +1,12 @@
 // src/routes/routeConverter.ts
 import express from 'express'
 import multer from 'multer'
-import { getConvertedCsv } from '@ctrl/ctrlConverter'
+import { convertCsvFileToJson } from '@ctrl/ctrlConverter'
 import { fileUploadMiddleware } from '@src/middlewares/fileUploadMiddleware'
 
 const router = express.Router()
 const upload = multer({ storage: multer.memoryStorage() })
 
-router.post('/post', upload.single('csvFile'), fileUploadMiddleware, getConvertedCsv)
+router.post('/post', upload.single('csvFile'), fileUploadMiddleware, convertCsvFileToJson)
 
 export default router

@@ -17,6 +17,8 @@ export class UpdateManagerGeneral {
         if (hasTimeElapsed(lastCmcUpdate, cmcUpdateInterval)) {
             console.info('Updating CMC data...');
             await ServiceCmc.updateCmcData();
+        } else {
+            console.info('Cmc : Up to date !')
         }
     }
 }

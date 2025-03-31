@@ -9,6 +9,7 @@ import { ServiceConfigApi } from './services/config/serviceConfigApi'
 import { ServiceCache } from '@services/serviceCache'
 //import { config, loadServerConfig } from '@config/index';
 import { loadServerConfig, loadApiConfig } from '@config/index'
+import { UpdateManager } from './services/update/updateManager'
 
 async function startApp(): Promise<void> {
   try {
@@ -26,7 +27,7 @@ async function startApp(): Promise<void> {
     await loadApiConfig(apiConfig)
 
     // Étape 3 : Mettre à jour les services
-    // await UpdateService.updateAll()
+    await UpdateManager.updateAll()
 
     // Étape 4 : Initialiser les tâches CRON
     await ServiceCron.initializeCronTasks()
