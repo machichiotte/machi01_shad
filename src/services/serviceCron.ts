@@ -17,7 +17,7 @@ import { config } from '@config/index'
 export class ServiceCron {
   static async initializeCronTasks(): Promise<void> {
     try {
-      console.info('Starting initialization of Cron tasks...')
+      console.info('[ServiceCron] Starting initialization of Cron tasks...')
 
       const initializedTasks: string[] = [] // Tâches initialisées avec succès
       const failedTasks: string[] = [] // Tâches ayant échoué
@@ -66,7 +66,7 @@ export class ServiceCron {
                 await task(platform) // Appelle la tâche avec l'argument platform
                 const duration = Date.now() - startTime
                 console.info(
-                  `Platform Task ${name} executed successfully in ${duration}ms.`
+                  `[ServiceCron] Platform Task ${name} executed successfully in ${duration}ms.`
                 )
               } catch (err) {
                 handleServiceError(
@@ -98,13 +98,13 @@ export class ServiceCron {
               if (task.length > 0) {
                 // Si `task` attend des arguments, passez une valeur par défaut ou adaptez ici
                 console.warn(
-                  `Task ${name} cannot be executed without arguments.`
+                  `[ServiceCron] General Task ${name} cannot be executed without arguments.`
                 )
               } else {
                 await (task as () => void)()
                 const duration = Date.now() - startTime
                 console.info(
-                  `General Task ${name} executed successfully in ${duration}ms.`
+                  `[ServiceCron] General Task ${name} executed successfully in ${duration}ms.`
                 )
               }
             } catch (error) {
@@ -129,11 +129,11 @@ export class ServiceCron {
       // Log des résultats
       if (initializedTasks.length > 0) {
         console.info(
-          `Cron Initialized: ${initializedTasks.join(' - ')}, Valid Platforms: ${validPlatforms.join(', ')}`
+          `[ServiceCron] ron Initialized: ${initializedTasks.join(' - ')}, Valid Platforms: ${validPlatforms.join(', ')}`
         )
       }
       if (failedTasks.length > 0) {
-        console.error(`Cron Failed: ${failedTasks.join(' - ')}`)
+        console.error(`[ServiceCron] Cron Failed: ${failedTasks.join(' - ')}`)
       }
     } catch (error) {
       handleServiceError(
