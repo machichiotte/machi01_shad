@@ -1,4 +1,4 @@
-// src/services/serviceTicker.ts
+// src/services/api/platform/serviceTicker.ts
 import { RepoTicker } from '@repo/repoTicker'
 import { ServiceCcxt } from '@services/api/platform/serviceCcxt'
 import { MappingPlatform } from '@services/api/platform/mappingPlatform'

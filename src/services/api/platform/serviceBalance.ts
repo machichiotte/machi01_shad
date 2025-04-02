@@ -1,4 +1,4 @@
-// src/services/serviceBalance.ts
+// src/services/api/platform/serviceBalance.ts
 import { RepoBalance } from '@repo/repoBalance';
 import { ServiceCcxt } from '@services/api/platform/serviceCcxt';
 import { MappingPlatform } from '@services/api/platform/mappingPlatform';

@@ -1,4 +1,4 @@
-// src/services/serviceMachi.ts
+// src/services/api/platform/serviceMachi.ts
 import { RepoMachi } from '@repo/repoMachi';
 import { RepoHighPrice } from '@repo/repoHighPrice';
 import { HighestPrices } from '@typ/database';

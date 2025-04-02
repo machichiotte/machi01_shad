@@ -1,4 +1,4 @@
-// src/services/serviceCcxt.ts
+// src/services/api/platform/serviceCcxt.ts
 import * as ccxt from 'ccxt';
 import { config } from '@config/index';
 import { PLATFORM, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@typ/platform';

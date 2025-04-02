@@ -1,10 +1,10 @@
-// src/services/serviceStrategy.ts
+// src/services/api/platform/serviceStrategy.ts
 import { MappedStrat } from '@typ/strat';
 import { handleServiceError } from '@utils/errorUtil';
 import { RepoStrategy } from '@repo/repoStrategy';
 
 export class ServiceStrategy {
-  
+
   static async fetchDatabaseStrategies(): Promise<MappedStrat[]> {
     try {
       return await RepoStrategy.fetchAll();

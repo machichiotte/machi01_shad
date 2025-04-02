@@ -1,4 +1,4 @@
-// src/services/serviceMongodb.ts
+// src/services/api/database/serviceMongodb.ts
 import { MongoClient, ServerApiVersion, Db } from 'mongodb'
 import { retry } from '@utils/retryUtil'
 import { handleServiceError } from '@utils/errorUtil'
@@ -12,7 +12,7 @@ export class ServiceMongodb {
     if (!mongoInstance) {
       const uri = `mongodb+srv://${config.databaseConfig.credentials.user}:${config.databaseConfig.credentials.password}@${config.databaseConfig.credentials.cluster}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
       try {
-        console.info('Attempting to connect to MongoDB...')
+        console.info('[ServiceMongodb] Attempting to connect to MongoDB...')
         mongoInstance = new MongoClient(uri, {
           serverApi: {
             version: ServerApiVersion.v1,
@@ -21,7 +21,7 @@ export class ServiceMongodb {
           }
         })
         await mongoInstance.connect()
-        console.info('Successfully connected to MongoDB')
+        console.info('[ServiceMongodb] Successfully connected to MongoDB')
       } catch (error) {
         handleServiceError(
           error,
@@ -38,9 +38,9 @@ export class ServiceMongodb {
     if (!db) {
       const client = await ServiceMongodb.getMongoClient()
       try {
-        console.info('Attempting to get database...')
+        console.info('[ServiceMongodb] Attempting to get database...')
         db = client.db(config.databaseConfig.credentials.dbName)
-        console.info('Connecté à ' + config.databaseConfig.credentials.dbName)
+        console.info('[ServiceMongodb] Connecté à ' + config.databaseConfig.credentials.dbName)
       } catch (error) {
         handleServiceError(error, 'getDB', 'Error getting database')
         throw error
@@ -98,7 +98,7 @@ export class ServiceMongodb {
         .toArray()
       if (collections.length === 0) {
         await db.createCollection(collectionName)
-        console.info(`Collection ${collectionName} created.`)
+        console.info(`[ServiceMongodb] Collection ${collectionName} created.`)
       }
     } catch (error) {
       handleServiceError(

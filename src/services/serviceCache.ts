@@ -11,58 +11,48 @@ type CacheKey = keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES
 export class ServiceCache {
   private static cache: { [key: string]: CacheItem } = {}
 
-  /**
-   * Adds data to cache with a timestamp.
-   */
+  // Ajoute des données au cache avec horodatage
   static async addToCache(key: string, data: MappedData[]): Promise<void> {
-    return Promise.resolve().then(() => {
-      ServiceCache.cache[key] = {
-        data,
-        timestamp: Date.now()
-      }
-    })
+    console.info(`[ServiceCache] Début addToCache pour la clé: ${key}`)
+    ServiceCache.cache[key] = { data, timestamp: Date.now() }
+    console.info(`[ServiceCache] Fin addToCache pour la clé: ${key}`)
   }
 
-  /**
-   * Retrieves cached data if it has not expired.
-   */
+  // Récupère les données du cache si elles ne sont pas expirées
   static async getFromCache(key: CacheKey): Promise<MappedData[] | null> {
-    return Promise.resolve().then(() => {
-      const cacheItem = ServiceCache.cache[key]
-      const expirationTime =
-        (config.serverConfig?.cacheExpirationTimes as CacheExpirationTimes)[key] ||
-        DEFAULT_CACHE_EXPIRATION_TIMES[key] ||
-        0
+    console.info(`[ServiceCache] Début getFromCache pour la clé: ${key}`)
+    const cacheItem = ServiceCache.cache[key]
+    const expirationTime =
+      (config.serverConfig?.cacheExpirationTimes as CacheExpirationTimes)[key] ||
+      DEFAULT_CACHE_EXPIRATION_TIMES[key] ||
+      0
 
-      if (cacheItem && Date.now() - cacheItem.timestamp < expirationTime) {
-        return cacheItem.data
-      }
+    if (cacheItem && Date.now() - cacheItem.timestamp < expirationTime) {
+      console.info(`[ServiceCache] Cache valide pour la clé: ${key}`)
+      return cacheItem.data
+    }
 
-      return null
-    })
+    console.info(`[ServiceCache] Cache expiré ou inexistant pour la clé: ${key}`)
+    return null
   }
 
-  /**
-   * Clears cache for a specific key. 
-   */
+  // Efface le cache pour une clé spécifique
   static async clearCache(key: CacheKey): Promise<void> {
-    return Promise.resolve().then(() => {
-      delete ServiceCache.cache[key]
-    })
+    console.info(`[ServiceCache] Début clearCache pour la clé: ${key}`)
+    delete ServiceCache.cache[key]
+    console.info(`[ServiceCache] Fin clearCache pour la clé: ${key}`)
   }
 
-  /**
-   * Clears all cache.
-   */
+  // Efface l'ensemble du cache
   static async clearAllCache(): Promise<void> {
-    return Promise.resolve().then(() => {
-      ServiceCache.cache = {};
-    });
+    console.info('[ServiceCache] Début clearAllCache')
+    ServiceCache.cache = {}
+    console.info('[ServiceCache] Fin clearAllCache')
   }
 
-  static getCacheKeyForCollection(
-    collectionName: string
-  ): keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES {
+  // Renvoie la clé de cache correspondant à une collection
+  static getCacheKeyForCollection(collectionName: string): keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES {
+    console.info(`[ServiceCache] Mapping de la collection: ${collectionName}`)
     switch (collectionName) {
       case config.databaseConfig.collection.balance:
         return BALANCE
@@ -90,7 +80,7 @@ export class ServiceCache {
         return USER
       case config.databaseConfig.collection.serverConfig:
         return SERVER_CONFIG
-        case config.databaseConfig.collection.apiConfig:
+      case config.databaseConfig.collection.apiConfig:
         return API_CONFIG
       default:
         throw new Error(`Collection non reconnue: ${collectionName}`)

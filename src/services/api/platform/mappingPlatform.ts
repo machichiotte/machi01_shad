@@ -1,4 +1,4 @@
-// src/services/mappingPlatform.ts
+// src/services/api/platform/mappingPlatform.ts
 import { PLATFORM, PlatformBalance, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@typ/platform'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'

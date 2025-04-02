@@ -1,4 +1,4 @@
-// src/services/cron/serviceEmail.ts
+// src/services/serviceEmail.ts
 import nodemailer, { Transporter, SentMessageInfo } from 'nodemailer'
 import { handleServiceError } from '@utils/errorUtil'
 import { config } from '@config/index';

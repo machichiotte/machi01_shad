@@ -1,4 +1,4 @@
-// src/services/serviceConfigServer.ts
+// src/services/config/serviceConfigServer.ts
 import { RepoConfigServer } from '@repo/config/repoConfigServer';
 import { Server } from '@config/types';
 

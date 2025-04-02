@@ -1,4 +1,4 @@
-// src/services/serviceCmc.ts
+// src/services/api/serviceCmc.ts
 import { RepoCmc } from '@repo/repoCmc'
 import { handleServiceError } from '@utils/errorUtil'
 import { MappedCmc, FetchResponse } from '@typ/cmc'
@@ -14,7 +14,6 @@ export class ServiceCmc {
    * Récupère les données CMC actuelles via l'API CoinMarketCap.
    */
   public static async fetchCurrentCmc(): Promise<MappedCmc[]> {
-    console.info('Fetching current CMC data...')
     let start = this.baseStart
     const allData: MappedCmc[] = []
     if (config.apiConfig.cmc && config.apiConfig.cmc.iv && config.apiConfig.cmc.apiKey) {

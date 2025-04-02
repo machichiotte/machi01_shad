@@ -1,4 +1,5 @@
 // src/services/cryptoAnalytics/invest/shad.ts
+
 import { STRAT_ERROR_ALLOWED } from '@src/constants/metrics'
 import { AmountsAndPrices } from '@src/types/cryptoAnalytics'
 import { getPlatformFee, Recup } from '.'
@@ -145,101 +146,100 @@ export function calculateRecupsShad(
  * Calculates amounts and prices for SHAD strategy
  */
 export function calculateAmountsAndPricesForShad(
-    balance: number,
-    averageEntryPrice: number,
-    recup: Recup
-  ): AmountsAndPrices {
-    const FACTOR_SELL_SHAD = 0.5
-    const parsedValues = {
-      recup: recup.stratTps,
-      balance,
-      averageEntryPrice
-    }
-  
-    const platformFee = getPlatformFee(recup.platform)
-    const feeMultiplier = 1 + platformFee / 100
-  
-    const amountTp1 =
-      recup?.stratTps?.totalShad > -1
-        ? FACTOR_SELL_SHAD *
-          (parsedValues.recup.recupTp1 / parsedValues.recup.recupTpX) *
-          parsedValues.balance
-        : parsedValues.balance - recup.maxExposition / parsedValues.averageEntryPrice
-  
-    const priceTp1 =
-      recup?.stratTps?.totalShad > -1
-        ? (parsedValues.recup.recupTp1 / amountTp1) * feeMultiplier
-        : parsedValues.averageEntryPrice * feeMultiplier
-  
-    let remainingBalance = parsedValues.balance - amountTp1
-    let amountTp2 = 0,
-      amountTp3 = 0,
-      amountTp4 = 0,
-      amountTp5 = 0
-    let priceTp2 = 0,
-      priceTp3 = 0,
-      priceTp4 = 0,
-      priceTp5 = 0
-  
-    for (let i = 2; i <= 5; i++) {
-      // Calcul des montants et prix pour chaque niveau de TP
-      const { amount, price } = calculateAmountAndPriceForShad(
-        parsedValues.recup.recupTpX,
-        remainingBalance,
-        FACTOR_SELL_SHAD
-      )
-  
-      // Utilisation des variables directement pour les montants et prix
-      if (i === 2) {
-        amountTp2 = amount
-        priceTp2 = price * feeMultiplier
-      } else if (i === 3) {
-        amountTp3 = amount
-        priceTp3 = price * feeMultiplier
-      } else if (i === 4) {
-        amountTp4 = amount
-        priceTp4 = price * feeMultiplier
-      } else if (i === 5) {
-        amountTp5 = amount
-        priceTp5 = price * feeMultiplier
-      }
-  
-      // Mise à jour de la balance restante
-      remainingBalance -= amount // Soustraction du montant calculé
-  
-      // Vérification si la balance restante est épuisée
-      if (remainingBalance <= 0) {
-        break // Sortir de la boucle si le solde est épuisé
-      }
-    }
-  
-    const amountsAndPrices: AmountsAndPrices = {
-      amountTp1,
-      priceTp1,
-      amountTp2,
-      amountTp3,
-      amountTp4,
-      amountTp5,
-      priceTp2,
-      priceTp3,
-      priceTp4,
-      priceTp5
-    }
-  
-    return amountsAndPrices
+  balance: number,
+  averageEntryPrice: number,
+  recup: Recup
+): AmountsAndPrices {
+  const FACTOR_SELL_SHAD = 0.5
+  const parsedValues = {
+    recup: recup.stratTps,
+    balance,
+    averageEntryPrice
   }
-  
-  /**
-   * Calculates amount and price for SHAD strategy
-   */
-  function calculateAmountAndPriceForShad(
-    parsedRecup: number,
-    parsedBalance: number,
-    factor: number
-  ): { amount: number; price: number } {
-    const amount = factor * parsedBalance
-    const price = parsedRecup / amount
-  
-    return { amount, price }
+
+  const platformFee = getPlatformFee(recup.platform)
+  const feeMultiplier = 1 + platformFee / 100
+
+  const amountTp1 =
+    recup?.stratTps?.totalShad > -1
+      ? FACTOR_SELL_SHAD *
+      (parsedValues.recup.recupTp1 / parsedValues.recup.recupTpX) *
+      parsedValues.balance
+      : parsedValues.balance - recup.maxExposition / parsedValues.averageEntryPrice
+
+  const priceTp1 =
+    recup?.stratTps?.totalShad > -1
+      ? (parsedValues.recup.recupTp1 / amountTp1) * feeMultiplier
+      : parsedValues.averageEntryPrice * feeMultiplier
+
+  let remainingBalance = parsedValues.balance - amountTp1
+  let amountTp2 = 0,
+    amountTp3 = 0,
+    amountTp4 = 0,
+    amountTp5 = 0
+  let priceTp2 = 0,
+    priceTp3 = 0,
+    priceTp4 = 0,
+    priceTp5 = 0
+
+  for (let i = 2; i <= 5; i++) {
+    // Calcul des montants et prix pour chaque niveau de TP
+    const { amount, price } = calculateAmountAndPriceForShad(
+      parsedValues.recup.recupTpX,
+      remainingBalance,
+      FACTOR_SELL_SHAD
+    )
+
+    // Utilisation des variables directement pour les montants et prix
+    if (i === 2) {
+      amountTp2 = amount
+      priceTp2 = price * feeMultiplier
+    } else if (i === 3) {
+      amountTp3 = amount
+      priceTp3 = price * feeMultiplier
+    } else if (i === 4) {
+      amountTp4 = amount
+      priceTp4 = price * feeMultiplier
+    } else if (i === 5) {
+      amountTp5 = amount
+      priceTp5 = price * feeMultiplier
+    }
+
+    // Mise à jour de la balance restante
+    remainingBalance -= amount // Soustraction du montant calculé
+
+    // Vérification si la balance restante est épuisée
+    if (remainingBalance <= 0) {
+      break // Sortir de la boucle si le solde est épuisé
+    }
   }
-  
+
+  const amountsAndPrices: AmountsAndPrices = {
+    amountTp1,
+    priceTp1,
+    amountTp2,
+    amountTp3,
+    amountTp4,
+    amountTp5,
+    priceTp2,
+    priceTp3,
+    priceTp4,
+    priceTp5
+  }
+
+  return amountsAndPrices
+}
+
+/**
+ * Calculates amount and price for SHAD strategy
+ */
+function calculateAmountAndPriceForShad(
+  parsedRecup: number,
+  parsedBalance: number,
+  factor: number
+): { amount: number; price: number } {
+  const amount = factor * parsedBalance
+  const price = parsedRecup / amount
+
+  return { amount, price }
+}

@@ -1,4 +1,4 @@
-// src/services/serviceOrderMarket.ts
+// src/services/api/platform/serviceOrderMarket.ts
 import { getMarketSymbolForPlatform } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 import { PLATFORM } from '@typ/platform'

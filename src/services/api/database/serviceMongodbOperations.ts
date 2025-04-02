@@ -1,4 +1,4 @@
-// src/services/mongodbOperationsService.ts
+// src/services/api/database/mongodbOperationsService.ts
 import { Collection, Document, InsertOneResult, InsertManyResult, UpdateResult, AggregateOptions, AnyBulkWriteOperation, FindOptions, BulkWriteResult } from 'mongodb';
 import { ServiceMongodb } from '@services/api/database/serviceMongodb';
 

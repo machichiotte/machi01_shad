@@ -1,4 +1,4 @@
-// src/services/serviceMarket.ts
+// src/services/api/platform/serviceMarket.ts
 import { ServiceCcxt } from '@services/api/platform/serviceCcxt';
 import { MappingPlatform } from '@services/api/platform/mappingPlatform';
 import { RepoMarket } from '@repo/repoMarket';

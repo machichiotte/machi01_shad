@@ -1,3 +1,5 @@
+// src/services/cryptoAnalytics/invest/pregressiveSells.ts
+
 /**
  * Calculates amounts to sell based on a progressive selling strategy.
  * @param totalAmount - The total amount of crypto to sell.

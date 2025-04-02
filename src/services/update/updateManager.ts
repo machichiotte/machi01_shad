@@ -16,24 +16,24 @@ export class UpdateManager {
     private static async updatePlatforms(): Promise<void> {
         const validPlatforms = PLATFORMS.filter(platform => checkApiKeys(platform));
         if (validPlatforms.length === 0) {
-            console.warn('Aucune plateforme valide trouvée.');
+            console.warn('[UpdateManager] Aucune plateforme valide trouvée.');
             return;
         }
 
         let completed = 0;
-        console.info(`Début de la mise à jour pour ${validPlatforms.length} plateforme(s).`);
+        console.info(`[UpdateManager] Début de la mise à jour pour ${validPlatforms.length} plateforme(s).`);
 
         for (const platform of validPlatforms) {
             try {
                 await UpdateManagerPlatform.updatePlatformData(platform);
                 completed++;
-                console.info(`Mise à jour ${completed}/${validPlatforms.length} terminée pour : ${platform}`);
+                console.info(`[UpdateManager] Mise à jour ${completed}/${validPlatforms.length} terminée pour : ${platform}`);
             } catch (error) {
-                console.error(`Échec de la mise à jour pour : ${platform}`, error);
+                console.error(`[UpdateManager] Échec de la mise à jour pour : ${platform}`, error);
             }
         }
 
-        console.info('Mise à jour des plateformes terminée.');
+        console.info('[UpdateManager] Mise à jour des plateformes terminée.');
     }
 
 }

@@ -1,4 +1,4 @@
-// src/services/serviceTimestamp.ts
+// src/services/api/database/serviceTimestamp.ts
 import { RepoTimestamp } from '@repo/repoTimestamp';
 import { TimestampData } from '@typ/timestamp';
 import { handleServiceError } from '@utils/errorUtil';

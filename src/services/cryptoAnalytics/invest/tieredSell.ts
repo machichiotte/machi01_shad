@@ -1,3 +1,5 @@
+// src/services/cryptoAnalytics/invest/tieredSell.ts
+
 /**
  * Calculates amounts to sell based on a tiered selling strategy.
  * @param totalAmount - The total amount of crypto to sell.

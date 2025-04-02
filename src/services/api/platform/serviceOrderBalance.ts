@@ -15,7 +15,7 @@ export class ServiceOrderBalance {
   /**
    * Get all orders for a specific symbol.
    */
-  static async getOrdersBySymbol(symbol: string): Promise<MappedOrder[]> { 
+  static async getOrdersBySymbol(symbol: string): Promise<MappedOrder[]> {
     const orders = await RepoOrderBalance.fetchAll();
     return orders.filter(order => order.symbol === symbol);
   }

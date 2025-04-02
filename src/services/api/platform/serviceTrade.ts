@@ -1,4 +1,4 @@
-// src/services/serviceTrade.ts
+// src/services/api/platform/serviceTrade.ts
 import { RepoTrade } from '@repo/repoTrade'
 import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ/trade'
 import { PLATFORM, PlatformTrade } from '@typ/platform'
