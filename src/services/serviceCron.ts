@@ -8,6 +8,7 @@ import { ServiceCmc } from '@services/api/serviceCmc'
 import { ServiceTicker } from '@services/api/platform/serviceTicker'
 import { ServiceMarket } from '@services/api/platform/serviceMarket'
 import { ServiceBalance } from '@services/api/platform/serviceBalance'
+import { ServiceRssProcessor } from '@services/content/serviceRssProcessor' // Importer le nouveau service
 
 import { Task } from '@typ/cron'
 import { PLATFORMS } from '@src/constants/platform'
@@ -52,6 +53,11 @@ export class ServiceCron {
           schedule: config.serverConfig.cronSchedules.cmc,
           task: ServiceCmc.updateCmcData,
           name: CMC
+        },
+        {
+          schedule: config.serverConfig.cronSchedules.rss, // Utilise la nouvelle config
+          task: ServiceRssProcessor.processAllFeeds, // Référence à la fonction
+          name: 'RSS'
         }
       ]
 
@@ -129,7 +135,7 @@ export class ServiceCron {
       // Log des résultats
       if (initializedTasks.length > 0) {
         console.info(
-          `[ServiceCron] ron Initialized: ${initializedTasks.join(' - ')}, Valid Platforms: ${validPlatforms.join(', ')}`
+          `[ServiceCron] Cron Initialized: ${initializedTasks.join(' - ')}, Valid Platforms: ${validPlatforms.join(', ')}`
         )
       }
       if (failedTasks.length > 0) {

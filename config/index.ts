@@ -38,6 +38,7 @@ export const config: Environment = {
             alarm: process.env.MONGODB_COLLECTION_ALARM || DEFAULT_MONGODB_COLLECTION.alarm,
             balance: process.env.MONGODB_COLLECTION_BALANCE || DEFAULT_MONGODB_COLLECTION.balance,
             cmc: process.env.MONGODB_COLLECTION_CMC || DEFAULT_MONGODB_COLLECTION.cmc,
+            rssArticles: process.env.MONGODB_COLLECTION_RSS_ARTICLES || DEFAULT_MONGODB_COLLECTION.rssArticles,
             highestPrice: process.env.MONGODB_COLLECTION_HIGHEST_PRICE || DEFAULT_MONGODB_COLLECTION.highestPrice,
             timestamp: process.env.MONGODB_COLLECTION_TIMESTAMP || DEFAULT_MONGODB_COLLECTION.timestamp,
             market: process.env.MONGODB_COLLECTION_MARKET || DEFAULT_MONGODB_COLLECTION.market,
@@ -53,19 +54,20 @@ export const config: Environment = {
         },
 
         category: {
-            alarm: process.env.COLLECTION_CATEGORY_ALARM || DEFAULT_DATABASE_CATEGORY.alarm,
-            balance: process.env.COLLECTION_CATEGORY_BALANCE || DEFAULT_DATABASE_CATEGORY.balance,
-            cmc: process.env.COLLECTION_CATEGORY_CMC || DEFAULT_DATABASE_CATEGORY.cmc,
-            timestamp: process.env.COLLECTION_CATEGORY_TIMESTAMP || DEFAULT_DATABASE_CATEGORY.timestamp,
-            market: process.env.COLLECTION_CATEGORY_MARKET || DEFAULT_DATABASE_CATEGORY.market,
-            order: process.env.COLLECTION_CATEGORY_ORDER || DEFAULT_DATABASE_CATEGORY.order,
-            machi: process.env.COLLECTION_CATEGORY_MACHI || DEFAULT_DATABASE_CATEGORY.machi,
-            strat: process.env.COLLECTION_CATEGORY_STRAT || DEFAULT_DATABASE_CATEGORY.strat,
-            ticker: process.env.COLLECTION_CATEGORY_TICKER || DEFAULT_DATABASE_CATEGORY.ticker,
-            trade: process.env.COLLECTION_CATEGORY_TRADE || DEFAULT_DATABASE_CATEGORY.trade,
-            serverConfig: process.env.COLLECTION_CATEGORY_SERVER_CONFIG || DEFAULT_DATABASE_CATEGORY.serverConfig,
-            apiConfig: process.env.COLLECTION_CATEGORY_API_CONFIG || DEFAULT_DATABASE_CATEGORY.apiConfig
-        }, 
+            alarm: DEFAULT_DATABASE_CATEGORY.alarm || '',
+            balance: DEFAULT_DATABASE_CATEGORY.balance || '',
+            cmc: DEFAULT_DATABASE_CATEGORY.cmc || '',
+            timestamp: DEFAULT_DATABASE_CATEGORY.timestamp || '',
+            market: DEFAULT_DATABASE_CATEGORY.market || '',
+            order: DEFAULT_DATABASE_CATEGORY.order || '',
+            machi: DEFAULT_DATABASE_CATEGORY.machi || '',
+            strat: DEFAULT_DATABASE_CATEGORY.strat || '',
+            ticker: DEFAULT_DATABASE_CATEGORY.ticker || '',
+            trade: DEFAULT_DATABASE_CATEGORY.trade || '',
+            serverConfig: DEFAULT_DATABASE_CATEGORY.serverConfig || '',
+            rssArticles: DEFAULT_DATABASE_CATEGORY.rssArticles || '',
+            apiConfig: DEFAULT_DATABASE_CATEGORY.apiConfig || '',
+        },
     },
 
     apiConfig: {
@@ -74,6 +76,10 @@ export const config: Environment = {
             base_url_icon: DEFAULT_APICONFIG.cmc.base_url_icon || '',
             iv: DEFAULT_APICONFIG.cmc.iv || '',
             apiKey: DEFAULT_APICONFIG.cmc.apiKey || ''
+        },
+        gemini: {
+            iv: DEFAULT_APICONFIG.gemini.iv || '',
+            apiKey: DEFAULT_APICONFIG.gemini.apiKey || ''
         },
         platform: {
             binance: {

@@ -3,13 +3,13 @@ import { startServer } from '@src/server'
 import { ServiceMongodb } from '@services/api/database/serviceMongodb'
 import { ServiceCron } from '@services/serviceCron'
 //import { UpdateService } from './services/update/updateSevice'
-import { ServiceProcessor } from './services/serviceProcessor'
+//import { UpdateManager } from './services/update/updateManager'
+//import { ServiceProcessor } from './services/serviceProcessor'
 import { ServiceConfigServer } from './services/config/serviceConfigServer'
 import { ServiceConfigApi } from './services/config/serviceConfigApi'
 import { ServiceCache } from '@services/serviceCache'
 //import { config, loadServerConfig } from '@config/index';
 import { loadServerConfig, loadApiConfig } from '@config/index'
-import { UpdateManager } from './services/update/updateManager'
 
 async function startApp(): Promise<void> {
   try {
@@ -27,13 +27,13 @@ async function startApp(): Promise<void> {
     await loadApiConfig(apiConfig)
 
     // Étape 3 : Mettre à jour les services
-    await UpdateManager.updateAll()
+    //  await UpdateManager.updateAll()
 
     // Étape 4 : Initialiser les tâches CRON
     await ServiceCron.initializeCronTasks()
 
     // Étape 5 : Exécuter les autres tâches
-    await ServiceProcessor.saveMachi()
+    //   await ServiceProcessor.saveMachi()
 
     // Étape 6 : Démarrer le serveur
     await startServer()

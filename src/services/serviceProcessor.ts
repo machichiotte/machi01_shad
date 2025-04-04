@@ -82,11 +82,11 @@ export class ServiceProcessor {
           allValues.push(assetMetrics)
         } else {
           notAddedAssets.push(`${item.base}:${item.platform}`)
-          console.info(`[ServiceProcessor] Asset ignoré (métriques invalides) pour ${item.base}:${item.platform}`)
+          //console.info(`[ServiceProcessor] Asset ignoré (métriques invalides) pour ${item.base}:${item.platform}`)
         }
       } else {
         ignoredBalances.push(`${item.base}:${item.platform}`)
-        console.info(`[ServiceProcessor] Balance ignorée (valeur nulle ou négative) pour ${item.base}:${item.platform}`)
+        // console.info(`[ServiceProcessor] Balance ignorée (valeur nulle ou négative) pour ${item.base}:${item.platform}`)
       }
     }
     console.info(`[ServiceProcessor] Fin calculateAllMachi - ${allValues.length} asset(s) traités`)

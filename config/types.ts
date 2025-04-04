@@ -24,7 +24,8 @@ export interface DatabaseCategory {
   trade: string
   serverConfig: string
   apiConfig: string,
-  alarm: string
+  alarm: string,
+  rssArticles: string
 }
 
 export interface CacheExpirationTimes {
@@ -63,6 +64,7 @@ export interface ServerCronSchedules {
   ticker: string
   balance: string
   cmc: string
+  rss: string
 }
 
 export interface ServerLog {
@@ -81,12 +83,13 @@ export interface Database {
 }
 export interface Api {
   cmc: ApiCmc
+  gemini: ApiGemini
   platform: ApiPlatforms
 }
 
 export interface ApiPlatform {
   iv: string
-  apiKey: string 
+  apiKey: string
   secretKey?: string
   passphrase?: string
 }
@@ -94,6 +97,7 @@ export interface ApiPlatform {
 export type ApiPlatforms = {
   [key in PLATFORM]: ApiPlatform
 }
+
 export interface ApiCmc {
   apiKey: string
   base_url_icon: string
@@ -101,10 +105,16 @@ export interface ApiCmc {
   url: string
 }
 
+export interface ApiGemini {
+  apiKey: string
+  iv: string
+}
+
 export interface Server {
   cacheExpirationTimes: CacheExpirationTimes
   smtp: ServerSmtp
   cronSchedules: ServerCronSchedules
+  rssFeeds: string[]
   logFiles: ServerLog
   security: ServerSecurity
   lastModified?: number

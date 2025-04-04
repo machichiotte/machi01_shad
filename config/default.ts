@@ -18,6 +18,7 @@ export const DEFAULT_MONGODB_COLLECTION = {
   serverConfig: 'collection_serverconfig',
   apiConfig: 'collection_apiconfig',
   alarm: 'collection_alarm',
+  rssArticles: 'collection_rss_articles'
 }
 
 export const DEFAULT_DATABASE_CATEGORY = {
@@ -35,7 +36,8 @@ export const DEFAULT_DATABASE_CATEGORY = {
   user: 'user',
   serverConfig: 'serverConfig',
   apiConfig: 'apiConfig',
-  alarm: 'alarm'
+  alarm: 'alarm',
+  rssArticles: 'rssArticles'
 }
 
 export const DEFAULT_MONGODB_CREDENTIALS = {
@@ -55,6 +57,10 @@ export const DEFAULT_APICONFIG = {
   cmc: {
     url: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
     base_url_icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/',
+    iv: '',
+    apiKey: ''
+  },
+  gemini: {
     iv: '',
     apiKey: ''
   },
@@ -122,7 +128,8 @@ export const DEFAULT_CRON_SCHEDULE = {
   market: '* 23 * * *',
   ticker: '*/1 * * * *',
   balance: '*/2 * * * *',
-  cmc: '0 23 * * *'
+  cmc: '0 23 * * *',
+  rss: '0 */2 * * *'
 }
 
 export const DEFAULT_LOG_FILES = {
@@ -134,10 +141,18 @@ export const DEFAULT_SECURITY = {
   hashRounds: 10
 }
 
+export const DEFAULT_RSS_FEEDS =
+  [
+    "https://www.cointribune.com/feed/",
+    "https://www.france24.com/en/rss"
+  ]
+
+
 export const DEFAULT_SERVER_CONFIG = {
   cacheExpirationTimes: DEFAULT_CACHE_EXPIRATION_TIMES,
   smtp: DEFAULT_SMTP,
   cronSchedules: DEFAULT_CRON_SCHEDULE,
   logFiles: DEFAULT_LOG_FILES,
-  security: DEFAULT_SECURITY
+  security: DEFAULT_SECURITY,
+  rssFeeds: DEFAULT_RSS_FEEDS
 }

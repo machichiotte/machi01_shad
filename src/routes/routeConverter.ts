@@ -7,6 +7,6 @@ import { fileUploadMiddleware } from '@src/middlewares/fileUploadMiddleware'
 const router = express.Router()
 const upload = multer({ storage: multer.memoryStorage() })
 
-router.post('/post', upload.single('csvFile'), fileUploadMiddleware, convertCsvFileToJson)
+router.post('/post', upload.single('csvFile'), fileUploadMiddleware as any, convertCsvFileToJson)
 
 export default router

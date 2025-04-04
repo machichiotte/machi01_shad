@@ -1,7 +1,7 @@
 // src/repo/repoConfigApi.ts
 import { config } from '@config/index'
 import { DEFAULT_APICONFIG } from '@config/default'
-import { Api, ApiPlatform, ApiCmc } from '@config/types'
+import { Api, ApiPlatform, ApiCmc, ApiGemini } from '@config/types'
 import { ServiceDatabase } from '@services/api/database/serviceDatabase'
 import { MappedData } from '@typ/database'
 import { PLATFORM } from '@typ/platform'
@@ -63,6 +63,22 @@ export class RepoConfigApi {
     await this.updateConfigApi(currentConfig)
   }
 
+  static async encryptConfigGemini(apiKey: string): Promise<void> {
+    const rd = randomBytes(16) // Générer un IV aléatoire
+    const iv = rd.toString('hex')
+    const encryptedKey = EncryptionService.encrypt(iv, apiKey).encryptedData
+
+    // Récupérer la configuration actuelle
+    const currentConfig = await this.fetchConfig()
+    currentConfig.gemini = {
+      apiKey: encryptedKey,
+      iv
+    }
+
+    // Sauvegarder la nouvelle configuration
+    await this.updateConfigApi(currentConfig)
+  }
+
   static async encryptConfigPlatform(
     platform: PLATFORM,
     apiKey: string,
@@ -106,6 +122,19 @@ export class RepoConfigApi {
       cmcConfig.apiKey
     )
     return { ...cmcConfig, apiKey: decryptedApiKey }
+  }
+
+  static decryptConfigGemini(geminiConfig: ApiGemini): ApiGemini {
+    if (!geminiConfig || !geminiConfig.apiKey) {
+      console.warn('Gemini API key is null.')
+      return geminiConfig || { apiKey: '', iv: '' }
+    }
+
+    const decryptedApiKey = EncryptionService.decrypt(
+      geminiConfig.iv,
+      geminiConfig.apiKey
+    )
+    return { ...geminiConfig, apiKey: decryptedApiKey }
   }
 
   static decryptConfigPlatform(config: ApiPlatform): ApiPlatform {
