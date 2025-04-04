@@ -5,12 +5,12 @@ export interface ProcessedArticleData {
     _id?: ObjectId;
     title: string;
     link: string;
-    publicationDate?: Date | null;
+    publicationDate?: string | null;
     sourceFeed?: string | null;
     feedName?: string | null;
     category?: string | null;
-    fetchedAt: Date;
-    processedAt?: Date;
+    fetchedAt: string | null;
+    processedAt?: string | null;
     summary?: string | null;
     analysis?: string | null;
     error?: string | null;

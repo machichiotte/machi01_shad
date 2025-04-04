@@ -1,6 +1,4 @@
 // src/services/content/serviceRssProcessor.ts
-// Removed: import { Collection } from 'mongodb';
-// Removed: import { ServiceMongodb } from '@services/api/database/serviceMongodb';
 import { ServiceRssFetcher } from '@services/content/serviceRssFetcher';
 import { ServiceContentScraper } from '@services/content/serviceContentScraper';
 import { ServiceGemini } from '@src/services/api/serviceGemini';
@@ -14,6 +12,7 @@ const SERVICE_NAME = 'ServiceRssProcessor';
 export class ServiceRssProcessor {
     public static async fetchDatabaseRss(): Promise<ProcessedArticleData[]> {
         try {
+            // Data fetched here will now have dates as strings if the change below is implemented
             return await RepoRss.fetchAll()
         } catch (error) {
             handleServiceError(
@@ -28,27 +27,23 @@ export class ServiceRssProcessor {
     static async processAllFeeds(): Promise<void> {
         console.info(`[${SERVICE_NAME}] Starting processing of all RSS feeds...`);
 
-        const rssConfig = config.serverConfig?.rss; // Récupérer la configuration RSS
+        const rssConfig = config.serverConfig?.rss;
 
-        // Vérifier si la configuration RSS existe et est activée
         if (!rssConfig || !rssConfig.enabled) {
             console.warn(`[${SERVICE_NAME}] RSS processing is disabled or configuration is missing.`);
             return;
         }
 
-        // Extraire les délais de la configuration avec des valeurs par défaut
         const delayBetweenArticles = rssConfig.delayBetweenArticlesMs ?? 2000;
         const delayBetweenFeeds = rssConfig.delayBetweenFeedsMs ?? 5000;
 
-        // Créer une liste plate de tous les flux activés, en ajoutant la catégorie
         const feedsToProcess: RssFeedConfig[] = [];
         if (rssConfig.categories) {
             for (const categoryName in rssConfig.categories) {
                 const categoryFeeds = rssConfig.categories[categoryName] || [];
                 for (const feed of categoryFeeds) {
-                    // Traiter si 'enabled' est true ou non défini (par défaut true)
                     if (feed.enabled !== false) {
-                        feedsToProcess.push({ ...feed, category: categoryName }); // Ajoute la catégorie au feed pour référence future
+                        feedsToProcess.push({ ...feed, category: categoryName });
                     } else {
                         console.debug(`[${SERVICE_NAME}] Skipping disabled feed: ${feed.name} (${feed.url})`);
                     }
@@ -63,31 +58,24 @@ export class ServiceRssProcessor {
 
         console.info(`[${SERVICE_NAME}] RSS feeds to process: ${feedsToProcess.map(f => `${f.name} [${f.category}]`).join(', ')}`);
 
-        // Itérer sur la liste plate des flux à traiter
         for (let i = 0; i < feedsToProcess.length; i++) {
             const feed = feedsToProcess[i];
             console.info(`[${SERVICE_NAME}] Processing feed: ${feed.name} (${feed.url}) from category [${feed.category}]`);
             try {
-                // Utiliser feed.url pour récupérer les articles
                 const articles = await ServiceRssFetcher.getArticlesFromFeed(feed.url);
                 console.info(`[${SERVICE_NAME}] Fetched ${articles.length} articles from ${feed.name}`);
 
                 for (const article of articles) {
-                    // Passer l'article brut et la configuration pertinente à processSingleArticle
-                    // On passe aussi l'objet 'feed' pour que processSingleArticle connaisse la catégorie
-                    await ServiceRssProcessor.processSingleArticle(article, feed, rssConfig); // << Passer feed et rssConfig
+                    await ServiceRssProcessor.processSingleArticle(article, feed, rssConfig);
 
-                    // Appliquer le délai entre les articles
                     if (delayBetweenArticles > 0) {
                         await new Promise(resolve => setTimeout(resolve, delayBetweenArticles));
                     }
                 }
             } catch (error) {
-                // Gérer les erreurs au niveau du flux individuel (ex: URL invalide, problème réseau)
                 handleServiceError(error, SERVICE_NAME, `Error processing feed ${feed.name} (${feed.url})`);
             }
 
-            // Appliquer le délai entre les flux (sauf après le dernier)
             if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
                 console.debug(`[${SERVICE_NAME}] Delaying ${delayBetweenFeeds}ms before next feed.`);
                 await new Promise(resolve => setTimeout(resolve, delayBetweenFeeds));
@@ -96,25 +84,25 @@ export class ServiceRssProcessor {
         console.info(`[${SERVICE_NAME}] Finished processing all RSS feeds.`);
     }
 
-    // Modifier la signature pour accepter l'article, les infos du flux et la config RSS
     private static async processSingleArticle(
         article: RssArticle,
-        feed: RssFeedConfig, // Contient name, url, category
-        rssConfig: ServerRssConfig // Contient les seuils et délais
+        feed: RssFeedConfig,
+        rssConfig: ServerRssConfig
     ): Promise<void> {
-        const fetchedAt = new Date();
+        const fetchedAtDate = new Date(); // Keep as Date object for now
         console.debug(`[${SERVICE_NAME}] Processing article: ${article.link} from feed ${feed.name}`);
 
         try {
             const existingArticle = await RepoRss.findByLink(article.link);
+            // Check assumes processedAt is stored as string now if previously processed successfully
             if (existingArticle?.processedAt && !existingArticle.error) {
+                // Optionally add more robust check, e.g., check if processedAt is a valid date string
                 console.debug(`[${SERVICE_NAME}] Article already successfully processed: ${article.link}`);
                 return;
             }
 
             let fullContent = article.contentSnippet;
             let scraped = false;
-            // Utiliser le seuil de la configuration
             const minContentLength = rssConfig.minContentLengthForScraping ?? 250;
 
             if (!fullContent || fullContent.length < minContentLength) {
@@ -125,7 +113,6 @@ export class ServiceRssProcessor {
                         fullContent = scrapeResult;
                         scraped = true;
                         console.info(`[${SERVICE_NAME}] Successfully scraped content for ${article.link}.`);
-                        // Utiliser le délai de scraping de la config
                         const scrapeDelay = rssConfig.scrapeRetryDelayMs ?? 1000;
                         if (scrapeDelay > 0) {
                             await new Promise(resolve => setTimeout(resolve, scrapeDelay));
@@ -140,25 +127,33 @@ export class ServiceRssProcessor {
                 }
             }
 
+            // Parse the publication date first
+            const publicationDateObject = ServiceRssProcessor.parseDate(article.isoDate);
+
+            // MODIFIED: Base data now stores dates as ISO strings or null
             const baseData: Partial<ProcessedArticleData> = {
                 link: article.link,
                 title: article.title,
-                sourceFeed: feed.url, // Ou feed.name si vous préférez
-                feedName: feed.name,  // Ajout du nom du feed
-                category: feed.category, // << Ajout de la catégorie
-                fetchedAt: fetchedAt,
+                sourceFeed: feed.url,
+                feedName: feed.name,
+                category: feed.category,
+                // Convert Date object to ISO string
+                fetchedAt: fetchedAtDate.toISOString(),
                 scrapedContent: scraped,
-                publicationDate: ServiceRssProcessor.parseDate(article.isoDate),
+                // Convert parsed Date object to ISO string, or null if parsing failed
+                publicationDate: publicationDateObject?.toISOString() ?? null,
             };
 
             let articleDataToSave: Partial<ProcessedArticleData>;
+            const processedAtDate = new Date(); // Get current date for processing
 
             if (!fullContent) {
                 console.warn(`[${SERVICE_NAME}] Content could not be obtained for: ${article.link}. Saving partial data with error.`);
                 articleDataToSave = {
                     ...baseData,
                     error: `Content unavailable (${scraped ? 'scrape failed' : 'snippet missing'})`,
-                    processedAt: new Date(),
+                    // MODIFIED: Store processedAt as ISO string
+                    processedAt: processedAtDate.toISOString(),
                     summary: null,
                     analysis: null
                 };
@@ -167,8 +162,7 @@ export class ServiceRssProcessor {
                 let analysis: string | null = null;
                 let geminiError: string | null = null;
 
-                // Récupérer et appliquer le délai AVANT d'appeler Gemini
-                const geminiDelay = rssConfig.geminiRequestDelayMs ?? 8000; // Utiliser la config ou un défaut
+                const geminiDelay = rssConfig.geminiRequestDelayMs ?? 8000;
                 if (geminiDelay > 0) {
                     console.debug(`[${SERVICE_NAME}] Applying Gemini delay: ${geminiDelay}ms`);
                     await new Promise(resolve => setTimeout(resolve, geminiDelay));
@@ -193,20 +187,24 @@ export class ServiceRssProcessor {
                     ...baseData,
                     summary: summary,
                     analysis: analysis,
-                    processedAt: new Date(),
-                    error: geminiError
+                    // MODIFIED: Store processedAt as ISO string
+                    processedAt: processedAtDate.toISOString(),
+                    error: geminiError // Will be null if no error
                 };
             }
 
-            // Nettoyer les undefined (optionnel)
+            // Optional: Clean undefined keys (though converting dates handles most cases)
             Object.keys(articleDataToSave).forEach((key) => {
                 const typedKey = key as keyof ProcessedArticleData;
                 if (articleDataToSave[typedKey] === undefined) {
-                    delete articleDataToSave[typedKey];
+                    // Set to null instead of deleting? Or ensure baseData has defaults
+                    // With current changes (ISO strings or null), undefined shouldn't occur for dates.
+                    delete articleDataToSave[typedKey]; // Keep deletion if other properties might be undefined
                 }
             });
 
             console.info(`[${SERVICE_NAME}] Saving results via RepoRss for: ${article.link}`);
+            // Ensure RepoRss.upsertByLink and the database schema expect/handle string dates
             await RepoRss.upsertByLink(articleDataToSave);
 
         } catch (error) {
@@ -214,6 +212,7 @@ export class ServiceRssProcessor {
             handleServiceError(error, SERVICE_NAME, errorMessage);
             try {
                 console.error(`[${SERVICE_NAME}] Attempting to save error state to DB for ${article.link}`);
+                // Ensure updateErrorStatus also handles dates as strings if it updates timestamps
                 await RepoRss.updateErrorStatus(article.link, errorMessage);
             } catch (dbError) {
                 handleServiceError(dbError, SERVICE_NAME, `CRITICAL: Could not save error state to DB for article ${article.link}`);
@@ -221,13 +220,13 @@ export class ServiceRssProcessor {
         }
     }
 
+    // Keep parseDate as it is, returning Date | null
     private static parseDate(dateString: string | undefined | null): Date | null {
         if (!dateString) {
             return null;
         }
         try {
             const date = new Date(dateString);
-            // Check if the date is valid
             if (isNaN(date.getTime())) {
                 console.warn(`[${SERVICE_NAME}] Invalid date string encountered: ${dateString}`);
                 return null;
