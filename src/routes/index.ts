@@ -31,5 +31,6 @@ router.use('/timestamp', routeTimestamp);
 router.use('/machi', routeMachi);
 router.use('/config/api', routeApi);
 router.use('/alarm', routeAlarm);
+router.use('/rss', routeRss);
 
 export default router;

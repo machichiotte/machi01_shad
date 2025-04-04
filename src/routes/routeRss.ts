@@ -1,6 +1,6 @@
 // src/routes/routeRss.ts
-import express from 'express'
 import { getRss } from '@ctrl/ctrlRss'
+import express from 'express'
 
 const router = express.Router()
 
