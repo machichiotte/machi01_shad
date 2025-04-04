@@ -14,6 +14,7 @@ import { RouterLink } from 'vue-router'
       <RouterLink to="/trade" active-class="selected-link">Trade</RouterLink>
       <RouterLink to="/stuff" active-class="selected-link">Stuff</RouterLink>
       <RouterLink to="/config" active-class="selected-link">Configuration</RouterLink>
+      <RouterLink to="/rss" active-class="selected-link">Rss</RouterLink>
     </nav>
 
     <main>

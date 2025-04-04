@@ -1,6 +1,6 @@
 // src/server/fetchFromServer
 import { fetchApiData } from './common';  // Import de fetchApiData depuis common.ts
-import { Balance, Cmc, Asset, Order, Strat, Ticker, Trade } from "../types/responseData";
+import { Balance, Cmc, Asset, Order, Strat, Ticker, Trade, RssItem } from "../types/responseData";
 
 const ENDPOINTS: Record<string, string> = {
   CMC: '/cmc/get',
@@ -16,7 +16,8 @@ const ENDPOINTS: Record<string, string> = {
   TICKER_API: '/ticker/fetch',
   MACHI: '/machi/get',
   MARKET: '/market/get',
-  MARKET_API: '/market/fetch'
+  MARKET_API: '/market/fetch',
+  RSS: '/rss/get'
 };
 
 // Wrapper functions for fetching different types of data
@@ -28,6 +29,7 @@ const fetchMarket = (): Promise<Asset[]> => fetchApiData<Asset[]>(ENDPOINTS.MARK
 const fetchStrategy = (): Promise<Strat[]> => fetchApiData<Strat[]>(ENDPOINTS.STRATEGY);
 const fetchTicker = (): Promise<Ticker[]> => fetchApiData<Ticker[]>(ENDPOINTS.TICKER);
 const fetchTrade = (): Promise<Trade[]> => fetchApiData<Trade[]>(ENDPOINTS.TRADE);
+const fetchRss = (): Promise<RssItem[]> => fetchApiData<RssItem[]>(ENDPOINTS.RSS);
 
 const fetchCmcApi = (): Promise<any[]> =>
   fetchApiData<any[]>(`${ENDPOINTS.CMC_API}`);
@@ -61,5 +63,6 @@ export {
   fetchCmcApi,
   fetchOpenOrdersByPlatform,
   fetchMarketsByPlatform,
-  fetchTickersByPlatform
+  fetchTickersByPlatform,
+  fetchRss
 };

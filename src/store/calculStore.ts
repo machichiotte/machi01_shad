@@ -1,4 +1,4 @@
-// src/store/calculStoreStore.ts
+// src/store/calculStore.ts
 import { defineStore } from 'pinia'
 import {
   fetchCmc,
@@ -7,9 +7,10 @@ import {
   fetchMachi,
   fetchStrategy,
   fetchTrade,
-  fetchTicker
+  fetchTicker,
+  fetchRss
 } from '../server/fetchFromServer.js'
-import { TYPES, Balance, Cmc, Order, Asset, Strat, Trade, Ticker } from '../types/responseData.ts'
+import { TYPES, Balance, Cmc, Order, Asset, Strat, Trade, Ticker, RssItem } from '../types/responseData.ts'
 
 export const useCalculStore = defineStore('calcul', {
   state: () => ({
@@ -22,6 +23,7 @@ export const useCalculStore = defineStore('calcul', {
     strat: [] as Strat[],
     ticker: [] as Ticker[],
     trade: [] as Trade[],
+    rss: [] as RssItem[],
     lastFetchTimestamp: {
       balance: 0 as number,
       cmc: 0 as number,
@@ -30,6 +32,7 @@ export const useCalculStore = defineStore('calcul', {
       strat: 0 as number,
       ticker: 0 as number,
       trade: 0 as number,
+      rss: 0 as number,
     }
   }),
 
@@ -43,6 +46,7 @@ export const useCalculStore = defineStore('calcul', {
     getOrder: (state) => state.order,
     getBuyOrder: (state) => state.buyOrder,
     getSellOrder: (state) => state.sellOrder,
+    getRss: (state) => state.rss,
     getLastFetchTimestamp: (state) => (type: TYPES) =>
       state.lastFetchTimestamp ? state.lastFetchTimestamp[type] : null
   },
@@ -75,6 +79,11 @@ export const useCalculStore = defineStore('calcul', {
     async loadMachi() {
       await this.loadData(TYPES.MACHI, fetchMachi, this.setMachi)
     },
+
+    async loadRss() {
+      await this.loadData(TYPES.RSS, fetchRss, this.setRss)
+    },
+
 
     async loadData(type: TYPES, fetchFn: () => Promise<any>, setFn: (data: any) => void) {
       const now = Date.now()
@@ -128,12 +137,19 @@ export const useCalculStore = defineStore('calcul', {
       this.sellOrder = data.filter((order: any) => order.side === 'sell')
     },
 
-    setLastFetchTimestamp({ type, timestamp }: { type: TYPES; timestamp: number }) {
-      this.lastFetchTimestamp[type] = timestamp
-    },
-
     setMachi(data: Asset[]) {
       this.machi = data
+    },
+
+    setRss(data: RssItem[]) {
+      // Vous pourriez vouloir trier les éléments par date de publication ici
+      this.rss = data.sort((a, b) =>
+        new Date(b.publicationDate.$date).getTime() - new Date(a.publicationDate.$date).getTime()
+      );
+    },
+
+    setLastFetchTimestamp({ type, timestamp }: { type: TYPES; timestamp: number }) {
+      this.lastFetchTimestamp[type] = timestamp
     }
   }
 })

@@ -9,7 +9,22 @@ export enum TYPES {
   CMC = 'cmc',
   ORDER = 'order',
   MACHI = 'machi',
-  TICKER = 'ticker'
+  TICKER = 'ticker',
+  RSS = 'rss'
+}
+
+export interface RssItem {
+  _id: { $oid: string };
+  link: string;
+  title: string;
+  sourceFeed: string;
+  fetchedAt: { $date: string };
+  scrapedContent: boolean;
+  publicationDate: { $date: string };
+  summary: string;
+  analysis: string;
+  processedAt: { $date: string };
+  error: string | null;
 }
 
 export interface Balance {

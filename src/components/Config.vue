@@ -1,11 +1,5 @@
 <!-- src/components/Config.vue -->
 <script setup lang="ts">
-/*
- * File: src/components/Config.vue
- * Description: Vue 3 component using <script setup> en TypeScript for configuring API keys
- *              for CoinMarketCap and exchange platforms. This component is designed with
- *              best practices and security in mind for a crypto-related project.
- */
 
 import { ref, computed } from 'vue';
 import { updateKey } from '../server/config';
@@ -14,6 +8,11 @@ import { PLATFORMS } from '../types/platform';
 // Déclaration réactive de l'objet pour la configuration CoinMarketCap
 const payloadCMC = ref({
   type: 'cmc',
+  apiKey: ''
+});
+
+const payloadGemini = ref({
+  type: 'gemini',
   apiKey: ''
 });
 
@@ -58,6 +57,18 @@ const sendKeyToServer = async (payload: any) => {
             placeholder="Entrez votre clé API CMC" />
         </div>
         <button type="submit">Mettre à jour la clé CMC</button>
+      </form>
+    </div>
+
+    <div class="config-section">
+      <h2>Configuration Google Gemini</h2>
+      <form @submit.prevent="sendKeyToServer(payloadGemini)">
+        <div class="form-group">
+          <label for="geminiApiKey">Clé API Google Gemini:</label>
+          <input type="text" id="geminiApiKey" v-model="payloadGemini.apiKey" required
+            placeholder="Entrez votre clé API Gemini" />
+        </div>
+        <button type="submit">Mettre à jour la clé Gemini</button>
       </form>
     </div>
 
