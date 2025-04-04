@@ -1,4 +1,4 @@
-// src/ctrl/authController.ts
+// src/ctrl/ctrlAuth.ts
 import { Request, Response } from 'express'
 import { ServiceAuth } from '@services/serviceAuth'
 import { handleControllerError } from '@utils/errorUtil'

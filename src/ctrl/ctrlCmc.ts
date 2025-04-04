@@ -1,4 +1,4 @@
-// src/ctrl/cmcController.ts
+// src/ctrl/ctrlCmc.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { ServiceCmc } from '@services/api/serviceCmc'

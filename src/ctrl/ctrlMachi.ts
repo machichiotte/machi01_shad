@@ -1,4 +1,4 @@
-// src/ctrl/machiController.ts
+// src/ctrl/ctrlMachi.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { ServiceMachi } from '@services/api/platform/serviceMachi'

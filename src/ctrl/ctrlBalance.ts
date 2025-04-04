@@ -1,4 +1,4 @@
-// src/ctrl/balanceController.ts
+// src/ctrl/ctrlBalance.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { ServiceBalance } from '@services/api/platform/serviceBalance'

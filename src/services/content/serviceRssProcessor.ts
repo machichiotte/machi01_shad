@@ -12,6 +12,19 @@ import { RssArticle, RssFeedConfig, ServerRssConfig, ProcessedArticleData } from
 const SERVICE_NAME = 'ServiceRssProcessor';
 
 export class ServiceRssProcessor {
+    public static async fetchDatabaseRss(): Promise<ProcessedArticleData[]> {
+        try {
+            return await RepoRss.fetchAll()
+        } catch (error) {
+            handleServiceError(
+                error,
+                'fetchDatabaseRss',
+                'Erreur lors de la récupération des données Rss de la base de données'
+            )
+            throw error
+        }
+    }
+
     static async processAllFeeds(): Promise<void> {
         console.info(`[${SERVICE_NAME}] Starting processing of all RSS feeds...`);
 
@@ -153,6 +166,13 @@ export class ServiceRssProcessor {
                 let summary: string | null = null;
                 let analysis: string | null = null;
                 let geminiError: string | null = null;
+
+                // Récupérer et appliquer le délai AVANT d'appeler Gemini
+                const geminiDelay = rssConfig.geminiRequestDelayMs ?? 8000; // Utiliser la config ou un défaut
+                if (geminiDelay > 0) {
+                    console.debug(`[${SERVICE_NAME}] Applying Gemini delay: ${geminiDelay}ms`);
+                    await new Promise(resolve => setTimeout(resolve, geminiDelay));
+                }
 
                 try {
                     console.debug(`[${SERVICE_NAME}] Requesting Gemini summary for ${article.link}`);

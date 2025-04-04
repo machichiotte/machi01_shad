@@ -1,4 +1,4 @@
-// src/ctrl/orderMarketController.ts
+// src/ctrl/ctrlOrderMarket.ts
 import { Request, Response } from 'express'
 import { ServiceOrderMarket } from '@services/api/platform/serviceOrderMarket';
 import { handleControllerError } from '@utils/errorUtil'

@@ -1,4 +1,4 @@
-// src/ctrl/tradeController.ts
+// src/ctrl/ctrlTrade.ts
 import { Request, Response } from 'express'
 import { ServiceTrade } from '@services/api/platform/serviceTrade'
 import { handleControllerError } from '@utils/errorUtil'

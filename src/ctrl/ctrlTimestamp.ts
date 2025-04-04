@@ -1,4 +1,4 @@
-// src/ctrl/timestampController.ts
+// src/ctrl/ctrlTimestamp.ts
 import { ServiceTimestamp } from '@services/api/database/serviceTimestamp'
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
