@@ -9,7 +9,7 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 
 import PrimeVue from 'primevue/config'
-import 'primevue/resources/themes/aura-light-green/theme.css'
+import 'primevue/resources/themes/aura-dark-green/theme.css'
 import 'primeicons/primeicons.css'
 
 import LogoMachi from './components/LogoMachi.vue'
@@ -44,6 +44,10 @@ import ToastService from 'primevue/toastservice'
 import ToggleButton from 'primevue/togglebutton'
 import Toolbar from 'primevue/toolbar'
 import Tooltip from 'primevue/tooltip';
+import Panel from 'primevue/panel';
+import ProgressSpinner from 'primevue/progressspinner';
+import Message from 'primevue/message';
+import Badge from 'primevue/badge';
 
 import './style.css'
 
@@ -85,6 +89,10 @@ app.component('Tag', Tag)
 app.component('Textarea', Textarea)
 app.component('ToggleButton', ToggleButton)
 app.component('Toolbar', Toolbar)
+app.component('Panel', Panel);
+app.component('ProgressSpinner', ProgressSpinner);
+app.component('Message', Message);
+app.component('Badge', Badge);
 
 app.directive('tooltip', Tooltip)
 

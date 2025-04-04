@@ -17,13 +17,15 @@ export interface RssItem {
   _id: { $oid: string };
   link: string;
   title: string;
-  sourceFeed: string;
-  fetchedAt: { $date: string };
+  sourceFeed: string; // L'URL du flux RSS
+  feedName: string; // Le nom du flux (ex: 'France 24 English')
+  category?: string; // Catégorie, si présente (ajoutée comme optionnelle)
+  fetchedAt: string;
   scrapedContent: boolean;
-  publicationDate: { $date: string };
+  publicationDate: string;
   summary: string;
   analysis: string;
-  processedAt: { $date: string };
+  processedAt: string; // Date d'analyse
   error: string | null;
 }
 
