@@ -1,49 +1,81 @@
 // src/services/content/serviceRssProcessor.ts
 // Removed: import { Collection } from 'mongodb';
 // Removed: import { ServiceMongodb } from '@services/api/database/serviceMongodb';
-import { ServiceRssFetcher, RssArticle } from '@services/content/serviceRssFetcher';
+import { ServiceRssFetcher } from '@services/content/serviceRssFetcher';
 import { ServiceContentScraper } from '@services/content/serviceContentScraper';
 import { ServiceGemini } from '@src/services/api/serviceGemini';
 import { RepoRss } from '@src/repo/repoRss'; // Import the repository
 import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
-import { ProcessedArticleData } from '@typ/rss';
+import { RssArticle, RssFeedConfig, ServerRssConfig, ProcessedArticleData } from '@typ/rss';
 
 const SERVICE_NAME = 'ServiceRssProcessor';
 
 export class ServiceRssProcessor {
     static async processAllFeeds(): Promise<void> {
         console.info(`[${SERVICE_NAME}] Starting processing of all RSS feeds...`);
-        // Removed: collection fetching logic
 
-        const rssFeeds: string[] = config.serverConfig?.rssFeeds || [];
-        if (rssFeeds.length === 0) {
-            console.warn(`[${SERVICE_NAME}] No RSS feeds configured in serverConfig.rssFeeds.`);
+        const rssConfig = config.serverConfig?.rss; // Récupérer la configuration RSS
+
+        // Vérifier si la configuration RSS existe et est activée
+        if (!rssConfig || !rssConfig.enabled) {
+            console.warn(`[${SERVICE_NAME}] RSS processing is disabled or configuration is missing.`);
             return;
         }
-        console.info(`[${SERVICE_NAME}] RSS feeds to process: ${rssFeeds.join(', ')}`);
 
-        const delayBetweenArticles = 2000; // Consider making configurable
-        const delayBetweenFeeds = 5000;    // Consider making configurable
+        // Extraire les délais de la configuration avec des valeurs par défaut
+        const delayBetweenArticles = rssConfig.delayBetweenArticlesMs ?? 2000;
+        const delayBetweenFeeds = rssConfig.delayBetweenFeedsMs ?? 5000;
 
-        for (const feedUrl of rssFeeds) {
-            console.info(`[${SERVICE_NAME}] Processing feed: ${feedUrl}`);
+        // Créer une liste plate de tous les flux activés, en ajoutant la catégorie
+        const feedsToProcess: RssFeedConfig[] = [];
+        if (rssConfig.categories) {
+            for (const categoryName in rssConfig.categories) {
+                const categoryFeeds = rssConfig.categories[categoryName] || [];
+                for (const feed of categoryFeeds) {
+                    // Traiter si 'enabled' est true ou non défini (par défaut true)
+                    if (feed.enabled !== false) {
+                        feedsToProcess.push({ ...feed, category: categoryName }); // Ajoute la catégorie au feed pour référence future
+                    } else {
+                        console.debug(`[${SERVICE_NAME}] Skipping disabled feed: ${feed.name} (${feed.url})`);
+                    }
+                }
+            }
+        }
+
+        if (feedsToProcess.length === 0) {
+            console.warn(`[${SERVICE_NAME}] No enabled RSS feeds found in the configuration.`);
+            return;
+        }
+
+        console.info(`[${SERVICE_NAME}] RSS feeds to process: ${feedsToProcess.map(f => `${f.name} [${f.category}]`).join(', ')}`);
+
+        // Itérer sur la liste plate des flux à traiter
+        for (let i = 0; i < feedsToProcess.length; i++) {
+            const feed = feedsToProcess[i];
+            console.info(`[${SERVICE_NAME}] Processing feed: ${feed.name} (${feed.url}) from category [${feed.category}]`);
             try {
-                const articles = await ServiceRssFetcher.getArticlesFromFeed(feedUrl);
-                console.info(`[${SERVICE_NAME}] Fetched ${articles.length} articles from ${feedUrl}`);
-                for (const article of articles) {
+                // Utiliser feed.url pour récupérer les articles
+                const articles = await ServiceRssFetcher.getArticlesFromFeed(feed.url);
+                console.info(`[${SERVICE_NAME}] Fetched ${articles.length} articles from ${feed.name}`);
 
-                    // Pass the article directly, RepoRss handles DB interaction
-                    await ServiceRssProcessor.processSingleArticle(article);
+                for (const article of articles) {
+                    // Passer l'article brut et la configuration pertinente à processSingleArticle
+                    // On passe aussi l'objet 'feed' pour que processSingleArticle connaisse la catégorie
+                    await ServiceRssProcessor.processSingleArticle(article, feed, rssConfig); // << Passer feed et rssConfig
+
+                    // Appliquer le délai entre les articles
                     if (delayBetweenArticles > 0) {
                         await new Promise(resolve => setTimeout(resolve, delayBetweenArticles));
                     }
                 }
             } catch (error) {
-                // Log feed-level processing errors
-                handleServiceError(error, SERVICE_NAME, `Error processing feed ${feedUrl}`);
+                // Gérer les erreurs au niveau du flux individuel (ex: URL invalide, problème réseau)
+                handleServiceError(error, SERVICE_NAME, `Error processing feed ${feed.name} (${feed.url})`);
             }
-            if (delayBetweenFeeds > 0 && rssFeeds.indexOf(feedUrl) < rssFeeds.length - 1) { // Avoid delay after last feed
+
+            // Appliquer le délai entre les flux (sauf après le dernier)
+            if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
                 console.debug(`[${SERVICE_NAME}] Delaying ${delayBetweenFeeds}ms before next feed.`);
                 await new Promise(resolve => setTimeout(resolve, delayBetweenFeeds));
             }
@@ -51,21 +83,26 @@ export class ServiceRssProcessor {
         console.info(`[${SERVICE_NAME}] Finished processing all RSS feeds.`);
     }
 
-    private static async processSingleArticle(article: RssArticle): Promise<void> {
+    // Modifier la signature pour accepter l'article, les infos du flux et la config RSS
+    private static async processSingleArticle(
+        article: RssArticle,
+        feed: RssFeedConfig, // Contient name, url, category
+        rssConfig: ServerRssConfig // Contient les seuils et délais
+    ): Promise<void> {
         const fetchedAt = new Date();
-        console.debug(`[${SERVICE_NAME}] Processing article: ${article.link}`);
+        console.debug(`[${SERVICE_NAME}] Processing article: ${article.link} from feed ${feed.name}`);
 
         try {
-            // Use RepoRss to find the existing article
             const existingArticle = await RepoRss.findByLink(article.link);
-            if (existingArticle?.processedAt && !existingArticle.error) { // Check if processedAt exists and error is null/undefined
+            if (existingArticle?.processedAt && !existingArticle.error) {
                 console.debug(`[${SERVICE_NAME}] Article already successfully processed: ${article.link}`);
-                return; // Skip processing
+                return;
             }
 
             let fullContent = article.contentSnippet;
             let scraped = false;
-            const minContentLength = 250; // Consider making configurable
+            // Utiliser le seuil de la configuration
+            const minContentLength = rssConfig.minContentLengthForScraping ?? 250;
 
             if (!fullContent || fullContent.length < minContentLength) {
                 console.info(`[${SERVICE_NAME}] Snippet insufficient for ${article.link}. Attempting scrape...`);
@@ -75,23 +112,27 @@ export class ServiceRssProcessor {
                         fullContent = scrapeResult;
                         scraped = true;
                         console.info(`[${SERVICE_NAME}] Successfully scraped content for ${article.link}.`);
-                        await new Promise(resolve => setTimeout(resolve, 1000)); // Keep delay after successful scrape
+                        // Utiliser le délai de scraping de la config
+                        const scrapeDelay = rssConfig.scrapeRetryDelayMs ?? 1000;
+                        if (scrapeDelay > 0) {
+                            await new Promise(resolve => setTimeout(resolve, scrapeDelay));
+                        }
                     } else {
                         console.warn(`[${SERVICE_NAME}] Scraping failed to retrieve content for ${article.link}.`);
                     }
                 } catch (scrapeError) {
                     handleServiceError(scrapeError, SERVICE_NAME, `Scraping failed for article: ${article.link}`);
-                    // Keep original snippet if scraping fails, proceed if snippet exists
                     fullContent = article.contentSnippet;
                     scraped = false;
                 }
             }
 
-            // Prepare data common to both success and content-error cases
             const baseData: Partial<ProcessedArticleData> = {
-                link: article.link, // Crucial for upsertByLink
+                link: article.link,
                 title: article.title,
-                sourceFeed: article.sourceFeed, // Assuming RssArticle has this field
+                sourceFeed: feed.url, // Ou feed.name si vous préférez
+                feedName: feed.name,  // Ajout du nom du feed
+                category: feed.category, // << Ajout de la catégorie
                 fetchedAt: fetchedAt,
                 scrapedContent: scraped,
                 publicationDate: ServiceRssProcessor.parseDate(article.isoDate),
@@ -105,7 +146,7 @@ export class ServiceRssProcessor {
                     ...baseData,
                     error: `Content unavailable (${scraped ? 'scrape failed' : 'snippet missing'})`,
                     processedAt: new Date(),
-                    summary: null, // Ensure these are nulled out on content error
+                    summary: null,
                     analysis: null
                 };
             } else {
@@ -122,7 +163,6 @@ export class ServiceRssProcessor {
                     if (!summary || !analysis) {
                         geminiError = 'Gemini processing returned empty results.';
                         console.warn(`[${SERVICE_NAME}] ${geminiError} for ${article.link}`);
-                        // Decide if empty results should prevent saving summary/analysis or be saved as is
                     }
                 } catch (geminiErr) {
                     handleServiceError(geminiErr, SERVICE_NAME, `Gemini API error for ${article.link}`);
@@ -131,32 +171,28 @@ export class ServiceRssProcessor {
 
                 articleDataToSave = {
                     ...baseData,
-                    summary: summary, // Will be null if error or empty result
-                    analysis: analysis, // Will be null if error or empty result
-                    processedAt: new Date(), // Mark as processed even if Gemini failed
-                    error: geminiError // Store Gemini error if one occurred
+                    summary: summary,
+                    analysis: analysis,
+                    processedAt: new Date(),
+                    error: geminiError
                 };
             }
 
-            // Clean undefined fields before saving (optional, but good practice)
+            // Nettoyer les undefined (optionnel)
             Object.keys(articleDataToSave).forEach((key) => {
                 const typedKey = key as keyof ProcessedArticleData;
                 if (articleDataToSave[typedKey] === undefined) {
-                    // Keep nulls, remove undefined
                     delete articleDataToSave[typedKey];
                 }
             });
 
             console.info(`[${SERVICE_NAME}] Saving results via RepoRss for: ${article.link}`);
-            // Use the new upsert method from the repository
             await RepoRss.upsertByLink(articleDataToSave);
 
         } catch (error) {
-            // Catch errors during the main processing block (DB check, scrape, Gemini, final save)
-            const errorMessage = `Major error processing article ${article.link}: ${error instanceof Error ? error.message : String(error)}`;
+            const errorMessage = `Major error processing article ${article.link} from feed ${feed.name}: ${error instanceof Error ? error.message : String(error)}`;
             handleServiceError(error, SERVICE_NAME, errorMessage);
             try {
-                // Attempt to record the error in the database using the repository
                 console.error(`[${SERVICE_NAME}] Attempting to save error state to DB for ${article.link}`);
                 await RepoRss.updateErrorStatus(article.link, errorMessage);
             } catch (dbError) {

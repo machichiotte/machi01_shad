@@ -6,11 +6,50 @@ export interface ProcessedArticleData {
     title: string;
     link: string;
     publicationDate?: Date | null;
-    sourceFeed: string;
+    sourceFeed?: string | null;
+    feedName?: string | null;
+    category?: string | null;
     fetchedAt: Date;
     processedAt?: Date;
     summary?: string | null;
     analysis?: string | null;
     error?: string | null;
     scrapedContent?: boolean;
+}
+
+export interface RssArticle {
+    title: string;
+    link: string;
+    contentSnippet?: string; // Extrait fourni par le flux RSS
+    isoDate?: string;        // Date au format ISO
+    sourceFeed: string;       // URL du flux d'origine
+}
+
+/**
+ * Représente un flux RSS unique dans la configuration.
+ */
+export interface RssFeedConfig {
+    name: string;         // Nom affichable du flux (ex: "CoinTribune")
+    url: string;          // URL du flux RSS
+    enabled?: boolean;    // Activer/désactiver ce flux spécifique (défaut: true si absent)
+    category?: string;    // Catégorie (sera ajoutée dynamiquement lors du traitement)
+}
+
+/**
+ * Structure pour les catégories de flux RSS.
+ * Les clés sont les noms des catégories (ex: "News", "Crypto").
+ */
+export type RssCategoryConfig = Record<string, RssFeedConfig[]>;
+
+/**
+ * Configuration complète pour le traitement RSS.
+ */
+export interface ServerRssConfig {
+    enabled: boolean;                   // Activer/désactiver globalement le traitement RSS
+    delayBetweenArticlesMs: number;     // Délai entre les articles
+    delayBetweenFeedsMs: number;        // Délai entre les différents flux (URLs)
+    minContentLengthForScraping: number; // Seuil pour le scraping
+    scrapeRetryDelayMs: number;         // Délai après scraping réussi
+    geminiRequestDelayMs: number; // Délai avant chaque série d'appels Gemini (résumé/analyse)
+    categories: RssCategoryConfig;      // Les catégories et leurs flux
 }

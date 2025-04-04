@@ -1,5 +1,6 @@
 // config/types.ts
 import { PLATFORM } from '@typ/platform'
+import { ServerRssConfig } from '@typ/rss'
 
 export interface DatabaseCredentials {
   user: string
@@ -114,7 +115,7 @@ export interface Server {
   cacheExpirationTimes: CacheExpirationTimes
   smtp: ServerSmtp
   cronSchedules: ServerCronSchedules
-  rssFeeds: string[]
+  rss: ServerRssConfig
   logFiles: ServerLog
   security: ServerSecurity
   lastModified?: number

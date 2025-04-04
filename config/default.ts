@@ -1,3 +1,5 @@
+import { ServerRssConfig } from "@typ/rss"
+
 // config/defaults.ts
 export const DEFAULT_PORT = 10000
 export const DEFAULT_OFFLINE_MODE = false
@@ -141,12 +143,31 @@ export const DEFAULT_SECURITY = {
   hashRounds: 10
 }
 
-export const DEFAULT_RSS_FEEDS =
-  [
-    "https://www.cointribune.com/feed/",
-    "https://www.france24.com/en/rss"
-  ]
-
+export const DEFAULT_RSS_CONFIG: ServerRssConfig = {
+  // Valeurs par défaut pour les paramètres globaux RSS
+  enabled: true,                     // Le traitement RSS est activé par défaut
+  delayBetweenArticlesMs: 2000,    // Délai par défaut entre les articles 
+  delayBetweenFeedsMs: 5000,       // Délai par défaut entre les flux 
+  minContentLengthForScraping: 250, // Seuil de scraping par défaut 
+  scrapeRetryDelayMs: 1000,        // Délai après scraping par défaut 
+  geminiRequestDelayMs: 8000,
+  categories: {
+    "Crypto": [
+      {
+        name: "CoinTribune",
+        url: "https://www.cointribune.com/feed/",
+        enabled: true
+      }
+    ],
+    "News": [
+      {
+        name: "France 24 English",
+        url: "https://www.france24.com/en/rss",
+        enabled: true
+      }
+    ]
+  }
+};
 
 export const DEFAULT_SERVER_CONFIG = {
   cacheExpirationTimes: DEFAULT_CACHE_EXPIRATION_TIMES,
@@ -154,5 +175,5 @@ export const DEFAULT_SERVER_CONFIG = {
   cronSchedules: DEFAULT_CRON_SCHEDULE,
   logFiles: DEFAULT_LOG_FILES,
   security: DEFAULT_SECURITY,
-  rssFeeds: DEFAULT_RSS_FEEDS
+  rss: DEFAULT_RSS_CONFIG
 }

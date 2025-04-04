@@ -1,19 +1,12 @@
 // src/services/content/serviceRssFetcher.ts
 import Parser from 'rss-parser';
 import { handleServiceError } from '@utils/errorUtil';
+import { RssArticle } from '@typ/rss';
 
 const parser = new Parser({
     timeout: 10000 // Timeout de 10 secondes
 });
 const SERVICE_NAME = 'ServiceRssFetcher';
-
-export interface RssArticle {
-    title: string;
-    link: string;
-    contentSnippet?: string; // Extrait fourni par le flux RSS
-    isoDate?: string;        // Date au format ISO
-    sourceFeed: string;       // URL du flux d'origine
-}
 
 export class ServiceRssFetcher {
     static async getArticlesFromFeed(feedUrl: string): Promise<RssArticle[]> {
