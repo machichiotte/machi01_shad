@@ -14,6 +14,7 @@ import routeTimestamp from './routeTimestamp';
 import routeMachi from './routeMachi';
 import routeAlarm from './routeAlarm';
 import routeApi from './config/routeApi';
+import routeRss from './routeRss';
 
 const router = Router();
 
