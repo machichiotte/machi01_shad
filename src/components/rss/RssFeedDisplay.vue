@@ -151,8 +151,8 @@ const formatDate = (dateString: string | undefined | null, options?: Intl.DateTi
 
 
             <div v-if="paginatedRssItems.length > 0" class="rss-items-list">
-                <Panel v-for="item in paginatedRssItems" :key="item._id?.$oid || item.link" toggleable collapsed
-                    class="rss-panel">
+                <Panel v-for="item in paginatedRssItems" :key="item._id?.$oid || item.link"
+                    :toggleable="!!(item.summary || item.analysis)" collapsed class="rss-panel">
                     <template #header>
                         <div class="rss-panel-header-content">
                             <div class="header-left-section">

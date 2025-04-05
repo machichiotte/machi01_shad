@@ -144,7 +144,7 @@ export const useCalculStore = defineStore('calcul', {
     setRss(data: RssItem[]) {
       // Vous pourriez vouloir trier les éléments par date de publication ici
       this.rss = data.sort((a, b) =>
-        new Date(b.publicationDate.$date).getTime() - new Date(a.publicationDate.$date).getTime()
+        new Date(b.publicationDate).getTime() - new Date(a.publicationDate).getTime()
       );
     },
 
