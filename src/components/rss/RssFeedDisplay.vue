@@ -9,6 +9,8 @@ import Message from 'primevue/message';
 import Badge from 'primevue/badge';
 import Paginator, { type PageState } from 'primevue/paginator';
 import MultiSelect from 'primevue/multiselect';
+import InputText from 'primevue/inputtext'; // <-- Importer InputText
+import SelectButton from 'primevue/selectbutton'; // <-- Importer SelectButton
 
 const calculStore = useCalculStore();
 const isLoading = ref(true);
@@ -17,6 +19,15 @@ const errorLoading = ref<string | null>(null);
 // --- State for Filtering ---
 const selectedSources = ref<string[]>([]);
 const selectedCategories = ref<string[]>([]);
+const searchQuery = ref(''); // <-- Nouvel état pour la recherche
+const contentFilterState = ref<'all' | 'withContent' | 'noContent'>('all'); // <-- Nouvel état pour le filtre de contenu
+
+// Options pour le SelectButton du filtre de contenu
+const contentFilterOptions = ref([
+    { label: 'Tous', value: 'all' },
+    { label: 'Avec Contenu', value: 'withContent' },
+    { label: 'Sans Contenu', value: 'noContent' }
+]);
 
 // --- State for Pagination ---
 const currentPage = ref(1);
@@ -25,6 +36,7 @@ const firstRecordIndex = computed(() => (currentPage.value - 1) * rowsPerPage.va
 
 // --- Data Fetching ---
 onMounted(async () => {
+    // ... (votre code de chargement existant)
     isLoading.value = true;
     errorLoading.value = null;
     try {
@@ -39,53 +51,79 @@ onMounted(async () => {
 
 // --- Computed Properties ---
 
-// 1. Base Data - MODIFIED to sort by processedAt descending
+// 1. Base Data - Triée par processedAt descendant (pas de changement)
 const allRssItems = computed<RssItem[]>(() => {
     const items = calculStore.getRss;
-    // Create a shallow copy and sort it
+    // ... (votre code de tri existant)
     return [...items].sort((a, b) => {
-        // Handle cases where processedAt might be null, undefined, or invalid
         const dateA = a.processedAt ? new Date(a.processedAt) : null;
         const dateB = b.processedAt ? new Date(b.processedAt) : null;
-
-        const timeA = dateA && !isNaN(dateA.getTime()) ? dateA.getTime() : 0; // Treat invalid/null as oldest
-        const timeB = dateB && !isNaN(dateB.getTime()) ? dateB.getTime() : 0; // Treat invalid/null as oldest
-
-        // Sort descending (newest first)
+        const timeA = dateA && !isNaN(dateA.getTime()) ? dateA.getTime() : 0;
+        const timeB = dateB && !isNaN(dateB.getTime()) ? dateB.getTime() : 0;
         return timeB - timeA;
     });
 });
 
-// 2. Filtering Options (derived from potentially sorted data)
+// 2. Filtering Options (pas de changement majeur, dérivés de allRssItems)
 const availableSources = computed(() => {
-    // Using allRssItems which is now sorted, but Set naturally removes order relevance for options
     const sources = new Set(allRssItems.value.map(item => item.feedName).filter(Boolean));
-    return Array.from(sources).sort(); // Sort source names alphabetically for the dropdown
+    return Array.from(sources).sort();
 });
 
 const availableCategories = computed(() => {
-    // Using allRssItems which is now sorted, but Set naturally removes order relevance for options
     const categories = new Set(allRssItems.value.map(item => item.category).filter(Boolean));
-    return Array.from(categories).sort(); // Sort category names alphabetically for the dropdown
+    return Array.from(categories).sort();
 });
 
-// 3. Filtered Data (operates on the sorted allRssItems)
+// 3. Filtered Data - INTÈGRE TOUS LES FILTRES (Source, Catégorie, Contenu, Recherche)
 const filteredRssItems = computed(() => {
-    return allRssItems.value.filter(item => { // This now filters the already sorted list
-        const sourceMatch = selectedSources.value.length === 0 || selectedSources.value.includes(item.feedName);
-        const categoryMatch = selectedCategories.value.length === 0 || (item.category && selectedCategories.value.includes(item.category));
-        return sourceMatch && categoryMatch;
-    });
+    let items = allRssItems.value; // Commence avec les données triées
+
+    // a) Filtrer par Source
+    if (selectedSources.value.length > 0) {
+        items = items.filter(item => selectedSources.value.includes(item.feedName));
+    }
+
+    // b) Filtrer par Catégorie
+    if (selectedCategories.value.length > 0) {
+        items = items.filter(item => item.category && selectedCategories.value.includes(item.category));
+    }
+
+    // c) Filtrer par Contenu (Toggleable)
+    if (contentFilterState.value === 'withContent') {
+        items = items.filter(item => !!(item.summary || item.analysis)); // Garde ceux qui SONT toggleable
+    } else if (contentFilterState.value === 'noContent') {
+        items = items.filter(item => !(item.summary || item.analysis)); // Garde ceux qui ne SONT PAS toggleable
+    }
+    // Si 'all', on ne filtre pas sur ce critère
+
+    // d) Filtrer par Recherche (sur titre, résumé, analyse)
+    const query = searchQuery.value.trim().toLowerCase();
+    if (query) {
+        items = items.filter(item =>
+            (item.title?.toLowerCase().includes(query)) ||
+            (item.summary?.toLowerCase().includes(query)) ||
+            (item.analysis?.toLowerCase().includes(query))
+        );
+    }
+
+    // Réinitialiser la page à 1 si les filtres changent et qu'on n'est plus sur la page 1
+    // C'est souvent une bonne pratique, mais nécessite un watch ou une logique plus complexe.
+    // Pour l'instant, on laisse comme ça, mais l'utilisateur pourrait se retrouver sur une page vide.
+    // Une amélioration serait de mettre currentPage.value = 1; quand un filtre change.
+
+    return items;
 });
 
-// 4. Total Count of Filtered Items
+
+// 4. Total Count of Filtered Items (pas de changement)
 const totalFilteredItems = computed(() => filteredRssItems.value.length);
 
-// 5. Paginated Data (takes pages from the filtered *and* sorted list)
+// 5. Paginated Data (pas de changement)
 const paginatedRssItems = computed(() => {
     const start = firstRecordIndex.value;
     const end = start + rowsPerPage.value;
-    return filteredRssItems.value.slice(start, end); // Slices the sorted+filtered list
+    return filteredRssItems.value.slice(start, end);
 });
 
 // --- Methods ---
@@ -93,10 +131,18 @@ const paginatedRssItems = computed(() => {
 const onPageChange = (event: PageState) => {
     currentPage.value = event.page + 1;
     rowsPerPage.value = event.rows;
+    window.scrollTo(0, 0); // Optionnel: remonte en haut de page lors du changement
 };
 
-// Date Formatting (no changes needed here)
+// Méthode pour réinitialiser la page lors d'un changement de filtre
+// (Alternative à une logique plus complexe avec des watchers)
+const resetPageAndFilter = () => {
+    currentPage.value = 1;
+};
+
+// Date Formatting (pas de changement)
 const formatDate = (dateString: string | undefined | null, options?: Intl.DateTimeFormatOptions): string => {
+    // ... (votre code de formatage existant)
     if (!dateString || typeof dateString !== 'string') {
         return 'Date invalide';
     }
@@ -129,13 +175,25 @@ const formatDate = (dateString: string | undefined | null, options?: Intl.DateTi
         </div>
 
         <div v-else>
-            <div class="filters-container p-mb-3 p-d-flex p-ai-center p-gap-3">
+            <div class="filters-container p-mb-3 p-d-flex p-flex-wrap p-ai-center p-gap-3">
+
+                <span class="p-input-icon-left search-input-wrapper">
+                    <i class="pi pi-search" />
+                    <InputText v-model="searchQuery" placeholder="Rechercher..." class="p-inputtext-sm search-input"
+                        @input="resetPageAndFilter" />
+                </span>
+
                 <MultiSelect v-model="selectedSources" :options="availableSources" placeholder="Filtrer par Source"
-                    :maxSelectedLabels="3" showClear class="p-inputtext-sm filter-multiselect" />
+                    :maxSelectedLabels="2" showClear class="p-inputtext-sm filter-multiselect"
+                    @change="resetPageAndFilter" />
 
                 <MultiSelect v-if="availableCategories.length > 0" v-model="selectedCategories"
-                    :options="availableCategories" placeholder="Filtrer par Catégorie" :maxSelectedLabels="3" showClear
-                    class="p-inputtext-sm filter-multiselect" />
+                    :options="availableCategories" placeholder="Filtrer par Catégorie" :maxSelectedLabels="2" showClear
+                    class="p-inputtext-sm filter-multiselect" @change="resetPageAndFilter" />
+
+                <SelectButton v-model="contentFilterState" :options="contentFilterOptions" optionLabel="label"
+                    optionValue="value" aria-labelledby="content-filter-label" class="content-filter-selectbutton"
+                    @change="resetPageAndFilter" />
             </div>
 
             <Paginator v-if="totalFilteredItems > 0" :rows="rowsPerPage" :totalRecords="totalFilteredItems"
@@ -145,7 +203,13 @@ const formatDate = (dateString: string | undefined | null, options?: Intl.DateTi
             </Paginator>
             <div v-else-if="!isLoading && !errorLoading && totalFilteredItems === 0" class="p-mb-3">
                 <Message severity="info" :closable="false" class="info-message">
-                    Aucun élément ne correspond à vos filtres.
+                    <span
+                        v-if="searchQuery || selectedSources.length > 0 || selectedCategories.length > 0 || contentFilterState !== 'all'">
+                        Aucun élément ne correspond à vos critères de recherche/filtre.
+                    </span>
+                    <span v-else>
+                        Aucun élément à afficher pour le moment.
+                    </span>
                 </Message>
             </div>
 
@@ -159,7 +223,8 @@ const formatDate = (dateString: string | undefined | null, options?: Intl.DateTi
                                 <a :href="item.sourceFeed" target="_blank" rel="noopener noreferrer" @click.stop
                                     class="source-link"
                                     v-tooltip.top="`Ouvrir le flux source : ${item.feedName || 'Source'}`">
-                                    <Badge :value="item.feedName || 'Source inconnue'" severity="info"></Badge>
+                                    <Badge :value="item.feedName || 'Source inconnue'" severity="info"
+                                        class="source-badge"></Badge>
                                 </a>
                                 <span class="analysis-date">
                                     <i class="pi pi-calendar p-mr-1"></i>
@@ -208,37 +273,144 @@ const formatDate = (dateString: string | undefined | null, options?: Intl.DateTi
 </template>
 
 <style scoped>
-/* All styles remain exactly the same as in the previous version */
-/* --- Modified Styles for Filters --- */
+/* --- Styles pour les Nouveaux Filtres --- */
 .filters-container {
     margin-bottom: 1.5rem;
     padding: 0.75rem 1rem;
-    /* Reduced padding slightly */
     background-color: #3a3a3a;
     border-radius: 6px;
     border: 1px solid #555;
-    /* p-d-flex p-ai-center p-gap-3 applied via class */
-    flex-wrap: wrap;
-    /* Allow wrapping on smaller screens */
+    /* display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; */
+    /* Classes PrimeFlex p-d-flex etc. font le travail */
 }
 
-/* Style for the multiselect components */
-.filter-multiselect {
-    min-width: 200px;
-    /* Keep min-width */
+.search-input-wrapper {
     flex-grow: 1;
-    /* Allow them to grow */
-    flex-basis: 200px;
-    /* Base width before growing */
+    /* Permet au champ de recherche de prendre plus de place */
+    min-width: 180px;
 }
 
-/* --- Your Existing Styles --- */
+.search-input {
+    width: 100%;
+    /* Prend toute la largeur du wrapper */
+}
+
+.filter-multiselect {
+    min-width: 180px;
+    flex-basis: 180px;
+    /* Largeur de base avant de grandir/rétrécir */
+    flex-grow: 1;
+    /* Permet aux multiselects de grandir un peu */
+}
+
+.content-filter-selectbutton {
+    flex-shrink: 0;
+    /* Empêche ce bouton de rétrécir excessivement */
+}
+
+/* Ajustement pour les petits écrans si nécessaire */
+@media (max-width: 768px) {
+    .filters-container {
+        gap: 0.5rem;
+        /* Réduire l'espace entre les filtres */
+    }
+
+    .search-input-wrapper,
+    .filter-multiselect {
+        flex-basis: calc(50% - 0.5rem);
+        /* Env. 2 par ligne */
+        min-width: 150px;
+    }
+
+    .content-filter-selectbutton {
+        flex-basis: 100%;
+        /* Prend toute la largeur */
+        order: 5;
+        /* Le met à la fin */
+    }
+}
+
+
+/* --- Ajustements pour la Cohérence de l'En-tête --- */
+.rss-panel-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    overflow: hidden;
+    /* Empêche le débordement global */
+}
+
+.header-left-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+    /* Important: Empêche cette section de rétrécir */
+    width: 160px;
+    /* Largeur fixe pour la section gauche (badge + date) */
+    /* Ajustez cette valeur selon vos besoins visuels */
+    gap: 0.25rem;
+}
+
+.source-link {
+    text-decoration: none;
+    display: block;
+    /* Pour que la largeur max/ellipsis fonctionne sur le badge */
+    max-width: 100%;
+    /* Limite la largeur du lien (et donc du badge) */
+}
+
+.source-badge {
+    /* Si vous voulez limiter la largeur du badge lui-même */
+    display: inline-block;
+    /* Nécessaire pour max-width sur un inline element */
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+    /* Meilleur alignement vertical */
+}
+
+
+.analysis-date {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8em;
+    color: #aaa;
+    white-space: nowrap;
+    /* Empêche la date de passer à la ligne */
+}
+
+.item-title {
+    font-weight: 600;
+    color: #eee;
+    flex-grow: 1;
+    /* Prend l'espace restant */
+    /* Les styles suivants assurent la troncature sur une seule ligne */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    /* Assurez-vous qu'il est aligné à gauche */
+    min-width: 0;
+    /* Important dans un contexte flex pour permettre la troncature */
+    cursor: default;
+}
+
+/* --- Vos Styles Existants (la plupart restent inchangés) --- */
 .rss-feed-container {
     padding: 1rem;
     max-width: 1000px;
+    /* Augmenté un peu pour accommoder les filtres */
     margin: 1rem auto;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* Styles pour loading, error, panel, content, footer, etc. sont conservés */
+/* ... (tous vos autres styles) ... */
 
 .loading-indicator {
     display: flex;
@@ -267,37 +439,6 @@ const formatDate = (dateString: string | undefined | null, options?: Intl.DateTi
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
 }
 
-.rss-panel-header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap: 1rem;
-}
-
-.header-left-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    flex-shrink: 0;
-    gap: 0.25rem;
-}
-
-.source-link {
-    text-decoration: none;
-    display: inline-block;
-}
-
-.source-link .p-badge {
-    cursor: pointer;
-}
-
-.analysis-date {
-    display: inline-flex;
-    align-items: center;
-    font-size: 0.8em;
-    color: #aaa;
-}
 
 .analysis-date i {
     font-size: 0.9em;
@@ -305,16 +446,6 @@ const formatDate = (dateString: string | undefined | null, options?: Intl.DateTi
     margin-right: 4px;
 }
 
-.item-title {
-    font-weight: 600;
-    color: #eee;
-    flex-grow: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: left;
-    cursor: default;
-}
 
 :deep(.p-panel-header) {
     background-color: #444;
@@ -325,6 +456,7 @@ const formatDate = (dateString: string | undefined | null, options?: Intl.DateTi
 }
 
 :deep(.p-panel-title) {
+    /* Ce sélecteur n'est plus directement utilisé car on utilise #header template */
     flex-grow: 1;
 }
 
@@ -531,5 +663,30 @@ const formatDate = (dateString: string | undefined | null, options?: Intl.DateTi
     background-color: #555;
     color: #eee;
     border: 1px solid #777;
+}
+
+/* Style pour SelectButton */
+:deep(.p-selectbutton .p-button) {
+    background-color: #555;
+    border-color: #777;
+    color: #ccc;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+:deep(.p-selectbutton .p-button:not(.p-highlight):hover) {
+    background-color: #666;
+    border-color: #888;
+    color: #fff;
+}
+
+:deep(.p-selectbutton .p-button.p-highlight) {
+    background-color: #0ea5e9;
+    border-color: #0ea5e9;
+    color: #fff;
+}
+
+:deep(.p-selectbutton .p-button:focus) {
+    box-shadow: 0 0 0 0.2rem rgba(14, 165, 233, 0.5);
+    /* Focus ring assorti au highlight */
 }
 </style>
