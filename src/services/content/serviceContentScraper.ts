@@ -12,7 +12,7 @@ export class ServiceContentScraper {
         const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
 
         try {
-            console.info(`[${SERVICE_NAME}] Fetching : ${url}`);
+            // console.info(`[${SERVICE_NAME}] Fetching : ${url}`);
 
             // --- Remplacement de axios.get par fetch ---
             const response = await fetch(url, {
@@ -81,7 +81,7 @@ export class ServiceContentScraper {
                 content = content.substring(0, MAX_CONTENT_LENGTH) + "... (tronqué)";
             }
 
-            console.info(`[${SERVICE_NAME}] Scraping réussi pour : ${url} (longueur: ${content.length})`);
+            // console.info(`[${SERVICE_NAME}] Scraping réussi pour : ${url} (longueur: ${content.length})`);
             return content;
 
         } catch (error: unknown) {

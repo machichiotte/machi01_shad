@@ -6,13 +6,17 @@ import { RepoRss } from '@src/repo/repoRss'; // Import the repository
 import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
 import { RssArticle, RssFeedConfig, ServerRssConfig, ProcessedArticleData, FinancialAnalysis, AnalysisWithSummary } from '@typ/rss';
+import { parseDateRss } from '@src/utils/timeUtil';
 
 const SERVICE_NAME = 'ServiceRssProcessor';
 
+// Helper function for delays (if not already globally available)
+const sleep = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
+
 export class ServiceRssProcessor {
+    // fetchDatabaseRss remains unchanged
     public static async fetchDatabaseRss(): Promise<ProcessedArticleData[]> {
         try {
-            // Data fetched here will now have dates as strings if the change below is implemented
             return await RepoRss.fetchAll()
         } catch (error) {
             handleServiceError(
@@ -25,239 +29,299 @@ export class ServiceRssProcessor {
     }
 
     static async processAllFeeds(): Promise<void> {
-        console.info(`[${SERVICE_NAME}] Starting processing of all RSS feeds...`);
+        console.info(`[${SERVICE_NAME}] Démarrage du traitement de tous les flux RSS...`);
 
         const rssConfig = config.serverConfig?.rss;
 
         if (!rssConfig || !rssConfig.enabled) {
-            console.warn(`[${SERVICE_NAME}] RSS processing is disabled or configuration is missing.`);
+            console.warn(`[${SERVICE_NAME}] Le traitement RSS est désactivé ou la configuration est manquante.`);
             return;
         }
 
         const delayBetweenArticles = rssConfig.delayBetweenArticlesMs ?? 2000;
-        const delayBetweenFeeds = rssConfig.delayBetweenFeedsMs ?? 5000;
+        const delayBetweenFeeds = rssConfig.delayBetweenFeedsMs ?? 2000;
 
-
-        const priorityCategories = new Set(['finance', 'crypto', 'economy']); // Define priority categories (lowercase)
+        // --- Feed Prioritization Logic (unchanged) ---
+        const priorityCategories = new Set(['finance', 'crypto', 'economy', 'politics']);
         const priorityFeeds: RssFeedConfig[] = [];
         const otherFeeds: RssFeedConfig[] = [];
 
         if (rssConfig.categories) {
-            console.debug(`[${SERVICE_NAME}] Reading categories from config...`);
+            console.debug(`[${SERVICE_NAME}] Lecture des catégories depuis la configuration...`);
             for (const categoryName in rssConfig.categories) {
                 const categoryFeeds = rssConfig.categories[categoryName] || [];
-                console.debug(`[${SERVICE_NAME}] Found category: ${categoryName} with ${categoryFeeds.length} feeds.`);
-
-                const isPriority = priorityCategories.has(categoryName.toLowerCase()); // Check if category is priority (case-insensitive)
+                console.debug(`[${SERVICE_NAME}] Catégorie trouvée: ${categoryName} avec ${categoryFeeds.length} flux.`);
+                const isPriority = priorityCategories.has(categoryName.toLowerCase());
 
                 for (const feed of categoryFeeds) {
                     if (feed.enabled !== false) {
                         const feedWithCategory = { ...feed, category: categoryName };
                         if (isPriority) {
                             priorityFeeds.push(feedWithCategory);
-                            console.debug(`[${SERVICE_NAME}] Adding to PRIORITY list: ${feed.name} [${categoryName}]`);
+                            console.debug(`[${SERVICE_NAME}] Ajout à la liste PRIORITAIRE: ${feed.name} [${categoryName}]`);
                         } else {
                             otherFeeds.push(feedWithCategory);
-                            console.debug(`[${SERVICE_NAME}] Adding to OTHER list: ${feed.name} [${categoryName}]`);
+                            console.debug(`[${SERVICE_NAME}] Ajout à la liste AUTRE: ${feed.name} [${categoryName}]`);
                         }
                     } else {
-                        console.debug(`[${SERVICE_NAME}] Skipping disabled feed: ${feed.name} (${feed.url})`);
+                        console.debug(`[${SERVICE_NAME}] Flux désactivé ignoré: ${feed.name} (${feed.url})`);
                     }
                 }
             }
         }
-
-        // Combine the lists, priority feeds first
         const feedsToProcess = [...priorityFeeds, ...otherFeeds];
+        // --- End Feed Prioritization Logic ---
 
         if (feedsToProcess.length === 0) {
-            console.warn(`[${SERVICE_NAME}] No enabled RSS feeds found in the configuration.`);
+            console.warn(`[${SERVICE_NAME}] Aucun flux RSS activé trouvé dans la configuration.`);
             return;
         }
 
-        console.info(`[${SERVICE_NAME}] RSS feeds to process: ${feedsToProcess.map(f => `${f.name} [${f.category}]`).join(', ')}`);
+        console.info(`[${SERVICE_NAME}] Flux RSS à traiter (${feedsToProcess.length}): ${feedsToProcess.map(f => `${f.name} [${f.category}]`).join(', ')}`);
 
+        // --- Loop through each Feed Configuration ---
         for (let i = 0; i < feedsToProcess.length; i++) {
             const feed = feedsToProcess[i];
-            console.info(`[${SERVICE_NAME}] Processing feed: ${feed.name} (${feed.url}) from category [${feed.category}]`);
+            console.info(`[${SERVICE_NAME}] === Début traitement du flux ${i + 1}/${feedsToProcess.length}: ${feed.name} (${feed.url}) [${feed.category}] ===`);
+
+            let articlesFromFeed: RssArticle[] = [];
             try {
-                const articles = await ServiceRssFetcher.getArticlesFromFeed(feed.url);
-                console.info(`[${SERVICE_NAME}] Fetched ${articles.length} articles from ${feed.name}`);
-
-                for (const article of articles) {
-                    await ServiceRssProcessor.processSingleArticle(article, feed, rssConfig);
-
-                    if (delayBetweenArticles > 0) {
-                        await new Promise(resolve => setTimeout(resolve, delayBetweenArticles));
-                    }
+                // 1. Fetch all articles from the current feed
+                articlesFromFeed = await ServiceRssFetcher.getArticlesFromFeed(feed.url);
+            } catch (fetchError) {
+                handleServiceError(fetchError, SERVICE_NAME, `Erreur lors de la récupération du flux ${feed.name} (${feed.url})`);
+                // Optionally apply delay before next feed even if current one failed
+                if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
+                    console.debug(`[${SERVICE_NAME}] Délai ${delayBetweenFeeds}ms avant le prochain flux après échec de récupération.`);
+                    await sleep(delayBetweenFeeds);
                 }
-            } catch (error) {
-                handleServiceError(error, SERVICE_NAME, `Error processing feed ${feed.name} (${feed.url})`);
+                continue; // Skip to the next feed configuration
             }
 
-            if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
-                console.debug(`[${SERVICE_NAME}] Delaying ${delayBetweenFeeds}ms before next feed.`);
-                await new Promise(resolve => setTimeout(resolve, delayBetweenFeeds));
+            // 2. Log total articles fetched
+            const totalArticlesInFeed = articlesFromFeed.length;
+            console.info(`[${SERVICE_NAME}] ${totalArticlesInFeed} articles récupérés depuis ${feed.name}. Vérification de ceux nécessitant une analyse...`);
+
+            if (totalArticlesInFeed === 0) {
+                console.info(`[${SERVICE_NAME}] Aucun article trouvé pour ${feed.name}. Passage au flux suivant.`);
+                // Apply delay before next feed
+                if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
+                    console.debug(`[${SERVICE_NAME}] Délai ${delayBetweenFeeds}ms avant le prochain flux.`);
+                    await sleep(delayBetweenFeeds);
+                }
+                continue;
             }
-        }
-        console.info(`[${SERVICE_NAME}] Finished processing all RSS feeds.`);
+
+            // 3. Filter articles needing analysis (Check DB)
+            const articlesToAnalyze: RssArticle[] = [];
+            for (const article of articlesFromFeed) {
+                if (!article.link) {
+                    console.warn(`[${SERVICE_NAME}] Article sans lien ignoré dans le flux ${feed.name}. Titre: ${article.title || 'N/A'}`);
+                    continue;
+                }
+                try {
+                    const existingArticle = await RepoRss.findByLink(article.link);
+                    // Define the condition for needing analysis (e.g., not processed successfully before)
+                    // Check if processedAt exists AND there is no error associated with it
+                    const needsAnalysis = !(existingArticle?.processedAt && !existingArticle.error);
+
+                    if (needsAnalysis) {
+                        articlesToAnalyze.push(article);
+                    } else {
+                        // console.debug(`[${SERVICE_NAME}] Article déjà traité avec succès, ignoré : ${article.link}`);
+                    }
+                } catch (dbError) {
+                    console.error(`[${SERVICE_NAME}] Erreur DB lors de la vérification de l'article ${article.link} pour le flux ${feed.name}. Tentative d'analyse par précaution.`, dbError);
+                    // Decide: Maybe add to articlesToAnalyze anyway? Or skip? Adding for safety here.
+                    articlesToAnalyze.push(article);
+                }
+            }
+
+            // 4. Log count of articles needing analysis
+            const totalToAnalyzeCount = articlesToAnalyze.length;
+            if (totalToAnalyzeCount > 0) {
+                console.info(`[${SERVICE_NAME}] ${totalToAnalyzeCount} sur ${totalArticlesInFeed} articles de ${feed.name} nécessitent une analyse.`);
+            } else {
+                console.info(`[${SERVICE_NAME}] Aucun article de ${feed.name} ne nécessite une nouvelle analyse.`);
+                // Apply delay before next feed
+                if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
+                    console.debug(`[${SERVICE_NAME}] Délai ${delayBetweenFeeds}ms avant le prochain flux.`);
+                    await sleep(delayBetweenFeeds);
+                }
+                continue; // Skip to the next feed if no articles need analysis
+            }
+
+            // 5. Process articles needing analysis with progress logging
+            for (let j = 0; j < articlesToAnalyze.length; j++) {
+                const article = articlesToAnalyze[j];
+                const articleTitle = article.title || 'Sans titre';
+
+                console.info(`[${SERVICE_NAME}] --> Analyse article ${j + 1}/${totalToAnalyzeCount} (Flux ${feed.name}): [${articleTitle}] (${article.link})`);
+
+                try {
+                    // Call the processing function for a single article
+                    await ServiceRssProcessor.processSingleArticle(article, feed, rssConfig);
+                    // Success log is now implicitly handled by processSingleArticle completion without throwing major error
+                } catch (processingError) {
+                    // Errors during processSingleArticle are already handled inside it (including DB logging)
+                    // This catch block is mainly for very unexpected errors bubbling up
+                    console.error(`[${SERVICE_NAME}] Erreur majeure non interceptée lors du traitement de l'article ${j + 1}/${totalToAnalyzeCount} (${article.link})`, processingError);
+                    // Optionally save an error status again here, although processSingleArticle should have tried
+                }
+
+                // Apply delay between articles if configured
+                if (delayBetweenArticles > 0 && j < articlesToAnalyze.length - 1) {
+                    // console.debug(`[${SERVICE_NAME}] Délai ${delayBetweenArticles}ms avant le prochain article.`);
+                    await sleep(delayBetweenArticles);
+                }
+            } // End loop for articles within a feed
+
+            console.info(`[${SERVICE_NAME}] === Fin traitement pour ${totalToAnalyzeCount} articles analysés du flux: ${feed.name} ===`);
+
+            // Apply delay before the next feed configuration
+            if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
+                console.debug(`[${SERVICE_NAME}] Délai ${delayBetweenFeeds}ms avant le prochain flux.`);
+                await sleep(delayBetweenFeeds);
+            }
+
+        } // End loop for feed configurations
+
+        console.info(`[${SERVICE_NAME}] Traitement de tous les flux RSS terminé.`);
     }
 
+    // --- processSingleArticle (MODIFIED) ---
+    // Assumes it's only called for articles that DO need processing based on the check in processAllFeeds
     private static async processSingleArticle(
         article: RssArticle,
         feed: RssFeedConfig,
         rssConfig: ServerRssConfig
     ): Promise<void> {
-        const fetchedAtDate = new Date(); // Keep as Date object for now
-        console.debug(`[${SERVICE_NAME}] Processing article: ${article.link} from feed ${feed.name}`);
+        const fetchedAtDate = new Date();
+        // Removed the initial log about "Processing article..." as it's now handled with progress in processAllFeeds
 
         try {
-            const existingArticle = await RepoRss.findByLink(article.link);
-            // Check assumes processedAt is stored as string now if previously processed successfully
-            if (existingArticle?.processedAt && !existingArticle.error) {
-                // Optionally add more robust check, e.g., check if processedAt is a valid date string
-                console.debug(`[${SERVICE_NAME}] Article already successfully processed: ${article.link}`);
-                return;
-            }
+            // REMOVED: The initial check for existingArticle is now done in processAllFeeds before calling this function.
+            // const existingArticle = await RepoRss.findByLink(article.link);
+            // if (existingArticle?.processedAt && !existingArticle.error) { ... return; }
 
             let fullContent = article.contentSnippet;
             let scraped = false;
             const minContentLength = rssConfig.minContentLengthForScraping ?? 250;
 
+            // Scraping logic remains the same
             if (!fullContent || fullContent.length < minContentLength) {
-                console.info(`[${SERVICE_NAME}] Snippet insufficient for ${article.link}. Attempting scrape...`);
+                console.info(`[${SERVICE_NAME}] Contenu court ou manquant pour ${article.link}. Tentative de scraping...`);
                 try {
                     const scrapeResult = await ServiceContentScraper.scrapeArticleContent(article.link);
                     if (scrapeResult) {
                         fullContent = scrapeResult;
                         scraped = true;
-                        console.info(`[${SERVICE_NAME}] Successfully scraped content for ${article.link}.`);
+                        console.info(`[${SERVICE_NAME}] Scraping réussi pour ${article.link}.`);
                         const scrapeDelay = rssConfig.scrapeRetryDelayMs ?? 1000;
                         if (scrapeDelay > 0) {
-                            await new Promise(resolve => setTimeout(resolve, scrapeDelay));
+                            await sleep(scrapeDelay);
                         }
                     } else {
-                        console.warn(`[${SERVICE_NAME}] Scraping failed to retrieve content for ${article.link}.`);
+                        console.warn(`[${SERVICE_NAME}] Échec du scraping (pas de contenu retourné) pour ${article.link}.`);
                     }
                 } catch (scrapeError) {
-                    handleServiceError(scrapeError, SERVICE_NAME, `Scraping failed for article: ${article.link}`);
+                    handleServiceError(scrapeError, SERVICE_NAME, `Échec du scraping pour l'article: ${article.link}`);
+                    // Keep snippet if scrape fails
                     fullContent = article.contentSnippet;
                     scraped = false;
                 }
             }
 
-            // Parse the publication date first
-            const publicationDateObject = ServiceRssProcessor.parseDate(article.isoDate);
+            const publicationDateObject = parseDateRss(article.isoDate);
 
-            // MODIFIED: Base data now stores dates as ISO strings or null
             const baseData: Partial<ProcessedArticleData> = {
                 link: article.link,
                 title: article.title,
                 sourceFeed: feed.url,
                 feedName: feed.name,
                 category: feed.category,
-                // Convert Date object to ISO string
-                fetchedAt: fetchedAtDate.toISOString(),
+                fetchedAt: fetchedAtDate.toISOString(), // Store as ISO string
                 scrapedContent: scraped,
-                // Convert parsed Date object to ISO string, or null if parsing failed
-                publicationDate: publicationDateObject?.toISOString() ?? null,
+                publicationDate: publicationDateObject?.toISOString() ?? null, // Store as ISO string or null
             };
 
             let articleDataToSave: Partial<ProcessedArticleData>;
-            const processedAtDate = new Date(); // Get current date for processing
+            const processedAtDate = new Date();
 
-            if (!fullContent) {
-                console.warn(`[${SERVICE_NAME}] Content could not be obtained for: ${article.link}. Saving partial data with error.`);
+            if (!fullContent || fullContent.trim().length === 0) { // Check specifically for empty content after trying snippet/scrape
+                console.warn(`[${SERVICE_NAME}] Contenu final non disponible pour: ${article.link}. Sauvegarde partielle avec erreur.`);
                 articleDataToSave = {
                     ...baseData,
-                    error: `Content unavailable (${scraped ? 'scrape failed' : 'snippet missing'})`,
-                    // MODIFIED: Store processedAt as ISO string
-                    processedAt: processedAtDate.toISOString(),
                     summary: null,
-                    analysis: null
+                    analysis: null,
+                    processedAt: processedAtDate.toISOString(), // Store as ISO string
+                    error: `Content unavailable (${scraped ? 'scrape failed or empty' : 'snippet missing or empty'})`,
                 };
             } else {
                 let summary: string | null = null;
                 let analysis: FinancialAnalysis | null = null;
                 let geminiError: string | null = null;
 
-                const geminiDelay = rssConfig.geminiRequestDelayMs ?? 8000;
+                // Gemini Delay Logic (remains the same)
+                const geminiDelay = rssConfig.geminiRequestDelayMs ?? 8000; // Default 8s
                 if (geminiDelay > 0) {
-                    console.debug(`[${SERVICE_NAME}] Applying Gemini delay: ${geminiDelay}ms`);
-                    await new Promise(resolve => setTimeout(resolve, geminiDelay));
+                    console.debug(`[${SERVICE_NAME}] Application du délai Gemini: ${geminiDelay}ms avant l'appel pour ${article.link}`);
+                    await sleep(geminiDelay);
                 }
 
                 try {
-                    // Single call to the updated analyzeText method
-                    console.debug(`[${SERVICE_NAME}] Requesting Gemini analysis and summary for ${article.link}`);
+                    // Call Gemini (includes retry logic internally)
+                    // console.debug(`[${SERVICE_NAME}] Requête d'analyse et résumé Gemini pour ${article.link}`); // Log now inside ServiceGemini
                     const analysisResult: AnalysisWithSummary | null = await ServiceGemini.analyzeText(fullContent);
 
                     if (analysisResult) {
                         summary = analysisResult.summary;
                         analysis = analysisResult.analysis;
-                        console.debug(`[${SERVICE_NAME}] Gemini processing successful for ${article.link}`);
+                        console.info(`[${SERVICE_NAME}] <-- Analyse Gemini réussie pour ${article.link}`);
                     } else {
-                        // Handle case where Gemini service returned null (e.g., invalid config, API error handled internally, invalid response format)
                         geminiError = 'Gemini processing failed or returned empty/invalid results.';
-                        console.warn(`[${SERVICE_NAME}] ${geminiError} for ${article.link}`);
+                        console.warn(`[${SERVICE_NAME}] <-- ${geminiError} pour ${article.link}`);
                     }
                 } catch (geminiErr) {
-                    handleServiceError(geminiErr, SERVICE_NAME, `Gemini API error for ${article.link}`);
+                    // This catch might be less likely if ServiceGemini handles its errors, but kept for safety
+                    handleServiceError(geminiErr, SERVICE_NAME, `Erreur API Gemini pour ${article.link}`);
                     geminiError = `Gemini API Error: ${geminiErr instanceof Error ? geminiErr.message : String(geminiErr)}`;
+                    console.warn(`[${SERVICE_NAME}] <-- Erreur API Gemini pour ${article.link}: ${geminiError}`);
                 }
 
                 articleDataToSave = {
                     ...baseData,
                     summary: summary,
                     analysis: analysis,
-                    // MODIFIED: Store processedAt as ISO string
-                    processedAt: processedAtDate.toISOString(),
-                    error: geminiError // Will be null if no error
+                    processedAt: processedAtDate.toISOString(), // Store as ISO string
+                    error: geminiError, // null if successful
                 };
             }
 
-            // Optional: Clean undefined keys (though converting dates handles most cases)
+            // Clean undefined keys (optional, good practice)
             Object.keys(articleDataToSave).forEach((key) => {
                 const typedKey = key as keyof ProcessedArticleData;
                 if (articleDataToSave[typedKey] === undefined) {
-                    // Set to null instead of deleting? Or ensure baseData has defaults
-                    // With current changes (ISO strings or null), undefined shouldn't occur for dates.
-                    delete articleDataToSave[typedKey]; // Keep deletion if other properties might be undefined
+                    delete articleDataToSave[typedKey];
                 }
             });
 
-            console.info(`[${SERVICE_NAME}] Saving results via RepoRss for: ${article.link}`);
-            // Ensure RepoRss.upsertByLink and the database schema expect/handle string dates
-            await RepoRss.upsertByLink(articleDataToSave);
+            console.info(`[${SERVICE_NAME}] Sauvegarde des résultats (RepoRss) pour: ${article.link}`);
+            await RepoRss.upsertByLink(articleDataToSave); // Assumes DB handles string dates
 
         } catch (error) {
-            const errorMessage = `Major error processing article ${article.link} from feed ${feed.name}: ${error instanceof Error ? error.message : String(error)}`;
+            // Catch major errors during the processing of this single article
+            const errorMessage = `Erreur majeure lors du traitement de l'article ${article.link} (Flux ${feed.name}): ${error instanceof Error ? error.message : String(error)}`;
             handleServiceError(error, SERVICE_NAME, errorMessage);
             try {
-                console.error(`[${SERVICE_NAME}] Attempting to save error state to DB for ${article.link}`);
-                // Ensure updateErrorStatus also handles dates as strings if it updates timestamps
-                await RepoRss.updateErrorStatus(article.link, errorMessage);
+                console.error(`[${SERVICE_NAME}] Tentative de sauvegarde de l'état d'erreur en DB pour ${article.link}`);
+                await RepoRss.updateErrorStatus(article.link, errorMessage); // Assumes it handles string dates if needed
             } catch (dbError) {
-                handleServiceError(dbError, SERVICE_NAME, `CRITICAL: Could not save error state to DB for article ${article.link}`);
+                handleServiceError(dbError, SERVICE_NAME, `CRITIQUE: Impossible de sauvegarder l'état d'erreur en DB pour l'article ${article.link}`);
             }
-        }
-    }
-
-    // Keep parseDate as it is, returning Date | null
-    private static parseDate(dateString: string | undefined | null): Date | null {
-        if (!dateString) {
-            return null;
-        }
-        try {
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) {
-                console.warn(`[${SERVICE_NAME}] Invalid date string encountered: ${dateString}`);
-                return null;
-            }
-            return date;
-        } catch (e) {
-            console.warn(`[${SERVICE_NAME}] Error parsing date string "${dateString}":`, e);
-            return null;
+            // Re-throw the error to signal failure in the main loop if necessary,
+            // or just let it be handled and logged. Depending on desired behavior.
+            // throw error; // Uncomment if you want processAllFeeds main try/catch to see this error too
         }
     }
 }
