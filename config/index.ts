@@ -79,7 +79,8 @@ export const config: Environment = {
         },
         gemini: {
             iv: DEFAULT_APICONFIG.gemini.iv || '',
-            apiKey: DEFAULT_APICONFIG.gemini.apiKey || ''
+            apiKey: DEFAULT_APICONFIG.gemini.apiKey || '',
+            model: DEFAULT_APICONFIG.gemini.model || ''
         },
         platform: {
             binance: {

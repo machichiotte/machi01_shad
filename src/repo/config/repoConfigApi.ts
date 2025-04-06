@@ -72,7 +72,8 @@ export class RepoConfigApi {
     const currentConfig = await this.fetchConfig()
     currentConfig.gemini = {
       apiKey: encryptedKey,
-      iv
+      iv,
+      model: 'gemini-1.5-flash' // Ajout de la propriété 'model' manquante
     }
 
     // Sauvegarder la nouvelle configuration
@@ -127,7 +128,7 @@ export class RepoConfigApi {
   static decryptConfigGemini(geminiConfig: ApiGemini): ApiGemini {
     if (!geminiConfig || !geminiConfig.apiKey) {
       console.warn('Gemini API key is null.')
-      return geminiConfig || { apiKey: '', iv: '' }
+      return geminiConfig || { apiKey: '', iv: '', model: '' }
     }
 
     const decryptedApiKey = EncryptionService.decrypt(

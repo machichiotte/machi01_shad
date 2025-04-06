@@ -4,6 +4,7 @@ import { config } from '@config/index'
 import { RepoConfigApi } from '@repo/config/repoConfigApi'
 import { handleServiceError } from '@utils/errorUtil'
 import { FinancialAnalysis } from "@src/types/rss"
+import { DEFAULT_APICONFIG } from "@config/default"
 
 const SERVICE_NAME = 'ServiceGemini'
 
@@ -29,7 +30,7 @@ export class ServiceGemini {
         try {
             const genAI = new GoogleGenerativeAI(decryptedGeminiConfig.apiKey);
             return genAI.getGenerativeModel({
-                model: "gemini-1.5-flash", // Ou un autre modèle
+                model: decryptedGeminiConfig.model || DEFAULT_APICONFIG.gemini.model,
                 safetySettings: [
                     { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
                     { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },

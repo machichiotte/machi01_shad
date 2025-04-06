@@ -64,7 +64,8 @@ export const DEFAULT_APICONFIG = {
   },
   gemini: {
     iv: '',
-    apiKey: ''
+    apiKey: '',
+    model: 'gemini-1.5-flash'
   },
   platform: {
     binance: {

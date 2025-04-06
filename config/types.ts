@@ -109,6 +109,7 @@ export interface ApiCmc {
 export interface ApiGemini {
   apiKey: string
   iv: string
+  model: string
 }
 
 export interface Server {
