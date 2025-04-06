@@ -28,14 +28,6 @@ const getRelevanceSeverity = computed(() => {
     }
 });
 
-// Helper to display lists or a fallback message
-const formatList = (list: string[] | null | undefined): string => {
-    if (list && list.length > 0) {
-        return list.join(', ');
-    }
-    return 'Aucun';
-}
-
 </script>
 
 <template>
