@@ -3,7 +3,7 @@ import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/ge
 import { config } from '@config/index'
 import { RepoConfigApi } from '@repo/config/repoConfigApi'
 import { handleServiceError } from '@utils/errorUtil'
-import { FinancialAnalysis } from "@src/types/rss"
+import { AnalysisWithSummary, FinancialAnalysis } from "@src/types/rss"
 import { DEFAULT_APICONFIG } from "@config/default"
 
 const SERVICE_NAME = 'ServiceGemini'
@@ -39,7 +39,7 @@ export class ServiceGemini {
                 ],
                 generationConfig: {
                     maxOutputTokens: 8192,
-                    responseMimeType: "text/plain",
+                    responseMimeType: "application/json",
                 },
             }) as GeminiModel;
         } catch (error) {
@@ -48,220 +48,137 @@ export class ServiceGemini {
         }
     }
 
-    static async summarizeText(text: string): Promise<string | null> {
+    /**
+     * Analyse un texte pour en extraire des informations financières ET génère un résumé.
+     * Retourne un objet contenant l'analyse et le résumé, ou null en cas d'erreur.
+     */
+    static async analyzeText(text: string): Promise<AnalysisWithSummary | null> {
         const model = await this.initializeModel();
         if (!model) return null;
 
         try {
-            console.info(`[${SERVICE_NAME}] Demande de résumé...`);
-            const prompt = `Résume le texte suivant de manière concise et informative en français :\n\n${text}`;
-            const result = await model.generateContent(prompt);
-            console.info(`[${SERVICE_NAME}] Résumé reçu.`);
-            return result.response.text();
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                handleServiceError(error, SERVICE_NAME, `Erreur lors du résumé`);
-            } else {
-                handleServiceError(new Error('Erreur inconnue'), SERVICE_NAME, `Erreur lors du résumé`);
-            }
-            return null;
-        }
+            console.info(`[${SERVICE_NAME}] Demande d'analyse financière et de résumé...`);
+            // Mise à jour du prompt pour demander le résumé et l'analyse dans un seul JSON
+            const prompt = `Effectue une analyse financière et cryptomonnaie approfondie du texte suivant ET génère un résumé concis et informatif en français.
+    Retourne ta réponse **UNIQUEMENT** sous la forme d'un objet JSON valide, sans aucun autre texte avant ou après.
+    L'objet JSON doit avoir la structure suivante :
+    {
+      "summary": string, // Le résumé concis en français du texte fourni. Ce champ est OBLIGATOIRE.
+      "isRelevant": "Yes" | "No" | "Partial", // Pertinence du texte pour la finance/crypto. OBLIGATOIRE.
+      "relevanceReason"?: string, // Justification si pertinent ou partiellement pertinent.
+      "mentionedAssets"?: string[], // Liste des actifs (actions, cryptos, etc.) mentionnés.
+      "financialSentiment"?: "Positive" | "Negative" | "Neutral" | "Mixed", // Sentiment général du texte.
+      "sentimentReason"?: string, // Justification du sentiment.
+      "potentialImpact"?: string, // Impact potentiel sur les marchés ou actifs mentionnés.
+      "financialThemes"?: string[], // Thèmes financiers principaux abordés.
+      "actionableInfo"?: string // Informations concrètes ou points clés (pas de conseils).
     }
 
-    static async analyzeText(text: string): Promise<FinancialAnalysis | null> {
-        const model = await this.initializeModel();
-        if (!model) return null;
+    N'inclus AUCUN conseil d'achat ou de vente. Assure-toi que le JSON est valide.
 
-        try {
-            console.info(`[${SERVICE_NAME}] Demande d'analyse financière...`);
-            //const prompt = `Analyse le texte suivant en français. Identifie les points clés, le sentiment général (positif, négatif, neutre), et les entités nommées principales (personnes, organisations, lieux) :\n\n${text}`; //avant
-
-            const prompt = `Effectue une analyse financière et cryptomonnaie approfondie du texte suivant, en français. Concentre-toi sur les aspects suivants :
-
-            1.  **Pertinence Financière/Crypto:** Évalue si cet article est pertinent pour un investisseur ou un analyste dans le domaine de la finance traditionnelle ou des cryptomonnaies. Justifie brièvement (Oui/Non/Partiellement, et pourquoi).
-            2.  **Actifs Mentionnés:** Liste tous les actifs financiers ou cryptomonnaies spécifiquement mentionnés (par exemple, actions (avec ticker si possible), obligations, indices, matières premières, cryptomonnaies (ex: Bitcoin, Ethereum, etc.), projets DeFi, NFT, etc.).
-            3.  **Sentiment Financier:** Quel est le sentiment général de l'article vis-à-vis des marchés, des actifs mentionnés, ou des événements économiques décrits ? (Positif, Négatif, Neutre, Mixte). Explique brièvement.
-            4.  **Impact Potentiel:** L'article suggère-t-il un impact potentiel (positif ou négatif) sur certains actifs, secteurs ou sur le marché en général ? Décris cet impact potentiel.
-            5.  **Thèmes Clés Financiers:** Identifie les principaux thèmes ou sujets financiers/crypto abordés (ex: régulation, adoption, innovation technologique, résultats d'entreprise, politique monétaire, analyse technique, etc.).
-            6.  **Informations exploitables (sans conseil) :** Extrait les informations factuelles clés qui pourraient être utiles pour une prise de décision d'investissement (par exemple, annonces de partenariat, lancement de produit, chiffres clés, prévisions mentionnées *par l'article*, avertissements sur les risques). **Ne fournis AUCUN conseil d'achat ou de vente.**
-            
-            Voici le texte :
-            \n\n${text}`;
+    Voici le texte :
+    \n\n${text}`;
 
             const result = await model.generateContent(prompt);
-            const analysisText = result.response.text();
-            console.info(`[${SERVICE_NAME}] Analyse textuelle reçue, tentative de parsing...`);
+            const responseText = result.response.text();
+            console.info(`[${SERVICE_NAME}] Réponse JSON (analyse + résumé) reçue, tentative de parsing...`);
 
-            if (!analysisText || analysisText.trim() === '') {
-                console.warn(`[${SERVICE_NAME}] Analyse reçue vide.`);
+            if (!responseText || responseText.trim() === '') {
+                console.warn(`[${SERVICE_NAME}] Réponse JSON reçue vide.`);
                 return null;
             }
 
-            // Parse the text response into a FinancialAnalysis object
-            const parsedAnalysis = ServiceGemini.parseAnalysisText(analysisText);
-            console.info(`[${SERVICE_NAME}] Parsing de l'analyse terminé.`);
-            return parsedAnalysis;
-
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                handleServiceError(error, SERVICE_NAME, `Erreur lors de l'analyse`);
-            } else {
-                handleServiceError(new Error('Erreur inconnue'), SERVICE_NAME, `Erreur lors de l'analyse`);
+            let parsedJson: unknown;
+            try {
+                // Nettoyage potentiel si Gemini ajoute des ```json ... ``` autour
+                const cleanedText = responseText.replace(/^```json\s*|```$/g, '').trim();
+                parsedJson = JSON.parse(cleanedText);
+            } catch (parseError) {
+                console.error(`[${SERVICE_NAME}] Erreur lors du parsing JSON: `, parseError);
+                console.error(`[${SERVICE_NAME}] Raw text reçu (non-JSON valide):\n---\n${responseText}\n---`);
+                return null;
             }
-            return null;
-        }
-    }
 
-    private static parseAnalysisText(text: string): FinancialAnalysis | null {
-        try {
-            const analysis: FinancialAnalysis = {
-                isRelevant: null,
-                relevanceReason: null,
-                mentionedAssets: null,
-                financialSentiment: null,
-                sentimentReason: null,
-                potentialImpact: null,
-                financialThemes: null,
-                actionableInfo: null,
+            if (typeof parsedJson !== 'object' || parsedJson === null) {
+                console.warn(`[${SERVICE_NAME}] Le JSON parsé n'est pas un objet.`, parsedJson);
+                return null;
+            }
+
+            const potentialCombinedData = parsedJson as Record<string, unknown>;
+
+            // --- Validation du nouveau format ---
+
+            // 1. Valider et extraire le résumé
+            if (typeof potentialCombinedData.summary !== 'string' || potentialCombinedData.summary.trim() === '') {
+                console.warn(`[${SERVICE_NAME}] Champ 'summary' manquant, invalide ou vide dans la réponse JSON.`, parsedJson);
+                // Vous pourriez décider de retourner null ou de continuer sans résumé
+                // Ici, on choisit de retourner null car le résumé est demandé explicitement.
+                return null;
+            }
+            const summary: string = potentialCombinedData.summary;
+
+            // 2. Préparer l'objet pour la validation de FinancialAnalysis (exclure le résumé)
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { summary: _summary, ...potentialAnalysis } = potentialCombinedData;
+
+
+            // 3. Valider les champs de FinancialAnalysis (comme avant, mais sur l'objet 'potentialAnalysis')
+            const isValidRelevant = typeof potentialAnalysis.isRelevant === 'string' &&
+                ['Yes', 'No', 'Partial'].includes(potentialAnalysis.isRelevant as string);
+
+            // Rendre isRelevant obligatoire comme demandé dans le prompt
+            if (!isValidRelevant) {
+                console.warn(`[${SERVICE_NAME}] Champ 'isRelevant' manquant ou invalide dans la réponse JSON.`, parsedJson);
+                return null;
+            }
+
+            const isValidAssets = potentialAnalysis.mentionedAssets === undefined ||
+                (Array.isArray(potentialAnalysis.mentionedAssets) &&
+                    potentialAnalysis.mentionedAssets.every(asset => typeof asset === 'string'));
+
+            const isValidSentiment = potentialAnalysis.financialSentiment === undefined ||
+                (typeof potentialAnalysis.financialSentiment === 'string' &&
+                    ['Positive', 'Negative', 'Neutral', 'Mixed'].includes(potentialAnalysis.financialSentiment as string));
+
+            // Validation des autres champs (string ou undefined)
+            const isValidStringOrUndefined = (field: unknown): boolean => field === undefined || typeof field === 'string';
+            const isValidStringArrayOrUndefined = (field: unknown): boolean => field === undefined || (Array.isArray(field) && field.every(item => typeof item === 'string'));
+
+            const isValidRelevanceReason = isValidStringOrUndefined(potentialAnalysis.relevanceReason);
+            const isValidSentimentReason = isValidStringOrUndefined(potentialAnalysis.sentimentReason);
+            const isValidPotentialImpact = isValidStringOrUndefined(potentialAnalysis.potentialImpact);
+            const isValidThemes = isValidStringArrayOrUndefined(potentialAnalysis.financialThemes);
+            const isValidActionableInfo = isValidStringOrUndefined(potentialAnalysis.actionableInfo);
+
+            if (!isValidAssets || !isValidSentiment ||
+                !isValidRelevanceReason || !isValidSentimentReason ||
+                !isValidPotentialImpact || !isValidThemes || !isValidActionableInfo) {
+                console.warn(`[${SERVICE_NAME}] Un ou plusieurs champs de l'analyse financière ne correspondent pas au schéma attendu.`, potentialAnalysis);
+                // Vous pourriez décider de retourner quand même l'analyse partielle si certains champs sont bons
+                // Ici, on est strict et on retourne null si la structure n'est pas parfaite.
+                return null;
+            }
+
+            // 4. Construire l'objet FinancialAnalysis validé
+            //    On force le type car on a validé les champs nécessaires.
+            const validatedAnalysis = potentialAnalysis as FinancialAnalysis;
+
+            console.info(`[${SERVICE_NAME}] Parsing et validation JSON (analyse + résumé) réussis.`);
+
+            // 5. Retourner l'objet combiné
+            return {
+                analysis: validatedAnalysis,
+                summary: summary
             };
 
-            const lines = text.split('\n');
-            let currentSection = '';
-
-            for (const line of lines) {
-                const trimmedLine = line.trim();
-                if (trimmedLine.startsWith('1. **Pertinence Financière/Crypto:**')) {
-                    currentSection = 'relevance';
-                    const content = trimmedLine.substring('1. **Pertinence Financière/Crypto:**'.length).trim();
-                    const matchRel = content.match(/^(Oui|Non|Partiellement)/i);
-                    if (matchRel) {
-                        const relevance = matchRel[1].toLowerCase();
-                        if (relevance === 'oui') analysis.isRelevant = 'Yes';
-                        else if (relevance === 'non') analysis.isRelevant = 'No';
-                        else if (relevance === 'partiellement') analysis.isRelevant = 'Partial';
-                    }
-                    const reasonMatch = content.match(/Raison : (.*)/i);
-                    analysis.relevanceReason = reasonMatch ? reasonMatch[1].trim() : content.replace(/^(Oui|Non|Partiellement)[.,]?\s*/i, '').trim(); // Fallback if "Raison:" missing
-                } else if (trimmedLine.startsWith('2. **Actifs Mentionnés:**')) {
-                    currentSection = 'assets';
-                    const content = trimmedLine.substring('2. **Actifs Mentionnés:**'.length).trim();
-                    if (content.toLowerCase() !== 'aucun' && content.length > 0) {
-                        analysis.mentionedAssets = content.split(',').map(a => a.trim()).filter(a => a.length > 0);
-                    } else {
-                        analysis.mentionedAssets = null; // Explicitly null if "Aucun" or empty
-                    }
-                } else if (trimmedLine.startsWith('3. **Sentiment Financier:**')) {
-                    currentSection = 'sentiment';
-                    const content = trimmedLine.substring('3. **Sentiment Financier:**'.length).trim();
-                    const matchSent = content.match(/^(Positif|Négatif|Neutre|Mixte)/i);
-                    if (matchSent) {
-                        const sentiment = matchSent[1].toLowerCase();
-                        if (sentiment === 'positif') analysis.financialSentiment = 'Positive';
-                        else if (sentiment === 'négatif') analysis.financialSentiment = 'Negative';
-                        else if (sentiment === 'neutre') analysis.financialSentiment = 'Neutral';
-                        else if (sentiment === 'mixte') analysis.financialSentiment = 'Mixed';
-                    }
-                    const reasonMatch = content.match(/Raison : (.*)/i);
-                    analysis.sentimentReason = reasonMatch ? reasonMatch[1].trim() : content.replace(/^(Positif|Négatif|Neutre|Mixte)[.,]?\s*/i, '').trim(); // Fallback
-                } else if (trimmedLine.startsWith('4. **Impact Potentiel:**')) {
-                    currentSection = 'impact';
-                    const content = trimmedLine.substring('4. **Impact Potentiel:**'.length).trim();
-                    analysis.potentialImpact = (content.toLowerCase() !== 'aucun impact clair mentionné' && content.length > 0) ? content : null;
-                } else if (trimmedLine.startsWith('5. **Thèmes Clés Financiers:**')) {
-                    currentSection = 'themes';
-                    const content = trimmedLine.substring('5. **Thèmes Clés Financiers:**'.length).trim();
-                    if (content.toLowerCase() !== 'aucun thème spécifique' && content.length > 0) {
-                        analysis.financialThemes = content.split(',').map(t => t.trim()).filter(t => t.length > 0);
-                    } else {
-                        analysis.financialThemes = null; // Explicitly null
-                    }
-                } else if (trimmedLine.startsWith('6. **Informations exploitables (sans conseil) :**')) {
-                    currentSection = 'actionable';
-                    const content = trimmedLine.substring('6. **Informations exploitables (sans conseil) :**'.length).trim();
-                    analysis.actionableInfo = (content.toLowerCase() !== 'aucune information exploitable spécifique' && content.length > 0) ? content : null;
-                } else if (trimmedLine.length > 0 && currentSection) {
-                    // Attempt to append continuation lines (basic approach)
-                    switch (currentSection) {
-                        case 'relevance': {
-                            analysis.relevanceReason = (analysis.relevanceReason ?? '') + ` ${trimmedLine}`;
-                            break;
-                        }
-                        case 'sentiment': {
-                            analysis.sentimentReason = (analysis.sentimentReason ?? '') + ` ${trimmedLine}`;
-                            break;
-                        }
-                        case 'assets': { // Added braces for block scope
-                            const assets = trimmedLine.split(',').map(a => a.trim()).filter(a => a.length > 0);
-                            if (assets.length > 0) {
-                                analysis.mentionedAssets = [...(analysis.mentionedAssets || []), ...assets];
-                            }
-                            break;
-                        }
-                        case 'impact': { // Added braces for consistency and safer concatenation
-                            analysis.potentialImpact = (analysis.potentialImpact ?? '') + ` ${trimmedLine}`;
-                            break;
-                        }
-                        case 'themes': { // Added braces for block scope
-                            const themes = trimmedLine.split(',').map(t => t.trim()).filter(t => t.length > 0);
-                            if (themes.length > 0) {
-                                analysis.financialThemes = [...(analysis.financialThemes || []), ...themes];
-                            }
-                            break;
-                        }
-                        case 'actionable': { // Added braces for consistency and safer concatenation
-                            analysis.actionableInfo = (analysis.actionableInfo ?? '') + ` ${trimmedLine}`;
-                            break;
-                        }
-                    }
-                } else {
-                    // Reset current section if line doesn't match or is empty
-                    currentSection = '';
-                }
-            }
-
-            // Trim potential leading/trailing spaces from appended lines
-            analysis.relevanceReason = analysis.relevanceReason?.trim() ?? null;
-            analysis.sentimentReason = analysis.sentimentReason?.trim() ?? null;
-            analysis.potentialImpact = analysis.potentialImpact?.trim() ?? null;
-            analysis.actionableInfo = analysis.actionableInfo?.trim() ?? null;
-
-            // Basic validation: Check if at least one field was parsed
-            if (Object.values(analysis).every(v => v === null)) {
-                console.warn(`[${SERVICE_NAME}] Parsing failed to extract any structured data from analysis text.`);
-                // Optionally, store the raw text in a specific field if needed for debugging
-                // analysis.rawText = text; // Example
-                return null; // Or return the partially filled object if preferred
-            }
-
-            return analysis;
-        } catch (error) {
-            console.error(`[${SERVICE_NAME}] Error parsing analysis text: `, error);
-            console.error(`[${SERVICE_NAME}] Raw text being parsed:\n---\n${text}\n---`);
-            return null; // Return null if parsing fails catastrophically
-        }
-    }
-
-    static async createBrief(texts: string[]): Promise<string | null> {
-        const model = await this.initializeModel();
-        if (!model) return null;
-
-        if (texts.length === 0) return "Aucun texte fourni pour le brief.";
-
-        try {
-            console.info(`[${SERVICE_NAME}] Demande de création de brief pour ${texts.length} article(s)...`);
-            const combinedText = texts.join("\n\n---\n\n");
-            const prompt = `À partir des articles suivants, crée un brief d'actualité cohérent et concis en français, mettant en évidence les informations les plus importantes :\n\n${combinedText}`;
-
-            const result = await model.generateContent(prompt);
-            console.info(`[${SERVICE_NAME}] Brief reçu.`);
-            return result.response.text();
         } catch (error: unknown) {
             if (error instanceof Error) {
-                handleServiceError(error, SERVICE_NAME, `Erreur lors de la création du brief`);
+                handleServiceError(error, SERVICE_NAME, `Erreur lors de l'analyse et du résumé`);
             } else {
-                handleServiceError(new Error('Erreur inconnue'), SERVICE_NAME, `Erreur lors de la création du brief`);
+                handleServiceError(new Error('Erreur inconnue'), SERVICE_NAME, `Erreur lors de l'analyse et du résumé`);
             }
             return null;
         }
     }
+
 }

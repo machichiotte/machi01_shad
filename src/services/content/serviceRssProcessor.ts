@@ -5,7 +5,7 @@ import { ServiceGemini } from '@src/services/api/serviceGemini';
 import { RepoRss } from '@src/repo/repoRss'; // Import the repository
 import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
-import { RssArticle, RssFeedConfig, ServerRssConfig, ProcessedArticleData, FinancialAnalysis } from '@typ/rss';
+import { RssArticle, RssFeedConfig, ServerRssConfig, ProcessedArticleData, FinancialAnalysis, AnalysisWithSummary } from '@typ/rss';
 
 const SERVICE_NAME = 'ServiceRssProcessor';
 
@@ -188,13 +188,17 @@ export class ServiceRssProcessor {
                 }
 
                 try {
-                    console.debug(`[${SERVICE_NAME}] Requesting Gemini summary for ${article.link}`);
-                    summary = await ServiceGemini.summarizeText(fullContent);
-                    console.debug(`[${SERVICE_NAME}] Requesting Gemini analysis for ${article.link}`);
-                    analysis = await ServiceGemini.analyzeText(fullContent);
+                    // Single call to the updated analyzeText method
+                    console.debug(`[${SERVICE_NAME}] Requesting Gemini analysis and summary for ${article.link}`);
+                    const analysisResult: AnalysisWithSummary | null = await ServiceGemini.analyzeText(fullContent);
 
-                    if (!summary || !analysis) {
-                        geminiError = 'Gemini processing returned empty results.';
+                    if (analysisResult) {
+                        summary = analysisResult.summary;
+                        analysis = analysisResult.analysis;
+                        console.debug(`[${SERVICE_NAME}] Gemini processing successful for ${article.link}`);
+                    } else {
+                        // Handle case where Gemini service returned null (e.g., invalid config, API error handled internally, invalid response format)
+                        geminiError = 'Gemini processing failed or returned empty/invalid results.';
                         console.warn(`[${SERVICE_NAME}] ${geminiError} for ${article.link}`);
                     }
                 } catch (geminiErr) {

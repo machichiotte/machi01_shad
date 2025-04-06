@@ -1,6 +1,11 @@
 // src/types/rss.ts
 import { ObjectId } from 'mongodb';
 
+export interface AnalysisWithSummary {
+    analysis: FinancialAnalysis;
+    summary: string;
+}
+
 export interface ProcessedArticleData {
     _id?: ObjectId;
     title: string;
@@ -19,14 +24,14 @@ export interface ProcessedArticleData {
 }
 
 export interface FinancialAnalysis {
-    isRelevant?: 'Yes' | 'No' | 'Partial' | null;
-    relevanceReason?: string | null;
-    mentionedAssets?: string[] | null;
-    financialSentiment?: 'Positive' | 'Negative' | 'Neutral' | 'Mixed' | null;
-    sentimentReason?: string | null;
-    potentialImpact?: string | null;
-    financialThemes?: string[] | null;
-    actionableInfo?: string | null;
+    isRelevant?: 'Yes' | 'No' | 'Partial';
+    relevanceReason?: string;
+    mentionedAssets?: string[];
+    financialSentiment?: 'Positive' | 'Negative' | 'Neutral' | 'Mixed';
+    sentimentReason?: string;
+    potentialImpact?: string;
+    financialThemes?: string[];
+    actionableInfo?: string;
 }
 
 export interface RssArticle {
