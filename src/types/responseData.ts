@@ -24,9 +24,20 @@ export interface RssItem {
   scrapedContent: boolean;
   publicationDate: string;
   summary: string;
-  analysis: string;
+  analysis: FinancialAnalysis;
   processedAt: string; // Date d'analyse
   error: string | null;
+}
+
+export interface FinancialAnalysis {
+  isRelevant?: 'Yes' | 'No' | 'Partial' | null;
+  relevanceReason?: string | null;
+  mentionedAssets?: string[] | null;
+  financialSentiment?: 'Positive' | 'Negative' | 'Neutral' | 'Mixed' | null;
+  sentimentReason?: string | null;
+  potentialImpact?: string | null;
+  financialThemes?: string[] | null;
+  actionableInfo?: string | null;
 }
 
 export interface Balance {
