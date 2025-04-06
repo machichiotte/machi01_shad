@@ -12,9 +12,21 @@ export interface ProcessedArticleData {
     fetchedAt: string | null;
     processedAt?: string | null;
     summary?: string | null;
-    analysis?: string | null;
+    // analysis?: string | null; avant
+    analysis?: FinancialAnalysis | null; // maintenant
     error?: string | null;
     scrapedContent?: boolean;
+}
+
+export interface FinancialAnalysis {
+    isRelevant?: 'Yes' | 'No' | 'Partial' | null;
+    relevanceReason?: string | null;
+    mentionedAssets?: string[] | null;
+    financialSentiment?: 'Positive' | 'Negative' | 'Neutral' | 'Mixed' | null;
+    sentimentReason?: string | null;
+    potentialImpact?: string | null;
+    financialThemes?: string[] | null;
+    actionableInfo?: string | null;
 }
 
 export interface RssArticle {

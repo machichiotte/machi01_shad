@@ -5,7 +5,7 @@ import { ServiceGemini } from '@src/services/api/serviceGemini';
 import { RepoRss } from '@src/repo/repoRss'; // Import the repository
 import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
-import { RssArticle, RssFeedConfig, ServerRssConfig, ProcessedArticleData } from '@typ/rss';
+import { RssArticle, RssFeedConfig, ServerRssConfig, ProcessedArticleData, FinancialAnalysis } from '@typ/rss';
 
 const SERVICE_NAME = 'ServiceRssProcessor';
 
@@ -37,19 +37,38 @@ export class ServiceRssProcessor {
         const delayBetweenArticles = rssConfig.delayBetweenArticlesMs ?? 2000;
         const delayBetweenFeeds = rssConfig.delayBetweenFeedsMs ?? 5000;
 
-        const feedsToProcess: RssFeedConfig[] = [];
+
+        const priorityCategories = new Set(['finance', 'crypto', 'economy']); // Define priority categories (lowercase)
+        const priorityFeeds: RssFeedConfig[] = [];
+        const otherFeeds: RssFeedConfig[] = [];
+
         if (rssConfig.categories) {
+            console.debug(`[${SERVICE_NAME}] Reading categories from config...`);
             for (const categoryName in rssConfig.categories) {
                 const categoryFeeds = rssConfig.categories[categoryName] || [];
+                console.debug(`[${SERVICE_NAME}] Found category: ${categoryName} with ${categoryFeeds.length} feeds.`);
+
+                const isPriority = priorityCategories.has(categoryName.toLowerCase()); // Check if category is priority (case-insensitive)
+
                 for (const feed of categoryFeeds) {
                     if (feed.enabled !== false) {
-                        feedsToProcess.push({ ...feed, category: categoryName });
+                        const feedWithCategory = { ...feed, category: categoryName };
+                        if (isPriority) {
+                            priorityFeeds.push(feedWithCategory);
+                            console.debug(`[${SERVICE_NAME}] Adding to PRIORITY list: ${feed.name} [${categoryName}]`);
+                        } else {
+                            otherFeeds.push(feedWithCategory);
+                            console.debug(`[${SERVICE_NAME}] Adding to OTHER list: ${feed.name} [${categoryName}]`);
+                        }
                     } else {
                         console.debug(`[${SERVICE_NAME}] Skipping disabled feed: ${feed.name} (${feed.url})`);
                     }
                 }
             }
         }
+
+        // Combine the lists, priority feeds first
+        const feedsToProcess = [...priorityFeeds, ...otherFeeds];
 
         if (feedsToProcess.length === 0) {
             console.warn(`[${SERVICE_NAME}] No enabled RSS feeds found in the configuration.`);
@@ -159,7 +178,7 @@ export class ServiceRssProcessor {
                 };
             } else {
                 let summary: string | null = null;
-                let analysis: string | null = null;
+                let analysis: FinancialAnalysis | null = null;
                 let geminiError: string | null = null;
 
                 const geminiDelay = rssConfig.geminiRequestDelayMs ?? 8000;
