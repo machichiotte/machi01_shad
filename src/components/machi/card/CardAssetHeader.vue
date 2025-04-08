@@ -3,7 +3,7 @@
 // 1: Import necessary modules and types
 import { computed, ref } from 'vue'
 import { Asset, Order, Trade } from '../../../types/responseData'
-import { formatPrice } from '../../../utils/format'
+import { formatPrice } from '../../../utils/formatter'
 
 // 2: Define component props
 const props = defineProps<{
