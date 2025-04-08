@@ -1,5 +1,5 @@
 // src/types/platform.ts
-import { PLATFORMS } from '@src/constants/platform'
+import { PLATFORMS } from '@constants/platform'
 import { Trade, Market, Order, Tickers, Balance, Balances } from 'ccxt'
 
 export type PlatformOrder = Order

@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { ServiceBalance } from '@services/api/platform/serviceBalance'
 import { PLATFORM } from '@typ/platform'
-import { PLATFORMS } from '@src/constants/platform'
+import { PLATFORMS } from '@constants/platform'
 import { isValidPlatform } from '@utils/platformUtil'
 
 /** 

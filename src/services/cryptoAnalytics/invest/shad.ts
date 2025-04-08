@@ -1,6 +1,6 @@
 // src/services/cryptoAnalytics/invest/shad.ts
 
-import { STRAT_ERROR_ALLOWED } from '@src/constants/metrics'
+import { STRAT_ERROR_ALLOWED } from '@constants/metrics'
 import { AmountsAndPrices } from '@typ/cryptoAnalytics'
 import { getPlatformFee, Recup } from '.'
 

@@ -1,5 +1,5 @@
 // src/services/cryptoAnalytics/tradingUtils.ts
-import { TP_THRESHOLD } from '@src/constants/metrics'
+import { TP_THRESHOLD } from '@constants/metrics'
 import { MappedBalance } from '@typ/balance'
 
 /**

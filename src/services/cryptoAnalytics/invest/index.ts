@@ -1,15 +1,15 @@
 // src/services/cryptoAnalytics/invest/index.ts
-import { STRAT_MAX_EXPO } from '@src/constants/metrics'
+import { STRAT_MAX_EXPO } from '@constants/metrics'
 import { MappedStrat } from '@typ/strat'
 import { PLATFORM } from '@typ/platform'
 
 import {
   calculateAmountsAndPricesForShad,
   calculateRecupsShad,
-  RecupsShad 
+  RecupsShad
 } from './shad'
 import { AmountsAndPrices } from '@typ/cryptoAnalytics'
-import { PLATFORM_FEES } from '@src/constants/platform'
+import { PLATFORM_FEES } from '@constants/platform'
 
 export interface Recup {
   base: string

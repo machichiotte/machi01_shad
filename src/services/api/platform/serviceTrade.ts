@@ -9,7 +9,7 @@ import { ServiceMarket } from '@services/api/platform/serviceMarket'
 import { getMarketSymbolForPlatform } from '@utils/platformUtil'
 import { handleServiceError } from '@utils/errorUtil'
 import { retry } from '@utils/retryUtil'
-import { QUOTE_CURRENCIES } from '@src/constants/coins'
+import { QUOTE_CURRENCIES } from '@constants/coins'
 import { config } from '@config/index';
 
 const COLLECTION_CATEGORY = config.databaseConfig.category.trade

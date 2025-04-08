@@ -10,6 +10,7 @@ const config: Config = {
   modulePaths: ['<rootDir>'], // Définit le chemin racine des modules
   moduleNameMapper: {
     "^@src/(.*)$": "<rootDir>/src/$1", // Alias pour les chemins @src
+    "^@constants/(.*)$": "<rootDir>/constants/$1", // Alias pour @constants
     "^@config/(.*)$": "<rootDir>/config/$1", // Alias pour @config
     "^@ctrl/(.*)$": "<rootDir>/src/ctrl/$1", // Alias pour @ctrl
     "^@repo/(.*)$": "<rootDir>/src/repo/$1", // Alias pour @repo

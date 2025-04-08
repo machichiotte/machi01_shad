@@ -37,8 +37,8 @@ import {
   SMART_CONTRACTS,
   CENTRALIZED_EXCHANGE,
   DECENTRALIZED_EXCHANGE
-} from '@src/constants/coins'
-import { DEFAULT_ASSET_FOR_METRICS } from '@src/constants/metrics'
+} from '@constants/coins'
+import { DEFAULT_ASSET_FOR_METRICS } from '@constants/metrics'
 import { PLATFORM } from '@typ/platform'
 
 export function calculateAssetMetrics(

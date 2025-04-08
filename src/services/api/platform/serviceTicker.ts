@@ -7,8 +7,8 @@ import { executeCronTask } from '@utils/cronUtil'
 import { retry } from '@utils/retryUtil'
 import { MappedTicker } from '@typ/ticker'
 import { PLATFORM } from '@typ/platform'
-import { PLATFORMS } from '@src/constants/platform'
-import { ServiceAlarm } from '@src/services/serviceAlarm'
+import { PLATFORMS } from '@constants/platform'
+import { ServiceAlarm } from '@services/serviceAlarm'
 
 export class ServiceTicker {
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {

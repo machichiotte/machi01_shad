@@ -4,7 +4,7 @@ import { CacheExpirationTimes } from '@config/types'
 import { DEFAULT_CACHE_EXPIRATION_TIMES } from '@config/default'
 import { CacheItem } from '@typ/cache'
 import { MappedData } from '@typ/database'
-import { API_CONFIG, BALANCE, CMC, MACHI, MARKET, ORDER, STRAT, TICKER, TRADE, USER, SERVER_CONFIG, HIGHEST_PRICE, SWAP, TIMESTAMP } from '@src/constants/collection'
+import { API_CONFIG, BALANCE, CMC, MACHI, MARKET, ORDER, STRAT, TICKER, TRADE, USER, SERVER_CONFIG, HIGHEST_PRICE, SWAP, TIMESTAMP } from '@constants/collection'
 
 type CacheKey = keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES
 

@@ -1,12 +1,12 @@
 // src/services/content/serviceRssProcessor.ts
 import { ServiceRssFetcher } from '@services/content/serviceRssFetcher';
 import { ServiceContentScraper } from '@services/content/serviceContentScraper';
-import { ServiceGemini } from '@src/services/api/serviceGemini';
-import { RepoRss } from '@src/repo/repoRss'; // Import the repository
+import { ServiceGemini } from '@services/api/serviceGemini';
+import { RepoRss } from '@repo/repoRss'; // Import the repository
 import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
 import { RssArticle, RssFeedConfig, ServerRssConfig, ProcessedArticleData, FinancialAnalysis, AnalysisWithSummary } from '@typ/rss';
-import { parseDateRss } from '@src/utils/timeUtil';
+import { parseDateRss } from '@utils/timeUtil';
 import { DEFAULT_SERVER_CONFIG } from '@config/default';
 
 const SERVICE_NAME = 'ServiceRssProcessor';

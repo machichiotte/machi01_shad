@@ -1,6 +1,6 @@
 // src/services/serviceAlarm.ts
 import { RepoAlarm } from '@repo/repoAlarm'
-import { RepoTicker } from '@src/repo/repoTicker'
+import { RepoTicker } from '@repo/repoTicker'
 import { AlarmInput, AlarmFilter, DbAlarm } from '@typ/database'
 import { ObjectId } from 'mongodb'
 

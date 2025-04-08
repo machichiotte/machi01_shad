@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { ServiceOrderBalance } from '@services/api/platform/serviceOrderBalance'
 import { handleControllerError } from '@utils/errorUtil'
 import { isValidPlatform } from '@utils/platformUtil'
-import { ServiceCcxt } from '@src/services/api/platform/serviceCcxt'
+import { ServiceCcxt } from '@services/api/platform/serviceCcxt'
 
 /**
  * Récupère toutes les commandes de la base de données.

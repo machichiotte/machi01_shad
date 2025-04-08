@@ -5,7 +5,7 @@ import { config } from '@config/index';
 import { PLATFORM } from '@typ/platform'
 import { checkApiKeys } from './platformUtil';
 import { retry } from './retryUtil';
-import { PLATFORMS } from '@src/constants/platform'
+import { PLATFORMS } from '@constants/platform'
 
 /**
  * Exécute une tâche cron avec gestion des erreurs et mécanisme de retry

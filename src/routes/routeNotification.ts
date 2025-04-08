@@ -1,5 +1,5 @@
 // src/routes/routeNotification.ts
-import { subscribe, sendNotification } from '@src/services/ctrlNotification'
+import { subscribe, sendNotification } from '@services/ctrlNotification'
 import express from 'express'
 
 const router = express.Router()

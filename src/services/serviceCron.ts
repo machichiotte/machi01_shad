@@ -1,6 +1,6 @@
 // src/services/serviceCron.ts
 import cron from 'node-cron'
-import { MARKETS, TICKERS, BALANCES, CMC } from '@src/constants/collection'
+import { MARKETS, TICKERS, BALANCES, CMC } from '@constants/collection'
 import { handleServiceError } from '@utils/errorUtil'
 import { checkApiKeys } from '@utils/platformUtil'
 
@@ -11,7 +11,7 @@ import { ServiceBalance } from '@services/api/platform/serviceBalance'
 import { ServiceRssProcessor } from '@services/content/serviceRssProcessor' // Importer le nouveau service
 
 import { Task } from '@typ/cron'
-import { PLATFORMS } from '@src/constants/platform'
+import { PLATFORMS } from '@constants/platform'
 
 import { config } from '@config/index'
 

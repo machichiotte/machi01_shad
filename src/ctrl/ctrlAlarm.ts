@@ -3,8 +3,8 @@ import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
 import { ServiceAlarm } from '@services/serviceAlarm'
 import { AlarmInput } from '@typ/database'
-import { ServiceTicker } from '@src/services/api/platform/serviceTicker'
-import { STABLECOINS } from '@src/constants/coins'
+import { ServiceTicker } from '@services/api/platform/serviceTicker'
+import { STABLECOINS } from '@constants/coins'
 
 /**
  * Méthode pour créer une alarme
