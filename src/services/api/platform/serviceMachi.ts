@@ -3,7 +3,7 @@ import { RepoMachi } from '@repo/repoMachi';
 import { RepoHighPrice } from '@repo/repoHighPrice';
 import { HighestPrices } from '@typ/database';
 import { PLATFORM } from '@typ/platform';
-import { Asset } from '@src/types/cryptoAnalytics';
+import { Asset } from '@typ/cryptoAnalytics';
 
 export class ServiceMachi {
   /**

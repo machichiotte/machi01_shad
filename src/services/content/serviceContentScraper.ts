@@ -3,8 +3,8 @@ import * as cheerio from 'cheerio';
 import { handleServiceError } from '@utils/errorUtil';
 
 const SERVICE_NAME = 'ServiceContentScraper';
-const MAX_CONTENT_LENGTH = 15000; // Limite pour Gemini (ajuster si besoin)
-const FETCH_TIMEOUT = 15000; // Timeout en millisecondes pour fetch
+const MAX_CONTENT_LENGTH = 15000;
+const FETCH_TIMEOUT = 15000;
 
 export class ServiceContentScraper {
     static async scrapeArticleContent(url: string): Promise<string | null> {
@@ -13,24 +13,19 @@ export class ServiceContentScraper {
 
         try {
             // console.info(`[${SERVICE_NAME}] Fetching : ${url}`);
-
-            // --- Remplacement de axios.get par fetch ---
             const response = await fetch(url, {
                 method: 'GET',
-                headers: { // Headers standard pour fetch
+                headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                     'Accept-Language': 'en-US,en;q=0.9,fr;q=0.8',
                 },
-                signal: controller.signal // Lier le signal de l'AbortController
+                signal: controller.signal
             });
-            // --- Fin du remplacement ---
 
-            clearTimeout(timeoutId); // Annuler le timeout si fetch réussit à temps
+            clearTimeout(timeoutId);
 
-            // Vérifier si la requête a réussi (status 2xx)
             if (!response.ok) {
-                // Log spécifique pour les erreurs HTTP
                 handleServiceError(
                     new Error(`HTTP error! Status: ${response.status} ${response.statusText}`),
                     SERVICE_NAME,
@@ -39,11 +34,9 @@ export class ServiceContentScraper {
                 return null;
             }
 
-            // Lire le corps de la réponse en tant que texte HTML
             const htmlData = await response.text();
             const $ = cheerio.load(htmlData);
 
-            // Sélecteurs communs (identiques à avant)
             const selectors = [
                 'article .article-content',
                 '.entry-content',
@@ -70,12 +63,10 @@ export class ServiceContentScraper {
                 return null;
             }
 
-            // Nettoyage basique (identique à avant)
             content = content.replace(/(\r\n|\n|\r)/gm, " ")
                 .replace(/\s\s+/g, ' ')
                 .trim();
 
-            // Tronquer si nécessaire (identique à avant)
             if (content.length > MAX_CONTENT_LENGTH) {
                 console.warn(`[${SERVICE_NAME}] Contenu tronqué pour ${url} (longueur: ${content.length})`);
                 content = content.substring(0, MAX_CONTENT_LENGTH) + "... (tronqué)";

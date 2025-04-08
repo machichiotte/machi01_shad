@@ -1,7 +1,7 @@
 // src/repo/repoMachi.ts
 import { ServiceDatabase } from '@services/api/database/serviceDatabase';
 import { config } from '@config/index';
-import { Asset } from '@src/types/cryptoAnalytics';
+import { Asset } from '@typ/cryptoAnalytics';
 
 const COLLECTION_NAME = config.databaseConfig.collection.machi;
 

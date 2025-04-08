@@ -8,7 +8,7 @@ import {
   getTakeProfitStatus
 } from './tradingUtils'
 import { getTotalAmountAndBuy, getTotalSell } from './tradeCalculations'
-import { Asset } from '@src/types/cryptoAnalytics'
+import { Asset } from '@typ/cryptoAnalytics'
 import { MappedTrade } from '@typ/trade'
 import { MappedTicker } from '@typ/ticker'
 import { MappedBalance } from '@typ/balance'

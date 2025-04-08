@@ -132,7 +132,7 @@ export const DEFAULT_CRON_SCHEDULE = {
   ticker: '*/1 * * * *',
   balance: '*/2 * * * *',
   cmc: '0 23 * * *',
-  rss: '0 */2 * * *'
+  rss: '0 */1 * * *'
 }
 
 export const DEFAULT_LOG_FILES = {

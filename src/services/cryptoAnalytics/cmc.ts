@@ -1,7 +1,7 @@
 // src/services/cryptoAnalytics/cmc.ts
 import { config } from "@config/index"
 import { MappedCmc } from "@typ/cmc"
-import { CompactMappedCmc } from "@src/types/cryptoAnalytics"
+import { CompactMappedCmc } from "@typ/cryptoAnalytics"
 
 export function getCmcValues(cmc: MappedCmc): CompactMappedCmc {
   const getPercentChange = (value: number | undefined): number =>

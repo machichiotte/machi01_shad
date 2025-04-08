@@ -7,7 +7,7 @@ import { ServiceStrategy } from '@services/api/database/serviceStrategy';
 import { ServiceTrade } from '@services/api/platform/serviceTrade';
 import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
-import { PLATFORM } from '@src/types/platform';
+import { PLATFORM } from '@typ/platform';
 
 const COLLECTION_NAME = config.databaseConfig.collection.swap;
 

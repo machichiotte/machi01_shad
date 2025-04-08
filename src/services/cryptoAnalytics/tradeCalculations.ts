@@ -1,5 +1,5 @@
 // src/services/cryptoAnalytics/tradeCalculations.ts
-import { TotalAmountAndBuy } from '@src/types/cryptoAnalytics'
+import { TotalAmountAndBuy } from '@typ/cryptoAnalytics'
 import { MappedTrade } from '@typ/trade'
 
 /**

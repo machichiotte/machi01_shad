@@ -5,7 +5,7 @@ import { MappedTicker } from '@typ/ticker'
 import { MappedCmc } from '@typ/cmc'
 import { MappedStrat } from '@typ/strat'
 import { MappedOrder } from '@typ/order'
-import { Asset } from '@src/types/cryptoAnalytics'
+import { Asset } from '@typ/cryptoAnalytics'
 
 function removeDuplicateDifferences(differences: BalanceWithDifference[]): BalanceWithDifference[] {
     const uniqueMap = new Map<string, BalanceWithDifference>()

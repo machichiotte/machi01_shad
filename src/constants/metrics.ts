@@ -1,5 +1,5 @@
 // src/constants/metrics.ts
-import { Asset } from "@src/types/cryptoAnalytics";
+import { Asset } from "@typ/cryptoAnalytics";
 
 //strat
 /**

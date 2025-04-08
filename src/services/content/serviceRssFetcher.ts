@@ -4,7 +4,7 @@ import { handleServiceError } from '@utils/errorUtil';
 import { RssArticle } from '@typ/rss';
 
 const parser = new Parser({
-    timeout: 10000 // Timeout de 10 secondes
+    timeout: 10000
 });
 const SERVICE_NAME = 'ServiceRssFetcher';
 
@@ -23,11 +23,11 @@ export class ServiceRssFetcher {
                     isoDate: item.isoDate,
                     sourceFeed: feedUrl,
                 }))
-                .filter(item => item.link); // Garder seulement ceux avec un lien
+                .filter(item => item.link);
 
         } catch (error) {
             handleServiceError(error, SERVICE_NAME, `Erreur lors de la récupération du flux RSS ${feedUrl}`);
-            return []; // Retourne un tableau vide en cas d'erreur
+            return [];
         }
     }
 }
