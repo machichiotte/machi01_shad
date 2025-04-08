@@ -40,14 +40,12 @@ export class UpdateManager {
         const validPlatforms = PLATFORMS.filter(platform => checkApiKeys(platform));
 
         if (validPlatforms.length === 0) {
-            // Remplacer console.warn par logger.warn
             logger.warn('No valid platforms found with API keys for update.', { module, operation });
             return;
         }
 
         let completed = 0;
         let failed = 0;
-        // Remplacer console.debug par logger.info pour le début du processus
         logger.info(`Starting platform updates for ${validPlatforms.length} valid platform(s): ${validPlatforms.join(', ')}`, { module, operation, validPlatforms, platformCount: validPlatforms.length });
 
         // Utiliser Promise.allSettled pour exécuter les mises à jour en parallèle (optionnel mais plus rapide)
@@ -68,7 +66,6 @@ export class UpdateManager {
             }
         }
 
-        // Remplacer console.debug par logger.info pour la fin du processus
         const statusMessage = failed === 0 ? 'All platform updates completed successfully.' : `Platform updates process finished with ${failed} failure(s).`;
         logger.info(statusMessage, { module, operation, completedCount: completed, failedCount: failed, totalAttempted: validPlatforms.length });
 
