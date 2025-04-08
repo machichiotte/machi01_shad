@@ -26,7 +26,6 @@ async function getMarkets(req: Request, res: Response): Promise<void> {
 async function fetchLastMarkets(req: Request, res: Response): Promise<void> {
   const { platform } = req.params
 
-  console.log('fetchLastMarketsfetchLastMarketsfetchLastMarkets')
   if (!isValidPlatform(platform)) {
     res.status(400).json({ message: `La plateforme '${platform}' n'est pas valide.` });
     return;

@@ -1,82 +1,88 @@
 // src/utils/processorUtil.ts
-import { MappedBalance, BalanceWithDifference } from '@typ/balance'
-import { MappedTrade } from '@typ/trade'
-import { MappedTicker } from '@typ/ticker'
-import { MappedCmc } from '@typ/cmc'
-import { MappedStrat } from '@typ/strat'
-import { MappedOrder } from '@typ/order'
-import { Asset } from '@typ/cryptoAnalytics'
+import { MappedBalance, BalanceWithDifference } from '@typ/balance';
+import { MappedTrade } from '@typ/trade';
+import { MappedTicker } from '@typ/ticker';
+import { MappedCmc } from '@typ/cmc';
+import { MappedStrat } from '@typ/strat';
+import { MappedOrder } from '@typ/order';
+import { Asset } from '@typ/cryptoAnalytics';
+import { logger } from '@utils/loggerUtil';
 
-function removeDuplicateDifferences(differences: BalanceWithDifference[]): BalanceWithDifference[] {
-    const uniqueMap = new Map<string, BalanceWithDifference>()
-    differences.forEach((v) => {
-        const key = `${v.base}-${v.platform}`
-        if (!uniqueMap.has(key)) {
-            uniqueMap.set(key, v)
-        }
-    })
-    return Array.from(uniqueMap.values())
-}
+const myUtil = 'ProcessorUtil';
 
+
+
+// Cette fonction est spécifiquement pour logger, donc on utilise logger.debug
 function logDifferenceType(difference: BalanceWithDifference): void {
+    const operation = 'logDifferenceType';
+    const context = { module: myUtil, operation, platform: difference.platform, base: difference.base };
+
     if (difference.newSymbol) {
-        console.info(`New symbol detected: ${difference.base}`)
+        logger.debug('New symbol detected.', context);
     }
 
     if (difference.balanceDifference) {
-        console.info(`Balance difference detected for symbol: ${difference.base}`)
+        logger.debug('Balance difference detected.', { ...context, diffValue: difference.balanceDifference });
     }
 
     if (difference.zeroBalance) {
-        console.info(`Zero balance symbol detected: ${difference.base}`)
+        logger.debug('Zero balance symbol detected.', context);
     }
 }
 
 function areAllDataValid(
-    dbCmc: MappedCmc[],
-    dbStrategies: MappedStrat[],
-    dbTrades: MappedTrade[],
-    dbOpenOrders: MappedOrder[],
-    dbTickers: MappedTicker[],
-    dbBalances: MappedBalance[]
+    dbCmc: MappedCmc[] | null | undefined, // Permettre null/undefined pour la vérification
+    dbStrategies: MappedStrat[] | null | undefined,
+    dbTrades: MappedTrade[] | null | undefined,
+    dbOpenOrders: MappedOrder[] | null | undefined,
+    dbTickers: MappedTicker[] | null | undefined,
+    dbBalances: MappedBalance[] | null | undefined
 ): boolean {
-    const invalidData: string[] = []
-    if (!dbCmc) invalidData.push('CMC')
-    if (!dbStrategies) invalidData.push('Strategies')
-    if (!dbTrades) invalidData.push('Trades')
-    if (!dbOpenOrders) invalidData.push('Open Orders')
-    if (!dbTickers) invalidData.push('Tickers')
-    if (!dbBalances) invalidData.push('Balances')
+    const operation = 'areAllDataValid';
+    const invalidData: string[] = [];
+    // Vérifier si les données sont null, undefined ou potentiellement des tableaux vides si cela est considéré invalide
+    // Ici, on vérifie juste la présence (non null/undefined)
+    if (!dbCmc) invalidData.push('CMC');
+    if (!dbStrategies) invalidData.push('Strategies');
+    if (!dbTrades) invalidData.push('Trades');
+    if (!dbOpenOrders) invalidData.push('Open Orders');
+    if (!dbTickers) invalidData.push('Tickers');
+    if (!dbBalances) invalidData.push('Balances');
 
     if (invalidData.length > 0) {
-        console.error(
-            `Erreur : Les fonctions de récupération de données suivantes ont renvoyé des données invalides : ${invalidData.join(', ')}`
-        )
-        return false
+        logger.error('Invalid data detected during validation check.', {
+            module: myUtil,
+            operation,
+            invalidDataSources: invalidData // Utiliser une clé structurée
+        });
+        return false;
     }
-    return true
+    // Optionnel: log de succès en debug
+    // logger.debug('All required data sources appear valid.', { module, operation });
+    return true;
 }
 
 function isValidAssetMetrics(asset: Asset | null): boolean {
-    return asset !== null && typeof asset.cmc.rank === 'number' && asset.cmc.rank > 0 && asset?.liveData.currentPossession != undefined && asset?.liveData.currentPossession > 0
+    // Vérification plus robuste pour la possession
+    const currentPossession = asset?.liveData?.currentPossession;
+    return (
+        asset !== null &&
+        typeof asset.cmc?.rank === 'number' &&
+        asset.cmc.rank > 0 &&
+        typeof currentPossession === 'number' && // Vérifier que c'est un nombre
+        currentPossession > 0
+    );
 }
 
 function removeDuplicates(differences: BalanceWithDifference[]): BalanceWithDifference[] {
-    // Utiliser un Map pour supprimer les doublons
-    const uniqueDifferences = new Map<string, BalanceWithDifference>()
-
+    const uniqueDifferences = new Map<string, BalanceWithDifference>();
     differences.forEach((difference) => {
-        const key = `${difference.base}-${difference.platform}` // Créez une clé unique en combinant 'base' et 'platform'
-
-        // Vérifiez que 'base' n'est pas un stablecoin et ajoutez-le au Map s'il n'est pas encore présent
+        const key = `${difference.base}-${difference.platform}`;
         if (!uniqueDifferences.has(key)) {
-            uniqueDifferences.set(key, difference)
+            uniqueDifferences.set(key, difference);
         }
-    })
-
-    // Convertissez le Map en tableau
-    return Array.from(uniqueDifferences.values())
+    });
+    return Array.from(uniqueDifferences.values());
 }
 
-export { removeDuplicateDifferences, logDifferenceType, areAllDataValid, isValidAssetMetrics, removeDuplicates }
-
+export { logDifferenceType, areAllDataValid, isValidAssetMetrics, removeDuplicates };

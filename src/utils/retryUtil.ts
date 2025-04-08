@@ -30,7 +30,7 @@ export async function retry<A extends unknown[], R>(
 
             attempt++;
 
-            console.info(`Nouvelle tentative de ${functionName}... essai ${attempt} après ${delay}ms`);
+            console.debug(`Nouvelle tentative de ${functionName}... essai ${attempt} après ${delay}ms`);
             await new Promise(resolve => setTimeout(resolve, delay));
             delay *= 2; // Backoff exponentiel
         }

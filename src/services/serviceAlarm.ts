@@ -56,7 +56,7 @@ export class ServiceAlarm {
       })
 
       if (isTriggered) {
-        console.info(
+        console.debug(
           `Notification: Alarme déclenchée pour ${alarm.base} à ${alarm.price}`
         )
 

@@ -27,25 +27,25 @@ const COLLECTION_CATEGORY = config.databaseConfig.category.machi
 
 export class ServiceProcessor {
   static async processBalanceChanges(platform: PLATFORM, differences: BalanceWithDifference[]): Promise<void> {
-    console.info(`[ServiceProcessor] Début processBalanceChanges pour ${platform} avec ${differences.length} différence(s)`)
+    console.debug(`[ServiceProcessor] Début processBalanceChanges pour ${platform} avec ${differences.length} différence(s)`)
     try {
       await ServiceOrderBalance.updateOrdersFromServer(platform)
       const newTrades: MappedTrade[] = []
       for (const difference of differences) {
-        console.info(`[ServiceProcessor] Vérification des nouveaux trades pour ${difference.platform} - ${difference.base}`)
+        console.debug(`[ServiceProcessor] Vérification des nouveaux trades pour ${difference.platform} - ${difference.base}`)
         const trades = await this.checkNewTrades(difference)
         if (Array.isArray(trades) && trades.length > 0) {
-          console.info(`[ServiceProcessor] ${trades.length} trade(s) détecté(s) pour ${difference.platform} - ${difference.base}`)
+          console.debug(`[ServiceProcessor] ${trades.length} trade(s) détecté(s) pour ${difference.platform} - ${difference.base}`)
           newTrades.push(...trades)
         } else {
-          console.info(`[ServiceProcessor] Aucun trade détecté pour ${difference.platform} - ${difference.base}`)
+          console.debug(`[ServiceProcessor] Aucun trade détecté pour ${difference.platform} - ${difference.base}`)
         }
       }
       if (newTrades.length > 0) {
-        console.info(`[ServiceProcessor] Sauvegarde de ${newTrades.length} nouveau(x) trade(s) en base`)
+        console.debug(`[ServiceProcessor] Sauvegarde de ${newTrades.length} nouveau(x) trade(s) en base`)
         await ServiceTrade.saveTradesToDatabase(newTrades)
       }
-      console.info(`[ServiceProcessor] Fin processBalanceChanges pour ${platform}`)
+      console.debug(`[ServiceProcessor] Fin processBalanceChanges pour ${platform}`)
     } catch (error) {
       handleServiceError(error, 'processBalanceChanges', `Erreur lors du traitement des changements de balance pour ${platform}`)
       throw error
@@ -53,11 +53,11 @@ export class ServiceProcessor {
   }
 
   static async saveMachi(): Promise<void> {
-    console.info('[ServiceProcessor] Début saveMachi')
+    console.debug('[ServiceProcessor] Début saveMachi')
     try {
       const data = await this.calculateAllMachi()
       await ServiceDatabase.saveDocumentsWithTimestamp(data, COLLECTION_NAME, COLLECTION_CATEGORY)
-      console.info('[ServiceProcessor] Fin saveMachi')
+      console.debug('[ServiceProcessor] Fin saveMachi')
     } catch (error) {
       handleServiceError(error, 'saveMachi', 'Erreur lors de la sauvegarde de Machi')
       throw error
@@ -66,7 +66,7 @@ export class ServiceProcessor {
 
   // Calcule l'ensemble des métriques pour les assets
   static async calculateAllMachi(): Promise<Asset[]> {
-    console.info('[ServiceProcessor] Début calculateAllMachi')
+    console.debug('[ServiceProcessor] Début calculateAllMachi')
     const [dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances] = await this.fetchAllDatabaseData()
     if (!areAllDataValid(dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances)) {
       console.warn('[ServiceProcessor] Données invalides détectées, abandon du calcul')
@@ -82,35 +82,35 @@ export class ServiceProcessor {
           allValues.push(assetMetrics)
         } else {
           notAddedAssets.push(`${item.base}:${item.platform}`)
-          //console.info(`[ServiceProcessor] Asset ignoré (métriques invalides) pour ${item.base}:${item.platform}`)
+          //console.debug(`[ServiceProcessor] Asset ignoré (métriques invalides) pour ${item.base}:${item.platform}`)
         }
       } else {
         ignoredBalances.push(`${item.base}:${item.platform}`)
-        // console.info(`[ServiceProcessor] Balance ignorée (valeur nulle ou négative) pour ${item.base}:${item.platform}`)
+        // console.debug(`[ServiceProcessor] Balance ignorée (valeur nulle ou négative) pour ${item.base}:${item.platform}`)
       }
     }
-    console.info(`[ServiceProcessor] Fin calculateAllMachi - ${allValues.length} asset(s) traités`)
+    console.debug(`[ServiceProcessor] Fin calculateAllMachi - ${allValues.length} asset(s) traités`)
     return allValues.sort((a, b) => a.cmc.rank - b.cmc.rank)
   }
 
   private static async checkNewTrades(difference: BalanceWithDifference): Promise<MappedTrade[]> {
-    console.info(`[ServiceProcessor] Début checkNewTrades pour ${difference.platform} - ${difference.base}`)
+    console.debug(`[ServiceProcessor] Début checkNewTrades pour ${difference.platform} - ${difference.base}`)
     try {
       const tradeList = await ServiceTrade.fetchFromApi(difference.platform, difference.base)
       if (tradeList && tradeList.length > 0) {
-        console.info(`[ServiceProcessor] Trades récupérés via API pour ${difference.platform} - ${difference.base}`)
+        console.debug(`[ServiceProcessor] Trades récupérés via API pour ${difference.platform} - ${difference.base}`)
         return MappingPlatform.mapTrades(difference.platform, tradeList, {})
       }
     } catch (error) {
       console.warn(`[ServiceProcessor] Erreur lors de la récupération des trades pour ${difference.platform} - ${difference.base}: ${error}`)
     }
-    console.info(`[ServiceProcessor] Fin checkNewTrades pour ${difference.platform} - ${difference.base}`)
+    console.debug(`[ServiceProcessor] Fin checkNewTrades pour ${difference.platform} - ${difference.base}`)
     return []
   }
 
   // Récupère toutes les données de la base de données
   private static async fetchAllDatabaseData(): Promise<[MappedCmc[], MappedStrat[], MappedTrade[], MappedOrder[], MappedTicker[], MappedBalance[]]> {
-    console.info('[ServiceProcessor] Récupération des données de la base')
+    console.debug('[ServiceProcessor] Récupération des données de la base')
     return await Promise.all([
       ServiceCmc.fetchDatabaseCmc(),
       ServiceStrategy.fetchDatabaseStrategies(),
@@ -147,7 +147,7 @@ export class ServiceProcessor {
       (ticker) => ticker.symbol.startsWith(`${assetBase}/`) && ticker.platform === assetPlatform
     )
     if (closestCmc === null || (!assetTrades.length && !assetOrders.length && !assetStrategy)) {
-      console.info(`[ServiceProcessor] Aucune donnée suffisante pour ${assetBase} sur ${assetPlatform}`)
+      console.debug(`[ServiceProcessor] Aucune donnée suffisante pour ${assetBase} sur ${assetPlatform}`)
       return null
     }
     return calculateAssetMetrics(

@@ -34,7 +34,7 @@ export class ServiceTrade {
     const trades: PlatformTrade[] = [];
     const batchSize = 30;
 
-    console.log(`Fetch ${validSymbols} trades for ${platform} ${base}`);
+    console.debug(`Fetch ${validSymbols} trades for ${platform} ${base}`);
     for (let i = 0; i < validSymbols.length; i += batchSize) {
       const symbolBatch = validSymbols.slice(i, i + batchSize);
       const batchPromises = symbolBatch.map(symbol =>

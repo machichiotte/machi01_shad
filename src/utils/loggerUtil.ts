@@ -1,36 +1,83 @@
 // src/utils/loggerUtil.ts
 import winston from 'winston';
 import { config } from '@config/index';
+import path from 'path'; // Pour gérer les chemins de fichiers
 
-const errorLogger = winston.createLogger({
-  level: 'error',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
-  ),
+// Assurez-vous que le répertoire des logs existe (optionnel, mais bonne pratique)
+import fs from 'fs';
+const logDir = path.dirname(config.serverConfig.logFiles.info); // Prend le chemin du premier fichier défini
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir, { recursive: true });
+}
+
+// Définir le niveau de log en fonction de l'environnement
+const level = process.env.NODE_ENV === 'production' ? 'info' : 'debug';
+
+// Format pour la console (plus lisible pour l'humain)
+const consoleFormat = winston.format.combine(
+  winston.format.colorize(), // Ajoute des couleurs
+  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), // Horodatage
+  winston.format.errors({ stack: true }), // Affiche la stacktrace des erreurs
+  winston.format.printf(({ timestamp, level, message, service, stack, ...metadata }) => {
+    const serviceLabel = service ? `[${service}] ` : ''; // Ajoute un label de service si défini
+    const metaString = metadata && Object.keys(metadata).length > 0 ? `\n${JSON.stringify(metadata, null, 2)}` : ''; // Metadonnées formatées
+
+    // Gère le message et la stacktrace
+    let output = `${timestamp} ${level}: ${serviceLabel}${message}`;
+    if (stack) {
+      // Si une stacktrace existe (via format.errors), l'ajouter
+      output += `\n${stack}`;
+    }
+    output += metaString; // Ajoute les métadonnées supplémentaires
+    return output;
+  })
+);
+
+// Format pour les fichiers (JSON structuré pour l'analyse machine)
+const fileFormat = winston.format.combine(
+  winston.format.timestamp(),
+  winston.format.errors({ stack: true }), // Inclure la stacktrace dans l'objet log
+  winston.format.json() // Format JSON
+);
+
+// Création de l'instance principale du logger
+const logger = winston.createLogger({
+  level: level, // Niveau de log basé sur l'environnement
+  format: fileFormat, // Format par défaut (sera utilisé par les transports de fichiers)
+  defaultMeta: { service: 'backend-service' }, // Métadonnée par défaut (ajustez le nom du service)
   transports: [
-    new winston.transports.File({ filename: config.serverConfig.logFiles.error })
-  ]
+    // Transport pour toutes les erreurs (niveau 'error') dans un fichier dédié
+    new winston.transports.File({
+      filename: config.serverConfig.logFiles.error, // Assurez-vous que ce chemin est dans config
+      level: 'error',
+      format: fileFormat, // Garder JSON pour les erreurs
+    }),
+    // Transport pour tous les logs (à partir du niveau 'info' ou 'debug') dans un fichier combiné
+    new winston.transports.File({
+      filename: config.serverConfig.logFiles.info, // Renommé pour clarté (ex: 'combined.log')
+      format: fileFormat, // JSON aussi pour le fichier combiné
+    }),
+  ],
+  // Gestionnaires pour les exceptions non capturées et les rejets de promesses non gérés
+  exceptionHandlers: [
+    new winston.transports.File({ filename: config.serverConfig.logFiles.exceptions }), // Chemin requis dans config
+    new winston.transports.Console({ format: consoleFormat }) // Affiche aussi en console
+  ],
+  rejectionHandlers: [
+    new winston.transports.File({ filename: config.serverConfig.logFiles.rejections }), // Chemin requis dans config
+    new winston.transports.Console({ format: consoleFormat }) // Affiche aussi en console
+  ],
+  exitOnError: false, // Winston ne quittera pas le processus sur une exception gérée
 });
 
-const infoLogger = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
-  ),
-  transports: [
-    new winston.transports.File({ filename: config.serverConfig.logFiles.info })
-  ]
-});
+// Ajouter le transport console pour le développement ou selon la configuration
+// Toujours ajouter la console, mais avec des niveaux différents potentiellement
+logger.add(new winston.transports.Console({
+  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug', // Plus verbeux en dev
+  format: consoleFormat, // Utiliser le format lisible pour la console
+  handleExceptions: true, // Gère aussi les exceptions
+  handleRejections: true, // Gère aussi les rejets
+}));
 
-// Méthodes pour loguer des messages
-export const logError = (message: string) => {
-  errorLogger.error(message);
-};
-
-export const logInfo = (message: string) => {
-  infoLogger.info(message);
-};
-
-export { infoLogger, errorLogger };
+// Exportation de l'instance unique du logger
+export { logger };

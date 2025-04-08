@@ -29,7 +29,7 @@ export class ServiceOrderMarket {
   ): Promise<void> {
     try {
       await ServiceCcxt.cancelOneOrder(platform, oId, symbol.replace('/', ''))
-      console.info(`Deleted order ${oId} for ${platform}.`, { symbol })
+      console.debug(`Deleted order ${oId} for ${platform}.`, { symbol })
     } catch (error) {
       handleServiceError(
         error,

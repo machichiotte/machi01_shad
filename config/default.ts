@@ -136,8 +136,10 @@ export const DEFAULT_CRON_SCHEDULE = {
 }
 
 export const DEFAULT_LOG_FILES = {
-  error: 'error.log',
-  info: 'info.log'
+  error: 'logs/error.log',
+  info: 'logs/info.log',
+  exceptions: 'logs/exceptions.log',
+  rejections: 'logs/rejections.log'
 }
 
 export const DEFAULT_SECURITY = {

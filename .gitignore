@@ -2,6 +2,7 @@
 node_modules
 /dist
 /coverage
+/logs
 machi-shad client + server.code-workspace
 
 # local env files
@@ -28,8 +29,6 @@ pnpm-debug.log*
 
 *.idx
 
-error.log
-info.log
 package-lock.json
 
 my_tree_structure.txt

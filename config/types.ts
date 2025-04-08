@@ -71,6 +71,8 @@ export interface ServerCronSchedules {
 export interface ServerLog {
   error: string
   info: string
+  exceptions: string
+  rejections: string
 }
 
 export interface ServerSecurity {

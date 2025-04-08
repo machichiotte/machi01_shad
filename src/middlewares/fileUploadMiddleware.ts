@@ -1,4 +1,5 @@
 // src/middlewares/fileUploadMiddleware.ts
+import { handleControllerError } from '@src/utils/errorUtil';
 import { Request, Response, NextFunction } from 'express';
 
 // Définir une interface pour étendre la requête avec le fichier uploadé
@@ -22,8 +23,7 @@ function fileUploadMiddleware(req: FileUploadRequest, res: Response, next: NextF
     // Continuer vers le prochain middleware ou gestionnaire de route
     next();
   } catch (error) {
-    // Gestion des erreurs
-    console.error('Erreur lors du téléchargement du fichier:', error);
+    handleControllerError(res, error, 'Une erreur s\'est produite lors du téléchargement du fichier.')
     res.status(500).json({ success: 'error', message: 'Une erreur s\'est produite lors du téléchargement du fichier.', error: error instanceof Error ? error.message : String(error) });
   }
 }

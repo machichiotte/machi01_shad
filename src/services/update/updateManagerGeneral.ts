@@ -15,10 +15,10 @@ export class UpdateManagerGeneral {
         const lastCmcUpdate = timestamps.cmc.$numberLong || '0';
 
         if (hasTimeElapsed(lastCmcUpdate, cmcUpdateInterval)) {
-            console.info('[UpdateManagerGeneral] Updating CMC data...');
+            console.debug('[UpdateManagerGeneral] Updating CMC data...');
             await ServiceCmc.updateCmcData();
         } else {
-            console.info('[UpdateManagerGeneral] Cmc : Up to date !')
+            console.debug('[UpdateManagerGeneral] Cmc : Up to date !')
         }
     }
 }

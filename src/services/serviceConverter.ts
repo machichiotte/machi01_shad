@@ -18,7 +18,7 @@ async function convertToJSON(data: TradeModel[]): Promise<Omit<MappedTrade, '_id
     case 'model_htx':
       return await convertModelHTX(data as ModelHtx[])
     default:
-      console.error('Modèle de fichier CSV non pris en charge')
+      console.warn('Modèle de fichier CSV non pris en charge')
       return []
   }
 }
@@ -120,7 +120,7 @@ async function getEqUSDFromAPI(
   
         return response.data.rate * total);
       } catch (error) {
-        console.error("Erreur lors de l'appel API pour obtenir le taux de conversion :", error);
+        logger.error("Erreur lors de l'appel API pour obtenir le taux de conversion :", error);
         return null;
       }*/
     return 0

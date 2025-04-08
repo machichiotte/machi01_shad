@@ -40,7 +40,7 @@ export async function executeCronTask(task: () => Promise<void>, isCritical: boo
  * Executes a given task function for all platforms
  */
 export async function executeForPlatforms(taskName: string, taskFunction: (platform: PLATFORM) => Promise<void>): Promise<void> {
-  console.info(`Exécution de la tâche cron pour ${taskName}...`)
+  console.debug(`Exécution de la tâche cron pour ${taskName}...`)
   await Promise.all(
     PLATFORMS.filter(platform => checkApiKeys(platform)).map((platform) =>
       executeCronTask(() => taskFunction(platform), true)

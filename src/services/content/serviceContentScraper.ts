@@ -12,7 +12,7 @@ export class ServiceContentScraper {
         const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
 
         try {
-            // console.info(`[${SERVICE_NAME}] Fetching : ${url}`);
+            // console.debug(`[${SERVICE_NAME}] Fetching : ${url}`);
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -53,7 +53,7 @@ export class ServiceContentScraper {
                 $(selector).find('script, style, noscript, iframe, header, footer, nav, aside, .sidebar, .related-posts, .comments, .share-buttons, form').remove();
                 content = $(selector).text();
                 if (content && content.trim().length > 100) {
-                    console.info(`[${SERVICE_NAME}] Contenu trouvé avec le sélecteur : ${selector}`);
+                    console.debug(`[${SERVICE_NAME}] Contenu trouvé avec le sélecteur : ${selector}`);
                     break;
                 }
             }
@@ -72,7 +72,7 @@ export class ServiceContentScraper {
                 content = content.substring(0, MAX_CONTENT_LENGTH) + "... (tronqué)";
             }
 
-            // console.info(`[${SERVICE_NAME}] Scraping réussi pour : ${url} (longueur: ${content.length})`);
+            // console.debug(`[${SERVICE_NAME}] Scraping réussi pour : ${url} (longueur: ${content.length})`);
             return content;
 
         } catch (error: unknown) {

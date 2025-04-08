@@ -2,54 +2,62 @@
 import { ServiceRssFetcher } from '@services/content/serviceRssFetcher';
 import { ServiceContentScraper } from '@services/content/serviceContentScraper';
 import { ServiceGemini } from '@services/api/serviceGemini';
-import { RepoRss } from '@repo/repoRss'; // Import the repository
+import { RepoRss } from '@repo/repoRss';
 import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
 import { RssArticle, RssFeedConfig, ServerRssConfig, ProcessedArticleData, FinancialAnalysis, AnalysisWithSummary } from '@typ/rss';
 import { parseDateRss } from '@utils/timeUtil';
 import { DEFAULT_SERVER_CONFIG } from '@config/default';
+import { logger } from '@utils/loggerUtil';
 
-const SERVICE_NAME = 'ServiceRssProcessor';
+// Utiliser une constante pour le nom du module/service dans les logs
+const myService = 'ServiceRssProcessor';
 
 const sleep = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
 
 export class ServiceRssProcessor {
-    // fetchDatabaseRss remains unchanged
+    // fetchDatabaseRss reste principalement inchangé, mais on améliore le contexte d'erreur
     public static async fetchDatabaseRss(): Promise<ProcessedArticleData[]> {
+        const operation = 'fetchDatabaseRss';
         try {
-            return await RepoRss.fetchAll()
+            logger.debug(`[${myService}] Fetching all RSS data from database...`, { module: myService, operation });
+            const data = await RepoRss.fetchAll();
+            logger.debug(`[${myService}] Fetched ${data.length} articles from database.`, { module: myService, operation, count: data.length });
+            return data;
         } catch (error) {
             handleServiceError(
                 error,
-                'fetchDatabaseRss',
-                'Erreur lors de la récupération des données Rss de la base de données'
-            )
-            throw error
+                `${myService}:${operation}`, // Nom de fonction plus spécifique
+                'Error fetching RSS data from database' // Message en anglais standardisé
+            );
+            throw error; // Relancer l'erreur après l'avoir loguée
         }
     }
 
     static async processAllFeeds(): Promise<void> {
-        console.info(`[${SERVICE_NAME}] Démarrage du traitement de tous les flux RSS...`);
+        const operation = 'processAllFeeds';
+        logger.info(`[${myService}] Starting processing of all RSS feeds...`, { module: myService, operation });
 
         const rssConfig = config.serverConfig?.rss;
 
         if (!rssConfig || !rssConfig.enabled) {
-            console.warn(`[${SERVICE_NAME}] Le traitement RSS est désactivé ou la configuration est manquante.`);
+            logger.warn(`[${myService}] RSS processing is disabled or configuration is missing. Aborting.`, { module: myService, operation });
             return;
         }
 
-        const delayBetweenArticles = rssConfig.delayBetweenArticlesMs ?? 2000;
-        const delayBetweenFeeds = rssConfig.delayBetweenFeedsMs ?? 2000;
+        const delayBetweenArticles = rssConfig.delayBetweenArticlesMs ?? DEFAULT_SERVER_CONFIG.rss.delayBetweenArticlesMs;
+        const delayBetweenFeeds = rssConfig.delayBetweenFeedsMs ?? DEFAULT_SERVER_CONFIG.rss.delayBetweenFeedsMs;
 
+        // Priorisation et collecte des flux (logique inchangée, on remplace les logs)
         const priorityCategories = new Set(['finance', 'crypto', 'economy', 'politics']);
         const priorityFeeds: RssFeedConfig[] = [];
         const otherFeeds: RssFeedConfig[] = [];
 
         if (rssConfig.categories) {
-            console.debug(`[${SERVICE_NAME}] Lecture des catégories depuis la configuration...`);
+            logger.debug(`[${myService}] Reading categories from configuration...`, { module: myService, operation });
             for (const categoryName in rssConfig.categories) {
                 const categoryFeeds = rssConfig.categories[categoryName] || [];
-                console.debug(`[${SERVICE_NAME}] Catégorie trouvée: ${categoryName} avec ${categoryFeeds.length} flux.`);
+                logger.debug(`[${myService}] Found category: ${categoryName} with ${categoryFeeds.length} feeds.`, { module: myService, operation, category: categoryName, feedCount: categoryFeeds.length });
                 const isPriority = priorityCategories.has(categoryName.toLowerCase());
 
                 for (const feed of categoryFeeds) {
@@ -57,13 +65,13 @@ export class ServiceRssProcessor {
                         const feedWithCategory = { ...feed, category: categoryName };
                         if (isPriority) {
                             priorityFeeds.push(feedWithCategory);
-                            //console.debug(`[${SERVICE_NAME}] Ajout à la liste PRIORITAIRE: ${feed.name} [${categoryName}]`);
+                            logger.debug(`[${myService}] Added to PRIORITY list: ${feed.name}`, { module: myService, operation, feedName: feed.name, category: categoryName });
                         } else {
                             otherFeeds.push(feedWithCategory);
-                            //console.debug(`[${SERVICE_NAME}] Ajout à la liste AUTRE: ${feed.name} [${categoryName}]`);
+                            logger.debug(`[${myService}] Added to OTHER list: ${feed.name}`, { module: myService, operation, feedName: feed.name, category: categoryName });
                         }
                     } else {
-                        //console.debug(`[${SERVICE_NAME}] Flux désactivé ignoré: ${feed.name} (${feed.url})`);
+                        logger.debug(`[${myService}] Skipping disabled feed: ${feed.name}`, { module: myService, operation, feedName: feed.name, feedUrl: feed.url });
                     }
                 }
             }
@@ -71,109 +79,119 @@ export class ServiceRssProcessor {
         const feedsToProcess = [...priorityFeeds, ...otherFeeds];
 
         if (feedsToProcess.length === 0) {
-            console.warn(`[${SERVICE_NAME}] Aucun flux RSS activé trouvé dans la configuration.`);
+            logger.warn(`[${myService}] No enabled RSS feeds found in configuration. Aborting.`, { module: myService, operation });
             return;
         }
 
-        console.info(`[${SERVICE_NAME}] Flux RSS à traiter (${feedsToProcess.length}): ${feedsToProcess.map(f => `${f.name} [${f.category}]`).join(', ')}`);
+        const feedNames = feedsToProcess.map(f => `${f.name} [${f.category}]`);
+        logger.info(`[${myService}] RSS feeds to process (${feedsToProcess.length}): ${feedNames.join(', ')}`, { module: myService, operation, feedCount: feedsToProcess.length, feedNames });
 
         for (let i = 0; i < feedsToProcess.length; i++) {
             const feed = feedsToProcess[i];
-            console.info(`[${SERVICE_NAME}] === Début traitement du flux ${i + 1}/${feedsToProcess.length}: ${feed.name} (${feed.url}) [${feed.category}] ===`);
+            const feedContext = { module: myService, operation, feedName: feed.name, feedUrl: feed.url, category: feed.category, feedIndex: `${i + 1}/${feedsToProcess.length}` };
+            logger.info(`[${myService}] === Starting processing for feed: ${feed.name} ===`, feedContext);
 
             let articlesFromFeed: RssArticle[] = [];
             try {
-                // 1. Fetch all articles from the current feed
+                logger.debug(`[${myService}] Fetching articles from feed...`, feedContext);
                 articlesFromFeed = await ServiceRssFetcher.getArticlesFromFeed(feed.url);
+                logger.debug(`[${myService}] Fetched ${articlesFromFeed.length} raw articles.`, { ...feedContext, rawArticleCount: articlesFromFeed.length });
             } catch (fetchError) {
-                handleServiceError(fetchError, SERVICE_NAME, `Erreur lors de la récupération du flux ${feed.name} (${feed.url})`);
-                // Optionally apply delay before next feed even if current one failed
+                handleServiceError(fetchError, `${myService}:${operation}:fetchFeed`, `Error fetching feed ${feed.name}`);
                 if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
-                    console.debug(`[${SERVICE_NAME}] Délai ${delayBetweenFeeds}ms avant le prochain flux après échec de récupération.`);
+                    logger.debug(`[${myService}] Applying delay (${delayBetweenFeeds}ms) before next feed after fetch error.`, { ...feedContext, delayMs: delayBetweenFeeds });
                     await sleep(delayBetweenFeeds);
                 }
-                continue;
+                continue; // Passe au flux suivant
             }
 
-            // 2. Log total articles fetched
             const totalArticlesInFeed = articlesFromFeed.length;
-            console.info(`[${SERVICE_NAME}] ${totalArticlesInFeed} articles récupérés depuis ${feed.name}. Vérification de ceux nécessitant une analyse...`);
+            logger.info(`[${myService}] ${totalArticlesInFeed} articles retrieved from ${feed.name}. Checking which need analysis...`, { ...feedContext, totalArticlesInFeed });
 
             if (totalArticlesInFeed === 0) {
-                console.info(`[${SERVICE_NAME}] Aucun article trouvé pour ${feed.name}. Passage au flux suivant.`);
+                logger.info(`[${myService}] No articles found for ${feed.name}. Skipping to next feed.`, feedContext);
                 if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
-                    console.debug(`[${SERVICE_NAME}] Délai ${delayBetweenFeeds}ms avant le prochain flux.`);
+                    logger.debug(`[${myService}] Applying delay (${delayBetweenFeeds}ms) before next feed.`, { ...feedContext, delayMs: delayBetweenFeeds });
                     await sleep(delayBetweenFeeds);
                 }
                 continue;
             }
 
-            // 3. Filter articles needing analysis (Check DB)
+            // Filtrage des articles (logique inchangée, on remplace les logs)
             const articlesToAnalyze: RssArticle[] = [];
+            let articlesSkipped = 0;
+            let articlesExisting = 0;
+            let articlesDbError = 0;
             for (const article of articlesFromFeed) {
                 if (!article.link) {
-                    console.warn(`[${SERVICE_NAME}] Article sans lien ignoré dans le flux ${feed.name}. Titre: ${article.title || 'N/A'}`);
+                    logger.warn(`[${myService}] Article skipped (missing link).`, { ...feedContext, articleTitle: article.title || 'N/A' });
+                    articlesSkipped++;
                     continue;
                 }
+                const articleContext = { ...feedContext, articleLink: article.link, articleTitle: article.title };
                 try {
                     const existingArticle = await RepoRss.findByLink(article.link);
-                    const needsAnalysis = !(existingArticle?.processedAt && !existingArticle.error);
+                    const needsAnalysis = !existingArticle || !existingArticle.processedAt || existingArticle.error; // Analyse si non existant, pas traité, ou en erreur
 
                     if (needsAnalysis) {
+                        logger.debug(`[${myService}] Article needs analysis.`, articleContext);
                         articlesToAnalyze.push(article);
                     } else {
-                        // console.debug(`[${SERVICE_NAME}] Article déjà traité avec succès, ignoré : ${article.link}`);
+                        logger.debug(`[${myService}] Article already processed successfully, skipping.`, articleContext);
+                        articlesExisting++;
                     }
                 } catch (dbError) {
-                    console.error(`[${SERVICE_NAME}] Erreur DB lors de la vérification de l'article ${article.link} pour le flux ${feed.name}. Tentative d'analyse par précaution.`, dbError);
-                    // Decide: Maybe add to articlesToAnalyze anyway? Or skip? Adding for safety here.
-                    articlesToAnalyze.push(article);
+                    // Logguer l'erreur DB via handleServiceError
+                    handleServiceError(dbError, `${myService}:${operation}:checkArticle`, `DB error checking article`);
+                    logger.warn(`[${myService}] Adding article to analysis queue due to DB check error.`, articleContext);
+                    articlesToAnalyze.push(article); // Analyse par précaution
+                    articlesDbError++;
                 }
             }
 
-            // 4. Log count of articles needing analysis
             const totalToAnalyzeCount = articlesToAnalyze.length;
             if (totalToAnalyzeCount > 0) {
-                console.info(`[${SERVICE_NAME}] ${totalToAnalyzeCount} sur ${totalArticlesInFeed} articles de ${feed.name} nécessitent une analyse.`);
+                logger.info(`[${myService}] Analysis needed for ${totalToAnalyzeCount} out of ${totalArticlesInFeed} articles.`, { ...feedContext, articlesToAnalyze: totalToAnalyzeCount, articlesExisting, articlesSkipped, articlesDbError });
             } else {
-                console.info(`[${SERVICE_NAME}] Aucun article de ${feed.name} ne nécessite une nouvelle analyse.`);
+                logger.info(`[${myService}] No articles require new analysis for ${feed.name}.`, { ...feedContext, articlesToAnalyze: 0, articlesExisting, articlesSkipped, articlesDbError });
                 if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
-                    console.debug(`[${SERVICE_NAME}] Délai ${delayBetweenFeeds}ms avant le prochain flux.`);
+                    logger.debug(`[${myService}] Applying delay (${delayBetweenFeeds}ms) before next feed.`, { ...feedContext, delayMs: delayBetweenFeeds });
                     await sleep(delayBetweenFeeds);
                 }
                 continue;
             }
 
-            // 5. Process articles needing analysis with progress logging
+            // Traitement des articles à analyser (logique inchangée, on remplace les logs)
             for (let j = 0; j < articlesToAnalyze.length; j++) {
                 const article = articlesToAnalyze[j];
                 const articleTitle = article.title || 'Sans titre';
+                const articleContext = { ...feedContext, articleLink: article.link, articleTitle, articleIndex: `${j + 1}/${totalToAnalyzeCount}` };
 
-                console.info(`[${SERVICE_NAME}] --> Analyse article ${j + 1}/${totalToAnalyzeCount} (Flux ${feed.name}): [${articleTitle}] (${article.link})`);
+                logger.info(`[${myService}] --> Analyzing article ${j + 1}/${totalToAnalyzeCount}: [${articleTitle}]`, articleContext);
 
                 try {
                     await ServiceRssProcessor.processSingleArticle(article, feed, rssConfig);
                 } catch (processingError) {
-                    console.error(`[${SERVICE_NAME}] Erreur majeure non interceptée lors du traitement de l'article ${j + 1}/${totalToAnalyzeCount} (${article.link})`, processingError);
-                    // Optionally save an error status again here, although processSingleArticle should have tried
+                    // Normalement, processSingleArticle devrait gérer ses erreurs internes et les logger via handleServiceError.
+                    // Ce catch est une sécurité supplémentaire pour les erreurs imprévues.
+                    handleServiceError(processingError, `${myService}:${operation}:processArticleLoop`, `Unhandled error processing article`);
                 }
 
                 if (delayBetweenArticles > 0 && j < articlesToAnalyze.length - 1) {
-                    // console.debug(`[${SERVICE_NAME}] Délai ${delayBetweenArticles}ms avant le prochain article.`);
+                    logger.debug(`[${myService}] Applying delay (${delayBetweenArticles}ms) before next article.`, { ...articleContext, delayMs: delayBetweenArticles });
                     await sleep(delayBetweenArticles);
                 }
             }
 
-            console.info(`[${SERVICE_NAME}] === Fin traitement pour ${totalToAnalyzeCount} articles analysés du flux: ${feed.name} ===`);
+            logger.info(`[${myService}] === Finished processing for ${totalToAnalyzeCount} analyzed articles from feed: ${feed.name} ===`, { ...feedContext, analyzedCount: totalToAnalyzeCount });
 
             if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
-                console.debug(`[${SERVICE_NAME}] Délai ${delayBetweenFeeds}ms avant le prochain flux.`);
+                logger.debug(`[${myService}] Applying delay (${delayBetweenFeeds}ms) before next feed.`, { ...feedContext, delayMs: delayBetweenFeeds });
                 await sleep(delayBetweenFeeds);
             }
-
         }
 
-        console.info(`[${SERVICE_NAME}] Traitement de tous les flux RSS terminé.`);
+        logger.info(`[${myService}] Processing of all RSS feeds finished.`, { module: myService, operation });
     }
 
     private static async processSingleArticle(
@@ -181,37 +199,42 @@ export class ServiceRssProcessor {
         feed: RssFeedConfig,
         rssConfig: ServerRssConfig
     ): Promise<void> {
+        const operation = 'processSingleArticle';
         const fetchedAtDate = new Date();
+        const articleContext = { module: myService, operation, articleLink: article.link, articleTitle: article.title, feedName: feed.name, category: feed.category };
 
         try {
             let fullContent = article.contentSnippet;
             let scraped = false;
-            const minContentLength = rssConfig.minContentLengthForScraping ?? 250;
+            const minContentLength = rssConfig.minContentLengthForScraping ?? DEFAULT_SERVER_CONFIG.rss.minContentLengthForScraping;
 
             if (!fullContent || fullContent.length < minContentLength) {
-                console.info(`[${SERVICE_NAME}] Contenu court ou manquant pour ${article.link}. Tentative de scraping...`);
+                logger.info(`[${myService}] Short or missing content, attempting scrape...`, { ...articleContext, currentLength: fullContent?.length ?? 0, minLength: minContentLength });
                 try {
                     const scrapeResult = await ServiceContentScraper.scrapeArticleContent(article.link);
                     if (scrapeResult) {
                         fullContent = scrapeResult;
                         scraped = true;
-                        console.info(`[${SERVICE_NAME}] Scraping réussi pour ${article.link}.`);
-                        const scrapeDelay = rssConfig.scrapeRetryDelayMs ?? 1000;
+                        logger.info(`[${myService}] Scrape successful.`, { ...articleContext, contentLength: fullContent.length });
+                        const scrapeDelay = rssConfig.scrapeRetryDelayMs ?? DEFAULT_SERVER_CONFIG.rss.scrapeRetryDelayMs;
                         if (scrapeDelay > 0) {
+                            logger.debug(`[${myService}] Applying post-scrape delay: ${scrapeDelay}ms`, { ...articleContext, delayMs: scrapeDelay });
                             await sleep(scrapeDelay);
                         }
                     } else {
-                        console.warn(`[${SERVICE_NAME}] Échec du scraping (pas de contenu retourné) pour ${article.link}.`);
+                        logger.warn(`[${myService}] Scrape returned no content.`, articleContext);
                     }
                 } catch (scrapeError) {
-                    handleServiceError(scrapeError, SERVICE_NAME, `Échec du scraping pour l'article: ${article.link}`);
+                    handleServiceError(scrapeError, `${myService}:${operation}:scrape`, `Scraping failed`);
+                    // Garde le contenu snippet s'il existe, sinon fullContent reste vide/null
                     fullContent = article.contentSnippet;
-                    scraped = false;
+                    scraped = false; // Échec du scraping
                 }
             }
 
             const publicationDateObject = parseDateRss(article.isoDate);
 
+            // Données de base avant l'analyse IA
             const baseData: Partial<ProcessedArticleData> = {
                 link: article.link,
                 title: article.title,
@@ -220,14 +243,14 @@ export class ServiceRssProcessor {
                 category: feed.category,
                 fetchedAt: fetchedAtDate.toISOString(),
                 scrapedContent: scraped,
-                publicationDate: publicationDateObject?.toISOString() ?? null,
+                publicationDate: publicationDateObject?.toISOString() ?? null, // Garde null si invalide
             };
 
             let articleDataToSave: Partial<ProcessedArticleData>;
             const processedAtDate = new Date();
 
             if (!fullContent || fullContent.trim().length === 0) {
-                console.warn(`[${SERVICE_NAME}] Contenu final non disponible pour: ${article.link}. Sauvegarde partielle avec erreur.`);
+                logger.warn(`[${myService}] Final content unavailable or empty. Saving partial data with error.`, articleContext);
                 articleDataToSave = {
                     ...baseData,
                     summary: null,
@@ -236,32 +259,34 @@ export class ServiceRssProcessor {
                     error: `Content unavailable (${scraped ? 'scrape failed or empty' : 'snippet missing or empty'})`,
                 };
             } else {
+                logger.debug(`[${myService}] Content ready for Gemini analysis. Length: ${fullContent.length}`, { ...articleContext, contentLength: fullContent.length });
                 let summary: string | null = null;
                 let analysis: FinancialAnalysis | null = null;
                 let geminiError: string | null = null;
 
                 const geminiDelay = rssConfig.geminiRequestDelayMs ?? DEFAULT_SERVER_CONFIG.rss.geminiRequestDelayMs;
                 if (geminiDelay > 0) {
-                    console.debug(`[${SERVICE_NAME}] Application du délai Gemini: ${geminiDelay}ms avant l'appel pour ${article.link}`);
+                    logger.debug(`[${myService}] Applying Gemini request delay: ${geminiDelay}ms`, { ...articleContext, delayMs: geminiDelay });
                     await sleep(geminiDelay);
                 }
 
                 try {
-                    // console.debug(`[${SERVICE_NAME}] Requête d'analyse et résumé Gemini pour ${article.link}`); // Log now inside ServiceGemini
+                    logger.info(`[${myService}] --> Sending request to Gemini...`, articleContext);
                     const analysisResult: AnalysisWithSummary | null = await ServiceGemini.analyzeText(fullContent);
 
-                    if (analysisResult) {
+                    if (analysisResult && analysisResult.summary && analysisResult.analysis) { // Vérifie si les résultats sont valides
                         summary = analysisResult.summary;
                         analysis = analysisResult.analysis;
-                        console.info(`[${SERVICE_NAME}] <-- Analyse Gemini réussie pour ${article.link}`);
+                        logger.info(`[${myService}] <-- Gemini analysis successful.`, { ...articleContext, summaryLength: summary?.length, analysisKeys: analysis ? Object.keys(analysis) : [] });
                     } else {
                         geminiError = 'Gemini processing failed or returned empty/invalid results.';
-                        console.warn(`[${SERVICE_NAME}] <-- ${geminiError} pour ${article.link}`);
+                        logger.warn(`[${myService}] <-- ${geminiError}`, articleContext);
                     }
                 } catch (geminiErr) {
-                    handleServiceError(geminiErr, SERVICE_NAME, `Erreur API Gemini pour ${article.link}`);
+                    // Log l'erreur via handleServiceError
+                    handleServiceError(geminiErr, `${myService}:${operation}:gemini`, `Gemini API Error`);
                     geminiError = `Gemini API Error: ${geminiErr instanceof Error ? geminiErr.message : String(geminiErr)}`;
-                    console.warn(`[${SERVICE_NAME}] <-- Erreur API Gemini pour ${article.link}: ${geminiError}`);
+                    logger.warn(`[${myService}] <-- Gemini API Error captured.`, { ...articleContext, errorMessage: geminiError });
                 }
 
                 articleDataToSave = {
@@ -269,10 +294,11 @@ export class ServiceRssProcessor {
                     summary: summary,
                     analysis: analysis,
                     processedAt: processedAtDate.toISOString(),
-                    error: geminiError,
+                    error: geminiError, // Sera null si succès
                 };
             }
 
+            // Nettoyer les clés undefined avant sauvegarde
             Object.keys(articleDataToSave).forEach((key) => {
                 const typedKey = key as keyof ProcessedArticleData;
                 if (articleDataToSave[typedKey] === undefined) {
@@ -280,18 +306,23 @@ export class ServiceRssProcessor {
                 }
             });
 
-            console.info(`[${SERVICE_NAME}] Sauvegarde des résultats (RepoRss) pour: ${article.link}`);
-            await RepoRss.upsertByLink(articleDataToSave); // Assumes DB handles string dates
+            logger.info(`[${myService}] Saving results to database...`, { ...articleContext, hasError: !!articleDataToSave.error });
+            await RepoRss.upsertByLink(articleDataToSave);
+            logger.info(`[${myService}] Results saved successfully.`, { ...articleContext, hasError: !!articleDataToSave.error });
 
         } catch (error) {
-            const errorMessage = `Erreur majeure lors du traitement de l'article ${article.link} (Flux ${feed.name}): ${error instanceof Error ? error.message : String(error)}`;
-            handleServiceError(error, SERVICE_NAME, errorMessage);
+            // Ce catch global est pour les erreurs imprévues dans processSingleArticle
+            const errorMessage = `Unhandled error processing article: ${error instanceof Error ? error.message : String(error)}`;
+            handleServiceError(error, `${myService}:${operation}:global`, errorMessage);
             try {
-                console.error(`[${SERVICE_NAME}] Tentative de sauvegarde de l'état d'erreur en DB pour ${article.link}`);
-                await RepoRss.updateErrorStatus(article.link, errorMessage); // Assumes it handles string dates if needed
+                // Tentative ultime de marquer l'article comme échoué en DB
+                logger.error(`[${myService}] Attempting to save error status to DB after unhandled exception...`, { ...articleContext, finalErrorMessage: errorMessage });
+                await RepoRss.updateErrorStatus(article.link, errorMessage);
+                logger.warn(`[${myService}] Error status saved to DB after unhandled exception.`, { ...articleContext, finalErrorMessage: errorMessage });
             } catch (dbError) {
-                handleServiceError(dbError, SERVICE_NAME, `CRITIQUE: Impossible de sauvegarder l'état d'erreur en DB pour l'article ${article.link}`);
+                handleServiceError(dbError, `${myService}:${operation}:saveErrorStatus`, `CRITICAL: Failed to save error status to DB`);
             }
+            // Pas besoin de relancer ici, on a loggé l'erreur et tenté de sauver l'état.
         }
     }
 }

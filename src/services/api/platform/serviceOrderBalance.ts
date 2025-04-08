@@ -59,7 +59,7 @@ export class ServiceOrderBalance {
     try {
       const data = await ServiceCcxt.fetchOpenOrdersByPlatform(platform);
       const mappedData = MappingPlatform.mapOrders(platform, data);
-      console.info(`Fetched and mapped orders for ${platform}:`, { count: mappedData.length });
+      console.debug(`Fetched and mapped orders for ${platform}:`, { count: mappedData.length });
       return mappedData;
     } catch (error) {
       handleServiceError(error, 'fetchAndMapOrders', `Error fetching and mapping orders for ${platform}`);
@@ -74,7 +74,7 @@ export class ServiceOrderBalance {
     try {
       const mappedData = await this.fetchAndMapOrders(platform);
       await RepoOrderBalance.save(mappedData, platform);
-      console.info(`Updated orders from server for ${platform}.`, { count: mappedData.length });
+      console.debug(`Updated orders from server for ${platform}.`, { count: mappedData.length });
     } catch (error) {
       handleServiceError(error, 'updateOrdersFromServer', `Error updating orders from server for ${platform}`);
       throw error;

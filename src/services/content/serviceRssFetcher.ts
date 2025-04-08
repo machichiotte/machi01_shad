@@ -11,9 +11,9 @@ const SERVICE_NAME = 'ServiceRssFetcher';
 export class ServiceRssFetcher {
     static async getArticlesFromFeed(feedUrl: string): Promise<RssArticle[]> {
         try {
-            console.info(`[${SERVICE_NAME}] Récupération du flux : ${feedUrl}`);
+            console.debug(`[${SERVICE_NAME}] Récupération du flux : ${feedUrl}`);
             const feed = await parser.parseURL(feedUrl);
-            console.info(`[${SERVICE_NAME}] Trouvé ${feed.items.length} articles dans ${feedUrl}`);
+            console.debug(`[${SERVICE_NAME}] Trouvé ${feed.items.length} articles dans ${feedUrl}`);
 
             return feed.items
                 .map(item => ({

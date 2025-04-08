@@ -28,7 +28,7 @@ export class ServiceMarket {
     try {
       const currentMarkets = await ServiceMarket.fetchCurrentMarkets(platform);
       await RepoMarket.save(currentMarkets, platform);
-      console.info(`Données de marché pour ${platform} mises à jour dans la base de données. Total des enregistrements : ${currentMarkets.length}.`);
+      console.debug(`Données de marché pour ${platform} mises à jour dans la base de données. Total des enregistrements : ${currentMarkets.length}.`);
     } catch (error) {
       handleServiceError(error, 'updateMarketsForPlatform', `Erreur lors de la mise à jour des marchés pour ${platform}`);
     }

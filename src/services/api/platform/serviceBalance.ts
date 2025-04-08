@@ -8,7 +8,7 @@ import { PLATFORM } from '@typ/platform';
 import { retry } from '@utils/retryUtil';
 import { handleServiceError } from '@utils/errorUtil';
 import { executeCronTask } from '@utils/cronUtil';
-import { removeDuplicateDifferences, removeDuplicates } from '@utils/processorUtil';
+import { removeDuplicates } from '@utils/processorUtil';
 
 export class ServiceBalance {
   static async fetchDatabaseBalance(): Promise<MappedBalance[]> {
@@ -65,7 +65,7 @@ export class ServiceBalance {
    */
   static async updateBalancesForPlatform(platform: PLATFORM): Promise<void> {
 
-    console.log(`[ServiceBalance] Mise à jour des balances pour la plateforme ${platform}`)
+    console.debug(`[ServiceBalance] Mise à jour des balances pour la plateforme ${platform}`)
     try {
       return await retry(async () => {
         const [currentBalances, previousBalances] = await Promise.all([
@@ -75,10 +75,10 @@ export class ServiceBalance {
 
         const differences = ServiceBalance.compareBalances(previousBalances, currentBalances);
 
-        console.log(`[ServiceBalance] Mise à jour des balances pour la plateforme ${platform} : ${differences.length} nouvelles differences`)
-        const uniqueDifferences = removeDuplicateDifferences(differences)
+        console.debug(`[ServiceBalance] Mise à jour des balances pour la plateforme ${platform} : ${differences.length} nouvelles differences`)
+        const uniqueDifferences = removeDuplicates(differences)
 
-        console.log(`[ServiceBalance] Mise à jour des balances pour la plateforme ${platform} : ${uniqueDifferences.length} nouvelles differences`)
+        console.debug(`[ServiceBalance] Mise à jour des balances pour la plateforme ${platform} : ${uniqueDifferences.length} nouvelles differences`)
         if (uniqueDifferences.length > 0) {
           await Promise.all([
             RepoBalance.saveBalances(platform, currentBalances),

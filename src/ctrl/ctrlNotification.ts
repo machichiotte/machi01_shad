@@ -1,6 +1,7 @@
 // src/ctrl/ctrlNotification.ts
 import webPush from 'web-push'
 import { Request, Response } from 'express'
+import { handleControllerError } from '@src/utils/errorUtil'
 
 // Clés VAPID (remplacez par les vôtres)
 // const vapidKeys = {
@@ -10,8 +11,8 @@ import { Request, Response } from 'express'
 
 const vapidKeys = webPush.generateVAPIDKeys()
 
-console.log('Clé VAPID publique:', vapidKeys.publicKey)
-console.log('Clé VAPID privée:', vapidKeys.privateKey)
+//console.debug('Clé VAPID publique:', vapidKeys.publicKey)
+//console.debug('Clé VAPID privée:', vapidKeys.privateKey)
 
 // Configurer web-push
 webPush.setVapidDetails({
@@ -31,7 +32,7 @@ export async function subscribe(req: Request, res: Response): Promise<void> {
   const subscription: webPush.Subscription = req.body
   if (!subscriptions.find((sub) => sub.endpoint === subscription.endpoint)) {
     subscriptions.push(subscription)
-    console.log('Nouvel abonnement enregistré:', subscription.endpoint)
+    console.debug('Nouvel abonnement enregistré:', subscription.endpoint)
   }
 
   res.status(201).json({ message: 'Abonnement enregistré avec succès.' })
@@ -41,7 +42,7 @@ export async function subscribe(req: Request, res: Response): Promise<void> {
 //router.post('/send', async (req, res) => {
 
 export async function sendNotification(req: Request, res: Response): Promise<void> {
-  
+
   const {
     title,
     message
@@ -59,7 +60,8 @@ export async function sendNotification(req: Request, res: Response): Promise<voi
     await Promise.all(promises)
     res.status(200).json({ message: 'Notifications envoyées.' })
   } catch (error) {
-    console.error("Erreur lors de l'envoi des notifications:", error)
+    handleControllerError(res, error, `Erreur lors de l'envoi des notifications:`)
+
     res
       .status(500)
       .json({ message: "Échec de l'envoi des notifications.", error })

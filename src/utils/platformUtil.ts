@@ -16,20 +16,20 @@ function isValidPlatform(platform: string): platform is PLATFORM {
 function checkApiKeys(platform: PLATFORM): boolean {
   const platformConfig = config.apiConfig.platform[platform];
   if (!platformConfig) {
-    console.info(`Configuration manquante pour la plateforme : ${platform}`);
+    console.debug(`Configuration manquante pour la plateforme : ${platform}`);
     return false;
   }
 
   const { apiKey, secretKey } = platformConfig;
   if (!apiKey || !secretKey) {
-    //console.info(`Clés API manquantes pour la plateforme : ${platform}`);
+    //console.debug(`Clés API manquantes pour la plateforme : ${platform}`);
     return false;
   }
 
   // Vérification spécifique pour les plateformes nécessitant un passphrase
   if (['kucoin', 'okx'].includes(platform)) {
     if (!('passphrase' in platformConfig) || !platformConfig.passphrase) {
-      console.info(`Passphrase manquant pour la plateforme : ${platform}`);
+      console.debug(`Passphrase manquant pour la plateforme : ${platform}`);
       return false;
     }
   }

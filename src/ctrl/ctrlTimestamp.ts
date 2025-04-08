@@ -27,7 +27,7 @@ async function getUniqueTimestamp(req: Request, res: Response): Promise<void> {
       })
     }
   } catch (error) {
-    console.error(
+    handleControllerError(res, error,
       `Échec de la récupération de la dernière mise à jour unique. Platform: \`${req.params.platform}\`, Type: \`${req.params.type}\`, Erreur: \`${error instanceof Error ? error.message : 'Erreur inconnue'}\``
     )
     res.status(500).json({

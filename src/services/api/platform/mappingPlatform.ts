@@ -13,7 +13,6 @@ export class MappingPlatform {
 
     // Vérification des données d'entrée
     if (typeof balanceData !== 'object' || balanceData === null) {
-      console.error(`Données de balance invalides pour la plateforme : ${platform}`);
       throw new Error(`Données de balance invalides pour la plateforme : ${platform}`)
     }
 
@@ -36,7 +35,7 @@ export class MappingPlatform {
 
   private static mapTradeCommon(item: PlatformTrade, platform: PLATFORM, conversionRates: Record<string, number> = {}): Omit<MappedTrade, '_id'> {
     if (!item) {
-      console.error('Item est undefined');
+      console.warn('Item est undefined');
       return {} as Omit<MappedTrade, '_id'>;
     }
 
