@@ -9,7 +9,7 @@ import type { PageState } from 'primevue/paginator'; // Import PageState type
  * @param initialRowsPerPage - Optional initial number of rows per page (defaults to 10).
  * @returns Pagination state and methods.
  */
-export function usePagination(
+export function useVuePagination(
     totalItems: Ref<number> | ComputedRef<number>,
     initialRowsPerPage: number = 10
 ) {

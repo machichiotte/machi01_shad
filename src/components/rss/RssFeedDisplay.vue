@@ -5,7 +5,7 @@ import { useCalculStore } from '../../store/calculStore';
 import RssFilters from './RssFilters.vue'; // Import Filter Component
 import RssItemPanel from './RssItemPanel.vue'; // Import Item Component
 import { useRssFiltering } from '../../composables/useRssFiltering'; // Import Filtering Logic
-import { useVuePagination } from '../../composables/useVuePagination'; // Import Pagination Logic
+
 // import { formatDate } from '../../utils/formatters'; // No longer needed directly here if RssItemPanel imports it
 import type { RssItem } from '../../types/responseData';
 import type { FilterState } from './RssFilters.vue'; // Import Filter State type
@@ -14,6 +14,7 @@ import type { FilterState } from './RssFilters.vue'; // Import Filter State type
 import ProgressSpinner from 'primevue/progressspinner';
 import Message from 'primevue/message';
 import Paginator from 'primevue/paginator';
+import { useVuePagination } from '../../composables/useVuePagination.ts';
 
 // --- Store and Loading State ---
 const calculStore = useCalculStore();

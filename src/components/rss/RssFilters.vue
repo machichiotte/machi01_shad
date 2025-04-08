@@ -110,150 +110,183 @@ const isResetDisabled = computed(() => {
 </script>
 
 <template>
-    <div class="filters-container p-mb-3 p-d-flex p-flex-wrap p-ai-center p-gap-3">
+    <div class="filters-container p-mb-3">
+        <div class="p-grid p-formgrid p-align-center p-nogutter-lg">
 
-        <span class="p-input-icon-left search-input-wrapper">
-            <i class="pi pi-search" />
-            <InputText v-model="searchQuery" placeholder="Rechercher (titre, résumé, analyse...)"
-                class="p-inputtext-sm search-input" />
-        </span>
-
-        <MultiSelect v-model="selectedSources" :options="props.availableSources" placeholder="Filtrer par Source"
-            :maxSelectedLabels="1" showClear filter class="p-inputtext-sm filter-multiselect"
-            :disabled="props.availableSources.length === 0" />
-
-        <MultiSelect v-if="props.availableCategories.length > 0" v-model="selectedCategories"
-            :options="props.availableCategories" placeholder="Filtrer par Catégorie" :maxSelectedLabels="1" showClear
-            filter class="p-inputtext-sm filter-multiselect" />
-
-        <SelectButton v-model="contentFilterState" :options="contentFilterOptions" optionLabel="label"
-            optionValue="value" aria-labelledby="content-filter-label" class="content-filter-selectbutton" />
-        <span id="content-filter-label" class="p-sr-only">Filtrer par présence de contenu</span>
-
-        <SelectButton v-model="selectedDateRange" :options="dateRangeOptions" optionLabel="label" optionValue="value"
-            aria-labelledby="date-filter-label" class="date-filter-selectbutton">
-            <template #option="slotProps">
-                <span v-tooltip.bottom="slotProps.option.tooltip || slotProps.option.label">
-                    {{ slotProps.option.label }}
+            <div class="p-col-12 p-md-5 p-lg-4 p-field p-mb-2 p-mb-lg-0">
+                <span class="p-input-icon-left search-input-wrapper">
+                    <i class="pi pi-search search-icon" />
+                    <InputText v-model="searchQuery" placeholder="Rechercher..." class="p-inputtext-sm search-input" />
                 </span>
-            </template>
-        </SelectButton>
-        <span id="date-filter-label" class="p-sr-only">Filtrer par période (date d'analyse)</span>
+            </div>
 
-        <Button icon="pi pi-filter-slash" label="Effacer Filtres" class="p-button-sm p-button-secondary reset-button"
-            @click="resetAllFilters" v-tooltip.bottom="'Réinitialiser tous les filtres et la recherche'"
-            :disabled="isResetDisabled" />
+            <div class="p-col-12 p-sm-6 p-md-3 p-lg-auto p-field p-mb-2 p-mb-lg-0">
+                <MultiSelect v-model="selectedSources" :options="props.availableSources" placeholder="Sources"
+                    :maxSelectedLabels="1" showClear filter class="p-inputtext-sm compact-multiselect"
+                    :disabled="props.availableSources.length === 0" />
+            </div>
 
+            <div v-if="props.availableCategories.length > 0"
+                class="p-col-12 p-sm-6 p-md-3 p-lg-auto p-field p-mb-2 p-mb-lg-0">
+                <MultiSelect v-model="selectedCategories" :options="props.availableCategories" placeholder="Catégories"
+                    :maxSelectedLabels="1" showClear filter class="p-inputtext-sm compact-multiselect" />
+            </div>
+
+            <div class="p-col-12 p-sm-6 p-md-3 p-lg-auto p-field p-mb-2 p-mb-lg-0">
+                <span id="content-filter-label" class="p-sr-only">Filtrer par présence de contenu</span>
+                <SelectButton v-model="contentFilterState" :options="contentFilterOptions" optionLabel="label"
+                    optionValue="value" aria-labelledby="content-filter-label" class="compact-selectbutton" />
+            </div>
+
+            <div class="p-col-12 p-sm-6 p-md-3 p-lg-auto p-field p-mb-2 p-mb-lg-0">
+                <span id="date-filter-label" class="p-sr-only">Filtrer par période</span>
+                <SelectButton v-model="selectedDateRange" :options="dateRangeOptions" optionLabel="label"
+                    optionValue="value" aria-labelledby="date-filter-label" class="compact-selectbutton">
+                    <template #option="slotProps">
+                        <span v-tooltip.bottom="slotProps.option.tooltip || slotProps.option.label">
+                            {{ slotProps.option.label }}
+                        </span>
+                    </template>
+                </SelectButton>
+            </div>
+
+            <div class="p-col-12 p-md-2 p-lg-auto p-field p-ml-lg-auto p-text-right">
+                <Button icon="pi pi-filter-slash" label="Reset" class="p-button-sm p-button-secondary reset-button"
+                    @click="resetAllFilters" v-tooltip.bottom="'Réinitialiser tous les filtres'"
+                    :disabled="isResetDisabled" />
+            </div>
+        </div>
     </div>
 </template>
 
 <style scoped>
-/* Styles specific to the filters container and its elements */
-/* Copied and potentially adapted from the original RssFeedDisplay.vue */
+/* Conteneur général */
 .filters-container {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem;
+    /* Padding uniforme */
     background-color: #3a3a3a;
     border-radius: 6px;
     border: 1px solid #555;
-    /* display: flex; Already set by p-d-flex */
-    /* flex-wrap: wrap; Already set by p-flex-wrap */
-    /* align-items: center; Already set by p-ai-center */
-    /* gap: 0.75rem; Already set by p-gap-3 */
     margin-bottom: 1.5rem;
-    /* Use PrimeFlex class p-mb-3 */
 }
 
+/* Espacement entre les colonnes/champs */
+.p-field {
+    /* Utilise p-formgrid pour l'espacement ou ajoute un padding léger si nécessaire */
+    padding: 0 0.4rem;
+    /* Léger padding horizontal entre les éléments */
+    margin-bottom: 0.5rem;
+    /* Espacement vertical mobile */
+}
+
+/* Responsive: Pas de marge en bas et ajustement padding sur grand écran */
+@media (min-width: 992px) {
+
+    /* lg */
+    .p-field.p-mb-lg-0 {
+        margin-bottom: 0;
+    }
+
+    .p-grid>.p-field:last-child {
+        padding-right: 0;
+    }
+
+    /* Pas de padding après le dernier */
+    .p-grid>.p-field:first-child {
+        padding-left: 0;
+    }
+
+    /* Pas de padding avant le premier */
+}
+
+/* Responsive: Reset alignement bouton reset sur écrans moyens et petits */
+@media (max-width: 991px) {
+
+    /* En dessous de lg */
+    .p-ml-lg-auto {
+        margin-left: 0 !important;
+    }
+
+    /* Reset le push à droite */
+    .p-text-right {
+        text-align: left;
+    }
+
+    /* Alignement gauche pour reset sur mobile */
+}
+
+/* Responsive: Assure alignement gauche sur mobile */
+@media (max-width: 767px) {
+
+    /* md et en dessous */
+    .p-text-right {
+        text-align: left;
+    }
+}
+
+
+/* --- Barre de Recherche --- */
 .search-input-wrapper {
-    flex-grow: 1;
-    min-width: 200px;
-    flex-basis: 250px;
+    position: relative;
+    /* Nécessaire pour positionner l'icône absolument */
+    display: block;
+    /* Prend la largeur de la colonne */
+    width: 100%;
 }
 
 .search-input {
     width: 100%;
+    /* Prend toute la largeur du wrapper */
+    /* Le padding est géré par :deep ci-dessous */
 }
 
-.filter-multiselect {
-    min-width: 160px;
-    flex-basis: 180px;
-    flex-grow: 1;
+/* Positionnement et alignement de l'icône de recherche */
+:deep(.p-input-icon-left > i.search-icon) {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0;
+    /* Reset margin éventuelle */
+    color: #999;
+    z-index: 2;
+    /* Au cas où */
 }
 
-.content-filter-selectbutton,
-.date-filter-selectbutton {
-    flex-shrink: 0;
+/* S'assurer que le texte ne va pas sous l'icône */
+:deep(.p-input-icon-left > .p-inputtext.search-input) {
+    padding-left: 2.5rem !important;
+    /* Espace suffisant pour l'icône */
 }
 
-/* Responsive adjustments, same as before */
-@media (max-width: 1100px) {
-    .reset-button {
-        margin-left: 0;
-        flex-basis: 100%;
-        order: 10;
-        margin-top: 0.5rem;
-    }
 
-    .search-input-wrapper {
-        flex-basis: calc(40% - 1rem);
-    }
-
-    .filter-multiselect {
-        flex-basis: calc(30% - 1rem);
-    }
-
-    .content-filter-selectbutton,
-    .date-filter-selectbutton {
-        flex-basis: auto;
-        order: 5;
-    }
+/* --- Filtres Compacts --- */
+/* Style pour rendre MultiSelect plus compact */
+.compact-multiselect {
+    min-width: 140px;
+    /* Largeur minimale pour lisibilité */
+    width: auto;
+    /* Taille naturelle */
 }
 
-@media (max-width: 768px) {
-
-    .search-input-wrapper,
-    .filter-multiselect {
-        flex-basis: calc(50% - 0.5rem);
-    }
-
-    .content-filter-selectbutton,
-    .date-filter-selectbutton {
-        flex-basis: calc(50% - 0.5rem);
-    }
+/* Styles pour rendre SelectButton compact */
+.compact-selectbutton {
+    width: auto;
+    /* Taille naturelle */
 }
 
-@media (max-width: 576px) {
-
-    .search-input-wrapper,
-    .filter-multiselect,
-    .content-filter-selectbutton,
-    .date-filter-selectbutton {
-        flex-basis: 100%;
-    }
-
-    .reset-button {
-        margin-top: 0.75rem;
-    }
+/* Styles pour le bouton Reset */
+.reset-button {
+    white-space: nowrap;
+    /* Empêche le retour à la ligne du texte */
 }
 
-/* PrimeVue component overrides for filters (can stay here or be global) */
-:deep(.p-multiselect) {
-    /* Keep :deep if styles are scoped */
-    background-color: #444;
-    border: 1px solid #666;
-    color: #eee;
-    font-size: 0.875rem;
-}
 
-:deep(.p-multiselect:not(.p-disabled):hover) {
-    border-color: #888;
-}
+/* --- Overrides PrimeVue pour Apparence (Thème Sombre) --- */
 
-:deep(.p-multiselect.p-focus) {
-    box-shadow: 0 0 0 0.2rem rgba(14, 165, 233, 0.3);
-    border-color: #0ea5e9;
-}
-
+/* InputText (partie de la recherche) */
 :deep(.p-inputtext) {
+    /* Style de base */
     background-color: #444;
     border: 1px solid #666;
     color: #eee;
@@ -269,31 +302,119 @@ const isResetDisabled = computed(() => {
     border-color: #0ea5e9;
 }
 
-:deep(.p-selectbutton .p-button) {
-    background-color: #555;
-    border-color: #777;
-    color: #ccc;
+/* MultiSelect */
+:deep(.compact-multiselect .p-multiselect) {
+    /* Cibler via la classe ajoutée */
+    background-color: #444;
+    border: 1px solid #666;
+    color: #eee;
     font-size: 0.875rem;
+}
+
+:deep(.compact-multiselect .p-multiselect:not(.p-disabled):hover) {
+    border-color: #888;
+}
+
+:deep(.compact-multiselect .p-multiselect.p-focus) {
+    box-shadow: 0 0 0 0.2rem rgba(14, 165, 233, 0.3);
+    border-color: #0ea5e9;
+}
+
+/* Panel du MultiSelect (dropdown) */
+:deep(.p-multiselect-panel) {
+    background-color: #444;
+    border: 1px solid #666;
+}
+
+:deep(.p-multiselect-items) {
+    /* Conteneur des items */
+    padding: 0.25rem 0;
+}
+
+:deep(.p-multiselect-header) {
+    background-color: #3a3a3a;
+    border-bottom: 1px solid #555;
+    padding: 0.5rem;
+}
+
+:deep(.p-multiselect-header .p-inputtext) {
+    /* Style du filtre dans le dropdown */
+    background-color: #555;
+    border: 1px solid #777;
+    color: #eee;
+    font-size: 0.875rem;
+    padding: 0.4rem 0.6rem;
+}
+
+:deep(.p-multiselect-header .p-multiselect-close) {
+    color: #ccc;
+    margin-left: 0.5rem;
+}
+
+:deep(.p-multiselect-item) {
+    color: #eee;
+    padding: 0.5rem 0.75rem;
+    margin: 0;
+    border-radius: 0;
+}
+
+:deep(.p-multiselect-item:hover) {
+    background-color: #555;
+}
+
+:deep(.p-multiselect-item.p-highlight) {
+    background-color: #0ea5e9;
+    color: #fff;
+}
+
+:deep(.p-multiselect-item .p-checkbox) {
+    margin-right: 0.5rem;
+}
+
+:deep(.p-multiselect-empty-message) {
+    color: #aaa;
     padding: 0.5rem 0.75rem;
 }
 
-:deep(.p-selectbutton .p-button:not(.p-highlight):not(.p-disabled):hover) {
+/* SelectButton */
+:deep(.compact-selectbutton .p-button) {
+    background-color: #555;
+    border-color: #777;
+    color: #ccc;
+    /* Texte gris clair par défaut */
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    /* Transition douce */
+    /* Pas de flex-grow pour garder compact */
+}
+
+:deep(.compact-selectbutton .p-button:not(.p-highlight):not(.p-disabled):hover) {
     background-color: #666;
     border-color: #888;
     color: #fff;
+    /* Texte blanc au survol */
 }
 
-:deep(.p-selectbutton .p-button.p-highlight) {
-    background-color: #0ea5e9;
-    border-color: #0ea5e9;
-    color: #fff;
+/* Bouton sélectionné : Assurer que le texte est blanc et visible */
+:deep(.compact-selectbutton .p-button.p-highlight) {
+    background-color: #0ea5e9 !important;
+    /* Bleu */
+    border-color: #0ea5e9 !important;
+    color: #ffffff !important;
+    /* Blanc, !important pour forcer si conflit */
 }
 
-:deep(.p-selectbutton .p-button:focus) {
+:deep(.compact-selectbutton .p-button:focus) {
     box-shadow: 0 0 0 0.2rem rgba(14, 165, 233, 0.3);
+    z-index: 1;
+    /* Pour que le focus soit visible au-dessus des autres */
 }
 
-/* Accessibility helper */
+/* Tooltips (si nécessaire de styliser spécifiquement) */
+/* :deep(.p-tooltip .p-tooltip-text) { ... } */
+
+/* Accessibilité */
 .p-sr-only {
     position: absolute;
     width: 1px;
@@ -305,7 +426,4 @@ const isResetDisabled = computed(() => {
     white-space: nowrap;
     border-width: 0;
 }
-
-/* Tooltip styles (if v-tooltip is used and locally registered/imported) */
-/* Or rely on global tooltip styles */
 </style>
