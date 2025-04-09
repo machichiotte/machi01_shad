@@ -16,13 +16,14 @@ import { PLATFORMS } from '@constants/platform'
 import { config } from '@config/index'
 import { logger } from '@utils/loggerUtil';
 
+const myModule = 'ServiceCron';
+
 export class ServiceCron {
   static async initializeCronTasks(): Promise<void> {
     const operation = 'initializeCronTasks';
-    const module = 'ServiceCron'; // Pour ajouter aux logs
 
     try {
-      logger.info(`[${module}] Starting initialization of Cron tasks...`, { module, operation });
+      logger.debug(`Starting initialization of Cron tasks...`, { module: myModule, operation });
 
       const initializedTasks: string[] = [] // Tâches initialisées avec succès
       const failedTasks: string[] = [] // Tâches ayant échoué
@@ -31,11 +32,11 @@ export class ServiceCron {
       const validPlatforms = PLATFORMS.filter((platform) => {
         const isValid = checkApiKeys(platform);
         if (!isValid) {
-          logger.warn(`[${module}] API keys check failed or missing for platform: ${platform}. Tasks requiring it will be skipped.`, { module, operation, platform });
+          logger.warn(`API keys check failed or missing for platform: ${platform}. Tasks requiring it will be skipped.`, { module: myModule, operation, platform });
         }
         return isValid;
       });
-      logger.info(`[${module}] Valid platforms found after API key check: ${validPlatforms.join(', ') || 'None'}`, { module, operation, validPlatforms });
+      logger.info(`Valid platforms found after API key check: ${validPlatforms.join(', ') || 'None'}`, { module: myModule, operation, validPlatforms });
 
       // Tâches basées sur les plateformes
       const platformTasks: Task[] = [
@@ -75,28 +76,28 @@ export class ServiceCron {
         const taskIdentifier = `Platform Task ${name}`;
         try {
           if (validPlatforms.length === 0) {
-            logger.warn(`[${module}] Skipping scheduling of ${taskIdentifier} as no valid platforms were found.`, { module, operation, taskName: name });
+            logger.warn(`Skipping scheduling of ${taskIdentifier} as no valid platforms were found.`, { module: myModule, operation, taskName: name });
             failedTasks.push(`${name} (No valid platforms)`);
             return; // Ne pas planifier si aucune plateforme n'est valide
           }
 
           validPlatforms.forEach((platform) => {
             const platformTaskName = `${taskIdentifier} for ${platform}`;
-            logger.debug(`[${module}] Scheduling ${platformTaskName} with schedule: ${schedule}`, { module, operation, taskName: name, platform, schedule });
+            logger.debug(`Scheduling ${platformTaskName} with schedule: ${schedule}`, { module: myModule, operation, taskName: name, platform, schedule });
 
             cron.schedule(schedule, async () => {
               const startTime = Date.now();
-              logger.debug(`[${module}] Executing ${platformTaskName}...`, { module, taskName: name, platform, schedule });
+              logger.debug(`Executing ${platformTaskName}...`, { module: myModule, taskName: name, platform, schedule });
 
               try {
                 await task(platform); // Appelle la tâche avec l'argument platform
                 const duration = Date.now() - startTime;
-                logger.debug(`[${module}] ${platformTaskName} executed successfully.`, { module, taskName: name, platform, durationMs: duration });
+                logger.debug(`${platformTaskName} executed successfully.`, { module: myModule, taskName: name, platform, durationMs: duration });
               } catch (err) {
                 // handleServiceError utilise déjà le logger
                 handleServiceError(
                   err,
-                  `${module}: ${platformTaskName}`, // Nom de fonction plus précis pour handleServiceError
+                  `${myModule}: ${platformTaskName}`, // Nom de fonction plus précis pour handleServiceError
                   `Execution failed` // Message personnalisé
                 );
                 // Pas besoin de logger à nouveau l'erreur ici, handleServiceError s'en charge.
@@ -109,7 +110,7 @@ export class ServiceCron {
           // handleServiceError pour les erreurs de planification elles-mêmes
           handleServiceError(
             error,
-            `${module}: Scheduling ${taskIdentifier}`,
+            `${myModule}: Scheduling ${taskIdentifier}`,
             `Failed to schedule cron task`
           );
         }
@@ -120,20 +121,20 @@ export class ServiceCron {
         const taskIdentifier = `General Task ${name}`;
 
         try {
-          logger.debug(`[${module}] Scheduling ${taskIdentifier} with schedule: ${schedule}`, { module, operation, taskName: name, schedule });
+          logger.debug(`Scheduling ${taskIdentifier} with schedule: ${schedule}`, { module: myModule, operation, taskName: name, schedule });
 
           cron.schedule(schedule, async () => {
             const startTime = Date.now()
-            logger.debug(`[${module}] Executing ${taskIdentifier}...`, { module, taskName: name, schedule });
+            logger.debug(`Executing ${taskIdentifier}...`, { module: myModule, taskName: name, schedule });
 
             try {
               if (task.length > 0) {
-                logger.warn(`[${module}] General Task ${taskIdentifier} cannot be executed without arguments.`, { module, operation, taskName: name });
+                logger.warn(`General Task ${taskIdentifier} cannot be executed without arguments.`, { module: myModule, operation, taskName: name });
 
               } else {
                 await (task as () => void)()
                 const duration = Date.now() - startTime
-                logger.debug(`[${module}] ${taskIdentifier} executed successfully.`, { module, taskName: name, durationMs: duration });
+                logger.debug(`${taskIdentifier} executed successfully.`, { module: myModule, taskName: name, durationMs: duration });
 
               }
             } catch (error) {
@@ -157,9 +158,9 @@ export class ServiceCron {
 
       // Log des résultats
       if (failedTasks.length === 0) {
-        logger.info(`[${module}] All cron tasks initialized successfully.`, { module, operation, initializedTasks, validPlatforms });
+        logger.info(`All cron tasks initialized successfully.`, { module: myModule, operation, initializedTasks, validPlatforms });
       } else {
-        logger.warn(`[${module}] Cron tasks initialization completed with some failures.`, { module, operation, initializedTasks, failedTasks, validPlatforms });
+        logger.warn(`Cron tasks initialization completed with some failures.`, { module: myModule, operation, initializedTasks, failedTasks, validPlatforms });
       }
     } catch (error) {
       handleServiceError(

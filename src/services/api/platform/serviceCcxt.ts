@@ -6,19 +6,19 @@ import { handleServiceError } from '@utils/errorUtil';
 import { checkApiKeys } from '@utils/platformUtil';
 import { ObjectId } from 'mongodb';
 import { RepoConfigApi } from '@repo/config/repoConfigApi';
-import { logger } from '@utils/loggerUtil'; // Import Winston logger
+import { logger } from '@utils/loggerUtil';
 
-const myService = 'ServiceCcxt'; // Module name for logging context
+const myModule = 'ServiceCcxt';
 
 export class ServiceCcxt {
 
     static createPlatformInstance(platform: PLATFORM): CCTX.Exchange {
         const operation = 'createPlatformInstance';
-        logger.debug(`Creating CCXT instance for platform: ${platform}`, { myService, operation, platform });
+        logger.debug(`Creating CCXT instance for platform: ${platform}`, { module: myModule, operation, platform });
 
         if (!checkApiKeys(platform)) {
             // Log the error before throwing
-            logger.error(`API keys missing for platform: ${platform}`, { myService, operation, platform });
+            logger.error(`API keys missing for platform: ${platform}`, { module: myModule, operation, platform });
             throw new Error(`API keys missing for platform: ${platform}`);
         }
 
@@ -32,7 +32,7 @@ export class ServiceCcxt {
             // Use CCTX alias here
             const exchangeClass = CCTX[platform as keyof typeof CCTX] as typeof CCTX.Exchange;
             if (!exchangeClass) {
-                logger.error(`CCXT class not found for platform: ${platform}`, { myService, operation, platform });
+                logger.error(`CCXT class not found for platform: ${platform}`, { module: myModule, operation, platform });
                 throw new Error(`Unsupported platform or CCXT class not found: ${platform}`);
             }
 
@@ -47,11 +47,11 @@ export class ServiceCcxt {
             };
 
             const instance = new exchangeClass(platformParams);
-            logger.debug(`CCXT instance created successfully for ${platform}`, { myService, operation, platform });
+            logger.debug(`CCXT instance created successfully for ${platform}`, { module: myModule, operation, platform });
             return instance;
         } catch (error) {
             // handleServiceError already logs using logger.error
-            handleServiceError(error, `${myService}:${operation}`, `Error creating platform instance for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error creating platform instance for ${platform}`);
             throw error; // Re-throw after logging
         }
     }
@@ -60,58 +60,57 @@ export class ServiceCcxt {
 
     static async fetchRawBalance(platform: PLATFORM): Promise<PlatformBalances> {
         const operation = 'fetchRawBalance';
-        logger.debug(`Workspaceing raw balance for ${platform}...`, { myService, operation, platform });
+        logger.debug(`Workspaceing raw balance for ${platform}...`, { module: myModule, operation, platform });
         try {
             const platformInstance = this.createPlatformInstance(platform);
             const balance = await platformInstance.fetchBalance();
-            logger.debug(`Raw balance fetched successfully for ${platform}`, { myService, operation, platform });
+            logger.debug(`Raw balance fetched successfully for ${platform}`, { module: myModule, operation, platform });
             return balance;
         } catch (error) {
-            handleServiceError(error, `${myService}:${operation}`, `Error fetching raw balance for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error fetching raw balance for ${platform}`);
             throw error;
         }
     }
 
     static async fetchRawTicker(platform: PLATFORM): Promise<PlatformTickers> {
         const operation = 'fetchRawTicker';
-        logger.debug(`Workspaceing raw tickers for ${platform}...`, { myService, operation, platform });
+        logger.debug(`Workspaceing raw tickers for ${platform}...`, { module: myModule, operation, platform });
         try {
             const platformInstance = this.createPlatformInstance(platform);
             const tickers = await platformInstance.fetchTickers();
-            logger.debug(`Raw tickers fetched successfully for ${platform}. Count: ${Object.keys(tickers).length}`, { myService, operation, platform, tickerCount: Object.keys(tickers).length });
+            logger.debug(`Raw tickers fetched successfully for ${platform}. Count: ${Object.keys(tickers).length}`, { module: myModule, operation, platform, tickerCount: Object.keys(tickers).length });
             return tickers;
         } catch (error) {
-            handleServiceError(error, `${myService}:${operation}`, `Error fetching raw tickers for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error fetching raw tickers for ${platform}`);
             throw error;
         }
     }
 
     static async fetchRawMarket(platform: PLATFORM): Promise<PlatformMarket[]> {
         const operation = 'fetchRawMarket';
-        logger.debug(`Workspaceing raw markets for ${platform}...`, { myService, operation, platform });
+        logger.debug(`Workspaceing raw markets for ${platform}...`, { module: myModule, operation, platform });
         try {
             const platformInstance = this.createPlatformInstance(platform);
             const markets = await platformInstance.fetchMarkets();
-            logger.debug(`Raw markets fetched successfully for ${platform}. Count: ${markets.length}`, { myService, operation, platform, marketCount: markets.length });
+            logger.debug(`Raw markets fetched successfully for ${platform}. Count: ${markets.length}`, { module: myModule, operation, platform, marketCount: markets.length });
             return markets;
         } catch (error) {
-            handleServiceError(error, `${myService}:${operation}`, `Error fetching raw markets for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error fetching raw markets for ${platform}`);
             throw error;
         }
     }
 
     static async fetchRawTrade(platform: PLATFORM, symbol?: string, since?: number, limit?: number, params?: Record<string, unknown>): Promise<PlatformTrade[]> {
         const operation = 'fetchRawTrade';
-        const context = { module: myService, operation, platform, symbol: symbol || 'all', since, limit, params };
+        const context = { module: myModule, operation, platform, symbol: symbol || 'all', since, limit, params };
         logger.debug(`Workspaceing raw trades...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
             const trades = await platformInstance.fetchMyTrades(symbol, since, limit, params);
-            // Replace console.debug with logger.debug
             logger.debug(`Workspaceed ${trades.length} raw trades.`, { ...context, tradeCount: trades.length });
             return trades;
         } catch (error) {
-            handleServiceError(error, `${myService}:${operation}`, `Error fetching raw trades for ${platform}, symbol: ${symbol || 'all'}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error fetching raw trades for ${platform}, symbol: ${symbol || 'all'}`);
             throw error;
         }
     }
@@ -121,27 +120,27 @@ export class ServiceCcxt {
     // fetch
     static async fetchOpenOrdersByPlatform(platform: PLATFORM): Promise<PlatformOrder[]> {
         const operation = 'fetchOpenOrdersByPlatform';
-        logger.debug(`Workspaceing open orders for ${platform}...`, { myService, operation, platform });
+        logger.debug(`Workspaceing open orders for ${platform}...`, { module: myModule, operation, platform });
         try {
             let orders: PlatformOrder[];
             if (platform === 'kucoin') { // Example platform-specific logic
-                logger.debug(`Using paginated fetch for ${platform}.`, { myService, operation, platform });
+                logger.debug(`Using paginated fetch for ${platform}.`, { module: myModule, operation, platform });
                 orders = await this.fetchRawOpenOrdersByPage(platform);
             } else {
-                logger.debug(`Using standard fetch for ${platform}.`, { myService, operation, platform });
+                logger.debug(`Using standard fetch for ${platform}.`, { module: myModule, operation, platform });
                 orders = await this.fetchRawOpenOrders(platform);
             }
-            logger.debug(`Workspaceed ${orders.length} open orders for ${platform}.`, { myService, operation, platform, orderCount: orders.length });
+            logger.debug(`Workspaceed ${orders.length} open orders for ${platform}.`, { module: myModule, operation, platform, orderCount: orders.length });
             return orders;
         } catch (error) {
-            handleServiceError(error, `${myService}:${operation}`, `Error fetching open orders for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error fetching open orders for ${platform}`);
             throw error;
         }
     }
 
     static async fetchRawOpenOrders(platform: PLATFORM, symbol?: string, since?: number, limit?: number, params?: Record<string, unknown>): Promise<PlatformOrder[]> {
         const operation = 'fetchRawOpenOrders';
-        const context = { module: myService, operation, platform, symbol: symbol || 'all', since, limit, params };
+        const context = { module: myModule, operation, platform, symbol: symbol || 'all', since, limit, params };
         logger.debug(`Workspaceing raw open orders (standard)...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
@@ -154,14 +153,14 @@ export class ServiceCcxt {
             logger.debug(`Workspaceed ${orders.length} raw open orders (standard).`, { ...context, orderCount: orders.length });
             return orders;
         } catch (error) {
-            handleServiceError(error, `${myService}:${operation}`, `Error fetching raw open orders (standard) for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error fetching raw open orders (standard) for ${platform}`);
             throw error;
         }
     }
 
     static async fetchRawOpenOrdersByPage(platform: PLATFORM, symbol?: string, since?: number, _limit?: number /* limit unused */, params?: Record<string, unknown>, pageSize: number = 100): Promise<PlatformOrder[]> {
         const operation = 'fetchRawOpenOrdersByPage';
-        const context = { myService, operation, platform, symbol: symbol || 'all', since, params, pageSize };
+        const context = { module: myModule, operation, platform, symbol: symbol || 'all', since, params, pageSize };
         logger.debug(`Workspaceing raw open orders (paginated)...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
@@ -208,7 +207,7 @@ export class ServiceCcxt {
             logger.debug(`Workspaceed ${allOrders.length} raw open orders (paginated) in ${currentPage - 1} pages.`, { ...context, orderCount: allOrders.length, totalPages: currentPage - 1 });
             return allOrders;
         } catch (error) {
-            handleServiceError(error, `${myService}:${operation}`, `Error fetching raw open orders (paginated) for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error fetching raw open orders (paginated) for ${platform}`);
             throw error;
         }
     }
@@ -216,7 +215,7 @@ export class ServiceCcxt {
     // --- cancel ---
     static async bunchCancelAllOrdersByAsset(platform: PLATFORM, symbol?: string, orderIds?: ObjectId[]) {
         const operation = 'bunchCancelAllOrdersByAsset';
-        const context = { myService, operation, platform, symbol, orderIds: orderIds?.map(id => id.toHexString()) };
+        const context = { module: myModule, operation, platform, symbol, orderIds: orderIds?.map(id => id.toHexString()) };
         logger.info(`Attempting to cancel orders...`, context);
         try {
             if (platform === 'okx') { // Platform specific logic example
@@ -235,7 +234,7 @@ export class ServiceCcxt {
                 logger.info(`Standard cancelAllOrders initiated for ${platform}`, context);
             }
         } catch (error) {
-            handleServiceError(error, `${myService}:${operation}`, `Error during bunch cancel orders for ${platform}, symbol: ${symbol || 'all'}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error during bunch cancel orders for ${platform}, symbol: ${symbol || 'all'}`);
             throw error;
         }
     }
@@ -243,7 +242,7 @@ export class ServiceCcxt {
     static async cancelAllOrdersRecursively(platform: PLATFORM, symbol: string, orderIds: ObjectId[]) {
         const operation = 'cancelAllOrdersRecursively';
         const orderIdStrings = orderIds.map(id => id.toHexString());
-        const context = { myService, operation, platform, symbol, orderIds: orderIdStrings, orderCount: orderIds.length };
+        const context = { module: myModule, operation, platform, symbol, orderIds: orderIdStrings, orderCount: orderIds.length };
         logger.debug(`Cancelling ${orderIds.length} specific orders recursively...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
@@ -260,7 +259,7 @@ export class ServiceCcxt {
                 logger.warn(`Completed recursive cancellation with ${failedCancellations.length} failures out of ${orderIds.length}.`, { ...context, successes: successfulCancellations, failures: failedCancellations.length });
                 failedCancellations.forEach((result, index) => {
                     if (result.status === 'rejected') {
-                        handleServiceError(result.reason, `${myService}:${operation}:singleCancel`, `Failed to cancel order ID ${orderIdStrings[index]}`);
+                        handleServiceError(result.reason, `${myModule}:${operation}:singleCancel`, `Failed to cancel order ID ${orderIdStrings[index]}`);
                     }
                 });
                 // Decide if partial failure should throw an error
@@ -269,21 +268,21 @@ export class ServiceCcxt {
                 logger.info(`Successfully initiated cancellation for all ${orderIds.length} orders.`, context);
             }
         } catch (error) { // Catch errors from createPlatformInstance or unexpected Promise.allSettled issues
-            handleServiceError(error, `${myService}:${operation}`, `Error during recursive cancellation process for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error during recursive cancellation process for ${platform}`);
             throw error;
         }
     }
 
     static async cancelOneOrder(platform: PLATFORM, symbol: string, orderId: string) {
         const operation = 'cancelOneOrder';
-        const context = { myService, operation, platform, symbol, orderId };
+        const context = { module: myModule, operation, platform, symbol, orderId };
         logger.info(`Attempting to cancel single order...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
             await platformInstance.cancelOrder(orderId, symbol);
             logger.info(`Successfully initiated cancellation for order ${orderId}`, context);
         } catch (error) {
-            handleServiceError(error, `${myService}:${operation}`, `Error cancelling order ${orderId} for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error cancelling order ${orderId} for ${platform}`);
             throw error;
         }
     }
@@ -291,7 +290,7 @@ export class ServiceCcxt {
     // --- execute order ---
     static async executeMarketOrder(platform: PLATFORM, symbol: string, amount: number, orderSide: 'buy' | 'sell', orderMode: 'market' | 'limit', price?: number, stopLossPrice?: number): Promise<PlatformOrder> {
         const operation = 'executeMarketOrder';
-        const context = { module: myService, operation, platform, symbol, amount, side: orderSide, type: orderMode, price, stopLossPrice };
+        const context = { module: myModule, operation, platform, symbol, amount, side: orderSide, type: orderMode, price, stopLossPrice };
         logger.info(`Attempting to execute order...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
@@ -326,7 +325,7 @@ export class ServiceCcxt {
             logger.info(`Order executed successfully. Order ID: ${orderResult?.id || 'N/A'}`, { ...context, orderId: orderResult?.id, resultStatus: orderResult?.status });
             return orderResult;
         } catch (error) {
-            handleServiceError(error, `${myService}:${operation}`, `Error executing ${orderMode} ${orderSide} order for ${symbol} on ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error executing ${orderMode} ${orderSide} order for ${symbol} on ${platform}`);
             throw error;
         }
     }
@@ -334,7 +333,7 @@ export class ServiceCcxt {
     // --- trades ---
     static async fetchPlatformTrades(platform: PLATFORM): Promise<PlatformTrade[]> {
         const operation = 'fetchPlatformTrades';
-        const context = { myService, operation, platform };
+        const context = { module: myModule, operation, platform };
         logger.info(`Workspaceing all trades for platform ${platform}...`, context);
         try {
             let trades: PlatformTrade[] = [];
@@ -363,14 +362,14 @@ export class ServiceCcxt {
             logger.info(`Workspaceed a total of ${trades.length} trades for ${platform}.`, { ...context, tradeCount: trades.length });
             return trades;
         } catch (error) {
-            handleServiceError(error, `${myService}:${operation}`, `Error fetching trades for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error fetching trades for ${platform}`);
             throw error;
         }
     }
 
     private static async fetchKucoinTrades(platform: PLATFORM): Promise<PlatformTrade[]> {
         const operation = 'fetchKucoinTrades';
-        const context = { myService, operation, platform };
+        const context = { module: myModule, operation, platform };
         logger.debug(`Workspaceing Kucoin trades (paginated by time)...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
@@ -404,21 +403,21 @@ export class ServiceCcxt {
                     }
                 } catch (weekError) {
                     // Log error for the specific week but continue fetching other weeks
-                    handleServiceError(weekError, `${myService}:${operation}:fetchWeek`, `Error fetching trades for week ${weeksBack - i + 1} on ${platform}`);
+                    handleServiceError(weekError, `${myModule}:${operation}:fetchWeek`, `Error fetching trades for week ${weeksBack - i + 1} on ${platform}`);
                 }
                 // await sleep(platformInstance.rateLimit); // Respect rate limit between fetches
             }
             logger.debug(`Finished fetching Kucoin trades. Total fetched: ${allTrades.length}`, { ...context, totalTradeCount: allTrades.length });
             return allTrades;
         } catch (error) { // Catch errors from createPlatformInstance
-            handleServiceError(error, `${myService}:${operation}`, `Error setting up Kucoin trade fetch for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error setting up Kucoin trade fetch for ${platform}`);
             throw error;
         }
     }
 
     private static async fetchHtxTrades(platform: PLATFORM): Promise<PlatformTrade[]> {
         const operation = 'fetchHtxTrades';
-        const context = { myService, operation, platform };
+        const context = { module: myModule, operation, platform };
         logger.debug(`Workspaceing HTX (Huobi) trades (paginated by time)...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
@@ -447,14 +446,14 @@ export class ServiceCcxt {
                         logger.warn(`Workspaceed maximum limit (${fetchLimit}) for iteration ${i + 1}. Some trades might be missed.`, { ...context, iteration: i + 1 });
                     }
                 } catch (iterError) {
-                    handleServiceError(iterError, `${myService}:${operation}:fetchIteration`, `Error fetching trades for iteration ${i + 1} on ${platform}`);
+                    handleServiceError(iterError, `${myModule}:${operation}:fetchIteration`, `Error fetching trades for iteration ${i + 1} on ${platform}`);
                 }
                 // await sleep(platformInstance.rateLimit); // Respect rate limit
             }
             logger.debug(`Finished fetching HTX trades. Total fetched: ${allTrades.length}`, { ...context, totalTradeCount: allTrades.length });
             return allTrades;
         } catch (error) { // Catch errors from createPlatformInstance
-            handleServiceError(error, `${myService}:${operation}`, `Error setting up HTX trade fetch for ${platform}`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error setting up HTX trade fetch for ${platform}`);
             throw error;
         }
     }

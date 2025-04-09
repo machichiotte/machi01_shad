@@ -6,7 +6,9 @@ import { MappedMarket } from '@typ/market';
 import { PLATFORM } from '@typ/platform';
 import { handleServiceError } from '@utils/errorUtil';
 import { executeCronTask } from '@utils/cronUtil';
+import { logger } from '@src/utils/loggerUtil';
 
+const myModule = 'ServiceMarket'
 export class ServiceMarket {
   /**
    * Fetches the current markets from the specified platform.
@@ -25,12 +27,13 @@ export class ServiceMarket {
    * Updates the markets for a specified platform.
    */
   static async updateMarketsForPlatform(platform: PLATFORM): Promise<void> {
+    const operation = 'updateMarketsForPlatform'
     try {
       const currentMarkets = await ServiceMarket.fetchCurrentMarkets(platform);
       await RepoMarket.save(currentMarkets, platform);
-      console.debug(`Données de marché pour ${platform} mises à jour dans la base de données. Total des enregistrements : ${currentMarkets.length}.`);
+      logger.debug(`Données de marché pour ${platform} mises à jour dans la base de données. Total des enregistrements : ${currentMarkets.length}.`, { module: myModule, operation });
     } catch (error) {
-      handleServiceError(error, 'updateMarketsForPlatform', `Erreur lors de la mise à jour des marchés pour ${platform}`);
+      handleServiceError(error, `${operation}`, `Erreur lors de la mise à jour des marchés pour ${platform}`);
     }
   }
 

@@ -2,6 +2,9 @@
 import { config } from '@config/index';
 import { PLATFORM } from '@typ/platform'
 import { PLATFORMS } from '@constants/platform'
+import { logger } from './loggerUtil';
+
+const myModule = 'platformUtil'
 
 // Fonction utilitaire pour valider la plateforme
 function isValidPlatform(platform: string): platform is PLATFORM {
@@ -14,22 +17,23 @@ function isValidPlatform(platform: string): platform is PLATFORM {
      * @returns true si toutes les clés nécessaires sont présentes, false sinon
      */
 function checkApiKeys(platform: PLATFORM): boolean {
+  const operation = 'checkApiKeys'
   const platformConfig = config.apiConfig.platform[platform];
   if (!platformConfig) {
-    console.debug(`Configuration manquante pour la plateforme : ${platform}`);
+    logger.debug(`Configuration manquante pour la plateforme : ${platform}`, { module: myModule, operation });
     return false;
   }
 
   const { apiKey, secretKey } = platformConfig;
   if (!apiKey || !secretKey) {
-    //console.debug(`Clés API manquantes pour la plateforme : ${platform}`);
+    logger.debug(`Clés API manquantes pour la plateforme : ${platform}`, { module: myModule, operation });
     return false;
   }
 
   // Vérification spécifique pour les plateformes nécessitant un passphrase
   if (['kucoin', 'okx'].includes(platform)) {
     if (!('passphrase' in platformConfig) || !platformConfig.passphrase) {
-      console.debug(`Passphrase manquant pour la plateforme : ${platform}`);
+      logger.debug(`Passphrase manquant pour la plateforme : ${platform}`, { module: myModule, operation });
       return false;
     }
   }

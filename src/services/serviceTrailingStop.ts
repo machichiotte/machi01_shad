@@ -4,6 +4,8 @@ import { Asset, HighestPrice, UpdatedOrder } from '@typ/trailingStop';
 import { RepoTrailingStop } from '@repo/repoTrailingStop';
 import { handleServiceError } from '@utils/errorUtil';
 import { PLATFORM } from '@typ/platform';
+import { logger } from '@src/utils/loggerUtil';
+const myModule = 'ServiceTrailingStop'
 
 export class ServiceTrailingStop {
     private static readonly PERCENTAGE_TO_LOSE = 0.01;
@@ -61,6 +63,7 @@ export class ServiceTrailingStop {
     }
 
     private static async processTrailingStops(symbolsAndBalanceByPlatform: Record<string, Set<{ base: string; balance: number; }>>, highestPrices: HighestPrice[], kucoinOnly = false): Promise<UpdatedOrder[]> {
+        const operation = 'processTrailingStops'
         try {
             const updatedOrders: UpdatedOrder[] = [];
 
@@ -91,7 +94,7 @@ export class ServiceTrailingStop {
                             orderCount += platform === 'binance' ? 1 : 0;
                         }
                     } else {
-                        // console.debug(`Prix actuel non défini pour ${base} sur ${platform}`);
+                        console.debug(`Prix actuel non défini pour ${base} sur ${platform}`, { module: myModule, operation });
                     }
                 }
             }
@@ -104,6 +107,7 @@ export class ServiceTrailingStop {
     }
 
     private static async handleRateLimiting(platform: PLATFORM, requestWeight: number, orderCount: number, lastResetTime: number): Promise<void> {
+        const operation = 'handleRateLimiting'
         try {
             const currentTime = Date.now();
             const timeSinceLastReset = currentTime - lastResetTime;
@@ -114,7 +118,7 @@ export class ServiceTrailingStop {
 
             if (rateLimitReached) {
                 const waitTime = Math.max(0, (platform === 'kucoin' ? this.rateLimits.kucoin.period : this.rateLimits.binance.period) - timeSinceLastReset);
-                console.debug(`Limite atteinte pour ${platform}. Pause de ${waitTime}ms.`);
+                console.debug(`Limite atteinte pour ${platform}. Pause de ${waitTime}ms.`, { module: myModule, operation });
                 await new Promise(resolve => setTimeout(resolve, waitTime));
             }
         } catch (error) {
@@ -123,13 +127,15 @@ export class ServiceTrailingStop {
     }
 
     private static async updateOrCreateOrder(platform: PLATFORM, base: string, balance: number, currentPrice: number, highestPrice: number | undefined): Promise<UpdatedOrder | null> {
+        const operation = 'updateOrCreateOrder'
+
         try {
             if (!highestPrice && currentPrice) {
                 const stopPrice = currentPrice * (1 - this.PERCENTAGE_TO_LOSE);
                 await RepoTrailingStop.cancelAllOrdersByBunch(platform, base);
                 await RepoTrailingStop.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
                 await RepoTrailingStop.updateHighestPrice(platform, base, currentPrice);
-                console.debug(`Ordre de trailing stop créé pour ${base}`);
+                console.debug(`Ordre de trailing stop créé pour ${base}`, { module: myModule, operation });
                 return { base, platform };
             }
 
@@ -138,7 +144,7 @@ export class ServiceTrailingStop {
                 await RepoTrailingStop.cancelAllOrdersByBunch(platform, base);
                 await RepoTrailingStop.createOrUpdateStopLossOrder(platform, stopLossPrice, base, balance);
                 await RepoTrailingStop.updateHighestPrice(platform, base, currentPrice);
-                console.debug(`Ordre de trailing stop mis à jour pour ${base}`);
+                console.debug(`Ordre de trailing stop mis à jour pour ${base}`, { module: myModule, operation });
                 return { base, platform };
             }
         } catch (error) {

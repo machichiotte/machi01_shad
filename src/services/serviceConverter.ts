@@ -1,11 +1,15 @@
 // src/services/serviceConverter.ts
 import { MappedTrade } from "@typ/trade"
 import { STABLECOINS } from "@constants/coins"
+import { logger } from "@src/utils/loggerUtil"
+
+const myModule = 'ServiceConverter'
 
 /**
  * Converts input data to JSON format based on the detected model type.
  */
 async function convertToJSON(data: TradeModel[]): Promise<Omit<MappedTrade, '_id'>[]> {
+  const operation = 'convertToJSON'
   const modelType = detectModelType(data)
 
   switch (modelType) {
@@ -18,7 +22,7 @@ async function convertToJSON(data: TradeModel[]): Promise<Omit<MappedTrade, '_id
     case 'model_htx':
       return await convertModelHTX(data as ModelHtx[])
     default:
-      console.warn('Modèle de fichier CSV non pris en charge')
+      logger.warn('Modèle de fichier CSV non pris en charge', { module: myModule, operation })
       return []
   }
 }
@@ -120,7 +124,7 @@ async function getEqUSDFromAPI(
   
         return response.data.rate * total);
       } catch (error) {
-        logger.error("Erreur lors de l'appel API pour obtenir le taux de conversion :", error);
+        logger.error(`Erreur lors de l'appel API pour obtenir le taux de conversion : ${error}`, { {module:myModule, operation, error}});
         return null;
       }*/
     return 0

@@ -8,7 +8,7 @@ import { DEFAULT_APICONFIG } from "@config/default";
 import { logger } from '@utils/loggerUtil'; // Import Winston logger
 
 // --- Constants ---
-const myService = 'ServiceGemini';
+const myModule = 'ServiceGemini';
 const MAX_RETRIES = 3;
 const DEFAULT_RETRY_DELAY_MS = 60000; // 60 seconds default
 const QUOTA_ERROR_STATUS_CODE_NUM = 429;
@@ -63,11 +63,11 @@ const parseRetryDelay = (errorMessage: string): number | null => {
     }
 
     if (seconds !== null && !isNaN(seconds)) {
-        logger.debug(`Parsed retry delay: ${seconds}s`, { module: myService }); // Use logger.debug
+        logger.debug(`Parsed retry delay: ${seconds}s`, { module: myModule }); // Use logger.debug
         return seconds * 1000;
     }
 
-    logger.debug('Could not parse retry delay from error message.', { module: myService, errorMessage }); // Use logger.debug
+    logger.debug('Could not parse retry delay from error message.', { module: myModule, errorMessage }); // Use logger.debug
     return null;
 };
 
@@ -92,20 +92,20 @@ export class ServiceGemini {
         const operation = 'initializeModel';
         const geminiConfig = config.apiConfig.gemini;
         if (!geminiConfig) {
-            logger.warn('Service disabled: Gemini configuration missing.', { module: myService, operation }); // Use logger.warn
+            logger.warn('Service disabled: Gemini configuration missing.', { module: myModule, operation }); // Use logger.warn
             return null;
         }
 
         const decryptedConfig = RepoConfigApi.decryptConfigGemini(geminiConfig);
         if (!decryptedConfig?.apiKey) {
-            logger.warn('Service disabled: Invalid or incomplete Gemini configuration (API key missing?).', { module: myService, operation }); // Use logger.warn
+            logger.warn('Service disabled: Invalid or incomplete Gemini configuration (API key missing?).', { module: myModule, operation }); // Use logger.warn
             return null;
         }
 
         try {
             const genAI = new GoogleGenerativeAI(decryptedConfig.apiKey);
             const modelName = decryptedConfig?.model ?? DEFAULT_APICONFIG.gemini.model;
-            logger.debug(`Initializing Gemini model: ${modelName}`, { module: myService, operation, modelName });
+            logger.debug(`Initializing Gemini model: ${modelName}`, { module: myModule, operation, modelName });
 
             return genAI.getGenerativeModel({
                 model: modelName,
@@ -122,7 +122,7 @@ export class ServiceGemini {
             });
         } catch (error) {
             // handleServiceError uses logger.error internally
-            handleServiceError(error, `${myService}:${operation}`, `Error initializing Gemini model`);
+            handleServiceError(error, `${myModule}:${operation}`, `Error initializing Gemini model`);
             return null;
         }
     }
@@ -155,7 +155,7 @@ Voici le texte :
     private static _validateAnalysisResponse(parsedJson: unknown): AnalysisWithSummary | null {
         const operation = '_validateAnalysisResponse';
         if (typeof parsedJson !== 'object' || parsedJson === null) {
-            logger.warn('Validation failed: Parsed JSON is not an object.', { module: myService, operation, receivedType: typeof parsedJson });
+            logger.warn('Validation failed: Parsed JSON is not an object.', { module: myModule, operation, receivedType: typeof parsedJson });
             return null;
         }
         const data = parsedJson as Record<string, unknown>;
@@ -163,11 +163,11 @@ Voici le texte :
         const isRelevant = data[KEY_IS_RELEVANT];
 
         if (typeof summary !== 'string' || summary.trim() === '') {
-            logger.warn(`Validation failed: '${KEY_SUMMARY}' is missing, invalid, or empty.`, { module: myService, operation, receivedSummary: summary, jsonData: JSON.stringify(data) });
+            logger.warn(`Validation failed: '${KEY_SUMMARY}' is missing, invalid, or empty.`, { module: myModule, operation, receivedSummary: summary, jsonData: JSON.stringify(data) });
             return null;
         }
         if (typeof isRelevant !== 'string' || !VALID_RELEVANCE.includes(isRelevant)) {
-            logger.warn(`Validation failed: '${KEY_IS_RELEVANT}' is missing or invalid.`, { module: myService, operation, receivedRelevance: isRelevant, jsonData: JSON.stringify(data) });
+            logger.warn(`Validation failed: '${KEY_IS_RELEVANT}' is missing or invalid.`, { module: myModule, operation, receivedRelevance: isRelevant, jsonData: JSON.stringify(data) });
             return null;
         }
 
@@ -189,7 +189,7 @@ Voici le texte :
         ];
 
         if (!validationChecks.every(check => check)) {
-            logger.warn('Validation failed: One or more optional fields have incorrect types.', { module: myService, operation, jsonData: JSON.stringify(data) });
+            logger.warn('Validation failed: One or more optional fields have incorrect types.', { module: myModule, operation, jsonData: JSON.stringify(data) });
             return null;
         }
 
@@ -201,41 +201,41 @@ Voici le texte :
     // --- Single API Attempt ---
     private static async _attemptAnalysis(model: GenerativeModel, text: string): Promise<AttemptResult> {
         const operation = '_attemptAnalysis';
-        logger.debug(`Attempting analysis... Text length: ${text.length}`, { module: myService, operation, textLength: text.length });
+        logger.debug(`Attempting analysis... Text length: ${text.length}`, { module: myModule, operation, textLength: text.length });
         const prompt = this._buildAnalysisPrompt(text);
         try {
             const result = await model.generateContent(prompt);
             const responseText = result.response.text();
 
             if (!responseText?.trim()) {
-                logger.warn('Received empty response from API.', { module: myService, operation });
+                logger.warn('Received empty response from API.', { module: myModule, operation });
                 return 'empty_response';
             }
-            logger.debug(`Received raw response. Length: ${responseText.length}`, { module: myService, operation, responseLength: responseText.length });
+            logger.debug(`Received raw response. Length: ${responseText.length}`, { module: myModule, operation, responseLength: responseText.length });
 
 
             let parsedJson: unknown;
             try {
                 const cleanedText = responseText.replace(/^```(?:json)?\s*|```$/g, '').trim();
                 if (!cleanedText) {
-                    logger.warn('Received empty response after cleaning markdown.', { module: myService, operation });
+                    logger.warn('Received empty response after cleaning markdown.', { module: myModule, operation });
                     return 'empty_response';
                 }
                 parsedJson = JSON.parse(cleanedText);
-                logger.debug('Successfully parsed JSON response.', { module: myService, operation });
+                logger.debug('Successfully parsed JSON response.', { module: myModule, operation });
             } catch (parseError) {
                 // Log detailed error and the raw text that failed parsing
-                logger.error('JSON parsing error.', { module: myService, operation, error: formatErrorForLog(parseError), rawResponse: responseText });
+                logger.error('JSON parsing error.', { module: myModule, operation, error: formatErrorForLog(parseError), rawResponse: responseText });
                 return 'parse_error';
             }
 
             const validatedData = this._validateAnalysisResponse(parsedJson);
             if (!validatedData) {
-                logger.warn('Response validation failed. See previous validation logs.', { module: myService, operation });
+                logger.warn('Response validation failed. See previous validation logs.', { module: myModule, operation });
                 return 'validation_error';
             }
 
-            logger.debug('Analysis attempt successful and validated.', { module: myService, operation });
+            logger.debug('Analysis attempt successful and validated.', { module: myModule, operation });
             return validatedData; // Success
 
         } catch (error: unknown) {
@@ -260,12 +260,12 @@ Voici le texte :
             }
 
             if (isQuotaError) {
-                logger.warn('Quota error detected.', { module: myService, operation, status: httpStatusCode ?? 'N/A', error: errorDetails });
+                logger.warn('Quota error detected.', { module: myModule, operation, status: httpStatusCode ?? 'N/A', error: errorDetails });
                 const retryDelayMs = parseRetryDelay(errorMessage);
                 return new QuotaError(errorMessage, retryDelayMs);
             } else {
                 // Use handleServiceError for non-quota API errors, which logs logger.error
-                handleServiceError(error, `${myService}:${operation}`, `Non-quota API error. Status: ${httpStatusCode ?? 'N/A'}`);
+                handleServiceError(error, `${myModule}:${operation}`, `Non-quota API error. Status: ${httpStatusCode ?? 'N/A'}`);
                 return error instanceof Error ? error : new Error(errorMessage);
             }
         }
@@ -274,28 +274,28 @@ Voici le texte :
     // --- Main Analysis Method ---
     static async analyzeText(text: string): Promise<AnalysisWithSummary | null> {
         const operation = 'analyzeText';
-        logger.debug('Analyze text request received.', { module: myService, operation, textLength: text.length });
+        logger.debug('Analyze text request received.', { module: myModule, operation, textLength: text.length });
 
         // 1. Check and wait for global pause
         if (ServiceGemini.isGloballyPaused) {
             const now = Date.now();
             if (now < ServiceGemini.globalPauseUntil) {
                 const waitTime = ServiceGemini.globalPauseUntil - now;
-                logger.warn(`Global quota pause active. Waiting for ${Math.ceil(waitTime / 1000)}s...`, { module: myService, operation, waitMs: waitTime, pauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
+                logger.warn(`Global quota pause active. Waiting for ${Math.ceil(waitTime / 1000)}s...`, { module: myModule, operation, waitMs: waitTime, pauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
 
                 if (!ServiceGemini.globalPausePromise) {
                     ServiceGemini.globalPausePromise = sleep(waitTime).then(() => {
-                        logger.info('Global quota pause finished.', { module: myService, operation: 'globalPauseHandler' });
+                        logger.info('Global quota pause finished.', { module: myModule, operation: 'globalPauseHandler' });
                         if (Date.now() >= ServiceGemini.globalPauseUntil) {
-                            logger.debug('Resetting global pause flags.', { module: myService, operation: 'globalPauseHandler' });
+                            logger.debug('Resetting global pause flags.', { module: myModule, operation: 'globalPauseHandler' });
                             ServiceGemini.isGloballyPaused = false;
                             ServiceGemini.globalPauseUntil = 0;
                             ServiceGemini.globalPausePromise = null;
                         } else {
-                            logger.debug('Global pause extended by another request, flags not reset.', { module: myService, operation: 'globalPauseHandler', currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
+                            logger.debug('Global pause extended by another request, flags not reset.', { module: myModule, operation: 'globalPauseHandler', currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
                         }
                     }).catch(err => {
-                        logger.error('Error during global pause sleep.', { module: myService, operation: 'globalPauseHandler', error: formatErrorForLog(err) });
+                        logger.error('Error during global pause sleep.', { module: myModule, operation: 'globalPauseHandler', error: formatErrorForLog(err) });
                         ServiceGemini.isGloballyPaused = false; // Attempt reset
                         ServiceGemini.globalPauseUntil = 0;
                         ServiceGemini.globalPausePromise = null;
@@ -307,7 +307,7 @@ Voici le texte :
 
             } else {
                 if (ServiceGemini.isGloballyPaused) { // Double check state after potential wait
-                    logger.info('Global quota pause already expired. Resetting flag.', { module: myService, operation });
+                    logger.info('Global quota pause already expired. Resetting flag.', { module: myModule, operation });
                     ServiceGemini.isGloballyPaused = false;
                     ServiceGemini.globalPauseUntil = 0;
                     ServiceGemini.globalPausePromise = null;
@@ -318,19 +318,19 @@ Voici le texte :
         // 2. Initialize model
         const model = await this.initializeModel();
         if (!model) {
-            logger.error('Failed to initialize model. Cannot analyze text.', { module: myService, operation });
+            logger.error('Failed to initialize model. Cannot analyze text.', { module: myModule, operation });
             return null;
         }
 
         // 3. Retry loop
         let retries = 0;
         while (retries <= MAX_RETRIES) {
-            logger.debug(`Attempt ${retries + 1}/${MAX_RETRIES + 1}...`, { module: myService, operation, attempt: retries + 1, maxAttempts: MAX_RETRIES + 1 });
+            logger.debug(`Attempt ${retries + 1}/${MAX_RETRIES + 1}...`, { module: myModule, operation, attempt: retries + 1, maxAttempts: MAX_RETRIES + 1 });
             const result: AttemptResult = await this._attemptAnalysis(model, text);
 
             // a) Success
             if (typeof result === 'object' && result !== null && !(result instanceof Error) && 'analysis' in result && 'summary' in result) {
-                logger.info('Analysis successful.', { module: myService, operation, attempt: retries + 1 });
+                logger.info('Analysis successful.', { module: myModule, operation, attempt: retries + 1 });
                 return result;
             }
 
@@ -339,30 +339,30 @@ Voici le texte :
                 if (retries < MAX_RETRIES) {
                     const delayMs = result.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS;
                     retries++;
-                    logger.warn(`Quota error (429). Activating global pause. Retrying attempt ${retries + 1}/${MAX_RETRIES + 1} in ${delayMs / 1000}s...`, { module: myService, operation, attempt: retries + 1, maxAttempts: MAX_RETRIES + 1, delayMs: delayMs, quotaErrorMessage: result.message });
+                    logger.warn(`Quota error (429). Activating global pause. Retrying attempt ${retries + 1}/${MAX_RETRIES + 1} in ${delayMs / 1000}s...`, { module: myModule, operation, attempt: retries + 1, maxAttempts: MAX_RETRIES + 1, delayMs: delayMs, quotaErrorMessage: result.message });
 
                     // Activate Global Pause Logic (same as before, just logging changes)
                     const pauseUntil = Date.now() + delayMs;
                     if (pauseUntil > ServiceGemini.globalPauseUntil) {
-                        logger.info(`Setting/Extending global pause until ${new Date(pauseUntil).toISOString()}`, { module: myService, operation: 'globalPauseActivation', pauseUntil: new Date(pauseUntil).toISOString(), triggeredByAttempt: retries }); // Use logger.info
+                        logger.info(`Setting/Extending global pause until ${new Date(pauseUntil).toISOString()}`, { module: myModule, operation: 'globalPauseActivation', pauseUntil: new Date(pauseUntil).toISOString(), triggeredByAttempt: retries }); // Use logger.info
                         ServiceGemini.isGloballyPaused = true;
                         ServiceGemini.globalPauseUntil = pauseUntil;
                         ServiceGemini.globalPausePromise = sleep(delayMs).then(() => {
-                            logger.info('Global quota pause finished (timer initiated by this request).', { module: myService, operation: 'globalPauseHandler', triggeredByAttempt: retries });
+                            logger.info('Global quota pause finished (timer initiated by this request).', { module: myModule, operation: 'globalPauseHandler', triggeredByAttempt: retries });
                             if (Date.now() >= ServiceGemini.globalPauseUntil) {
-                                logger.debug('Resetting global pause flags after wait.', { module: myService, operation: 'globalPauseHandler' });
+                                logger.debug('Resetting global pause flags after wait.', { module: myModule, operation: 'globalPauseHandler' });
                                 ServiceGemini.isGloballyPaused = false;
                                 ServiceGemini.globalPauseUntil = 0;
                                 ServiceGemini.globalPausePromise = null;
                             } else {
-                                logger.info('Global pause was extended further. Not resetting flags.', { module: myService, operation: 'globalPauseHandler', currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
+                                logger.info('Global pause was extended further. Not resetting flags.', { module: myModule, operation: 'globalPauseHandler', currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
                             }
                         }).catch(err => {
-                            logger.error('Error during global pause sleep.', { module: myService, operation: 'globalPauseHandler', error: formatErrorForLog(err) });
+                            logger.error('Error during global pause sleep.', { module: myModule, operation: 'globalPauseHandler', error: formatErrorForLog(err) });
                             ServiceGemini.isGloballyPaused = false; ServiceGemini.globalPauseUntil = 0; ServiceGemini.globalPausePromise = null; // Reset state on error
                         });
                     } else {
-                        logger.info('Global pause already active and extends further. This request will wait.', { module: myService, operation, currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
+                        logger.info('Global pause already active and extends further. This request will wait.', { module: myModule, operation, currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
                     }
                     // End Global Pause Activation
 
@@ -371,7 +371,7 @@ Voici le texte :
                 } else {
                     // Max retries exceeded for quota error
                     const errorMessage = `Quota error persisted after ${MAX_RETRIES + 1} attempts. Last error: ${result.message}`;
-                    logger.error(errorMessage, { module: myService, operation, maxAttempts: MAX_RETRIES + 1, lastError: result.message });
+                    logger.error(errorMessage, { module: myModule, operation, maxAttempts: MAX_RETRIES + 1, lastError: result.message });
                     // Log with handleServiceError as well for consistency? Optional.
                     // handleServiceError(new Error(errorMessage), `${module}:${operation}`, `Quota error persisted`);
                     return null;
@@ -380,25 +380,25 @@ Voici le texte :
 
             // c) Other specific non-retryable errors
             if (typeof result === 'string') {
-                logger.error(`Non-retryable error during analysis: ${result}. Aborting.`, { module: myService, operation, errorType: result, attempt: retries + 1 });
+                logger.error(`Non-retryable error during analysis: ${result}. Aborting.`, { module: myModule, operation, errorType: result, attempt: retries + 1 });
                 return null;
             }
 
             // d) Generic API Error or other unexpected Error
             if (result instanceof Error) {
-                logger.error(`Unhandled non-quota API error encountered. Aborting analysis.`, { module: myService, operation, error: formatErrorForLog(result), attempt: retries + 1 });
+                logger.error(`Unhandled non-quota API error encountered. Aborting analysis.`, { module: myModule, operation, error: formatErrorForLog(result), attempt: retries + 1 });
                 // Error already logged by _attemptAnalysis via handleServiceError if it came from there.
                 return null;
             }
 
             // e) Safeguard
-            logger.error('Unexpected state in analyzeText retry loop. Aborting.', { module: myService, operation, result: result, attempt: retries + 1 });
+            logger.error('Unexpected state in analyzeText retry loop. Aborting.', { module: myModule, operation, result: result, attempt: retries + 1 });
             return null;
 
         } // End while loop
 
         // Should only be reached if loop finishes unexpectedly (e.g., MAX_RETRIES logic error), but safeguard log
-        logger.error(`Analysis failed after ${MAX_RETRIES + 1} attempts due to persistent issues (exited loop).`, { module: myService, operation, maxAttempts: MAX_RETRIES + 1 });
+        logger.error(`Analysis failed after ${MAX_RETRIES + 1} attempts due to persistent issues (exited loop).`, { module: myModule, operation, maxAttempts: MAX_RETRIES + 1 });
         return null;
     }
 }

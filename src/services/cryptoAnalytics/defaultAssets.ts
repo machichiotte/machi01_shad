@@ -40,6 +40,9 @@ import {
 } from '@constants/coins'
 import { DEFAULT_ASSET_FOR_METRICS } from '@constants/metrics'
 import { PLATFORM } from '@typ/platform'
+import { logger } from '@src/utils/loggerUtil'
+
+const myModule = 'defaultAssets'
 
 export function calculateAssetMetrics(
   base: string,
@@ -215,8 +218,9 @@ function getCurrentPrice(
   cmcPrice: number | undefined,
   tags: string[]
 ): number {
+  const operation = 'getCurrentPrice'
   if (ticker === 0) {
-    //console.warn('Paramètres invalides pour getCurrentPrice', ticker + " - " + cmcPrice + " - " + tags)
+    logger.warn(`Paramètres invalides pour getCurrentPrice`, { module: myModule, operation, ticker, cmcPrice, tags })
     if (cmcPrice && tags.includes('stablecoin')) return cmcPrice
   }
 

@@ -1,7 +1,9 @@
 // src/services/cryptoAnalytics/tradingUtils.ts
 import { TP_THRESHOLD } from '@constants/metrics'
 import { MappedBalance } from '@typ/balance'
+import { logger } from '@src/utils/loggerUtil';
 
+const myModule = 'tradingUtils'
 /**
  * Calcule la possession actuelle en fonction du prix actuel et du solde.
  */
@@ -33,21 +35,22 @@ export function getProfit(
  * Récupère le solde pour un symbole donné à partir d'un objet de solde.
  */
 export function getBalanceBySymbol(base: string, balanceObj: MappedBalance): number {
+  const operation = 'getBalanceBySymbol'
   if (typeof balanceObj !== 'object' || balanceObj === null) {
-    console.warn(`balanceObj is invalid: ${balanceObj}`)
+    logger.warn(`balanceObj is invalid: ${balanceObj}`, { module: myModule, operation })
     return 0
   }
 
   if (balanceObj.base !== base) {
-    console.warn(`base not found: ${base}`)
+    logger.warn(`base not found: ${base}`, { module: myModule, operation })
     return 0
   }
 
   const balanceAsNumber = balanceObj.balance
   if (!isNaN(balanceAsNumber)) return balanceAsNumber
 
-  console.warn(
-    `Invalid balance value for symbol ${base}: ${balanceObj.balance}`
+  logger.warn(
+    `Invalid balance value for symbol ${base}: ${balanceObj.balance}`, { module: myModule, operation }
   )
   return 0
 }

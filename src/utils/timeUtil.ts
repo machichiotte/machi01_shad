@@ -1,4 +1,8 @@
+import { logger } from "./loggerUtil";
+
 // src/utils/timeUtil.ts
+const myModule = 'timeUtil'
+
 export function hasTimeElapsed(lastTimestamp: string, intervalInMs: number): boolean {
     const lastUpdate = parseInt(lastTimestamp, 10);
     if (isNaN(lastUpdate)) return false;
@@ -8,18 +12,19 @@ export function hasTimeElapsed(lastTimestamp: string, intervalInMs: number): boo
 }
 
 export function parseDateRss(dateString: string | undefined | null): Date | null {
+    const operation = 'parseDateRss'
     if (!dateString) {
         return null;
     }
     try {
         const date = new Date(dateString);
         if (isNaN(date.getTime())) {
-            console.warn(`Invalid date string encountered: ${dateString}`);
+            logger.warn(`Invalid date string encountered: ${dateString}`, { module: myModule, operation });
             return null;
         }
         return date;
-    } catch (e) {
-        console.warn(`Error parsing date string "${dateString}":`, e);
+    } catch (error) {
+        logger.warn(`Error parsing date string "${dateString}": ${error}`, { module: myModule, operation });
         return null;
     }
 }

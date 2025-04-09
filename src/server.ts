@@ -76,12 +76,10 @@ function startServer(): Promise<Server> {
   const operation = 'startServer';
   return new Promise((resolve, reject) => {
     const server = app.listen(PORT, () => {
-      // Utiliser logger.info pour le démarrage réussi
-      logger.info(`Server started successfully on port: ${PORT}`, { module: moduleName, operation, port: PORT });
+      logger.debug(`Server started successfully on port: ${PORT}`, { module: moduleName, operation, port: PORT });
       resolve(server);
     });
     server.on('error', (error) => {
-      // Utiliser logger.error pour les erreurs de démarrage du serveur
       logger.error('Failed to start server:', { module: moduleName, operation, port: PORT, error: formatErrorForLog(error) });
       reject(error);
     });

@@ -1,18 +1,23 @@
 // src/services/content/serviceContentScraper.ts
 import * as cheerio from 'cheerio';
 import { handleServiceError } from '@utils/errorUtil';
+import { logger } from '@src/utils/loggerUtil';
 
 const SERVICE_NAME = 'ServiceContentScraper';
 const MAX_CONTENT_LENGTH = 15000;
 const FETCH_TIMEOUT = 15000;
 
+const myModule = 'ServiceContentScraper'
+
 export class ServiceContentScraper {
     static async scrapeArticleContent(url: string): Promise<string | null> {
+        const operation = 'scrapeArticleContent'
+
         const controller = new AbortController(); // Pour gérer le timeout
         const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
 
         try {
-            // console.debug(`[${SERVICE_NAME}] Fetching : ${url}`);
+            logger.debug(`Fetching : ${url}`, { module: myModule, operation, url });
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -53,13 +58,13 @@ export class ServiceContentScraper {
                 $(selector).find('script, style, noscript, iframe, header, footer, nav, aside, .sidebar, .related-posts, .comments, .share-buttons, form').remove();
                 content = $(selector).text();
                 if (content && content.trim().length > 100) {
-                    console.debug(`[${SERVICE_NAME}] Contenu trouvé avec le sélecteur : ${selector}`);
+                    logger.debug(`Contenu trouvé avec le sélecteur : ${selector}`, { module: myModule, operation, url });
                     break;
                 }
             }
 
             if (!content || content.trim().length < 100) {
-                console.warn(`[${SERVICE_NAME}] Contenu insuffisant ou non trouvé pour ${url}`);
+                logger.warn(`Contenu insuffisant ou non trouvé pour ${url}`, { module: myModule, operation, url });
                 return null;
             }
 
@@ -68,11 +73,11 @@ export class ServiceContentScraper {
                 .trim();
 
             if (content.length > MAX_CONTENT_LENGTH) {
-                console.warn(`[${SERVICE_NAME}] Contenu tronqué pour ${url} (longueur: ${content.length})`);
+                logger.warn(`Contenu tronqué pour ${url} (longueur: ${content.length})`, { module: myModule, operation, url });
                 content = content.substring(0, MAX_CONTENT_LENGTH) + "... (tronqué)";
             }
 
-            // console.debug(`[${SERVICE_NAME}] Scraping réussi pour : ${url} (longueur: ${content.length})`);
+            logger.debug(`[Scraping réussi pour : ${url} (longueur: ${content.length})`, { module: myModule, operation, url });
             return content;
 
         } catch (error: unknown) {

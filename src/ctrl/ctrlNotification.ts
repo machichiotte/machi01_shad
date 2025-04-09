@@ -2,7 +2,9 @@
 import webPush from 'web-push'
 import { Request, Response } from 'express'
 import { handleControllerError } from '@src/utils/errorUtil'
+import { logger } from '@src/utils/loggerUtil'
 
+const myModule = 'ctrlNotifications'
 // Clés VAPID (remplacez par les vôtres)
 // const vapidKeys = {
 //   publicKey: '<YOUR_PUBLIC_KEY>',
@@ -11,8 +13,8 @@ import { handleControllerError } from '@src/utils/errorUtil'
 
 const vapidKeys = webPush.generateVAPIDKeys()
 
-//console.debug('Clé VAPID publique:', vapidKeys.publicKey)
-//console.debug('Clé VAPID privée:', vapidKeys.privateKey)
+//logger.debug(`Clé VAPID publique: ${vapidKeys.publicKey}`, {module: myModule})
+//logger.debug(`Clé VAPID privée: ${vapidKeys.privateKey}`, {module: myModule})
 
 // Configurer web-push
 webPush.setVapidDetails({
@@ -28,11 +30,11 @@ const subscriptions: Array<webPush.Subscription> = [] // Stockage temporaire des
 //router.post('/subscribe', (req, res) => {
 
 export async function subscribe(req: Request, res: Response): Promise<void> {
-
+  const operation = 'subscribe'
   const subscription: webPush.Subscription = req.body
   if (!subscriptions.find((sub) => sub.endpoint === subscription.endpoint)) {
     subscriptions.push(subscription)
-    console.debug('Nouvel abonnement enregistré:', subscription.endpoint)
+    logger.debug(`Nouvel abonnement enregistré: ${subscription.endpoint}`, { module: myModule, operation })
   }
 
   res.status(201).json({ message: 'Abonnement enregistré avec succès.' })

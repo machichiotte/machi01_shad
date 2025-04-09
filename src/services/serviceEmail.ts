@@ -3,18 +3,20 @@ import nodemailer, { Transporter, SentMessageInfo } from 'nodemailer'
 import { handleServiceError } from '@utils/errorUtil'
 import { config } from '@config/index';
 import { EmailOptions } from '@typ/email';
+import { logger } from '@src/utils/loggerUtil';
 
 const transporter: Transporter = nodemailer.createTransport(config.serverConfig.smtp)
-
+const myModule = 'ServiceEmail'
 export class ServiceEmail {
 
   /**
    * Sends an email using the configured SMTP transporter.
    */
   static async sendMail(options: EmailOptions): Promise<SentMessageInfo> {
+    const operation = 'sendMail'
     try {
       const info = await transporter.sendMail(options)
-      //console.debug(`Email sent: ${info.response}`)
+      logger.debug(`Email sent: ${info.response}`, { module: myModule, operation, options })
       return info
     } catch (error) {
       handleServiceError(error, 'sendMail', `Error sending email`)

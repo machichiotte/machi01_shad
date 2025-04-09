@@ -1,4 +1,7 @@
+import { logger } from "./loggerUtil";
+
 // src/utils/retryUtil.ts
+const myModule = 'retryUtil'
 interface NonRetryableError extends Error {
     isNonRetryable?: boolean;
 }
@@ -17,6 +20,7 @@ export async function retry<A extends unknown[], R>(
     retries: number = 3,
     delay: number = 1000
 ): Promise<R> {
+    const operation = 'retry'
     let attempt = 0;
 
     while (attempt < retries) {
@@ -30,7 +34,7 @@ export async function retry<A extends unknown[], R>(
 
             attempt++;
 
-            console.debug(`Nouvelle tentative de ${functionName}... essai ${attempt} après ${delay}ms`);
+            logger.debug(`Nouvelle tentative de ${functionName}... essai ${attempt} après ${delay}ms`, { module: myModule, operation });
             await new Promise(resolve => setTimeout(resolve, delay));
             delay *= 2; // Backoff exponentiel
         }

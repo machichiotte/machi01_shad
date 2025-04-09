@@ -5,7 +5,6 @@ import { ServiceTrade } from '@services/api/platform/serviceTrade';
 import { ServiceTicker } from '@services/api/platform/serviceTicker';
 import { ServiceCmc } from '@services/api/serviceCmc';
 import { ServiceStrategy } from '@services/api/database/serviceStrategy';
-// Utiliser handleServiceError qui utilise déjà logger.error
 import { handleServiceError, formatErrorForLog } from '@utils/errorUtil';
 import { areAllDataValid, isValidAssetMetrics } from '@utils/processorUtil';
 import { QUOTE_CURRENCIES } from '@constants/coins';
@@ -22,22 +21,21 @@ import { Asset } from '@typ/cryptoAnalytics';
 import { config } from '@config/index';
 import { ServiceDatabase } from '@services/api/database/serviceDatabase';
 import { ServiceOrderBalance } from '@services/api/platform/serviceOrderBalance';
-// Importer le logger configuré
 import { logger } from '@utils/loggerUtil';
 
-const myService = 'ServiceProcessor'; // Pour contexte de log
+const myModule = 'ServiceProcessor'; // Pour contexte de log
 const COLLECTION_NAME = config.databaseConfig.collection.machi;
 const COLLECTION_CATEGORY = config.databaseConfig.category.machi;
 
 export class ServiceProcessor {
   static async processBalanceChanges(platform: PLATFORM, differences: BalanceWithDifference[]): Promise<void> {
     const operation = 'processBalanceChanges';
-    logger.debug(`Début processBalanceChanges pour ${platform}`, { module: myService, operation, platform, differenceCount: differences.length });
+    logger.debug(`Début processBalanceChanges pour ${platform}`, { module: myModule, operation, platform, differenceCount: differences.length });
     try {
       await ServiceOrderBalance.updateOrdersFromServer(platform);
       const newTrades: MappedTrade[] = [];
       for (const difference of differences) {
-        const context = { module: myService, operation, platform: difference.platform, base: difference.base };
+        const context = { module: myModule, operation, platform: difference.platform, base: difference.base };
         logger.debug(`Vérification des nouveaux trades`, context);
         const trades = await this.checkNewTrades(difference); // checkNewTrades logguera ses propres erreurs/warnings
         if (Array.isArray(trades) && trades.length > 0) {
@@ -48,32 +46,32 @@ export class ServiceProcessor {
         }
       }
       if (newTrades.length > 0) {
-        logger.debug(`Sauvegarde de ${newTrades.length} nouveau(x) trade(s) en base`, { module: myService, operation, platform, newTradeCount: newTrades.length });
+        logger.debug(`Sauvegarde de ${newTrades.length} nouveau(x) trade(s) en base`, { module: myModule, operation, platform, newTradeCount: newTrades.length });
         await ServiceTrade.saveTradesToDatabase(newTrades);
-        logger.info(`Successfully saved ${newTrades.length} new trade(s).`, { module: myService, operation, platform, newTradeCount: newTrades.length }); // Log de succès en info
+        logger.debug(`Successfully saved ${newTrades.length} new trade(s).`, { module: myModule, operation, platform, newTradeCount: newTrades.length }); // Log de succès en info
       }
-      logger.debug(`Fin processBalanceChanges pour ${platform}`, { module: myService, operation, platform });
+      logger.debug(`Fin processBalanceChanges pour ${platform}`, { module: myModule, operation, platform });
     } catch (error) {
-      handleServiceError(error, `${myService}:${operation}`, `Erreur lors du traitement des changements de balance pour ${platform}`);
+      handleServiceError(error, `${myModule}:${operation}`, `Erreur lors du traitement des changements de balance pour ${platform}`);
       throw error;
     }
   }
 
   static async saveMachi(): Promise<void> {
     const operation = 'saveMachi';
-    logger.info('Début saveMachi', { module: myService, operation });
+    logger.info('Début saveMachi', { module: myModule, operation });
     try {
       const data = await this.calculateAllMachi();
       if (data && data.length > 0) {
-        logger.info(`Attempting to save ${data.length} Machi asset(s) to DB...`, { module: myService, operation, count: data.length });
+        logger.info(`Attempting to save ${data.length} Machi asset(s) to DB...`, { module: myModule, operation, count: data.length });
         await ServiceDatabase.saveDocumentsWithTimestamp(data, COLLECTION_NAME, COLLECTION_CATEGORY);
-        logger.info(`Successfully saved ${data.length} Machi asset(s).`, { module: myService, operation, count: data.length });
+        logger.info(`Successfully saved ${data.length} Machi asset(s).`, { module: myModule, operation, count: data.length });
       } else {
-        logger.info('No Machi data calculated to save.', { module: myService, operation });
+        logger.info('No Machi data calculated to save.', { module: myModule, operation });
       }
-      logger.info('Fin saveMachi', { module: myService, operation });
+      logger.info('Fin saveMachi', { module: myModule, operation });
     } catch (error) {
-      handleServiceError(error, `${myService}:${operation}`, 'Erreur lors de la sauvegarde de Machi');
+      handleServiceError(error, `${myModule}:${operation}`, 'Erreur lors de la sauvegarde de Machi');
       throw error;
     }
   }
@@ -81,25 +79,23 @@ export class ServiceProcessor {
   // Calcule l'ensemble des métriques pour les assets
   static async calculateAllMachi(): Promise<Asset[]> {
     const operation = 'calculateAllMachi';
-    logger.info('Début calculateAllMachi', { module: myService, operation });
+    logger.info('Début calculateAllMachi', { module: myModule, operation });
     const fetchStart = Date.now();
     const [dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances] = await this.fetchAllDatabaseData();
-    logger.debug(`Database data fetched in ${Date.now() - fetchStart}ms`, { module: myService, operation });
+    logger.debug(`Database data fetched in ${Date.now() - fetchStart}ms`, { module: myModule, operation });
 
-
-    // areAllDataValid utilise déjà logger.error si nécessaire
     if (!areAllDataValid(dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances)) {
-      logger.warn('Données invalides détectées, abandon du calcul', { module: myService, operation });
-      return []; // Retourner tableau vide comme dans l'original
+      logger.warn('Données invalides détectées, abandon du calcul', { module: myModule, operation });
+      return [];
     }
 
     const allValues: Asset[] = [];
     const ignoredBalances: string[] = [];
     const notAddedAssets: string[] = []; // Assets pour lesquels les métriques sont invalides ou non calculées
 
-    logger.debug(`Processing ${dbBalances.length} balance entries...`, { module: myService, operation, balanceCount: dbBalances.length });
+    logger.debug(`Processing ${dbBalances.length} balance entries...`, { module: myModule, operation, balanceCount: dbBalances.length });
     for (const item of dbBalances) {
-      const context = { module: myService, operation, platform: item.platform, base: item.base };
+      const context = { module: myModule, operation, platform: item.platform, base: item.base };
       if (typeof item.balance === 'number' && item.balance > 0) {
         const assetMetrics = this.calculateMachiForBalance(item, dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers);
         if (assetMetrics && isValidAssetMetrics(assetMetrics)) {
@@ -116,19 +112,19 @@ export class ServiceProcessor {
       }
     }
     logger.info(`Fin calculateAllMachi - ${allValues.length} asset(s) traités`, {
-      module: myService,
+      module: myModule,
       operation,
       processedAssets: allValues.length,
       ignoredBalanceCount: ignoredBalances.length,
       notAddedAssetCount: notAddedAssets.length
     });
-    // Trier comme l'original
+
     return allValues.sort((a, b) => (a.cmc?.rank ?? Infinity) - (b.cmc?.rank ?? Infinity));
   }
 
   private static async checkNewTrades(difference: BalanceWithDifference): Promise<MappedTrade[]> {
     const operation = 'checkNewTrades';
-    const context = { module: myService, operation, platform: difference.platform, base: difference.base };
+    const context = { module: myModule, operation, platform: difference.platform, base: difference.base };
     logger.debug('Début checkNewTrades via API...', context);
     try {
       const tradeList = await ServiceTrade.fetchFromApi(difference.platform, difference.base);
@@ -137,11 +133,11 @@ export class ServiceProcessor {
         return MappingPlatform.mapTrades(difference.platform, tradeList, {});
       } else {
         logger.debug('Aucun trade retourné par API.', context);
-        return []; // Retourner tableau vide
+        return [];
       }
     } catch (error) {
       logger.warn(`Erreur lors de la récupération des trades via API.`, { ...context, error: formatErrorForLog(error) });
-      return []; // Retourner tableau vide comme dans l'original (erreur est loguée mais non bloquante)
+      return [];
     }
     // Ce log est redondant car on retourne toujours avant
     // logger.debug(`Fin checkNewTrades pour ${difference.platform} - ${difference.base}`, context);
@@ -150,7 +146,7 @@ export class ServiceProcessor {
   // Récupère toutes les données de la base de données
   private static async fetchAllDatabaseData(): Promise<[MappedCmc[], MappedStrat[], MappedTrade[], MappedOrder[], MappedTicker[], MappedBalance[]]> {
     const operation = 'fetchAllDatabaseData';
-    logger.debug('Récupération des données de la base...', { module: myService, operation });
+    logger.debug('Récupération des données de la base...', { module: myModule, operation });
     try {
       const results = await Promise.all([
         ServiceCmc.fetchDatabaseCmc(),
@@ -161,17 +157,16 @@ export class ServiceProcessor {
         ServiceBalance.fetchDatabaseBalance()
       ]);
       logger.debug('Finished fetching all database data successfully.', {
-        module: myService, operation,
-        counts: { // Group counts for clarity
+        module: myModule, operation,
+        counts: {
           cmc: results[0]?.length ?? 0, strategies: results[1]?.length ?? 0, trades: results[2]?.length ?? 0,
           orders: results[3]?.length ?? 0, tickers: results[4]?.length ?? 0, balances: results[5]?.length ?? 0,
         }
       });
-      // Garder le type de retour original
       return results as [MappedCmc[], MappedStrat[], MappedTrade[], MappedOrder[], MappedTicker[], MappedBalance[]];
     } catch (error) {
-      handleServiceError(error, `${myService}:${operation}`, `Failed to fetch all required database data`);
-      throw error; // Relancer car ces données sont critiques
+      handleServiceError(error, `${myModule}:${operation}`, `Failed to fetch all required database data`);
+      throw error;
     }
   }
 
@@ -185,10 +180,7 @@ export class ServiceProcessor {
     dbTickers: MappedTicker[]
   ): Asset | null {
     const operation = 'calculateMachiForBalance';
-    const context = { module: myService, operation, platform: balance.platform, base: balance.base };
-    // Pas forcément besoin de log au début ici, appelé dans une boucle.
-
-    // Garder la logique de filtrage originale
+    const context = { module: myModule, operation, platform: balance.platform, base: balance.base };
     const assetBase = balance.base;
     const assetPlatform = balance.platform;
     const cmcMatches = dbCmc.filter((cmc) => cmc.symbol === assetBase);
@@ -199,7 +191,6 @@ export class ServiceProcessor {
     const assetOrders = dbOpenOrders.filter((order) =>
       order.symbol && QUOTE_CURRENCIES.some(quote => order.symbol === `${assetBase}/${quote}`) && order.platform === assetPlatform // Ajout filtre plateforme
     );
-    // Garder la logique originale pour assetStrategy, y compris le fallback objet vide
     const assetStrategy = dbStrategies.find(
       (strategy) => strategy.base === assetBase && strategy.strategies[assetPlatform]
     ) || { base: '', strategies: {}, maxExposure: {} } as MappedStrat;
@@ -207,8 +198,6 @@ export class ServiceProcessor {
       (ticker) => ticker.symbol.startsWith(`${assetBase}/`) && ticker.platform === assetPlatform
     );
 
-    // Garder la condition originale pour les données suffisantes
-    // La seule différence est le fallback objet vide pour assetStrategy qui existe toujours
     if (closestCmc === null || (!assetTrades.length && !assetOrders.length && !assetStrategy.base)) { // Vérifier si le fallback est utilisé via !assetStrategy.base
       logger.debug('Aucune donnée suffisante pour calculer Machi.', {
         ...context,
@@ -220,12 +209,6 @@ export class ServiceProcessor {
       return null;
     }
 
-    // Garder l'appel original à calculateAssetMetrics
-    // Si l'erreur ts(2345) se reproduit, cela signifie que l'appel original
-    // n'était PAS compatible avec la signature de calculateAssetMetrics,
-    // malgré l'affirmation que "le code fonctionnait".
-    // Dans ce cas, la correction précédente (vérifier/omettre _id) serait nécessaire,
-    // mais je respecte l'instruction de ne pas modifier la logique ici.
     return calculateAssetMetrics(
       assetBase,
       assetPlatform,
@@ -233,7 +216,7 @@ export class ServiceProcessor {
       closestCmc,
       assetTrades,
       assetOrders,
-      assetStrategy, // Utilisation de l'objet original (potentiellement le fallback)
+      assetStrategy,
       assetTicker
     );
   }

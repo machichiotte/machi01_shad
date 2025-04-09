@@ -8,6 +8,9 @@ import { PLATFORM } from '@typ/platform'
 import { EncryptionService } from '@utils/encryption'
 import { randomBytes } from 'crypto'
 
+import { logger } from '@src/utils/loggerUtil'
+const myModule = 'RepoConfigApi'
+
 const COLLECTION_NAME = config.databaseConfig.collection.apiConfig
 
 export class RepoConfigApi {
@@ -113,8 +116,9 @@ export class RepoConfigApi {
   }
 
   static decryptConfigCmc(cmcConfig: ApiCmc): ApiCmc {
+    const operation = 'decryptConfigCmc'
     if (!cmcConfig || !cmcConfig.apiKey) {
-      console.warn('CMC API key is null.')
+      logger.warn('CMC API key is null.', { module: myModule, operation })
       return cmcConfig || { apiKey: '', iv: '' }
     }
 
@@ -126,8 +130,9 @@ export class RepoConfigApi {
   }
 
   static decryptConfigGemini(geminiConfig: ApiGemini): ApiGemini {
+    const operation = 'decryptConfigGemini'
     if (!geminiConfig || !geminiConfig.apiKey) {
-      console.warn('Gemini API key is null.')
+      logger.warn('Gemini API key is null.', { module: myModule, operation })
       return geminiConfig || { apiKey: '', iv: '', model: '' }
     }
 
@@ -139,6 +144,7 @@ export class RepoConfigApi {
   }
 
   static decryptConfigPlatform(config: ApiPlatform): ApiPlatform {
+
     const iv = config.iv
     const apiKey = EncryptionService.decrypt(config.iv, config.apiKey)
     const secretKey = config.secretKey
@@ -159,14 +165,16 @@ export class RepoConfigApi {
   private static decryptConfigPlatforms(platformConfigs: {
     [key in PLATFORM]: ApiPlatform
   }): { [key in PLATFORM]: ApiPlatform } {
+    const operation = 'decryptConfigPlatforms'
+
     const decryptedPlatform: { [key in PLATFORM]: ApiPlatform } = {} as {
       [key in PLATFORM]: ApiPlatform
     }
 
     Object.entries(platformConfigs).forEach(([platform, config]) => {
       if (!config.iv) {
-        console.warn(
-          `No IV provided for platform: ${platform}. Skipping decryption.`
+        logger.warn(
+          `No IV provided for platform: ${platform}. Skipping decryption.`, { module: myModule, operation }
         )
         return
       }

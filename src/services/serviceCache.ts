@@ -5,22 +5,27 @@ import { DEFAULT_CACHE_EXPIRATION_TIMES } from '@config/default'
 import { CacheItem } from '@typ/cache'
 import { MappedData } from '@typ/database'
 import { API_CONFIG, BALANCE, CMC, MACHI, MARKET, ORDER, STRAT, TICKER, TRADE, USER, SERVER_CONFIG, HIGHEST_PRICE, SWAP, TIMESTAMP } from '@constants/collection'
-
+import { logger } from '@src/utils/loggerUtil'
 type CacheKey = keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES
+
+const myModule = 'ServiceCache'
 
 export class ServiceCache {
   private static cache: { [key: string]: CacheItem } = {}
 
   // Ajoute des données au cache avec horodatage
   static async addToCache(key: string, data: MappedData[]): Promise<void> {
-    //  console.debug(`[ServiceCache] Début addToCache pour la clé: ${key}`)
+    const operation = 'addToCache'
+    logger.debug(`[ServiceCache] Début addToCache pour la clé: ${key}`, { module: myModule, operation })
     ServiceCache.cache[key] = { data, timestamp: Date.now() }
-    //  console.debug(`[ServiceCache] Fin addToCache pour la clé: ${key}`)
+    logger.debug(`[ServiceCache] Fin addToCache pour la clé: ${key}`, { module: myModule, operation })
   }
 
   // Récupère les données du cache si elles ne sont pas expirées
   static async getFromCache(key: CacheKey): Promise<MappedData[] | null> {
-    //  console.debug(`[ServiceCache] Début getFromCache pour la clé: ${key}`)
+    const operation = 'getFromCache'
+
+    logger.debug(`[ServiceCache] Début getFromCache pour la clé: ${key}`, { module: myModule, operation })
     const cacheItem = ServiceCache.cache[key]
     const expirationTime =
       (config.serverConfig?.cacheExpirationTimes as CacheExpirationTimes)[key] ||
@@ -28,31 +33,37 @@ export class ServiceCache {
       0
 
     if (cacheItem && Date.now() - cacheItem.timestamp < expirationTime) {
-      //   console.debug(`[ServiceCache] Cache valide pour la clé: ${key}`)
+      logger.debug(`[ServiceCache] Cache valide pour la clé: ${key}`, { module: myModule, operation })
       return cacheItem.data
     }
 
-    // console.debug(`[ServiceCache] Cache expiré ou inexistant pour la clé: ${key}`)
+    logger.debug(`[ServiceCache] Cache expiré ou inexistant pour la clé: ${key}`, { module: myModule, operation })
     return null
   }
 
   // Efface le cache pour une clé spécifique
   static async clearCache(key: CacheKey): Promise<void> {
-    console.debug(`[ServiceCache] Début clearCache pour la clé: ${key}`)
+    const operation = 'clearCache'
+
+    logger.debug(`[ServiceCache] Début clearCache pour la clé: ${key}`, { module: myModule, operation })
     delete ServiceCache.cache[key]
-    console.debug(`[ServiceCache] Fin clearCache pour la clé: ${key}`)
+    logger.debug(`[ServiceCache] Fin clearCache pour la clé: ${key}`, { module: myModule, operation })
   }
 
   // Efface l'ensemble du cache
   static async clearAllCache(): Promise<void> {
-    console.debug('[ServiceCache] Début clearAllCache')
+    const operation = 'clearAllCache'
+
+    logger.debug('[ServiceCache] Début clearAllCache', { module: myModule, operation })
     ServiceCache.cache = {}
-    console.debug('[ServiceCache] Fin clearAllCache')
+    logger.debug('[ServiceCache] Fin clearAllCache', { module: myModule, operation })
   }
 
   // Renvoie la clé de cache correspondant à une collection
   static getCacheKeyForCollection(collectionName: string): keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES {
-    //   console.debug(`[ServiceCache] Mapping de la collection: ${collectionName}`)
+    const operation = 'getCacheKeyForCollection'
+
+    logger.debug(`[ServiceCache] Mapping de la collection: ${collectionName}`, { module: myModule, operation })
     switch (collectionName) {
       case config.databaseConfig.collection.balance:
         return BALANCE

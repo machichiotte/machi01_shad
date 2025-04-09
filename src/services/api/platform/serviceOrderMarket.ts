@@ -4,7 +4,7 @@ import { handleServiceError } from '@utils/errorUtil'
 import { PLATFORM } from '@typ/platform'
 import { ServiceCcxt } from '@services/api/platform/serviceCcxt'
 import { ServiceOrderBalance } from '@services/api/platform/serviceOrderBalance'
-
+const myModule = 'ServiceOrderMarket'
 export class ServiceOrderMarket {
   static async createOrUpdateStopLossOrder(
     platform: PLATFORM,
@@ -27,9 +27,10 @@ export class ServiceOrderMarket {
     oId: string,
     symbol: string
   ): Promise<void> {
+    const operation = 'deleteOrder'
     try {
       await ServiceCcxt.cancelOneOrder(platform, oId, symbol.replace('/', ''))
-      console.debug(`Deleted order ${oId} for ${platform}.`, { symbol })
+      console.debug(`Deleted order ${oId} for ${platform}.`, { module: myModule, operation, symbol })
     } catch (error) {
       handleServiceError(
         error,
