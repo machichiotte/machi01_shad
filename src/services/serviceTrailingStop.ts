@@ -94,7 +94,7 @@ export class ServiceTrailingStop {
                             orderCount += platform === 'binance' ? 1 : 0;
                         }
                     } else {
-                        console.debug(`Prix actuel non défini pour ${base} sur ${platform}`, { module: myModule, operation });
+                        logger.debug(`Prix actuel non défini pour ${base} sur ${platform}`, { module: myModule, operation });
                     }
                 }
             }
@@ -118,7 +118,7 @@ export class ServiceTrailingStop {
 
             if (rateLimitReached) {
                 const waitTime = Math.max(0, (platform === 'kucoin' ? this.rateLimits.kucoin.period : this.rateLimits.binance.period) - timeSinceLastReset);
-                console.debug(`Limite atteinte pour ${platform}. Pause de ${waitTime}ms.`, { module: myModule, operation });
+                logger.debug(`Limite atteinte pour ${platform}. Pause de ${waitTime}ms.`, { module: myModule, operation });
                 await new Promise(resolve => setTimeout(resolve, waitTime));
             }
         } catch (error) {
@@ -135,7 +135,7 @@ export class ServiceTrailingStop {
                 await RepoTrailingStop.cancelAllOrdersByBunch(platform, base);
                 await RepoTrailingStop.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
                 await RepoTrailingStop.updateHighestPrice(platform, base, currentPrice);
-                console.debug(`Ordre de trailing stop créé pour ${base}`, { module: myModule, operation });
+                logger.debug(`Ordre de trailing stop créé pour ${base}`, { module: myModule, operation });
                 return { base, platform };
             }
 
@@ -144,7 +144,7 @@ export class ServiceTrailingStop {
                 await RepoTrailingStop.cancelAllOrdersByBunch(platform, base);
                 await RepoTrailingStop.createOrUpdateStopLossOrder(platform, stopLossPrice, base, balance);
                 await RepoTrailingStop.updateHighestPrice(platform, base, currentPrice);
-                console.debug(`Ordre de trailing stop mis à jour pour ${base}`, { module: myModule, operation });
+                logger.debug(`Ordre de trailing stop mis à jour pour ${base}`, { module: myModule, operation });
                 return { base, platform };
             }
         } catch (error) {

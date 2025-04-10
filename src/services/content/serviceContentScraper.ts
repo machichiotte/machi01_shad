@@ -2,12 +2,12 @@
 import * as cheerio from 'cheerio';
 import { handleServiceError } from '@utils/errorUtil';
 import { logger } from '@src/utils/loggerUtil';
+const myModule = 'ServiceContentScraper'
 
 const SERVICE_NAME = 'ServiceContentScraper';
 const MAX_CONTENT_LENGTH = 15000;
 const FETCH_TIMEOUT = 15000;
 
-const myModule = 'ServiceContentScraper'
 
 export class ServiceContentScraper {
     static async scrapeArticleContent(url: string): Promise<string | null> {

@@ -198,11 +198,25 @@ Voici le texte :
         return { analysis: validatedAnalysis, summary: summary };
     }
 
+    private static _cleanJsonMarkdown(input: string): string {
+        return input
+            .replace(/^```(?:json)?\s*|```$/g, '')        // Enlève les balises markdown
+            .replace(/,\s*}/g, '}')                       // Supprime les virgules invalides avant un objet
+            .replace(/,\s*]/g, ']')                       // Supprime les virgules invalides avant un tableau
+            .trim();
+    }
+
     // --- Single API Attempt ---
     private static async _attemptAnalysis(model: GenerativeModel, text: string): Promise<AttemptResult> {
         const operation = '_attemptAnalysis';
-        logger.debug(`Attempting analysis... Text length: ${text.length}`, { module: myModule, operation, textLength: text.length });
+        logger.debug(`Attempting analysis... Text length: ${text.length}`, {
+            module: myModule,
+            operation,
+            textLength: text.length,
+        });
+
         const prompt = this._buildAnalysisPrompt(text);
+
         try {
             const result = await model.generateContent(prompt);
             const responseText = result.response.text();
@@ -211,21 +225,31 @@ Voici le texte :
                 logger.warn('Received empty response from API.', { module: myModule, operation });
                 return 'empty_response';
             }
-            logger.debug(`Received raw response. Length: ${responseText.length}`, { module: myModule, operation, responseLength: responseText.length });
 
+            logger.debug(`Received raw response. Length: ${responseText.length}`, {
+                module: myModule,
+                operation,
+                responseLength: responseText.length,
+            });
 
             let parsedJson: unknown;
+
             try {
-                const cleanedText = responseText.replace(/^```(?:json)?\s*|```$/g, '').trim();
+                const cleanedText = this._cleanJsonMarkdown(responseText);
                 if (!cleanedText) {
                     logger.warn('Received empty response after cleaning markdown.', { module: myModule, operation });
                     return 'empty_response';
                 }
+
                 parsedJson = JSON.parse(cleanedText);
                 logger.debug('Successfully parsed JSON response.', { module: myModule, operation });
             } catch (parseError) {
-                // Log detailed error and the raw text that failed parsing
-                logger.error('JSON parsing error.', { module: myModule, operation, error: formatErrorForLog(parseError), rawResponse: responseText });
+                logger.error('JSON parsing error.', {
+                    module: myModule,
+                    operation,
+                    error: formatErrorForLog(parseError),
+                    rawResponse: responseText,
+                });
                 return 'parse_error';
             }
 
@@ -236,23 +260,24 @@ Voici le texte :
             }
 
             logger.debug('Analysis attempt successful and validated.', { module: myModule, operation });
-            return validatedData; // Success
-
+            return validatedData;
         } catch (error: unknown) {
+            const errorDetails = formatErrorForLog(error);
             let errorMessage = "Unknown error during API call";
-            let isQuotaError = false;
             let httpStatusCode: string | number | undefined = undefined;
-            const errorDetails = formatErrorForLog(error); // Format error for logging
+            let isQuotaError = false;
 
             if (error instanceof Error) {
                 errorMessage = error.message;
-                // Check status/code properties
                 if ('status' in error && (typeof error.status === 'number' || typeof error.status === 'string')) {
                     httpStatusCode = error.status;
                 } else if ('code' in error && (typeof error.code === 'number' || typeof error.code === 'string')) {
                     httpStatusCode = error.code;
                 }
-                isQuotaError = (httpStatusCode === QUOTA_ERROR_STATUS_CODE_NUM || httpStatusCode === QUOTA_ERROR_STATUS_CODE_STR) ||
+
+                isQuotaError =
+                    httpStatusCode === QUOTA_ERROR_STATUS_CODE_NUM ||
+                    httpStatusCode === QUOTA_ERROR_STATUS_CODE_STR ||
                     errorMessage.toLowerCase().includes(QUOTA_ERROR_MESSAGE_FRAGMENT);
             } else {
                 errorMessage = String(error);
@@ -260,16 +285,21 @@ Voici le texte :
             }
 
             if (isQuotaError) {
-                logger.warn('Quota error detected.', { module: myModule, operation, status: httpStatusCode ?? 'N/A', error: errorDetails });
+                logger.warn('Quota error detected.', {
+                    module: myModule,
+                    operation,
+                    status: httpStatusCode ?? 'N/A',
+                    error: errorDetails,
+                });
                 const retryDelayMs = parseRetryDelay(errorMessage);
                 return new QuotaError(errorMessage, retryDelayMs);
-            } else {
-                // Use handleServiceError for non-quota API errors, which logs logger.error
-                handleServiceError(error, `${myModule}:${operation}`, `Non-quota API error. Status: ${httpStatusCode ?? 'N/A'}`);
-                return error instanceof Error ? error : new Error(errorMessage);
             }
+
+            handleServiceError(error, `${myModule}:${operation}`, `Non-quota API error. Status: ${httpStatusCode ?? 'N/A'}`);
+            return error instanceof Error ? error : new Error(errorMessage);
         }
     }
+
 
     // --- Main Analysis Method ---
     static async analyzeText(text: string): Promise<AnalysisWithSummary | null> {
