@@ -4,9 +4,7 @@ import { handleServiceError } from '@utils/errorUtil'
 import { PLATFORM } from '@typ/platform'
 import { ServiceCcxt } from '@services/api/platform/serviceCcxt'
 import { ServiceOrderBalance } from '@services/api/platform/serviceOrderBalance'
-import { logger } from '@src/utils/loggerUtil'
-
-const myModule = 'ServiceOrderMarket'
+import path from 'path'; import { logger } from '@src/utils/loggerUtil'
 
 export class ServiceOrderMarket {
   static async createOrUpdateStopLossOrder(
@@ -33,7 +31,7 @@ export class ServiceOrderMarket {
     const operation = 'deleteOrder'
     try {
       await ServiceCcxt.cancelOneOrder(platform, oId, symbol.replace('/', ''))
-      logger.debug(`Deleted order ${oId} for ${platform}.`, { module: myModule, operation, symbol })
+      logger.debug(`Deleted order ${oId} for ${platform}.`, { module: path.parse(__filename).name, operation, symbol })
     } catch (error) {
       handleServiceError(
         error,

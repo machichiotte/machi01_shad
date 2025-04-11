@@ -5,11 +5,10 @@ import cors from 'cors';
 import { Server } from 'http';
 import { config } from '@config/index';
 import apiRoutes from '@routes/index';
-import { logger } from '@utils/loggerUtil'; // Importer le logger Winston
+import path from 'path'; import { logger } from '@utils/loggerUtil'; // Importer le logger Winston
 import { formatErrorForLog } from '@utils/errorUtil'; // Importer le helper
 
 const PORT = config.port || 10000;
-const moduleName = 'ExpressServer'; // Nom du module pour les logs
 
 const app = express() as express.Application;
 
@@ -33,7 +32,7 @@ app.use((req: Request, res: Response) => {
   const message = 'Route not found';
   // Loguer l'événement 404 comme un warning
   logger.warn(`${message}: ${req.method} ${req.originalUrl}`, {
-    module: moduleName,
+    module: path.parse(__filename).name,
     status: status,
     method: req.method,
     url: req.originalUrl,
@@ -52,7 +51,7 @@ app.use((error: Error, req: Request, res: Response) => {
 
   // Loguer l'erreur avec logger.error et inclure les détails de la requête
   logger.error(`${message} on ${req.method} ${req.originalUrl}`, {
-    module: moduleName,
+    module: path.parse(__filename).name,
     status: status,
     method: req.method,
     url: req.originalUrl,
@@ -76,11 +75,11 @@ function startServer(): Promise<Server> {
   const operation = 'startServer';
   return new Promise((resolve, reject) => {
     const server = app.listen(PORT, () => {
-      logger.debug(`Server started successfully on port: ${PORT}`, { module: moduleName, operation, port: PORT });
+      logger.info(`Server started successfully on port: ${PORT}`, { module: path.parse(__filename).name, operation, port: PORT });
       resolve(server);
     });
     server.on('error', (error) => {
-      logger.error('Failed to start server:', { module: moduleName, operation, port: PORT, error: formatErrorForLog(error) });
+      logger.error('Failed to start server:', { module: path.parse(__filename).name, operation, port: PORT, error: formatErrorForLog(error) });
       reject(error);
     });
   });

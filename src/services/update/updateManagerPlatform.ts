@@ -6,7 +6,7 @@ import { ServiceMarket } from '@services/api/platform/serviceMarket';
 import { ServiceTicker } from '@services/api/platform/serviceTicker';
 import { hasTimeElapsed } from '@utils/timeUtil';
 import { config } from '@config/index';
-import { logger } from '@utils/loggerUtil'; // Importer le logger Winston
+import path from 'path'; import { logger } from '@utils/loggerUtil'; // Importer le logger Winston
 import { formatErrorForLog } from '@utils/errorUtil'; // Importer le helper pour formater les erreurs
 
 const module = 'UpdateManagerPlatform'; // Nom du module pour les logs

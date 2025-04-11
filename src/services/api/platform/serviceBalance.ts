@@ -9,9 +9,7 @@ import { retry } from '@utils/retryUtil';
 import { handleServiceError } from '@utils/errorUtil';
 import { executeCronTask } from '@utils/cronUtil';
 import { removeDuplicates } from '@utils/processorUtil';
-import { logger } from '@src/utils/loggerUtil';
-
-const myModule = 'ServiceBalance'
+import path from 'path'; import { logger } from '@src/utils/loggerUtil';
 
 export class ServiceBalance {
   static async fetchDatabaseBalance(): Promise<MappedBalance[]> {
@@ -68,7 +66,7 @@ export class ServiceBalance {
    */
   static async updateBalancesForPlatform(platform: PLATFORM): Promise<void> {
     const operation = 'updateBalancesForPlatform'
-    logger.debug(`Mise à jour des balances pour la plateforme ${platform}`, { module: myModule, operation })
+    logger.debug(`Mise à jour des balances pour la plateforme ${platform}`, { module: path.parse(__filename).name, operation })
     try {
       return await retry(async () => {
         const [currentBalances, previousBalances] = await Promise.all([
@@ -78,10 +76,10 @@ export class ServiceBalance {
 
         const differences = ServiceBalance.compareBalances(previousBalances, currentBalances);
 
-        logger.debug(`Mise à jour des balances pour la plateforme ${platform} : ${differences.length} nouvelles differences`, { module: myModule, operation })
+        logger.debug(`Mise à jour des balances pour la plateforme ${platform} : ${differences.length} nouvelles differences`, { module: path.parse(__filename).name, operation })
         const uniqueDifferences = removeDuplicates(differences)
 
-        logger.debug(`Mise à jour des balances pour la plateforme ${platform} : ${uniqueDifferences.length} nouvelles differences`, { module: myModule, operation })
+        logger.debug(`Mise à jour des balances pour la plateforme ${platform} : ${uniqueDifferences.length} nouvelles differences`, { module: path.parse(__filename).name, operation })
         if (uniqueDifferences.length > 0) {
           await Promise.all([
             RepoBalance.saveBalances(platform, currentBalances),

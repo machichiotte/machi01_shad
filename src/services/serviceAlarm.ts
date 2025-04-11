@@ -3,8 +3,8 @@ import { RepoAlarm } from '@repo/repoAlarm'
 import { RepoTicker } from '@repo/repoTicker'
 import { AlarmInput, AlarmFilter, DbAlarm } from '@typ/database'
 import { ObjectId } from 'mongodb'
-import { logger } from '@src/utils/loggerUtil'
-const myModule = 'ServiceAlarm'
+import path from 'path'; import { logger } from '@src/utils/loggerUtil'
+
 export class ServiceAlarm {
   // Constructeur si nécessaire
   constructor() {
@@ -36,7 +36,6 @@ export class ServiceAlarm {
   }
 
   static async checkAndTriggerAlarms(): Promise<void> {
-    const operation = 'checkAndTriggerAlarms'
     // Logique de déclenchement des alarmes
     // 1. récupérer les alarmes
     const alarms = await RepoAlarm.fetchAlarms()
@@ -59,7 +58,7 @@ export class ServiceAlarm {
 
       if (isTriggered) {
         logger.debug(
-          `Notification: Alarme déclenchée pour ${alarm.base} à ${alarm.price}`, { module: myModule, operation }
+          `Notification: Alarme déclenchée pour ${alarm.base} à ${alarm.price}`, { module: path.parse(__filename).name, operation: 'checkAndTriggerAlarms' }
         )
 
         RepoAlarm.updateAlarm(alarm._id.toString(), {

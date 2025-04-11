@@ -14,9 +14,7 @@ import { MappedData } from '@typ/database';
 // Assuming CacheItem is defined, potentially similar to MappedData or a specific cache structure
 import { CacheItem } from '@typ/mongodb'; // Keep if correct, otherwise adjust import
 import { config } from '@config/index';
-import { logger } from '@utils/loggerUtil';
-
-const myModule = 'ServiceDatabase';
+import path from 'path'; import { logger } from '@utils/loggerUtil';
 
 export class ServiceDatabase {
   /**
@@ -27,7 +25,7 @@ export class ServiceDatabase {
    */
   static async insertDocuments(collectionName: string, data: Document | Document[]): Promise<InsertData> {
     const operation = 'insertDocuments';
-    const context = { module: myModule, operation, collectionName };
+    const context = { module: path.parse(__filename).name, operation, collectionName };
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -50,7 +48,7 @@ export class ServiceDatabase {
       return result;
     } catch (error) {
       // handleServiceError already logs the error details
-      handleServiceError(error, `${myModule}:${operation}`, `Erreur lors de l'insertion dans ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Erreur lors de l'insertion dans ${collectionName}`);
       throw error; // Re-throw the error to be handled upstream
     }
   }
@@ -62,7 +60,7 @@ export class ServiceDatabase {
    */
   static async findAllDocuments(collectionName: string): Promise<Document[]> {
     const operation = 'findAllDocuments';
-    const context = { module: myModule, operation, collectionName };
+    const context = { module: path.parse(__filename).name, operation, collectionName };
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -70,7 +68,7 @@ export class ServiceDatabase {
       logger.debug(`Fin ${operation} - ${docs.length} document(s) récupéré(s)`, { ...context, count: docs.length });
       return docs;
     } catch (error) {
-      handleServiceError(error, `${myModule}:${operation}`, `Erreur lors de la récupération de tous les documents dans ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Erreur lors de la récupération de tous les documents dans ${collectionName}`);
       throw error;
     }
   }
@@ -83,7 +81,7 @@ export class ServiceDatabase {
    */
   static async findSingleDocument(collectionName: string, query: Filter<Document>): Promise<Document | null> {
     const operation = 'findSingleDocument';
-    const context = { module: myModule, operation, collectionName, query }; // Log the query
+    const context = { module: path.parse(__filename).name, operation, collectionName, query }; // Log the query
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -91,7 +89,7 @@ export class ServiceDatabase {
       logger.debug(`Fin ${operation} - Document ${doc ? 'trouvé' : 'non trouvé'}`, { ...context, found: !!doc });
       return doc;
     } catch (error) {
-      handleServiceError(error, `${myModule}:${operation}`, `Erreur lors de la récupération d'un document dans ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Erreur lors de la récupération d'un document dans ${collectionName}`);
       throw error;
     }
   }
@@ -104,7 +102,7 @@ export class ServiceDatabase {
    */
   static async deleteSingleDocument(collectionName: string, filter: Filter<Document>): Promise<boolean> {
     const operation = 'deleteSingleDocument';
-    const context = { module: myModule, operation, collectionName, filter }; // Log the filter
+    const context = { module: path.parse(__filename).name, operation, collectionName, filter }; // Log the filter
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -112,7 +110,7 @@ export class ServiceDatabase {
       logger.debug(`Fin ${operation} - Succès: ${success}`, { ...context, success });
       return success;
     } catch (error) {
-      handleServiceError(error, `${myModule}:${operation}`, `Erreur lors de la suppression d'un document dans ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Erreur lors de la suppression d'un document dans ${collectionName}`);
       throw error;
     }
   }
@@ -125,7 +123,7 @@ export class ServiceDatabase {
    */
   static async deleteDocuments(collectionName: string, filter: Filter<Document>): Promise<number> {
     const operation = 'deleteDocuments';
-    const context = { module: myModule, operation, collectionName, filter }; // Log the filter
+    const context = { module: path.parse(__filename).name, operation, collectionName, filter }; // Log the filter
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -133,7 +131,7 @@ export class ServiceDatabase {
       logger.debug(`Fin ${operation} - ${count} document(s) supprimé(s)`, { ...context, count });
       return count;
     } catch (error) {
-      handleServiceError(error, `${myModule}:${operation}`, `Erreur lors de la suppression de documents dans ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Erreur lors de la suppression de documents dans ${collectionName}`);
       throw error;
     }
   }
@@ -145,7 +143,7 @@ export class ServiceDatabase {
    */
   static async deleteAllDocuments(collectionName: string): Promise<number> {
     const operation = 'deleteAllDocuments';
-    const context = { module: myModule, operation, collectionName };
+    const context = { module: path.parse(__filename).name, operation, collectionName };
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -154,7 +152,7 @@ export class ServiceDatabase {
       logger.debug(`Fin ${operation} - ${count} document(s) supprimé(s)`, { ...context, count });
       return count;
     } catch (error) {
-      handleServiceError(error, `${myModule}:${operation}`, `Erreur lors de la suppression de tous les documents dans ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Erreur lors de la suppression de tous les documents dans ${collectionName}`);
       throw error;
     }
   }
@@ -169,7 +167,7 @@ export class ServiceDatabase {
   static async updateDocument(collectionName: string, filter: Filter<Document>, update: UpdateFilter<Document>): Promise<boolean> {
     const operation = 'updateDocument';
     // Avoid logging potentially large update objects unless necessary for debugging specific issues
-    const context = { module: myModule, operation, collectionName, filter };
+    const context = { module: path.parse(__filename).name, operation, collectionName, filter };
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -177,7 +175,7 @@ export class ServiceDatabase {
       logger.debug(`Fin ${operation} - Succès: ${success}`, { ...context, success });
       return success;
     } catch (error) {
-      handleServiceError(error, `${myModule}:${operation}`, `Erreur lors de la mise à jour des données dans ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Erreur lors de la mise à jour des données dans ${collectionName}`);
       throw error;
     }
   }
@@ -191,7 +189,7 @@ export class ServiceDatabase {
    */
   static async replaceDocuments(collectionName: string, mapData: Omit<MappedData, '_id'>[], platform?: PLATFORM): Promise<void> {
     const operation = 'replaceDocuments';
-    const context = { module: myModule, operation, collectionName, platform: platform ?? 'all', incomingDataCount: mapData?.length ?? 0 };
+    const context = { module: path.parse(__filename).name, operation, collectionName, platform: platform ?? 'all', incomingDataCount: mapData?.length ?? 0 };
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -215,7 +213,7 @@ export class ServiceDatabase {
     } catch (error) {
       // Let errors from deleteAllDocuments/deleteDocuments/insertDocuments propagate
       // Add specific handling here only if needed beyond what handleServiceError does
-      handleServiceError(error, `${myModule}:${operation}`, `Erreur lors du remplacement des documents dans ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Erreur lors du remplacement des documents dans ${collectionName}`);
       throw error;
     }
   }
@@ -235,7 +233,7 @@ export class ServiceDatabase {
     platform?: PLATFORM
   ): Promise<void> {
     const operation = 'saveDocumentsWithTimestamp';
-    const context = { module: myModule, operation, collectionName, tsCategory, platform: platform ?? 'all', dataCount: data?.length ?? 0 };
+    const context = { module: path.parse(__filename).name, operation, collectionName, tsCategory, platform: platform ?? 'all', dataCount: data?.length ?? 0 };
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -245,7 +243,7 @@ export class ServiceDatabase {
       await ServiceTimestamp.saveTimestampToDatabase(tsCategory, platform);
       logger.debug(`Fin ${operation} - Succès`, context);
     } catch (error) {
-      handleServiceError(error, `${myModule}:${operation}`, `Erreur lors de la sauvegarde des documents dans ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Erreur lors de la sauvegarde des documents dans ${collectionName}`);
       throw error;
     }
   }
@@ -258,7 +256,7 @@ export class ServiceDatabase {
    */
   static async getCollectionDocuments(collectionName: string): Promise<MappedData[]> {
     const operation = 'getCollectionDocuments';
-    const context = { module: myModule, operation, collectionName };
+    const context = { module: path.parse(__filename).name, operation, collectionName };
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -278,7 +276,7 @@ export class ServiceDatabase {
         return mappedData;
       }
     } catch (error) {
-      handleServiceError(error, `${myModule}:${operation}`, `Échec de la récupération des documents pour ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Échec de la récupération des documents pour ${collectionName}`);
       throw error; // Re-throw error
     }
   }
@@ -291,7 +289,7 @@ export class ServiceDatabase {
    */
   static async getDocumentByFilter(collectionName: string, filter: Filter<Document>): Promise<MappedData | null> {
     const operation = 'getDocumentByFilter';
-    const context = { module: myModule, operation, collectionName, filter };
+    const context = { module: path.parse(__filename).name, operation, collectionName, filter };
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -320,7 +318,7 @@ export class ServiceDatabase {
         // However, this approach leverages the cache effectively.
       }
     } catch (error) {
-      handleServiceError(error, `${myModule}:${operation}`, `Échec de la récupération du document dans ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Échec de la récupération du document dans ${collectionName}`);
       throw error;
     }
   }
@@ -334,7 +332,7 @@ export class ServiceDatabase {
   static async getCachedOrFetchedDocuments(collectionName: string): Promise<CacheItem[] | Document[]> {
     // This operation is internal, logging might be less verbose or focused on cache hit/miss
     const operation = 'getCachedOrFetchedDocuments';
-    const context = { module: myModule, operation, collectionName };
+    const context = { module: path.parse(__filename).name, operation, collectionName };
     // logger.debug(`Début ${operation}`, context); // Optional: Might be too noisy
 
     const key = ServiceCache.getCacheKeyForCollection(collectionName);
@@ -361,7 +359,7 @@ export class ServiceDatabase {
    */
   static async fetchAndCacheDocuments(collectionName: string): Promise<Document[]> {
     const operation = 'fetchAndCacheDocuments';
-    const context = { module: myModule, operation, collectionName };
+    const context = { module: path.parse(__filename).name, operation, collectionName };
     logger.debug(`Début ${operation}`, context);
 
     try {
@@ -376,7 +374,7 @@ export class ServiceDatabase {
       return result;
     } catch (error) {
       // handleServiceError logs the error details including stack
-      handleServiceError(error, `${myModule}:${operation}`, `Erreur lors de la récupération et mise en cache pour ${collectionName}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Erreur lors de la récupération et mise en cache pour ${collectionName}`);
       // Decide on behavior: re-throw or return empty array?
       // Returning empty allows dependent services to potentially continue with no data.
       // Re-throwing stops the process immediately. Let's re-throw for clarity.

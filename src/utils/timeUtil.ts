@@ -1,7 +1,5 @@
-import { logger } from "./loggerUtil";
-
 // src/utils/timeUtil.ts
-const myModule = 'timeUtil'
+import path from 'path'; import { logger } from "./loggerUtil";
 
 export function hasTimeElapsed(lastTimestamp: string, intervalInMs: number): boolean {
     const lastUpdate = parseInt(lastTimestamp, 10);
@@ -19,12 +17,12 @@ export function parseDateRss(dateString: string | undefined | null): Date | null
     try {
         const date = new Date(dateString);
         if (isNaN(date.getTime())) {
-            logger.warn(`Invalid date string encountered: ${dateString}`, { module: myModule, operation });
+            logger.warn(`Invalid date string encountered: ${dateString}`, { module: path.parse(__filename).name, operation });
             return null;
         }
         return date;
     } catch (error) {
-        logger.warn(`Error parsing date string "${dateString}": ${error}`, { module: myModule, operation });
+        logger.warn(`Error parsing date string "${dateString}": ${error}`, { module: path.parse(__filename).name, operation });
         return null;
     }
 }

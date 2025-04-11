@@ -4,8 +4,7 @@ import { Asset, HighestPrice, UpdatedOrder } from '@typ/trailingStop';
 import { RepoTrailingStop } from '@repo/repoTrailingStop';
 import { handleServiceError } from '@utils/errorUtil';
 import { PLATFORM } from '@typ/platform';
-import { logger } from '@src/utils/loggerUtil';
-const myModule = 'ServiceTrailingStop'
+import path from 'path'; import { logger } from '@src/utils/loggerUtil';
 
 export class ServiceTrailingStop {
     private static readonly PERCENTAGE_TO_LOSE = 0.01;
@@ -94,7 +93,7 @@ export class ServiceTrailingStop {
                             orderCount += platform === 'binance' ? 1 : 0;
                         }
                     } else {
-                        logger.debug(`Prix actuel non défini pour ${base} sur ${platform}`, { module: myModule, operation });
+                        logger.debug(`Prix actuel non défini pour ${base} sur ${platform}`, { module: path.parse(__filename).name, operation });
                     }
                 }
             }
@@ -118,7 +117,7 @@ export class ServiceTrailingStop {
 
             if (rateLimitReached) {
                 const waitTime = Math.max(0, (platform === 'kucoin' ? this.rateLimits.kucoin.period : this.rateLimits.binance.period) - timeSinceLastReset);
-                logger.debug(`Limite atteinte pour ${platform}. Pause de ${waitTime}ms.`, { module: myModule, operation });
+                logger.debug(`Limite atteinte pour ${platform}. Pause de ${waitTime}ms.`, { module: path.parse(__filename).name, operation });
                 await new Promise(resolve => setTimeout(resolve, waitTime));
             }
         } catch (error) {
@@ -135,7 +134,7 @@ export class ServiceTrailingStop {
                 await RepoTrailingStop.cancelAllOrdersByBunch(platform, base);
                 await RepoTrailingStop.createOrUpdateStopLossOrder(platform, stopPrice, base, balance);
                 await RepoTrailingStop.updateHighestPrice(platform, base, currentPrice);
-                logger.debug(`Ordre de trailing stop créé pour ${base}`, { module: myModule, operation });
+                logger.debug(`Ordre de trailing stop créé pour ${base}`, { module: path.parse(__filename).name, operation });
                 return { base, platform };
             }
 
@@ -144,7 +143,7 @@ export class ServiceTrailingStop {
                 await RepoTrailingStop.cancelAllOrdersByBunch(platform, base);
                 await RepoTrailingStop.createOrUpdateStopLossOrder(platform, stopLossPrice, base, balance);
                 await RepoTrailingStop.updateHighestPrice(platform, base, currentPrice);
-                logger.debug(`Ordre de trailing stop mis à jour pour ${base}`, { module: myModule, operation });
+                logger.debug(`Ordre de trailing stop mis à jour pour ${base}`, { module: path.parse(__filename).name, operation });
                 return { base, platform };
             }
         } catch (error) {

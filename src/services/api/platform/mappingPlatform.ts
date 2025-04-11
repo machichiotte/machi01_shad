@@ -7,8 +7,7 @@ import { MappedOrder } from '@typ/order'
 import { MappedMarket } from '@typ/market'
 import { QUOTE_CURRENCIES } from '@constants/coins'
 import { getEqUSD } from '@utils/mappingUtil'
-import { logger } from '@src/utils/loggerUtil'
-const myModule = 'MappingPlatform'
+import path from 'path'; import { logger } from '@src/utils/loggerUtil'
 
 export class MappingPlatform {
   static mapBalance(platform: PLATFORM, balanceData: PlatformBalances): Omit<MappedBalance, '_id'>[] {
@@ -38,7 +37,7 @@ export class MappingPlatform {
   private static mapTradeCommon(item: PlatformTrade, platform: PLATFORM, conversionRates: Record<string, number> = {}): Omit<MappedTrade, '_id'> {
     const operation = 'mapTradeCommon'
     if (!item) {
-      logger.warn('Item est undefined', { module: myModule, operation });
+      logger.warn('Item est undefined', { module: path.parse(__filename).name, operation });
       return {} as Omit<MappedTrade, '_id'>;
     }
 

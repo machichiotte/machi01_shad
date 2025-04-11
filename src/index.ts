@@ -9,35 +9,33 @@ import { ServiceConfigServer } from '@services/config/serviceConfigServer';
 import { ServiceConfigApi } from '@services/config/serviceConfigApi';
 import { ServiceCache } from '@services/serviceCache';
 import { loadServerConfig, loadApiConfig } from '@config/index';
-import { logger } from '@utils/loggerUtil'; // Importer le logger Winston
+import path from 'path'; import { logger } from '@utils/loggerUtil'; // Importer le logger Winston
 import { formatErrorForLog } from '@utils/errorUtil'; // Importer le helper
-
-const moduleName = 'Application'; // Nom du module pour les logs de démarrage
 
 async function startApp(): Promise<void> {
   const operation = 'startApp';
-  logger.info('Starting application initialization...', { module: moduleName, operation });
+  logger.info('Starting application initialization...', { module: path.parse(__filename).name, operation });
   try {
     // Étape 0 : Vider le cache
-    logger.info('[Step 0] Clearing all cache...', { module: moduleName, operation });
+    logger.info('[Step 0] Clearing all cache...', { module: path.parse(__filename).name, operation });
     await ServiceCache.clearAllCache();
-    logger.info('[Step 0] Cache cleared.', { module: moduleName, operation });
+    logger.info('[Step 0] Cache cleared.', { module: path.parse(__filename).name, operation });
 
     // Étape 1 : Démarrer MongoDB
-    logger.info('[Step 1] Connecting to MongoDB...', { module: moduleName, operation });
+    logger.info('[Step 1] Connecting to MongoDB...', { module: path.parse(__filename).name, operation });
     await ServiceMongodb.connectToMongoDB();
-    logger.info('[Step 1] MongoDB connected.', { module: moduleName, operation });
+    logger.info('[Step 1] MongoDB connected.', { module: path.parse(__filename).name, operation });
 
     // Étape 2 : Charger la configuration depuis MongoDB
-    logger.info('[Step 2] Loading Server configuration from DB...', { module: moduleName, operation });
+    logger.info('[Step 2] Loading Server configuration from DB...', { module: path.parse(__filename).name, operation });
     const serverConfig = await ServiceConfigServer.getConfig();
     await loadServerConfig(serverConfig); // Fusionne la config DB dans l'objet config global
-    logger.info('[Step 2] Server configuration loaded and merged.', { module: moduleName, operation });
+    logger.info('[Step 2] Server configuration loaded and merged.', { module: path.parse(__filename).name, operation });
 
-    logger.info('[Step 2] Loading API configuration from DB...', { module: moduleName, operation });
+    logger.info('[Step 2] Loading API configuration from DB...', { module: path.parse(__filename).name, operation });
     const apiConfig = await ServiceConfigApi.getConfig();
     await loadApiConfig(apiConfig); // Fusionne la config API
-    logger.info('[Step 2] API configuration loaded and merged.', { module: moduleName, operation });
+    logger.info('[Step 2] API configuration loaded and merged.', { module: path.parse(__filename).name, operation });
 
     // Étape 3 : Mettre à jour les services 
     // logger.info('[Step 3] Updating services via UpdateManager...', { module: moduleName, operation });
@@ -45,25 +43,25 @@ async function startApp(): Promise<void> {
     // logger.info('[Step 3] Services updated.', { module: moduleName, operation });
 
     // Étape 4 : Initialiser les tâches CRON
-    logger.info('[Step 4] Initializing CRON tasks...', { module: moduleName, operation });
+    logger.info('[Step 4] Initializing CRON tasks...', { module: path.parse(__filename).name, operation });
     await ServiceCron.initializeCronTasks();
-    logger.info('[Step 4] CRON tasks initialized.', { module: moduleName, operation }); // Le détail est loggué par ServiceCron
+    logger.info('[Step 4] CRON tasks initialized.', { module: path.parse(__filename).name, operation }); // Le détail est loggué par ServiceCron
 
     // Étape 5 : Exécuter les autres tâches 
-    // logger.info('[Step 5] Executing other tasks (ServiceProcessor)...', { module: moduleName, operation });
+    // logger.info('[Step 5] Executing other tasks (ServiceProcessor)...', { module: path.parse(__filename).name, operation });
     // await ServiceProcessor.saveMachi();
-    // logger.info('[Step 5] Other tasks executed.', { module: moduleName, operation });
+    // logger.info('[Step 5] Other tasks executed.', { module: path.parse(__filename).name, operation });
 
     // Étape 6 : Démarrer le serveur Express
-    logger.info('[Step 6] Starting Express server...', { module: moduleName, operation });
+    logger.info('[Step 6] Starting Express server...', { module: path.parse(__filename).name, operation });
     await startServer(); // La fonction startServer loggue déjà son succès/échec
-    logger.info('[Step 6] Express server start process initiated.', { module: moduleName, operation });
+    logger.info('[Step 6] Express server start process initiated.', { module: path.parse(__filename).name, operation });
 
-    logger.info('Application initialized successfully!', { module: moduleName, operation });
+    logger.info('Application initialized successfully!', { module: path.parse(__filename).name, operation });
 
   } catch (error) {
     logger.error('Fatal error during application startup:', {
-      module: moduleName,
+      module: path.parse(__filename).name,
       operation,
       error: formatErrorForLog(error) // Utiliser le helper
     });
@@ -78,7 +76,7 @@ startApp();
 // --- Gestion des signaux d'arrêt (BONNE PRATIQUE) ---
 // (Déplacé de server.ts pour être au niveau application globale)
 const gracefulShutdown = async (signal: string) => {
-  logger.warn(`Received ${signal}. Starting graceful shutdown...`, { module: moduleName, signal });
+  logger.warn(`Received ${signal}. Starting graceful shutdown...`, { module: path.parse(__filename).name, signal });
   // Ajoutez ici la logique pour fermer proprement les connexions (DB, etc.)
   // Exemple :
   await ServiceMongodb.disconnect(); // Assurez-vous que cette méthode existe et fonctionne

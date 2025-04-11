@@ -8,10 +8,7 @@ import { config } from '@config/index';
 import { RssArticle, RssFeedConfig, ServerRssConfig, ProcessedArticleData, FinancialAnalysis, AnalysisWithSummary } from '@typ/rss';
 import { parseDateRss } from '@utils/timeUtil';
 import { DEFAULT_SERVER_CONFIG } from '@config/default';
-import { logger } from '@utils/loggerUtil';
-
-// Utiliser une constante pour le nom du module/service dans les logs
-const myModule = 'ServiceRssProcessor';
+import path from 'path'; import { logger } from '@utils/loggerUtil';
 
 const sleep = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -20,14 +17,14 @@ export class ServiceRssProcessor {
     public static async fetchDatabaseRss(): Promise<ProcessedArticleData[]> {
         const operation = 'fetchDatabaseRss';
         try {
-            logger.debug(`Fetching all RSS data from database...`, { module: myModule, operation });
+            logger.debug(`Fetching all RSS data from database...`, { module: path.parse(__filename).name, operation });
             const data = await RepoRss.fetchAll();
-            logger.debug(`Fetched ${data.length} articles from database.`, { module: myModule, operation, count: data.length });
+            logger.debug(`Fetched ${data.length} articles from database.`, { module: path.parse(__filename).name, operation, count: data.length });
             return data;
         } catch (error) {
             handleServiceError(
                 error,
-                `${myModule}:${operation}`, // Nom de fonction plus spécifique
+                `${path.parse(__filename).name}:${operation}`, // Nom de fonction plus spécifique
                 'Error fetching RSS data from database' // Message en anglais standardisé
             );
             throw error; // Relancer l'erreur après l'avoir loguée
@@ -36,12 +33,12 @@ export class ServiceRssProcessor {
 
     static async processAllFeeds(): Promise<void> {
         const operation = 'processAllFeeds';
-        logger.info(`Starting processing of all RSS feeds...`, { module: myModule, operation });
+        logger.info(`Starting processing of all RSS feeds...`, { module: path.parse(__filename).name, operation });
 
         const rssConfig = config.serverConfig?.rss;
 
         if (!rssConfig || !rssConfig.enabled) {
-            logger.warn(`RSS processing is disabled or configuration is missing. Aborting.`, { module: myModule, operation });
+            logger.warn(`RSS processing is disabled or configuration is missing. Aborting.`, { module: path.parse(__filename).name, operation });
             return;
         }
 
@@ -54,10 +51,10 @@ export class ServiceRssProcessor {
         const otherFeeds: RssFeedConfig[] = [];
 
         if (rssConfig.categories) {
-            logger.debug(`Reading categories from configuration...`, { module: myModule, operation });
+            logger.debug(`Reading categories from configuration...`, { module: path.parse(__filename).name, operation });
             for (const categoryName in rssConfig.categories) {
                 const categoryFeeds = rssConfig.categories[categoryName] || [];
-                logger.debug(`Found category: ${categoryName} with ${categoryFeeds.length} feeds.`, { module: myModule, operation, category: categoryName, feedCount: categoryFeeds.length });
+                logger.debug(`Found category: ${categoryName} with ${categoryFeeds.length} feeds.`, { module: path.parse(__filename).name, operation, category: categoryName, feedCount: categoryFeeds.length });
                 const isPriority = priorityCategories.has(categoryName.toLowerCase());
 
                 for (const feed of categoryFeeds) {
@@ -65,13 +62,13 @@ export class ServiceRssProcessor {
                         const feedWithCategory = { ...feed, category: categoryName };
                         if (isPriority) {
                             priorityFeeds.push(feedWithCategory);
-                            logger.debug(`Added to PRIORITY list: ${feed.name}`, { module: myModule, operation, feedName: feed.name, category: categoryName });
+                            logger.debug(`Added to PRIORITY list: ${feed.name}`, { module: path.parse(__filename).name, operation, feedName: feed.name, category: categoryName });
                         } else {
                             otherFeeds.push(feedWithCategory);
-                            logger.debug(`Added to OTHER list: ${feed.name}`, { module: myModule, operation, feedName: feed.name, category: categoryName });
+                            logger.debug(`Added to OTHER list: ${feed.name}`, { module: path.parse(__filename).name, operation, feedName: feed.name, category: categoryName });
                         }
                     } else {
-                        logger.debug(`Skipping disabled feed: ${feed.name}`, { module: myModule, operation, feedName: feed.name, feedUrl: feed.url });
+                        logger.debug(`Skipping disabled feed: ${feed.name}`, { module: path.parse(__filename).name, operation, feedName: feed.name, feedUrl: feed.url });
                     }
                 }
             }
@@ -79,16 +76,16 @@ export class ServiceRssProcessor {
         const feedsToProcess = [...priorityFeeds, ...otherFeeds];
 
         if (feedsToProcess.length === 0) {
-            logger.warn(`No enabled RSS feeds found in configuration. Aborting.`, { module: myModule, operation });
+            logger.warn(`No enabled RSS feeds found in configuration. Aborting.`, { module: path.parse(__filename).name, operation });
             return;
         }
 
         const feedNames = feedsToProcess.map(f => `${f.name} [${f.category}]`);
-        logger.info(`RSS feeds to process (${feedsToProcess.length}): ${feedNames.join(', ')}`, { module: myModule, operation, feedCount: feedsToProcess.length, feedNames });
+        logger.info(`RSS feeds to process (${feedsToProcess.length}): ${feedNames.join(', ')}`, { module: path.parse(__filename).name, operation, feedCount: feedsToProcess.length, feedNames });
 
         for (let i = 0; i < feedsToProcess.length; i++) {
             const feed = feedsToProcess[i];
-            const feedContext = { module: myModule, operation, feedName: feed.name, feedUrl: feed.url, category: feed.category, feedIndex: `${i + 1}/${feedsToProcess.length}` };
+            const feedContext = { module: path.parse(__filename).name, operation, feedName: feed.name, feedUrl: feed.url, category: feed.category, feedIndex: `${i + 1}/${feedsToProcess.length}` };
             logger.info(`=== Starting processing for feed: ${feed.name} ===`, feedContext);
 
             let articlesFromFeed: RssArticle[] = [];
@@ -97,7 +94,7 @@ export class ServiceRssProcessor {
                 articlesFromFeed = await ServiceRssFetcher.getArticlesFromFeed(feed.url);
                 logger.debug(`Fetched ${articlesFromFeed.length} raw articles.`, { ...feedContext, rawArticleCount: articlesFromFeed.length });
             } catch (fetchError) {
-                handleServiceError(fetchError, `${myModule}:${operation}:fetchFeed`, `Error fetching feed ${feed.name}`);
+                handleServiceError(fetchError, `${path.parse(__filename).name}:${operation}:fetchFeed`, `Error fetching feed ${feed.name}`);
                 if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
                     logger.debug(`Applying delay (${delayBetweenFeeds}ms) before next feed after fetch error.`, { ...feedContext, delayMs: delayBetweenFeeds });
                     await sleep(delayBetweenFeeds);
@@ -142,7 +139,7 @@ export class ServiceRssProcessor {
                     }
                 } catch (dbError) {
                     // Logguer l'erreur DB via handleServiceError
-                    handleServiceError(dbError, `${myModule}:${operation}:checkArticle`, `DB error checking article`);
+                    handleServiceError(dbError, `${path.parse(__filename).name}:${operation}:checkArticle`, `DB error checking article`);
                     logger.warn(`Adding article to analysis queue due to DB check error.`, articleContext);
                     articlesToAnalyze.push(article); // Analyse par précaution
                     articlesDbError++;
@@ -174,7 +171,7 @@ export class ServiceRssProcessor {
                 } catch (processingError) {
                     // Normalement, processSingleArticle devrait gérer ses erreurs internes et les logger via handleServiceError.
                     // Ce catch est une sécurité supplémentaire pour les erreurs imprévues.
-                    handleServiceError(processingError, `${myModule}:${operation}:processArticleLoop`, `Unhandled error processing article`);
+                    handleServiceError(processingError, `${path.parse(__filename).name}:${operation}:processArticleLoop`, `Unhandled error processing article`);
                 }
 
                 if (delayBetweenArticles > 0 && j < articlesToAnalyze.length - 1) {
@@ -191,7 +188,7 @@ export class ServiceRssProcessor {
             }
         }
 
-        logger.info(`Processing of all RSS feeds finished.`, { module: myModule, operation });
+        logger.info(`Processing of all RSS feeds finished.`, { module: path.parse(__filename).name, operation });
     }
 
     private static async processSingleArticle(
@@ -201,7 +198,7 @@ export class ServiceRssProcessor {
     ): Promise<void> {
         const operation = 'processSingleArticle';
         const fetchedAtDate = new Date();
-        const articleContext = { module: myModule, operation, articleLink: article.link, articleTitle: article.title, feedName: feed.name, category: feed.category };
+        const articleContext = { module: path.parse(__filename).name, operation, articleLink: article.link, articleTitle: article.title, feedName: feed.name, category: feed.category };
 
         try {
             let fullContent = article.contentSnippet;
@@ -225,7 +222,7 @@ export class ServiceRssProcessor {
                         logger.warn(`Scrape returned no content.`, articleContext);
                     }
                 } catch (scrapeError) {
-                    handleServiceError(scrapeError, `${myModule}:${operation}:scrape`, `Scraping failed`);
+                    handleServiceError(scrapeError, `${path.parse(__filename).name}:${operation}:scrape`, `Scraping failed`);
                     // Garde le contenu snippet s'il existe, sinon fullContent reste vide/null
                     fullContent = article.contentSnippet;
                     scraped = false; // Échec du scraping
@@ -284,7 +281,7 @@ export class ServiceRssProcessor {
                     }
                 } catch (geminiErr) {
                     // Log l'erreur via handleServiceError
-                    handleServiceError(geminiErr, `${myModule}:${operation}:gemini`, `Gemini API Error`);
+                    handleServiceError(geminiErr, `${path.parse(__filename).name}:${operation}:gemini`, `Gemini API Error`);
                     geminiError = `Gemini API Error: ${geminiErr instanceof Error ? geminiErr.message : String(geminiErr)}`;
                     logger.warn(`Gemini API Error captured.`, { ...articleContext, errorMessage: geminiError });
                 }
@@ -313,14 +310,14 @@ export class ServiceRssProcessor {
         } catch (error) {
             // Ce catch global est pour les erreurs imprévues dans processSingleArticle
             const errorMessage = `Unhandled error processing article: ${error instanceof Error ? error.message : String(error)}`;
-            handleServiceError(error, `${myModule}:${operation}:global`, errorMessage);
+            handleServiceError(error, `${path.parse(__filename).name}:${operation}:global`, errorMessage);
             try {
                 // Tentative ultime de marquer l'article comme échoué en DB
                 logger.error(`Attempting to save error status to DB after unhandled exception...`, { ...articleContext, finalErrorMessage: errorMessage });
                 await RepoRss.updateErrorStatus(article.link, errorMessage);
                 logger.warn(`Error status saved to DB after unhandled exception.`, { ...articleContext, finalErrorMessage: errorMessage });
             } catch (dbError) {
-                handleServiceError(dbError, `${myModule}:${operation}:saveErrorStatus`, `CRITICAL: Failed to save error status to DB`);
+                handleServiceError(dbError, `${path.parse(__filename).name}:${operation}:saveErrorStatus`, `CRITICAL: Failed to save error status to DB`);
             }
             // Pas besoin de relancer ici, on a loggé l'erreur et tenté de sauver l'état.
         }

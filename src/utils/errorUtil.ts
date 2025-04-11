@@ -1,7 +1,7 @@
 // src/utils/errorUtil.ts
 import { AuthenticationError } from 'ccxt'; // Gardez vos imports spécifiques
 import { Response } from 'express';
-import { logger } from './loggerUtil'; // Importer notre logger configuré
+import path from 'path'; import { logger } from './loggerUtil'; // Importer notre logger configuré
 
 // Fonction helper pour extraire les détails de l'erreur de manière sûre
 const getErrorDetails = (error: unknown): { message: string; stack?: string; name?: string, details?: unknown } => {

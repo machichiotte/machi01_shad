@@ -6,7 +6,7 @@ import { MappedCmc } from '@typ/cmc';
 import { MappedStrat } from '@typ/strat';
 import { MappedOrder } from '@typ/order';
 import { Asset } from '@typ/cryptoAnalytics';
-import { logger } from '@utils/loggerUtil';
+import path from 'path'; import { logger } from '@utils/loggerUtil';
 
 const myUtil = 'ProcessorUtil';
 

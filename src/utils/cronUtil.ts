@@ -6,9 +6,8 @@ import { PLATFORM } from '@typ/platform'
 import { checkApiKeys } from './platformUtil';
 import { retry } from './retryUtil';
 import { PLATFORMS } from '@constants/platform'
-import { logger } from './loggerUtil';
+import path from 'path'; import { logger } from './loggerUtil';
 
-const myModule = 'cronUtil'
 /**
  * Exécute une tâche cron avec gestion des erreurs et mécanisme de retry
  */
@@ -43,7 +42,7 @@ export async function executeCronTask(task: () => Promise<void>, isCritical: boo
  */
 export async function executeForPlatforms(taskName: string, taskFunction: (platform: PLATFORM) => Promise<void>): Promise<void> {
   const operation = 'executeForPlatforms'
-  logger.debug(`Exécution de la tâche cron pour ${taskName}...`, { module: myModule, operation })
+  logger.debug(`Exécution de la tâche cron pour ${taskName}...`, { module: path.parse(__filename).name, operation })
   await Promise.all(
     PLATFORMS.filter(platform => checkApiKeys(platform)).map((platform) =>
       executeCronTask(() => taskFunction(platform), true)

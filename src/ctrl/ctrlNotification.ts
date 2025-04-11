@@ -2,9 +2,8 @@
 import webPush from 'web-push'
 import { Request, Response } from 'express'
 import { handleControllerError } from '@src/utils/errorUtil'
-import { logger } from '@src/utils/loggerUtil'
+import path from 'path'; import { logger } from '@src/utils/loggerUtil'
 
-const myModule = 'ctrlNotifications'
 // Clés VAPID (remplacez par les vôtres)
 // const vapidKeys = {
 //   publicKey: '<YOUR_PUBLIC_KEY>',
@@ -13,8 +12,8 @@ const myModule = 'ctrlNotifications'
 
 const vapidKeys = webPush.generateVAPIDKeys()
 
-//logger.debug(`Clé VAPID publique: ${vapidKeys.publicKey}`, {module: myModule})
-//logger.debug(`Clé VAPID privée: ${vapidKeys.privateKey}`, {module: myModule})
+//logger.debug(`Clé VAPID publique: ${vapidKeys.publicKey}`, {module: path.parse(__filename).name})
+//logger.debug(`Clé VAPID privée: ${vapidKeys.privateKey}`, {module: path.parse(__filename).name})
 
 // Configurer web-push
 webPush.setVapidDetails({
@@ -30,11 +29,10 @@ const subscriptions: Array<webPush.Subscription> = [] // Stockage temporaire des
 //router.post('/subscribe', (req, res) => {
 
 export async function subscribe(req: Request, res: Response): Promise<void> {
-  const operation = 'subscribe'
   const subscription: webPush.Subscription = req.body
   if (!subscriptions.find((sub) => sub.endpoint === subscription.endpoint)) {
     subscriptions.push(subscription)
-    logger.debug(`Nouvel abonnement enregistré: ${subscription.endpoint}`, { module: myModule, operation })
+    logger.debug(`Nouvel abonnement enregistré: ${subscription.endpoint}`, { module: path.parse(__filename).name, operation: 'subscribe' })
   }
 
   res.status(201).json({ message: 'Abonnement enregistré avec succès.' })

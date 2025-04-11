@@ -11,9 +11,8 @@ import { handleServiceError } from '@utils/errorUtil'
 import { retry } from '@utils/retryUtil'
 import { QUOTE_CURRENCIES } from '@constants/coins'
 import { config } from '@config/index';
-import { logger } from '@src/utils/loggerUtil'
+import path from 'path'; import { logger } from '@src/utils/loggerUtil'
 
-const myModule = 'ServiceTrade'
 const COLLECTION_CATEGORY = config.databaseConfig.category.trade
 
 export class ServiceTrade {
@@ -37,7 +36,7 @@ export class ServiceTrade {
     const trades: PlatformTrade[] = [];
     const batchSize = 30;
 
-    logger.debug(`Fetch ${validSymbols} trades for ${platform} ${base}`, { module: myModule, operation });
+    logger.debug(`Fetch ${validSymbols} trades for ${platform} ${base}`, { module: path.parse(__filename).name, operation });
     for (let i = 0; i < validSymbols.length; i += batchSize) {
       const symbolBatch = validSymbols.slice(i, i + batchSize);
       const batchPromises = symbolBatch.map(symbol =>

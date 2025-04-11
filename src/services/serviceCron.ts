@@ -14,16 +14,14 @@ import { Task } from '@typ/cron'
 import { PLATFORMS } from '@constants/platform'
 
 import { config } from '@config/index'
-import { logger } from '@utils/loggerUtil';
-
-const myModule = 'ServiceCron';
+import path from 'path'; import { logger } from '@utils/loggerUtil';
 
 export class ServiceCron {
   static async initializeCronTasks(): Promise<void> {
     const operation = 'initializeCronTasks';
 
     try {
-      logger.debug(`Starting initialization of Cron tasks...`, { module: myModule, operation });
+      logger.debug(`Starting initialization of Cron tasks...`, { module: path.parse(__filename).name, operation });
 
       const initializedTasks: string[] = [] // Tâches initialisées avec succès
       const failedTasks: string[] = [] // Tâches ayant échoué
@@ -32,11 +30,11 @@ export class ServiceCron {
       const validPlatforms = PLATFORMS.filter((platform) => {
         const isValid = checkApiKeys(platform);
         if (!isValid) {
-          logger.warn(`API keys check failed or missing for platform: ${platform}. Tasks requiring it will be skipped.`, { module: myModule, operation, platform });
+          logger.warn(`API keys check failed or missing for platform: ${platform}. Tasks requiring it will be skipped.`, { module: path.parse(__filename).name, operation, platform });
         }
         return isValid;
       });
-      logger.info(`Valid platforms found after API key check: ${validPlatforms.join(', ') || 'None'}`, { module: myModule, operation, validPlatforms });
+      logger.info(`Valid platforms found after API key check: ${validPlatforms.join(', ') || 'None'}`, { module: path.parse(__filename).name, operation, validPlatforms });
 
       // Tâches basées sur les plateformes
       const platformTasks: Task[] = [
@@ -76,28 +74,28 @@ export class ServiceCron {
         const taskIdentifier = `Platform Task ${name}`;
         try {
           if (validPlatforms.length === 0) {
-            logger.warn(`Skipping scheduling of ${taskIdentifier} as no valid platforms were found.`, { module: myModule, operation, taskName: name });
+            logger.warn(`Skipping scheduling of ${taskIdentifier} as no valid platforms were found.`, { module: path.parse(__filename).name, operation, taskName: name });
             failedTasks.push(`${name} (No valid platforms)`);
             return; // Ne pas planifier si aucune plateforme n'est valide
           }
 
           validPlatforms.forEach((platform) => {
             const platformTaskName = `${taskIdentifier} for ${platform}`;
-            logger.debug(`Scheduling ${platformTaskName} with schedule: ${schedule}`, { module: myModule, operation, taskName: name, platform, schedule });
+            logger.debug(`Scheduling ${platformTaskName} with schedule: ${schedule}`, { module: path.parse(__filename).name, operation, taskName: name, platform, schedule });
 
             cron.schedule(schedule, async () => {
               const startTime = Date.now();
-              logger.debug(`Executing ${platformTaskName}...`, { module: myModule, taskName: name, platform, schedule });
+              logger.debug(`Executing ${platformTaskName}...`, { module: path.parse(__filename).name, taskName: name, platform, schedule });
 
               try {
                 await task(platform); // Appelle la tâche avec l'argument platform
                 const duration = Date.now() - startTime;
-                logger.debug(`${platformTaskName} executed successfully.`, { module: myModule, taskName: name, platform, durationMs: duration });
+                logger.debug(`${platformTaskName} executed successfully.`, { module: path.parse(__filename).name, taskName: name, platform, durationMs: duration });
               } catch (err) {
                 // handleServiceError utilise déjà le logger
                 handleServiceError(
                   err,
-                  `${myModule}: ${platformTaskName}`, // Nom de fonction plus précis pour handleServiceError
+                  `${path.parse(__filename).name}: ${platformTaskName}`, // Nom de fonction plus précis pour handleServiceError
                   `Execution failed` // Message personnalisé
                 );
                 // Pas besoin de logger à nouveau l'erreur ici, handleServiceError s'en charge.
@@ -110,7 +108,7 @@ export class ServiceCron {
           // handleServiceError pour les erreurs de planification elles-mêmes
           handleServiceError(
             error,
-            `${myModule}: Scheduling ${taskIdentifier}`,
+            `${path.parse(__filename).name}: Scheduling ${taskIdentifier}`,
             `Failed to schedule cron task`
           );
         }
@@ -121,20 +119,20 @@ export class ServiceCron {
         const taskIdentifier = `General Task ${name}`;
 
         try {
-          logger.debug(`Scheduling ${taskIdentifier} with schedule: ${schedule}`, { module: myModule, operation, taskName: name, schedule });
+          logger.debug(`Scheduling ${taskIdentifier} with schedule: ${schedule}`, { module: path.parse(__filename).name, operation, taskName: name, schedule });
 
           cron.schedule(schedule, async () => {
             const startTime = Date.now()
-            logger.debug(`Executing ${taskIdentifier}...`, { module: myModule, taskName: name, schedule });
+            logger.debug(`Executing ${taskIdentifier}...`, { module: path.parse(__filename).name, taskName: name, schedule });
 
             try {
               if (task.length > 0) {
-                logger.warn(`General Task ${taskIdentifier} cannot be executed without arguments.`, { module: myModule, operation, taskName: name });
+                logger.warn(`General Task ${taskIdentifier} cannot be executed without arguments.`, { module: path.parse(__filename).name, operation, taskName: name });
 
               } else {
                 await (task as () => void)()
                 const duration = Date.now() - startTime
-                logger.debug(`${taskIdentifier} executed successfully.`, { module: myModule, taskName: name, durationMs: duration });
+                logger.debug(`${taskIdentifier} executed successfully.`, { module: path.parse(__filename).name, taskName: name, durationMs: duration });
 
               }
             } catch (error) {
@@ -158,9 +156,9 @@ export class ServiceCron {
 
       // Log des résultats
       if (failedTasks.length === 0) {
-        logger.info(`All cron tasks initialized successfully.`, { module: myModule, operation, initializedTasks, validPlatforms });
+        logger.info(`All cron tasks initialized successfully.`, { module: path.parse(__filename).name, operation, initializedTasks, validPlatforms });
       } else {
-        logger.warn(`Cron tasks initialization completed with some failures.`, { module: myModule, operation, initializedTasks, failedTasks, validPlatforms });
+        logger.warn(`Cron tasks initialization completed with some failures.`, { module: path.parse(__filename).name, operation, initializedTasks, failedTasks, validPlatforms });
       }
     } catch (error) {
       handleServiceError(

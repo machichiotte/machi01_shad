@@ -5,9 +5,7 @@ import { MappingPlatform } from '@services/api/platform/mappingPlatform';
 import { handleServiceError } from '@utils/errorUtil';
 import { PLATFORM } from '@typ/platform';
 import { MappedOrder } from '@typ/order';
-import { logger } from '@src/utils/loggerUtil';
-
-const myModule = 'ServiceOrderBalance'
+import path from 'path'; import { logger } from '@src/utils/loggerUtil';
 
 export class ServiceOrderBalance {
 
@@ -63,7 +61,7 @@ export class ServiceOrderBalance {
     try {
       const data = await ServiceCcxt.fetchOpenOrdersByPlatform(platform);
       const mappedData = MappingPlatform.mapOrders(platform, data);
-      logger.debug(`Fetched and mapped orders for ${platform}:`, { module: myModule, operation, count: mappedData.length });
+      logger.debug(`Fetched and mapped orders for ${platform}:`, { module: path.parse(__filename).name, operation, count: mappedData.length });
       return mappedData;
     } catch (error) {
       handleServiceError(error, 'fetchAndMapOrders', `Error fetching and mapping orders for ${platform}`);
@@ -80,7 +78,7 @@ export class ServiceOrderBalance {
     try {
       const mappedData = await this.fetchAndMapOrders(platform);
       await RepoOrderBalance.save(mappedData, platform);
-      logger.debug(`Updated orders from server for ${platform}.`, { module: myModule, operation, count: mappedData.length });
+      logger.debug(`Updated orders from server for ${platform}.`, { module: path.parse(__filename).name, operation, count: mappedData.length });
     } catch (error) {
       handleServiceError(error, 'updateOrdersFromServer', `Error updating orders from server for ${platform}`);
       throw error;

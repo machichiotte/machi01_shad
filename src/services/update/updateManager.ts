@@ -3,7 +3,7 @@ import { PLATFORMS } from '@constants/platform';
 import { UpdateManagerGeneral } from '@services/update/updateManagerGeneral';
 import { UpdateManagerPlatform } from '@services/update/updateManagerPlatform';
 import { checkApiKeys } from '@utils/platformUtil';
-import { logger } from '@utils/loggerUtil'; // Importer le logger Winston
+import path from 'path'; import { logger } from '@utils/loggerUtil'; // Importer le logger Winston
 import { formatErrorForLog } from '@utils/errorUtil'; // Importer le helper
 
 const module = 'UpdateManager'; // Nom du module pour les logs

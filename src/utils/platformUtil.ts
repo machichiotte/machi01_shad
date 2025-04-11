@@ -2,9 +2,7 @@
 import { config } from '@config/index';
 import { PLATFORM } from '@typ/platform'
 import { PLATFORMS } from '@constants/platform'
-import { logger } from './loggerUtil';
-
-const myModule = 'platformUtil'
+import path from 'path'; import { logger } from './loggerUtil';
 
 // Fonction utilitaire pour valider la plateforme
 function isValidPlatform(platform: string): platform is PLATFORM {
@@ -20,20 +18,20 @@ function checkApiKeys(platform: PLATFORM): boolean {
   const operation = 'checkApiKeys'
   const platformConfig = config.apiConfig.platform[platform];
   if (!platformConfig) {
-    logger.debug(`Configuration manquante pour la plateforme : ${platform}`, { module: myModule, operation });
+    logger.debug(`Configuration manquante pour la plateforme : ${platform}`, { module: path.parse(__filename).name, operation });
     return false;
   }
 
   const { apiKey, secretKey } = platformConfig;
   if (!apiKey || !secretKey) {
-    logger.debug(`Clés API manquantes pour la plateforme : ${platform}`, { module: myModule, operation });
+    logger.debug(`Clés API manquantes pour la plateforme : ${platform}`, { module: path.parse(__filename).name, operation });
     return false;
   }
 
   // Vérification spécifique pour les plateformes nécessitant un passphrase
   if (['kucoin', 'okx'].includes(platform)) {
     if (!('passphrase' in platformConfig) || !platformConfig.passphrase) {
-      logger.debug(`Passphrase manquant pour la plateforme : ${platform}`, { module: myModule, operation });
+      logger.debug(`Passphrase manquant pour la plateforme : ${platform}`, { module: path.parse(__filename).name, operation });
       return false;
     }
   }

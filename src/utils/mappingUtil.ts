@@ -1,6 +1,6 @@
 // src/utils/mappingUtil.ts
 import { STABLECOINS, MAJOR_CRYPTO_PAIRS } from '@constants/coins'
-import { logger } from './loggerUtil'; // Importer le logger Winston
+import path from 'path'; import { logger } from './loggerUtil'; // Importer le logger Winston
 
 const myUtil = 'MappingUtil'; // Nom du module pour les logs
 /**

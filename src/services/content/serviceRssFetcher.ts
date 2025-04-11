@@ -2,9 +2,8 @@
 import Parser from 'rss-parser';
 import { handleServiceError } from '@utils/errorUtil';
 import { RssArticle } from '@typ/rss';
-import { logger } from '@src/utils/loggerUtil';
+import path from 'path'; import { logger } from '@src/utils/loggerUtil';
 
-const myModule = 'ServiceRssFetcher'
 const parser = new Parser({
     timeout: 10000
 });
@@ -14,9 +13,9 @@ export class ServiceRssFetcher {
     static async getArticlesFromFeed(feedUrl: string): Promise<RssArticle[]> {
         const operation = 'getArticlesFromFeed'
         try {
-            logger.debug(`[${SERVICE_NAME}] Récupération du flux : ${feedUrl}`, { module: myModule, operation });
+            logger.debug(`[${SERVICE_NAME}] Récupération du flux : ${feedUrl}`, { module: path.parse(__filename).name, operation });
             const feed = await parser.parseURL(feedUrl);
-            logger.debug(`[${SERVICE_NAME}] Trouvé ${feed.items.length} articles dans ${feedUrl}`, { module: myModule, operation });
+            logger.debug(`[${SERVICE_NAME}] Trouvé ${feed.items.length} articles dans ${feedUrl}`, { module: path.parse(__filename).name, operation });
 
             return feed.items
                 .map(item => ({

@@ -8,8 +8,7 @@ import { PLATFORM } from '@typ/platform'
 import { EncryptionService } from '@utils/encryption'
 import { randomBytes } from 'crypto'
 
-import { logger } from '@src/utils/loggerUtil'
-const myModule = 'RepoConfigApi'
+import path from 'path'; import { logger } from '@src/utils/loggerUtil'
 
 const COLLECTION_NAME = config.databaseConfig.collection.apiConfig
 
@@ -116,9 +115,8 @@ export class RepoConfigApi {
   }
 
   static decryptConfigCmc(cmcConfig: ApiCmc): ApiCmc {
-    const operation = 'decryptConfigCmc'
     if (!cmcConfig || !cmcConfig.apiKey) {
-      logger.warn('CMC API key is null.', { module: myModule, operation })
+      logger.warn('CMC API key is null.', { module: path.parse(__filename).name, operation: 'decryptConfigCmc' })
       return cmcConfig || { apiKey: '', iv: '' }
     }
 
@@ -130,9 +128,8 @@ export class RepoConfigApi {
   }
 
   static decryptConfigGemini(geminiConfig: ApiGemini): ApiGemini {
-    const operation = 'decryptConfigGemini'
     if (!geminiConfig || !geminiConfig.apiKey) {
-      logger.warn('Gemini API key is null.', { module: myModule, operation })
+      logger.warn('Gemini API key is null.', { module: path.parse(__filename).name, operation: 'decryptConfigGemini' })
       return geminiConfig || { apiKey: '', iv: '', model: '' }
     }
 
@@ -165,8 +162,6 @@ export class RepoConfigApi {
   private static decryptConfigPlatforms(platformConfigs: {
     [key in PLATFORM]: ApiPlatform
   }): { [key in PLATFORM]: ApiPlatform } {
-    const operation = 'decryptConfigPlatforms'
-
     const decryptedPlatform: { [key in PLATFORM]: ApiPlatform } = {} as {
       [key in PLATFORM]: ApiPlatform
     }
@@ -174,7 +169,7 @@ export class RepoConfigApi {
     Object.entries(platformConfigs).forEach(([platform, config]) => {
       if (!config.iv) {
         logger.warn(
-          `No IV provided for platform: ${platform}. Skipping decryption.`, { module: myModule, operation }
+          `No IV provided for platform: ${platform}. Skipping decryption.`, { module: path.parse(__filename).name, operation: 'decryptConfigPlatforms' }
         )
         return
       }

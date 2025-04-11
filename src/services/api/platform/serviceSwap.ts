@@ -7,30 +7,29 @@ import { ServiceStrategy } from '@services/api/database/serviceStrategy';
 import { ServiceTrade } from '@services/api/platform/serviceTrade';
 import { handleServiceError } from '@utils/errorUtil';
 import { PLATFORM } from '@typ/platform';
-import { logger } from '@utils/loggerUtil';
+import path from 'path'; import { logger } from '@utils/loggerUtil';
 import { config } from '@config/index';
 
-const myModule = 'ServiceSwap';
 const COLLECTION_NAME = config.databaseConfig.collection.swap;
 
 export class ServiceSwap {
 
   static async fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
     const operation = 'fetchDatabaseSwapMigration';
-    logger.debug(`Workspaceing swap migrations from DB: ${COLLECTION_NAME}...`, { module: myModule, operation, collection: COLLECTION_NAME });
+    logger.debug(`Workspaceing swap migrations from DB: ${COLLECTION_NAME}...`, { module: path.parse(__filename).name, operation, collection: COLLECTION_NAME });
     try {
       const swaps = await ServiceDatabase.getCollectionDocuments(COLLECTION_NAME) as SwapMigration[];
-      logger.debug(`Workspaceed ${swaps.length} swap migrations.`, { module: myModule, operation, count: swaps.length });
+      logger.debug(`Workspaceed ${swaps.length} swap migrations.`, { module: path.parse(__filename).name, operation, count: swaps.length });
       return swaps;
     } catch (error) {
-      handleServiceError(error, `${myModule}:${operation}`, `Error fetching swap migrations from ${COLLECTION_NAME}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Error fetching swap migrations from ${COLLECTION_NAME}`);
       throw error;
     }
   }
 
   static async updateTrade(trade: MappedTrade, oldAsset: string, newAsset: string, swapMultiplier: number, platform: string): Promise<void> {
     const operation = 'updateTrade';
-    const context = { module: myModule, operation, oldAsset, newAsset, platform, swapMultiplier, tradeId: trade._id?.toHexString() ?? 'N/A' }; // Include tradeId early
+    const context = { module: path.parse(__filename).name, operation, oldAsset, newAsset, platform, swapMultiplier, tradeId: trade._id?.toHexString() ?? 'N/A' }; // Include tradeId early
 
     // --- Création de l'objet mis à jour SANS ajouter de nouvelles propriétés ---
     const updatedTrade: Partial<MappedTrade> & { _id?: MappedTrade['_id'] } = { // Utiliser Partial pour flexibilité mais garder _id
@@ -53,12 +52,12 @@ export class ServiceSwap {
         await ServiceTrade.updateById(updatedTrade as MappedTrade); // Cast prudent si nécessaire par updateById
         logger.info(`Trade updated successfully for swap.`, context); // Utiliser info pour succès
       } catch (error) {
-        handleServiceError(error, `${myModule}:${operation}:dbUpdate`, `Failed to update swapped trade in DB for ID: ${updatedTrade._id.toHexString()}`);
+        handleServiceError(error, `${path.parse(__filename).name}:${operation}:dbUpdate`, `Failed to update swapped trade in DB for ID: ${updatedTrade._id.toHexString()}`);
         throw error;
       }
     } else {
       logger.error('Trade _id is undefined, cannot update trade during swap.', {
-        module: myModule,
+        module: path.parse(__filename).name,
         operation,
         platform,
         oldAsset,
@@ -71,7 +70,7 @@ export class ServiceSwap {
 
   static async updateStrategy(strategy: MappedStrat, newAsset: string, platform: PLATFORM): Promise<void> {
     const operation = 'updateStrategy';
-    const context = { module: myModule, operation, oldAsset: strategy.base, newAsset, platform, strategyId: strategy._id?.toHexString() ?? 'N/A' };
+    const context = { module: path.parse(__filename).name, operation, oldAsset: strategy.base, newAsset, platform, strategyId: strategy._id?.toHexString() ?? 'N/A' };
     logger.debug(`Preparing strategy update for swap...`, context);
 
     // --- Création de l'objet mis à jour ---
@@ -89,12 +88,12 @@ export class ServiceSwap {
         await ServiceStrategy.updateStrategyById(updatedStrategy as MappedStrat);
         logger.info(`Strategy updated successfully for swap.`, context); // Utiliser info pour succès
       } catch (error) {
-        handleServiceError(error, `${myModule}:${operation}:dbUpdate`, `Failed to update swapped strategy in DB for ID: ${updatedStrategy._id.toHexString()}`);
+        handleServiceError(error, `${path.parse(__filename).name}:${operation}:dbUpdate`, `Failed to update swapped strategy in DB for ID: ${updatedStrategy._id.toHexString()}`);
         throw error;
       }
     } else {
       logger.error('Strategy _id is undefined, cannot update strategy during swap.', {
-        module: myModule,
+        module: path.parse(__filename).name,
         operation,
         platform,
         oldAsset: strategy.base,
@@ -108,28 +107,28 @@ export class ServiceSwap {
 
   static async handleMigrationSwap(): Promise<void> {
     const operation = 'handleMigrationSwap';
-    logger.info('Starting swap migration handling process...', { module: myModule, operation });
+    logger.info('Starting swap migration handling process...', { module: path.parse(__filename).name, operation });
     try {
-      logger.debug('Fetching required data (swaps, trades, strategies)...', { module: myModule, operation });
+      logger.debug('Fetching required data (swaps, trades, strategies)...', { module: path.parse(__filename).name, operation });
       const [swaps, trades, strategies] = await Promise.all([
         this.fetchDatabaseSwapMigration(),
         ServiceTrade.fetchFromDb() as Promise<MappedTrade[]>,
         ServiceStrategy.fetchDatabaseStrategies() as Promise<MappedStrat[]>
       ]);
-      logger.debug(`Data fetched: ${swaps.length} swaps, ${trades.length} trades, ${strategies.length} strategies.`, { module: myModule, operation, swapCount: swaps.length, tradeCount: trades.length, strategyCount: strategies.length });
+      logger.debug(`Data fetched: ${swaps.length} swaps, ${trades.length} trades, ${strategies.length} strategies.`, { module: path.parse(__filename).name, operation, swapCount: swaps.length, tradeCount: trades.length, strategyCount: strategies.length });
 
       const now = new Date();
       let totalTradesUpdated = 0;
       let totalStrategiesUpdated = 0;
 
       if (swaps.length === 0) {
-        logger.info('No swap migration configurations found in database.', { module: myModule, operation });
+        logger.info('No swap migration configurations found in database.', { module: path.parse(__filename).name, operation });
         return;
       }
 
       for (const swap of swaps) {
         const { oldBase: oldAsset, newBase: newAsset, swapRate, platform, delistingDate } = swap;
-        const swapContext = { module: myModule, operation, platform, oldAsset, newAsset, swapRate, delistingDate };
+        const swapContext = { module: path.parse(__filename).name, operation, platform, oldAsset, newAsset, swapRate, delistingDate };
         logger.debug(`Processing swap configuration...`, swapContext);
 
         const delisting = new Date(delistingDate);
@@ -186,14 +185,14 @@ export class ServiceSwap {
           }
 
         } catch (promiseError) {
-          handleServiceError(promiseError, `${myModule}:${operation}:promiseProcessing`, `Unexpected error during Promise.allSettled for swap`);
+          handleServiceError(promiseError, `${path.parse(__filename).name}:${operation}:promiseProcessing`, `Unexpected error during Promise.allSettled for swap`);
         }
       } // end for loop
 
-      logger.info(`Swap migration handling process finished. Total successful updates - Trades: ${totalTradesUpdated}, Strategies: ${totalStrategiesUpdated}.`, { module: myModule, operation, totalTradesUpdated, totalStrategiesUpdated });
+      logger.info(`Swap migration handling process finished. Total successful updates - Trades: ${totalTradesUpdated}, Strategies: ${totalStrategiesUpdated}.`, { module: path.parse(__filename).name, operation, totalTradesUpdated, totalStrategiesUpdated });
 
     } catch (error) {
-      handleServiceError(error, `${myModule}:${operation}`, 'Error during swap migration handling process');
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, 'Error during swap migration handling process');
     }
   }
 }
