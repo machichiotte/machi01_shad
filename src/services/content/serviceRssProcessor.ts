@@ -17,9 +17,9 @@ export class ServiceRssProcessor {
     public static async fetchDatabaseRss(): Promise<ProcessedArticleData[]> {
         const operation = 'fetchDatabaseRss';
         try {
-            logger.debug(`Fetching all RSS data from database...`, { module: path.parse(__filename).name, operation });
+            //logger.debug(`Fetching all RSS data from database...`, { module: path.parse(__filename).name, operation });
             const data = await RepoRss.fetchAll();
-            logger.debug(`Fetched ${data.length} articles from database.`, { module: path.parse(__filename).name, operation, count: data.length });
+            //logger.debug(`Fetched ${data.length} articles from database.`, { module: path.parse(__filename).name, operation, count: data.length });
             return data;
         } catch (error) {
             handleServiceError(
@@ -51,10 +51,10 @@ export class ServiceRssProcessor {
         const otherFeeds: RssFeedConfig[] = [];
 
         if (rssConfig.categories) {
-            logger.debug(`Reading categories from configuration...`, { module: path.parse(__filename).name, operation });
+            // logger.debug(`Reading categories from configuration...`, { module: path.parse(__filename).name, operation });
             for (const categoryName in rssConfig.categories) {
                 const categoryFeeds = rssConfig.categories[categoryName] || [];
-                logger.debug(`Found category: ${categoryName} with ${categoryFeeds.length} feeds.`, { module: path.parse(__filename).name, operation, category: categoryName, feedCount: categoryFeeds.length });
+                //logger.debug(`Found category: ${categoryName} with ${categoryFeeds.length} feeds.`, { module: path.parse(__filename).name, operation, category: categoryName, feedCount: categoryFeeds.length });
                 const isPriority = priorityCategories.has(categoryName.toLowerCase());
 
                 for (const feed of categoryFeeds) {
@@ -62,13 +62,13 @@ export class ServiceRssProcessor {
                         const feedWithCategory = { ...feed, category: categoryName };
                         if (isPriority) {
                             priorityFeeds.push(feedWithCategory);
-                            logger.debug(`Added to PRIORITY list: ${feed.name}`, { module: path.parse(__filename).name, operation, feedName: feed.name, category: categoryName });
+                            //logger.debug(`Added to PRIORITY list: ${feed.name}`, { module: path.parse(__filename).name, operation, feedName: feed.name, category: categoryName });
                         } else {
                             otherFeeds.push(feedWithCategory);
-                            logger.debug(`Added to OTHER list: ${feed.name}`, { module: path.parse(__filename).name, operation, feedName: feed.name, category: categoryName });
+                            //logger.debug(`Added to OTHER list: ${feed.name}`, { module: path.parse(__filename).name, operation, feedName: feed.name, category: categoryName });
                         }
                     } else {
-                        logger.debug(`Skipping disabled feed: ${feed.name}`, { module: path.parse(__filename).name, operation, feedName: feed.name, feedUrl: feed.url });
+                        //logger.debug(`Skipping disabled feed: ${feed.name}`, { module: path.parse(__filename).name, operation, feedName: feed.name, feedUrl: feed.url });
                     }
                 }
             }
@@ -86,29 +86,29 @@ export class ServiceRssProcessor {
         for (let i = 0; i < feedsToProcess.length; i++) {
             const feed = feedsToProcess[i];
             const feedContext = { module: path.parse(__filename).name, operation, feedName: feed.name, feedUrl: feed.url, category: feed.category, feedIndex: `${i + 1}/${feedsToProcess.length}` };
-            logger.info(`=== Starting processing for feed: ${feed.name} ===`, feedContext);
+            //logger.debug(`=== Starting processing for feed: ${feed.name} ===`, feedContext);
 
             let articlesFromFeed: RssArticle[] = [];
             try {
-                logger.debug(`Fetching articles from feed...`, feedContext);
+                //logger.debug(`Fetching articles from feed...`, feedContext);
                 articlesFromFeed = await ServiceRssFetcher.getArticlesFromFeed(feed.url);
-                logger.debug(`Fetched ${articlesFromFeed.length} raw articles.`, { ...feedContext, rawArticleCount: articlesFromFeed.length });
+                //logger.debug(`Fetched ${articlesFromFeed.length} raw articles.`, { ...feedContext, rawArticleCount: articlesFromFeed.length });
             } catch (fetchError) {
                 handleServiceError(fetchError, `${path.parse(__filename).name}:${operation}:fetchFeed`, `Error fetching feed ${feed.name}`);
                 if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
-                    logger.debug(`Applying delay (${delayBetweenFeeds}ms) before next feed after fetch error.`, { ...feedContext, delayMs: delayBetweenFeeds });
+                    // logger.debug(`Applying delay (${delayBetweenFeeds}ms) before next feed after fetch error.`, { ...feedContext, delayMs: delayBetweenFeeds });
                     await sleep(delayBetweenFeeds);
                 }
                 continue; // Passe au flux suivant
             }
 
             const totalArticlesInFeed = articlesFromFeed.length;
-            logger.info(`${totalArticlesInFeed} articles retrieved from ${feed.name}. Checking which need analysis...`, { ...feedContext, totalArticlesInFeed });
+            // logger.debug(`${totalArticlesInFeed} articles retrieved from ${feed.name}. Checking which need analysis...`, { ...feedContext, totalArticlesInFeed });
 
             if (totalArticlesInFeed === 0) {
-                logger.info(`No articles found for ${feed.name}. Skipping to next feed.`, feedContext);
+                // logger.debug(`No articles found for ${feed.name}. Skipping to next feed.`, feedContext);
                 if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
-                    logger.debug(`Applying delay (${delayBetweenFeeds}ms) before next feed.`, { ...feedContext, delayMs: delayBetweenFeeds });
+                    // logger.debug(`Applying delay (${delayBetweenFeeds}ms) before next feed.`, { ...feedContext, delayMs: delayBetweenFeeds });
                     await sleep(delayBetweenFeeds);
                 }
                 continue;
@@ -131,10 +131,10 @@ export class ServiceRssProcessor {
                     const needsAnalysis = !existingArticle || !existingArticle.processedAt || existingArticle.error; // Analyse si non existant, pas traité, ou en erreur
 
                     if (needsAnalysis) {
-                        logger.debug(`Article needs analysis.`, articleContext);
+                        //logger.debug(`Article needs analysis.`, articleContext);
                         articlesToAnalyze.push(article);
                     } else {
-                        logger.debug(`Article already processed successfully, skipping.`, articleContext);
+                        //logger.debug(`Article already processed successfully, skipping.`, articleContext);
                         articlesExisting++;
                     }
                 } catch (dbError) {
@@ -152,19 +152,19 @@ export class ServiceRssProcessor {
             } else {
                 logger.info(`No articles require new analysis for ${feed.name}.`, { ...feedContext, articlesToAnalyze: 0, articlesExisting, articlesSkipped, articlesDbError });
                 if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
-                    logger.debug(`Applying delay (${delayBetweenFeeds}ms) before next feed.`, { ...feedContext, delayMs: delayBetweenFeeds });
+                    // logger.debug(`Applying delay (${delayBetweenFeeds}ms) before next feed.`, { ...feedContext, delayMs: delayBetweenFeeds });
                     await sleep(delayBetweenFeeds);
                 }
                 continue;
             }
 
-            // Traitement des articles à analyser (logique inchangée, on remplace les logs)
+            // Traitement des articles à analyser
             for (let j = 0; j < articlesToAnalyze.length; j++) {
                 const article = articlesToAnalyze[j];
-                const articleTitle = article.title || 'Sans titre';
-                const articleContext = { ...feedContext, articleLink: article.link, articleTitle, articleIndex: `${j + 1}/${totalToAnalyzeCount}` };
+                // const articleTitle = article.title || 'Sans titre';
+                // const articleContext = { ...feedContext, articleLink: article.link, articleTitle, articleIndex: `${j + 1}/${totalToAnalyzeCount}` };
 
-                logger.info(`Analyzing article ${j + 1}/${totalToAnalyzeCount}: [${articleTitle}]`, articleContext);
+                //logger.debug(`Analyzing article ${j + 1}/${totalToAnalyzeCount}: [${articleTitle}]`, articleContext);
 
                 try {
                     await ServiceRssProcessor.processSingleArticle(article, feed, rssConfig);
@@ -175,7 +175,7 @@ export class ServiceRssProcessor {
                 }
 
                 if (delayBetweenArticles > 0 && j < articlesToAnalyze.length - 1) {
-                    logger.debug(`Applying delay (${delayBetweenArticles}ms) before next article.`, { ...articleContext, delayMs: delayBetweenArticles });
+                    //logger.debug(`Applying delay (${delayBetweenArticles}ms) before next article.`, { ...articleContext, delayMs: delayBetweenArticles });
                     await sleep(delayBetweenArticles);
                 }
             }
@@ -183,7 +183,7 @@ export class ServiceRssProcessor {
             logger.info(`Finished processing for ${totalToAnalyzeCount} analyzed articles from feed: ${feed.name} ===`, { ...feedContext, analyzedCount: totalToAnalyzeCount });
 
             if (delayBetweenFeeds > 0 && i < feedsToProcess.length - 1) {
-                logger.debug(`Applying delay (${delayBetweenFeeds}ms) before next feed.`, { ...feedContext, delayMs: delayBetweenFeeds });
+                // logger.debug(`Applying delay (${delayBetweenFeeds}ms) before next feed.`, { ...feedContext, delayMs: delayBetweenFeeds });
                 await sleep(delayBetweenFeeds);
             }
         }
@@ -215,7 +215,7 @@ export class ServiceRssProcessor {
                         logger.info(`Scrape successful.`, { ...articleContext, contentLength: fullContent.length });
                         const scrapeDelay = rssConfig.scrapeRetryDelayMs ?? DEFAULT_SERVER_CONFIG.rss.scrapeRetryDelayMs;
                         if (scrapeDelay > 0) {
-                            logger.debug(`Applying post-scrape delay: ${scrapeDelay}ms`, { ...articleContext, delayMs: scrapeDelay });
+                            // logger.debug(`Applying post-scrape delay: ${scrapeDelay}ms`, { ...articleContext, delayMs: scrapeDelay });
                             await sleep(scrapeDelay);
                         }
                     } else {
@@ -256,19 +256,19 @@ export class ServiceRssProcessor {
                     error: `Content unavailable (${scraped ? 'scrape failed or empty' : 'snippet missing or empty'})`,
                 };
             } else {
-                logger.debug(`Content ready for Gemini analysis. Length: ${fullContent.length}`, { ...articleContext, contentLength: fullContent.length });
+                //logger.debug(`Content ready for Gemini analysis. Length: ${fullContent.length}`, { ...articleContext, contentLength: fullContent.length });
                 let summary: string | null = null;
                 let analysis: FinancialAnalysis | null = null;
                 let geminiError: string | null = null;
 
                 const geminiDelay = rssConfig.geminiRequestDelayMs ?? DEFAULT_SERVER_CONFIG.rss.geminiRequestDelayMs;
                 if (geminiDelay > 0) {
-                    logger.debug(`Applying Gemini request delay: ${geminiDelay}ms`, { ...articleContext, delayMs: geminiDelay });
+                    //logger.debug(`Applying Gemini request delay: ${geminiDelay}ms`, { ...articleContext, delayMs: geminiDelay });
                     await sleep(geminiDelay);
                 }
 
                 try {
-                    logger.info(`Sending request to Gemini...`, articleContext);
+                    //logger.debug(`Sending request to Gemini...`, articleContext);
                     const analysisResult: AnalysisWithSummary | null = await ServiceGemini.analyzeText(fullContent);
 
                     if (analysisResult && analysisResult.summary && analysisResult.analysis) { // Vérifie si les résultats sont valides
@@ -280,10 +280,7 @@ export class ServiceRssProcessor {
                         logger.warn(`${geminiError}`, articleContext);
                     }
                 } catch (geminiErr) {
-                    // Log l'erreur via handleServiceError
                     handleServiceError(geminiErr, `${path.parse(__filename).name}:${operation}:gemini`, `Gemini API Error`);
-                    geminiError = `Gemini API Error: ${geminiErr instanceof Error ? geminiErr.message : String(geminiErr)}`;
-                    logger.warn(`Gemini API Error captured.`, { ...articleContext, errorMessage: geminiError });
                 }
 
                 articleDataToSave = {
@@ -303,9 +300,9 @@ export class ServiceRssProcessor {
                 }
             });
 
-            logger.info(`Saving results to database...`, { ...articleContext, hasError: !!articleDataToSave.error });
+            //logger.info(`Saving results to database...`, { ...articleContext, hasError: !!articleDataToSave.error });
             await RepoRss.upsertByLink(articleDataToSave);
-            logger.info(`Results saved successfully.`, { ...articleContext, hasError: !!articleDataToSave.error });
+            //logger.info(`Results saved successfully.`, { ...articleContext, hasError: !!articleDataToSave.error });
 
         } catch (error) {
             // Ce catch global est pour les erreurs imprévues dans processSingleArticle

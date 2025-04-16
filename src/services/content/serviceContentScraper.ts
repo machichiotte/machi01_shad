@@ -16,7 +16,7 @@ export class ServiceContentScraper {
         const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
 
         try {
-            logger.debug(`Fetching : ${url}`, { module: path.parse(__filename).name, operation, url });
+            // logger.debug(`Fetching : ${url}`, { module: path.parse(__filename).name, operation, url });
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -57,7 +57,7 @@ export class ServiceContentScraper {
                 $(selector).find('script, style, noscript, iframe, header, footer, nav, aside, .sidebar, .related-posts, .comments, .share-buttons, form').remove();
                 content = $(selector).text();
                 if (content && content.trim().length > 100) {
-                    logger.debug(`Contenu trouvé avec le sélecteur : ${selector}`, { module: path.parse(__filename).name, operation, url });
+                    // logger.debug(`Contenu trouvé avec le sélecteur : ${selector}`, { module: path.parse(__filename).name, operation, url });
                     break;
                 }
             }
@@ -76,7 +76,7 @@ export class ServiceContentScraper {
                 content = content.substring(0, MAX_CONTENT_LENGTH) + "... (tronqué)";
             }
 
-            logger.debug(`[Scraping réussi pour : ${url} (longueur: ${content.length})`, { module: path.parse(__filename).name, operation, url });
+            // logger.debug(`[Scraping réussi pour : ${url} (longueur: ${content.length})`, { module: path.parse(__filename).name, operation, url });
             return content;
 
         } catch (error: unknown) {

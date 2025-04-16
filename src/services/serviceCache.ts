@@ -5,7 +5,7 @@ import { DEFAULT_CACHE_EXPIRATION_TIMES } from '@config/default'
 import { CacheItem } from '@typ/cache'
 import { MappedData } from '@typ/database'
 import { API_CONFIG, BALANCE, CMC, MACHI, MARKET, ORDER, STRAT, TICKER, TRADE, USER, SERVER_CONFIG, HIGHEST_PRICE, SWAP, TIMESTAMP } from '@constants/collection'
-import path from 'path'; import { logger } from '@src/utils/loggerUtil'
+//import path from 'path'; import { logger } from '@src/utils/loggerUtil'
 type CacheKey = keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES
 
 export class ServiceCache {
@@ -13,17 +13,14 @@ export class ServiceCache {
 
   // Ajoute des données au cache avec horodatage
   static async addToCache(key: string, data: MappedData[]): Promise<void> {
-    const operation = 'addToCache'
-    logger.debug(`Début addToCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation })
+    //logger.debug(`Début addToCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'addToCache' })
     ServiceCache.cache[key] = { data, timestamp: Date.now() }
-    logger.debug(`Fin addToCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation })
+    //logger.debug(`Fin addToCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'addToCache' })
   }
 
   // Récupère les données du cache si elles ne sont pas expirées
   static async getFromCache(key: CacheKey): Promise<MappedData[] | null> {
-    const operation = 'getFromCache'
-
-    logger.debug(`Début getFromCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation })
+    //logger.debug(`Début getFromCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'getFromCache' })
     const cacheItem = ServiceCache.cache[key]
     const expirationTime =
       (config.serverConfig?.cacheExpirationTimes as CacheExpirationTimes)[key] ||
@@ -31,37 +28,31 @@ export class ServiceCache {
       0
 
     if (cacheItem && Date.now() - cacheItem.timestamp < expirationTime) {
-      logger.debug(`Cache valide pour la clé: ${key}`, { module: path.parse(__filename).name, operation })
+      //logger.debug(`Cache valide pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'getFromCache' })
       return cacheItem.data
     }
 
-    logger.debug(`Cache expiré ou inexistant pour la clé: ${key}`, { module: path.parse(__filename).name, operation })
+    //logger.debug(`Cache expiré ou inexistant pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'getFromCache' })
     return null
   }
 
   // Efface le cache pour une clé spécifique
   static async clearCache(key: CacheKey): Promise<void> {
-    const operation = 'clearCache'
-
-    logger.debug(`Début clearCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation })
+    //logger.debug(`Début clearCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'clearCache' })
     delete ServiceCache.cache[key]
-    logger.debug(`Fin clearCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation })
+    //logger.debug(`Fin clearCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'clearCache' })
   }
 
   // Efface l'ensemble du cache
   static async clearAllCache(): Promise<void> {
-    const operation = 'clearAllCache'
-
-    logger.debug('Début clearAllCache', { module: path.parse(__filename).name, operation })
+    //logger.debug('Début clearAllCache', { module: path.parse(__filename).name, operation: 'clearAllCache' })
     ServiceCache.cache = {}
-    logger.debug('Fin clearAllCache', { module: path.parse(__filename).name, operation })
+    //logger.debug('Fin clearAllCache', { module: path.parse(__filename).name, operation: 'clearAllCache' })
   }
 
   // Renvoie la clé de cache correspondant à une collection
   static getCacheKeyForCollection(collectionName: string): keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES {
-    const operation = 'getCacheKeyForCollection'
-
-    logger.debug(`Mapping de la collection: ${collectionName}`, { module: path.parse(__filename).name, operation })
+    //logger.debug(`Mapping de la collection: ${collectionName}`, { module: path.parse(__filename).name, operation: 'getCacheKeyForCollection' })
     switch (collectionName) {
       case config.databaseConfig.collection.balance:
         return BALANCE

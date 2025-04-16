@@ -29,29 +29,29 @@ const COLLECTION_CATEGORY = config.databaseConfig.category.machi;
 export class ServiceProcessor {
   static async processBalanceChanges(platform: PLATFORM, differences: BalanceWithDifference[]): Promise<void> {
     const operation = 'processBalanceChanges';
-    logger.debug(`Début processBalanceChanges pour ${platform}`, { module: path.parse(__filename).name, operation, platform, differenceCount: differences.length });
+    //logger.debug(`Début processBalanceChanges pour ${platform}`, { module: path.parse(__filename).name, operation, platform, differenceCount: differences.length });
     try {
       await ServiceOrderBalance.updateOrdersFromServer(platform);
       const newTrades: MappedTrade[] = [];
       for (const difference of differences) {
-        const context = { module: path.parse(__filename).name, operation, platform: difference.platform, base: difference.base };
-        logger.debug(`Vérification des nouveaux trades`, context);
+        //const context = { module: path.parse(__filename).name, operation, platform: difference.platform, base: difference.base };
+        //logger.debug(`Vérification des nouveaux trades`, context);
         const trades = await this.checkNewTrades(difference); // checkNewTrades logguera ses propres erreurs/warnings
         if (Array.isArray(trades) && trades.length > 0) {
-          logger.debug(`${trades.length} trade(s) détecté(s).`, { ...context, tradeCount: trades.length });
+          //logger.debug(`${trades.length} trade(s) détecté(s).`, { ...context, tradeCount: trades.length });
           newTrades.push(...trades);
         } else {
-          logger.debug('Aucun trade détecté.', context);
+          //logger.debug('Aucun trade détecté.', context);
         }
       }
       if (newTrades.length > 0) {
-        logger.debug(`Sauvegarde de ${newTrades.length} nouveau(x) trade(s) en base`, { module: path.parse(__filename).name, operation, platform, newTradeCount: newTrades.length });
+        //logger.debug(`Sauvegarde de ${newTrades.length} nouveau(x) trade(s) en base`, { module: path.parse(__filename).name, operation, platform, newTradeCount: newTrades.length });
         await ServiceTrade.saveTradesToDatabase(newTrades);
-        logger.debug(`Successfully saved ${newTrades.length} new trade(s).`, { module: path.parse(__filename).name, operation, platform, newTradeCount: newTrades.length }); // Log de succès en info
+        //logger.debug(`Successfully saved ${newTrades.length} new trade(s).`, { module: path.parse(__filename).name, operation, platform, newTradeCount: newTrades.length }); // Log de succès en info
       }
-      logger.debug(`Fin processBalanceChanges pour ${platform}`, { module: path.parse(__filename).name, operation, platform });
+      //logger.debug(`Fin processBalanceChanges pour ${platform}`, { module: path.parse(__filename).name, operation, platform });
     } catch (error) {
-      handleServiceError(error, `ServiceProcessor:processBalanceChanges`, `Erreur lors du traitement des changements de balance pour ${platform}`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}}`, `Erreur lors du traitement des changements de balance pour ${platform}`);
       throw error;
     }
   }
@@ -70,7 +70,7 @@ export class ServiceProcessor {
       }
       logger.info('Fin saveMachi', { module: path.parse(__filename).name, operation });
     } catch (error) {
-      handleServiceError(error, `ServiceProcessor:${operation}`, 'Erreur lors de la sauvegarde de Machi');
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}}`, 'Erreur lors de la sauvegarde de Machi');
       throw error;
     }
   }
@@ -79,9 +79,10 @@ export class ServiceProcessor {
   static async calculateAllMachi(): Promise<Asset[]> {
     const operation = 'calculateAllMachi';
     logger.info('Début calculateAllMachi', { module: path.parse(__filename).name, operation });
-    const fetchStart = Date.now();
     const [dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances] = await this.fetchAllDatabaseData();
-    logger.debug(`Database data fetched in ${Date.now() - fetchStart}ms`, { module: path.parse(__filename).name, operation });
+
+    //const fetchStart = Date.now();
+    //logger.debug(`Database data fetched in ${Date.now() - fetchStart}ms`, { module: path.parse(__filename).name, operation });
 
     if (!areAllDataValid(dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances)) {
       logger.warn('Données invalides détectées, abandon du calcul', { module: path.parse(__filename).name, operation });
@@ -92,22 +93,22 @@ export class ServiceProcessor {
     const ignoredBalances: string[] = [];
     const notAddedAssets: string[] = []; // Assets pour lesquels les métriques sont invalides ou non calculées
 
-    logger.debug(`Processing ${dbBalances.length} balance entries...`, { module: path.parse(__filename).name, operation, balanceCount: dbBalances.length });
+    //logger.debug(`Processing ${dbBalances.length} balance entries...`, { module: path.parse(__filename).name, operation, balanceCount: dbBalances.length });
     for (const item of dbBalances) {
-      const context = { module: path.parse(__filename).name, operation, platform: item.platform, base: item.base };
+      //const context = { module: path.parse(__filename).name, operation, platform: item.platform, base: item.base };
       if (typeof item.balance === 'number' && item.balance > 0) {
         const assetMetrics = this.calculateMachiForBalance(item, dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers);
         if (assetMetrics && isValidAssetMetrics(assetMetrics)) {
           allValues.push(assetMetrics);
           // Optionnel: log debug succès par asset
-          // logger.debug('Valid metrics calculated.', context);
+          // //logger.debug('Valid metrics calculated.', context);
         } else {
           notAddedAssets.push(`${item.base}:${item.platform}`);
-          logger.debug('Asset ignoré (métriques invalides ou non calculées).', context);
+          //logger.debug('Asset ignoré (métriques invalides ou non calculées).', context);
         }
       } else {
         ignoredBalances.push(`${item.base}:${item.platform}`);
-        logger.debug('Balance ignorée (valeur nulle ou négative).', { ...context, balanceValue: item.balance });
+        //logger.debug('Balance ignorée (valeur nulle ou négative).', { ...context, balanceValue: item.balance });
       }
     }
     logger.info(`Fin calculateAllMachi - ${allValues.length} asset(s) traités`, {
@@ -124,28 +125,30 @@ export class ServiceProcessor {
   private static async checkNewTrades(difference: BalanceWithDifference): Promise<MappedTrade[]> {
     const operation = 'checkNewTrades';
     const context = { module: path.parse(__filename).name, operation, platform: difference.platform, base: difference.base };
-    logger.debug('Début checkNewTrades via API...', context);
+    //logger.debug('Début checkNewTrades via API...', context);
     try {
       const tradeList = await ServiceTrade.fetchFromApi(difference.platform, difference.base);
       if (tradeList && tradeList.length > 0) {
-        logger.debug(`Trades récupérés via API (${tradeList.length}). Mapping...`, { ...context, fetchedCount: tradeList.length });
+        //logger.debug(`Trades récupérés via API (${tradeList.length}). Mapping...`, { ...context, fetchedCount: tradeList.length });
         return MappingPlatform.mapTrades(difference.platform, tradeList, {});
       } else {
-        logger.debug('Aucun trade retourné par API.', context);
+        //logger.debug('Aucun trade retourné par API.', context);
         return [];
       }
     } catch (error) {
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}}`, 'Erreur lors de la récupération des trades via API.');
+
       logger.warn(`Erreur lors de la récupération des trades via API.`, { ...context, error: formatErrorForLog(error) });
       return [];
     }
     // Ce log est redondant car on retourne toujours avant
-    // logger.debug(`Fin checkNewTrades pour ${difference.platform} - ${difference.base}`, context);
+    // //logger.debug(`Fin checkNewTrades pour ${difference.platform} - ${difference.base}`, context);
   }
 
   // Récupère toutes les données de la base de données
   private static async fetchAllDatabaseData(): Promise<[MappedCmc[], MappedStrat[], MappedTrade[], MappedOrder[], MappedTicker[], MappedBalance[]]> {
-    //const operation = 'fetchAllDatabaseData';
-    logger.debug('Récupération des données de la base...', { module: path.parse(__filename).name, operation: 'fetchAllDatabaseData' });
+    const operation = 'fetchAllDatabaseData';
+    //logger.debug('Récupération des données de la base...', { module: path.parse(__filename).name, operation: 'fetchAllDatabaseData' });
     try {
       const results = await Promise.all([
         ServiceCmc.fetchDatabaseCmc(),
@@ -155,6 +158,7 @@ export class ServiceProcessor {
         ServiceTicker.fetchDatabaseTickers(),
         ServiceBalance.fetchDatabaseBalance()
       ]);
+      /*
       logger.debug('Finished fetching all database data successfully.', {
         module: path.parse(__filename).name, operation: 'fetchAllDatabaseData',
         counts: {
@@ -162,9 +166,10 @@ export class ServiceProcessor {
           orders: results[3]?.length ?? 0, tickers: results[4]?.length ?? 0, balances: results[5]?.length ?? 0,
         }
       });
+*/
       return results as [MappedCmc[], MappedStrat[], MappedTrade[], MappedOrder[], MappedTicker[], MappedBalance[]];
     } catch (error) {
-      handleServiceError(error, `${path.parse(__filename).name}:fetchAllDatabaseData`, `Failed to fetch all required database data`);
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Failed to fetch all required database data`);
       throw error;
     }
   }
@@ -198,13 +203,14 @@ export class ServiceProcessor {
     );
 
     if (closestCmc === null || (!assetTrades.length && !assetOrders.length && !assetStrategy.base)) { // Vérifier si le fallback est utilisé via !assetStrategy.base
-      logger.debug('Aucune donnée suffisante pour calculer Machi.', {
+      logger.warn('Aucune donnée suffisante pour calculer Machi.', {
         ...context,
         cmcFound: !!closestCmc,
         tradesFound: assetTrades.length > 0,
         ordersFound: assetOrders.length > 0,
         strategyFound: !!assetStrategy.base // Vérifier si une vraie stratégie a été trouvée
       });
+
       return null;
     }
 

@@ -16,10 +16,10 @@ export class ServiceSwap {
 
   static async fetchDatabaseSwapMigration(): Promise<SwapMigration[]> {
     const operation = 'fetchDatabaseSwapMigration';
-    logger.debug(`Workspaceing swap migrations from DB: ${COLLECTION_NAME}...`, { module: path.parse(__filename).name, operation, collection: COLLECTION_NAME });
+    //logger.debug(`Workspaceing swap migrations from DB: ${COLLECTION_NAME}...`, { module: path.parse(__filename).name, operation, collection: COLLECTION_NAME });
     try {
       const swaps = await ServiceDatabase.getCollectionDocuments(COLLECTION_NAME) as SwapMigration[];
-      logger.debug(`Workspaceed ${swaps.length} swap migrations.`, { module: path.parse(__filename).name, operation, count: swaps.length });
+      //logger.debug(`Workspaceed ${swaps.length} swap migrations.`, { module: path.parse(__filename).name, operation, count: swaps.length });
       return swaps;
     } catch (error) {
       handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Error fetching swap migrations from ${COLLECTION_NAME}`);
@@ -46,7 +46,7 @@ export class ServiceSwap {
 
     if (updatedTrade._id) {
       try {
-        logger.debug(`Attempting to save updated trade (swap) to DB...`, context);
+        //logger.debug(`Attempting to save updated trade (swap) to DB...`, context);
         // Assurez-vous que la fonction attend un objet complet si nécessaire, sinon caster en MappedTrade peut être risqué
         // Si updateById prend un Partial, c'est ok. Sinon, il faudra peut-être reconstruire un objet complet.
         await ServiceTrade.updateById(updatedTrade as MappedTrade); // Cast prudent si nécessaire par updateById
@@ -71,7 +71,7 @@ export class ServiceSwap {
   static async updateStrategy(strategy: MappedStrat, newAsset: string, platform: PLATFORM): Promise<void> {
     const operation = 'updateStrategy';
     const context = { module: path.parse(__filename).name, operation, oldAsset: strategy.base, newAsset, platform, strategyId: strategy._id?.toHexString() ?? 'N/A' };
-    logger.debug(`Preparing strategy update for swap...`, context);
+    //logger.debug(`Preparing strategy update for swap...`, context);
 
     // --- Création de l'objet mis à jour ---
     const updatedStrategy: Partial<MappedStrat> & { _id?: MappedStrat['_id'] } = {
@@ -83,7 +83,7 @@ export class ServiceSwap {
 
     if (updatedStrategy._id) {
       try {
-        logger.debug(`Attempting to save updated strategy (swap) to DB...`, context);
+        //logger.debug(`Attempting to save updated strategy (swap) to DB...`, context);
         // Même remarque que pour updateTrade sur le type attendu par updateStrategyById
         await ServiceStrategy.updateStrategyById(updatedStrategy as MappedStrat);
         logger.info(`Strategy updated successfully for swap.`, context); // Utiliser info pour succès
@@ -109,13 +109,13 @@ export class ServiceSwap {
     const operation = 'handleMigrationSwap';
     logger.info('Starting swap migration handling process...', { module: path.parse(__filename).name, operation });
     try {
-      logger.debug('Fetching required data (swaps, trades, strategies)...', { module: path.parse(__filename).name, operation });
+      //logger.debug('Fetching required data (swaps, trades, strategies)...', { module: path.parse(__filename).name, operation });
       const [swaps, trades, strategies] = await Promise.all([
         this.fetchDatabaseSwapMigration(),
         ServiceTrade.fetchFromDb() as Promise<MappedTrade[]>,
         ServiceStrategy.fetchDatabaseStrategies() as Promise<MappedStrat[]>
       ]);
-      logger.debug(`Data fetched: ${swaps.length} swaps, ${trades.length} trades, ${strategies.length} strategies.`, { module: path.parse(__filename).name, operation, swapCount: swaps.length, tradeCount: trades.length, strategyCount: strategies.length });
+      //logger.debug(`Data fetched: ${swaps.length} swaps, ${trades.length} trades, ${strategies.length} strategies.`, { module: path.parse(__filename).name, operation, swapCount: swaps.length, tradeCount: trades.length, strategyCount: strategies.length });
 
       const now = new Date();
       let totalTradesUpdated = 0;
@@ -129,12 +129,12 @@ export class ServiceSwap {
       for (const swap of swaps) {
         const { oldBase: oldAsset, newBase: newAsset, swapRate, platform, delistingDate } = swap;
         const swapContext = { module: path.parse(__filename).name, operation, platform, oldAsset, newAsset, swapRate, delistingDate };
-        logger.debug(`Processing swap configuration...`, swapContext);
+        //logger.debug(`Processing swap configuration...`, swapContext);
 
         const delisting = new Date(delistingDate);
 
         if (now < delisting) {
-          logger.debug(`Waiting for delisting date to pass.`, { ...swapContext, currentDate: now.toISOString() });
+          //logger.debug(`Waiting for delisting date to pass.`, { ...swapContext, currentDate: now.toISOString() });
           continue;
         }
 
@@ -146,7 +146,7 @@ export class ServiceSwap {
           continue;
         }
         const swapMultiplier = newRatio / oldRatio;
-        logger.debug(`Calculated swap multiplier: ${swapMultiplier}`, { ...swapContext, oldRatio, newRatio, swapMultiplier });
+        //logger.debug(`Calculated swap multiplier: ${swapMultiplier}`, { ...swapContext, oldRatio, newRatio, swapMultiplier });
 
 
         // --- Filtrage SANS utiliser la propriété 'swap' inexistante ---
@@ -167,7 +167,7 @@ export class ServiceSwap {
         const tradeUpdatePromises = tradesToUpdate.map(trade => this.updateTrade(trade, oldAsset, newAsset, swapMultiplier, platform));
         const strategyUpdatePromises = strategiesToUpdate.map(strategy => this.updateStrategy(strategy, newAsset, platform));
 
-        logger.debug(`Executing ${tradeUpdatePromises.length} trade updates and ${strategyUpdatePromises.length} strategy updates...`, swapContext);
+        //logger.debug(`Executing ${tradeUpdatePromises.length} trade updates and ${strategyUpdatePromises.length} strategy updates...`, swapContext);
         try {
           const results = await Promise.allSettled([...tradeUpdatePromises, ...strategyUpdatePromises]);
           const fulfilled = results.filter(r => r.status === 'fulfilled').length;

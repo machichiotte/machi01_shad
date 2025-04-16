@@ -19,9 +19,8 @@ import path from 'path'; import { logger } from '@utils/loggerUtil';
 export class ServiceCron {
   static async initializeCronTasks(): Promise<void> {
     const operation = 'initializeCronTasks';
-
     try {
-      logger.debug(`Starting initialization of Cron tasks...`, { module: path.parse(__filename).name, operation });
+      //logger.debug(`Starting initialization of Cron tasks...`, { module: path.parse(__filename).name, operation });
 
       const initializedTasks: string[] = [] // Tâches initialisées avec succès
       const failedTasks: string[] = [] // Tâches ayant échoué
@@ -81,16 +80,16 @@ export class ServiceCron {
 
           validPlatforms.forEach((platform) => {
             const platformTaskName = `${taskIdentifier} for ${platform}`;
-            logger.debug(`Scheduling ${platformTaskName} with schedule: ${schedule}`, { module: path.parse(__filename).name, operation, taskName: name, platform, schedule });
+            //logger.debug(`Scheduling ${platformTaskName} with schedule: ${schedule}`, { module: path.parse(__filename).name, operation, taskName: name, platform, schedule });
 
             cron.schedule(schedule, async () => {
-              const startTime = Date.now();
-              logger.debug(`Executing ${platformTaskName}...`, { module: path.parse(__filename).name, taskName: name, platform, schedule });
+              // const startTime = Date.now();
+              //logger.debug(`Executing ${platformTaskName}...`, { module: path.parse(__filename).name, taskName: name, platform, schedule });
 
               try {
                 await task(platform); // Appelle la tâche avec l'argument platform
-                const duration = Date.now() - startTime;
-                logger.debug(`${platformTaskName} executed successfully.`, { module: path.parse(__filename).name, taskName: name, platform, durationMs: duration });
+                // const duration = Date.now() - startTime;
+                //logger.debug(`${platformTaskName} executed successfully.`, { module: path.parse(__filename).name, taskName: name, platform, durationMs: duration });
               } catch (err) {
                 // handleServiceError utilise déjà le logger
                 handleServiceError(
@@ -119,11 +118,11 @@ export class ServiceCron {
         const taskIdentifier = `General Task ${name}`;
 
         try {
-          logger.debug(`Scheduling ${taskIdentifier} with schedule: ${schedule}`, { module: path.parse(__filename).name, operation, taskName: name, schedule });
+          //logger.debug(`Scheduling ${taskIdentifier} with schedule: ${schedule}`, { module: path.parse(__filename).name, operation, taskName: name, schedule });
 
           cron.schedule(schedule, async () => {
-            const startTime = Date.now()
-            logger.debug(`Executing ${taskIdentifier}...`, { module: path.parse(__filename).name, taskName: name, schedule });
+            //  const startTime = Date.now()
+            //logger.debug(`Executing ${taskIdentifier}...`, { module: path.parse(__filename).name, taskName: name, schedule });
 
             try {
               if (task.length > 0) {
@@ -131,8 +130,8 @@ export class ServiceCron {
 
               } else {
                 await (task as () => void)()
-                const duration = Date.now() - startTime
-                logger.debug(`${taskIdentifier} executed successfully.`, { module: path.parse(__filename).name, taskName: name, durationMs: duration });
+                // const duration = Date.now() - startTime
+                //logger.debug(`${taskIdentifier} executed successfully.`, { module: path.parse(__filename).name, taskName: name, durationMs: duration });
 
               }
             } catch (error) {
@@ -148,7 +147,7 @@ export class ServiceCron {
           failedTasks.push(name)
           handleServiceError(
             error,
-            `CronTaskService: ${name}`,
+            `${path.parse(__filename).name}:${operation}`,
             `Failed to initialize general cron task: ${name}`
           )
         }
@@ -163,7 +162,7 @@ export class ServiceCron {
     } catch (error) {
       handleServiceError(
         error,
-        'initializeCronTasks',
+        `${path.parse(__filename).name}:${operation}`,
         `Error initializing Cron tasks`
       )
       throw error

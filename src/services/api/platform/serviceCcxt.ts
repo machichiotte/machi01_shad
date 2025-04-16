@@ -12,7 +12,7 @@ export class ServiceCcxt {
 
     static createPlatformInstance(platform: PLATFORM): CCTX.Exchange {
         const operation = 'createPlatformInstance';
-        logger.debug(`Creating CCXT instance for platform: ${platform}`, { module: path.parse(__filename).name, operation, platform });
+        //logger.debug(`Creating CCXT instance for platform: ${platform}`, { module: path.parse(__filename).name, operation, platform });
 
         if (!checkApiKeys(platform)) {
             // Log the error before throwing
@@ -45,7 +45,7 @@ export class ServiceCcxt {
             };
 
             const instance = new exchangeClass(platformParams);
-            logger.debug(`CCXT instance created successfully for ${platform}`, { module: path.parse(__filename).name, operation, platform });
+            //logger.debug(`CCXT instance created successfully for ${platform}`, { module: path.parse(__filename).name, operation, platform });
             return instance;
         } catch (error) {
             // handleServiceError already logs using logger.error
@@ -58,11 +58,11 @@ export class ServiceCcxt {
 
     static async fetchRawBalance(platform: PLATFORM): Promise<PlatformBalances> {
         const operation = 'fetchRawBalance';
-        logger.debug(`Workspaceing raw balance for ${platform}...`, { module: path.parse(__filename).name, operation, platform });
+        //logger.debug(`Workspaceing raw balance for ${platform}...`, { module: path.parse(__filename).name, operation, platform });
         try {
             const platformInstance = this.createPlatformInstance(platform);
             const balance = await platformInstance.fetchBalance();
-            logger.debug(`Raw balance fetched successfully for ${platform}`, { module: path.parse(__filename).name, operation, platform });
+            //logger.debug(`Raw balance fetched successfully for ${platform}`, { module: path.parse(__filename).name, operation, platform });
             return balance;
         } catch (error) {
             handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Error fetching raw balance for ${platform}`);
@@ -72,11 +72,11 @@ export class ServiceCcxt {
 
     static async fetchRawTicker(platform: PLATFORM): Promise<PlatformTickers> {
         const operation = 'fetchRawTicker';
-        logger.debug(`Workspaceing raw tickers for ${platform}...`, { module: path.parse(__filename).name, operation, platform });
+        //logger.debug(`Workspaceing raw tickers for ${platform}...`, { module: path.parse(__filename).name, operation, platform });
         try {
             const platformInstance = this.createPlatformInstance(platform);
             const tickers = await platformInstance.fetchTickers();
-            logger.debug(`Raw tickers fetched successfully for ${platform}. Count: ${Object.keys(tickers).length}`, { module: path.parse(__filename).name, operation, platform, tickerCount: Object.keys(tickers).length });
+            //logger.debug(`Raw tickers fetched successfully for ${platform}. Count: ${Object.keys(tickers).length}`, { module: path.parse(__filename).name, operation, platform, tickerCount: Object.keys(tickers).length });
             return tickers;
         } catch (error) {
             handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Error fetching raw tickers for ${platform}`);
@@ -86,11 +86,11 @@ export class ServiceCcxt {
 
     static async fetchRawMarket(platform: PLATFORM): Promise<PlatformMarket[]> {
         const operation = 'fetchRawMarket';
-        logger.debug(`Workspaceing raw markets for ${platform}...`, { module: path.parse(__filename).name, operation, platform });
+        //logger.debug(`Workspaceing raw markets for ${platform}...`, { module: path.parse(__filename).name, operation, platform });
         try {
             const platformInstance = this.createPlatformInstance(platform);
             const markets = await platformInstance.fetchMarkets();
-            logger.debug(`Raw markets fetched successfully for ${platform}. Count: ${markets.length}`, { module: path.parse(__filename).name, operation, platform, marketCount: markets.length });
+            //logger.debug(`Raw markets fetched successfully for ${platform}. Count: ${markets.length}`, { module: path.parse(__filename).name, operation, platform, marketCount: markets.length });
             return markets;
         } catch (error) {
             handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Error fetching raw markets for ${platform}`);
@@ -100,12 +100,12 @@ export class ServiceCcxt {
 
     static async fetchRawTrade(platform: PLATFORM, symbol?: string, since?: number, limit?: number, params?: Record<string, unknown>): Promise<PlatformTrade[]> {
         const operation = 'fetchRawTrade';
-        const context = { module: path.parse(__filename).name, operation, platform, symbol: symbol || 'all', since, limit, params };
-        logger.debug(`Workspaceing raw trades...`, context);
+        //const context = { module: path.parse(__filename).name, operation, platform, symbol: symbol || 'all', since, limit, params };
+        //logger.debug(`Workspaceing raw trades...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
             const trades = await platformInstance.fetchMyTrades(symbol, since, limit, params);
-            logger.debug(`Workspaceed ${trades.length} raw trades.`, { ...context, tradeCount: trades.length });
+            //logger.debug(`Workspaceed ${trades.length} raw trades.`, { ...context, tradeCount: trades.length });
             return trades;
         } catch (error) {
             handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Error fetching raw trades for ${platform}, symbol: ${symbol || 'all'}`);
@@ -118,17 +118,17 @@ export class ServiceCcxt {
     // fetch
     static async fetchOpenOrdersByPlatform(platform: PLATFORM): Promise<PlatformOrder[]> {
         const operation = 'fetchOpenOrdersByPlatform';
-        logger.debug(`Workspaceing open orders for ${platform}...`, { module: path.parse(__filename).name, operation, platform });
+        //logger.debug(`Workspaceing open orders for ${platform}...`, { module: path.parse(__filename).name, operation, platform });
         try {
             let orders: PlatformOrder[];
             if (platform === 'kucoin') { // Example platform-specific logic
-                logger.debug(`Using paginated fetch for ${platform}.`, { module: path.parse(__filename).name, operation, platform });
+                //logger.debug(`Using paginated fetch for ${platform}.`, { module: path.parse(__filename).name, operation, platform });
                 orders = await this.fetchRawOpenOrdersByPage(platform);
             } else {
-                logger.debug(`Using standard fetch for ${platform}.`, { module: path.parse(__filename).name, operation, platform });
+                //logger.debug(`Using standard fetch for ${platform}.`, { module: path.parse(__filename).name, operation, platform });
                 orders = await this.fetchRawOpenOrders(platform);
             }
-            logger.debug(`Workspaceed ${orders.length} open orders for ${platform}.`, { module: path.parse(__filename).name, operation, platform, orderCount: orders.length });
+            //logger.debug(`Workspaceed ${orders.length} open orders for ${platform}.`, { module: path.parse(__filename).name, operation, platform, orderCount: orders.length });
             return orders;
         } catch (error) {
             handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Error fetching open orders for ${platform}`);
@@ -138,17 +138,17 @@ export class ServiceCcxt {
 
     static async fetchRawOpenOrders(platform: PLATFORM, symbol?: string, since?: number, limit?: number, params?: Record<string, unknown>): Promise<PlatformOrder[]> {
         const operation = 'fetchRawOpenOrders';
-        const context = { module: path.parse(__filename).name, operation, platform, symbol: symbol || 'all', since, limit, params };
-        logger.debug(`Workspaceing raw open orders (standard)...`, context);
+        //const context = { module: path.parse(__filename).name, operation, platform, symbol: symbol || 'all', since, limit, params };
+        //logger.debug(`Workspaceing raw open orders (standard)...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
             // Specific handling example
             if (platform === 'binance' && platformInstance.options) {
-                logger.debug('Disabling warnOnFetchOpenOrdersWithoutSymbol for Binance.', context);
+                //logger.debug('Disabling warnOnFetchOpenOrdersWithoutSymbol for Binance.', context);
                 platformInstance.options.warnOnFetchOpenOrdersWithoutSymbol = false;
             }
             const orders = await platformInstance.fetchOpenOrders(symbol, since, limit, params);
-            logger.debug(`Workspaceed ${orders.length} raw open orders (standard).`, { ...context, orderCount: orders.length });
+            //logger.debug(`Workspaceed ${orders.length} raw open orders (standard).`, { ...context, orderCount: orders.length });
             return orders;
         } catch (error) {
             handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Error fetching raw open orders (standard) for ${platform}`);
@@ -159,21 +159,21 @@ export class ServiceCcxt {
     static async fetchRawOpenOrdersByPage(platform: PLATFORM, symbol?: string, since?: number, _limit?: number /* limit unused */, params?: Record<string, unknown>, pageSize: number = 100): Promise<PlatformOrder[]> {
         const operation = 'fetchRawOpenOrdersByPage';
         const context = { module: path.parse(__filename).name, operation, platform, symbol: symbol || 'all', since, params, pageSize };
-        logger.debug(`Workspaceing raw open orders (paginated)...`, context);
+        //logger.debug(`Workspaceing raw open orders (paginated)...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
             // Specific handling example
             if (platform === 'binance' && platformInstance.options) {
-                logger.debug('Disabling warnOnFetchOpenOrdersWithoutSymbol for Binance.', context);
+                //logger.debug('Disabling warnOnFetchOpenOrdersWithoutSymbol for Binance.', context);
                 platformInstance.options.warnOnFetchOpenOrdersWithoutSymbol = false;
             }
 
             let currentPage = 1;
             let allOrders: PlatformOrder[] = [];
-            let totalFetched = 0;
+            // let totalFetched = 0;
 
             while (true) {
-                logger.debug(`Workspaceing page ${currentPage}...`, { ...context, currentPage });
+                //logger.debug(`Workspaceing page ${currentPage}...`, { ...context, currentPage });
                 const pageParams = { ...params, currentPage }; // Pass currentPage in params
                 const orders = await platformInstance.fetchOpenOrders(
                     symbol, // Use provided symbol
@@ -181,15 +181,15 @@ export class ServiceCcxt {
                     pageSize, // Use pageSize as limit for the page fetch
                     pageParams
                 );
-                totalFetched += orders.length;
-                logger.debug(`Workspaceed ${orders.length} orders on page ${currentPage}. Total so far: ${totalFetched}`, { ...context, currentPage, pageCount: orders.length, totalFetched });
+                // totalFetched += orders.length;
+                //logger.debug(`Workspaceed ${orders.length} orders on page ${currentPage}. Total so far: ${totalFetched}`, { ...context, currentPage, pageCount: orders.length, totalFetched });
 
                 if (orders.length > 0) {
                     allOrders = allOrders.concat(orders);
                 }
 
                 if (orders.length < pageSize) {
-                    logger.debug(`Last page reached (fetched ${orders.length} < ${pageSize}). Stopping pagination.`, { ...context, currentPage, pageCount: orders.length });
+                    //logger.debug(`Last page reached (fetched ${orders.length} < ${pageSize}). Stopping pagination.`, { ...context, currentPage, pageCount: orders.length });
                     break; // Exit loop if fewer orders than page size were returned
                 }
 
@@ -202,7 +202,7 @@ export class ServiceCcxt {
                 }
                 // await sleep(100); // Optional small delay between pages
             }
-            logger.debug(`Workspaceed ${allOrders.length} raw open orders (paginated) in ${currentPage - 1} pages.`, { ...context, orderCount: allOrders.length, totalPages: currentPage - 1 });
+            //logger.debug(`Workspaceed ${allOrders.length} raw open orders (paginated) in ${currentPage - 1} pages.`, { ...context, orderCount: allOrders.length, totalPages: currentPage - 1 });
             return allOrders;
         } catch (error) {
             handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Error fetching raw open orders (paginated) for ${platform}`);
@@ -218,7 +218,7 @@ export class ServiceCcxt {
         try {
             if (platform === 'okx') { // Platform specific logic example
                 if (symbol && orderIds && orderIds.length > 0) {
-                    logger.debug(`Using recursive cancel for ${platform} for ${orderIds.length} orders.`, context);
+                    //logger.debug(`Using recursive cancel for ${platform} for ${orderIds.length} orders.`, context);
                     await this.cancelAllOrdersRecursively(platform, symbol, orderIds);
                 } else {
                     logger.warn(`Cannot perform recursive cancel for ${platform}: Missing symbol or orderIds.`, context);
@@ -226,7 +226,7 @@ export class ServiceCcxt {
                     // throw new Error('Symbol and Order IDs required for OKX recursive cancel');
                 }
             } else {
-                logger.debug(`Using standard cancelAllOrders for ${platform}.`, context);
+                //logger.debug(`Using standard cancelAllOrders for ${platform}.`, context);
                 const platformInstance = this.createPlatformInstance(platform);
                 await platformInstance.cancelAllOrders(symbol);
                 logger.info(`Standard cancelAllOrders initiated for ${platform}`, context);
@@ -241,12 +241,12 @@ export class ServiceCcxt {
         const operation = 'cancelAllOrdersRecursively';
         const orderIdStrings = orderIds.map(id => id.toHexString());
         const context = { module: path.parse(__filename).name, operation, platform, symbol, orderIds: orderIdStrings, orderCount: orderIds.length };
-        logger.debug(`Cancelling ${orderIds.length} specific orders recursively...`, context);
+        //logger.debug(`Cancelling ${orderIds.length} specific orders recursively...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
             // Use Promise.allSettled to attempt all cancellations even if some fail
             const results = await Promise.allSettled(orderIds.map(order => {
-                logger.debug(`Attempting cancellation for order ID: ${order.toHexString()}`, { ...context, orderId: order.toHexString() });
+                //logger.debug(`Attempting cancellation for order ID: ${order.toHexString()}`, { ...context, orderId: order.toHexString() });
                 return platformInstance.cancelOrder(order.toHexString(), symbol);
             }));
 
@@ -295,7 +295,7 @@ export class ServiceCcxt {
             let orderResult: PlatformOrder;
 
             if (orderMode === 'market') {
-                logger.debug(`Executing market order...`, context);
+                //logger.debug(`Executing market order...`, context);
                 orderResult = orderSide === 'buy'
                     ? await platformInstance.createMarketBuyOrder(symbol, amount)
                     : await platformInstance.createMarketSellOrder(symbol, amount);
@@ -304,9 +304,9 @@ export class ServiceCcxt {
                     logger.error('Price must be specified for limit orders.', context);
                     throw new Error('Price must be specified for limit orders.');
                 }
-                logger.debug(`Executing limit order... Price: ${price}`, { ...context, price }); // Log price specifically for limit
+                //logger.debug(`Executing limit order... Price: ${price}`, { ...context, price }); // Log price specifically for limit
                 if (stopLossPrice) { // Assuming this creates a stop-limit order if supported
-                    logger.debug(`Executing stop-limit order... Stop Price: ${stopLossPrice}`, { ...context, stopLossPrice });
+                    //logger.debug(`Executing stop-limit order... Stop Price: ${stopLossPrice}`, { ...context, stopLossPrice });
                     // Note: CCXT's createStopOrder might need specific params structure
                     orderResult = await platformInstance.createOrder(symbol, 'limit', orderSide, amount, price, { 'stopPrice': stopLossPrice }); // Example using createOrder for stop-limit
                     // orderResult = await platformInstance.createStopLimitOrder(symbol, orderSide, amount, price, stopLossPrice); // If method exists
@@ -339,17 +339,17 @@ export class ServiceCcxt {
 
             switch (platform) {
                 case 'binance':
-                    logger.debug(`Using standard fetchMyTrades for ${platform}`, context);
+                    //logger.debug(`Using standard fetchMyTrades for ${platform}`, context);
                     // Potential Bug Note: fetchMyTrades without symbol might be restricted on Binance.
                     // Consider fetching trades per market/symbol if this fails.
                     trades = await this.createPlatformInstance(platform).fetchMyTrades();
                     break;
                 case 'kucoin':
-                    logger.debug(`Using specific fetchKucoinTrades for ${platform}`, context);
+                    //logger.debug(`Using specific fetchKucoinTrades for ${platform}`, context);
                     trades = await this.fetchKucoinTrades(platform);
                     break;
                 case 'htx': // Assuming 'htx' corresponds to Huobi
-                    logger.debug(`Using specific fetchHtxTrades for ${platform}`, context);
+                    //logger.debug(`Using specific fetchHtxTrades for ${platform}`, context);
                     trades = await this.fetchHtxTrades(platform);
                     break;
                 default:
@@ -368,19 +368,19 @@ export class ServiceCcxt {
     private static async fetchKucoinTrades(platform: PLATFORM): Promise<PlatformTrade[]> {
         const operation = 'fetchKucoinTrades';
         const context = { module: path.parse(__filename).name, operation, platform };
-        logger.debug(`Workspaceing Kucoin trades (paginated by time)...`, context);
+        //logger.debug(`Workspaceing Kucoin trades (paginated by time)...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
             const weeksBack = 4 * 52; // Fetch trades up to 4 years back (adjust as needed)
             let allTrades: PlatformTrade[] = [];
             const fetchLimit = 500; // Kucoin's max limit per fetch
 
-            logger.debug(`Workspaceing trades for the last ${weeksBack} weeks...`, { ...context, weeksBack, fetchLimit });
+            //logger.debug(`Workspaceing trades for the last ${weeksBack} weeks...`, { ...context, weeksBack, fetchLimit });
 
             for (let i = weeksBack; i > 0; i--) { // Iterate backwards in time
-                const endTime = Date.now() - (i - 1) * 7 * 86400 * 1000; // End of the week window
+                //  const endTime = Date.now() - (i - 1) * 7 * 86400 * 1000; // End of the week window
                 const startTime = Date.now() - i * 7 * 86400 * 1000;     // Start of the week window
-                logger.debug(`Workspaceing week ${weeksBack - i + 1}/${weeksBack}. Time range: ${new Date(startTime).toISOString()} - ${new Date(endTime).toISOString()}`, { ...context, iteration: weeksBack - i + 1, startTime: new Date(startTime).toISOString(), endTime: new Date(endTime).toISOString() });
+                //logger.debug(`Workspaceing week ${weeksBack - i + 1}/${weeksBack}. Time range: ${new Date(startTime).toISOString()} - ${new Date(endTime).toISOString()}`, { ...context, iteration: weeksBack - i + 1, startTime: new Date(startTime).toISOString(), endTime: new Date(endTime).toISOString() });
                 try {
                     // Note: fetchMyTrades 'since' parameter includes trades AT or AFTER the timestamp.
                     const trades = await platformInstance.fetchMyTrades(
@@ -390,7 +390,7 @@ export class ServiceCcxt {
                         // KuCoin might need specific params for time range, check CCXT docs if 'since' isn't enough
                         // params: { startTime: startTime, endTime: endTime } // Example if needed
                     );
-                    logger.debug(`Workspaceed ${trades.length} trades for the week.`, { ...context, iteration: weeksBack - i + 1, tradeCount: trades.length });
+                    //logger.debug(`Workspaceed ${trades.length} trades for the week.`, { ...context, iteration: weeksBack - i + 1, tradeCount: trades.length });
                     if (trades.length > 0) {
                         // Filter trades to strictly be within the window if 'since' is not precise enough (optional)
                         // const filteredTrades = trades.filter(t => t.timestamp < endTime);
@@ -405,7 +405,7 @@ export class ServiceCcxt {
                 }
                 // await sleep(platformInstance.rateLimit); // Respect rate limit between fetches
             }
-            logger.debug(`Finished fetching Kucoin trades. Total fetched: ${allTrades.length}`, { ...context, totalTradeCount: allTrades.length });
+            //logger.debug(`Finished fetching Kucoin trades. Total fetched: ${allTrades.length}`, { ...context, totalTradeCount: allTrades.length });
             return allTrades;
         } catch (error) { // Catch errors from createPlatformInstance
             handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Error setting up Kucoin trade fetch for ${platform}`);
@@ -416,7 +416,7 @@ export class ServiceCcxt {
     private static async fetchHtxTrades(platform: PLATFORM): Promise<PlatformTrade[]> {
         const operation = 'fetchHtxTrades';
         const context = { module: path.parse(__filename).name, operation, platform };
-        logger.debug(`Workspaceing HTX (Huobi) trades (paginated by time)...`, context);
+        //logger.debug(`Workspaceing HTX (Huobi) trades (paginated by time)...`, context);
         try {
             const platformInstance = this.createPlatformInstance(platform);
             const currentTime = Date.now();
@@ -426,17 +426,17 @@ export class ServiceCcxt {
             let allTrades: PlatformTrade[] = [];
             const fetchLimit = 1000; // Check HTX limit, might be lower
 
-            logger.debug(`Workspaceing trades for the last year in ${iterations} iterations of ${windowSize / (1000 * 60 * 60)} hours...`, { ...context, iterations, windowHours: windowSize / (1000 * 60 * 60), fetchLimit });
+            //logger.debug(`Workspaceing trades for the last year in ${iterations} iterations of ${windowSize / (1000 * 60 * 60)} hours...`, { ...context, iterations, windowHours: windowSize / (1000 * 60 * 60), fetchLimit });
 
             for (let i = 0; i < iterations; i++) {
                 const startTime = currentTime - (i + 1) * windowSize;
                 const endTime = currentTime - i * windowSize; // fetchMyTrades usually includes 'endTime' if provided
                 const param = { 'start-time': startTime, 'end-time': endTime }; // Check CCXT/HTX docs for correct param names
-                logger.debug(`Workspaceing iteration ${i + 1}/${iterations}. Time range: ${new Date(startTime).toISOString()} - ${new Date(endTime).toISOString()}`, { ...context, iteration: i + 1, startTime: new Date(startTime).toISOString(), endTime: new Date(endTime).toISOString() });
+                //logger.debug(`Workspaceing iteration ${i + 1}/${iterations}. Time range: ${new Date(startTime).toISOString()} - ${new Date(endTime).toISOString()}`, { ...context, iteration: i + 1, startTime: new Date(startTime).toISOString(), endTime: new Date(endTime).toISOString() });
                 try {
                     // Check CCXT docs for HTX fetchMyTrades params for time ranges
                     const trades = await platformInstance.fetchMyTrades(undefined, undefined, fetchLimit, param);
-                    logger.debug(`Workspaceed ${trades.length} trades for the iteration.`, { ...context, iteration: i + 1, tradeCount: trades.length });
+                    //logger.debug(`Workspaceed ${trades.length} trades for the iteration.`, { ...context, iteration: i + 1, tradeCount: trades.length });
                     if (trades.length > 0) {
                         allTrades = allTrades.concat(trades);
                     }
@@ -448,7 +448,7 @@ export class ServiceCcxt {
                 }
                 // await sleep(platformInstance.rateLimit); // Respect rate limit
             }
-            logger.debug(`Finished fetching HTX trades. Total fetched: ${allTrades.length}`, { ...context, totalTradeCount: allTrades.length });
+            //logger.debug(`Finished fetching HTX trades. Total fetched: ${allTrades.length}`, { ...context, totalTradeCount: allTrades.length });
             return allTrades;
         } catch (error) { // Catch errors from createPlatformInstance
             handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Error setting up HTX trade fetch for ${platform}`);

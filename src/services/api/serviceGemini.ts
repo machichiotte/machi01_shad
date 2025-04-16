@@ -62,11 +62,11 @@ const parseRetryDelay = (errorMessage: string): number | null => {
     }
 
     if (seconds !== null && !isNaN(seconds)) {
-        logger.debug(`Parsed retry delay: ${seconds}s`, { module: path.parse(__filename).name }); // Use logger.debug
+        //logger.debug(`Parsed retry delay: ${seconds}s`, { module: path.parse(__filename).name });
         return seconds * 1000;
     }
 
-    logger.debug('Could not parse retry delay from error message.', { module: path.parse(__filename).name, errorMessage }); // Use logger.debug
+    //logger.debug('Could not parse retry delay from error message.', { module: path.parse(__filename).name, errorMessage });
     return null;
 };
 
@@ -104,7 +104,7 @@ export class ServiceGemini {
         try {
             const genAI = new GoogleGenerativeAI(decryptedConfig.apiKey);
             const modelName = decryptedConfig?.model ?? DEFAULT_APICONFIG.gemini.model;
-            logger.debug(`Initializing Gemini model: ${modelName}`, { module: path.parse(__filename).name, operation, modelName });
+            //logger.debug(`Initializing Gemini model: ${modelName}`, { module: path.parse(__filename).name, operation, modelName });
 
             return genAI.getGenerativeModel({
                 model: modelName,
@@ -218,11 +218,11 @@ Voici le texte :
     // --- Single API Attempt ---
     private static async _attemptAnalysis(model: GenerativeModel, text: string): Promise<AttemptResult> {
         const operation = '_attemptAnalysis';
-        logger.debug(`Attempting analysis... Text length: ${text.length}`, {
+        /*logger.debug(`Attempting analysis... Text length: ${text.length}`, {
             module: path.parse(__filename).name,
             operation,
             textLength: text.length,
-        });
+        });*/
 
         const prompt = this._buildAnalysisPrompt(text);
 
@@ -235,11 +235,11 @@ Voici le texte :
                 return 'empty_response';
             }
 
-            logger.debug(`Received raw response. Length: ${responseText.length}`, {
+            /*logger.debug(`Received raw response. Length: ${responseText.length}`, {
                 module: path.parse(__filename).name,
                 operation,
                 responseLength: responseText.length,
-            });
+            });*/
 
             let parsedJson: unknown;
 
@@ -251,7 +251,7 @@ Voici le texte :
                 }
 
                 parsedJson = JSON.parse(cleanedText);
-                logger.debug('Successfully parsed JSON response.', { module: path.parse(__filename).name, operation });
+                //logger.debug('Successfully parsed JSON response.', { module: path.parse(__filename).name, operation });
             } catch (parseError) {
                 logger.error('JSON parsing error.', {
                     module: path.parse(__filename).name,
@@ -268,7 +268,7 @@ Voici le texte :
                 return 'validation_error';
             }
 
-            logger.debug('Analysis attempt successful and validated.', { module: path.parse(__filename).name, operation });
+            //logger.debug('Analysis attempt successful and validated.', { module: path.parse(__filename).name, operation });
             return validatedData;
         } catch (error: unknown) {
             const errorDetails = formatErrorForLog(error);
@@ -313,7 +313,7 @@ Voici le texte :
     // --- Main Analysis Method ---
     static async analyzeText(text: string): Promise<AnalysisWithSummary | null> {
         const operation = 'analyzeText';
-        logger.debug('Analyze text request received.', { module: path.parse(__filename).name, operation, textLength: text.length });
+        //logger.debug('Analyze text request received.', { module: path.parse(__filename).name, operation, textLength: text.length });
 
         // 1. Check and wait for global pause
         if (ServiceGemini.isGloballyPaused) {
@@ -326,12 +326,12 @@ Voici le texte :
                     ServiceGemini.globalPausePromise = sleep(waitTime).then(() => {
                         logger.info('Global quota pause finished.', { module: path.parse(__filename).name, operation: 'globalPauseHandler' });
                         if (Date.now() >= ServiceGemini.globalPauseUntil) {
-                            logger.debug('Resetting global pause flags.', { module: path.parse(__filename).name, operation: 'globalPauseHandler' });
+                            //logger.debug('Resetting global pause flags.', { module: path.parse(__filename).name, operation: 'globalPauseHandler' });
                             ServiceGemini.isGloballyPaused = false;
                             ServiceGemini.globalPauseUntil = 0;
                             ServiceGemini.globalPausePromise = null;
                         } else {
-                            logger.debug('Global pause extended by another request, flags not reset.', { module: path.parse(__filename).name, operation: 'globalPauseHandler', currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
+                            //logger.debug('Global pause extended by another request, flags not reset.', { module: path.parse(__filename).name, operation: 'globalPauseHandler', currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
                         }
                     }).catch(err => {
                         logger.error('Error during global pause sleep.', { module: path.parse(__filename).name, operation: 'globalPauseHandler', error: formatErrorForLog(err) });
@@ -364,7 +364,7 @@ Voici le texte :
         // 3. Retry loop
         let retries = 0;
         while (retries <= MAX_RETRIES) {
-            logger.debug(`Attempt ${retries + 1}/${MAX_RETRIES + 1}...`, { module: path.parse(__filename).name, operation, attempt: retries + 1, maxAttempts: MAX_RETRIES + 1 });
+            //logger.debug(`Attempt ${retries + 1}/${MAX_RETRIES + 1}...`, { module: path.parse(__filename).name, operation, attempt: retries + 1, maxAttempts: MAX_RETRIES + 1 });
             const result: AttemptResult = await this._attemptAnalysis(model, text);
 
             // a) Success
@@ -383,25 +383,25 @@ Voici le texte :
                     // Activate Global Pause Logic (same as before, just logging changes)
                     const pauseUntil = Date.now() + delayMs;
                     if (pauseUntil > ServiceGemini.globalPauseUntil) {
-                        logger.info(`Setting/Extending global pause until ${new Date(pauseUntil).toISOString()}`, { module: path.parse(__filename).name, operation: 'globalPauseActivation', pauseUntil: new Date(pauseUntil).toISOString(), triggeredByAttempt: retries }); // Use logger.info
+                        logger.warn(`Setting/Extending global pause until ${new Date(pauseUntil).toISOString()}`, { module: path.parse(__filename).name, operation: 'globalPauseActivation', pauseUntil: new Date(pauseUntil).toISOString(), triggeredByAttempt: retries }); // Use logger.info
                         ServiceGemini.isGloballyPaused = true;
                         ServiceGemini.globalPauseUntil = pauseUntil;
                         ServiceGemini.globalPausePromise = sleep(delayMs).then(() => {
-                            logger.info('Global quota pause finished (timer initiated by this request).', { module: path.parse(__filename).name, operation: 'globalPauseHandler', triggeredByAttempt: retries });
+                            logger.warn('Global quota pause finished (timer initiated by this request).', { module: path.parse(__filename).name, operation: 'globalPauseHandler', triggeredByAttempt: retries });
                             if (Date.now() >= ServiceGemini.globalPauseUntil) {
-                                logger.debug('Resetting global pause flags after wait.', { module: path.parse(__filename).name, operation: 'globalPauseHandler' });
+                                //logger.debug('Resetting global pause flags after wait.', { module: path.parse(__filename).name, operation: 'globalPauseHandler' });
                                 ServiceGemini.isGloballyPaused = false;
                                 ServiceGemini.globalPauseUntil = 0;
                                 ServiceGemini.globalPausePromise = null;
                             } else {
-                                logger.info('Global pause was extended further. Not resetting flags.', { module: path.parse(__filename).name, operation: 'globalPauseHandler', currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
+                                logger.warn('Global pause was extended further. Not resetting flags.', { module: path.parse(__filename).name, operation: 'globalPauseHandler', currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
                             }
                         }).catch(err => {
                             logger.error('Error during global pause sleep.', { module: path.parse(__filename).name, operation: 'globalPauseHandler', error: formatErrorForLog(err) });
                             ServiceGemini.isGloballyPaused = false; ServiceGemini.globalPauseUntil = 0; ServiceGemini.globalPausePromise = null; // Reset state on error
                         });
                     } else {
-                        logger.info('Global pause already active and extends further. This request will wait.', { module: path.parse(__filename).name, operation, currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
+                        logger.warn('Global pause already active and extends further. This request will wait.', { module: path.parse(__filename).name, operation, currentPauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
                     }
                     // End Global Pause Activation
 

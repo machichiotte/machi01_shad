@@ -170,7 +170,7 @@ export class ServiceMongodb {
         await dbInstance.createCollection(collectionName);
         logger.info(`Collection ${collectionName} created successfully.`, { module: path.parse(__filename).name, operation, dbName: dbInstance.databaseName });
       } else {
-        logger.debug(`Collection ${collectionName} already exists.`, { module: path.parse(__filename).name, operation, dbName: dbInstance.databaseName });
+        // logger.debug(`Collection ${collectionName} already exists.`, { module: path.parse(__filename).name, operation, dbName: dbInstance.databaseName });
       }
     } catch (error) {
       // Gérer les erreurs spécifiques de MongoDB si nécessaire
