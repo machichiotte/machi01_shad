@@ -320,7 +320,7 @@ Voici le texte :
             const now = Date.now();
             if (now < ServiceGemini.globalPauseUntil) {
                 const waitTime = ServiceGemini.globalPauseUntil - now;
-                logger.warn(`Global quota pause active. Waiting for ${Math.ceil(waitTime / 1000)}s...`, { module: path.parse(__filename).name, operation, waitMs: waitTime, pauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
+               // logger.debug(`Global quota pause active. Waiting for ${Math.ceil(waitTime / 1000)}s...`, { module: path.parse(__filename).name, operation, waitMs: waitTime, pauseUntil: new Date(ServiceGemini.globalPauseUntil).toISOString() });
 
                 if (!ServiceGemini.globalPausePromise) {
                     ServiceGemini.globalPausePromise = sleep(waitTime).then(() => {
