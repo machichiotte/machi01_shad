@@ -15,6 +15,7 @@ import routeMachi from './routeMachi';
 import routeAlarm from './routeAlarm';
 import routeApi from './config/routeApi';
 import routeRss from './routeRss';
+import routeWs from './routeWs';
 
 const router = Router();
 
@@ -33,5 +34,6 @@ router.use('/machi', routeMachi);
 router.use('/config/api', routeApi);
 router.use('/alarm', routeAlarm);
 router.use('/rss', routeRss);
+router.use('/ws', routeWs);
 
 export default router;

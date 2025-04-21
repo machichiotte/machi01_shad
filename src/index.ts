@@ -5,6 +5,8 @@ import { ServiceCron } from '@services/serviceCron';
 // import { UpdateService } from '@services/update/updateSevice';
 // import { UpdateManager } from '@services/update/updateManager';
 // import { ServiceProcessor } from '@services/serviceProcessor';
+import { ServiceBinanceWs } from '@services/api/platform/serviceBinanceWs'; // Import du service WebSocket
+
 import { ServiceConfigServer } from '@services/config/serviceConfigServer';
 import { ServiceConfigApi } from '@services/config/serviceConfigApi';
 import { ServiceCache } from '@services/serviceCache';
@@ -47,15 +49,21 @@ async function startApp(): Promise<void> {
     await ServiceCron.initializeCronTasks();
     logger.info('[Step 4] CRON tasks initialized.', { module: path.parse(__filename).name, operation }); // Le détail est loggué par ServiceCron
 
-    // Étape 5 : Exécuter les autres tâches 
-    // logger.info('[Step 5] Executing other tasks (ServiceProcessor)...', { module: path.parse(__filename).name, operation });
-    // await ServiceProcessor.saveMachi();
-    // logger.info('[Step 5] Other tasks executed.', { module: path.parse(__filename).name, operation });
+    // Étape 5 : Démarrer la WebSocket Binance
+    logger.info('[Step 5] Starting Binance WebSocket...');
+    await ServiceBinanceWs.init() // Initialisation des paramètres de souscription
+    ServiceBinanceWs.connect(); // Démarrage de la WebSocket
+    logger.info('[Step 5] Binance WebSocket started.');
 
-    // Étape 6 : Démarrer le serveur Express
-    logger.info('[Step 6] Starting Express server...', { module: path.parse(__filename).name, operation });
+    // Étape 6 : Exécuter les autres tâches 
+    // logger.info('[Step 6] Executing other tasks (ServiceProcessor)...', { module: path.parse(__filename).name, operation });
+    // await ServiceProcessor.saveMachi();
+    // logger.info('[Step 6] Other tasks executed.', { module: path.parse(__filename).name, operation });
+
+    // Étape 7 : Démarrer le serveur Express
+    logger.info('[Step 7] Starting Express server...', { module: path.parse(__filename).name, operation });
     await startServer(); // La fonction startServer loggue déjà son succès/échec
-    logger.info('[Step 6] Express server start process initiated.', { module: path.parse(__filename).name, operation });
+    logger.info('[Step 7] Express server start process initiated.', { module: path.parse(__filename).name, operation });
 
     logger.info('Application initialized successfully!', { module: path.parse(__filename).name, operation });
 

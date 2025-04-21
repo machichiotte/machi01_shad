@@ -206,13 +206,13 @@ export class ServiceRssProcessor {
             const minContentLength = rssConfig.minContentLengthForScraping ?? DEFAULT_SERVER_CONFIG.rss.minContentLengthForScraping;
 
             if (!fullContent || fullContent.length < minContentLength) {
-                logger.info(`Short or missing content, attempting scrape...`, { ...articleContext, currentLength: fullContent?.length ?? 0, minLength: minContentLength });
+                logger.warn(`Short or missing content, attempting scrape...`, { ...articleContext, currentLength: fullContent?.length ?? 0, minLength: minContentLength });
                 try {
                     const scrapeResult = await ServiceContentScraper.scrapeArticleContent(article.link);
                     if (scrapeResult) {
                         fullContent = scrapeResult;
                         scraped = true;
-                        logger.info(`Scrape successful.`, { ...articleContext, contentLength: fullContent.length });
+                        // logger.debug(`Scrape successful.`, { ...articleContext, contentLength: fullContent.length });
                         const scrapeDelay = rssConfig.scrapeRetryDelayMs ?? DEFAULT_SERVER_CONFIG.rss.scrapeRetryDelayMs;
                         if (scrapeDelay > 0) {
                             // logger.debug(`Applying post-scrape delay: ${scrapeDelay}ms`, { ...articleContext, delayMs: scrapeDelay });
@@ -274,7 +274,7 @@ export class ServiceRssProcessor {
                     if (analysisResult && analysisResult.summary && analysisResult.analysis) { // Vérifie si les résultats sont valides
                         summary = analysisResult.summary;
                         analysis = analysisResult.analysis;
-                        logger.info(`Gemini analysis successful.`, { ...articleContext, summaryLength: summary?.length, analysisKeys: analysis ? Object.keys(analysis) : [] });
+                        // logger.debug(`Gemini analysis successful.`, { ...articleContext, summaryLength: summary?.length, analysisKeys: analysis ? Object.keys(analysis) : [] });
                     } else {
                         geminiError = 'Gemini processing failed or returned empty/invalid results.';
                         logger.warn(`${geminiError}`, articleContext);
