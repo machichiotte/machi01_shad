@@ -82,7 +82,7 @@ const connectWebSocket = () => {
       if (message && message.type === 'ticker' && message.symbol) {
         tickerData[message.symbol] = message;
       } else {
-         console.warn('Received message does not match expected ticker format:', message);
+        console.warn('Received message does not match expected ticker format:', message);
       }
     } catch (error) {
       console.error('Failed to parse WebSocket message:', error);
@@ -101,7 +101,7 @@ const connectWebSocket = () => {
     console.log(`WebSocket disconnected. Code: ${event.code}, Reason: ${event.reason}`);
     // Only set to 'disconnected' if it wasn't an error causing the close
     if (connectionStatus.value !== 'error') {
-        connectionStatus.value = 'disconnected';
+      connectionStatus.value = 'disconnected';
     }
     ws.value = null; // Clear the ref
 
@@ -141,7 +141,7 @@ const formatPrice = (price: string | number | undefined) => {
 
 // Helper to format percentage change
 const formatChangePercent = (percent: string | number | undefined) => {
-   if (percent === undefined || percent === null) return 'N/A';
+  if (percent === undefined || percent === null) return 'N/A';
   const num = Number(percent);
   return isNaN(num) ? 'N/A' : `${num.toFixed(2)}%`;
 };
@@ -172,42 +172,46 @@ const getChangeClass = (percent: string | number | undefined) => {
     </div>
 
     <div v-if="connectionStatus === 'connected' && sortedTickers.length > 0" class="ticker-grid">
-       <table>
-         <thead>
-           <tr>
-             <th>Symbol</th>
-             <th>Last Price (USDT)</th>
-             <th>Change (24h)</th>
-             <th>High (24h)</th>
-             <th>Low (24h)</th>
-             <th>Volume (Base)</th>
-             <th>Volume (Quote)</th>
-           </tr>
-         </thead>
-         <tbody>
-           <tr v-for="ticker in sortedTickers" :key="ticker.symbol">
-             <td>{{ ticker.symbol }}</td>
-             <td>{{ formatPrice(ticker.lastPrice) }}</td>
-             <td :class="getChangeClass(ticker.priceChangePercent)">
-                 {{ formatChangePercent(ticker.priceChangePercent) }}
-             </td>
-             <td>{{ formatPrice(ticker.highPrice) }}</td>
-             <td>{{ formatPrice(ticker.lowPrice) }}</td>
-             <td>{{ Number(ticker.volume).toFixed(2) }}</td>
-             <td>{{ Number(ticker.quoteVolume).toFixed(2) }}</td>
-           </tr>
-         </tbody>
-       </table>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th> <!-- Colonne pour le numéro -->
+            <th>Symbol</th>
+            <th>Last Price (USDT)</th>
+            <th>Change (24h)</th>
+            <th>High (24h)</th>
+            <th>Low (24h)</th>
+            <th>Volume (Base)</th>
+            <th>Volume (Quote)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(ticker, index) in sortedTickers" :key="ticker.symbol">
+
+            <td>{{ index + 1 }}</td> <!-- Numéro de ligne -->
+
+            <td>{{ ticker.symbol }}</td>
+            <td>{{ formatPrice(ticker.lastPrice) }}</td>
+            <td :class="getChangeClass(ticker.priceChangePercent)">
+              {{ formatChangePercent(ticker.priceChangePercent) }}
+            </td>
+            <td>{{ formatPrice(ticker.highPrice) }}</td>
+            <td>{{ formatPrice(ticker.lowPrice) }}</td>
+            <td>{{ Number(ticker.volume).toFixed(2) }}</td>
+            <td>{{ Number(ticker.quoteVolume).toFixed(2) }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div v-else-if="connectionStatus === 'connected'">
-       <p>Waiting for data...</p>
+      <p>Waiting for data...</p>
     </div>
     <div v-else-if="connectionStatus === 'connecting'">
-       <p>Connecting to WebSocket...</p>
+      <p>Connecting to WebSocket...</p>
     </div>
     <div v-else>
-       <p>WebSocket is disconnected. Click 'Connect' to start receiving data.</p>
+      <p>WebSocket is disconnected. Click 'Connect' to start receiving data.</p>
     </div>
   </div>
 </template>
@@ -217,8 +221,10 @@ const getChangeClass = (percent: string | number | undefined) => {
   max-width: 1000px;
   margin: 1rem auto;
   padding: 1rem;
-    background-color: #2c2c2c; /* Darker background */
-  color: #eee; /* Lighter text color for container */
+  background-color: #2c2c2c;
+  /* Darker background */
+  color: #eee;
+  /* Lighter text color for container */
   border-radius: 8px;
 }
 
@@ -241,8 +247,9 @@ const getChangeClass = (percent: string | number | undefined) => {
   border-radius: 4px;
   transition: background-color 0.2s ease;
 }
+
 .status-bar button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .error-message {
@@ -253,47 +260,60 @@ const getChangeClass = (percent: string | number | undefined) => {
 h2 {
   text-align: center;
   margin-bottom: 1.5rem;
-    color: #eee; /* Lighter text color */
+  color: #eee;
+  /* Lighter text color */
 }
 
 .ticker-grid table {
   width: 100%;
   border-collapse: collapse;
-    color: #ccc; /* Lighter text color for table */
+  color: #ccc;
+  /* Lighter text color for table */
 }
 
 .ticker-grid th,
 .ticker-grid td {
-  border: 1px solid #444; /* Darker borders */
+  border: 1px solid #444;
+  /* Darker borders */
   padding: 0.6rem;
   text-align: left;
-  font-size: 0.9em; /* Slightly smaller font */
-  vertical-align: middle; /* Align text vertically */
+  font-size: 0.9em;
+  /* Slightly smaller font */
+  vertical-align: middle;
+  /* Align text vertically */
 }
 
 .ticker-grid th {
-    background-color: #3a3a3a; /* Slightly lighter header background */
-    color: #eee;
-    font-weight: bold;
-    position: sticky; /* Make header sticky if container scrolls */
-    top: 0; /* Required for sticky */
+  background-color: #3a3a3a;
+  /* Slightly lighter header background */
+  color: #eee;
+  font-weight: bold;
+  position: sticky;
+  /* Make header sticky if container scrolls */
+  top: 0;
+  /* Required for sticky */
 }
 
 .ticker-grid tbody tr:nth-child(even) {
-  background-color: #333; /* Slightly darker even rows */
+  background-color: #333;
+  /* Slightly darker even rows */
 }
+
 .ticker-grid tbody tr:hover {
-    background-color: #454545; /* Highlight on hover */
+  background-color: #454545;
+  /* Highlight on hover */
 }
 
 
 /* Classes for price change styling */
 .positive-change {
-  color: #4caf50; /* Green */
+  color: #4caf50;
+  /* Green */
 }
 
 .negative-change {
-  color: #f44336; /* Red */
+  color: #f44336;
+  /* Red */
 }
 
 /* Style for placeholder messages */
