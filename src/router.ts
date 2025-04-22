@@ -10,6 +10,7 @@ import Trades from './components/trade/Trades.vue'
 import Stuff from './components/Stuff.vue'
 import Config from './components/Config.vue'
 import RssFeedDisplay from './components/rss/RssFeedDisplay.vue'
+import Livedata from './components/livedata/Livedata.vue'
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', name: 'machi', component: Machi },
@@ -22,6 +23,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/stuff', name: 'stuff', component: Stuff },
   { path: '/config', name: 'config', component: Config },
   { path: '/rss', name: 'rss', component: RssFeedDisplay },
+  { path: '/livedata', name: 'rss', component: Livedata },
 ]
 
 const router = createRouter({

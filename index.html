@@ -5,13 +5,14 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval';">
-    <meta http-equiv="Content-Security-Policy" content="connect-src 'self' http://localhost:10000;">
-  
+    
+    <meta http-equiv="Content-Security-Policy" 
+          content="script-src 'self' 'unsafe-eval'; 
+                   connect-src 'self' http://localhost:10000 ws://localhost:10000;"> 
+ 
     <title>Machi-01</title>
   </head>
   <body>
-
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
