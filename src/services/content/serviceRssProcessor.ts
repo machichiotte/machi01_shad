@@ -1,7 +1,7 @@
 // src/services/content/serviceRssProcessor.ts
 import { ServiceRssFetcher } from '@services/content/serviceRssFetcher';
 import { ServiceContentScraper } from '@services/content/serviceContentScraper';
-import { ServiceGemini } from '@services/api/serviceGemini';
+import { ServiceGemini } from '@services/api/gemini/serviceGemini';
 import { RepoRss } from '@repo/repoRss';
 import { handleServiceError } from '@utils/errorUtil';
 import { config } from '@config/index';
