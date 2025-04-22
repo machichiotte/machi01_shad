@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/stuff', name: 'stuff', component: Stuff },
   { path: '/config', name: 'config', component: Config },
   { path: '/rss', name: 'rss', component: RssFeedDisplay },
-  { path: '/livedata', name: 'rss', component: Livedata },
+  { path: '/livedata', name: 'livedata', component: Livedata },
 ]
 
 const router = createRouter({
