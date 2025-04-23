@@ -74,15 +74,14 @@ const stablecoinDetailsByPlatform = computed(() => {
 
 <style scoped>
 .stablecoin-card {
-    border: 1px solid white;
     border-radius: 15px;
     margin-bottom: 1rem;
     margin-left: 1rem;
     margin-right: 1rem;
     padding: 0.5rem;
+    border: 1px solid white;
     background-color: #ddd;
     color: #666;
-
 }
 
 .platform-header {

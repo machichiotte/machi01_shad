@@ -110,12 +110,12 @@ const updateSelectedBases = (newSelection: Asset[]): void => { selectedBases.val
 const updateSelectedPlatforms = (newPlatforms: string[]): void => { selectedPlatforms.value = newPlatforms }
 
 const isBottomExpanded = ref(false)
-const activeTab = ref<'trades' | 'orders'>('trades')
-const toggleExpandCollapse = (): void => { isBottomExpanded.value = !isBottomExpanded.value }
+const activeBottomTab = ref<'trades' | 'orders'>('trades')
+//const toggleBottomExpandCollapse = (): void => { isBottomExpanded.value = !isBottomExpanded.value }
 
 const isTopExpanded = ref(false)
 const activeTopTab = ref<'platforms' | 'fetch' | 'action'>('platforms')
-const toggleTopExpandCollapse = (): void => { isTopExpanded.value = !isTopExpanded.value }
+//const toggleTopExpandCollapse = (): void => { isTopExpanded.value = !isTopExpanded.value }
 
 const itemsPerPage = 10
 const currentPage = ref(1)
@@ -131,6 +131,18 @@ const handleScroll = debounce(() => {
 }, 200)
 onMounted(() => window.addEventListener('scroll', handleScroll))
 onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll))
+
+const emit = defineEmits(['top-toggle-details', 'bottom-toggle-details'])
+
+function toggleTopExpandCollapse() {
+  isTopExpanded .value = !isTopExpanded .value
+  emit('top-toggle-details', isTopExpanded .value)
+}
+
+function toggleBottomExpandCollapse() {
+  isBottomExpanded.value = !isBottomExpanded.value
+  emit('bottom-toggle-details', isBottomExpanded.value)
+}
 </script>
 
 <template>
@@ -142,7 +154,9 @@ onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll))
             :class="{ active: activeTopTab === 'platforms' }" />
           <Button label="Update data" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
           <Button label="Actions" @click="activeTopTab = 'action'" :class="{ active: activeTopTab === 'action' }" />
-          <Button icon="pi pi-chevron-down" @click="toggleTopExpandCollapse" class="expand-collapse-button" />
+
+          <Button :icon="isTopExpanded ? 'pi pi-chevron-down' : 'pi pi-chevron-up'" class="expand-collapse-button"
+            @click="toggleTopExpandCollapse" />
         </div>
         <SearchBar :filters="filters" />
       </div>
@@ -171,14 +185,16 @@ onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll))
     <div class="bottom-tab-container" :class="{ expanded: isBottomExpanded }">
       <div class="bottom-tab-header">
         <div class="bottom-tab-menu">
-          <Button label="Trades" @click="activeTab = 'trades'" :class="{ active: activeTab === 'trades' }" />
-          <Button label="Orders" @click="activeTab = 'orders'" :class="{ active: activeTab === 'orders' }" />
-          <Button icon="pi pi-chevron-up" @click="toggleExpandCollapse" class="expand-collapse-button" />
+          <Button label="Trades" @click="activeBottomTab = 'trades'" :class="{ active: activeBottomTab === 'trades' }" />
+          <Button label="Orders" @click="activeBottomTab = 'orders'" :class="{ active: activeBottomTab === 'orders' }" />
+          <Button :icon="isBottomExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" class="expand-collapse-button"
+            @click="toggleBottomExpandCollapse" />
+
         </div>
       </div>
       <div class="bottom-tab-content">
-        <TradesTable v-if="activeTab === 'trades'" :rows="filteredTrades" :filters="filters" />
-        <OrdersTable v-if="activeTab === 'orders'" :rows="openOrdersItems" :filters="filters" />
+        <TradesTable v-if="activeBottomTab === 'trades'" :rows="filteredTrades" :filters="filters" />
+        <OrdersTable v-if="activeBottomTab === 'orders'" :rows="openOrdersItems" :filters="filters" />
       </div>
     </div>
   </div>
@@ -220,7 +236,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll))
   gap: 1rem;
 }
 
-.card-container > * {
+.card-container>* {
   flex: 0 0 400px;
 }
 
