@@ -77,17 +77,6 @@ const transformedTrades = computed<TradeTransformed[]>(() => {
 </template>
 
 <style scoped>
-/* Variables CSS pour des couleurs et styles réutilisables */
-:root {
-    --primary-bg: #f4f4f4;
-    --secondary-bg: #eaeaea;
-    --highlight-color: #4caf50;
-    --danger-color: #ff4c4c;
-    --neutral-color: #777;
-    --font-main: 'Roboto', sans-serif;
-    --transition-duration: 0.3s;
-}
-
 .card {
     background-color: #ddd;
     color: #666;

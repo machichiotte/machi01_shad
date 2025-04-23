@@ -59,11 +59,11 @@ const possessionDetailsByPlatform = computed(() => {
         <!-- Liste des plateformes avec détails des actifs -->
         <div v-for="details in possessionDetailsByPlatform" :key="details.platform" class="platform-section">
             <div class="platform-header" @click="toggleDetails(details.platform)">
-                <strong>{{ details.platform }} : {{ details.totalPossession }}</strong>
+                <strong>{{ details.platform }} : {{ details.totalPossession.toFixed(2) }}</strong>
             </div>
             <ul v-if="expandedPlatforms.includes(details.platform)">
                 <li v-for="asset in details.assets" :key="asset.name">
-                    {{ asset.name }} - {{ asset.base }} : {{ asset.currentPossession }}$
+                    {{ asset.name }} - {{ asset.base }} : {{ asset.currentPossession.toFixed(2) }}$
                 </li>
             </ul>
         </div>
@@ -79,15 +79,13 @@ const possessionDetailsByPlatform = computed(() => {
     margin-right: 1rem;
     padding: 0.5rem;
     cursor: pointer;
-    background-color: blue;
+    background-color: #ddd;
+    color: #666;
+
 }
 
 .platform-header {
     cursor: pointer;
-    /* Pointeur sur le texte cliquable */
-    background-color: yellowgreen;
-
-    /* Couleur du texte pour l'en-tête de la plateforme */
 }
 
 .platform-header:hover {

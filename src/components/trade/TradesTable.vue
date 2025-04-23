@@ -55,7 +55,7 @@ const {
 
 <style scoped>
 .table-container {
-  margin-bottom: 1rem;
+  margin-bottom: 0.2rem;
 }
 
 /* Mise en page fixe du tableau pour garantir des largeurs constantes */

@@ -80,6 +80,9 @@ const stablecoinDetailsByPlatform = computed(() => {
     margin-left: 1rem;
     margin-right: 1rem;
     padding: 0.5rem;
+    background-color: #ddd;
+    color: #666;
+
 }
 
 .platform-header {

@@ -7,38 +7,23 @@ import CardAsset from './card/CardAsset.vue'
 import CardBalance from './card/CardBalance.vue'
 import CardStableCoin from './card/CardStableCoin.vue'
 import SearchBar from './SearchBar.vue'
-
 import PlatformSelector from './PlatformSelector.vue'
 import UpdateBarSelector from './UpdateBarSelector.vue'
 import ActionSelector from './ActionSelector.vue'
-
 import TradesTable from '../trade/TradesTable.vue'
 import OrdersTable from '../order/OrdersTable.vue'
-
 import { Filter } from '../../types/filter'
 import { Asset, Trade, TradeTransformed } from '../../types/responseData'
 import { debounce } from 'lodash-es'
 
-// Définition des bases sélectionnées avec les types appropriés
 const selectedBases = shallowRef<Asset[]>([])
-
-// Définition des filtres avec une structure bien définie
-const filters = ref<Filter>({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-})
-
-// Définition du tableau de plateformes
+const filters = ref<Filter>({ global: { value: null, matchMode: FilterMatchMode.CONTAINS } })
 const selectedPlatforms = shallowRef(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
-
-// Accès au store Pinia
 const calculStore = useCalculStore()
-
-// Propriétés calculées pour récupérer les données du store
 const tradesItems = computed(() => calculStore.getTrade)
 const openOrdersItems = computed(() => calculStore.getOrder)
 const machiItems = computed(() => calculStore.getMachi)
 
-// Transformation des trades en TradeTransformed pour le tableau des trades
 const filteredTrades = computed<TradeTransformed[]>(() => {
   return tradesItems.value
     .filter(item => {
@@ -52,7 +37,6 @@ const filteredTrades = computed<TradeTransformed[]>(() => {
       let date: string
       let timestampVal = 0
       if (item.timestamp) {
-        // Si le timestamp est en secondes, le convertir en millisecondes
         timestampVal = item.timestamp.toString().length <= 10 ? item.timestamp * 1000 : item.timestamp
         const formattedDate = new Date(timestampVal)
         const year = formattedDate.getFullYear()
@@ -82,127 +66,78 @@ const filteredTrades = computed<TradeTransformed[]>(() => {
         fee: item.fee,
         feecoin: item.feecoin,
         platform: item.platform,
-        timestampVal // utilisé pour le tri
+        timestampVal
       } as TradeTransformed
     })
-    .sort((a, b) => b.timestampVal - a.timestampVal) // Tri décroissant
+    .sort((a, b) => b.timestampVal - a.timestampVal)
 })
 
-// Filtrage des Machi items par plateforme et recherche (unicité sur base et plateforme)
 const filteredMachiItems = computed(() => {
-  const searchValue = filters.value.global.value?.toLowerCase() ?? '';
-  const uniqueItems = new Map(); // Utiliser Map au lieu de Set pour de meilleures performances
+  const searchValue = filters.value.global.value?.toLowerCase() ?? ''
+  const uniqueItems = new Map<string, boolean>()
 
   return machiItems.value.filter(item => {
-    const uniqueKey = `${item.base}-${item.platform}`;
-    if (uniqueItems.has(uniqueKey)) return false;
-
-    const matchesPlatform = selectedPlatforms.value.includes(item.platform);
-    const matchesSearch = !searchValue ||
-      Object.values(item).some(value => String(value).toLowerCase().includes(searchValue));
-
+    const key = `${item.base}-${item.platform}`
+    if (uniqueItems.has(key)) return false
+    const matchesPlatform = selectedPlatforms.value.includes(item.platform)
+    const matchesSearch = !searchValue || Object.values(item).some(v => String(v).toLowerCase().includes(searchValue))
     if (matchesPlatform && matchesSearch) {
-      uniqueItems.set(uniqueKey, true);
-      return true;
+      uniqueItems.set(key, true)
+      return true
     }
-    return false;
-  });
-});
+    return false
+  })
+})
 
-// Fonction pour récupérer les données du store de façon asynchrone
 const getData = async (): Promise<void> => {
   try {
-    await calculStore.loadTrade();
-    await calculStore.loadOrder();
-    await calculStore.loadMachi();
-    console.info("Data retrieved:", {
+    await calculStore.loadTrade()
+    await calculStore.loadOrder()
+    await calculStore.loadMachi()
+    console.info('Data retrieved:', {
       trades: tradesItems.value.length,
       orders: openOrdersItems.value.length,
       machi: machiItems.value.length,
-    });
+    })
   } catch (error) {
-    console.error("An error occurred while retrieving data:", error)
+    console.error('An error occurred while retrieving data:', error)
   }
 }
 
-// Chargement des données lors du montage du composant
-onMounted(async () => {
-  await getData()
-})
+onMounted(async () => { await getData() })
+const handleDeleteAction = (): void => { }
+const updateSelectedBases = (newSelection: Asset[]): void => { selectedBases.value = newSelection }
+const updateSelectedPlatforms = (newPlatforms: string[]): void => { selectedPlatforms.value = newPlatforms }
 
-// Gestion de l'action de suppression (à implémenter)
-const handleDeleteAction = (): void => {
-  // TODO: Implémenter la suppression
-};
+const isBottomExpanded = ref(false)
+const activeTab = ref<'trades' | 'orders'>('trades')
+const toggleExpandCollapse = (): void => { isBottomExpanded.value = !isBottomExpanded.value }
 
-// Mise à jour des bases sélectionnées
-const updateSelectedBases = (newSelection: Asset[]): void => {
-  selectedBases.value = newSelection
-}
-
-// Mise à jour des plateformes sélectionnées
-const updateSelectedPlatforms = (newPlatforms: string[]): void => {
-  selectedPlatforms.value = newPlatforms
-}
-
-// Gestion de l'expansion/repli des sections
-const isBottomExpanded = ref<boolean>(false)
-const activeTab = ref<'trades' | 'orders' | 'buyCalculator'>('trades')
-const toggleExpandCollapse = (): void => {
-  isBottomExpanded.value = !isBottomExpanded.value
-}
-
-const isTopExpanded = ref<boolean>(false)
+const isTopExpanded = ref(false)
 const activeTopTab = ref<'platforms' | 'fetch' | 'action'>('platforms')
-const toggleTopExpandCollapse = (): void => {
-  isTopExpanded.value = !isTopExpanded.value
-}
+const toggleTopExpandCollapse = (): void => { isTopExpanded.value = !isTopExpanded.value }
 
-// Pagination des Machi items
-const itemsPerPage = 10;
-const currentPage = ref(1);
-const loading = ref(false);
-const paginatedMachiItems = computed(() => {
-  const start = 0;
-  return filteredMachiItems.value.slice(start, currentPage.value * itemsPerPage);
-});
-const hasMoreItems = computed(() => {
-  return currentPage.value * itemsPerPage < filteredMachiItems.value.length;
-});
-const loadMore = () => {
-  if (!loading.value && hasMoreItems.value) {
-    loading.value = true;
-    currentPage.value++;
-    loading.value = false;
-  }
-};
-
+const itemsPerPage = 10
+const currentPage = ref(1)
+const loading = ref(false)
+const paginatedMachiItems = computed(() => filteredMachiItems.value.slice(0, currentPage.value * itemsPerPage))
+const hasMoreItems = computed(() => currentPage.value * itemsPerPage < filteredMachiItems.value.length)
+const loadMore = () => { if (!loading.value && hasMoreItems.value) { loading.value = true; currentPage.value++; loading.value = false } }
 const handleScroll = debounce(() => {
-  if (loading.value) return;
-
-  const scrollPosition = window.innerHeight + window.scrollY;
-  const threshold = document.body.offsetHeight - 200;
-
-  if (scrollPosition >= threshold && hasMoreItems.value) {
-    loadMore();
-  }
-}, 200);
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll);
-});
+  if (loading.value) return
+  const pos = window.innerHeight + window.scrollY
+  const threshold = document.body.offsetHeight - 200
+  if (pos >= threshold && hasMoreItems.value) loadMore()
+}, 200)
+onMounted(() => window.addEventListener('scroll', handleScroll))
+onBeforeUnmount(() => window.removeEventListener('scroll', handleScroll))
 </script>
 
 <template>
   <div class="main-container">
-    <!-- Top Expandable Container -->
     <div class="top-tab-container" :class="{ expanded: isTopExpanded }">
-      <div class="tab-header">
-        <div class="tab_menu">
+      <div class="top-tab-header">
+        <div class="top-tab-menu">
           <Button label="Platform Selector" @click="activeTopTab = 'platforms'"
             :class="{ active: activeTopTab === 'platforms' }" />
           <Button label="Update data" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
@@ -211,7 +146,7 @@ onBeforeUnmount(() => {
         </div>
         <SearchBar :filters="filters" />
       </div>
-      <div class="tab-content">
+      <div class="top-tab-content">
         <PlatformSelector v-if="activeTopTab === 'platforms'" :initialSelectedPlatforms="selectedPlatforms"
           @update:selectedPlatforms="updateSelectedPlatforms" />
         <UpdateBarSelector v-if="activeTopTab === 'fetch'" />
@@ -221,16 +156,11 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="content-container">
-      <Toolbar class="mb-4">
-        <template #end>
-          <!-- Boutons ou éléments supplémentaires -->
-        </template>
-      </Toolbar>
-
-      <CardBalance :assets="filteredMachiItems" />
-      <CardStableCoin :assets="filteredMachiItems" />
-
-      <!-- Conteneur de cartes -->
+      <Toolbar class="mb-4"><template #end></template></Toolbar>
+      <div class="card-container">
+        <CardBalance :assets="filteredMachiItems" />
+        <CardStableCoin :assets="filteredMachiItems" />
+      </div>
       <div class="asset-card-container">
         <CardAsset v-for="item in paginatedMachiItems" :key="`${item.base}-${item.platform}`" :asset="item"
           :trades="tradesItems" :orders="openOrdersItems" @update:selectedBases="updateSelectedBases" />
@@ -238,15 +168,15 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <!-- Fixed Bottom Tab Container -->
     <div class="bottom-tab-container" :class="{ expanded: isBottomExpanded }">
-      <div class="tab-header">
-        <Button label="Trades" @click="activeTab = 'trades'" :class="{ active: activeTab === 'trades' }" />
-        <Button label="Orders" @click="activeTab = 'orders'" :class="{ active: activeTab === 'orders' }" />
-        <Button icon="pi pi-chevron-up" @click="toggleExpandCollapse" class="expand-collapse-button" />
+      <div class="bottom-tab-header">
+        <div class="bottom-tab-menu">
+          <Button label="Trades" @click="activeTab = 'trades'" :class="{ active: activeTab === 'trades' }" />
+          <Button label="Orders" @click="activeTab = 'orders'" :class="{ active: activeTab === 'orders' }" />
+          <Button icon="pi pi-chevron-up" @click="toggleExpandCollapse" class="expand-collapse-button" />
+        </div>
       </div>
-      <div class="tab-content">
-        <!-- Passage de TradeTransformed au composant TradesTable -->
+      <div class="bottom-tab-content">
         <TradesTable v-if="activeTab === 'trades'" :rows="filteredTrades" :filters="filters" />
         <OrdersTable v-if="activeTab === 'orders'" :rows="openOrdersItems" :filters="filters" />
       </div>
@@ -255,101 +185,113 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+:deep(.p-button) {
+  background-color: var(--surface-card) !important;
+  border-color: var(--surface-card) !important;
+  color: var(--text-color) !important;
+  box-shadow: none;
+}
+
+:deep(.p-button.active) {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color-text) !important;
+}
+
 .main-container {
   display: flex;
-  background-color: darkolivegreen;
   flex-direction: column;
   height: 100vh;
 }
 
 .content-container {
   background: var(--surface-card);
-  padding: 0;
   border-radius: 4px;
-  flex-grow: 1;
+  flex: 1;
   overflow-y: auto;
-  height: calc(100vh - 60px - 44px);
-  transition: height 0.3s ease;
-  background-color: darkorchid;
+  height: calc(100vh - var(--top-bar-height) - var(--bottom-bar-height));
+  transition: height 0.3s;
+}
+
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.card-container > * {
+  flex: 0 0 400px;
 }
 
 .asset-card-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-  background-color: var(--surface-ground);
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--surface-ground);
 }
 
-.top-tab-container {
+.top-tab-container,
+.bottom-tab-container {
   position: sticky;
-  top: 0;
-  left: 0;
+  z-index: 10;
   width: 100%;
-  background-color: var(--surface-card);
-  border-bottom: 1px solid var(--border-color);
-  transition: height 0.3s ease;
+  background: var(--surface-card);
+  border: 1px solid var(--border-color);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: red;
+  transition: max-height 0.3s;
+}
+
+.top-tab-container {
+  top: 0;
+  --bar-height: var(--top-bar-height);
+  max-height: var(--top-bar-height, 80px);
 }
 
 .top-tab-container.expanded {
-  height: 100px;
-  padding-bottom: 4px;
-}
-
-.top-tab-container:not(.expanded) {
-  height: 50px;
-}
-
-.tab-header {
-  display: flex;
-  align-items: center;
-  padding: 4px 0;
-}
-
-.tab_menu {
-  display: flex;
-  justify-content: center;
-  flex-grow: 1;
-}
-
-.search-bar {
-  margin-left: auto;
-}
-
-.tab-content {
-  padding-top: 4px;
+  max-height: var(--top-bar-height, 160px);
 }
 
 .bottom-tab-container {
-  position: fixed;
   bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: var(--surface-card);
-  border-top: 1px solid var(--border-color);
-  transition: height 0.3s ease;
-  overflow: hidden;
+  --bar-height: var(--bottom-bar-height);
+  max-height: var(--bottom-bar-height, 56px);
 }
 
 .bottom-tab-container.expanded {
-  height: 300px;
+  max-height: var(--bottom-bar-height, 300px);
 }
 
-.bottom-tab-container:not(.expanded) {
-  height: 40px;
+.top-tab-header,
+.bottom-tab-header {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  justify-content: space-between;
 }
 
-@media (max-width: 768px) {
-  .asset-card-container {
-    grid-template-columns: 1fr;
-  }
+.top-tab-menu .bottom-tab-menu {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+}
 
-  .top-tab-container.expanded {
-    height: 150px;
-  }
+.top-tab-content .bottom-tab-content {
+  padding: 0.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.expand-collapse-button .pi {
+  transition: transform 0.3s;
+}
+
+.top-tab-container.expanded .expand-collapse-button .pi,
+.bottom-tab-container.expanded .expand-collapse-button .pi {
+  transform: rotate(180deg);
 }
 </style>

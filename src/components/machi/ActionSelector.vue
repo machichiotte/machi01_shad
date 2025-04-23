@@ -40,7 +40,6 @@ const onDeleteClicked = () => {
 .action-selector {
     display: flex;
     justify-content: space-between;
-    /* Distributes action buttons and search bar */
     align-items: center;
     margin-bottom: 16px;
 }

@@ -55,7 +55,7 @@ const {
 
 <style scoped>
 .table-container {
-  margin-top: 1rem;
+  margin-bottom: 0.2rem;
 }
 
 .orders-table {

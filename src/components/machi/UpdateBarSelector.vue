@@ -68,13 +68,12 @@ async function fetchMyData<T>(fetchFunction: () => Promise<T>, index: number): P
 .fetch-from-server-selector {
     display: flex;
     align-items: center;
-    margin: 1rem 0;
     flex-wrap: nowrap;
     overflow-x: auto;
 }
 
 .fetch-button {
-    margin: 0 0.5rem;
+    margin: 0 0.2rem;
     flex: 0 0 auto;
     position: relative;
     min-width: 150px;

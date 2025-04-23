@@ -32,9 +32,11 @@ const props = defineProps<{
     min-width: 250px;
     padding: 0.75rem 0.75rem 0.75rem 2.5rem;
     border-radius: 8px;
-    border: 1px solid #ced4da;
     transition: all 0.3s ease;
     font-size: 1rem;
+    border: 1px solid #ccc;
+    background-color: #ddd;
+    color: #333;
 }
 
 .search-input:hover {
@@ -57,7 +59,7 @@ const props = defineProps<{
     top: 50%;
     left: 0.75rem;
     transform: translateY(-50%);
-    color: #6c757d;
+    color: #333;
     z-index: 1;
 }
 

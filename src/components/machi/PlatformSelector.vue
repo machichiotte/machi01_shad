@@ -61,16 +61,16 @@ watch(
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  background-color: red;
 }
 
 .platform-button {
-  margin: 0 0.5rem;
+  margin: 0 0.2rem;
   flex: 0 0 auto;
 }
 
 .platform-button.selected {
-  background-color: blue;
-  color: white;
+  border: 1px solid #ccc;
+  background-color: #ddd;
+  color: #333;
 }
 </style>
