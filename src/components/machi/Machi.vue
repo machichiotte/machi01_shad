@@ -111,13 +111,11 @@ const updateSelectedPlatforms = (newPlatforms: string[]): void => { selectedPlat
 
 const isBottomExpanded = ref(false)
 const activeBottomTab = ref<'trades' | 'orders'>('trades')
-//const toggleBottomExpandCollapse = (): void => { isBottomExpanded.value = !isBottomExpanded.value }
 
 const isTopExpanded = ref(false)
 const activeTopTab = ref<'platforms' | 'fetch' | 'action'>('platforms')
-//const toggleTopExpandCollapse = (): void => { isTopExpanded.value = !isTopExpanded.value }
 
-const itemsPerPage = 10
+const itemsPerPage = 1000
 const currentPage = ref(1)
 const loading = ref(false)
 const paginatedMachiItems = computed(() => filteredMachiItems.value.slice(0, currentPage.value * itemsPerPage))
@@ -155,7 +153,7 @@ function toggleBottomExpandCollapse() {
           <Button label="Update data" @click="activeTopTab = 'fetch'" :class="{ active: activeTopTab === 'fetch' }" />
           <Button label="Actions" @click="activeTopTab = 'action'" :class="{ active: activeTopTab === 'action' }" />
 
-          <Button :icon="isTopExpanded ? 'pi pi-chevron-down' : 'pi pi-chevron-up'" class="expand-collapse-button"
+          <Button :icon="isTopExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" class="expand-collapse-button"
             @click="toggleTopExpandCollapse" />
         </div>
         <SearchBar :filters="filters" />
@@ -187,7 +185,7 @@ function toggleBottomExpandCollapse() {
         <div class="bottom-tab-menu">
           <Button label="Trades" @click="activeBottomTab = 'trades'" :class="{ active: activeBottomTab === 'trades' }" />
           <Button label="Orders" @click="activeBottomTab = 'orders'" :class="{ active: activeBottomTab === 'orders' }" />
-          <Button :icon="isBottomExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" class="expand-collapse-button"
+          <Button :icon="isBottomExpanded ? 'pi pi-chevron-down' : 'pi pi-chevron-up'" class="expand-collapse-button"
             @click="toggleBottomExpandCollapse" />
 
         </div>
