@@ -180,7 +180,7 @@ Voici le texte :
 
             // a) Success
             if (typeof result === 'object' && result !== null && !(result instanceof Error) && 'analysis' in result && 'summary' in result) {
-                logger.info('Analysis successful.', { module: moduleName, operation, attempt: retries + 1 });
+               // logger.debug('Analysis successful.', { module: moduleName, operation, attempt: retries + 1 });
                 return result;
             }
 

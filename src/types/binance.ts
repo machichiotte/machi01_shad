@@ -1,4 +1,4 @@
-// src/types/binanceTypes.ts (ou à placer dans le même fichier si vous préférez)
+// src/types/binance.ts (ou à placer dans le même fichier si vous préférez)
 
 // --- Market Data Stream Types ---
 // Type générique pour différencier les streams
