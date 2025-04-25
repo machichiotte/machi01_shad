@@ -2,6 +2,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, onBeforeUnmount, shallowRef } from 'vue'
 import { useCalculStore } from '../../store/calculStore'
+import { useLiveDataStore } from '../../store/liveDataStore';
+
 import { FilterMatchMode } from 'primevue/api'
 import CardAsset from './card/CardAsset.vue'
 import CardBalance from './card/CardBalance.vue'
@@ -19,7 +21,10 @@ import { debounce } from 'lodash-es'
 const selectedBases = shallowRef<Asset[]>([])
 const filters = ref<Filter>({ global: { value: null, matchMode: FilterMatchMode.CONTAINS } })
 const selectedPlatforms = shallowRef(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
+
 const calculStore = useCalculStore()
+const liveDataStore = useLiveDataStore(); // Use the live data store
+
 const tradesItems = computed(() => calculStore.getTrade)
 const openOrdersItems = computed(() => calculStore.getOrder)
 const machiItems = computed(() => calculStore.getMachi)
@@ -174,8 +179,17 @@ function toggleBottomExpandCollapse() {
         <CardStableCoin :assets="filteredMachiItems" />
       </div>
       <div class="asset-card-container">
-        <CardAsset v-for="item in paginatedMachiItems" :key="`${item.base}-${item.platform}`" :asset="item"
-          :trades="tradesItems" :orders="openOrdersItems" @update:selectedBases="updateSelectedBases" />
+          <CardAsset
+          v-for="item in paginatedMachiItems"
+          :key="`${item.base}-${item.platform}`"
+          :asset="item"
+          :trades="tradesItems"
+          :orders="openOrdersItems"
+          :available-markets="liveDataStore.getMarketsForBase(item.base)" 
+          :live-price="liveDataStore.getCurrentPrice(item.base + 'USDT')"
+          :live-change-percent="liveDataStore.getChangePercent(item.base + 'USDT')"
+          @update:selectedBases="updateSelectedBases"
+        />
         <div v-if="loading">Loading more items...</div>
       </div>
     </div>

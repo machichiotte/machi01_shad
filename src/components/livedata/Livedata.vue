@@ -1,6 +1,7 @@
 <!-- src/components/livedata/Livedata.vue -->
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, reactive, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { useLiveDataStore } from '../../store/liveDataStore';
 
 // Define the structure of the ticker data we expect from the backend
 interface TickerData {
@@ -17,37 +18,18 @@ interface TickerData {
 }
 
 const ws = ref<WebSocket | null>(null);
-// tickerData stocke les données par symbole
-const tickerData = reactive<Record<string, TickerData>>({});
 const connectionStatus = ref<'connecting' | 'connected' | 'disconnected' | 'error'>('disconnected');
 const errorMessage = ref<string | null>(null);
+
+// Use the Pinia store
+const liveDataStore = useLiveDataStore();
 
 // Get WebSocket URL from environment variables or use a default
 // Make sure VITE_WS_URL is defined in your .env file (e.g., VITE_WS_URL=ws://localhost:10000)
 const VITE_WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:10000';
 
 // Computed property for sorted ticker data
-const sortedTickers = computed(() => {
-  // 1. Obtenir un tableau des objets TickerData à partir de l'objet réactif
-  const tickersArray: TickerData[] = Object.values(tickerData);
-
-  // 2. Trier le tableau par quoteVolume (décroissant)
-  tickersArray.sort((a, b) => {
-    // Convertir les volumes (qui sont des strings) en nombres pour la comparaison
-    const volumeA = Number(a.quoteVolume);
-    const volumeB = Number(b.quoteVolume);
-
-    // Gérer les cas où la conversion pourrait échouer (NaN)
-    if (isNaN(volumeA)) return 1; // Mettre les NaN à la fin
-    if (isNaN(volumeB)) return -1; // Mettre les NaN à la fin
-
-    // Comparer pour un ordre décroissant (le plus grand volume en premier)
-    return volumeB - volumeA;
-  });
-
-  // 3. Retourner le tableau trié
-  return tickersArray;
-});
+const sortedTickers = computed(() => liveDataStore.sortedTickersByVolume);
 
 const connectWebSocket = () => {
   if (ws.value && ws.value.readyState === WebSocket.OPEN) {
@@ -74,15 +56,27 @@ const connectWebSocket = () => {
   ws.value.onmessage = (event) => {
     console.log('Raw message received on frontend:', event.data); // Gardez ce log pour le debug
     try {
-      const message: TickerData = JSON.parse(event.data);
-      // console.log('Parsed message:', message); // Décommentez si nécessaire
+      const parsedData = JSON.parse(event.data);
 
-      // Mettre à jour l'objet réactif tickerData.
-      // La propriété computed 'sortedTickers' se mettra à jour automatiquement.
-      if (message && message.type === 'ticker' && message.symbol) {
-        tickerData[message.symbol] = message;
+      // Check if the received data is an array
+      if (Array.isArray(parsedData)) {
+        // If it's an array, process each ticker object inside it
+        console.log(`Parsed message: Received array with ${parsedData.length} tickers.`);
+        parsedData.forEach((ticker: TickerData) => { // Add type annotation here
+          // Make sure the structure of objects in the array matches TickerData
+          // You might need to adjust TickerData or map fields if they differ
+          // from Binance's !ticker@arr format (e.g., Binance uses 's' for symbol, 'c' for lastPrice)
+          // For now, assuming direct compatibility or backend mapping:
+          liveDataStore.updateTicker(ticker);
+        });
+      } else if (typeof parsedData === 'object' && parsedData !== null) {
+        // If it's a single object (handle potential future cases or other message types)
+        console.log('Parsed message: Received single ticker object.');
+        // Ensure it matches the TickerData structure before updating
+        // Add validation if necessary
+        liveDataStore.updateTicker(parsedData as TickerData); // Type assertion
       } else {
-        console.warn('Received message does not match expected ticker format:', message);
+        console.warn('Received unexpected WebSocket message format:', parsedData);
       }
     } catch (error) {
       console.error('Failed to parse WebSocket message:', error);

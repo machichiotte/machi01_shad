@@ -1,4 +1,4 @@
-// src/js/constants.ts
+// src/constants/exchanges.ts
 export const BINANCE_PLATFORM_ID = 'binance';
 export const BINANCE_THRESHOLD = 3; // 300%
 

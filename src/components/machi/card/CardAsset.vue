@@ -1,35 +1,37 @@
-<!-- src/components/machi/card/CardAsset.vue -->
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, PropType } from 'vue'; // Import PropType
 import { Asset, Order, Trade, TradeTransformed } from '../../../types/responseData';
 import { filterOrdersByAsset, filterTradesByAsset } from '../../../utils/filter';
 import CardAssetHeader from './CardAssetHeader.vue';
-import CardAssetDetail from './CardAssetDetail.vue';
+import CardAssetDetail from './CardAssetDetail.vue'; // Corrected import name
 
-// Props
-const props = defineProps<{
-    asset: Asset;
-    trades: Trade[];
-    orders: Order[];
-}>();
+// Props: Add the new props
+const props = defineProps({
+    asset: { type: Object as PropType<Asset>, required: true },
+    trades: { type: Array as PropType<Trade[]>, required: true }, // Expecting full list
+    orders: { type: Array as PropType<Order[]>, required: true }, // Expecting full list
+    availableMarkets: { type: Array as PropType<string[]>, default: () => [] }, // <-- New prop
+    livePrice: { type: Number, default: undefined },                            // <-- New prop
+    liveChangePercent: { type: Number, default: undefined },                    // <-- New prop
+});
 
-// Données locales
+// Données locales - Keep your filtering
 const asset = props.asset;
-const trades = filterTradesByAsset(props.trades, asset.base, asset.platform);
-const orders = filterOrdersByAsset(props.orders, asset.base, asset.platform);
+// Filter trades and orders based on the *incoming* full lists and the current asset/platform
+const filteredTrades = computed(() => filterTradesByAsset(props.trades, asset.base, asset.platform));
+const filteredOrders = computed(() => filterOrdersByAsset(props.orders, asset.base, asset.platform));
 
-// Gestion des détails
+// Gestion des détails - Keep your toggle logic
 const isDetailsVisible = ref(false);
 const toggleDetails = () => (isDetailsVisible.value = !isDetailsVisible.value);
 
-// Transformation des trades en TradeTransformed
+// Transformation des trades en TradeTransformed - Use filteredTrades
 const transformedTrades = computed<TradeTransformed[]>(() => {
-    return trades
+    return filteredTrades.value // Use the filtered list here
         .map((item: Trade) => {
             let date: string;
             let timestampVal = 0;
             if (item.timestamp) {
-                // Si le timestamp est en secondes, le convertir en millisecondes
                 timestampVal =
                     item.timestamp.toString().length <= 10 ? item.timestamp * 1000 : item.timestamp;
                 const formattedDate = new Date(timestampVal);
@@ -60,23 +62,26 @@ const transformedTrades = computed<TradeTransformed[]>(() => {
                 fee: item.fee,
                 feecoin: item.feecoin,
                 platform: item.platform,
-                timestampVal // propriété utilisée pour le tri
+                timestampVal
             } as TradeTransformed;
         })
-        .sort((a, b) => b.timestampVal - a.timestampVal); // Tri décroissant
+        .sort((a, b) => b.timestampVal - a.timestampVal);
 });
 
 </script>
 
 <template>
     <div class="card">
-        <CardAssetHeader :asset="asset" :orders="orders" :trades="trades" :is-details-visible="isDetailsVisible"
+        <CardAssetHeader :asset="asset" :orders="filteredOrders" :trades="filteredTrades"
+            :is-details-visible="isDetailsVisible" :available-markets="props.availableMarkets"
+            :live-price="props.livePrice" :live-change-percent="props.liveChangePercent"
             @toggle-details="toggleDetails" />
-        <CardAssetDetail v-if="isDetailsVisible" :asset="asset" :orders="orders" :trades="transformedTrades" />
+        <CardAssetDetail v-if="isDetailsVisible" :asset="asset" :orders="filteredOrders" :trades="transformedTrades" />
     </div>
 </template>
 
 <style scoped>
+/* Your existing styles */
 .card {
     background-color: #ddd;
     color: #666;
