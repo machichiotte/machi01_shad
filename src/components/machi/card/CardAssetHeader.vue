@@ -4,17 +4,19 @@ import { computed, ref, PropType, onMounted } from 'vue'; // Import PropType, on
 import { Asset, Order, Trade } from '../../../types/responseData';
 import { formatPrice } from '../../../utils/formatter'; // Assuming this utility exists
 import { QUOTE_CURRENCIES } from '../../../constants/assets';
+import { useLiveDataStore } from '../../../store/liveDataStore'; // <-- IMPORT THE STORE
 
-// 2: Define component props - Add new ones
+// 1: Define component props - Remove livePrice and liveChangePercent
 const props = defineProps({
   asset: { type: Object as PropType<Asset>, required: true },
-  orders: { type: Array as PropType<Order[]>, required: true }, // Use filtered from parent
-  trades: { type: Array as PropType<Trade[]>, required: true }, // Use filtered from parent
-  isDetailsVisible: { type: Boolean, required: true },         // <-- Prop controls visibility
-  availableMarkets: { type: Array as PropType<string[]>, default: () => [] }, // <-- Live markets
-  livePrice: { type: Number, default: undefined },                            // <-- Live price
-  liveChangePercent: { type: Number, default: undefined },                    // <-- Live change %
+  orders: { type: Array as PropType<Order[]>, required: true },
+  trades: { type: Array as PropType<Trade[]>, required: true },
+  isDetailsVisible: { type: Boolean, required: true },
+  availableMarkets: { type: Array as PropType<string[]>, default: () => [] }
 });
+
+// 2: Instantiate the store
+const liveDataStore = useLiveDataStore();
 
 // 3: Alias for easier access to asset prop
 const asset = props.asset;
@@ -35,38 +37,62 @@ const inOrderAmount = computed(() => {
 
 // 7: Use live data prop for price, fallback to asset data if not available
 const displayPrice = computed(() => {
-    // Prioritize live price for the *selected* market? Or always show default?
-    // For now, using the passed livePrice (likely for BASE/USDT)
-    return props.livePrice !== undefined
-        ? formatPrice(props.livePrice)
-        // Fallback to potentially less up-to-date price from asset object
-        : formatPrice(asset.liveData?.currentPrice);
+  if (!selectedMarket.value) return 'N/A'; // Handle no selection
+  const price = liveDataStore.getCurrentPrice(selectedMarket.value);
+  // Handle cases where store might not have the price (yet)
+  return price !== undefined ? formatPrice(price) : 'Loading...';
 });
 
-// 8: Use live data prop for change percentage
+// 8: Calculate live change percentage based on selectedMarket and liveDataStore
+const liveChangePercentValue = computed(() => { // Raw value for logic
+  if (!selectedMarket.value) return undefined;
+  return liveDataStore.getChangePercent(selectedMarket.value);
+});
+
 const formattedLiveChangePercent = computed(() => {
-  // Similarly, prioritize live change percentage
-  return props.liveChangePercent !== undefined
-    ? props.liveChangePercent.toFixed(2)
-    // Fallback to CMC data from asset object
-    : asset.cmc?.cryptoPercentChange24h !== undefined
-        ? asset.cmc.cryptoPercentChange24h.toFixed(2)
-        : "0.00";
+  const change = liveChangePercentValue.value;
+  return change !== undefined ? change.toFixed(2) : "N/A";
 });
 
 // Determine CSS class based on live change percentage
 const liveChangeClass = computed(() => {
-    const change = props.liveChangePercent ?? asset.cmc?.cryptoPercentChange24h; // Prioritize live prop
-    if (change === undefined) return 'neutral';
-    return change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral';
+  const change = liveChangePercentValue.value; // Use the reactive value
+  if (change === undefined) return 'neutral'; // Default if no data
+  return change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral';
 });
-
 
 // 9: Profit percentage (from asset prop, assumed calculated upstream)
 const formattedProfit = computed(() => {
   return asset.profit !== undefined
     ? asset.profit.toFixed(2)
     : "0.00";
+});
+
+const currentPossessionValue = computed(() => {
+  // 1. Récupérer le prix BRUT actuel depuis le store
+  const currentRawPrice = selectedMarket.value
+    ? liveDataStore.getCurrentPrice(selectedMarket.value)
+    : undefined; // Prix brut (nombre ou undefined)
+
+  // 2. Récupérer la quantité possédée BRUTE
+  const currentAmount = asset.liveData?.currentPossession; // Quantité brute (nombre ou undefined/null)
+
+  if (asset.base === 'ETH') {
+    // Si l'actif est USDT, on utilise le montant total
+    console.log('currentRawPrice:', currentRawPrice);
+  console.log('currentAmount:', currentAmount);
+  }
+  
+  // 3. Vérifier que les deux valeurs sont des nombres valides
+  if (typeof currentRawPrice === 'number' && typeof currentAmount === 'number' && !isNaN(currentRawPrice) && !isNaN(currentAmount)) {
+    // 4. Calculer la valeur totale
+    const totalValue = currentRawPrice * currentAmount;
+    // 5. Formater la valeur totale pour l'affichage
+    return formatPrice(totalValue);
+  } else {
+    // 6. Retourner une valeur par défaut si le prix ou la quantité n'est pas disponible
+    return 'N/A'; // Ou formatPrice(0) ou 'Calcul...' selon votre préférence
+  }
 });
 
 // --- Refs ---
@@ -122,8 +148,8 @@ onMounted(() => {
         </div>
         <div class="market-selector">
           <select v-model="selectedMarket">
-             <option :value="null" disabled v-if="!selectedMarket && availableMarkets.length === 0">Loading...</option>
-             <option :value="null" disabled v-else-if="!selectedMarket">Select Market</option>
+            <option :value="null" disabled v-if="!selectedMarket && availableMarkets.length === 0">Loading...</option>
+            <option :value="null" disabled v-else-if="!selectedMarket">Select Market</option>
             <option v-for="market in availableMarkets" :key="market" :value="market">
               {{ formatMarketSymbol(market) }}
             </option>
@@ -143,35 +169,33 @@ onMounted(() => {
     </div>
 
     <div class="right-section">
-       <div class="current-possession">
-          {{ formatPrice(asset.liveData?.currentPossession) }}$ </div>
-       <div class="profit-difference">
-          <span :class="{
-              'positive': asset.profit > 0,
-              'negative': asset.profit < 0,
-              'neutral': asset.profit === 0
-          }">
-              {{ formattedProfit }}%
-          </span>
-          <span> (entry price: {{ formatPrice(asset.orders?.trade?.averageEntryPrice) }}$)</span>
+      <div class="current-possession">
+        {{ currentPossessionValue }}$ </div>
+      <div class="profit-difference">
+        <span :class="{
+          'positive': asset.profit > 0,
+          'negative': asset.profit < 0,
+          'neutral': asset.profit === 0
+        }">
+          {{ formattedProfit }}%
+        </span>
+        <span> (entry price: {{ formatPrice(asset.orders?.trade?.averageEntryPrice) }}$)</span>
       </div>
-       <div class="total-buy">
-          Total Buy: {{ formattedTotalBuy }}$
-       </div>
-       <div class="total-sell">
-          Total Sell: {{ formattedTotalSell }}$
-       </div>
-       <div class="total-amount">
-          Total Amount: {{ asset.orders?.trade?.totalAmountBuy }} {{ asset.base }}
-       </div>
-       <div class="in-order">
-          In Order: {{ inOrderAmount.toFixed(8) }} {{ asset.base }} </div>
-       <div class="details-button">
-          <Button
-             :icon="isDetailsVisible ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
-             class="expand-button"
-             @click="handleToggleDetailsClick" />
-       </div>
+      <div class="total-buy">
+        Total Buy: {{ formattedTotalBuy }}$
+      </div>
+      <div class="total-sell">
+        Total Sell: {{ formattedTotalSell }}$
+      </div>
+      <div class="total-amount">
+        Total Amount: {{ asset.orders?.trade?.totalAmountBuy }} {{ asset.base }}
+      </div>
+      <div class="in-order">
+        In Order: {{ inOrderAmount.toFixed(8) }} {{ asset.base }} </div>
+      <div class="details-button">
+        <Button :icon="isDetailsVisible ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" class="expand-button"
+          @click="handleToggleDetailsClick" />
+      </div>
     </div>
   </div>
 </template>
@@ -324,32 +348,49 @@ onMounted(() => {
 .market-selector select {
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
-  border: 1px solid #aaa; /* Slightly darker border */
+  border: 1px solid #aaa;
+  /* Slightly darker border */
   background-color: white;
-  min-width: 100px; /* Ensure minimum width */
+  min-width: 100px;
+  /* Ensure minimum width */
   cursor: pointer;
   color: #333;
 }
 
 /* Ensure right-section items have consistent bottom margin */
-.right-section > div:not(:last-child) {
-    margin-bottom: 0.3rem; /* Adjust spacing */
+.right-section>div:not(:last-child) {
+  margin-bottom: 0.3rem;
+  /* Adjust spacing */
 }
-.right-section > div:last-child {
-    margin-bottom: 0; /* No margin for the button container */
+
+.right-section>div:last-child {
+  margin-bottom: 0;
+  /* No margin for the button container */
 }
 
 /* Ensure button aligns well */
 .details-button {
-    line-height: 1; /* Adjust button alignment if needed */
-    margin-top: auto; /* Push button towards the bottom if needed */
+  line-height: 1;
+  /* Adjust button alignment if needed */
+  margin-top: auto;
+  /* Push button towards the bottom if needed */
 }
+
 .expand-button {
-  padding: 0.2rem; /* Add some padding if needed */
+  padding: 0.2rem;
+  /* Add some padding if needed */
 }
 
 /* Add optional styling for positive/negative/neutral in profit difference */
-.profit-difference .positive { color: #4caf50; }
-.profit-difference .negative { color: #ff4c4c; }
-.profit-difference .neutral { color: #636963; }
+.profit-difference .positive {
+  color: #4caf50;
+}
+
+.profit-difference .negative {
+  color: #ff4c4c;
+}
+
+.profit-difference .neutral {
+  color: #636963;
+}
 </style>

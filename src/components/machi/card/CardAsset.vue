@@ -1,3 +1,4 @@
+<!-- src/components/machi/card/CardAsset.vue -->
 <script setup lang="ts">
 import { computed, ref, PropType } from 'vue'; // Import PropType
 import { Asset, Order, Trade, TradeTransformed } from '../../../types/responseData';
@@ -11,8 +12,6 @@ const props = defineProps({
     trades: { type: Array as PropType<Trade[]>, required: true }, // Expecting full list
     orders: { type: Array as PropType<Order[]>, required: true }, // Expecting full list
     availableMarkets: { type: Array as PropType<string[]>, default: () => [] }, // <-- New prop
-    livePrice: { type: Number, default: undefined },                            // <-- New prop
-    liveChangePercent: { type: Number, default: undefined },                    // <-- New prop
 });
 
 // Données locales - Keep your filtering
@@ -74,7 +73,6 @@ const transformedTrades = computed<TradeTransformed[]>(() => {
     <div class="card">
         <CardAssetHeader :asset="asset" :orders="filteredOrders" :trades="filteredTrades"
             :is-details-visible="isDetailsVisible" :available-markets="props.availableMarkets"
-            :live-price="props.livePrice" :live-change-percent="props.liveChangePercent"
             @toggle-details="toggleDetails" />
         <CardAssetDetail v-if="isDetailsVisible" :asset="asset" :orders="filteredOrders" :trades="transformedTrades" />
     </div>

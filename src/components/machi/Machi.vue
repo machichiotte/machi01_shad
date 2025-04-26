@@ -185,9 +185,7 @@ function toggleBottomExpandCollapse() {
           :asset="item"
           :trades="tradesItems"
           :orders="openOrdersItems"
-          :available-markets="liveDataStore.getMarketsForBase(item.base)" 
-          :live-price="liveDataStore.getCurrentPrice(item.base + 'USDT')"
-          :live-change-percent="liveDataStore.getChangePercent(item.base + 'USDT')"
+          :available-markets="liveDataStore.getMarketsForBase(item.base)"
           @update:selectedBases="updateSelectedBases"
         />
         <div v-if="loading">Loading more items...</div>
