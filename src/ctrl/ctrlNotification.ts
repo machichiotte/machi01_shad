@@ -1,8 +1,8 @@
 // src/ctrl/ctrlNotification.ts
 import webPush from 'web-push'
 import { Request, Response } from 'express'
-import { handleControllerError } from '@src/utils/errorUtil'
-import path from 'path'; import { logger } from '@src/utils/loggerUtil'
+import { handleControllerError } from '@utils/errorUtil'
+import path from 'path'; import { logger } from '@utils/loggerUtil'
 
 // Clés VAPID (remplacez par les vôtres)
 // const vapidKeys = {

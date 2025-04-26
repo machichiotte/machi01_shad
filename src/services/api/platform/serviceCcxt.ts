@@ -1,12 +1,15 @@
 // src/services/api/platform/serviceCcxt.ts
 import * as CCTX from 'ccxt'; // Use CCTX alias to avoid conflict with local 'ccxt' variable name
+import path from 'path';
+import { ObjectId } from 'mongodb';
+
 import { config } from '@config/index';
 import { PLATFORM, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@typ/platform';
+import { RepoConfigApi } from '@repo/repoConfigApi';
+
 import { handleServiceError } from '@utils/errorUtil';
 import { checkApiKeys } from '@utils/platformUtil';
-import { ObjectId } from 'mongodb';
-import { RepoConfigApi } from '@src/repo/repoConfigApi';
-import path from 'path'; import { logger } from '@utils/loggerUtil';
+import { logger } from '@utils/loggerUtil';
 
 export class ServiceCcxt {
 

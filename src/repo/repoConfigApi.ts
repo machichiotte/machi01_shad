@@ -8,7 +8,7 @@ import { PLATFORM } from '@typ/platform'
 import { EncryptionService } from '@utils/encryption'
 import { randomBytes } from 'crypto'
 
-import path from 'path'; import { logger } from '@src/utils/loggerUtil'
+import path from 'path'; import { logger } from '@utils/loggerUtil'
 
 const COLLECTION_NAME = config.databaseConfig.collection.apiConfig
 

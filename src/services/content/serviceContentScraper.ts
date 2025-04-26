@@ -1,7 +1,7 @@
 // src/services/content/serviceContentScraper.ts
 import * as cheerio from 'cheerio';
 import { handleServiceError } from '@utils/errorUtil';
-import path from 'path'; import { logger } from '@src/utils/loggerUtil';
+import path from 'path'; import { logger } from '@utils/loggerUtil';
 
 const SERVICE_NAME = 'ServiceContentScraper';
 const MAX_CONTENT_LENGTH = 15000;

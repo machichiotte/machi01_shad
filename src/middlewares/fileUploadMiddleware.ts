@@ -1,5 +1,5 @@
 // src/middlewares/fileUploadMiddleware.ts
-import { handleControllerError } from '@src/utils/errorUtil';
+import { handleControllerError } from '@utils/errorUtil';
 import { Request, Response, NextFunction } from 'express';
 
 // Définir une interface pour étendre la requête avec le fichier uploadé

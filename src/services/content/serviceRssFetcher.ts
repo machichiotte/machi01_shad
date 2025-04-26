@@ -3,7 +3,7 @@ import Parser from 'rss-parser';
 import { handleServiceError } from '@utils/errorUtil';
 import { RssArticle } from '@typ/rss';
 import path from 'path';
-//import { logger } from '@src/utils/loggerUtil';
+//import { logger } from '@utils/loggerUtil';
 
 const parser = new Parser({
     timeout: 10000

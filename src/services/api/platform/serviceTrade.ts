@@ -1,17 +1,19 @@
 // src/services/api/platform/serviceTrade.ts
-import { RepoTrade } from '@repo/repoTrade'
-import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ/trade'
-import { PLATFORM, PlatformTrade } from '@typ/platform'
-import { ServiceTimestamp } from '@services/api/database/serviceTimestamp'
-import { MappingPlatform } from '@services/api/platform/mappingPlatform'
-import { ServiceCcxt } from '@services/api/platform/serviceCcxt'
-import { ServiceMarket } from '@services/api/platform/serviceMarket'
-import { getMarketSymbolForPlatform } from '@utils/platformUtil'
-import { handleServiceError } from '@utils/errorUtil'
-import { retry } from '@utils/retryUtil'
-import { QUOTE_CURRENCIES } from '@constants/coins'
+import path from 'path';
+
 import { config } from '@config/index';
-import path from 'path'; import { logger } from '@src/utils/loggerUtil'
+import { QUOTE_CURRENCIES } from '@constants/coins';
+import { RepoTrade } from '@repo/repoTrade';
+import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ/trade';
+import { PLATFORM, PlatformTrade } from '@typ/platform';
+import { ServiceTimestamp } from '@services/api/database/serviceTimestamp';
+import { MappingPlatform } from '@services/api/platform/mappingPlatform';
+import { ServiceCcxt } from '@services/api/platform/serviceCcxt';
+import { ServiceMarket } from '@services/api/platform/serviceMarket';
+import { getMarketSymbolForPlatform } from '@utils/platformUtil';
+import { handleServiceError } from '@utils/errorUtil';
+import { retry } from '@utils/retryUtil';
+import { logger } from '@utils/loggerUtil';
 
 const COLLECTION_CATEGORY = config.databaseConfig.category.trade
 

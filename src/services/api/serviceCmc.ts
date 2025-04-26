@@ -1,9 +1,9 @@
 // src/services/api/serviceCmc.ts
+import { config } from '@config/index'
 import { RepoCmc } from '@repo/repoCmc'
+import { RepoConfigApi } from '@repo/repoConfigApi'
 import { handleServiceError } from '@utils/errorUtil'
 import { MappedCmc, FetchResponse } from '@typ/cmc'
-import { config } from '@config/index'
-import { RepoConfigApi } from '@src/repo/repoConfigApi'
 
 export class ServiceCmc {
   private static readonly limit = 5000

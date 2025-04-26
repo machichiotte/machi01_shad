@@ -3,7 +3,7 @@ import { ServiceTimestamp } from '@services/api/database/serviceTimestamp';
 import { ServiceCmc } from '@services/api/serviceCmc';
 import { hasTimeElapsed } from '@utils/timeUtil';
 import { config } from '@config/index';
-import path from 'path'; import { logger } from '@src/utils/loggerUtil';
+import path from 'path'; import { logger } from '@utils/loggerUtil';
 
 export class UpdateManagerGeneral {
     private static readonly UPDATE_INTERVALS = {

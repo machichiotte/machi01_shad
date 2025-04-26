@@ -4,7 +4,7 @@ import { Asset, HighestPrice, UpdatedOrder } from '@typ/trailingStop';
 import { RepoTrailingStop } from '@repo/repoTrailingStop';
 import { handleServiceError } from '@utils/errorUtil';
 import { PLATFORM } from '@typ/platform';
-import path from 'path'; import { logger } from '@src/utils/loggerUtil';
+import path from 'path'; import { logger } from '@utils/loggerUtil';
 
 export class ServiceTrailingStop {
     private static readonly PERCENTAGE_TO_LOSE = 0.01;

@@ -1,10 +1,13 @@
 // src/services/api/platform/serviceOrderMarket.ts
-import { getMarketSymbolForPlatform } from '@utils/platformUtil'
-import { handleServiceError } from '@utils/errorUtil'
-import { PLATFORM } from '@typ/platform'
-import { ServiceCcxt } from '@services/api/platform/serviceCcxt'
-import { ServiceOrderBalance } from '@services/api/platform/serviceOrderBalance'
-import path from 'path'; import { logger } from '@src/utils/loggerUtil'
+import path from 'path';
+
+import { getMarketSymbolForPlatform } from '@utils/platformUtil';
+import { handleServiceError } from '@utils/errorUtil';
+import { logger } from '@utils/loggerUtil';
+
+import { PLATFORM } from '@typ/platform';
+import { ServiceCcxt } from '@services/api/platform/serviceCcxt';
+import { ServiceOrderBalance } from '@services/api/platform/serviceOrderBalance';
 
 export class ServiceOrderMarket {
   static async createOrUpdateStopLossOrder(

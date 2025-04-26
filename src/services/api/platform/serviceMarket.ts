@@ -1,12 +1,16 @@
 // src/services/api/platform/serviceMarket.ts
+import path from 'path';
+
 import { ServiceCcxt } from '@services/api/platform/serviceCcxt';
 import { MappingPlatform } from '@services/api/platform/mappingPlatform';
 import { RepoMarket } from '@repo/repoMarket';
+
 import { MappedMarket } from '@typ/market';
 import { PLATFORM } from '@typ/platform';
+
 import { handleServiceError } from '@utils/errorUtil';
 import { executeCronTask } from '@utils/cronUtil';
-import path from 'path'; import { logger } from '@src/utils/loggerUtil';
+import { logger } from '@utils/loggerUtil';
 
 export class ServiceMarket {
   /**

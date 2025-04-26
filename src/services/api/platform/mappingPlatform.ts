@@ -1,13 +1,16 @@
 // src/services/api/platform/mappingPlatform.ts
-import { PLATFORM, PlatformBalance, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@typ/platform'
-import { MappedTrade } from '@typ/trade'
-import { MappedTicker } from '@typ/ticker'
-import { MappedBalance } from '@typ/balance'
-import { MappedOrder } from '@typ/order'
-import { MappedMarket } from '@typ/market'
-import { QUOTE_CURRENCIES } from '@constants/coins'
-import { getEqUSD } from '@utils/mappingUtil'
-import path from 'path'; import { logger } from '@src/utils/loggerUtil'
+import path from 'path';
+
+import { PLATFORM, PlatformBalance, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTickers, PlatformTrade } from '@typ/platform';
+import { MappedTrade } from '@typ/trade';
+import { MappedTicker } from '@typ/ticker';
+import { MappedBalance } from '@typ/balance';
+import { MappedOrder } from '@typ/order';
+import { MappedMarket } from '@typ/market';
+
+import { QUOTE_CURRENCIES } from '@constants/coins';
+import { getEqUSD } from '@utils/mappingUtil';
+import { logger } from '@utils/loggerUtil';
 
 export class MappingPlatform {
   static mapBalance(platform: PLATFORM, balanceData: PlatformBalances): Omit<MappedBalance, '_id'>[] {

@@ -6,13 +6,10 @@ import { handleServiceError } from '@utils/errorUtil'; // Added formatErrorForLo
 import { ServiceTimestamp } from '@services/api/database/serviceTimestamp';
 import { mongodbOperations } from '@services/api/database/serviceMongodbOperations';
 import { ServiceCache } from '@services/serviceCache';
-// Assuming InsertData is defined elsewhere, e.g., export type InsertData = InsertOneResult | InsertManyResult;
-import { InsertData } from '@typ/trade'; // Keep if correct, otherwise adjust import
+import { InsertData } from '@typ/trade';
 import { PLATFORM } from '@typ/platform';
-// Assuming MappedData is a base type/interface for your mapped documents
 import { MappedData } from '@typ/database';
-// Assuming CacheItem is defined, potentially similar to MappedData or a specific cache structure
-import { CacheItem } from '@typ/mongodb'; // Keep if correct, otherwise adjust import
+import { CacheItem } from '@typ/mongodb'; 
 import { config } from '@config/index';
 import path from 'path'; import { logger } from '@utils/loggerUtil';
 
@@ -82,11 +79,11 @@ export class ServiceDatabase {
   static async findSingleDocument(collectionName: string, query: Filter<Document>): Promise<Document | null> {
     const operation = 'findSingleDocument';
     //const context = { module: path.parse(__filename).name, operation, collectionName, query }; // Log the query
-    ////logger.debug(`Début ${operation}`, context);
+    //logger.debug(`Début ${operation}`, context);
 
     try {
       const doc = await retry(mongodbOperations.findOne, [collectionName, query], operation);
-      ////logger.debug(`Fin ${operation} - Document ${doc ? 'trouvé' : 'non trouvé'}`, { ...context, found: !!doc });
+      //logger.debug(`Fin ${operation} - Document ${doc ? 'trouvé' : 'non trouvé'}`, { ...context, found: !!doc });
       return doc;
     } catch (error) {
       handleServiceError(error, `${path.parse(__filename).name}:${operation}`, `Erreur lors de la récupération d'un document dans ${collectionName}`);

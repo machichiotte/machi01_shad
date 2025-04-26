@@ -2,13 +2,13 @@
 import { RepoTicker } from '@repo/repoTicker'
 import { ServiceCcxt } from '@services/api/platform/serviceCcxt'
 import { MappingPlatform } from '@services/api/platform/mappingPlatform'
+import { ServiceAlarm } from '@services/serviceAlarm'
 import { handleServiceError } from '@utils/errorUtil'
 import { executeCronTask } from '@utils/cronUtil'
 import { retry } from '@utils/retryUtil'
 import { MappedTicker } from '@typ/ticker'
 import { PLATFORM } from '@typ/platform'
 import { PLATFORMS } from '@constants/platform'
-import { ServiceAlarm } from '@services/serviceAlarm'
 
 export class ServiceTicker {
   static async fetchDatabaseTickers(): Promise<MappedTicker[]> {

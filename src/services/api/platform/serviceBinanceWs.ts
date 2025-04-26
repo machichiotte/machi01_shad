@@ -3,7 +3,7 @@ import WebSocket from 'ws';
 import { logger } from '@utils/loggerUtil';
 import { broadcast } from '@src/server';
 import { formatErrorForLog } from '@utils/errorUtil';
-import { TickerData } from '@src/types/binance'; 
+import { TickerData } from '@typ/binance'; 
 
 export class ServiceBinanceWs {
   private static ws: WebSocket | null = null;

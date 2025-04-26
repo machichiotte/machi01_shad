@@ -3,7 +3,7 @@ import nodemailer, { Transporter, SentMessageInfo } from 'nodemailer'
 import { handleServiceError } from '@utils/errorUtil'
 import { config } from '@config/index';
 import { EmailOptions } from '@typ/email';
-import path from 'path'; import { logger } from '@src/utils/loggerUtil';
+import path from 'path'; import { logger } from '@utils/loggerUtil';
 
 const transporter: Transporter = nodemailer.createTransport(config.serverConfig.smtp)
 export class ServiceEmail {

@@ -1,20 +1,16 @@
 // src/services/cryptoAnalytics/defaultAssets.ts
-import { calculateRecups, calculateAmountsAndPrices } from './invest'
-import { getCmcValues } from './cmc'
-import {
-  getBalanceBySymbol,
-  getProfit,
-  getCurrentPossession,
-  getTakeProfitStatus
-} from './tradingUtils'
-import { getTotalAmountAndBuy, getTotalSell } from './tradeCalculations'
-import { Asset } from '@typ/cryptoAnalytics'
-import { MappedTrade } from '@typ/trade'
-import { MappedTicker } from '@typ/ticker'
-import { MappedBalance } from '@typ/balance'
-import { MappedOrder } from '@typ/order'
-import { MappedCmc } from '@typ/cmc'
-import { MappedStrat } from '@typ/strat'
+import path from 'path';
+import { logger } from '@utils/loggerUtil';
+
+import { Asset } from '@typ/cryptoAnalytics';
+import { MappedTrade } from '@typ/trade';
+import { MappedTicker } from '@typ/ticker';
+import { MappedBalance } from '@typ/balance';
+import { MappedOrder } from '@typ/order';
+import { MappedCmc } from '@typ/cmc';
+import { MappedStrat } from '@typ/strat';
+import { PLATFORM } from '@typ/platform';
+
 import {
   DEPIN,
   GAMING,
@@ -37,10 +33,19 @@ import {
   SMART_CONTRACTS,
   CENTRALIZED_EXCHANGE,
   DECENTRALIZED_EXCHANGE
-} from '@constants/coins'
-import { DEFAULT_ASSET_FOR_METRICS } from '@constants/metrics'
-import { PLATFORM } from '@typ/platform'
-import path from 'path'; import { logger } from '@src/utils/loggerUtil'
+} from '@constants/coins';
+
+import { DEFAULT_ASSET_FOR_METRICS } from '@constants/metrics';
+
+import { calculateRecups, calculateAmountsAndPrices } from './invest';
+import { getCmcValues } from './cmc';
+import {
+  getBalanceBySymbol,
+  getProfit,
+  getCurrentPossession,
+  getTakeProfitStatus
+} from './tradingUtils';
+import { getTotalAmountAndBuy, getTotalSell } from './tradeCalculations';
 
 export function calculateAssetMetrics(
   base: string,

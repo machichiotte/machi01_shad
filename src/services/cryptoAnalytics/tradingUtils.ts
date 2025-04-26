@@ -1,7 +1,7 @@
 // src/services/cryptoAnalytics/tradingUtils.ts
 import { TP_THRESHOLD } from '@constants/metrics'
 import { MappedBalance } from '@typ/balance'
-import path from 'path'; import { logger } from '@src/utils/loggerUtil';
+import path from 'path'; import { logger } from '@utils/loggerUtil';
 
 /**
  * Calcule la possession actuelle en fonction du prix actuel et du solde.

@@ -1,14 +1,18 @@
 // src/services/api/platform/serviceSwap.ts
+import path from 'path';
+
+import { config } from '@config/index';
 import { SwapMigration } from '@typ/database';
+import { PLATFORM } from '@typ/platform';
 import { MappedStrat } from '@typ/strat';
 import { MappedTrade } from '@typ/trade';
+
 import { ServiceDatabase } from '@services/api/database/serviceDatabase';
 import { ServiceStrategy } from '@services/api/database/serviceStrategy';
 import { ServiceTrade } from '@services/api/platform/serviceTrade';
+
 import { handleServiceError } from '@utils/errorUtil';
-import { PLATFORM } from '@typ/platform';
-import path from 'path'; import { logger } from '@utils/loggerUtil';
-import { config } from '@config/index';
+import { logger } from '@utils/loggerUtil';
 
 const COLLECTION_NAME = config.databaseConfig.collection.swap;
 

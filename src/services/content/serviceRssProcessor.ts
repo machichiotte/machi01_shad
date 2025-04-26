@@ -1,14 +1,27 @@
 // src/services/content/serviceRssProcessor.ts
+import path from 'path';
+
+import { config } from '@config/index';
+import { DEFAULT_SERVER_CONFIG } from '@config/default';
+
 import { ServiceRssFetcher } from '@services/content/serviceRssFetcher';
 import { ServiceContentScraper } from '@services/content/serviceContentScraper';
 import { ServiceGemini } from '@services/api/gemini/serviceGemini';
+
 import { RepoRss } from '@repo/repoRss';
+
 import { handleServiceError } from '@utils/errorUtil';
-import { config } from '@config/index';
-import { RssArticle, RssFeedConfig, ServerRssConfig, ProcessedArticleData, FinancialAnalysis, AnalysisWithSummary } from '@typ/rss';
+import { logger } from '@utils/loggerUtil';
 import { parseDateRss } from '@utils/timeUtil';
-import { DEFAULT_SERVER_CONFIG } from '@config/default';
-import path from 'path'; import { logger } from '@utils/loggerUtil';
+
+import { 
+    RssArticle, 
+    RssFeedConfig, 
+    ServerRssConfig, 
+    ProcessedArticleData, 
+    FinancialAnalysis, 
+    AnalysisWithSummary 
+} from '@typ/rss';
 
 const sleep = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
 

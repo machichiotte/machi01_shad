@@ -1,6 +1,6 @@
 // src/ctrl/ctrlConfigApi.ts
 import { Request, Response } from 'express'
-import { RepoConfigApi } from '@src/repo/repoConfigApi'
+import { RepoConfigApi } from '@repo/repoConfigApi'
 import { Api } from '@config/types'
 import { handleControllerError } from '@utils/errorUtil'
 
