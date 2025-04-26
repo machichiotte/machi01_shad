@@ -120,7 +120,7 @@ const activeBottomTab = ref<'trades' | 'orders'>('trades')
 const isTopExpanded = ref(false)
 const activeTopTab = ref<'platforms' | 'fetch' | 'action'>('platforms')
 
-const itemsPerPage = 1000
+const itemsPerPage = 10
 const currentPage = ref(1)
 const loading = ref(false)
 const paginatedMachiItems = computed(() => filteredMachiItems.value.slice(0, currentPage.value * itemsPerPage))

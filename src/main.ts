@@ -51,6 +51,8 @@ import Badge from 'primevue/badge';
 
 import './style.css'
 
+import { websocketService } from './services/websocketService';
+
 const app = createApp(App)
 app.component('LogoMachi', LogoMachi)
 
@@ -95,5 +97,8 @@ app.component('Message', Message);
 app.component('Badge', Badge);
 
 app.directive('tooltip', Tooltip)
+
+// Start WebSocket service on app startup
+websocketService.connect();
 
 app.mount('#app')
