@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold, type GenerativeModel } from "@google/generative-ai";
 import { config } from '@config/index';
-import { RepoConfigApi } from '@repo/config/repoConfigApi';
+import { RepoConfigApi } from '@src/repo/repoConfigApi';
 import { handleServiceError } from '@utils/errorUtil';
 import { DEFAULT_APICONFIG } from "@config/default";
 import path from 'path';

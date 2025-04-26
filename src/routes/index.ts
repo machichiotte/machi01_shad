@@ -1,39 +1,39 @@
 // src/routes/index.ts
 import { Router } from 'express';
 
-import routeConverter from './routeConverter';
+import routeAlarm from './routeAlarm';
 import routeAuth from './routeAuth';
 import routeBalance from './routeBalance';
 import routeCmc from './routeCmc';
-import routeStrategy from './routeStrategy';
-import routeOrder from './routeOrder';
+import routeConfigApi from './routeConfigApi';
+import routeConverter from './routeConverter';
+import routeMachi from './routeMachi';
 import routeMarket from './routeMarket';
-import routeTrade from './routeTrade';
+import routeOrder from './routeOrder';
+import routeRss from './routeRss';
+import routeStrategy from './routeStrategy';
 import routeTicker from './routeTicker';
 import routeTimestamp from './routeTimestamp';
-import routeMachi from './routeMachi';
-import routeAlarm from './routeAlarm';
-import routeApi from './config/routeApi';
-import routeRss from './routeRss';
+import routeTrade from './routeTrade';
 import routeWs from './routeWs';
 
 const router = Router();
 
 // Enregistrement des routes
-router.use('/converter', routeConverter);
+router.use('/alarm', routeAlarm);
 router.use('/auth', routeAuth);
 router.use('/balance', routeBalance);
 router.use('/cmc', routeCmc);
-router.use('/strategy', routeStrategy);
-router.use('/order', routeOrder);
+router.use('/config_api', routeConfigApi);
+router.use('/converter', routeConverter);
+router.use('/machi', routeMachi);
 router.use('/market', routeMarket);
-router.use('/trade', routeTrade);
+router.use('/order', routeOrder);
+router.use('/rss', routeRss);
+router.use('/strategy', routeStrategy);
 router.use('/ticker', routeTicker);
 router.use('/timestamp', routeTimestamp);
-router.use('/machi', routeMachi);
-router.use('/config/api', routeApi);
-router.use('/alarm', routeAlarm);
-router.use('/rss', routeRss);
+router.use('/trade', routeTrade);
 router.use('/ws', routeWs);
 
 export default router;

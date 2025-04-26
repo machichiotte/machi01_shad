@@ -5,7 +5,7 @@ import { PLATFORM, PlatformBalances, PlatformMarket, PlatformOrder, PlatformTick
 import { handleServiceError } from '@utils/errorUtil';
 import { checkApiKeys } from '@utils/platformUtil';
 import { ObjectId } from 'mongodb';
-import { RepoConfigApi } from '@repo/config/repoConfigApi';
+import { RepoConfigApi } from '@src/repo/repoConfigApi';
 import path from 'path'; import { logger } from '@utils/loggerUtil';
 
 export class ServiceCcxt {

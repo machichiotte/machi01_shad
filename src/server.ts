@@ -107,14 +107,14 @@ function startServer(): Promise<{ httpServer: Server; wss: WebSocketServer }> {
   const operation = 'startServer';
   return new Promise((resolve, reject) => {
     const httpServer = app.listen(PORT, () => {
-      // logger.info(`HTTP Server listening on port ${PORT}`, { module: path.parse(__filename).name, operation, port: PORT });
+      // logger.debug(`HTTP Server listening on port ${PORT}`, { module: path.parse(__filename).name, operation, port: PORT });
 
       wss = new WebSocketServer({ server: httpServer });
-      // logger.info(`WebSocket Server attached on port ${PORT}`, { module: path.parse(__filename).name, operation, port: PORT });
+      // logger.debug(`WebSocket Server attached on port ${PORT}`, { module: path.parse(__filename).name, operation, port: PORT });
 
       wss.on('connection', (ws: WebSocket, req) => {
         const ip = req.socket.remoteAddress;
-        // logger.info(`[WebSocket] Client connected: ${ip}`);
+        // logger.debug(`[WebSocket] Client connected: ${ip}`);
         clients.add(ws);
 
         /* ws.on('message', (message: Buffer) => {

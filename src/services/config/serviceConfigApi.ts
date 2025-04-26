@@ -1,5 +1,5 @@
 // src/services/config/serviceConfigApi.ts
-import { RepoConfigApi } from '@repo/config/repoConfigApi';
+import { RepoConfigApi } from '@src/repo/repoConfigApi';
 import { Api } from '@config/types';
 
 export class ServiceConfigApi {
