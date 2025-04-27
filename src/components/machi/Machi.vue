@@ -94,6 +94,10 @@ const filteredMachiItems = computed(() => {
   })
 })
 
+const nonStableMachiItems = computed(() =>
+  filteredMachiItems.value.filter(item => !item.tags.includes('stablecoin'))
+)
+
 const getData = async (): Promise<void> => {
   try {
     await calculStore.loadTrade()
@@ -123,8 +127,9 @@ const activeTopTab = ref<'platforms' | 'fetch' | 'action'>('platforms')
 const itemsPerPage = 10
 const currentPage = ref(1)
 const loading = ref(false)
-const paginatedMachiItems = computed(() => filteredMachiItems.value.slice(0, currentPage.value * itemsPerPage))
-const hasMoreItems = computed(() => currentPage.value * itemsPerPage < filteredMachiItems.value.length)
+
+const paginatedMachiItems = computed(() => nonStableMachiItems .value.slice(0, currentPage.value * itemsPerPage))
+const hasMoreItems = computed(() => currentPage.value * itemsPerPage < nonStableMachiItems .value.length)
 const loadMore = () => { if (!loading.value && hasMoreItems.value) { loading.value = true; currentPage.value++; loading.value = false } }
 const handleScroll = debounce(() => {
   if (loading.value) return
@@ -175,8 +180,8 @@ function toggleBottomExpandCollapse() {
     <div class="content-container">
       <Toolbar class="mb-4"><template #end></template></Toolbar>
       <div class="card-container">
-        <CardBalance :assets="filteredMachiItems" />
-        <CardStableCoin :assets="filteredMachiItems" />
+          <CardBalance :assets="filteredMachiItems" />
+          <CardStableCoin :assets="filteredMachiItems" />
       </div>
       <div class="asset-card-container">
           <CardAsset
