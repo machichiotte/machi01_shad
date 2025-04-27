@@ -7,7 +7,7 @@ import { ServiceCmc } from '@services/api/serviceCmc';
 import { ServiceStrategy } from '@services/api/database/serviceStrategy';
 import { handleServiceError, formatErrorForLog } from '@utils/errorUtil';
 import { areAllDataValid, isValidAssetMetrics } from '@utils/processorUtil';
-import { QUOTE_CURRENCIES } from '@constants/coins';
+import { QUOTE_CURRENCIES } from '@src/constants/assets';
 import { ServiceBalance } from '@services/api/platform/serviceBalance';
 import { MappedTrade } from '@typ/trade';
 import { MappedTicker } from '@typ/ticker';

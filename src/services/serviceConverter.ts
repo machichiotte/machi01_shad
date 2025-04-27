@@ -1,6 +1,6 @@
 // src/services/serviceConverter.ts
 import { MappedTrade } from "@typ/trade"
-import { STABLECOINS } from "@constants/coins"
+import { STABLECOINS } from "@src/constants/assets"
 import path from 'path'; import { logger } from "@src/utils/loggerUtil"
 
 /**

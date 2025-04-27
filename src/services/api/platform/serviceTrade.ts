@@ -2,7 +2,7 @@
 import path from 'path';
 
 import { config } from '@config/index';
-import { QUOTE_CURRENCIES } from '@constants/coins';
+import { QUOTE_CURRENCIES } from '@src/constants/assets';
 import { RepoTrade } from '@repo/repoTrade';
 import { MappedTrade, TradeServiceResult, ManualTradeAdditionResult } from '@typ/trade';
 import { PLATFORM, PlatformTrade } from '@typ/platform';

@@ -33,7 +33,7 @@ import {
   SMART_CONTRACTS,
   CENTRALIZED_EXCHANGE,
   DECENTRALIZED_EXCHANGE
-} from '@constants/coins';
+} from '@src/constants/assets';
 
 import { DEFAULT_ASSET_FOR_METRICS } from '@constants/metrics';
 

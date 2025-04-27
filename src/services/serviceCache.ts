@@ -1,6 +1,6 @@
 // src/services/serviceCache.ts
-import path from 'path';
-import { logger } from '@utils/loggerUtil';
+//import path from 'path';
+//import { logger } from '@utils/loggerUtil';
 import { config } from '@config/index'
 import { CacheExpirationTimes } from '@config/types'
 import { DEFAULT_CACHE_EXPIRATION_TIMES } from '@config/default'
@@ -14,14 +14,14 @@ export class ServiceCache {
 
   // Ajoute des données au cache avec horodatage
   static async addToCache(key: string, data: MappedData[]): Promise<void> {
-    logger.debug(`Début addToCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'addToCache' })
+    // logger.debug(`Début addToCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'addToCache' })
     ServiceCache.cache[key] = { data, timestamp: Date.now() }
-    logger.debug(`Fin addToCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'addToCache' })
+    // logger.debug(`Fin addToCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'addToCache' })
   }
 
   // Récupère les données du cache si elles ne sont pas expirées
   static async getFromCache(key: CacheKey): Promise<MappedData[] | null> {
-    logger.debug(`Début getFromCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'getFromCache' })
+    // logger.debug(`Début getFromCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'getFromCache' })
     const cacheItem = ServiceCache.cache[key]
     const expirationTime =
       (config.serverConfig?.cacheExpirationTimes as CacheExpirationTimes)[key] ||
@@ -29,31 +29,31 @@ export class ServiceCache {
       0
 
     if (cacheItem && Date.now() - cacheItem.timestamp < expirationTime) {
-      logger.debug(`Cache valide pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'getFromCache' })
+      // logger.debug(`Cache valide pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'getFromCache' })
       return cacheItem.data
     }
 
-    logger.debug(`Cache expiré ou inexistant pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'getFromCache' })
+    // logger.debug(`Cache expiré ou inexistant pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'getFromCache' })
     return null
   }
 
   // Efface le cache pour une clé spécifique
   static async clearCache(key: CacheKey): Promise<void> {
-    logger.debug(`Début clearCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'clearCache' })
+    // logger.debug(`Début clearCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'clearCache' })
     delete ServiceCache.cache[key]
-    logger.debug(`Fin clearCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'clearCache' })
+    // logger.debug(`Fin clearCache pour la clé: ${key}`, { module: path.parse(__filename).name, operation: 'clearCache' })
   }
 
   // Efface l'ensemble du cache
   static async clearAllCache(): Promise<void> {
-    logger.debug('Début clearAllCache', { module: path.parse(__filename).name, operation: 'clearAllCache' })
+    // logger.debug('Début clearAllCache', { module: path.parse(__filename).name, operation: 'clearAllCache' })
     ServiceCache.cache = {}
-    logger.debug('Fin clearAllCache', { module: path.parse(__filename).name, operation: 'clearAllCache' })
+    // logger.debug('Fin clearAllCache', { module: path.parse(__filename).name, operation: 'clearAllCache' })
   }
 
   // Renvoie la clé de cache correspondant à une collection
   static getCacheKeyForCollection(collectionName: string): keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES {
-    logger.debug(`Mapping de la collection: ${collectionName}`, { module: path.parse(__filename).name, operation: 'getCacheKeyForCollection' })
+    // logger.debug(`Mapping de la collection: ${collectionName}`, { module: path.parse(__filename).name, operation: 'getCacheKeyForCollection' })
     switch (collectionName) {
       case config.databaseConfig.collection.balance:
         return BALANCE

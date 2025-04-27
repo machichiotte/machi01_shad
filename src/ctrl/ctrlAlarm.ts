@@ -4,7 +4,7 @@ import { handleControllerError } from '@utils/errorUtil'
 import { ServiceAlarm } from '@services/serviceAlarm'
 import { AlarmInput } from '@typ/database'
 import { ServiceTicker } from '@services/api/platform/serviceTicker'
-import { STABLECOINS } from '@constants/coins'
+import { STABLECOINS } from '@src/constants/assets'
 
 /**
  * Méthode pour créer une alarme

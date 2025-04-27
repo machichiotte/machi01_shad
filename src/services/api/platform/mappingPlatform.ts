@@ -8,7 +8,7 @@ import { MappedBalance } from '@typ/balance';
 import { MappedOrder } from '@typ/order';
 import { MappedMarket } from '@typ/market';
 
-import { QUOTE_CURRENCIES } from '@constants/coins';
+import { QUOTE_CURRENCIES } from '@src/constants/assets';
 import { getEqUSD } from '@utils/mappingUtil';
 import { logger } from '@utils/loggerUtil';
 
