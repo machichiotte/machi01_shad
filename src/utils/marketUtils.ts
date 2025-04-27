@@ -74,7 +74,7 @@ export function formatMarketSymbolForDisplay(symbol: string): string {
   const quote = getQuoteCurrency(symbol) // Réutilise la fonction utilitaire
   if (quote) {
     const base = symbol.slice(0, symbol.length - quote.length)
-    return `<span class="math-inline">${base}/</span>{quote}`
+    return `${base}/${quote}`
   }
   return symbol // Fallback
 }
