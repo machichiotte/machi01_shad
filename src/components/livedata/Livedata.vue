@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useLiveDataStore } from '../../store/liveDataStore';
-import { formatPrice, formatChangePercent } from '../../utils/formatter';
+import { formatPrice, formatChangePercent, formatNumberWithDynamicPrecision } from '../../utils/formatter';
 const liveDataStore = useLiveDataStore();
 const sortedTickers = computed(() => liveDataStore.sortedTickersByVolume);
 
@@ -13,10 +13,6 @@ const getChangeClass = (percent: string | number | undefined): string => {
   return num > 0 ? 'positive-change' : num < 0 ? 'negative-change' : '';
 };
 
-const formatVolume = (vol: string | number): string => {
-  const num = Number(vol);
-  return isNaN(num) ? 'N/A' : num.toFixed(2);
-};
 </script>
 
 <template>
@@ -47,8 +43,8 @@ const formatVolume = (vol: string | number): string => {
             </td>
             <td>{{ formatPrice(ticker.highPrice) }}</td>
             <td>{{ formatPrice(ticker.lowPrice) }}</td>
-            <td>{{ formatVolume(ticker.volume) }}</td>
-            <td>{{ formatVolume(ticker.quoteVolume) }}</td>
+            <td>{{ formatNumberWithDynamicPrecision(ticker.volume, 2) }}</td>
+            <td>{{ formatNumberWithDynamicPrecision(ticker.quoteVolume, 2) }}</td>
           </tr>
         </tbody>
       </table>

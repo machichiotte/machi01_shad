@@ -3,8 +3,14 @@
 import { computed, ref, PropType, onMounted } from 'vue'; // Import PropType, onMounted
 import { Asset, Order, Trade } from '../../../types/responseData';
 import { formatPrice, formatNumberWithDynamicPrecision } from '../../../utils/formatter'; // Assuming this utility exists
-import { QUOTE_CURRENCIES } from '../../../constants/assets';
+import { QUOTE_CURRENCIES_FIAT } from '../../../constants/assets';
 import { useLiveDataStore } from '../../../store/liveDataStore'; // <-- IMPORT THE STORE
+import {
+  FIAT,
+  MAJOR_CRYPTO_PAIRS,
+  STABLECOINS_USD,
+  STABLECOINS_EUR
+} from '../../../constants/assets';
 
 // 1: Define component props - Remove livePrice and liveChangePercent
 const props = defineProps({
@@ -37,10 +43,32 @@ const inOrderAmount = computed(() => {
 
 // 7: Use live data prop for price, fallback to asset data if not available
 const displayPrice = computed(() => {
-  if (!selectedMarket.value) return 'N/A'; // Handle no selection
+  // 1. Vérifier si un marché est sélectionné
+  if (!selectedMarket.value) {
+    return '...'; // Indicateur simple si aucun marché n'est choisi
+  }
+
+  // 2. Obtenir le prix brut depuis le store
   const price = liveDataStore.getCurrentPrice(selectedMarket.value);
-  // Handle cases where store might not have the price (yet)
-  return price !== undefined ? formatPrice(price) : 'Loading...';
+
+  // 3. Vérifier si le prix est un nombre valide
+  //    (pas undefined, null, NaN)
+  if (typeof price !== 'number' || isNaN(price)) {
+    return '...'; // Indicateur simple si le prix n'est pas (encore) disponible
+  }
+
+  // 4. Obtenir la devise de cotation pour déterminer la précision
+  const quote = quoteCurrency.value; // Utilise la computed property existante
+
+  // 5. Déterminer la précision requise
+  let precision: number = 2;
+
+  if (quote && MAJOR_CRYPTO_PAIRS.includes(quote)) {
+    // Si la devise de cotation est BTC, ETH, ou BNB
+    precision = 8; // Utiliser jusqu'à 8 décimales
+  } 
+
+  return formatNumberWithDynamicPrecision(price, precision);
 });
 
 // 8: Calculate live change percentage based on selectedMarket and liveDataStore
@@ -102,24 +130,72 @@ const currentPossessionValue = computed(() => {
 const quoteCurrency = computed(() => {
   if (!selectedMarket.value) return null;
   // Trouve la devise de cotation (ex: USDT, BTC, ETH) dans la liste QUOTE_CURRENCIES
-  return QUOTE_CURRENCIES.find(q => selectedMarket.value!.endsWith(q)) || null;
+  return QUOTE_CURRENCIES_FIAT.find(q => selectedMarket.value!.endsWith(q)) || null;
 });
 
 // Propriété calculée pour obtenir le symbole à afficher (ex: $, BTC, ETH)
 const quoteCurrencySymbol = computed(() => {
-  const quote = quoteCurrency.value;
-  if (!quote) return ''; // Pas de marché sélectionné ou quote inconnue
+  const quote = quoteCurrency.value; // Get the current quote currency value
 
-  // Cas spécial pour USDT -> $
-  if (quote === 'BTC' || quote === 'ETH' ) return quote;
+  // Handle null or empty case
+  if (!quote) return '';
 
-  if (quote === 'EUR') return '€'; // Euro
-  
-  return '$';
+  // 1. Major Crypto Pairs (return ticker)
+  if (MAJOR_CRYPTO_PAIRS.includes(quote)) {
+    // Handles BTC, ETH, BNB
+    return quote;
+  }
+
+  // 2. EUR Stablecoins (return €)
+  if (STABLECOINS_EUR.includes(quote)) {
+    // Handles EURC, EURR
+    return '€*';
+  }
+
+  // 3. USD Stablecoins (return $)
+  if (STABLECOINS_USD.includes(quote)) {
+    // Handles USDC, USDR, USDT, BUSD, DAI, TUSD, PAX, GUSD, HUSD, USDN
+    return '$*';
+  }
+
+  // 4. Fiat Currencies (check for specific symbols, otherwise return code)
+  // Using a switch for cleaner handling of specific fiat codes
+  switch (quote) {
+    // Explicit Fiat Symbols
+    case 'EUR':
+      return '€';
+    case 'USD':
+      return '$';
+    case 'GBP': // British Pound
+      return '£';
+    case 'JPY': // Japanese Yen
+      return '¥';
+    case 'CAD': return 'C$'; // Canadian Dollar
+    case 'AUD': return 'A$'; // Australian Dollar
+    case 'CNY': return '¥'; // Chinese Yuan (can conflict with JPY, consider 'CN¥' or just 'CNY')
+    case 'CHF': return 'Fr'; // Swiss Franc (or just 'CHF')
+    case 'KRW': // South Korean Won
+      return '₩';
+    case 'INR': // Indian Rupee
+      return '₹';
+    case 'RUB': // Russian Ruble
+      return '₽';
+    case 'BRL': // Brazilian Real
+      return 'R$';
+    case 'TRY': // Turkish Lira
+      return '₺';
+    // Default for other Fiats and any unknown cases: return the code itself
+    default:
+      // This will catch all other fiats (PLN, ZAR, INR, etc.)
+      // and any quote currency not covered above.
+      // You could optionally check if it's in the FIAT array first:
+      // if (FIAT.includes(quote)) { return quote; }
+      // else { /* handle unknown */ return '?'; }
+      // But simply returning the quote code is often the most practical fallback.
+      return quote;
+  }
 });
 
-// --- Refs ---
-// Removed local isDetailsVisible ref
 
 // --- Emits ---
 // 10: Define component emits
@@ -133,7 +209,7 @@ function handleToggleDetailsClick() {
 
 // Helper to format symbol for display (e.g., BTCUSDT -> BTC/USDT)
 const formatMarketSymbol = (symbol: string): string => {
-  const quote = QUOTE_CURRENCIES.find(q => symbol.endsWith(q));
+  const quote = QUOTE_CURRENCIES_FIAT.find(q => symbol.endsWith(q));
   if (quote) {
     const base = symbol.slice(0, symbol.length - quote.length);
     return `${base}/${quote}`;
@@ -145,16 +221,6 @@ onMounted(() => {
   const defaultMarket = props.availableMarkets.find(m => m === asset.base + 'USDT');
   selectedMarket.value = defaultMarket ?? props.availableMarkets[0] ?? null;
 });
-
-// Watch for changes in the selected market to potentially update displayed price/change?
-// watch(selectedMarket, (newMarketSymbol) => {
-//   if (newMarketSymbol) {
-//      // Fetch/find live data for the newMarketSymbol from the store?
-//      // This would require more logic, potentially passing the whole store
-//      // or specific getter functions down, or emitting an event upwards.
-//      console.log("Selected market changed to:", newMarketSymbol);
-//   }
-// });
 
 </script>
 
