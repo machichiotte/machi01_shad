@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { computed, ref, PropType, onMounted } from 'vue'; // Import PropType, onMounted
 import { Asset, Order, Trade } from '../../../types/responseData';
-import { formatPrice } from '../../../utils/formatter'; // Assuming this utility exists
+import { formatPrice, formatNumberWithDynamicPrecision } from '../../../utils/formatter'; // Assuming this utility exists
 import { QUOTE_CURRENCIES } from '../../../constants/assets';
 import { useLiveDataStore } from '../../../store/liveDataStore'; // <-- IMPORT THE STORE
 
@@ -72,27 +72,50 @@ const currentPossessionValue = computed(() => {
   // 1. Récupérer le prix BRUT actuel depuis le store
   const currentRawPrice = selectedMarket.value
     ? liveDataStore.getCurrentPrice(selectedMarket.value)
-    : undefined; // Prix brut (nombre ou undefined)
+    : undefined;
 
   // 2. Récupérer la quantité possédée BRUTE
-  const currentAmount = asset.liveData?.currentPossession; // Quantité brute (nombre ou undefined/null)
+  const currentAmount = asset.liveData?.currentPossession;
 
-  if (asset.base === 'ETH') {
-    // Si l'actif est USDT, on utilise le montant total
-    console.log('currentRawPrice:', currentRawPrice);
-  console.log('currentAmount:', currentAmount);
-  }
-  
   // 3. Vérifier que les deux valeurs sont des nombres valides
   if (typeof currentRawPrice === 'number' && typeof currentAmount === 'number' && !isNaN(currentRawPrice) && !isNaN(currentAmount)) {
     // 4. Calculer la valeur totale
     const totalValue = currentRawPrice * currentAmount;
-    // 5. Formater la valeur totale pour l'affichage
-    return formatPrice(totalValue);
+
+    // 5. Déterminer la précision basée sur la devise de cotation
+    const quote = quoteCurrency.value; // Utilise la computed property créée précédemment
+    let precision = 2; // Précision par défaut (pour USDT ou inconnue)
+    if (quote && quote !== 'USDT') {
+      // Si c'est BTC, ETH, etc., utiliser 8 décimales
+      precision = 8;
+    }
+
+    // 6. Formater la valeur en utilisant la NOUVELLE fonction formatWithPrecision
+    return formatNumberWithDynamicPrecision(totalValue, precision); // <--- Changement ici
+
   } else {
-    // 6. Retourner une valeur par défaut si le prix ou la quantité n'est pas disponible
-    return 'N/A'; // Ou formatPrice(0) ou 'Calcul...' selon votre préférence
+    // 7. Retourner une valeur par défaut si le calcul est impossible
+    return 'N/A'; // Ou formatWithPrecision(0, precision) si vous préférez afficher 0.00 ou 0.00000000
   }
+});
+
+const quoteCurrency = computed(() => {
+  if (!selectedMarket.value) return null;
+  // Trouve la devise de cotation (ex: USDT, BTC, ETH) dans la liste QUOTE_CURRENCIES
+  return QUOTE_CURRENCIES.find(q => selectedMarket.value!.endsWith(q)) || null;
+});
+
+// Propriété calculée pour obtenir le symbole à afficher (ex: $, BTC, ETH)
+const quoteCurrencySymbol = computed(() => {
+  const quote = quoteCurrency.value;
+  if (!quote) return ''; // Pas de marché sélectionné ou quote inconnue
+
+  // Cas spécial pour USDT -> $
+  if (quote === 'BTC' || quote === 'ETH' ) return quote;
+
+  if (quote === 'EUR') return '€'; // Euro
+  
+  return '$';
 });
 
 // --- Refs ---
@@ -170,7 +193,7 @@ onMounted(() => {
 
     <div class="right-section">
       <div class="current-possession">
-        {{ currentPossessionValue }}$ </div>
+        {{ currentPossessionValue }} {{ quoteCurrencySymbol }} </div>
       <div class="profit-difference">
         <span :class="{
           'positive': asset.profit > 0,

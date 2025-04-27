@@ -2,18 +2,13 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useCalculStore } from '../../store/calculStore';
-import RssFilters from './RssFilters.vue'; // Import Filter Component
-import RssItemPanel from './RssItemPanel.vue'; // Import Item Component
-import { useRssFiltering } from '../../composables/useRssFiltering'; // Import Filtering Logic
-
-// import { formatDate } from '../../utils/formatters'; // No longer needed directly here if RssItemPanel imports it
+import RssFilters from './RssFilters.vue'; 
+import RssItemPanel from './RssItemPanel.vue'; 
+import { useRssFiltering } from '../../composables/useRssFiltering';
 import type { RssItem } from '../../types/responseData';
-import type { FilterState } from './RssFilters.vue'; // Import Filter State type
+import type { FilterState } from './RssFilters.vue'; 
 
-// PrimeVue Components (Only those used directly in *this* template)
-import ProgressSpinner from 'primevue/progressspinner';
-import Message from 'primevue/message';
-import Paginator from 'primevue/paginator';
+// PrimeVue Components
 import { useVuePagination } from '../../composables/useVuePagination.ts';
 
 // --- Store and Loading State ---

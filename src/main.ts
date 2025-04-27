@@ -52,6 +52,7 @@ import Badge from 'primevue/badge';
 import './style.css'
 
 import { websocketService } from './services/websocketService';
+import Paginator from 'primevue/paginator'
 
 const app = createApp(App)
 app.component('LogoMachi', LogoMachi)
@@ -93,6 +94,7 @@ app.component('ToggleButton', ToggleButton)
 app.component('Toolbar', Toolbar)
 app.component('Panel', Panel);
 app.component('ProgressSpinner', ProgressSpinner);
+app.component('Paginator', Paginator);
 app.component('Message', Message);
 app.component('Badge', Badge);
 

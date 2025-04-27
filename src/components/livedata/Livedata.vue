@@ -2,22 +2,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useLiveDataStore } from '../../store/liveDataStore';
-
+import { formatPrice, formatChangePercent } from '../../utils/formatter';
 const liveDataStore = useLiveDataStore();
 const sortedTickers = computed(() => liveDataStore.sortedTickersByVolume);
-
-// Formatters
-const formatPrice = (price: string | number | undefined): string => {
-  if (price == null) return 'N/A';
-  const num = Number(price);
-  return isNaN(num) ? 'N/A' : num.toFixed(2);
-};
-
-const formatChangePercent = (percent: string | number | undefined): string => {
-  if (percent == null) return 'N/A';
-  const num = Number(percent);
-  return isNaN(num) ? 'N/A' : `${num.toFixed(2)}%`;
-};
 
 const getChangeClass = (percent: string | number | undefined): string => {
   if (percent == null) return '';
