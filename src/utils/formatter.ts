@@ -63,16 +63,7 @@ export const formatNumberWithDynamicPrecision = (
 };
 
 export const formatPrice = (value: number | string | null): string => {
-  if (value === null || value === undefined) {
-    return '0' // Retourne un format par défaut ou une valeur vide
-  }
-
-  const num = Number(value)
-  if (isNaN(num)) {
-    return '0' // Retourne un format par défaut si la conversion échoue
-  }
-
-  return num.toFixed(2) // Formatte avec 2 décimales
+  return formatNumberWithDynamicPrecision(value, 2)
 }
 
 /**
