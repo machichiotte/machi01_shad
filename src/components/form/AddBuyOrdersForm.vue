@@ -190,11 +190,11 @@ watch(baseOptions, (newOptions) => {
 
 .calculated-value {
     font-size: 0.8rem;
-    color: #888;
+    color: var(--text-color-secondary);
 }
 
 .error-message {
-    color: red;
+    color: var(--error-text);
     font-size: 0.8rem;
 }
 </style>

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { reactive, computed } from 'vue'
 
 // Re-use or import the TickerData interface
-interface TickerData {
+export interface TickerData {
   type: string
   symbol: string
   priceChangePercent: string

@@ -34,19 +34,18 @@ const props = defineProps<{
     border-radius: 8px;
     transition: all 0.3s ease;
     font-size: 1rem;
-    border: 1px solid #ccc;
-    background-color: #ddd;
-    color: #333;
+    border: 1px solid var(--searchbar-border);
+    background-color: var(--searchbar-bg);
+    color: var(--searchbar-text);
 }
 
 .search-input:hover {
-    border-color: #2196F3;
+    border-color: var(--searchbar-border-hover);
 }
 
 .search-input:focus {
     outline: none;
-    border-color: #2196F3;
-    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+    border-color: var(--searchbar-border-hover);
 }
 
 .p-input-icon-left {
@@ -64,6 +63,6 @@ const props = defineProps<{
 }
 
 .p-input-icon-left i:hover {
-    color: #2196F3;
+    color: var(--searchbar-icon-hover);
 }
 </style>

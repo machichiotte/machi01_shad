@@ -194,11 +194,6 @@ const noResultsMessage = computed(() => {
     width: 100%;
 }
 
-.rss-items-list {
-    /* Styles for the list container if needed */
-}
-
-
 /* Paginator Dark Theme Adjustments (Keep these global overrides here or move to a global CSS) */
 :deep(.p-paginator) {
     background-color: #3a3a3a;

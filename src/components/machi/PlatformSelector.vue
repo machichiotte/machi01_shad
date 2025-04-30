@@ -51,7 +51,7 @@ watch(
 <template>
   <div class="platform-selector">
     <Button v-for="platform in platformOptions" :key="platform.id" :label="platform.name"
-      :class="['platform-button', { selected: selectedPlatforms.includes(platform.id) }]"
+      :class="['button-toggle', { selected: selectedPlatforms.includes(platform.id) }]"
       @click="togglePlatform(platform.id)" />
   </div>
 </template>
@@ -61,16 +61,5 @@ watch(
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-}
-
-.platform-button {
-  margin: 0 0.2rem;
-  flex: 0 0 auto;
-}
-
-.platform-button.selected {
-  border: 1px solid #ccc;
-  background-color: #ddd;
-  color: #333;
 }
 </style>

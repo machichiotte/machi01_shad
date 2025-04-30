@@ -71,16 +71,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.button {
-  background: #007bff;
-  color: white;
-  padding: 0.3rem 0.7rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
 /* Center the SearchBar */
 .text-align-left {
   display: flex;

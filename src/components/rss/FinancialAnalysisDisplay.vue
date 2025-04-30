@@ -141,14 +141,6 @@ const getRelevanceSeverity = computed(() => {
     margin-top: 0.4rem;
 }
 
-.relevance-field {
-    /* Special styling if needed */
-}
-
-.sentiment-field {
-    /* Special styling if needed */
-}
-
 .analysis-content {
     padding-left: 0.5rem;
     /* Indent analysis details slightly if relevant */

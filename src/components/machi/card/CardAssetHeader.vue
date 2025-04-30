@@ -1,10 +1,9 @@
-<!-- src/components/machi/card/CardAssetHeader.vue -->
+// File: /components/AssetCardHeader.vue
 <script setup lang="ts">
 import { computed, ref, PropType, onMounted } from 'vue';
 import { Asset, Order, Trade } from '../../../types/responseData';
-import { formatPrice, formatNumberWithDynamicPrecision } from '../../../utils/formatter';
+import { formatNumberWithDynamicPrecision } from '../../../utils/formatter';
 import { useLiveDataStore } from '../../../store/liveDataStore';
-
 import {
   getQuoteCurrency,
   getCurrencySymbol,
@@ -12,6 +11,7 @@ import {
   getPriceDisplayPrecision,
   getChangeStatusClass
 } from '../../../utils/marketUtils';
+import Button from 'primevue/button'; // Assurez-vous que l'importation de Button est correcte
 
 const props = defineProps({
   asset: { type: Object as PropType<Asset>, required: true },
@@ -22,28 +22,18 @@ const props = defineProps({
 });
 
 const liveDataStore = useLiveDataStore();
-
 const asset = props.asset;
 const selectedMarket = ref<string | null>(null);
-
-const formattedTotalBuy = computed(() => formatPrice(asset.orders?.trade?.totalBuy || 0));
-const formattedTotalSell = computed(() => formatPrice(asset.orders?.trade?.totalSell || 0));
 
 const inOrderAmount = computed(() => {
   return props.orders.reduce((total, order) => total + (order.amount || 0), 0);
 });
 
 const displayPrice = computed(() => {
-  if (!selectedMarket.value) {
-    return '...';
-  }
-
+  if (!selectedMarket.value) return '...';
   const price = liveDataStore.getCurrentPrice(selectedMarket.value);
-
-  if (typeof price !== 'number' || isNaN(price)) {
-    return '...';
-  }
-
+  if (typeof price !== 'number' || isNaN(price)) return '...';
+  // Ajuster la précision ici si nécessaire ou utiliser une fonction dédiée
   const precision = getPriceDisplayPrecision(quoteCurrency.value);
   return formatNumberWithDynamicPrecision(price, precision);
 });
@@ -55,7 +45,7 @@ const liveChangePercentValue = computed(() => {
 
 const formattedLiveChangePercent = computed(() => {
   const change = liveChangePercentValue.value;
-  return change !== undefined ? change.toFixed(2) : "N/A";
+  return change !== undefined ? change.toFixed(2) : "--"; // Utiliser -- ou N/A si non dispo
 });
 
 const liveChangeClass = computed(() => {
@@ -63,26 +53,26 @@ const liveChangeClass = computed(() => {
 });
 
 const formattedProfit = computed(() => {
-  return asset.profit !== undefined
-    ? asset.profit.toFixed(2)
-    : "0.00";
+  return asset.profit !== undefined ? asset.profit.toFixed(2) : "--"; // Utiliser -- ou N/A si non dispo
 });
+
+const profitClass = computed(() => {
+  return getChangeStatusClass(asset.profit);
+});
+
 
 const currentPossessionValue = computed(() => {
   const currentRawPrice = selectedMarket.value
     ? liveDataStore.getCurrentPrice(selectedMarket.value)
     : undefined;
-
-  const currentAmount = asset.liveData?.currentPossession;
+  const currentAmount = asset.liveData?.balance;
 
   if (typeof currentRawPrice === 'number' && typeof currentAmount === 'number' && !isNaN(currentRawPrice) && !isNaN(currentAmount)) {
     const totalValue = currentRawPrice * currentAmount;
     const precision = getPriceDisplayPrecision(quoteCurrency.value);
-
     return formatNumberWithDynamicPrecision(totalValue, precision);
-
   } else {
-    return 'N/A';
+    return '...'; // Ou 'N/A' ou une autre valeur par défaut
   }
 });
 
@@ -96,264 +86,273 @@ function handleToggleDetailsClick() {
 }
 
 onMounted(() => {
-  const defaultMarket = props.availableMarkets.find(m => m === asset.base + 'USDT');
+  const priorityMarkets = ['USDT', 'USD'];
+  const defaultMarket = priorityMarkets
+    .map(suffix => props.asset.base + suffix)
+    .find(symbol => props.availableMarkets.includes(symbol));
   selectedMarket.value = defaultMarket ?? props.availableMarkets[0] ?? null;
 });
 
 </script>
 
 <template>
-  <div class="card-header">
-    <div class="left-section">
-      <div class="top-row">
-        <div class="logo-container">
-          <img :src="asset.iconUrl" alt="Logo" class="logo" />
-        </div>
+  <div class="card-header compact">
+    <div class="asset-market-section">
+      <div class="asset-identity">
+        <img :src="asset.iconUrl" alt="" class="logo" />
         <div class="asset-info">
-          <div class="asset-name">{{ asset.name }}</div>
-          <div class="asset-base-rank">{{ asset.base }} {{ asset.cmc?.rank ? '#' + asset.cmc.rank : '' }}</div>
-        </div>
-        <div class="market-selector">
-          <select v-model="selectedMarket">
-            <option :value="null" disabled v-if="!selectedMarket && availableMarkets.length === 0">Loading...</option>
-            <option :value="null" disabled v-else-if="!selectedMarket">Select Market</option>
-            <option v-for="market in availableMarkets" :key="market" :value="market">
-              {{ formatMarketSymbolForDisplay(market) }}
-            </option>
-          </select>
+          <span class="asset-name">{{ asset.name }}</span>
+          <span class="asset-base-rank">
+            {{ asset.base }} {{ asset.cmc?.rank ? '#' + asset.cmc.rank : '' }}
+          </span>
         </div>
       </div>
-
-      <div class="middle-row">
-        <div class="current-price">{{ displayPrice }}</div>
-      </div>
-
-      <div class="bottom-row">
-        <div class="cmc-data" :class="liveChangeClass">
-          {{ formattedLiveChangePercent }}%
-        </div>
+      <div class="market-selector">
+        <select v-model="selectedMarket">
+          <option :value="null" disabled v-if="!selectedMarket && availableMarkets.length === 0">...</option>
+          <option :value="null" disabled v-else-if="!selectedMarket">Market</option>
+          <option v-for="market in availableMarkets" :key="market" :value="market">
+            {{ formatMarketSymbolForDisplay(market) }}
+          </option>
+        </select>
       </div>
     </div>
 
-    <div class="right-section">
+    <div class="price-change-section">
+      <div class="current-price">
+        <span class="value fixed-width">{{ displayPrice }}</span>
+        <span class="currency">{{ quoteCurrencySymbol }}</span>
+      </div>
+      <div class="change-percent fixed-width" :class="liveChangeClass">
+        {{ formattedLiveChangePercent }}%
+      </div>
+    </div>
+
+
+    <div class="possession-profit-section">
       <div class="current-possession">
-        {{ currentPossessionValue }} {{ quoteCurrencySymbol }} </div>
-      <div class="profit-difference">
-        <span :class="getChangeStatusClass(asset.profit)">
-          {{ formattedProfit }}%
-        </span>
-        <span> (entry price: {{ formatPrice(asset.orders?.trade?.averageEntryPrice) }}$)</span>
+        <span class="value fixed-width">{{ currentPossessionValue }}</span>
+        <span class="currency">{{ quoteCurrencySymbol }}</span>
       </div>
-      <div class="total-buy">
-        Total Buy: {{ formattedTotalBuy }}$
+      <div class="profit-percent fixed-width" :class="profitClass">
+        {{ formattedProfit }}%
       </div>
-      <div class="total-sell">
-        Total Sell: {{ formattedTotalSell }}$
-      </div>
-      <div class="total-amount">
-        Total Amount: {{ asset.orders?.trade?.totalAmountBuy }} {{ asset.base }}
-      </div>
-      <div class="in-order">
-        In Order: {{ inOrderAmount.toFixed(8) }} {{ asset.base }} </div>
-      <div class="details-button">
-        <Button :icon="isDetailsVisible ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" class="expand-button"
-          @click="handleToggleDetailsClick" />
-      </div>
+    </div>
+
+    <div class="balance-order-section">
+      <span class="label">Balance:</span>
+      <span class="value fixed-width">{{ formatNumberWithDynamicPrecision(asset.liveData?.balance ?? 0, 8) }}</span>
+      <span class="base">{{ asset.base }}</span>
+
+
+      <template v-if="inOrderAmount > 0">
+        <span class="label">Order:</span>
+        <span class="value fixed-width">{{ formatNumberWithDynamicPrecision(inOrderAmount, 4) }}</span>
+        <span class="base">{{ asset.base }}</span>
+      </template>
+
+
+    </div>
+
+    <div class="details-button-container">
+      <Button :icon="isDetailsVisible ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+        class="p-button-text p-button-sm expand-button"
+        :aria-label="isDetailsVisible ? 'Masquer les détails' : 'Afficher les détails'"
+        @click="handleToggleDetailsClick" />
     </div>
   </div>
 </template>
 
 <style scoped>
-/* 1: Card header layout */
-.card-header {
+.card-header.compact {
   display: flex;
-  justify-content: space-between;
-  background-color: #ddd;
-  padding: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  background-color: var(--card-bg);
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--border-color);
+  gap: 0.8rem;
+  min-height: 45px;
 }
 
-/* 2: Left section styling */
-.left-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding-right: 0.5rem;
-}
-
-/* 3: Right section styling */
-.right-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding-left: 0.5rem;
-  text-align: right;
-}
-
-/* 4: Top row layout */
-.top-row {
+/* --- Sections Principales --- */
+/* Chaque section est un élément flex qui peut contenir d'autres éléments */
+.asset-market-section,
+.price-change-section,
+.possession-profit-section,
+.balance-order-section {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-/* 5: Logo container styling */
-.logo-container {
+.balance-order-section {
+  flex-shrink: 1;
+  overflow: hidden;
+  min-width: 100px;
+}
+
+/* Section Identité & Marché */
+.asset-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
 
-/* 6: Logo image styling */
-.logo {
-  width: 64px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-/* 7: Asset info styling */
 .asset-info {
-  margin-left: 0.5rem;
+  line-height: 1.2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-/* 8: Asset name styling */
 .asset-name {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
-/* 9: Asset base and rank styling */
 .asset-base-rank {
-  font-size: 1rem;
-  color: #555;
+  font-size: 0.75rem;
+  color: var(--secondary-text);
 }
 
-/* 10: Market selector styling */
-.market-selector {
+.market-selector select {
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: var(--selector-bg);
+  font-size: 0.75rem;
+  color: var(--primary-text);
+  max-width: 100px;
+}
+
+/* Section Prix & Changement */
+.price-change-section {
+  font-weight: 600;
+}
+
+.current-price {
+  font-size: 1.05rem;
+}
+
+.current-price .value {
+  margin-right: 0.1rem;
+}
+
+.current-price .currency {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--secondary-text);
+  margin-left: 1px;
+}
+
+.change-percent {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Section Possession & Profit */
+.possession-profit-section {
+  font-weight: 600;
   margin-left: auto;
 }
 
-/* 11: Middle row for current price */
-.middle-row {
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-
-/* 12: Current price styling */
-.current-price {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-/* 13: Bottom row styling for CMC data */
-.bottom-row {
-  text-align: center;
-}
-
-/* 14: CMC data styling with conditional coloring */
-.cmc-data {
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.cmc-data.positive {
-  color: #4caf50;
-}
-
-.cmc-data.negative {
-  color: #ff4c4c;
-}
-
-.cmc-data.neutral {
-  color: #636963;
-}
-
-/* 15: Spacing for each div in right section */
-.right-section>div {
-  margin-bottom: 0.5rem;
-}
-
-/* 16: Current possession styling */
 .current-possession {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.05rem;
 }
 
-/* 17: Profit difference styling */
-.profit-difference {
-  font-size: 1rem;
-  font-weight: bold;
+.current-possession .value {
+  margin-right: 0.1rem;
 }
 
-/* 18: Smaller text for total and order info */
-.total-buy,
-.total-sell,
-.total-amount,
-.in-order {
+.current-possession .currency {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--secondary-text);
+  margin-left: 1px;
+}
+
+.profit-percent {
   font-size: 0.8rem;
+  font-weight: 600;
 }
 
-/* 19: Details button styling */
-.details-button {
+
+/* Section Balance & Ordres */
+.balance-order-section {
+  font-size: 0.8rem;
+  color: var(--primary-text);
+}
+
+.balance-order-section .label {
+  font-size: 0.7rem;
+  margin-right: 0.1rem;
+}
+
+.balance-order-section .value {
+  color: var(--secondary-text);
+  font-weight: 500;
+  margin-right: 0.3rem;
+}
+
+.balance-order-section .base {
+  color: var(--secondary-text);
+  font-size: 0.7rem;
+}
+
+/* Bouton Détails */
+.details-button-container {
+  margin-left: auto;
+  padding-left: 0.5rem;
+  flex-shrink: 0;
+}
+
+.expand-button {
+  padding: 0 !important;
+  min-width: 24px !important;
+  height: 24px !important;
+  color: var(--secondary-text);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.expand-button:hover {
+  color: var(--primary-text);
+  background: var(--expand-btn-hover-bg) !important;
+  /* Léger fond au survol */
+}
+
+
+/* Couleurs Positif/Négatif/Neutre */
+.change-percent.positive,
+.profit-percent.positive {
+  color: var(--positive-color);
+}
+
+.change-percent.negative,
+.profit-percent.negative {
+  color: var(--negative-color);
+}
+
+.change-percent.neutral,
+.profit-percent.neutral {
+  color: var(--neutral-color);
+}
+
+.fixed-width {
+  min-width: 60px;
+  display: inline-block;
   text-align: right;
-}
-
-/* 20: Expand button styling */
-.expand-button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-
-/* Style the select dropdown */
-.market-selector select {
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  border: 1px solid #aaa;
-  /* Slightly darker border */
-  background-color: white;
-  min-width: 100px;
-  /* Ensure minimum width */
-  cursor: pointer;
-  color: #333;
-}
-
-/* Ensure right-section items have consistent bottom margin */
-.right-section>div:not(:last-child) {
-  margin-bottom: 0.3rem;
-  /* Adjust spacing */
-}
-
-.right-section>div:last-child {
-  margin-bottom: 0;
-  /* No margin for the button container */
-}
-
-/* Ensure button aligns well */
-.details-button {
-  line-height: 1;
-  /* Adjust button alignment if needed */
-  margin-top: auto;
-  /* Push button towards the bottom if needed */
-}
-
-.expand-button {
-  padding: 0.2rem;
-  /* Add some padding if needed */
-}
-
-/* Add optional styling for positive/negative/neutral in profit difference */
-.profit-difference .positive {
-  color: #4caf50;
-}
-
-.profit-difference .negative {
-  color: #ff4c4c;
-}
-
-.profit-difference .neutral {
-  color: #636963;
+  font-family: monospace;
 }
 </style>

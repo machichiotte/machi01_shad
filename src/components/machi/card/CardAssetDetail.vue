@@ -111,7 +111,6 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 
 <style scoped>
 .card-details {
-    background-color: #ddd;
     padding: 1rem;
     max-width: 100%;
     display: flex;
@@ -124,25 +123,20 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
     justify-content: center;
     margin-bottom: 1rem;
     z-index: 10;
-    background-color: #f4f4f4;
     padding: 0.5rem;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Contenu avec défilement */
 .card-details-content {
     max-width: 100%;
     overflow-x: auto;
-    /* Défilement horizontal uniquement pour le contenu large */
     white-space: nowrap;
-    /* Empêche le texte de se découper */
 }
 
 /* Conteneur des tableaux */
 .table-container {
     overflow-x: auto;
-    /* Conteneur pour les tableaux avec défilement horizontal */
     white-space: nowrap;
 }
 
@@ -152,21 +146,10 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
     height: 8px;
 }
 
-.card-details-content::-webkit-scrollbar-thumb,
-.table-container::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 4px;
-}
-
-.card-details-content::-webkit-scrollbar-track,
-.table-container::-webkit-scrollbar-track {
-    background: #f4f4f4;
-}
-
 /* Bouton de sauvegarde */
 .save-button {
-    background-color: #4caf50;
-    color: white;
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
     padding: 0.5rem 1rem;
     border-radius: 4px;
     border: none;
@@ -176,6 +159,6 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 }
 
 .save-button:hover {
-    background-color: #45a049;
+    background-color: var(--bg-color-hover);;
 }
 </style>

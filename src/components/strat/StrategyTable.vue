@@ -144,7 +144,7 @@ const onMaxExposureChange = (base: string, platform: string, event: Event) => {
 /* Styling for table headers and cells */
 .strategy-table th,
 .strategy-table td {
-    border: 1px solid #ccc;
+    border: 1px solid var(--table-border);
     padding: 0.5rem;
     text-align: center;
     overflow: hidden;

@@ -72,15 +72,14 @@ const possessionDetailsByPlatform = computed(() => {
 
 <style scoped>
 .balance-card {
-    border: 1px solid white;
     border-radius: 15px;
     margin-bottom: 1rem;
     margin-left: 1rem;
     margin-right: 1rem;
     padding: 0.5rem;
     cursor: pointer;
-    background-color: #ddd;
-    color: #666;
+    background-color: var(--card-bg);
+    color: var(--primary-text);
 
 }
 
@@ -90,6 +89,5 @@ const possessionDetailsByPlatform = computed(() => {
 
 .platform-header:hover {
     text-decoration: underline;
-    /* Soulignement au survol */
 }
 </style>

@@ -117,7 +117,7 @@ const sendKeyToServer = async (payload: any) => {
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 4px;
-  background-color: #333;
+  background-color: var(--card-dark-bg);
 }
 
 h2 {
@@ -142,24 +142,18 @@ h2 {
 .form-group select {
   flex: 1;
   padding: 0.5rem;
-  border: 1px solid #555;
   border-radius: 4px;
-  background-color: #333;
-  color: #ccc;
+  border: 1px solid var(--searchbar-border);
+  background-color: var(--searchbar-bg);
+  color: var(--searchbar-text);
 }
 
 button {
   width: 100%;
   padding: 0.5rem;
   margin-top: 0.5rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #007bff;
-}
 </style>

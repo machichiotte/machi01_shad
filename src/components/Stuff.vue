@@ -189,8 +189,6 @@ const copyToClipboard = () => {
     display: flex;
     gap: 1rem;
     padding: 1rem;
-    color: #eee;
-    background-color: #222;
 }
 
 .actions {
@@ -201,7 +199,7 @@ const copyToClipboard = () => {
 }
 
 .card {
-    background: #333;
+    background: var(--card-dark-bg);
     padding: 1rem;
     border-radius: 4px;
 }
@@ -225,10 +223,10 @@ const copyToClipboard = () => {
 .field input {
     flex: 1;
     padding: 0.3rem;
-    border: 1px solid #555;
     border-radius: 4px;
-    background: #444;
-    color: #eee;
+    border: 1px solid var(--searchbar-border);
+    background-color: var(--searchbar-bg);
+    color: var(--searchbar-text);
 }
 
 .btn-group {
@@ -238,22 +236,18 @@ const copyToClipboard = () => {
 }
 
 button {
-    background: #007bff;
-    color: #fff;
-    border: none;
     padding: 0.5rem 0.8rem;
     border-radius: 4px;
     cursor: pointer;
 }
 
 button:disabled {
-    background: #666;
     cursor: not-allowed;
 }
 
 .response {
     flex: 2;
-    background: #333;
+    background: var(--card-dark-bg);
     padding: 1rem;
     border-radius: 4px;
     display: flex;

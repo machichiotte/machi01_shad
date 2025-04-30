@@ -1,3 +1,4 @@
+// File: /App.vue
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 </script>
@@ -24,7 +25,68 @@ import { RouterLink } from 'vue-router'
   </div>
 </template>
 
-<style scoped>
+<style>
+:root {
+  --font-family-base: monospace;
+
+  --positive-color: #4caf50;
+  --negative-color: #f44336;
+  --neutral-color: #4b5563;
+
+  --primary-text: #1154b1;
+  --secondary-text: #398f95;
+  --old-primary-text-color: #1f2937;
+  --old-secondary-text-color: #6b7280;
+
+  --border-color: #e5e7eb;
+  --background-color: #242424;
+
+  --transition-duration: 0.3s;
+
+  --btn-bg: #911919;
+  --btn-bg-disable: #aaa;
+  --btn-border: #ccc;
+  --btn-text: #fff;
+
+
+  --btn-hover-bg: #e5e5ff;
+  --btn-hover-border: #646cff;
+
+  --btn-toggle-bg: #f9fafb;
+  --btn-toggle-border: #ccc;
+  --btn-toggle-text: #1f2937;
+
+  --btn-toggle-selected-bg: #646cff;
+  --btn-toggle-selected-border: #4646ff;
+  --btn-toggle-selected-text: #ffffff;
+
+  --btn-toggle-hover-bg: #e5e5ff;
+  --btn-toggle-hover-border: #646cff;
+
+
+  --searchbar-text: #ccc;
+  --searchbar-bg: #333;
+  --searchbar-border: #555;
+  --searchbar-border-hover: #2196F3;
+  --searchbar-icon-hover: #2196F3;
+
+
+  --card-bg: #ddd;
+
+  --card-dark-bg: #333;
+  --input-border: 1px solid #555;
+  --input-bg: #444;
+  --input-text: #eee;
+
+
+
+  --selector-bg: #f9fafb;
+  --expand-btn-hover-bg: #f0f0f0;
+  --table-border: #e5e7eb;
+  --menu-text: #b42828;
+  --error-text: #dc2626;
+}
+
 .layout {
   display: flex;
   flex-direction: column;

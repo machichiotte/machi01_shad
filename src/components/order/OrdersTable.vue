@@ -126,14 +126,11 @@ const {
 
 .pagination button {
   padding: 0.5rem 1rem;
-  border: none;
-  background-color: #007bff;
   color: #fff;
   cursor: pointer;
 }
 
 .pagination button:disabled {
-  background-color: #aaa;
   cursor: not-allowed;
 }
 </style>

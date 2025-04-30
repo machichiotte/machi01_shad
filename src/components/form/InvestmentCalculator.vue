@@ -227,7 +227,7 @@ table {
 
 table th,
 table td {
-    border: 1px solid #ccc;
+    border: 1px solid var(--table-border);
     padding: 8px;
     text-align: center;
 }

@@ -80,7 +80,7 @@ async function fetchMyData<T>(fetchFunction: () => Promise<T>, index: number): P
 }
 
 .fetch-button.error {
-    background-color: red;
+    background-color: var(--error-text);
     color: white;
 }
 </style>

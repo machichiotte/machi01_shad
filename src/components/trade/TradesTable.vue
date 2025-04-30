@@ -67,7 +67,7 @@ const {
 
 .trades-table th,
 .trades-table td {
-  border: 1px solid #ccc;
+  border: 1px solid var(--table-border);
   padding: 0.2rem;
   text-align: center;
   overflow: hidden;
@@ -152,14 +152,10 @@ const {
 
 .pagination button {
   padding: 0.5rem 1rem;
-  border: none;
-  background-color: #007bff;
-  color: #fff;
   cursor: pointer;
 }
 
 .pagination button:disabled {
-  background-color: #aaa;
   cursor: not-allowed;
 }
 </style>

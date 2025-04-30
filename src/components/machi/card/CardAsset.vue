@@ -81,24 +81,14 @@ const transformedTrades = computed<TradeTransformed[]>(() => {
 <style scoped>
 /* Your existing styles */
 .card {
-    background-color: #ddd;
-    color: #666;
+    background-color: var(--card-bg);
+    color: var(--primary-text);
     border-radius: 15px;
-    margin: 1rem;
+    margin: 0rem;
     padding: 0.5rem;
     cursor: pointer;
     max-width: 100%;
     overflow: hidden;
-    font-family: 'Roboto', sans-serif;
-    transition: box-shadow 0.3s;
 }
 
-.card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-small {
-    font-size: 0.8rem;
-    color: #777;
-}
 </style>
