@@ -150,62 +150,46 @@ const isResetDisabled = computed(() => {
 /* Conteneur général */
 .filters-container {
     padding: 0.75rem;
-    background-color: #3a3a3a;
+    background-color: var(--card-secondary-bg);
     border-radius: 6px;
-    border: 1px solid #555;
     margin-bottom: 1.5rem;
-    /* Le div interne avec p-d-flex gère maintenant la disposition */
 }
 
 /* --- Barre de Recherche --- */
 .search-input-wrapper {
     position: relative;
-    /* Pour l'icône absolue */
-    /* display: block; Removed - let flexbox handle display */
     flex-grow: 1;
-    /* Permet de grandir */
     flex-basis: 250px;
-    /* Taille de base avant de grandir/rétrécir */
     min-width: 200px;
-    /* Largeur minimale */
 }
 
 .search-input {
     width: 100%;
-    /* Prend toute la largeur du wrapper */
 }
 
 /* --- Filtres Compacts --- */
-/* Assurer que les filtres ne rétrécissent pas trop */
 .compact-multiselect,
 .compact-selectbutton,
 .reset-button-wrapper {
     flex-shrink: 0;
-    /* Empêche de rétrécir en dessous de leur taille naturelle */
 }
 
 .compact-multiselect {
     min-width: 140px;
-    /* Largeur minimale */
     width: auto;
-    /* Adjust width based on content */
 }
 
 .compact-selectbutton {
     width: auto;
-    /* Adjust width based on content */
 }
 
 /* --- Bouton Reset --- */
 .reset-button-wrapper {
     margin-left: auto;
-    /* Pousse cet élément vers la fin de la ligne flex */
-    /* flex-shrink: 0; déjà défini au-dessus */
 }
 
 .reset-button {
     white-space: nowrap;
-    /* Empêche le retour à la ligne du texte */
 }
 
 /* Accessibilité : Classe pour masquer visuellement mais garder accessible */

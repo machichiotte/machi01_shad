@@ -94,15 +94,16 @@ const getRelevanceSeverity = computed(() => {
 
 <style scoped>
 .financial-analysis-details {
+    font-family: var(--font-family-base);
     font-size: 0.95em;
     line-height: 1.6;
+    color: var(--primary-text);
 }
 
 .analysis-field {
     margin-bottom: 1rem;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid #4a4a4a;
-    /* Slightly lighter border */
+    border-bottom: 1px solid var(--primary-border);
 }
 
 .analysis-field:last-child {
@@ -112,9 +113,7 @@ const getRelevanceSeverity = computed(() => {
 }
 
 .analysis-field strong {
-    color: #b0c4de;
-    /* Light Steel Blue */
-    margin-right: 0.5rem;
+    color: var(--secondary-text);
     display: block;
     margin-bottom: 0.3rem;
 }
@@ -125,15 +124,13 @@ const getRelevanceSeverity = computed(() => {
     margin-top: 0.4rem;
     margin-left: 0.2rem;
     font-style: italic;
-    color: #bdbdbd;
-    /* Lighter gray */
+    color: var(--error-text);
     white-space: pre-wrap;
-    /* Keep formatting */
     word-wrap: break-word;
 }
 
 .text-muted {
-    color: #999;
+    color: var(--neutral-color);
     font-style: italic;
 }
 
@@ -143,7 +140,6 @@ const getRelevanceSeverity = computed(() => {
 
 .analysis-content {
     padding-left: 0.5rem;
-    /* Indent analysis details slightly if relevant */
     margin-top: 1rem;
 }
 </style>

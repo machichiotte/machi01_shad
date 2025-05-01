@@ -215,7 +215,10 @@ function toggleBottomExpandCollapse(): void {
       </div>
 
        <div v-if="isLoadingData" class="p-p-3 text-center text-color-secondary">
-         Chargement des données...
+         
+         <Message severity="info" :closable="false" class="info-message">
+                    <span>Chargement des données...</span>
+                </Message>
        </div>
 
        <div v-else>
@@ -232,9 +235,11 @@ function toggleBottomExpandCollapse(): void {
                 />
             </div>
 
-            <div v-if="!isLoadingData && totalMachiItems === 0" class="p-p-3 text-center text-color-secondary">
-                Aucun asset à afficher correspondant aux filtres actuels.
-           </div>
+            <div v-if="!isLoadingData && totalMachiItems === 0" class="p-p-3">
+                <Message severity="error" :closable="false" class="error-message">
+                    <span>Aucun asset à afficher correspondant aux filtres actuels.</span>
+                </Message>
+              </div>
             <div v-else-if="!isLoadingData && totalMachiItems > 0 && paginatedMachiItems.length === 0" class="p-p-3 text-center text-color-secondary">
                 Aucun asset à afficher sur cette page.
            </div>

@@ -2,11 +2,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useCalculStore } from '../../store/calculStore';
-import RssFilters from './RssFilters.vue'; 
-import RssItemPanel from './RssItemPanel.vue'; 
+import RssFilters from './RssFilters.vue';
+import RssItemPanel from './RssItemPanel.vue';
 import { useRssFiltering } from '../../composables/useRssFiltering';
 import type { RssItem } from '../../types/responseData';
-import type { FilterState } from './RssFilters.vue'; 
+import type { FilterState } from './RssFilters.vue';
 
 // PrimeVue Components
 import { useVuePagination } from '../../composables/useVuePagination.ts';
@@ -149,7 +149,7 @@ const noResultsMessage = computed(() => {
             </Paginator>
 
             <div v-else-if="!isLoading && !errorLoading && totalFilteredItems === 0" class="p-mb-3">
-                <Message severity="info" :closable="false" class="info-message">
+                <Message severity="error" :closable="false" class="error-message">
                     <span>{{ noResultsMessage }}</span>
                 </Message>
             </div>
@@ -169,7 +169,6 @@ const noResultsMessage = computed(() => {
 </template>
 
 <style scoped>
-/* Keep only general styles, loading, error, and potentially Paginator overrides */
 .rss-feed-container {
     padding: 1rem;
 }
@@ -180,14 +179,9 @@ const noResultsMessage = computed(() => {
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    color: #ccc;
 }
 
 .loading-indicator p {
     margin-top: 1rem;
-}
-
-.info-message {
-    width: 100%;
 }
 </style>

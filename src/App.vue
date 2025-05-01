@@ -37,74 +37,83 @@ import { RouterLink } from 'vue-router'
 
 
   /* === CORE === */
---primary-bg: #1a1a1a;
---primary-border: #2e2e2e;
---primary-text: #f0f0f0;
+  --primary-bg: #1a1a1a;
+  --primary-border: #2e2e2e;
+  --primary-text: #f0f0f0;
 
-/* === ACCENTS === */
---secondary-bg: #2b0f12;
---secondary-border: #a33439;
---secondary-text: #e0a8aa;
+  /* === ACCENTS === */
+  --secondary-bg: #2b0f12;
+  --secondary-border: #a33439;
+  --secondary-text: #e0a8aa;
 
-/* === TRANSITIONS === */
---transition-duration: 0.3s;
+  /* === TRANSITIONS === */
+  --transition-duration: 0.3s;
 
-/* === BUTTONS === */
---btn-bg: #911919;
---btn-bg-disable: #5a5a5a;
---btn-border: #a82828;
---btn-text: #ffffff;
+  /* === BUTTONS === */
+  --btn-bg: #911919;
+  --btn-bg-disable: #5a5a5a;
+  --btn-border: #a82828;
+  --btn-text: #ffffff;
 
---btn-hover-bg: #b32a2a;
---btn-hover-border: #d03a3a;
+  --btn-hover-bg: #b32a2a;
+  --btn-hover-border: #d03a3a;
 
-/* === TOGGLE === */
---btn-toggle-bg: #2a2a2a;
---btn-toggle-border: #444;
---btn-toggle-text: #ccc;
+  /* === TOGGLE === */
+  --btn-toggle-bg: #2a2a2a;
+  --btn-toggle-border: #444;
+  --btn-toggle-text: #ccc;
 
---btn-toggle-selected-bg: #b32a2a;
---btn-toggle-selected-border: #d03a3a;
---btn-toggle-selected-text: #ffffff;
+  --btn-toggle-selected-bg: #b32a2a;
+  --btn-toggle-selected-border: #d03a3a;
+  --btn-toggle-selected-text: #ffffff;
 
---btn-toggle-hover-bg: #3a1a1a;
---btn-toggle-hover-border: #c33;
+  --btn-toggle-hover-bg: #3a1a1a;
+  --btn-toggle-hover-border: #c33;
 
-/* === SEARCHBAR === */
---searchbar-text: #cccccc;
---searchbar-bg: #222;
---searchbar-border: #444;
---searchbar-border-hover: #e84c4c;
---searchbar-icon: #ccc;
---searchbar-icon-hover: #ff6666;
+  /* === SEARCHBAR === */
+  --searchbar-text: #cccccc;
+  --searchbar-bg: #222;
+  --searchbar-border: #444;
+  --searchbar-border-hover: #e84c4c;
+  --searchbar-icon: #ccc;
+  --searchbar-icon-hover: #ff6666;
 
-/* === CARDS === */
---card-primary-bg: #2a2a2a;
---card-secondary-bg: #1e1e1e;
+  /* === CARDS === */
+  --card-primary-bg: #2a2a2a;
+  --card-secondary-bg: #1e1e1e;
 
-/* === FORM INPUTS === */
---input-border: 1px solid #5a1e1e;
---input-bg: #2b2b2b;
---input-text: #ffffff;
-  
+  /* === FORM INPUTS === */
+  --input-border: 1px solid #5a1e1e;
+  --input-bg: #2b2b2b;
+  --input-text: #ffffff;
 
-/* === SELECTOR & MISC === */
---selector-bg: #2a2a2a;
---expand-btn-hover-bg: #3a1a1a;
---table-border: #444;
---menu-text: #e84c4c;
+  /* === TOOLTIP === */
+  --tooltip-bg: #1e1e1e;
+  --tooltip-text: #0e0ede;
 
-/* === TABS === */
---tab-bg: #191919;
---tab-border: #333;
---tab-text: #ff6b6b;
+   /* === BADGE === */
+   --badge-primary-bg: ;
+   --badge-primary-text: ;
+   --badge-secondary-bg: ;
+   --badge-secondary-text: ;
 
-/* === SURFACE / GROUND === */
---surface-ground: #1a1a1a;
+  /* === SELECTOR & MISC === */
+  --selector-bg: #2a2a2a;
+  --expand-btn-hover-bg: #3a1a1a;
+  --table-border: #444;
+  --menu-text: #e84c4c;
+
+  /* === TABS === */
+  --tab-bg: #191919;
+  --tab-border: #333;
+  --tab-text: #ff6b6b;
+
+  /* === SURFACE / GROUND === */
+  --surface-ground: #1a1a1a;
 
 
-  --top-bar-height:40px;
-  --bottom-bar-height:56px;
+  --top-bar-height: 40px;
+  --bottom-bar-height: 56px;
 
   --top-bar-expanded-height: 180px;
   --bottom-bar-expanded-height: 350px;

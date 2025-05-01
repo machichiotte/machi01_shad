@@ -20,9 +20,7 @@ defineProps({
 </script>
 
 <template>
-    <Panel :toggleable="!!(item.summary || item.analysis)" collapsed class="rss-panel" :pt="{ // PassThrough for dynamic header ID if needed for aria later
-        // header: { id: `rss-item-header-${item._id?.$oid || item.link}` }
-    }">
+    <Panel :toggleable="!!(item.summary || item.analysis)" collapsed class="rss-panel">
         <template #header>
             <div class="rss-panel-header-content">
                 <div class="header-left-section">
@@ -71,23 +69,6 @@ defineProps({
 </template>
 
 <style scoped>
-/* Styles specific to a single RSS Item Panel */
-/* Copied and potentially adapted from the original RssFeedDisplay.vue */
-
-.rss-panel {
-    margin-bottom: 1rem;
-    border: 1px solid #555;
-    border-radius: 6px;
-    background-color: #333;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    transition: box-shadow 0.3s ease;
-    overflow: hidden;
-}
-
-.rss-panel:hover {
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5);
-}
-
 /* Header specific styles */
 .rss-panel-header-content {
     display: flex;
@@ -127,16 +108,21 @@ defineProps({
     border-radius: 4px;
 }
 
+.source-badge {
+    background-color: var(--badge-primary-bg);
+    color: var(--badge-primary-text);
+}
+
 .category-badge {
-    background-color: #6c757d;
-    color: #fff;
+    background-color: var(--badge-secondary-bg);
+    color: var(--badge-secondary-text);
 }
 
 .analysis-date {
     display: inline-flex;
     align-items: center;
     font-size: 0.8em;
-    color: #aaa;
+    color: var(--neutral-color);
     white-space: nowrap;
 }
 
@@ -147,7 +133,7 @@ defineProps({
 
 .item-title {
     font-weight: 600;
-    color: #eee;
+    color: var(--primary-text);
     flex-grow: 1;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -161,15 +147,15 @@ defineProps({
 /* Content specific styles */
 .rss-item-content {
     padding: 1rem 1.5rem;
-    background-color: #333;
-    color: #ccc;
+    background-color: var(--card-secondary-bg);
+    color: var(--secondary-text);
 }
 
 .rss-item-content h4 {
     margin-top: 1.25rem;
     margin-bottom: 0.75rem;
-    color: #60a5fa;
-    border-bottom: 1px solid #555;
+    color: var(--secondary-text);
+    border-bottom: 1px solid var(--primary-border);
     padding-bottom: 0.3rem;
     font-weight: 600;
     font-size: 1.1em;
@@ -187,9 +173,9 @@ defineProps({
 .rss-item-footer {
     margin-top: 1.5rem;
     padding-top: 0.75rem;
-    border-top: 1px dashed #666;
+    border-top: 1px dashed var(--primary-border);
     font-size: 0.8em;
-    color: #aaa;
+    color: var(--neutral-color);
 }
 
 .rss-item-footer small {
