@@ -57,30 +57,18 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <div class="text-align-left">
-      <SearchBar :filters="filters" />
+    <div class="page">
+      <div class="card">
+        <SearchBar :filters="filters" />
+        <StrategyTable :tableData="tableData" :platforms="platforms" :strategyLabels="strategyLabels"
+          :exposures="exposures" :setSelectedStrategy="handleSetSelectedStrategy"
+          :setSelectedMaxExposure="handleSetSelectedMaxExposure" :globalFilter="filters.global.value" />
+      </div>
     </div>
-    <!-- Wrapper to center the strategy table -->
-    <div class="data-table-wrapper">
-      <StrategyTable :tableData="tableData" :platforms="platforms" :strategyLabels="strategyLabels"
-        :exposures="exposures" :setSelectedStrategy="handleSetSelectedStrategy"
-        :setSelectedMaxExposure="handleSetSelectedMaxExposure" :globalFilter="filters.global.value" />
-    </div>
-  </div>
 </template>
 
 <style scoped>
-/* Center the SearchBar */
-.text-align-left {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-/* Center the table container */
-.data-table-wrapper {
-  display: flex;
-  justify-content: center;
+.page {
+  padding: 1rem;
 }
 </style>

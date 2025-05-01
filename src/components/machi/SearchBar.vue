@@ -58,7 +58,7 @@ const props = defineProps<{
     top: 50%;
     left: 0.75rem;
     transform: translateY(-50%);
-    color: #333;
+    color: var(--searchbar-icon);
     z-index: 1;
 }
 

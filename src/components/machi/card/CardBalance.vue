@@ -78,7 +78,7 @@ const possessionDetailsByPlatform = computed(() => {
     margin-right: 1rem;
     padding: 0.5rem;
     cursor: pointer;
-    background-color: var(--card-bg);
+    background-color: var(--card-primary-bg);
     color: var(--primary-text);
 
 }

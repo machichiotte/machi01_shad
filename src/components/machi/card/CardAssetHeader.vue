@@ -168,9 +168,9 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  background-color: var(--card-bg);
+  background-color: var(--card-primary-bg);
   padding: 0.4rem 0.6rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--primary-border);
   gap: 0.8rem;
   min-height: 45px;
 }
@@ -228,7 +228,7 @@ onMounted(() => {
 .market-selector select {
   padding: 0.1rem 0.3rem;
   border-radius: 4px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--primary-border);
   background-color: var(--selector-bg);
   font-size: 0.75rem;
   color: var(--primary-text);

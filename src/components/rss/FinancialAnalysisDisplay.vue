@@ -146,14 +146,4 @@ const getRelevanceSeverity = computed(() => {
     /* Indent analysis details slightly if relevant */
     margin-top: 1rem;
 }
-
-/* Adjust Tag margin if needed */
-:deep(.p-tag) {
-    vertical-align: middle;
-}
-
-:deep(.p-tag.p-tag-contrast) {
-    background-color: #555;
-    color: #eee;
-}
 </style>

@@ -79,7 +79,7 @@ onMounted(async () => {
 
 <template>
   <div class="page">
-    <div id="card">
+    <div class="card">
       <SearchBar :filters="filters" />
       <CmcTable :rows="filteredRows" :itemsPerPage="itemsPerPage" />
     </div>
@@ -88,9 +88,6 @@ onMounted(async () => {
 
 <style scoped>
 .page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 1rem;
 }
 </style>

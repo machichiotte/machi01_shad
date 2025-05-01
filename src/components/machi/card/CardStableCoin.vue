@@ -79,7 +79,7 @@ const stablecoinDetailsByPlatform = computed(() => {
     margin-left: 1rem;
     margin-right: 1rem;
     padding: 0.5rem;
-    background-color: var(--card-bg);
+    background-color: var(--card-primary-bg);
     color: var(--primary-text);
 }
 

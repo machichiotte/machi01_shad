@@ -12,9 +12,6 @@ const filters = ref<{ global: { value: string; matchMode: typeof FilterMatchMode
   global: { value: '', matchMode: FilterMatchMode.CONTAINS }
 })
 
-// Référence pour la balance réelle saisie par l'utilisateur
-const realBalance = ref<number | null>(null)
-
 // Récupération du store
 const calculStore = useCalculStore()
 
@@ -72,34 +69,6 @@ const filteredTrades = computed<TradeTransformed[]>(() => {
     .sort((a, b) => b.timestampVal - a.timestampVal) // Tri décroissant
 })
 
-// Calcul des agrégats sur les trades filtrés
-const safeSum = (acc: number, value: number) => acc + (value || 0)
-
-const sellTrades = computed(() =>
-  filteredTrades.value.filter(item => item.side.toLowerCase() === 'sell')
-)
-const buyTrades = computed(() =>
-  filteredTrades.value.filter(item => item.side.toLowerCase() === 'buy')
-)
-
-const totalSell = computed(() =>
-  sellTrades.value.reduce((acc, item) => safeSum(acc, item.eqUSD), 0)
-)
-const amountSell = computed(() =>
-  sellTrades.value.reduce((acc, item) => acc + (item.amount || 0), 0)
-)
-const totalBuy = computed(() =>
-  buyTrades.value.reduce((acc, item) => safeSum(acc, item.eqUSD), 0)
-)
-const amountBuy = computed(() =>
-  buyTrades.value.reduce((acc, item) => acc + (item.amount || 0), 0)
-)
-
-// Calcul du prix d'achat moyen en fonction de la balance réelle
-const averageBuyPrice = computed(() => {
-  if (realBalance.value === null || realBalance.value === 0) return 0
-  return (totalSell.value - totalBuy.value) / realBalance.value
-})
 
 // Chargement des trades depuis le store
 const getTradesData = async () => {
@@ -118,23 +87,8 @@ onMounted(async () => {
 
 <template>
   <div class="page">
-    <div class="header">
-      <SearchBar :filters="filters" />
-      <div class="trade-sums">
-        <label>Supposed Balance: {{ amountBuy - amountSell }}</label>
-        <label>Supposed Avg: {{ (totalSell - totalBuy) / (amountBuy - amountSell) }}</label>
-        <label>Buy: -{{ totalBuy.toFixed(2) }} / Sell: +{{ totalSell.toFixed(2) }}</label>
-        <label>Diff: {{ (totalSell - totalBuy).toFixed(2) }}</label>
-        <div>
-          <label>Real Balance:</label>
-          <input type="number" v-model.number="realBalance" placeholder="Enter real balance" />
-        </div>
-        <div>
-          <label>Average Buy Price: {{ averageBuyPrice }}</label>
-        </div>
-      </div>
-    </div>
     <div class="card">
+      <SearchBar :filters="filters" />
       <TradesTable :rows="filteredTrades" />
     </div>
   </div>
@@ -142,22 +96,6 @@ onMounted(async () => {
 
 <style scoped>
 .page {
-  display: flex;
-  flex-direction: column;
   padding: 1rem;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-.trade-sums {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }
 </style>

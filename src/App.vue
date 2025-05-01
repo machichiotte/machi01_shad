@@ -33,58 +33,81 @@ import { RouterLink } from 'vue-router'
   --negative-color: #f44336;
   --neutral-color: #4b5563;
 
-  --primary-text: #1154b1;
-  --secondary-text: #398f95;
-  --old-primary-text-color: #1f2937;
-  --old-secondary-text-color: #6b7280;
-
-  --border-color: #e5e7eb;
-  --background-color: #242424;
-
-  --transition-duration: 0.3s;
-
-  --btn-bg: #911919;
-  --btn-bg-disable: #aaa;
-  --btn-border: #ccc;
-  --btn-text: #fff;
-
-
-  --btn-hover-bg: #e5e5ff;
-  --btn-hover-border: #646cff;
-
-  --btn-toggle-bg: #f9fafb;
-  --btn-toggle-border: #ccc;
-  --btn-toggle-text: #1f2937;
-
-  --btn-toggle-selected-bg: #646cff;
-  --btn-toggle-selected-border: #4646ff;
-  --btn-toggle-selected-text: #ffffff;
-
-  --btn-toggle-hover-bg: #e5e5ff;
-  --btn-toggle-hover-border: #646cff;
-
-
-  --searchbar-text: #ccc;
-  --searchbar-bg: #333;
-  --searchbar-border: #555;
-  --searchbar-border-hover: #2196F3;
-  --searchbar-icon-hover: #2196F3;
-
-
-  --card-bg: #ddd;
-
-  --card-dark-bg: #333;
-  --input-border: 1px solid #555;
-  --input-bg: #444;
-  --input-text: #eee;
-
-
-
-  --selector-bg: #f9fafb;
-  --expand-btn-hover-bg: #f0f0f0;
-  --table-border: #e5e7eb;
-  --menu-text: #b42828;
   --error-text: #dc2626;
+
+
+  /* === CORE === */
+--primary-bg: #1a1a1a;
+--primary-border: #2e2e2e;
+--primary-text: #f0f0f0;
+
+/* === ACCENTS === */
+--secondary-bg: #2b0f12;
+--secondary-border: #a33439;
+--secondary-text: #e0a8aa;
+
+/* === TRANSITIONS === */
+--transition-duration: 0.3s;
+
+/* === BUTTONS === */
+--btn-bg: #911919;
+--btn-bg-disable: #5a5a5a;
+--btn-border: #a82828;
+--btn-text: #ffffff;
+
+--btn-hover-bg: #b32a2a;
+--btn-hover-border: #d03a3a;
+
+/* === TOGGLE === */
+--btn-toggle-bg: #2a2a2a;
+--btn-toggle-border: #444;
+--btn-toggle-text: #ccc;
+
+--btn-toggle-selected-bg: #b32a2a;
+--btn-toggle-selected-border: #d03a3a;
+--btn-toggle-selected-text: #ffffff;
+
+--btn-toggle-hover-bg: #3a1a1a;
+--btn-toggle-hover-border: #c33;
+
+/* === SEARCHBAR === */
+--searchbar-text: #cccccc;
+--searchbar-bg: #222;
+--searchbar-border: #444;
+--searchbar-border-hover: #e84c4c;
+--searchbar-icon: #ccc;
+--searchbar-icon-hover: #ff6666;
+
+/* === CARDS === */
+--card-primary-bg: #2a2a2a;
+--card-secondary-bg: #1e1e1e;
+
+/* === FORM INPUTS === */
+--input-border: 1px solid #5a1e1e;
+--input-bg: #2b2b2b;
+--input-text: #ffffff;
+  
+
+/* === SELECTOR & MISC === */
+--selector-bg: #2a2a2a;
+--expand-btn-hover-bg: #3a1a1a;
+--table-border: #444;
+--menu-text: #e84c4c;
+
+/* === TABS === */
+--tab-bg: #191919;
+--tab-border: #333;
+--tab-text: #ff6b6b;
+
+/* === SURFACE / GROUND === */
+--surface-ground: #1a1a1a;
+
+
+  --top-bar-height:40px;
+  --bottom-bar-height:56px;
+
+  --top-bar-expanded-height: 180px;
+  --bottom-bar-expanded-height: 350px;
 }
 
 .layout {

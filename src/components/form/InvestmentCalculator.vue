@@ -108,60 +108,61 @@ export default {
     <div>
         <!-- Formulaire principal avec les anciens champs -->
         <div class="form-container">
-            <h2>Investment Calculator</h2>
-            <div class="form-group">
-                <label for="totalAmount">Total Investment Amount ($):</label>
-                <input v-model.number="totalAmount" type="number" id="totalAmount" placeholder="Enter total amount" />
-            </div>
-            <div class="form-group">
-                <label for="priceLower">Lower Price:</label>
-                <input v-model.number="priceLower" type="number" id="priceLower" placeholder="Enter lower price" />
-            </div>
-            <div class="form-group">
-                <label for="priceUpper">Upper Price:</label>
-                <input v-model.number="priceUpper" type="number" id="priceUpper" placeholder="Enter upper price" />
-            </div>
-            <div class="form-group">
-                <label for="orderCount">Number of Orders:</label>
-                <select v-model="orderCount">
-                    <option v-for="count in [5, 10, 15, 20, 25, 50]" :key="count" :value="count">
-                        {{ count }}
-                    </option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="platformOption">Platform Option:</label>
-                <select v-model="platformOption">
-                    <option value="default">Default</option>
-                    <option value="binance">Binance</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="percentageOption">Percentage Type:</label>
-                <select v-model="percentageOption">
-                    <option value="average">Average Percentage</option>
-                    <option value="weighted">Weighted Percentage</option>
-                </select>
-            </div>
-            <button @click="calculateInvestment">Validate</button>
-        </div>
+            <div class="form-section">
+                <h2>Investment Calculator</h2>
+                <div class="form-group">
+                    <label for="totalAmount">Total Investment Amount ($):</label>
+                    <input v-model.number="totalAmount" type="number" id="totalAmount"
+                        placeholder="Enter total amount" />
+                </div>
+                <div class="form-group">
+                    <label for="priceLower">Lower Price:</label>
+                    <input v-model.number="priceLower" type="number" id="priceLower" placeholder="Enter lower price" />
+                </div>
+                <div class="form-group">
+                    <label for="priceUpper">Upper Price:</label>
+                    <input v-model.number="priceUpper" type="number" id="priceUpper" placeholder="Enter upper price" />
+                </div>
+                <div class="form-group">
+                    <label for="orderCount">Number of Orders:</label>
+                    <select v-model="orderCount">
+                        <option v-for="count in [5, 10, 15, 20, 25, 50]" :key="count" :value="count">
+                            {{ count }}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="platformOption">Platform Option:</label>
+                    <select v-model="platformOption">
+                        <option value="default">Default</option>
+                        <option value="binance">Binance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="percentageOption">Percentage Type:</label>
+                    <select v-model="percentageOption">
+                        <option value="average">Average Percentage</option>
+                        <option value="weighted">Weighted Percentage</option>
+                    </select>
+                </div>
+                <button @click="calculateInvestment">Validate</button>
 
-        <!-- Nouvelle section pour les champs supplémentaires -->
-        <div class="form-container">
-            <h3>Additional Fields</h3>
-            <div class="form-group">
-                <label for="prevBuyTotal">Previous Total Purchase ($):</label>
-                <input v-model.number="prevBuyTotal" type="number" id="prevBuyTotal"
-                    placeholder="Previous total buy amount" />
-            </div>
-            <div class="form-group">
-                <label for="prevSellTotal">Previous Total Sale ($):</label>
-                <input v-model.number="prevSellTotal" type="number" id="prevSellTotal"
-                    placeholder="Previous total sell amount" />
-            </div>
-            <div class="form-group">
-                <label for="balance">Current Balance ($):</label>
-                <input v-model.number="balance" type="number" id="balance" placeholder="Current balance" />
+
+                <h3>Additional Fields</h3>
+                <div class="form-group">
+                    <label for="prevBuyTotal">Previous Total Purchase ($):</label>
+                    <input v-model.number="prevBuyTotal" type="number" id="prevBuyTotal"
+                        placeholder="Previous total buy amount" />
+                </div>
+                <div class="form-group">
+                    <label for="prevSellTotal">Previous Total Sale ($):</label>
+                    <input v-model.number="prevSellTotal" type="number" id="prevSellTotal"
+                        placeholder="Previous total sell amount" />
+                </div>
+                <div class="form-group">
+                    <label for="balance">Current Balance ($):</label>
+                    <input v-model.number="balance" type="number" id="balance" placeholder="Current balance" />
+                </div>
             </div>
         </div>
 
@@ -213,7 +214,16 @@ export default {
 
 <style>
 .form-container {
-    margin-bottom: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.form-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    background-color: var(--card-secondary-bg);
 }
 
 .form-group {

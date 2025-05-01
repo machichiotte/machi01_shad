@@ -197,27 +197,4 @@ defineProps({
     line-height: 1.4;
     margin-bottom: 0.25rem;
 }
-
-/* Panel Header / Icons Overrides (keep deep if needed and scoped) */
-:deep(.p-panel-header) {
-    background-color: #444;
-    border-bottom: 1px solid #555;
-    padding: 0.75rem 1rem;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-:deep(.p-panel-toggler) {
-    margin-left: auto !important;
-    order: 10;
-}
-
-:deep(.p-panel-header-icon.icon-link) {
-    margin-left: 0.5rem;
-    order: 5;
-}
-
-/* Tooltip styles (if v-tooltip is used and locally registered/imported) */
-/* Or rely on global tooltip styles */
 </style>

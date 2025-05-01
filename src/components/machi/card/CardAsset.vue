@@ -81,7 +81,7 @@ const transformedTrades = computed<TradeTransformed[]>(() => {
 <style scoped>
 /* Your existing styles */
 .card {
-    background-color: var(--card-bg);
+    background-color: var(--card-primary-bg);
     color: var(--primary-text);
     border-radius: 15px;
     margin: 0rem;

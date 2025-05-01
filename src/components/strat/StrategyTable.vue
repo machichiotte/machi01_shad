@@ -74,7 +74,7 @@ const onMaxExposureChange = (base: string, platform: string, event: Event) => {
 <template>
     <!-- Container for the strategy table -->
     <div class="table-container">
-        <table class="strategy-table">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Base</th>
@@ -87,7 +87,7 @@ const onMaxExposureChange = (base: string, platform: string, event: Event) => {
                     <td>{{ row.base }}</td>
                     <td v-for="platform in props.platforms" :key="platform">
                         <!-- If the cell is visible, display dropdowns -->
-                        <div v-if="(row[platform] as PlatformData)?.isVisible" class="select-container">
+                        <div v-if="(row[platform] as PlatformData)?.isVisible">
                             <!-- Dropdown for strategy selection -->
                             <select :value="(row[platform] as PlatformData).strategy"
                                 @change="(e) => onStrategyChange(row.base, platform, e)">
@@ -117,51 +117,15 @@ const onMaxExposureChange = (base: string, platform: string, event: Event) => {
 </template>
 
 <style scoped>
-/* Container styling for the table */
-.table-container {
-    margin-top: 1rem;
-}
-
-/* Fixed layout for the table */
-.strategy-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
 /* Fixed width for the first column (base) */
-.strategy-table th:first-child,
-.strategy-table td:first-child {
+.table th:first-child,
+.table td:first-child {
     width: 100px;
 }
 
 /* Fixed width for platform columns */
-.strategy-table th:not(:first-child),
-.strategy-table td:not(:first-child) {
+.table th:not(:first-child),
+.table td:not(:first-child) {
     width: 200px;
-}
-
-/* Styling for table headers and cells */
-.strategy-table th,
-.strategy-table td {
-    border: 1px solid var(--table-border);
-    padding: 0.5rem;
-    text-align: center;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-/* Styling for the container of dropdown selectors */
-.select-container {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-}
-
-/* Fixed width for dropdowns to ensure consistent alignment */
-.select-container select {
-    width: 90px;
-    padding: 2px;
 }
 </style>

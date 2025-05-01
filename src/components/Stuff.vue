@@ -199,7 +199,7 @@ const copyToClipboard = () => {
 }
 
 .card {
-    background: var(--card-dark-bg);
+    background: var(--card-secondary-bg);
     padding: 1rem;
     border-radius: 4px;
 }
@@ -247,7 +247,7 @@ button:disabled {
 
 .response {
     flex: 2;
-    background: var(--card-dark-bg);
+    background: var(--card-secondary-bg);
     padding: 1rem;
     border-radius: 4px;
     display: flex;

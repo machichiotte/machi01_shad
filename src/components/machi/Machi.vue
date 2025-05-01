@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, shallowRef, watch } from 'vue' // Removed onBeforeUnmount
+import { ref, onMounted, computed, shallowRef, watch } from 'vue'
 import { useCalculStore } from '../../store/calculStore'
 import { useLiveDataStore } from '../../store/liveDataStore';
 
 import { FilterMatchMode } from 'primevue/api'
-import Paginator, { type PageState } from 'primevue/paginator'; // Import Paginator and PageState type
-import Button from 'primevue/button'; // Assuming Button is used, ensure it's imported
-import Toolbar from 'primevue/toolbar'; // Assuming Toolbar is used
+import Paginator, { type PageState } from 'primevue/paginator';
+import Button from 'primevue/button';
+import Toolbar from 'primevue/toolbar';
 import CardAsset from './card/CardAsset.vue'
 import CardBalance from './card/CardBalance.vue'
 import CardStableCoin from './card/CardStableCoin.vue'
@@ -17,36 +17,31 @@ import ActionSelector from './ActionSelector.vue'
 import TradesTable from '../trade/TradesTable.vue'
 import OrdersTable from '../order/OrdersTable.vue'
 import { Filter } from '../../types/filter'
-import { Asset, Order, Trade, TradeTransformed } from '../../types/responseData' // Add Order type if needed by OrdersTable
+import { Asset, Order, Trade, TradeTransformed } from '../../types/responseData'
 
-// --- Component State ---
 const selectedBases = shallowRef<Asset[]>([])
 const filters = ref<Filter>({ global: { value: null, matchMode: FilterMatchMode.CONTAINS } })
 const selectedPlatforms = shallowRef<string[]>(['binance', 'kucoin', 'htx', 'okx', 'gateio'])
-const isLoadingData = ref<boolean>(true); // Added for initial loading state message
+const isLoadingData = ref<boolean>(true);
 
-// --- Stores ---
 const calculStore = useCalculStore()
 const liveDataStore = useLiveDataStore();
 
-// --- Data from Store ---
 const tradesItems = computed<Trade[]>(() => calculStore.getTrade)
-const openOrdersItems = computed<Order[]>(() => calculStore.getOrder) // Assuming Order type
+const openOrdersItems = computed<Order[]>(() => calculStore.getOrder)
 const machiItems = computed<Asset[]>(() => calculStore.getMachi)
 
-// --- Filtered Trades (example, assuming full logic exists) ---
 const filteredTrades = computed<TradeTransformed[]>(() => {
   return tradesItems.value
     .filter(item => {
       const searchValue = filters.value.global.value ? filters.value.global.value.toLowerCase() : ''
-      // Example filter logic: Adjust based on your actual needs
       return !searchValue ||
         item.pair.toLowerCase().startsWith(searchValue) ||
         item.base.toLowerCase().startsWith(searchValue) ||
         item.quote.toLowerCase().startsWith(searchValue) ||
         item.platform.toLowerCase().startsWith(searchValue)
     })
-    .map((item: Trade): TradeTransformed => { // Explicit return type
+    .map((item: Trade): TradeTransformed => {
       let date: string
       let timestampVal = 0
       if (item.timestamp) {
@@ -80,26 +75,25 @@ const filteredTrades = computed<TradeTransformed[]>(() => {
         feecoin: item.feecoin,
         platform: item.platform,
         timestampVal
-      } // Removed 'as TradeTransformed' by adding explicit return type
+      }
     })
     .sort((a, b) => b.timestampVal - a.timestampVal)
 })
 
-// --- Filtered Machi Items based on platform and search ---
 const filteredMachiItems = computed<Asset[]>(() => {
   const searchValue = filters.value.global.value?.toLowerCase() ?? ''
   const uniqueItems = new Map<string, boolean>()
 
   return machiItems.value.filter(item => {
-    const key = `${item.base}-${item.platform}` // Ensure unique key combination
-    if (uniqueItems.has(key)) return false // Skip duplicates based on base+platform
+    const key = `${item.base}-${item.platform}`
+    if (uniqueItems.has(key)) return false
 
     const matchesPlatform = selectedPlatforms.value.includes(item.platform)
     const matchesSearch = !searchValue ||
                           item.base.toLowerCase().includes(searchValue) ||
                           item.platform.toLowerCase().includes(searchValue) ||
-                          (item.name && item.name.toLowerCase().includes(searchValue)) || // Optional: search in name if exists
-                          (item.tags && item.tags.some(tag => tag.toLowerCase().includes(searchValue))); // Optional: search in tags
+                          (item.name && item.name.toLowerCase().includes(searchValue)) ||
+                          (item.tags && item.tags.some(tag => tag.toLowerCase().includes(searchValue)))
 
     if (matchesPlatform && matchesSearch) {
        uniqueItems.set(key, true)
@@ -109,12 +103,10 @@ const filteredMachiItems = computed<Asset[]>(() => {
   })
 })
 
-// --- Non-Stable Machi Items (to be paginated) ---
 const nonStableMachiItems = computed<Asset[]>(() =>
   filteredMachiItems.value.filter(item => !(item.tags && item.tags.includes('stablecoin')))
 )
 
-// --- Data Fetching ---
 const getData = async (): Promise<void> => {
   isLoadingData.value = true;
   try {
@@ -128,7 +120,6 @@ const getData = async (): Promise<void> => {
     })
   } catch (error) {
     console.error('An error occurred while retrieving data:', error)
-    // Handle error display to user if necessary
   } finally {
     isLoadingData.value = false;
   }
@@ -136,10 +127,8 @@ const getData = async (): Promise<void> => {
 
 onMounted(async () => { await getData() })
 
-// --- Action Handlers ---
 const handleDeleteAction = (): void => {
   console.log('Delete action triggered');
-  // Implement actual delete logic here
 }
 const updateSelectedBases = (newSelection: Asset[]): void => {
   selectedBases.value = newSelection
@@ -148,59 +137,41 @@ const updateSelectedPlatforms = (newPlatforms: string[]): void => {
   selectedPlatforms.value = newPlatforms
 }
 
-// --- Expand/Collapse State for Tabs ---
 const isBottomExpanded = ref<boolean>(false)
 const activeBottomTab = ref<'trades' | 'orders'>('trades')
 const isTopExpanded = ref<boolean>(false)
 const activeTopTab = ref<'platforms' | 'fetch' | 'action'>('platforms')
 
-// --- Pagination State ---
-const itemsPerPage = ref<number>(100); // Rows per page
-const firstRecordIndex = ref<number>(0); // Index of the first item on the current page
+const itemsPerPage = ref<number>(100);
+const firstRecordIndex = ref<number>(0);
 
-// --- Total Items for Pagination ---
 const totalMachiItems = computed<number>(() => nonStableMachiItems.value.length);
 
-// --- Paginated Items Calculation (Current Page Only) ---
 const paginatedMachiItems = computed<Asset[]>(() => {
   const start = firstRecordIndex.value;
   const end = start + itemsPerPage.value;
   return nonStableMachiItems.value.slice(start, end);
 });
 
-// --- Page Change Handler ---
 const onPage = (event: PageState): void => {
-  // PageState provides { first: number, rows: number, page: number, pageCount: number }
   firstRecordIndex.value = event.first;
   itemsPerPage.value = event.rows;
 };
 
-// --- Watch for filter changes to reset pagination ---
 watch([filters, selectedPlatforms, machiItems], () => {
-    // Reset to first page whenever the underlying data or filters change
-    // Check if current page becomes invalid
     const newTotalPages = Math.ceil(nonStableMachiItems.value.length / itemsPerPage.value);
     const currentPageNum = Math.floor(firstRecordIndex.value / itemsPerPage.value);
     if (currentPageNum >= newTotalPages && newTotalPages > 0) {
-        // If current page is now out of bounds, go to the new last page
         firstRecordIndex.value = Math.max(0, newTotalPages - 1) * itemsPerPage.value;
     } else if (firstRecordIndex.value !== 0 && nonStableMachiItems.value.length > 0 && paginatedMachiItems.value.length === 0) {
-        // Or simply reset to page 0 if the current page ends up empty (e.g., going from many items to few)
          firstRecordIndex.value = 0;
     } else if (nonStableMachiItems.value.length === 0) {
-        // Handle case where filters result in zero items
         firstRecordIndex.value = 0;
     }
-    // If filters change but current page is still valid, we might choose *not* to reset,
-    // but resetting is usually safer UX. Let's reset:
-    // firstRecordIndex.value = 0; // Uncomment this line for strict reset on every filter change
+}, { deep: true });
 
-}, { deep: true }); // Use deep watch for filters object
-
-// --- Emit Definitions ---
 const emit = defineEmits(['top-toggle-details', 'bottom-toggle-details'])
 
-// --- Toggle Functions ---
 function toggleTopExpandCollapse(): void {
   isTopExpanded.value = !isTopExpanded.value
   emit('top-toggle-details', isTopExpanded.value)
@@ -301,73 +272,32 @@ function toggleBottomExpandCollapse(): void {
 </template>
 
 <style scoped>
-/* Deep selectors for PrimeVue components */
-:deep(.p-button) {
-  background-color: var(--surface-card) !important;
-  border-color: var(--surface-card) !important;
-  color: var(--text-color) !important;
-  box-shadow: none;
-}
-
-:deep(.p-button.active) {
-  background-color: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
-  color: var(--primary-color-text) !important;
-}
-
-/* Paginator specific styling */
-:deep(.p-paginator.surface-ground) {
-  background-color: var(--surface-ground) !important; /* Match asset container background */
-  border: none !important; /* Remove border if desired */
-  border-radius: 0 !important; /* Remove border-radius if needed */
-}
-/* Optional: Style paginator elements if needed for theme consistency */
-:deep(.p-paginator .p-paginator-current),
-:deep(.p-paginator .p-dropdown .p-dropdown-label),
-:deep(.p-paginator .p-paginator-page),
-:deep(.p-paginator .p-paginator-next),
-:deep(.p-paginator .p-paginator-last),
-:deep(.p-paginator .p-paginator-first),
-:deep(.p-paginator .p-paginator-prev) {
-    color: var(--text-color-secondary); /* Example: Adjust color */
-}
-:deep(.p-paginator .p-paginator-page.p-highlight) {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
-    color: var(--primary-color-text);
-}
-
-/* Layout Styles */
 .main-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full viewport height */
+  height: 100vh;
 }
 
 .content-container {
-  background: var(--surface-card);
   border-radius: 4px;
-  flex: 1; /* Takes remaining vertical space */
-  overflow-y: auto; /* Allows content scrolling */
-  /* Adjusted height calculation might not be needed if flex: 1 works */
-  /* height: calc(100vh - var(--top-bar-height) - var(--bottom-bar-height)); */
-  transition: height var(--transition-duration) ease-in-out; /* Smooth height transition */
+  flex: 1;
+  overflow-y: auto;
+  transition: var(--transition-duration) ease-in-out;
   display: flex;
-  flex-direction: column; /* Ensure paginators stay at top/bottom */
+  flex-direction: column;
 }
-
 
 .card-container {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  padding: 1rem; /* Add some padding */
-  flex-wrap: wrap; /* Allow wrapping if space is limited */
+  padding: 1rem;
+  flex-wrap: wrap;
 }
 
 .card-container > * {
-  flex: 0 0 400px; /* Maintain fixed width for balance/stablecoin cards */
-   max-width: 100%; /* Ensure they don't overflow container */
+  flex: 0 0 400px;
+   max-width: 100%;
 }
 
 .asset-card-container {
@@ -375,47 +305,42 @@ function toggleBottomExpandCollapse(): void {
   grid-template-columns: repeat(auto-fit, minmax(800px, 1fr));
   gap: 0.5rem;
   padding: 0.5rem;
-  background: var(--surface-ground);
-  flex-grow: 1; /* Allow grid to take available space if content is short */
-  min-height: 200px; /* Prevent collapsing when empty */
+  flex-grow: 1;
+  min-height: 200px;
 }
 
-/* Sticky Tab Containers */
 .top-tab-container,
 .bottom-tab-container {
-  position: sticky; /* Make tabs stick */
+  position: sticky;
   z-index: 10;
   width: 100%;
-  background: var(--surface-card);
-  border: 1px solid var(--border-color, #444); /* Added default border color */
+  background: var(--tab-bg);
+  border: 1px solid var(--tab-border);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: max-height 0.3s ease-in-out; /* Smoother transition */
-  flex-shrink: 0; /* Prevent tabs from shrinking */
+  transition: max-height 0.3s ease-in-out;
+  flex-shrink: 0;
 }
 
 .top-tab-container {
   top: 0;
-  border-bottom: 1px solid var(--border-color, #444);
-  --top-bar-height: 60px; /* Example fixed height for collapsed */
+  border-bottom: 1px solid var(--tab-border);
+  --top-bar-height: 60px;
   max-height: var(--top-bar-height);
 }
 
 .top-tab-container.expanded {
-  --top-bar-expanded-height: 180px; /* Example expanded height */
   max-height: var(--top-bar-expanded-height);
 }
 
 .bottom-tab-container {
   bottom: 0;
-  border-top: 1px solid var(--border-color, #444);
-   --bottom-bar-height: 56px; /* Example fixed height for collapsed */
+  border-top: 1px solid var(--tab-border);
   max-height: var(--bottom-bar-height);
 }
 
 .bottom-tab-container.expanded {
-   --bottom-bar-expanded-height: 350px; /* Example expanded height */
   max-height: var(--bottom-bar-expanded-height);
 }
 
@@ -423,61 +348,56 @@ function toggleBottomExpandCollapse(): void {
 .bottom-tab-header {
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem; /* Added horizontal padding */
+  padding: 0.5rem 1rem;
   justify-content: space-between;
-  flex-shrink: 0; /* Prevent header from shrinking */
-   min-height: var(--bottom-bar-height); /* Ensure header has minimum height */
+  flex-shrink: 0; 
+   min-height: var(--bottom-bar-height); 
 }
 .top-tab-header {
     min-height: var(--top-bar-height);
 }
 
-
-.top-tab-menu, /* Combined selector */
+.top-tab-menu,
 .bottom-tab-menu {
   display: flex;
   gap: 0.5rem;
-  flex-grow: 1; /* Allow menu to take space */
-  justify-content: flex-start; /* Align buttons to the start */
+  flex-grow: 1; 
+  justify-content: flex-start; 
 }
 
-.top-tab-header > .p-inputgroup { /* Target SearchBar container more specifically */
-   max-width: 300px; /* Limit search bar width */
+.top-tab-header > .p-inputgroup {
+   max-width: 300px; 
    flex-shrink: 1;
 }
 
-.top-tab-content, /* Combined selector */
+.top-tab-content,
 .bottom-tab-content {
-  padding: 0.5rem 1rem; /* Added horizontal padding */
-  overflow-y: auto; /* Allow content within tabs to scroll if needed */
-  flex-grow: 1; /* Allow content to fill expanded space */
+  padding: 0.5rem 1rem;
+  overflow-y: auto;
+  flex-grow: 1;
 }
 
-/* Button styles within headers */
 .expand-collapse-button {
-    margin-left: auto; /* Push expand/collapse button to the right */
+    margin-left: auto;
 }
 
 .expand-collapse-button .pi {
-  transition: transform 0.3s;
+  transition: transform var(--transition-duration) ease-in-out;
 }
 
-/* Rotate chevron icons when expanded */
 .top-tab-container.expanded .expand-collapse-button .pi-chevron-down,
 .bottom-tab-container.expanded .expand-collapse-button .pi-chevron-up {
   transform: rotate(180deg);
 }
 
-
-/* Utility classes (assuming these are defined globally or add them here) */
 .text-center {
     text-align: center;
 }
 .text-color-secondary {
-    color: var(--text-color-secondary);
+    color: var(--secondary-text);
 }
 .p-p-3 {
-    padding: 1rem; /* Adjust based on your theme's spacing */
+    padding: 1rem; 
 }
 .p-mb-3 {
     margin-bottom: 1rem;

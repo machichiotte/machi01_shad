@@ -117,7 +117,7 @@ const sendKeyToServer = async (payload: any) => {
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 4px;
-  background-color: var(--card-dark-bg);
+  background-color: var(--card-secondary-bg);
 }
 
 h2 {

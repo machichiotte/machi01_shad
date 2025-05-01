@@ -171,9 +171,7 @@ const noResultsMessage = computed(() => {
 <style scoped>
 /* Keep only general styles, loading, error, and potentially Paginator overrides */
 .rss-feed-container {
-    /* Basic container styles if any */
     padding: 1rem;
-    /* Example */
 }
 
 .loading-indicator {
@@ -190,77 +188,6 @@ const noResultsMessage = computed(() => {
 }
 
 .info-message {
-    /* Style for the 'no results' message */
     width: 100%;
-}
-
-/* Paginator Dark Theme Adjustments (Keep these global overrides here or move to a global CSS) */
-:deep(.p-paginator) {
-    background-color: #3a3a3a;
-    border: 1px solid #555;
-    color: #ccc;
-    border-radius: 6px;
-}
-
-:deep(.p-paginator .p-paginator-current) {
-    color: #ccc;
-}
-
-:deep(.p-paginator .p-dropdown) {
-    background-color: #444;
-    border: 1px solid #666;
-    color: #eee;
-}
-
-:deep(.p-paginator .p-dropdown .p-dropdown-trigger) {
-    color: #eee;
-}
-
-:deep(.p-paginator .p-dropdown-panel .p-dropdown-items .p-dropdown-item) {
-    color: #eee;
-}
-
-:deep(.p-paginator .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover) {
-    background-color: #5a5a5a;
-}
-
-:deep(.p-paginator .p-paginator-page),
-:deep(.p-paginator .p-paginator-next),
-:deep(.p-paginator .p-paginator-last),
-:deep(.p-paginator .p-paginator-first),
-:deep(.p-paginator .p-paginator-prev) {
-    color: #eee;
-    min-width: 2.5rem;
-    height: 2.5rem;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-:deep(.p-paginator .p-paginator-element:not(.p-disabled):hover) {
-    background-color: #555;
-    color: #fff;
-}
-
-:deep(.p-paginator .p-paginator-page.p-highlight) {
-    background-color: #0ea5e9;
-    border-color: #0ea5e9;
-    color: #fff;
-}
-
-:deep(.p-paginator .p-paginator-element:focus) {
-    box-shadow: 0 0 0 0.2rem rgba(14, 165, 233, 0.3);
-}
-
-/* Tooltip global styles (if needed) */
-:deep(.p-tooltip) {
-    background-color: #222 !important;
-    color: #eee !important;
-    font-size: 0.85rem !important;
-}
-
-:deep(.p-tooltip .p-tooltip-arrow) {
-    border-top-color: #222 !important;
-    border-bottom-color: #222 !important;
-    border-left-color: #222 !important;
-    border-right-color: #222 !important;
 }
 </style>
