@@ -1,4 +1,5 @@
-<!-- src/components/machi/card/CardAsset.vue -->
+// File: src/components/machi/card/CardAsset.vue
+
 <script setup lang="ts">
 import { computed, ref, PropType } from 'vue'; // Import PropType
 import { Asset, Order, Trade, TradeTransformed } from '../../../types/responseData';
@@ -91,4 +92,5 @@ const transformedTrades = computed<TradeTransformed[]>(() => {
     overflow: hidden;
 }
 
-</style>
+</style> 
+

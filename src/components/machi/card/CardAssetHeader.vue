@@ -1,4 +1,5 @@
-// File: /components/AssetCardHeader.vue
+// File: src/components/machi/card/CardAssetHeader.vue
+
 <script setup lang="ts">
 import { computed, ref, PropType, onMounted } from 'vue';
 import { Asset, Order, Trade } from '../../../types/responseData';
@@ -160,6 +161,7 @@ onMounted(() => {
         :aria-label="isDetailsVisible ? 'Masquer les détails' : 'Afficher les détails'"
         @click="handleToggleDetailsClick" />
     </div>
+    
   </div>
 </template>
 
@@ -329,7 +331,6 @@ onMounted(() => {
 .expand-button:hover {
   color: var(--primary-text);
   background: var(--expand-btn-hover-bg) !important;
-  /* Léger fond au survol */
 }
 
 
