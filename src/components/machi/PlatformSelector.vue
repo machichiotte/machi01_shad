@@ -1,23 +1,25 @@
 <!-- src/components/machi/PlatformSelector.vue -->
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import SelectButton from 'primevue/selectbutton'; // Importez SelectButton
 
-// Définition des types pour les options de plateforme
+// Définition des types pour les options de plateforme (inchangé)
 interface PlatformOption {
   id: string;
   name: string;
 }
 
-// Définition des props avec types
+// Définition des props avec types (inchangé)
 const props = defineProps<{
   initialSelectedPlatforms: string[];
 }>();
 
+// Emit pour la mise à jour (inchangé, v-model sur SelectButton s'en chargera)
 const emit = defineEmits<{
   (e: 'update:selectedPlatforms', selectedPlatforms: string[]): void;
 }>();
 
-// Options de plateforme
+// Options de plateforme (inchangé)
 const platformOptions = computed<PlatformOption[]>(() => [
   { id: 'binance', name: 'Binance' },
   { id: 'kucoin', name: 'KuCoin' },
@@ -26,34 +28,34 @@ const platformOptions = computed<PlatformOption[]>(() => [
   { id: 'gateio', name: 'Gate.io' }
 ]);
 
-// Sélection des plateformes
 const selectedPlatforms = ref<string[]>([...props.initialSelectedPlatforms]);
 
-// Fonction pour basculer la sélection d'une plateforme
-function togglePlatform(platformId: string): void {
-  if (selectedPlatforms.value.includes(platformId)) {
-    selectedPlatforms.value = selectedPlatforms.value.filter(id => id !== platformId);
-  } else {
-    selectedPlatforms.value.push(platformId);
-  }
-  emit('update:selectedPlatforms', selectedPlatforms.value);
-}
-
-// Surveiller les changements dans les plateformes sélectionnées
 watch(
   () => props.initialSelectedPlatforms,
   (newVal) => {
-    selectedPlatforms.value = [...newVal];
-  }
+    if (JSON.stringify(newVal) !== JSON.stringify(selectedPlatforms.value)) {
+      selectedPlatforms.value = [...newVal];
+    }
+  },
+  { deep: true } 
 );
+watch(selectedPlatforms, (newSelection) => {
+    emit('update:selectedPlatforms', newSelection);
+});
+
 </script>
 
 <template>
   <div class="platform-selector">
-    <Button v-for="platform in platformOptions" :key="platform.id" :label="platform.name"
-      :class="['button-toggle', { selected: selectedPlatforms.includes(platform.id) }]"
-      @click="togglePlatform(platform.id)" />
-  </div>
+    <SelectButton
+      v-model="selectedPlatforms"
+      :options="platformOptions"
+      optionLabel="name"  
+      optionValue="id"    
+      multiple            
+      aria-labelledby="multiple-platforms" 
+    />
+    </div>
 </template>
 
 <style scoped>

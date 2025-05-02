@@ -60,7 +60,7 @@ button:disabled {
 }
 
 .button-toggle {
-  background-color: var(--btn-toggle-bg);
+  background-color: #00f000;
   border: 1px solid var(--btn-toggle-border);
   color: var(--btn-toggle-text);
   padding: 0.5rem 1rem;
@@ -139,15 +139,27 @@ button:disabled {
   box-shadow: none !important;
 }
 
-.p-button.active,
-.p-button.p-highlight {
+
+
+.p-button.active {
   background-color: var(--btn-bg) !important;
   border-color: var(--btn-border) !important;
   color: var(--btn-text) !important;
 }
 
+.p-selectbutton .p-button {
+  background-color: violet !important;
+  color: wheat !important;
+}
+
+.p-selectbutton .p-button.p-highlight {
+  background-color: red !important;
+  color: yellow !important;
+  box-shadow: none !important;
+}
+
 .p-paginator {
-  background-color: var(--primary-bg);
+  position: sticky;
 }
 
 /* Paginator */
@@ -209,102 +221,6 @@ button:disabled {
   border-color: var(--btn-border);
 }
 
-/* MultiSelect */
-.compact-multiselect .p-multiselect {
-  background-color: #119e2d;
-  border: 1px solid #8f1c87;
-  color: #265589;
-  font-size: 0.875rem;
-}
-
-.compact-multiselect .p-multiselect:not(.p-disabled):hover {
-  border-color: #888;
-}
-
-.compact-multiselect .p-multiselect.p-focus {
-  box-shadow: 0 0 0 0.2rem rgba(14, 165, 233, 0.3);
-  border-color: #0ea5e9;
-}
-
-/* MultiSelect */
-.compact-multiselect .p-multiselect {
-  background-color: var(--input-bg);
-  border: 1px solid var(--input-border);
-  color: var(--input-text);
-  font-size: 0.875rem;
-}
-
-.compact-multiselect .p-multiselect:not(.p-disabled):hover {
-  border-color: var(--searchbar-border-hover);
-}
-
-.compact-multiselect .p-multiselect.p-focus {
-  box-shadow: 0 0 0 0.2rem rgba(145, 25, 25, 0.4);
-  border-color: var(--btn-border);
-}
-
-/* MultiSelect panel & items */
-.p-multiselect-panel {
-  background-color: var(--secondary-bg);
-  border: 1px solid var(--secondary-border);
-}
-
-.p-multiselect-header {
-  background-color: var(--secondary-bg);
-  border-bottom: 1px solid var(--secondary-border);
-  padding: 0.5rem;
-}
-
-.p-multiselect-header .p-inputtext {
-  background-color: var(--card-primary-bg);
-  border: 1px solid var(--secondary-border);
-  color: var(--input-text);
-  font-size: 0.875rem;
-  padding: 0.4rem 0.6rem;
-}
-
-.p-multiselect-header .p-multiselect-close {
-  color: var(--secondary-text);
-  margin-left: 0.5rem;
-}
-
-.p-multiselect-item {
-  color: var(--secondary-text);
-  padding: 0.5rem 0.75rem;
-  margin: 0;
-  border-radius: 0;
-}
-
-.p-multiselect-item:hover {
-  background-color: var(--btn-hover-bg);
-}
-
-.p-multiselect-item.p-highlight {
-  background-color: var(--btn-bg);
-  color: var(--btn-text);
-}
-
-.p-multiselect-empty-message {
-  color: var(--neutral-color);
-  padding: 0.5rem 0.75rem;
-}
-
-/* SelectButton */
-.compact-selectbutton .p-button {
-  background-color: var(--btn-bg);
-  border-color: var(--btn-border);
-  color: var(--btn-text);
-  font-size: 0.875rem;
-  padding: 0.5rem 0.75rem;
-  transition: background-color var(--transition-duration), color var(--transition-duration),
-    border-color var(--transition-duration);
-}
-
-.compact-selectbutton .p-button:not(.p-highlight):not(.p-disabled):hover {
-  background-color: var(--btn-hover-bg);
-  border-color: var(--btn-hover-border);
-  color: var(--btn-text);
-}
 
 /* Search icon positioning */
 .p-input-icon-left > i.search-icon {
@@ -343,13 +259,17 @@ button:disabled {
 }
 
 .p-panel-header-icon.icon-link {
-  color: #0f15ff;
-
   margin-left: 0.5rem;
 }
 
 /* Message */
 .error-message {
+  color: var(--secondary-text);
+  background-color: var(--secondary-bg);
+  border-color: var(--secondary-border);
+}
+
+.info-message {
   color: var(--secondary-text);
   background-color: var(--secondary-bg);
   border-color: var(--secondary-border);

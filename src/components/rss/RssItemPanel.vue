@@ -144,6 +144,41 @@ defineProps({
     margin-left: 1rem;
 }
 
+/* Style pour le bouton d'expansion/réduction du Panel */
+:deep(.p-panel-toggler) {
+  padding: 0 !important;
+  min-width: 24px !important;
+  width: 24px !important; /* Fixer la largeur */
+  height: 24px !important;
+  color: var(--secondary-text-color); /* Utilise la variable */
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 50%; /* Optionnel: pour un look circulaire comme un IconButton */
+  transition: color 0.2s, background-color 0.2s; /* Transition douce */
+  margin-left: 0.5rem; /* Ajouter un peu d'espace à gauche */
+  display: inline-flex; /* Assurer un bon alignement */
+  align-items: center;
+  justify-content: center;
+}
+
+:deep(.p-panel-toggler:hover) {
+  color: var(--primary-text-color); /* Utilise la variable */
+  background: var(--expand-btn-hover-bg) !important; /* Utilise la variable */
+}
+
+/* Ajustement pour l'icône externe pour cohérence */
+.external-link-icon {
+    color: var(--secondary-text-color);
+    transition: color 0.2s;
+    margin-right: 0.5rem !important; /* Cohérence d'espacement */
+    /* Enlever p-mr-2 si vous préférez gérer via margin */
+}
+.external-link-icon:hover {
+     color: var(--primary-text-color);
+}
+
+
 /* Content specific styles */
 .rss-item-content {
     padding: 1rem 1.5rem;

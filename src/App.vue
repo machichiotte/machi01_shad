@@ -112,7 +112,7 @@ import { RouterLink } from 'vue-router'
   --surface-ground: #1a1a1a;
 
 
-  --top-bar-height: 40px;
+  --top-bar-height: 60px;
   --bottom-bar-height: 56px;
 
   --top-bar-expanded-height: 180px;
