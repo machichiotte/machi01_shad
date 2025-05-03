@@ -27,10 +27,10 @@ const onLeftChange = (e: { index: number }) => (selectedLeft.value = e.index);
 const onRightChange = (e: { index: number }) => (selectedRight.value = e.index);
 
 // Derived counts
-const buyOpenOrdersCount = computed(() => props.orders.filter(o => o.side === 'buy').length);
-const sellOpenOrdersCount = computed(() => props.orders.filter(o => o.side === 'sell').length);
-const buyTradesCount = computed(() => props.trades.filter(t => t.side === 'buy').length);
-const sellTradesCount = computed(() => props.trades.filter(t => t.side === 'sell').length);
+const buyOpenOrdersCount = computed(() => props.orders.filter(o => o.side?.toLowerCase() === 'buy').length);
+const sellOpenOrdersCount = computed(() => props.orders.filter(o => o.side?.toLowerCase() === 'sell').length);
+const buyTradesCount = computed(() => props.trades.filter(t => t.side.toLowerCase() === 'buy').length);
+const sellTradesCount = computed(() => props.trades.filter(t => t.side.toLowerCase() === 'sell').length);
 
 // Strategy and exposition
 const selectedStrat = ref<string>(ass.strat.strategy || 'shad');
@@ -55,7 +55,6 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
 
 <template>
     <div class="card-details">
-        <!-- Upper panels: two separate TabViews -->
         <div class="card-panel">
             <TabView :activeIndex="selectedLeft" @tab-change="onLeftChange" :renderActiveOnly="true">
                 <TabPanel header="Strategy">
