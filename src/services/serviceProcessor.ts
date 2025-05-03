@@ -23,8 +23,8 @@ import { ServiceDatabase } from '@services/api/database/serviceDatabase';
 import { ServiceOrderBalance } from '@services/api/platform/serviceOrderBalance';
 import path from 'path'; import { logger } from '@utils/loggerUtil';
 
-const COLLECTION_NAME = config.databaseConfig.collection.machi;
-const COLLECTION_CATEGORY = config.databaseConfig.category.machi;
+const COLLECTION_NAME = config.databaseConfig.collection.dashboard;
+const COLLECTION_CATEGORY = config.databaseConfig.category.dashboard;
 
 export class ServiceProcessor {
   static async processBalanceChanges(platform: PLATFORM, differences: BalanceWithDifference[]): Promise<void> {
@@ -56,29 +56,29 @@ export class ServiceProcessor {
     }
   }
 
-  static async saveMachi(): Promise<void> {
-    const operation = 'saveMachi';
-    logger.info('Début saveMachi', { module: path.parse(__filename).name, operation });
+  static async saveDashboard(): Promise<void> {
+    const operation = 'saveDashboard';
+    logger.info('Début saveDashboard', { module: path.parse(__filename).name, operation });
     try {
-      const data = await this.calculateAllMachi();
+      const data = await this.calculateAllDashboard();
       if (data && data.length > 0) {
-        logger.info(`Attempting to save ${data.length} Machi asset(s) to DB...`, { module: path.parse(__filename).name, operation, count: data.length });
+        logger.info(`Attempting to save ${data.length} Dashboard asset(s) to DB...`, { module: path.parse(__filename).name, operation, count: data.length });
         await ServiceDatabase.saveDocumentsWithTimestamp(data, COLLECTION_NAME, COLLECTION_CATEGORY);
-        logger.info(`Successfully saved ${data.length} Machi asset(s).`, { module: path.parse(__filename).name, operation, count: data.length });
+        logger.info(`Successfully saved ${data.length} Dashboard asset(s).`, { module: path.parse(__filename).name, operation, count: data.length });
       } else {
-        logger.info('No Machi data calculated to save.', { module: path.parse(__filename).name, operation });
+        logger.info('No Dashboard data calculated to save.', { module: path.parse(__filename).name, operation });
       }
-      logger.info('Fin saveMachi', { module: path.parse(__filename).name, operation });
+      logger.info('Fin saveDashboard', { module: path.parse(__filename).name, operation });
     } catch (error) {
-      handleServiceError(error, `${path.parse(__filename).name}:${operation}}`, 'Erreur lors de la sauvegarde de Machi');
+      handleServiceError(error, `${path.parse(__filename).name}:${operation}}`, 'Erreur lors de la sauvegarde de Dashboard');
       throw error;
     }
   }
 
   // Calcule l'ensemble des métriques pour les assets
-  static async calculateAllMachi(): Promise<Asset[]> {
-    const operation = 'calculateAllMachi';
-    logger.info('Début calculateAllMachi', { module: path.parse(__filename).name, operation });
+  static async calculateAllDashboard(): Promise<Asset[]> {
+    const operation = 'calculateAllDashboard';
+    logger.info('Début calculateAllDashboard', { module: path.parse(__filename).name, operation });
     const [dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers, dbBalances] = await this.fetchAllDatabaseData();
 
     //const fetchStart = Date.now();
@@ -97,7 +97,7 @@ export class ServiceProcessor {
     for (const item of dbBalances) {
       //const context = { module: path.parse(__filename).name, operation, platform: item.platform, base: item.base };
       if (typeof item.balance === 'number' && item.balance > 0) {
-        const assetMetrics = this.calculateMachiForBalance(item, dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers);
+        const assetMetrics = this.calculateDashboardForBalance(item, dbCmc, dbStrategies, dbTrades, dbOpenOrders, dbTickers);
         if (assetMetrics && isValidAssetMetrics(assetMetrics)) {
           allValues.push(assetMetrics);
           // Optionnel: log debug succès par asset
@@ -111,7 +111,7 @@ export class ServiceProcessor {
         //logger.debug('Balance ignorée (valeur nulle ou négative).', { ...context, balanceValue: item.balance });
       }
     }
-    logger.info(`Fin calculateAllMachi - ${allValues.length} asset(s) traités`, {
+    logger.info(`Fin calculateAllDashboard - ${allValues.length} asset(s) traités`, {
       module: path.parse(__filename).name,
       operation,
       processedAssets: allValues.length,
@@ -175,7 +175,7 @@ export class ServiceProcessor {
   }
 
   // Calcule les métriques d'un asset pour une balance donnée
-  private static calculateMachiForBalance(
+  private static calculateDashboardForBalance(
     balance: MappedBalance,
     dbCmc: MappedCmc[],
     dbStrategies: MappedStrat[],
@@ -183,7 +183,7 @@ export class ServiceProcessor {
     dbOpenOrders: MappedOrder[],
     dbTickers: MappedTicker[]
   ): Asset | null {
-    const operation = 'calculateMachiForBalance';
+    const operation = 'calculateDashboardForBalance';
     const context = { module: path.parse(__filename).name, operation, platform: balance.platform, base: balance.base };
     const assetBase = balance.base;
     const assetPlatform = balance.platform;
@@ -203,7 +203,7 @@ export class ServiceProcessor {
     );
 
     if (closestCmc === null || (!assetTrades.length && !assetOrders.length && !assetStrategy.base)) { // Vérifier si le fallback est utilisé via !assetStrategy.base
-      logger.warn('Aucune donnée suffisante pour calculer Machi.', {
+      logger.warn('Aucune donnée suffisante pour calculer Dashboard.', {
         ...context,
         cmcFound: !!closestCmc,
         tradesFound: assetTrades.length > 0,

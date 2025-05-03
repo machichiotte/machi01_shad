@@ -92,7 +92,7 @@ function broadcast(data: BroadcastTickerData): void {
     if (client.readyState === WebSocket.OPEN) {
       client.send(jsonData, (err) => {
         if (err) {
-          logger.error('[Broadcast] Error sending to client:', { error: formatErrorForLog(err) });
+          // logger.error('[Broadcast] Error sending to client:', { error: formatErrorForLog(err) });
         }
         // else logger.debug('[Broadcast] Message sent');
       });

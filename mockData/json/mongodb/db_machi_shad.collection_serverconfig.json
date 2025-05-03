@@ -9,7 +9,7 @@
     "timestamp": 30000,
     "market": 86400000,
     "order": 60000,
-    "machi": 60000,
+    "dashboard": 60000,
     "strat": 36000000,
     "swap": 86400000,
     "ticker": 30000,
@@ -27,7 +27,7 @@
     }
   },
   "cronSchedules": {
-    "machi": "*/30 * * * *",
+    "dashboard": "*/30 * * * *",
     "market": "* 23 * * *",
     "ticker": "*/1 * * * *",
     "balance": "*/2 * * * *",

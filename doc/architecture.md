@@ -24,7 +24,7 @@ Gère les requêtes entrantes et les réponses.
 - **`ctrlBalance.ts`** : Gestion des soldes des utilisateurs.
 - **`ctrlCmc.ts`** : Gestion des données CoinMarketCap.
 - **`ctrlMarket.ts`** : Gestion des données de marché.
-- **`ctrlMachi.ts`** : Gestion des stratégies Machi.
+- **`ctrlDashboard.ts`** : Gestion des stratégies Dashboard.
 - **`ctrlOrder.ts`** : Gestion des ordres de trading.
 - **`ctrlRss.ts`** : Gestion des flux RSS.
 - **`ctrlStrategy.ts`** : Gestion des stratégies de trading.
@@ -47,7 +47,7 @@ Définit les points d'API pour chaque fonctionnalité.
 - **`routeCmc.ts`** : Routes pour les données CoinMarketCap.
 - **`routeConfigApi.ts`** : Routes pour la configuration de l'API.
 - **`routeConverter.ts`** : Routes pour la conversion de fichiers CSV.
-- **`routeMachi.ts`** : Routes pour les stratégies Machi.
+- **`routeDashboard.ts`** : Routes pour les stratégies Dashboard.
 - **`routeMarket.ts`** : Routes pour les données de marché.
 - **`routeOrder.ts`** : Routes pour les ordres de trading.
 - **`routeRss.ts`** : Routes pour les flux RSS.
@@ -87,7 +87,7 @@ Contient la logique métier et les interactions avec les API externes.
 - **`serviceBalance.ts`** : Gestion des soldes des plateformes.
 - **`serviceBinanceWs.ts`** : Gestion des WebSockets pour Binance.
 - **`serviceCcxt.ts`** : Intégration avec la bibliothèque CCXT.
-- **`serviceMachi.ts`** : Gestion des stratégies Machi.
+- **`serviceDashboard.ts`** : Gestion des stratégies Dashboard.
 - **`serviceMarket.ts`** : Gestion des données de marché.
 - **`serviceOrderBalance.ts`** : Gestion des ordres et des soldes.
 - **`serviceOrderMarket.ts`** : Gestion des ordres de marché.
@@ -155,7 +155,7 @@ Gère l'accès aux données dans la base de données. Chaque fichier correspond 
 - **`repoConfigApi.ts`** : Accès aux données de configuration des API.
 - **`repoConfigServer.ts`** : Accès aux données de configuration du serveur.
 - **`repoHighPrice.ts`** : Accès aux données des prix élevés (high prices).
-- **`repoMachi.ts`** : Accès aux données des stratégies Machi.
+- **`repoDashboard.ts`** : Accès aux données des stratégies Dashboard.
 - **`repoMarket.ts`** : Accès aux données de marché.
 - **`repoOrderBalance.ts`** : Accès aux données des ordres et des soldes.
 - **`repoRss.ts`** : Accès aux données des flux RSS.

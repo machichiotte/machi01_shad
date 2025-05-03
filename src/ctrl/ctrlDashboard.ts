@@ -1,18 +1,18 @@
-// src/ctrl/ctrlMachi.ts
+// src/ctrl/Dashboard.ts
 import { Request, Response } from 'express'
 import { handleControllerError } from '@utils/errorUtil'
-import { ServiceMachi } from '@services/api/platform/serviceMachi'
+import { ServiceDashboard } from '@src/services/api/platform/serviceDashboard'
 import { ServiceTrailingStop } from '@services/serviceTrailingStop'
 
 /**
  * Récupère les dernières données CoinMarketCap de la base de données.
  */
-async function getMachi(req: Request, res: Response): Promise<void> {
+async function getDashboard(req: Request, res: Response): Promise<void> {
     try {
-        const data = await ServiceMachi.fetchMachiInDatabase()
-        res.status(200).json({ status: "success", message: 'Données Machi récupérées', data })
+        const data = await ServiceDashboard.fetchDashboardInDatabase()
+        res.status(200).json({ status: "success", message: 'Données Dashboard récupérées', data })
     } catch (error) {
-        handleControllerError(res, error, getMachi.name)
+        handleControllerError(res, error, getDashboard.name)
     }
 }
 
@@ -30,4 +30,4 @@ async function handleTrailingStopHedge(req: Request, res: Response): Promise<voi
     }
 }
 
-export { getMachi, handleTrailingStopHedge }
+export { getDashboard, handleTrailingStopHedge }

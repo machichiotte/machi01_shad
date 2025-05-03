@@ -3,7 +3,6 @@ node_modules
 /dist
 /coverage
 /logs
-machi-shad client + server.code-workspace
 
 # local env files
 .env

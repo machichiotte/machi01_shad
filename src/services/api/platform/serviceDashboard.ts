@@ -1,16 +1,16 @@
-// src/services/api/platform/serviceMachi.ts
-import { RepoMachi } from '@repo/repoMachi';
+// src/services/api/platform/serviceDashboard.ts
+import { RepoDashboard } from '@src/repo/repoDashboard';
 import { RepoHighPrice } from '@repo/repoHighPrice';
 import { HighestPrices } from '@typ/database';
 import { PLATFORM } from '@typ/platform';
 import { Asset } from '@typ/cryptoAnalytics';
 
-export class ServiceMachi {
+export class ServiceDashboard {
   /**
-   * Fetches the most recent SHAD data from the database.
+   * Fetches the most recent Dashboard data from the database.
    */
-  static async fetchMachiInDatabase(): Promise<Asset[]> {
-    return await RepoMachi.fetchAll();
+  static async fetchDashboardInDatabase(): Promise<Asset[]> {
+    return await RepoDashboard.fetchAll();
   }
 
   /**

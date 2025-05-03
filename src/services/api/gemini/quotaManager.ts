@@ -42,7 +42,7 @@ export class QuotaManager {
             const now = Date.now();
             if (now < QuotaManager.globalPauseUntil) {
                 const waitTime = QuotaManager.globalPauseUntil - now;
-                logger.debug(`Global quota pause active. Waiting for ${Math.ceil(waitTime / 1000)}s...`, { module: moduleName, operation, waitMs: waitTime, pauseUntil: new Date(QuotaManager.globalPauseUntil).toISOString() });
+                //logger.debug(`Global quota pause active. Waiting for ${Math.ceil(waitTime / 1000)}s...`, { module: moduleName, operation, waitMs: waitTime, pauseUntil: new Date(QuotaManager.globalPauseUntil).toISOString() });
 
                 // Ensure only one sleep promise is created
                 if (!QuotaManager.globalPausePromise) {

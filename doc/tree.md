@@ -20,7 +20,7 @@
       - db_machi_shad.collection_balance.json
       - db_machi_shad.collection_cmc.json
       - db_machi_shad.collection_highest_price.json
-      - db_machi_shad.collection_machi.json
+      - db_machi_shad.collection_dashboard.json
       - db_machi_shad.collection_market.json
       - db_machi_shad.collection_order.json
       - db_machi_shad.collection_price_btc.json
@@ -46,7 +46,7 @@
     - ctrlBalance.ts
     - ctrlCmc.ts
     - ctrlConverter.ts
-    - ctrlMachi.ts
+    - ctrlDashboard.ts
     - ctrlMarket.ts
     - ctrlOrderBalance.ts
     - ctrlOrderMarket.ts
@@ -64,7 +64,7 @@
     - repoBalance.ts
     - repoCmc.ts
     - repoHighPrice.ts
-    - repoMachi.ts
+    - repoDashboard.ts
     - repoMarket.ts
     - repoOrderBalance.ts
     - repoStrategy.ts
@@ -80,7 +80,7 @@
     - routeBalance.ts
     - routeCmc.ts
     - routeConverter.ts
-    - routeMachi.ts
+    - routeDashboard.ts
     - routeMarket.ts
     - routeOrder.ts
     - routeStrategy.ts
@@ -99,7 +99,7 @@
         - mappingPlatform.ts
         - serviceBalance.ts
         - serviceCcxt.ts
-        - serviceMachi.ts
+        - serviceDashboard.ts
         - serviceMarket.ts
         - serviceOrderBalance.ts
         - serviceOrderMarket.ts
@@ -180,7 +180,7 @@
       - ctrlBalance.test.ts
       - ctrlCmc.test.ts
       - ctrlConverter.test.ts
-      - ctrlMachi.test.ts
+      - ctrlDashboard.test.ts
       - ctrlMarket.test.ts
       - ctrlOrderBalance.test.ts
       - ctrlOrderMarket.test.ts
@@ -189,7 +189,7 @@
       - ctrlTimestamp.test.ts
       - ctrlTrade.test.ts
     - routes/
-      - machiRoutes.test.ts
+      - dashboardRoutes.test.ts
       - marketRoutes.test.ts
       - orderRoutes.test.ts
       - routeAuth.test.ts

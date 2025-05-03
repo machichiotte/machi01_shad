@@ -4,7 +4,7 @@
 import { config } from '@config/index'
 import { CacheExpirationTimes } from '@config/types'
 import { DEFAULT_CACHE_EXPIRATION_TIMES } from '@config/default'
-import { API_CONFIG, BALANCE, CMC, MACHI, MARKET, ORDER, STRAT, TICKER, TRADE, USER, SERVER_CONFIG, HIGHEST_PRICE, SWAP, TIMESTAMP } from '@constants/collection'
+import { API_CONFIG, BALANCE, CMC, DASHBOARD, MARKET, ORDER, STRAT, TICKER, TRADE, USER, SERVER_CONFIG, HIGHEST_PRICE, SWAP, TIMESTAMP } from '@constants/collection'
 import { CacheItem } from '@typ/cache'
 import { MappedData } from '@typ/database'
 type CacheKey = keyof typeof DEFAULT_CACHE_EXPIRATION_TIMES
@@ -67,8 +67,8 @@ export class ServiceCache {
         return MARKET
       case config.databaseConfig.collection.order:
         return ORDER
-      case config.databaseConfig.collection.machi:
-        return MACHI
+      case config.databaseConfig.collection.dashboard:
+        return DASHBOARD
       case config.databaseConfig.collection.strat:
         return STRAT
       case config.databaseConfig.collection.swap:

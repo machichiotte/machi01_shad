@@ -1,6 +1,6 @@
 // src/repo/repoTrailingStop.ts
 import { ServiceBalance } from '@services/api/platform/serviceBalance';
-import { ServiceMachi } from '@services/api/platform/serviceMachi';
+import { ServiceDashboard } from '@src/services/api/platform/serviceDashboard';
 import { ServiceTicker } from '@services/api/platform/serviceTicker';
 import { ServiceOrderMarket } from '@services/api/platform/serviceOrderMarket';
 import { MappedBalance } from '@typ/balance';
@@ -13,7 +13,7 @@ export class RepoTrailingStop {
         try {
             return await Promise.all([
                 ServiceBalance.fetchDatabaseBalance(),
-                ServiceMachi.getHighestPrices()
+                ServiceDashboard.getHighestPrices()
             ]);
         } catch (error) {
             handleServiceError(error, 'fetchBalanceAndHighestPrices', 'Error fetching balance and highest prices');
@@ -48,7 +48,7 @@ export class RepoTrailingStop {
 
     static async updateHighestPrice(platform: PLATFORM, base: string, price: number): Promise<void> {
         try {
-            await ServiceMachi.updateHighestPrice(platform, base, price);
+            await ServiceDashboard.updateHighestPrice(platform, base, price);
         } catch (error) {
             handleServiceError(error, 'updateHighestPrice', `Error updating highest price for ${base} on ${platform}`);
         }

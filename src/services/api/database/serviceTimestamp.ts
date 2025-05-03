@@ -42,8 +42,8 @@ export class ServiceTimestamp {
     const timestampValue = { $numberLong: currentTimestamp.toString() };
 
     switch (type) {
-      case 'machi':
-        data.machi = timestampValue;
+      case 'dashboard':
+        data.dashboard = timestampValue;
         break;
       case 'cmc':
         data.cmc = timestampValue;

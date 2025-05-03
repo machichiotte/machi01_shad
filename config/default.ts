@@ -11,7 +11,7 @@ export const DEFAULT_MONGODB_COLLECTION = {
   timestamp: 'collection_timestamp',
   market: 'collection_market',
   order: 'collection_order',
-  machi: 'collection_machi',
+  dashboard: 'collection_dashboard',
   strat: 'collection_strategy',
   swap: 'collection_swap',
   ticker: 'collection_ticker',
@@ -30,7 +30,7 @@ export const DEFAULT_DATABASE_CATEGORY = {
   timestamp: 'timestamp',
   market: 'market',
   order: 'order',
-  machi: 'machi',
+  dashboard: 'dashboard',
   strat: 'strat',
   swap: 'swap',
   ticker: 'ticker',
@@ -105,7 +105,7 @@ export const DEFAULT_CACHE_EXPIRATION_TIMES = {
   timestamp: 111,
   market: 111,
   order: 111,
-  machi: 111,
+  dashboard: 111,
   strat: 111,
   swap: 111,
   ticker: 111,
@@ -127,7 +127,7 @@ export const DEFAULT_SMTP = {
 }
 
 export const DEFAULT_CRON_SCHEDULE = {
-  machi: '*/30 * * * *',
+  dashboard: '*/30 * * * *',
   market: '* 23 * * *',
   ticker: '*/1 * * * *',
   balance: '*/2 * * * *',

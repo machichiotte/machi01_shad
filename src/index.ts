@@ -57,7 +57,7 @@ async function startApp(): Promise<void> {
 
     // Étape 6 : Exécuter les autres tâches 
     // logger.info('[Step 6] Executing other tasks (ServiceProcessor)...', { module: path.parse(__filename).name, operation });
-    // await ServiceProcessor.saveMachi();
+    // await ServiceProcessor.saveDashboard();
     // logger.info('[Step 6] Other tasks executed.', { module: path.parse(__filename).name, operation });
 
     // Étape 7 : Démarrer le serveur Express

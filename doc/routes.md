@@ -46,12 +46,12 @@
 - **Endpoints** :
   - `POST /api/converter/post` : Convertir un fichier CSV.
 
-## Stratégies Machi
+## Stratégies Dashboard
 
-- **Routeur** : [`routeMachi.ts`](../src/routes/routeMachi.ts)
+- **Routeur** : [`routeDashboard.ts`](../src/routes/routeDashboard.ts)
 - **Endpoints** :
-  - `GET /api/machi/get` : Récupérer les stratégies Machi.
-  - `POST /api/machi/trailing` : Gérer un trailing stop hedge.
+  - `GET /api/dashboard/get` : Récupérer les stratégies Dashboard.
+  - `POST /api/dashboard/trailing` : Gérer un trailing stop hedge.
 
 ## Ordres de trading
 
