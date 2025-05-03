@@ -14,7 +14,7 @@ const ENDPOINTS: Record<string, string> = {
   ORDER_API: '/order/fetch',
   TICKER: '/ticker/get',
   TICKER_API: '/ticker/fetch',
-  DASHBOARD: '/machi/get',
+  DASHBOARD: '/dashboard/get',
   MARKET: '/market/get',
   MARKET_API: '/market/fetch',
   RSS: '/rss/get'
