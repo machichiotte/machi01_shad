@@ -4,7 +4,7 @@ import {
   fetchCmc,
   fetchBalance,
   fetchOrder,
-  fetchMachi,
+  fetchDashboard,
   fetchStrategy,
   fetchTrade,
   fetchTicker,
@@ -19,7 +19,7 @@ export const useCalculStore = defineStore('calcul', {
     order: [] as Order[],
     buyOrder: [] as Order[],
     sellOrder: [] as Order[],
-    machi: [] as Asset[],
+    dashboard: [] as Asset[],
     strat: [] as Strat[],
     ticker: [] as Ticker[],
     trade: [] as Trade[],
@@ -28,7 +28,7 @@ export const useCalculStore = defineStore('calcul', {
       balance: 0 as number,
       cmc: 0 as number,
       order: 0 as number,
-      machi: 0 as number,
+      dashboard: 0 as number,
       strat: 0 as number,
       ticker: 0 as number,
       trade: 0 as number,
@@ -38,7 +38,7 @@ export const useCalculStore = defineStore('calcul', {
 
   getters: {
     getTicker: (state) => state.ticker,
-    getMachi: (state) => state.machi,
+    getDashboard: (state) => state.dashboard,
     getBalance: (state) => state.balance,
     getTrade: (state) => state.trade,
     getStrat: (state) => state.strat,
@@ -76,8 +76,8 @@ export const useCalculStore = defineStore('calcul', {
       await this.loadData(TYPES.ORDER, fetchOrder, this.setOrder)
     },
 
-    async loadMachi() {
-      await this.loadData(TYPES.MACHI, fetchMachi, this.setMachi)
+    async loadDashboard() {
+      await this.loadData(TYPES.DASHBOARD, fetchDashboard, this.setDashboard)
     },
 
     async loadRss() {
@@ -137,8 +137,8 @@ export const useCalculStore = defineStore('calcul', {
       this.sellOrder = data.filter((order: any) => order.side === 'sell')
     },
 
-    setMachi(data: Asset[]) {
-      this.machi = data
+    setDashboard(data: Asset[]) {
+      this.dashboard = data
     },
 
     setRss(data: RssItem[]) {

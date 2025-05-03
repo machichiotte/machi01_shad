@@ -1,4 +1,5 @@
-// File: src/components/machi/card/CardAssetDetail.vue
+// File: src/components/dashboard/card/CardAssetDetail.vue
+
 <script setup lang="ts">
 import { ref, computed, reactive, watch } from 'vue';
 import { Asset, Order, TradeTransformed } from '../../../types/responseData';

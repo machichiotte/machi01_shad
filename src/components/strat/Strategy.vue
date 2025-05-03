@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useCalculStore } from '../../store/calculStore';
-import SearchBar from "../machi/SearchBar.vue";
+import SearchBar from "../dashboard/SearchBar.vue";
 import StrategyTable from "./StrategyTable.vue";
 import { useStrategyData } from '../../composables/useStrategyData';
 import {

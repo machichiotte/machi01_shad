@@ -1,4 +1,4 @@
-<!-- src/components/machi/card/CardStableCoin.vue -->
+<!-- src/components/dashboard/card/CardStableCoin.vue -->
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Asset } from '../../../types/responseData'

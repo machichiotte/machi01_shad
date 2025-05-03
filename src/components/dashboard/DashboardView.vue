@@ -1,3 +1,5 @@
+// File: src/components/dashboard/DashboardView.vue
+
 <script setup lang="ts">
 import { ref, onMounted, computed, shallowRef, watch } from 'vue'
 import { useCalculStore } from '../../store/calculStore'
@@ -29,7 +31,7 @@ const liveDataStore = useLiveDataStore();
 
 const tradesItems = computed<Trade[]>(() => calculStore.getTrade)
 const openOrdersItems = computed<Order[]>(() => calculStore.getOrder)
-const machiItems = computed<Asset[]>(() => calculStore.getMachi)
+const dashboardItems = computed<Asset[]>(() => calculStore.getDashboard)
 
 function formatTimestampToDateString(timestamp?: number, fallback?: string): string {
   if (timestamp) {
@@ -59,11 +61,11 @@ const filteredTrades = computed<TradeTransformed[]>(() => {
     .sort((a, b) => b.timestampVal - a.timestampVal)
 })
 
-const filteredMachiItems = computed<Asset[]>(() => {
+const dashboardFilteredItems = computed<Asset[]>(() => {
   const searchValue = filters.value.global.value?.toLowerCase() ?? ''
   const uniqueItems = new Map<string, boolean>()
 
-  return machiItems.value.filter(item => {
+  return dashboardItems.value.filter(item => {
     const key = `${item.base}-${item.platform}`
     if (uniqueItems.has(key)) return false
 
@@ -82,8 +84,8 @@ const filteredMachiItems = computed<Asset[]>(() => {
   })
 })
 
-const nonStableMachiItems = computed<Asset[]>(() =>
-  filteredMachiItems.value.filter(item => !(item.tags && item.tags.includes('stablecoin')))
+const dashboardNonStableItems = computed<Asset[]>(() =>
+  dashboardFilteredItems.value.filter(item => !(item.tags && item.tags.includes('stablecoin')))
 )
 
 const getData = async (): Promise<void> => {
@@ -91,11 +93,11 @@ const getData = async (): Promise<void> => {
   try {
     await calculStore.loadTrade()
     await calculStore.loadOrder()
-    await calculStore.loadMachi()
+    await calculStore.loadDashboard()
     console.info('Data retrieved:', {
       trades: tradesItems.value.length,
       orders: openOrdersItems.value.length,
-      machi: machiItems.value.length,
+      dashboard: dashboardItems.value.length,
     })
   } catch (error) {
     console.error('An error occurred while retrieving data:', error)
@@ -124,12 +126,12 @@ const activeTopPanelTab = ref<'platforms' | 'fetch' | 'action'>('platforms')
 const itemsPerPage = ref<number>(100);
 const firstRecordIndex = ref<number>(0);
 
-const totalMachiItems = computed<number>(() => nonStableMachiItems.value.length);
+const dashboardTotalItems = computed<number>(() => dashboardNonStableItems.value.length);
 
-const paginatedMachiItems = computed<Asset[]>(() => {
+const dashboardPaginatedItems = computed<Asset[]>(() => {
   const start = firstRecordIndex.value;
   const end = start + itemsPerPage.value;
-  return nonStableMachiItems.value.slice(start, end);
+  return dashboardNonStableItems.value.slice(start, end);
 });
 
 const onPage = (event: PageState): void => {
@@ -137,14 +139,14 @@ const onPage = (event: PageState): void => {
   itemsPerPage.value = event.rows;
 };
 
-watch([filters, selectedPlatforms, machiItems], () => {
-  const newTotalPages = Math.ceil(nonStableMachiItems.value.length / itemsPerPage.value);
+watch([filters, selectedPlatforms, dashboardItems], () => {
+  const newTotalPages = Math.ceil(dashboardNonStableItems.value.length / itemsPerPage.value);
   const currentPageNum = Math.floor(firstRecordIndex.value / itemsPerPage.value);
   if (currentPageNum >= newTotalPages && newTotalPages > 0) {
     firstRecordIndex.value = Math.max(0, newTotalPages - 1) * itemsPerPage.value;
-  } else if (firstRecordIndex.value !== 0 && nonStableMachiItems.value.length > 0 && paginatedMachiItems.value.length === 0) {
+  } else if (firstRecordIndex.value !== 0 && dashboardNonStableItems.value.length > 0 && dashboardPaginatedItems.value.length === 0) {
     firstRecordIndex.value = 0;
-  } else if (nonStableMachiItems.value.length === 0) {
+  } else if (dashboardNonStableItems.value.length === 0) {
     firstRecordIndex.value = 0;
   }
 }, { deep: true });
@@ -192,8 +194,8 @@ function toggleBottomExpandCollapse(): void {
     <div class="content-container">
       <Toolbar class="mb-4"><template #end></template></Toolbar>
       <div class="card-container">
-        <CardBalance :assets="filteredMachiItems" />
-        <CardStableCoin :assets="filteredMachiItems" />
+        <CardBalance :assets="dashboardFilteredItems" />
+        <CardStableCoin :assets="dashboardFilteredItems" />
       </div>
 
       <div v-if="isLoadingData" class="p-p-3">
@@ -204,25 +206,25 @@ function toggleBottomExpandCollapse(): void {
 
       <div v-else>
 
-        <Paginator v-if="totalMachiItems > itemsPerPage" :rows="itemsPerPage" :totalRecords="totalMachiItems"
+        <Paginator v-if="dashboardTotalItems > itemsPerPage" :rows="itemsPerPage" :totalRecords="dashboardTotalItems"
           :first="firstRecordIndex" @page="onPage" :rowsPerPageOptions="[10, 20, 50, 100]"
           template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
           currentPageReportTemplate="Affichage {first} à {last} sur {totalRecords} assets"
           class="p-mt-3" />
 
         <div class="asset-card-container">
-          <CardAsset v-for="item in paginatedMachiItems" :key="`${item.base}-${item.platform}`" :asset="item"
+          <CardAsset v-for="item in dashboardPaginatedItems" :key="`${item.base}-${item.platform}`" :asset="item"
             :trades="tradesItems" :orders="openOrdersItems"
             :available-markets="liveDataStore.getMarketsForBase(item.base)"
             @update:selectedBases="updateSelectedBases" />
         </div>
 
-        <div v-if="!isLoadingData && totalMachiItems === 0" class="p-p-3">
+        <div v-if="!isLoadingData && dashboardTotalItems === 0" class="p-p-3">
           <Message severity="error" :closable="false" class="error-message">
             <span>Aucun asset à afficher correspondant aux filtres actuels.</span>
           </Message>
         </div>
-        <div v-else-if="!isLoadingData && totalMachiItems > 0 && paginatedMachiItems.length === 0"
+        <div v-else-if="!isLoadingData && dashboardTotalItems > 0 && dashboardPaginatedItems.length === 0"
           class="p-p-3">
           <Message severity="error" :closable="false" class="error-message">
             <span>Aucun asset à afficher sur cette page.</span>

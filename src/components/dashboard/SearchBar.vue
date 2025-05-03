@@ -1,4 +1,4 @@
-<!-- src/components/machi/SearchBar.vue -->
+<!-- src/components/dashboard/SearchBar.vue -->
 <script setup lang="ts">
 
 interface Filters {

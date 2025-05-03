@@ -12,7 +12,7 @@ import PrimeVue from 'primevue/config'
 import 'primevue/resources/themes/aura-dark-green/theme.css'
 import 'primeicons/primeicons.css'
 
-import LogoMachi from './components/LogoMachi.vue'
+import MyLogoView from './components/MyLogoView.vue'
 
 import Button from 'primevue/button'
 import Calendar from 'primevue/calendar'
@@ -55,7 +55,7 @@ import { websocketService } from './services/websocketService';
 import Paginator from 'primevue/paginator'
 
 const app = createApp(App)
-app.component('LogoMachi', LogoMachi)
+app.component('MyLogoView', MyLogoView)
 
 app.use(createPinia())
 app.use(VueSweetalert2)

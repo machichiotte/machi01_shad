@@ -3,7 +3,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useCalculStore } from '../../store/calculStore'
 import { FilterMatchMode } from 'primevue/api'
-import SearchBar from "../machi/SearchBar.vue"
+import SearchBar from "../dashboard/SearchBar.vue"
 import CmcTable from "./CmcTable.vue"
 import { Cmc } from '../../types/responseData'
 import { applyGlobalFilter } from '../../utils/filter'

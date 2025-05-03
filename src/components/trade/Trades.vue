@@ -3,7 +3,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { FilterMatchMode } from 'primevue/api'
 import { useCalculStore } from '../../store/calculStore'
-import SearchBar from '../machi/SearchBar.vue'
+import SearchBar from '../dashboard/SearchBar.vue'
 import TradesTable from './TradesTable.vue'
 import { Trade, TradeTransformed } from '../../types/responseData'
 

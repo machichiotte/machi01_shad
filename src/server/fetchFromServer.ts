@@ -14,7 +14,7 @@ const ENDPOINTS: Record<string, string> = {
   ORDER_API: '/order/fetch',
   TICKER: '/ticker/get',
   TICKER_API: '/ticker/fetch',
-  MACHI: '/machi/get',
+  DASHBOARD: '/machi/get',
   MARKET: '/market/get',
   MARKET_API: '/market/fetch',
   RSS: '/rss/get'
@@ -24,7 +24,7 @@ const ENDPOINTS: Record<string, string> = {
 const fetchBalance = (): Promise<Balance[]> => fetchApiData<Balance[]>(ENDPOINTS.BALANCE);
 const fetchCmc = (): Promise<Cmc[]> => fetchApiData<Cmc[]>(ENDPOINTS.CMC);
 const fetchOrder = (): Promise<Order[]> => fetchApiData<Order[]>(ENDPOINTS.ORDER);
-const fetchMachi = (): Promise<Asset[]> => fetchApiData<Asset[]>(ENDPOINTS.MACHI);
+const fetchDashboard = (): Promise<Asset[]> => fetchApiData<Asset[]>(ENDPOINTS.DASHBOARD);
 const fetchMarket = (): Promise<Asset[]> => fetchApiData<Asset[]>(ENDPOINTS.MARKET);
 const fetchStrategy = (): Promise<Strat[]> => fetchApiData<Strat[]>(ENDPOINTS.STRATEGY);
 const fetchTicker = (): Promise<Ticker[]> => fetchApiData<Ticker[]>(ENDPOINTS.TICKER);
@@ -53,7 +53,7 @@ export {
   fetchBalance,
   fetchCmc,
   fetchOrder,
-  fetchMachi,
+  fetchDashboard,
   fetchMarket,
   fetchStrategy,
   fetchTicker,

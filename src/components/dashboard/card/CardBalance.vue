@@ -1,4 +1,4 @@
-<!-- src/components/machi/card/CardBalance.vue -->
+<!-- src/components/dashboard/card/CardBalance.vue -->
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Asset } from '../../../types/responseData';

@@ -8,7 +8,7 @@ export enum TYPES {
   STRAT = 'strat',
   CMC = 'cmc',
   ORDER = 'order',
-  MACHI = 'machi',
+  DASHBOARD = 'dashboard',
   TICKER = 'ticker',
   RSS = 'rss'
 }

@@ -1,4 +1,4 @@
-<!-- src/components/machi/PlatformSelector.vue -->
+<!-- src/components/dashboard/PlatformSelector.vue -->
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import SelectButton from 'primevue/selectbutton'; // Importez SelectButton

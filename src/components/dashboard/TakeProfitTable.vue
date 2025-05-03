@@ -1,4 +1,4 @@
-<!-- src/components/machi/TakeProfitTable.vue -->
+<!-- src/components/dashboard/TakeProfitTable.vue -->
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Order, TakeProfits } from '../../types/responseData';

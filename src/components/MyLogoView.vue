@@ -1,4 +1,4 @@
-<!-- src/components/LogoMachi.vue -->
+// File: /components/MyLogoView.vue
 <script setup lang="ts">
 const props = defineProps({
   color: {

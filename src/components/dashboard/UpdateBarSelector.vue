@@ -8,7 +8,7 @@ import {
     fetchTicker,
     fetchOrder,
     fetchStrategy,
-    fetchMachi
+    fetchDashboard
 } from '../../server/fetchFromServer'
 import { Balance, Cmc, Asset, Order, Strat, Ticker, Trade } from '../../types/responseData';
 
@@ -34,7 +34,7 @@ const fetchOptions: Array<
         { id: 'fetchTickers', name: 'Fetch Tickers Data', fetchFunction: fetchTicker },
         { id: 'fetchOrders', name: 'Fetch Orders Data', fetchFunction: fetchOrder },
         { id: 'fetchStrategy', name: 'Fetch Strategy Data', fetchFunction: fetchStrategy },
-        { id: 'fetchMachi', name: 'Fetch Machi Data', fetchFunction: fetchMachi }
+        { id: 'fetchDashboard', name: 'Fetch Dashboard Data', fetchFunction: fetchDashboard }
     ]
 
 const loading = ref(Array(fetchOptions.length).fill(false))

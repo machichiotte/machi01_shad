@@ -1,7 +1,7 @@
 // src/router.ts
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from './components/Home.vue'
-import Machi from './components/machi/Machi.vue'
+import DashboardView from './components/dashboard/DashboardView.vue'
 import InvestCalculator from './components/form/InvestmentCalculator.vue'
 import Orders from './components/order/Orders.vue'
 import Cmc from './components/cmc/Cmc.vue'
@@ -13,7 +13,7 @@ import RssFeedDisplay from './components/rss/RssFeedDisplay.vue'
 import Livedata from './components/livedata/Livedata.vue'
 
 const routes: Array<RouteRecordRaw> = [
-  { path: '/', name: 'machi', component: Machi },
+  { path: '/', name: 'dashboard', component: DashboardView },
   { path: '/order', name: 'order', component: Orders },
   { path: '/invest', name: 'invest', component: InvestCalculator },
   { path: '/cmc', name: 'cmc', component: Cmc },

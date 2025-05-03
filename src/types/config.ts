@@ -51,7 +51,7 @@ export interface DatabaseCategory {
   timestamp: string
   market: string
   order: string
-  machi: string
+  dashboard: string
   strat: string
   ticker: string
   trade: string
@@ -66,7 +66,7 @@ export interface CacheExpirationTimes {
   timestamp: number
   market: number
   order: number
-  machi: number
+  dashboard: number
   strat: number
   swap: number
   ticker: number
@@ -89,7 +89,7 @@ export interface ServerSmtp {
 }
 
 export interface ServerCronSchedules {
-  machi: string
+  dashboard: string
   market: string
   ticker: string
   balance: string

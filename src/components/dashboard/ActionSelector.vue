@@ -1,4 +1,4 @@
-<!-- src/components/machi/ActionSelector.vue -->
+<!-- src/components/dashboard/ActionSelector.vue -->
 <script setup lang="ts">
 import MyBunchSellButton from '../button/MyBunchSellButton.vue'
 import MyEmergencySellButton from '../button/MyEmergencySellButton.vue'
