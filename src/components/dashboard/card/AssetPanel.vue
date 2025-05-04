@@ -1,7 +1,7 @@
 // File: src/components/dashboard/card/AssetPanel.vue
 
 <script setup lang="ts">
-import { computed, ref, PropType } from 'vue';
+import { computed, ref, PropType, onMounted, watch } from 'vue';
 import { Asset, Order, Trade, TradeTransformed } from '../../../types/responseData';
 import { filterOrdersByAsset, filterTradesByAsset } from '../../../utils/filter';
 import AssetPanelHeader from './AssetPanelHeader.vue';
@@ -58,7 +58,7 @@ function transformRawTrades(tradesToTransform: Trade[]): TradeTransformed[] {
                 fee: item.fee ?? 0,
                 feecoin: item.feecoin ?? '',
                 platform: item.platform ?? 'N/A',
-                timestampVal 
+                timestampVal
             };
         })
         .sort((a, b) => b.timestampVal - a.timestampVal);
@@ -74,6 +74,7 @@ const props = defineProps({
 
 // --- State ---
 const isExpanded = ref(false);
+const selectedMarket = ref<string | null>(null);
 
 // --- Computed Properties ---
 const filteredTrades = computed(() => filterTradesByAsset(props.trades, props.asset.base, props.asset.platform));
@@ -88,16 +89,51 @@ const handleCollapsedUpdate = (collapsed: boolean) => {
     isExpanded.value = !collapsed;
 };
 
+const updateSelectedMarket = (market: string | null) => {
+    selectedMarket.value = market;
+}
+
+onMounted(() => {
+    // Ensure availableMarkets is populated before selecting
+    if (props.availableMarkets && props.availableMarkets.length > 0) {
+        const priorityMarkets = ['USDT', 'USD', 'FDUSD', 'USDC']; // Add other common quotes if needed
+        const defaultMarket = priorityMarkets
+            .map(suffix => `${props.asset.base}${suffix}`) // Use template literal
+            .find(symbol => props.availableMarkets.includes(symbol));
+
+        selectedMarket.value = defaultMarket ?? props.availableMarkets[0]; // Fallback to the first available
+    } else {
+        selectedMarket.value = null; // No markets available
+    }
+});
+
+// --- Watcher (Optional but good practice): If availableMarkets change externally ---
+watch(() => props.availableMarkets, (newMarkets) => {
+    if (newMarkets && newMarkets.length > 0) {
+        // Re-evaluate selectedMarket if current one is no longer available or if none was selected
+        if (!selectedMarket.value || !newMarkets.includes(selectedMarket.value)) {
+            const priorityMarkets = ['USDT', 'USD', 'FDUSD', 'USDC'];
+            const defaultMarket = priorityMarkets
+                .map(suffix => `${props.asset.base}${suffix}`)
+                .find(symbol => newMarkets.includes(symbol));
+            selectedMarket.value = defaultMarket ?? newMarkets[0];
+        }
+    } else {
+        selectedMarket.value = null;
+    }
+}, { immediate: true });
+
 </script>
 
 <template>
     <Panel :toggleable="true" :collapsed="!isExpanded" @update:collapsed="handleCollapsedUpdate" class="asset-panel">
         <template #header>
             <AssetPanelHeader :asset="props.asset" :orders="filteredOrders" :available-markets="props.availableMarkets"
-                :trades="[]" />
+                :trades="[]" :selected-market="selectedMarket" @update:selected-market="updateSelectedMarket" />
         </template>
 
-        <AssetPanelDetails v-if="isExpanded" :asset="props.asset" :orders="filteredOrders" :trades="transformedTrades" />
+        <AssetPanelDetails v-if="isExpanded" :asset="props.asset" :orders="filteredOrders" :trades="transformedTrades"
+            :selected-market="selectedMarket" :available-markets="props.availableMarkets" />
         <template #footer>
         </template>
 

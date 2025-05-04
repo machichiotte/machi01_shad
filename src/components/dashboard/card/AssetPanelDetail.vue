@@ -119,8 +119,8 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
                         </div>
                     </div>
                 </TabPanel>
-                <TabPanel header="Add 2">
-                    <p>A rajouter</p>
+                <TabPanel header="Graph">
+                    <p>A rajouter trading view graph version gratuite</p>
                 </TabPanel>
             </TabView>
         </div>
