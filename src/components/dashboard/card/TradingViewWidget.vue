@@ -44,15 +44,27 @@ function loadWidget() {
     widgetInstance = new (window as any).TradingView.widget({
       autosize: true,
       symbol,
-      interval: 'D',
-      timezone: 'Etc/UTC',
-      theme: 'light',
-      style: '1',
-      locale: 'fr',
-      toolbar_bg: '#f1f3f6',
+      interval: "60",
+      timezone: "Europe/Paris",
+      theme: "dark",
+      style: 1,  // candles
+      locale: "fr",
+      toolbar_bg: "#1f1f1f",
+      allow_symbol_change: false,
       enable_publishing: false,
-      allow_symbol_change: true,
       container_id: containerId.value,
+      withdateranges: true,
+      hide_side_toolbar: false,
+      details: false,
+      disabled_features: ["symbol_search_hot_key", "header_screenshot"],
+      overrides: {
+        "mainSeriesProperties.candleStyle.upColor": "#26a69a",
+        "mainSeriesProperties.candleStyle.downColor": "#ef5350",
+        "paneProperties.background": "#121212",
+        "paneProperties.vertGridProperties.color": "#333",
+        "paneProperties.horzGridProperties.color": "#333"
+      },
+      studies: ["MACD@tv-basicstudies", "RSI@tv-basicstudies"]
     });
   } catch {
     container.innerHTML = '<p>Error creating TradingView chart.</p>';
