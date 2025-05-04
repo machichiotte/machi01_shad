@@ -7,9 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <meta http-equiv="Content-Security-Policy" 
-          content="script-src 'self' 'unsafe-eval'; 
-                   connect-src 'self' http://localhost:10000 ws://localhost:10000;"> 
+          content="script-src 'self' 'unsafe-eval' https://s3.tradingview.com; 
+                   connect-src 'self' http://localhost:10000 ws://localhost:10000 https://*.tradingview.com wss://*.tradingview.com;"> 
  
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+
     <title>Machi-01</title>
   </head>
   <body>
