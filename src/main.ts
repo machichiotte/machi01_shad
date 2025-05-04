@@ -49,6 +49,9 @@ import ProgressSpinner from 'primevue/progressspinner';
 import Message from 'primevue/message';
 import Badge from 'primevue/badge';
 
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
+
 import './style.css'
 
 import { websocketService } from './services/websocketService';
@@ -97,6 +100,8 @@ app.component('ProgressSpinner', ProgressSpinner);
 app.component('Paginator', Paginator);
 app.component('Message', Message);
 app.component('Badge', Badge);
+app.component('TabView', TabView);
+app.component('TabPanel', TabPanel);
 
 app.directive('tooltip', Tooltip)
 
