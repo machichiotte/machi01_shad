@@ -1,25 +1,20 @@
 <!-- src/components/dashboard/PlatformSelector.vue -->
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import SelectButton from 'primevue/selectbutton'; // Importez SelectButton
 
-// Définition des types pour les options de plateforme (inchangé)
 interface PlatformOption {
   id: string;
   name: string;
 }
 
-// Définition des props avec types (inchangé)
 const props = defineProps<{
   initialSelectedPlatforms: string[];
 }>();
 
-// Emit pour la mise à jour (inchangé, v-model sur SelectButton s'en chargera)
 const emit = defineEmits<{
   (e: 'update:selectedPlatforms', selectedPlatforms: string[]): void;
 }>();
 
-// Options de plateforme (inchangé)
 const platformOptions = computed<PlatformOption[]>(() => [
   { id: 'binance', name: 'Binance' },
   { id: 'kucoin', name: 'KuCoin' },
@@ -37,25 +32,34 @@ watch(
       selectedPlatforms.value = [...newVal];
     }
   },
-  { deep: true } 
+  { deep: true }
 );
+
 watch(selectedPlatforms, (newSelection) => {
-    emit('update:selectedPlatforms', newSelection);
+  emit('update:selectedPlatforms', newSelection);
 });
 
+function togglePlatform(id: string) {
+  const index = selectedPlatforms.value.indexOf(id);
+  if (index === -1) {
+    selectedPlatforms.value.push(id);
+  } else {
+    selectedPlatforms.value.splice(index, 1);
+  }
+}
 </script>
 
 <template>
   <div class="platform-selector">
-    <SelectButton
-      v-model="selectedPlatforms"
-      :options="platformOptions"
-      optionLabel="name"  
-      optionValue="id"    
-      multiple            
-      aria-labelledby="multiple-platforms" 
-    />
-    </div>
+    <button
+      v-for="platform in platformOptions"
+      :key="platform.id"
+      :class="['platform-button', { active: selectedPlatforms.includes(platform.id) }]"
+      @click="() => togglePlatform(platform.id)"
+    >
+      {{ platform.name }}
+    </button>
+  </div>
 </template>
 
 <style scoped>
@@ -63,5 +67,26 @@ watch(selectedPlatforms, (newSelection) => {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
+}
+
+.platform-button {
+  margin: 0 0.3rem;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  background-color: #eee;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  transition: background-color 0.2s;
+}
+
+.platform-button:hover {
+  background-color: #ddd;
+}
+
+.platform-button.active {
+  background-color: var(--primary-color, #007bff);
+  color: white;
 }
 </style>

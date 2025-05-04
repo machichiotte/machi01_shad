@@ -1,4 +1,4 @@
-// File: src/components/dashboard/card/CardAssetHeader.vue
+// File: src/components/dashboard/card/AssetPanelHeader.vue
 
 <script setup lang="ts">
 import { computed, ref, PropType, onMounted } from 'vue';

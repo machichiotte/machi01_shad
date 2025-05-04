@@ -9,7 +9,7 @@ import { FilterMatchMode } from 'primevue/api'
 import Paginator, { type PageState } from 'primevue/paginator';
 import Button from 'primevue/button';
 import Toolbar from 'primevue/toolbar';
-import CardAsset from './card/CardAsset.vue'
+import AssetPanel from './card/AssetPanel.vue'
 import CardBalance from './card/CardBalance.vue'
 import CardStableCoin from './card/CardStableCoin.vue'
 import SearchBar from './SearchBar.vue'
@@ -213,7 +213,7 @@ function toggleBottomExpandCollapse(): void {
           class="p-mt-3" />
 
         <div class="asset-card-container">
-          <CardAsset v-for="item in dashboardPaginatedItems" :key="`${item.base}-${item.platform}`" :asset="item"
+          <AssetPanel v-for="item in dashboardPaginatedItems" :key="`${item.base}-${item.platform}`" :asset="item"
             :trades="tradesItems" :orders="openOrdersItems"
             :available-markets="liveDataStore.getMarketsForBase(item.base)"
             @update:selectedBases="updateSelectedBases" />

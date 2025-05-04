@@ -1,17 +1,16 @@
-// File: src/components/dashboard/card/CardAsset.vue
+// File: src/components/dashboard/card/AssetPanel.vue
 
 <script setup lang="ts">
 import { computed, ref, PropType } from 'vue';
 import { Asset, Order, Trade, TradeTransformed } from '../../../types/responseData';
 import { filterOrdersByAsset, filterTradesByAsset } from '../../../utils/filter';
-// Consider moving transformation logic to a separate utility file
-import CardAssetHeader from './CardAssetHeader.vue';
-import CardAssetDetail from './CardAssetDetail.vue'; // Uses TabView internally as per previous step
-import Panel from 'primevue/panel'; // Import Panel
+import AssetPanelHeader from './AssetPanelHeader.vue';
+import AssetPanelDetails from './AssetPanelDetail.vue';
+import Panel from 'primevue/panel';
 
 function transformRawTrades(tradesToTransform: Trade[]): TradeTransformed[] {
     return tradesToTransform
-        .map((item: Trade): TradeTransformed => { // Explicit return type for clarity
+        .map((item: Trade): TradeTransformed => {
             let date: string;
             let timestampVal = 0;
 
@@ -59,38 +58,32 @@ function transformRawTrades(tradesToTransform: Trade[]): TradeTransformed[] {
                 fee: item.fee ?? 0,
                 feecoin: item.feecoin ?? '',
                 platform: item.platform ?? 'N/A',
-                timestampVal // Keep for sorting
+                timestampVal 
             };
         })
-        .sort((a, b) => b.timestampVal - a.timestampVal); // Sort descending
+        .sort((a, b) => b.timestampVal - a.timestampVal);
 }
 
 // Props: Remain the same
 const props = defineProps({
     asset: { type: Object as PropType<Asset>, required: true },
-    trades: { type: Array as PropType<Trade[]>, required: true }, // Expecting full list
-    orders: { type: Array as PropType<Order[]>, required: true }, // Expecting full list
+    trades: { type: Array as PropType<Trade[]>, required: true },
+    orders: { type: Array as PropType<Order[]>, required: true },
     availableMarkets: { type: Array as PropType<string[]>, default: () => [] },
 });
 
 // --- State ---
-// Controls the expanded/collapsed state of the Panel
-const isExpanded = ref(false); // Default to collapsed
+const isExpanded = ref(false);
 
 // --- Computed Properties ---
-// Filter trades and orders based on the *incoming* full lists and the current asset/platform
 const filteredTrades = computed(() => filterTradesByAsset(props.trades, props.asset.base, props.asset.platform));
 const filteredOrders = computed(() => filterOrdersByAsset(props.orders, props.asset.base, props.asset.platform));
 
-// Transformation des trades en TradeTransformed - Use filteredTrades and the utility function
 const transformedTrades = computed<TradeTransformed[]>(() => {
-    // Call the dedicated transformer function
     return transformRawTrades(filteredTrades.value);
 });
 
 // --- Methods ---
-// Method to sync Panel's collapsed state with our local isExpanded ref
-// The 'collapsed' event payload from Panel is true if it *became* collapsed
 const handleCollapsedUpdate = (collapsed: boolean) => {
     isExpanded.value = !collapsed;
 };
@@ -100,11 +93,11 @@ const handleCollapsedUpdate = (collapsed: boolean) => {
 <template>
     <Panel :toggleable="true" :collapsed="!isExpanded" @update:collapsed="handleCollapsedUpdate" class="asset-panel">
         <template #header>
-            <CardAssetHeader :asset="props.asset" :orders="filteredOrders" :available-markets="props.availableMarkets"
+            <AssetPanelHeader :asset="props.asset" :orders="filteredOrders" :available-markets="props.availableMarkets"
                 :trades="[]" />
         </template>
 
-        <CardAssetDetail v-if="isExpanded" :asset="props.asset" :orders="filteredOrders" :trades="transformedTrades" />
+        <AssetPanelDetails v-if="isExpanded" :asset="props.asset" :orders="filteredOrders" :trades="transformedTrades" />
         <template #footer>
         </template>
 
@@ -114,7 +107,6 @@ const handleCollapsedUpdate = (collapsed: boolean) => {
 </template>
 
 <style scoped>
-
 /* Style the Panel component using :deep() for internal PrimeVue classes */
 .asset-panel {
     margin-bottom: 1rem;

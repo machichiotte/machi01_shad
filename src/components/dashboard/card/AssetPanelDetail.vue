@@ -1,4 +1,4 @@
-// File: src/components/dashboard/card/CardAssetDetail.vue
+// File: src/components/dashboard/card/AssetPanelDetail.vue
 
 <script setup lang="ts">
 import { ref, computed, reactive, watch } from 'vue';
@@ -65,8 +65,59 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
                         <button @click="saveStratForAsset">Save</button>
                     </div>
                 </TabPanel>
-                <TabPanel header="Add 1">
-                    <p>A rajouter</p>
+                <TabPanel header="Data">
+                    <div class="data-content">
+                        <div class="section">
+                            <h4>Basic Info</h4>
+                            <img :src="ass.iconUrl" alt="Asset Icon" class="asset-icon" />
+                            <p><strong>Base:</strong> {{ ass.base }}</p>
+                            <p><strong>Name:</strong> {{ ass.name }}</p>
+                            <p><strong>Ticker:</strong> {{ ass.ticker }}</p>
+                            <p><strong>Platform:</strong> {{ ass.platform }}</p>
+                            <p><strong>Tags:</strong>
+                                <span v-for="(tag, index) in ass.tags" :key="tag">
+                                    {{ tag }}{{ index < ass.tags.length - 1 ? ', ' : '' }} </span>
+                            </p>
+                        </div>
+
+                        <div class="section">
+                            <h4>CMC Data</h4>
+                            <p><strong>Price:</strong> {{ ass.cmc.currentCmcPrice }} USD</p>
+                            <p><strong>Rank:</strong> #{{ ass.cmc.rank }}</p>
+                            <p><strong>Change 24h:</strong> {{ ass.cmc.cryptoPercentChange24h }}%</p>
+                            <p><strong>Change 7d:</strong> {{ ass.cmc.cryptoPercentChange7d }}%</p>
+                            <p><strong>Change 30d:</strong> {{ ass.cmc.cryptoPercentChange30d }}%</p>
+                            <p><strong>Change 60d:</strong> {{ ass.cmc.cryptoPercentChange60d }}%</p>
+                            <p><strong>Change 90d:</strong> {{ ass.cmc.cryptoPercentChange90d }}%</p> 
+                        </div>
+
+                        <div class="section">
+                            <h4>Live Data</h4>
+                            <p><strong>Balance:</strong> {{ ass.liveData.balance }}</p>
+                            <p><strong>Current Price:</strong> {{ ass.liveData.currentPrice }} USD</p>
+                            <p><strong>Possession Value:</strong> {{ ass.liveData.currentPossession }} USD</p> 
+                            <p><strong>Realized Profit:</strong> {{ ass.profit }} USD</p> 
+                        </div>
+
+                        <div class="section">
+                            <h4>Strategy Summary</h4>
+                            <p><strong>Current Strategy:</strong> {{ ass.strat.strategy }}</p>
+                            <p><strong>Max Exposure:</strong> {{ ass.strat.maxExposition }}</p>
+                            <p><strong>TP Status:</strong> {{ ass.strat.takeProfits.status.join(', ') }}</p>
+                        </div>
+
+                        <div class="section">
+                            <h4>Order/Trade Summary</h4>
+                            <p><strong>Open Buy Orders:</strong> {{ ass.orders.open.nbOpenBuyOrders }}</p>
+                            <p><strong>Open Sell Orders:</strong> {{ ass.orders.open.nbOpenSellOrders }}</p>
+                            <p><strong>Total Buy Value (Historic):</strong> {{ ass.orders.trade.totalBuy }} USD</p>
+                            <p><strong>Total Sell Value (Historic):</strong> {{ ass.orders.trade.totalSell }} USD</p>
+                            <p><strong>Total Amount Bought (Historic):</strong> {{ ass.orders.trade.totalAmountBuy }}
+                            </p>
+                            <p><strong>Total Amount Sold (Historic):</strong> {{ ass.orders.trade.totalAmountSell }}</p>
+                            <p><strong>Average Entry Price:</strong> {{ ass.orders.trade.averageEntryPrice }} USD</p>
+                        </div>
+                    </div>
                 </TabPanel>
                 <TabPanel header="Add 2">
                     <p>A rajouter</p>
@@ -108,5 +159,4 @@ watch([selectedStrat, selectedExpo], ([newStrat, newExpo]) => {
     gap: 1rem;
     align-items: center;
 }
-
 </style>
