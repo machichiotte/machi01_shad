@@ -1,7 +1,7 @@
 // File: src/components/dashboard/card/AssetPanelHeader.vue
 
 <script setup lang="ts">
-import { computed, ref, PropType, onMounted } from 'vue';
+import { computed, PropType } from 'vue';
 import { Asset, Order, Trade } from '../../../types/responseData'; // Keep Trade if used, remove if not
 import { formatNumberWithDynamicPrecision } from '../../../utils/formatter';
 import { useLiveDataStore } from '../../../store/liveDataStore';
@@ -134,7 +134,7 @@ const handleMarketChange = (event: Event) => {
         <div class="balance-order-section">
             <span class="label">Balance:</span>
             <span class="value fixed-width">{{ formatNumberWithDynamicPrecision(asset.liveData?.balance ?? 0, 8)
-                }}</span>
+            }}</span>
             <span class="base">{{ asset.base }}</span>
 
             <template v-if="inOrderAmount > 0">

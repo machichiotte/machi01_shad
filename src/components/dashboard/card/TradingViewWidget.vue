@@ -7,7 +7,6 @@
 </template>
 
 <script setup lang="ts">
-// Props: asset platform and chosen market
 import { computed, onMounted, watch, nextTick } from 'vue';
 
 interface Props {
@@ -19,8 +18,6 @@ const props = defineProps<Props>();
 
 // Computed container ID ensures unique element
 const containerId = computed(() => `tradingview-widget-${props.platform}-${props.market || 'none'}`);
-
-let widgetInstance: any = null;
 
 // Function to instantiate the TradingView widget
 function loadWidget() {
@@ -41,13 +38,13 @@ function loadWidget() {
   }
 
   try {
-    widgetInstance = new (window as any).TradingView.widget({
+    new (window as any).TradingView.widget({
       autosize: true,
       symbol,
       interval: "60",
       timezone: "Europe/Paris",
       theme: "dark",
-      style: 1,  // candles
+      style: 1,
       locale: "fr",
       toolbar_bg: "#1f1f1f",
       allow_symbol_change: false,
@@ -82,7 +79,7 @@ function clearContainer() {
 }
 
 // Reload when market prop changes
-watch(() => props.market, async (newMarket, oldMarket) => {
+watch(() => props.market, async () => {
   await nextTick();
   loadWidget();
 });
