@@ -232,10 +232,7 @@ function toggleBottomExpandCollapse(): void {
           <Message severity="error" :closable="false" class="error-message">
             <span>Aucun asset à afficher sur cette page.</span>
           </Message>
-
         </div>
-
-
       </div>
     </div>
 

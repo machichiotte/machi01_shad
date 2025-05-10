@@ -52,8 +52,8 @@ function loadWidget() {
       container_id: containerId.value,
       charts_storage_url: "https://saveload.tradingview.com",
       charts_storage_api_version: "1.1",
-      client_id: String('client_id'), // Replace with your client ID
-      user_id: String('user_id'), // Replace with your user ID 
+      client_id: String('hoho'), // Replace with your client ID, rajouter dans la config
+      user_id: String('hihi'), // Replace with your user ID ne pas laisser en dur, rajouter dans la config
       withdateranges: true,
       hide_side_toolbar: false,
       details: false,
