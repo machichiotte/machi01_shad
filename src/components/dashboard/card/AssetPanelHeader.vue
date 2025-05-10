@@ -38,12 +38,7 @@ const displayPrice = computed(() => {
     if (!props.selectedMarket) return '...';
     const price = liveDataStore.getCurrentPrice(props.selectedMarket);
     if (typeof price !== 'number' || isNaN(price)) return '...';
-<<<<<<< HEAD
     return price;
-=======
-    const precision = getPriceDisplayPrecision(quoteCurrency.value);
-    return formatNumberWithDynamicPrecision(price, precision);
->>>>>>> 233dfa5cb34235d296464c3f1a2f6bca2c61f328
 });
 
 const liveChangePercentValue = computed(() => {
@@ -138,11 +133,7 @@ const handleMarketChange = (event: Event) => {
         <div class="balance-order-section">
             <span class="label">Balance:</span>
             <span class="value fixed-width">{{ formatNumberWithDynamicPrecision(asset.liveData?.balance ?? 0, 8)
-<<<<<<< HEAD
                 }}</span>
-=======
-            }}</span>
->>>>>>> 233dfa5cb34235d296464c3f1a2f6bca2c61f328
             <span class="base">{{ asset.base }}</span>
 
             <template v-if="inOrderAmount > 0">
