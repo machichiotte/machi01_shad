@@ -1,0 +1,67 @@
+// src/constants/columns.ts
+type Column = {
+  header: string;
+  field: string;
+  numeric?: boolean;
+};
+
+const cmcColumns: Column[] = [
+  { header: 'Rank', field: 'rank', numeric: true },
+  { header: 'Name', field: 'name' },
+  { header: 'Symbol', field: 'symbol' },
+  { header: 'Price', field: 'price' },
+  { header: 'Tags', field: 'tags' },
+]
+
+const ordersColumns: Column[] = [
+  { header: 'oId', field: 'oId' },
+  { header: 'Platform', field: 'platform' },
+  { header: 'Symbol', field: 'symbol' },
+  { header: 'Type', field: 'type' },
+  { header: 'Side', field: 'side' },
+  { header: 'Amount', field: 'amount', numeric: true },
+  { header: 'Price', field: 'price', numeric: true }
+]
+
+const tradesColumns: Column[] = [
+  { header: 'Platform', field: 'platform' },
+  { header: 'Date', field: 'dateUTC' },
+  { header: 'Base', field: 'base' },
+  { header: 'Quote', field: 'quote' },
+  { header: 'Side', field: 'side' },
+  { header: 'Price', field: 'price' },
+  { header: 'Amount', field: 'amount' },
+  { header: 'Total', field: 'total' },
+  { header: '~ USD', field: 'eqUSD' },
+  { header: 'Fee', field: 'fee' },
+  { header: 'Feecoin', field: 'feecoin' },
+  { header: 'Order', field: 'orderid' },
+]
+
+const tradesTableColumns: Column[] = [
+  { header: 'Date', field: 'dateUTC' },
+  { header: 'Pair', field: 'pair' },
+  { header: 'Type', field: 'type' },
+  { header: 'Price', field: 'price' },
+  { header: 'Amount', field: 'amount' },
+  { header: 'Total', field: 'total' },
+  { header: '~ USD', field: 'eqUSD' },
+  { header: 'Fee', field: 'fee' },
+  { header: 'Platform', field: 'platform' },
+  { header: 'Explatform', field: 'explatform' }
+]
+
+const openOrdersTableColumns: Column[] = [
+  { header: 'Platform', field: 'platform' },
+  { header: 'Symbol', field: 'symbol' },
+  { header: 'Side', field: 'side' },
+  { header: 'Amount', field: 'amount' },
+  { header: 'Price', field: 'price' },
+  { header: 'Total', field: 'total' },
+  { header: 'ID', field: '_id' },
+  { header: 'oID', field: 'oId' },
+  { header: 'cID', field: 'cId' },
+  { header: 'type', field: 'type' },
+]
+
+export { cmcColumns, ordersColumns, tradesColumns, tradesTableColumns, openOrdersTableColumns }

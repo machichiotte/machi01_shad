@@ -1,0 +1,39 @@
+{
+  "name": "machi-01",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Hello World!",
+  "author": "machichiotte",
+  "scripts": {
+    "dev": "vue-tsc -b && vite",
+    "build": "vue-tsc -b && vite build && electron .",
+    "preview": "vite preview",
+    "test": "vitest",
+    "lint": "eslint . --ext .vue,.js,.jsx,.ts,.tsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "format": "prettier --write src/",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@types/lodash-es": "^4.17.12",
+    "lodash-es": "^4.17.21",
+    "mongodb": "^6.12.0",
+    "pinia": "^3.0.1",
+    "primeicons": "^7.0.0",
+    "primevue": "^3.48.1",
+    "swapy": "^1.0.5",
+    "vue": "^3.5.10",
+    "vue-router": "^4.0.13",
+    "vue-sweetalert2": "^5.0.11"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.13",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.5.3",
+    "vite": "^6.2.4",
+    "vitest": "^2.1.2",
+    "vue-tsc": "^2.1.6"
+  }
+}

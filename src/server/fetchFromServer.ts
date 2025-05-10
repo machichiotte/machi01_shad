@@ -1,0 +1,68 @@
+// src/server/fetchFromServer
+import { fetchApiData } from './common';  // Import de fetchApiData depuis common.ts
+import { Balance, Cmc, Asset, Order, Strat, Ticker, Trade, RssItem } from "../types/responseData";
+
+const ENDPOINTS: Record<string, string> = {
+  CMC: '/cmc/get',
+  CMC_API: '/cmc/fetch',
+  STRATEGY: '/strategy/get',
+  BALANCE: '/balance/get',
+  BALANCE_BY_PLATFORM: '/balance/fetch',
+  TRADE: '/trade/get',
+  TRADE_BY_BASE: '/trade/fetch',
+  ORDER: '/order/get',
+  ORDER_API: '/order/fetch',
+  TICKER: '/ticker/get',
+  TICKER_API: '/ticker/fetch',
+  DASHBOARD: '/dashboard/get',
+  MARKET: '/market/get',
+  MARKET_API: '/market/fetch',
+  RSS: '/rss/get'
+};
+
+// Wrapper functions for fetching different types of data
+const fetchBalance = (): Promise<Balance[]> => fetchApiData<Balance[]>(ENDPOINTS.BALANCE);
+const fetchCmc = (): Promise<Cmc[]> => fetchApiData<Cmc[]>(ENDPOINTS.CMC);
+const fetchOrder = (): Promise<Order[]> => fetchApiData<Order[]>(ENDPOINTS.ORDER);
+const fetchDashboard = (): Promise<Asset[]> => fetchApiData<Asset[]>(ENDPOINTS.DASHBOARD);
+const fetchMarket = (): Promise<Asset[]> => fetchApiData<Asset[]>(ENDPOINTS.MARKET);
+const fetchStrategy = (): Promise<Strat[]> => fetchApiData<Strat[]>(ENDPOINTS.STRATEGY);
+const fetchTicker = (): Promise<Ticker[]> => fetchApiData<Ticker[]>(ENDPOINTS.TICKER);
+const fetchTrade = (): Promise<Trade[]> => fetchApiData<Trade[]>(ENDPOINTS.TRADE);
+const fetchRss = (): Promise<RssItem[]> => fetchApiData<RssItem[]>(ENDPOINTS.RSS);
+
+const fetchCmcApi = (): Promise<any[]> =>
+  fetchApiData<any[]>(`${ENDPOINTS.CMC_API}`);
+
+const fetchTradeBySymbol = (params: { base: string; platform: string }): Promise<any[]> =>
+  fetchApiData<any[]>(`${ENDPOINTS.TRADE_BY_BASE}/${params.platform}/${params.base}`);
+
+const fetchBalanceByPlatform = (params: { platform: string }): Promise<any[]> =>
+  fetchApiData<any[]>(`${ENDPOINTS.BALANCE_BY_PLATFORM}/${params.platform}`);
+
+const fetchOpenOrdersByPlatform = (params: { platform: string }): Promise<any[]> =>
+  fetchApiData<any[]>(`${ENDPOINTS.ORDER_API}/${params.platform}`);
+
+const fetchMarketsByPlatform = (params: { platform: string }): Promise<any[]> =>
+  fetchApiData<any[]>(`${ENDPOINTS.MARKET_API}/${params.platform}`);
+
+const fetchTickersByPlatform = (params: { platform: string }): Promise<any[]> =>
+  fetchApiData<any[]>(`${ENDPOINTS.TICKER_API}/${params.platform}`);
+
+export {
+  fetchBalance,
+  fetchCmc,
+  fetchOrder,
+  fetchDashboard,
+  fetchMarket,
+  fetchStrategy,
+  fetchTicker,
+  fetchTrade,
+  fetchTradeBySymbol,
+  fetchBalanceByPlatform,
+  fetchCmcApi,
+  fetchOpenOrdersByPlatform,
+  fetchMarketsByPlatform,
+  fetchTickersByPlatform,
+  fetchRss
+};
