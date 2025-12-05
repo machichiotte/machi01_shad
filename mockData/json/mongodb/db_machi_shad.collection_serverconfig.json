@@ -1,0 +1,43 @@
+{
+  "_id": {
+    "$oid": "676837d9cc51517fcd085559"
+  },
+  "cacheExpirationTimes": {
+    "cmc": 14400000,
+    "balance": 30000,
+    "highestPrice": 30000,
+    "timestamp": 30000,
+    "market": 86400000,
+    "order": 60000,
+    "dashboard": 60000,
+    "strat": 36000000,
+    "swap": 86400000,
+    "ticker": 30000,
+    "trade": 30000,
+    "user": 0,
+    "serverConfig": 600000
+  },
+  "smtp": {
+    "host": "smtp.ethereal.email",
+    "port": 444,
+    "auth": {
+      "user": "sender@email.com",
+      "receiver": "receiver@email.com",
+      "pass": "mock json"
+    }
+  },
+  "cronSchedules": {
+    "dashboard": "*/30 * * * *",
+    "market": "* 23 * * *",
+    "ticker": "*/1 * * * *",
+    "balance": "*/2 * * * *",
+    "cmc": "0 23 * * *"
+  },
+  "logFiles": {
+    "error": "error.log",
+    "info": "info.log"
+  },
+  "security": {
+    "hashRounds": 11
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "_id": {
+    "$oid": "65a96fb4e334c2acf07b9104"
+  },
+  "balance": {
+    "binance": 1734868032
+  },
+  "cmc": 1734753756,
+  "dashboard": 1734801833,
+  "strategy": 1734868032,
+  "order": {
+    "binance": 1734739692
+  },
+  "market": {
+    "binance": 1734743655
+  },
+  "ticker": {
+    "binance": 1734868032
+  },
+  "timestamp": 0,
+  "serverConfig": 0
+}

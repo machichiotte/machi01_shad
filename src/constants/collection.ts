@@ -1,0 +1,22 @@
+// src/constants/collection.ts 
+export const CMC = 'cmc';
+export const MARKET = 'market';
+export const MARKETS = 'markets';
+export const STRAT = 'strat';
+export const BALANCE = 'balance';
+export const BALANCES = 'balances';
+export const ORDER = 'order';
+export const ORDERS = 'orders';
+export const TICKER = 'ticker';
+export const TICKERS = 'tickers';
+export const DASHBOARD = 'dashboard';
+export const TRADE = 'trade';
+export const TRADES = 'trades';
+export const SWAP = 'swap';
+export const SWAPS = 'swaps';
+export const TIMESTAMP = 'timestamp';
+export const SERVER_CONFIG = 'serverConfig';
+export const USER = 'user';
+export const HIGHEST_PRICE = 'highestPrice';
+export const API_CONFIG = 'apiConfig';
+export const RSS_ARTICLES = 'rssArticles';

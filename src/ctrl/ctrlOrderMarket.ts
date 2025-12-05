@@ -1,0 +1,89 @@
+// src/ctrl/ctrlOrderMarket.ts
+import { Request, Response } from 'express'
+import { ServiceOrderMarket } from '@services/api/platform/serviceOrderMarket';
+import { handleControllerError } from '@utils/errorUtil'
+
+enum OrderType {
+  LIMIT_BUY = 'limitBuy',
+  LIMIT_SELL = 'limitSell',
+  MARKET_BUY = 'marketBuy',
+  MARKET_SELL = 'marketSell',
+  CANCEL_ALL = 'cancelAll',
+  CANCEL_BUY = 'cancelBuy',
+  CANCEL_SELL = 'cancelSell',
+  DELETE = 'delete'
+}
+
+async function handleOrder(req: Request, res: Response, orderType: OrderType): Promise<void> {
+  const { platform, base, amount, price, oId, symbol } = req.body
+  try {
+    let data
+    switch (orderType) {
+      case OrderType.LIMIT_BUY:
+      case OrderType.LIMIT_SELL:
+        data = await ServiceOrderMarket.createLimitOrder(platform, base, amount, orderType.includes('Buy') ? 'buy' : 'sell', price)
+        break
+      case OrderType.MARKET_BUY:
+      case OrderType.MARKET_SELL:
+        data = await ServiceOrderMarket.createMarketOrder(platform, base, amount, orderType.includes('Buy') ? 'buy' : 'sell')
+        break
+      case OrderType.CANCEL_ALL:
+        data = await ServiceOrderMarket.cancelAllOrdersByBunch(platform, base)
+        break
+      case OrderType.CANCEL_BUY:
+      case OrderType.CANCEL_SELL:
+        data = await ServiceOrderMarket.cancelAllOrdersNoBunch(platform, base, orderType.includes('Buy') ? 'buy' : 'sell')
+        break
+      case OrderType.DELETE:
+        await ServiceOrderMarket.deleteOrder(platform, oId, symbol)
+        break
+    }
+
+    const message = getResponseMessage(orderType, base, platform)
+    res.status(200).json({ status: "success", message, data })
+  } catch (error) {
+    handleControllerError(res, error, `${handleOrder.name} (${orderType})`)
+  }
+}
+
+function getResponseMessage(orderType: OrderType, base?: string, platform?: string): string {
+  switch (orderType) {
+    case OrderType.LIMIT_BUY:
+    case OrderType.LIMIT_SELL:
+      return `Ordre limit ${orderType.includes('Buy') ? 'd\'achat' : 'de vente'} créé`
+    case OrderType.MARKET_BUY:
+    case OrderType.MARKET_SELL:
+      return 'Ordre au marché créé'
+    case OrderType.CANCEL_ALL:
+      return `Tous les ordres annulés pour ${base} sur ${platform}`
+    case OrderType.CANCEL_BUY:
+      return `Tous les ordres d'achat annulés pour ${base} sur ${platform}`
+    case OrderType.CANCEL_SELL:
+      return `Tous les ordres de vente annulés pour ${base} sur ${platform}`
+    case OrderType.DELETE:
+      return 'Ordre supprimé'
+    default:
+      return 'Opération effectuée avec succès'
+  }
+}
+
+// Fonctions simplifiées utilisant handleOrder
+const createLimitSellOrder = (req: Request, res: Response) => handleOrder(req, res, OrderType.LIMIT_SELL)
+const createLimitBuyOrder = (req: Request, res: Response) => handleOrder(req, res, OrderType.LIMIT_BUY)
+const createMarketBuyOrder = (req: Request, res: Response) => handleOrder(req, res, OrderType.MARKET_BUY)
+const createMarketSellOrder = (req: Request, res: Response) => handleOrder(req, res, OrderType.MARKET_SELL)
+const cancelAllOrders = (req: Request, res: Response) => handleOrder(req, res, OrderType.CANCEL_ALL)
+const cancelAllBuyOrders = (req: Request, res: Response) => handleOrder(req, res, OrderType.CANCEL_BUY)
+const cancelAllSellOrders = (req: Request, res: Response) => handleOrder(req, res, OrderType.CANCEL_SELL)
+const deleteOrder = (req: Request, res: Response) => handleOrder(req, res, OrderType.DELETE)
+
+export {
+  createLimitSellOrder,
+  createLimitBuyOrder,
+  cancelAllOrders,
+  cancelAllSellOrders,
+  cancelAllBuyOrders,
+  createMarketBuyOrder,
+  createMarketSellOrder,
+  deleteOrder
+}

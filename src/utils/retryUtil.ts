@@ -1,0 +1,42 @@
+import path from 'path'; import { logger } from "./loggerUtil";
+
+// src/utils/retryUtil.ts
+interface NonRetryableError extends Error {
+    isNonRetryable?: boolean;
+}
+
+// Fonction utilitaire pour vérifier si une erreur est non récupérable
+const isNonRetryableError = (error: unknown): boolean => {
+    // Vérifie si l'erreur possède la propriété "isNonRetryable" ou correspond à un cas spécifique
+    return (error as NonRetryableError).isNonRetryable === true ||
+        (error as Error).message?.includes('API keys missing')
+}
+
+export async function retry<A extends unknown[], R>(
+    fn: (...args: A) => Promise<R>,
+    args: A,
+    functionName: string,
+    retries: number = 3,
+    delay: number = 1000
+): Promise<R> {
+    const operation = 'retry'
+    let attempt = 0;
+
+    while (attempt < retries) {
+        try {
+            return await fn(...args);
+        } catch (error) {
+            if (isNonRetryableError(error)) {
+                // Si l'erreur est non récupérable, pas besoin de réessayer
+                throw new Error(`La fonction n'a pas besoin de retry ${error}`);
+            }
+
+            attempt++;
+
+            logger.debug(`Nouvelle tentative de ${functionName}... essai ${attempt} après ${delay}ms`, { module: path.parse(__filename).name, operation });
+            await new Promise(resolve => setTimeout(resolve, delay));
+            delay *= 2; // Backoff exponentiel
+        }
+    }
+    throw new Error(`La fonction ${functionName} n'a pas réussi après ${attempt} tentatives`);
+}
