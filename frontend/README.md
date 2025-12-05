@@ -1,50 +1,366 @@
-## Machi00 - Client
+# 📱 machi00_shad - Frontend
 
-This project is the frontend part of the Machi00 client application. It is a web application that allows users to view and manage trading orders and market data.
+![Vue.js](https://img.shields.io/badge/Vue.js-3.5-brightgreen)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue)
+![Vite](https://img.shields.io/badge/Vite-6.2-purple)
+![PrimeVue](https://img.shields.io/badge/PrimeVue-3.48-blue)
 
-### Key Features
+> Modern and reactive user interface for the machi00_shad trading platform
 
-- **Display orders**
-- **Visualize market data**
-- **Manage trading strategies**
-- **Track transactions**
+## 🎯 Description
 
-### Technologies Used
+Full TypeScript web application built with Vue.js 3 and the Composition API, offering an intuitive interface for managing trading orders, visualizing real-time market data, and monitoring automated trading strategies.
 
-- **Vue.js**: JavaScript framework for building the user interface
-- **Vue Router**: Managing application routes
-- **Bootstrap**: CSS framework for layout and design
-- **Bootstrap Vue**: Integrating Bootstrap with Vue.js
-- **Path**: Manipulating file and directory paths
-- **Portal Vue**: Managing rendering to another location in the DOM
-- **Vue Router**: Managing routes for navigation
-- **Popper.js Core**: Library for popups (tooltips and popovers)
+## ✨ Features
 
-### Project Setup
+### 📊 Order Management
 
-1. Clone the repository from GitHub: `git clone https://github.com/machichiotte/machi-gpt-shad.git`
-2. Install dependencies: `npm install`
-3. Launch the development server: `npm run serve`
-4. Access the application in your browser: `http://localhost:8080`
+- Real-time visualization of active orders
+- Create and modify orders (Market, Limit, Stop-Loss)
+- Complete transaction history
+- Advanced filtering and search
 
-### Contribution
+### 📈 Market Analysis
 
-Contributions are welcome! If you would like to contribute to this project, please create a pull request with your modifications.
+- Interactive price charts
+- Technical indicators (RSI, MACD, Bollinger Bands)
+- Order books
+- Multi-exchange market data
 
-### Authors
+### 🤖 Trading Strategies
 
-- [machichiotte](https://github.com/machichiotte)
+- Automated strategy configuration
+- Historical data backtesting
+- Performance monitoring
+- Custom alerts
 
-### License
+### ⚙️ Customizable Dashboard
 
-This project is licensed under the MIT License. See the [MIT License](https://www.mit.edu/~amini/LICENSE.md) file for more information.
+- Drag & drop reorganizable widgets
+- Dark/light theme
+- Saved layouts
+- Multiple views (Trading, Portfolio, Analytics)
 
-### Notes
+## 🛠️ Tech Stack
 
-This project is still in development. Some features may not be fully implemented or may have bugs.
+### Core
 
-### Contact
+- **Vue.js 3.5** - Progressive framework with Composition API
+- **TypeScript 5.5** - Static typing for robustness
+- **Vite 6.2** - Ultra-fast build tool with HMR
 
-If you have any questions or comments, feel free to contact us at [machichiotte@gmail.com](mailto:machichiotte@gmail.com).
+### UI/UX
+
+- **PrimeVue 3.48** - Rich UI component library
+- **PrimeIcons 7.0** - Vector icons
+- **Swapy 1.0** - Drag & drop for customizable layouts
+- **Vue SweetAlert2** - Elegant modals and notifications
+
+### State Management & Routing
+
+- **Pinia 3.0** - Modern and type-safe store
+- **Vue Router 4.0** - Declarative routing
+
+### Utilities
+
+- **Lodash-ES 4.17** - Optimized JavaScript utilities
+- **MongoDB 6.12** - Client for direct connections (if needed)
+
+### Development
+
+- **Vitest 2.1** - Fast testing framework
+- **Vue Test Utils 2.4** - Testing utilities for Vue
+- **ESLint** - Code linting
+- **Prettier** - Automatic formatting
+
+## 📁 Project Architecture
 
 ```
+frontend/
+├── src/
+│   ├── components/          # Reusable Vue components
+│   │   ├── Dashboard/       # Dashboard components
+│   │   ├── Orders/          # Order management
+│   │   ├── Market/          # Market data
+│   │   ├── Strategy/        # Trading strategies
+│   │   └── Common/          # Shared components
+│   │
+│   ├── composables/         # Composition API hooks
+│   │   ├── useWebSocket.ts  # WebSocket connection
+│   │   ├── useMarketData.ts # Market data
+│   │   └── useAuth.ts       # Authentication
+│   │
+│   ├── store/               # Pinia stores
+│   │   ├── auth.ts          # Authentication state
+│   │   ├── orders.ts        # Order management
+│   │   └── market.ts        # Market data
+│   │
+│   ├── services/            # API services
+│   │   └── api.ts           # Centralized HTTP client
+│   │
+│   ├── types/               # TypeScript definitions
+│   │   ├── Order.ts
+│   │   ├── Market.ts
+│   │   └── Strategy.ts
+│   │
+│   ├── utils/               # Utilities
+│   │   ├── formatters.ts    # Data formatting
+│   │   ├── validators.ts    # Validation
+│   │   └── constants.ts     # Constants
+│   │
+│   ├── router.ts            # Route configuration
+│   ├── main.ts              # Entry point
+│   ├── App.vue              # Root component
+│   └── style.css            # Global styles
+│
+├── public/                  # Static assets
+├── tests/                   # Unit and e2e tests
+├── vite.config.ts           # Vite configuration
+├── tsconfig.json            # TypeScript configuration
+└── package.json             # Dependencies and scripts
+```
+
+## 🚀 Installation and Setup
+
+### Prerequisites
+
+- Node.js >= 14.x
+- Yarn >= 1.22.x
+
+### Installation
+
+```bash
+# Install dependencies
+yarn install
+```
+
+### Configuration
+
+Create a `.env` file at the root of the frontend folder:
+
+```env
+# Backend API URL
+VITE_API_URL=http://localhost:10000
+
+# WebSocket URL (optional)
+VITE_WS_URL=ws://localhost:10000
+
+# Development mode
+VITE_DEV_MODE=true
+```
+
+### Development
+
+```bash
+# Start development server with HMR
+yarn dev
+
+# Application will be available at http://localhost:5173
+```
+
+### Production Build
+
+```bash
+# Compile and minify for production
+yarn build
+
+# Preview production build locally
+yarn preview
+```
+
+## 🧪 Testing
+
+```bash
+# Run unit tests
+yarn test
+
+# Run tests in watch mode
+yarn test --watch
+
+# Generate coverage report
+yarn test --coverage
+```
+
+## 🎨 Code Conventions
+
+### Vue Component Structure
+
+```vue
+<script setup lang="ts">
+// 1. Imports
+import { ref, computed, onMounted } from 'vue'
+import type { Order } from '@/types/Order'
+
+// 2. Props & Emits
+interface Props {
+  orderId: string
+}
+const props = defineProps<Props>()
+const emit = defineEmits<{
+  update: [order: Order]
+}>()
+
+// 3. Composables
+const { fetchOrder } = useOrders()
+
+// 4. State
+const order = ref<Order | null>(null)
+
+// 5. Computed
+const isActive = computed(() => order.value?.status === 'active')
+
+// 6. Methods
+const loadOrder = async () => {
+  order.value = await fetchOrder(props.orderId)
+}
+
+// 7. Lifecycle
+onMounted(() => {
+  loadOrder()
+})
+</script>
+
+<template>
+  <div class="order-card">
+    <!-- Template -->
+  </div>
+</template>
+
+<style scoped>
+/* Component-scoped styles */
+</style>
+```
+
+### Naming Conventions
+
+- **Components**: PascalCase (`OrderCard.vue`)
+- **Composables**: camelCase with `use` prefix (`useMarketData.ts`)
+- **Types**: PascalCase (`Order.ts`, `interface OrderData`)
+- **Constants**: UPPER_SNAKE_CASE (`API_BASE_URL`)
+- **Variables/functions**: camelCase (`fetchOrders`, `isLoading`)
+
+## 🔧 Available Scripts
+
+| Script         | Description                        |
+| -------------- | ---------------------------------- |
+| `yarn dev`     | Start development server with HMR  |
+| `yarn build`   | Compile application for production |
+| `yarn preview` | Preview production build           |
+| `yarn test`    | Run unit tests                     |
+| `yarn lint`    | Check and fix code with ESLint     |
+| `yarn format`  | Format code with Prettier          |
+| `yarn clean`   | Clean dist folder                  |
+
+## 📊 Performance
+
+### Implemented Optimizations
+
+- ✅ **Code splitting** - Lazy loading of routes
+- ✅ **Tree shaking** - Dead code elimination
+- ✅ **Compression** - Gzip/Brotli for assets
+- ✅ **Caching** - Service Worker for cache
+- ✅ **Lazy loading** - Components loaded on demand
+- ✅ **Debouncing** - For searches and filters
+- ✅ **Virtual scrolling** - For long lists
+
+### Target Metrics
+
+- **First Contentful Paint**: < 1.5s
+- **Time to Interactive**: < 3.0s
+- **Lighthouse Score**: > 90
+
+## 🔒 Security
+
+- ✅ User input validation
+- ✅ Data sanitization
+- ✅ XSS protection via Vue.js
+- ✅ JWT tokens for authentication
+- ✅ HTTPS in production
+- ✅ Content Security Policy (CSP)
+
+## 🌐 Browser Compatibility
+
+- Chrome/Edge >= 90
+- Firefox >= 88
+- Safari >= 14
+- Opera >= 76
+
+## 📱 Responsive Design
+
+The application is fully responsive and optimized for:
+
+- 📱 Mobile (320px - 768px)
+- 📱 Tablet (768px - 1024px)
+- 💻 Desktop (1024px+)
+- 🖥️ Large screens (1920px+)
+
+## 🐛 Debugging
+
+### Vue DevTools
+
+Install the [Vue DevTools](https://devtools.vuejs.org/) extension to:
+
+- Inspect components
+- Debug Pinia store
+- Analyze performance
+- Trace events
+
+### Development Logs
+
+```typescript
+// Enable detailed logs
+if (import.meta.env.DEV) {
+  console.log('Debug info:', data)
+}
+```
+
+## 🚀 Deployment
+
+### Build
+
+```bash
+yarn build
+```
+
+The `dist/` folder will contain optimized files for production.
+
+### Recommended Hosting
+
+- **Netlify** - Integrated CI/CD
+- **AWS S3 + CloudFront** - Maximum scalability
+- **GitHub Pages** - Free for open source projects
+
+### Production Environment Variables
+
+```env
+VITE_API_URL=https://api.machi00.com
+VITE_WS_URL=wss://api.machi00.com
+VITE_DEV_MODE=false
+```
+
+## 📚 Resources
+
+- [Vue.js 3 Documentation](https://vuejs.org/)
+- [TypeScript Documentation](https://www.typescriptlang.org/)
+- [PrimeVue Documentation](https://primevue.org/)
+- [Pinia Documentation](https://pinia.vuejs.org/)
+- [Vite Documentation](https://vitejs.dev/)
+
+## 🤝 Contributing
+
+See the [main README](../README.md) for contribution guidelines.
+
+## 📄 License
+
+MIT - See the [LICENSE](../LICENSE) file for details.
+
+## 👤 Author
+
+**Machi Chiotte**
+
+- GitHub: [@machichiotte](https://github.com/machichiotte)
+- Email: [machichiotte@gmail.com](mailto:machichiotte@gmail.com)
+
+---
+
+[⬆ Back to main README](../README.md)

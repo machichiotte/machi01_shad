@@ -1,222 +1,436 @@
-# Machi00 Server
+# ⚙️ machi00_shad - Backend API
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Node.js](https://img.shields.io/badge/Node.js-14+-green)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue)
+![Express](https://img.shields.io/badge/Express-4.18-lightgrey)
+![MongoDB](https://img.shields.io/badge/MongoDB-6.3-green)
+![Version](https://img.shields.io/badge/version-1.1.1-blue.svg)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-Backend pour l'application Machi00, gérant les ordres de trading et les données de marché.
+> Robust and secure RESTful API for cryptocurrency trading management
 
-## Table des matières
+## 🎯 Description
 
-- [Description](#description)
-- [Fonctionnalités principales](#fonctionnalités-principales)
-- [Fonctionnalités secondaires](#fonctionnalités-secondaires)
-- [Démarrage rapide](#démarrage-rapide)
-- [Prérequis](#prérequis)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Utilisation](#utilisation)
-- [Architecture](#architecture)
-- [Sécurité](#sécurité)
-- [Points d'API](#points-dapi)
-- [Dépendances](#dependances)
-- [Tests](#tests)
-- [Déploiement](#déploiement)
-- [Surveillance et journalisation](#surveillance-et-journalisation)
-- [Roadmap](#roadmap)
-- [Contribution](#contribution)
-- [Licence](#licence)
-- [Contact](#contact)
+Node.js/TypeScript backend with Express.js, handling all business logic for the machi00_shad platform: trading orders, real-time market data, automated strategies, and multi-exchange integration via CCXT.
 
-## Description
+## ✨ Key Features
 
-Machi00 Server est le backend du projet Machi00, construit avec Node.js et Express.js et TypeScript.
+### 🚀 Trading
 
-## Fonctionnalités principales
+- **Order Management** - Create, modify, cancel orders (Market, Limit, Stop-Loss)
+- **Automated Execution** - Programmable trading strategies
+- **Multi-Exchange** - Support for Binance, Kraken, Coinbase via CCXT
+- **Complete History** - Tracking of all transactions
 
-- 🚀 Gestion des ordres de trading en temps réel
-- 📊 Récupération et mise à jour des données de marché
-- 🔗 Intégration avec plusieurs plateformes d'échange de cryptomonnaies
-- 🔒 Système d'authentification sécurisé
-- 📈 Gestion des stratégies de trading
-- 📋 Planification de tâches automatisées
-- ⏱️ Gestion des alarmes
+### 📊 Market Data
 
-## Fonctionnalités secondaires
+- **Real-time Prices** - WebSocket for instant updates
+- **Order Books** - Detailed order books
+- **Historical Data** - OHLCV (Open, High, Low, Close, Volume)
+- **Multi-source Aggregation** - CoinMarketCap, direct exchanges
 
-- 🔄 Conversion de fichiers CSV pour l'importation de données historiques
+### 🤖 Automation
 
-## Prérequis
+- **Custom Strategies** - Configurable trading algorithms
+- **Backtesting** - Testing on historical data
+- **Smart Alerts** - Condition-based notifications
+- **Scheduled Tasks** - Cron jobs for automatic updates
 
-Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments suivants installés sur votre système :
+### 🔒 Security
 
-- Node.js (>=14)
-- yarn
-- MongoDB
-- Git
+- **JWT Authentication** - Secure tokens
+- **API Key Encryption** - Credential protection
+- **Rate Limiting** - Abuse protection
+- **Input Validation** - Injection prevention
+- **Helmet.js** - Protection against common vulnerabilities
 
-## Démarrage rapide
+## 🛠️ Tech Stack
 
-1. Clonez le dépôt
-2. Installez les dépendances : `yarn install`
-3. Configurez les variables d'environnement dans `.env`
-4. Lancez le serveur : `yarn dev`
+### Core
 
-Le serveur sera accessible à `http://localhost:10000`.
+- **Node.js** - JavaScript runtime
+- **Express.js 4.18** - Minimalist web framework
+- **TypeScript 5.5** - Static typing
+- **MongoDB 6.3** - NoSQL database
 
-## Prérequis
+### Trading & Market Data
 
-Avant d'installer et d'exécuter ce projet, assurez-vous d'avoir les éléments suivants installés sur votre système :
+- **CCXT 4.1** - Unified library for exchanges
+- **WebSocket (ws 8.18)** - Real-time connections
+- **node-cron 3.0** - Task scheduling
 
-- Node.js (>=14)
-- yarn
-- MongoDB
-- Git
+### Security
 
-## Installation
+- **bcrypt 5.1** - Password hashing
+- **Helmet 7.1** - HTTP header security
+- **dotenv 16.3** - Environment variable management
 
-1. Clonez le dépôt depuis GitHub :
+### Utilities
 
-```bash
-git clone https://github.com/machichiotte/machi-shad-backend.git
+- **Winston 3.3** - Advanced logging
+- **Nodemailer 6.7** - Email sending
+- **PapaParse 5.4** - CSV parsing
+- **Cheerio 1.0** - Web scraping
+- **RSS Parser 3.13** - RSS feed parsing
+
+### Development
+
+- **Jest 29.7** - Testing framework
+- **Supertest 7.0** - API testing
+- **ESLint 9.10** - Linting
+- **Prettier 3.3** - Code formatting
+- **ts-node 10.9** - Direct TypeScript execution
+
+## 📁 Project Architecture
+
+```
+backend/
+├── src/
+│   ├── ctrl/                    # Controllers (business logic)
+│   │   ├── authController.ts    # Authentication
+│   │   ├── orderController.ts   # Order management
+│   │   ├── marketController.ts  # Market data
+│   │   └── strategyController.ts # Trading strategies
+│   │
+│   ├── routes/                  # Endpoint definitions
+│   │   ├── authRoutes.ts
+│   │   ├── orderRoutes.ts
+│   │   ├── marketRoutes.ts
+│   │   └── strategyRoutes.ts
+│   │
+│   ├── services/                # Business services
+│   │   ├── tradingService.ts    # Trading logic
+│   │   ├── marketDataService.ts # Market data retrieval
+│   │   ├── strategyService.ts   # Strategy execution
+│   │   ├── notificationService.ts # Alerts and emails
+│   │   └── cronService.ts       # Scheduled tasks
+│   │
+│   ├── repo/                    # Repositories (data access)
+│   │   ├── orderRepository.ts
+│   │   ├── userRepository.ts
+│   │   └── marketRepository.ts
+│   │
+│   ├── middlewares/             # Express middlewares
+│   │   ├── authMiddleware.ts    # JWT verification
+│   │   ├── errorHandler.ts      # Error handling
+│   │   └── validator.ts         # Data validation
+│   │
+│   ├── types/                   # TypeScript definitions
+│   │   ├── Order.ts
+│   │   ├── User.ts
+│   │   ├── Market.ts
+│   │   └── Strategy.ts
+│   │
+│   ├── utils/                   # Utilities
+│   │   ├── logger.ts            # Winston configuration
+│   │   ├── encryption.ts        # Encryption/decryption
+│   │   └── validators.ts        # Validation functions
+│   │
+│   ├── constants/               # Constants
+│   │   └── config.ts
+│   │
+│   ├── index.ts                 # Entry point
+│   └── server.ts                # Express configuration
+│
+├── tests/                       # Tests
+│   ├── unit/                    # Unit tests
+│   └── integration/             # Integration tests
+│
+├── dist/                        # Compiled code (generated)
+├── .env                         # Environment variables (not versioned)
+├── .env.example                 # Configuration template
+├── tsconfig.json                # TypeScript configuration
+├── jest.config.ts               # Jest configuration
+└── package.json                 # Dependencies and scripts
 ```
 
-2. Installez les dépendances :
-   `yarn install`
+## 🚀 Installation and Setup
 
-## Configuration
+### Prerequisites
 
-Avant d'exécuter le backend, assurez-vous de configurer les variables d'environnement. Créez un fichier `.env` dans le répertoire racine du backend avec le contenu suivant :
+- **Node.js** >= 14.x
+- **Yarn** >= 1.22.x
+- **MongoDB** >= 4.x (local or cloud)
+- **Git**
 
-- `PORT=`
-- `OFFLINE_MODE=true_ou_false`
-
-### Connect MongoDb
-- `MONGODB_USER=`
-- `MONGODB_PASSWORD=`
-- `MONGODB_CLUSTER=`
-- `MONGODB_DATABASE=`
-
-### Collections MongoDb
-- `MONGODB_COLLECTION_BALANCE=`
-- `MONGODB_COLLECTION_CMC=`
-- `MONGODB_COLLECTION_TIMESTAMP=`
-- `MONGODB_COLLECTION_DASHBOARD=`
-- `MONGODB_COLLECTION_MARKET=`
-- `MONGODB_COLLECTION_ORDER=`
-- `MONGODB_COLLECTION_STRAT=`
-- `MONGODB_COLLECTION_SWAP=`
-- `MONGODB_COLLECTION_TRADE=`
-- `MONGODB_COLLECTION_TICKER=`
-- `MONGODB_COLLECTION_USER=`
-- `MONGODB_COLLECTION_HIGHEST_PRICE=`
-- `MONGODB_COLLECTION_PRICE_BTC=`
-- `MONGODB_COLLECTION_PRICE_ETH=`
-- `MONGODB_COLLECTION_SERVER_CONFIG=`
-- `MONGODB_COLLECTION_API_CONFIG=`
-- `MONGODB_COLLECTION_ALARM=`
-
-### ApiKeys
-- `ENCRYPTION_KEY=`
-- `APIKEY_CMC=`
-- `APIKEY_BINANCE=`
-- `SECRETKEY_BINANCE=`
-
-Remplacez les valeurs par vos propres paramètres.
-
-## Utilisation
-
-Pour démarrer le serveur backend, exécutez la commande suivante :
-`yarn dev`
-
-Le serveur démarrera sur `http://localhost:10000`. Le backend est maintenant prêt à traiter les requêtes entrantes.
-
-## Architecture
-
-Le backend suit une architecture MVC (Modèle-Vue-Contrôleur) : [./doc/tree.md](./doc/tree.md).
-
-## Sécurité
-
-- Utilisation de bcrypt pour le hachage des mots de passe
-- Protection contre les attaques CSRF et XSS grâce à Helmet
-- Validation des entrées utilisateur
-- Gestion sécurisée des clés API et des secrets via les variables d'environnement
-
-## Points d'API
-
-Le backend expose les points d'API dans le fichier suivant  : [./doc/routes.md](./doc/routes.md).
-
-## Dépendances
-
-Le backend utilise les packages Node.js suivants :
-
-- `bcrypt`: Pour le hachage des mots de passe
-- `body-parser`: Middleware pour analyser les requêtes HTTP entrantes
-- `ccxt`: Bibliothèque pour accéder aux plateformes de cryptomonnaies
-- `cors`: Middleware pour gérer les problèmes de partage de ressources entre origines (CORS)
-- `dotenv`: Bibliothèque pour charger les variables d'environnement à partir d'un fichier `.env`
-- `express`: Framework web pour gérer les requêtes HTTP et les routes
-- `fs`: Module système de fichiers pour lire et écrire des fichiers
-- `helmet`: Middleware pour sécuriser les applications Express
-- `mongodb`: Pilote MongoDB pour Node.js pour se connecter et interagir avec une base de données MongoDB
-- `multer`: Middleware pour gérer les données multipart/form-data
-- `node-cron`: Pour planifier des tâches
-- `nodemailer`: Pour envoyer des emails
-- `papaparse`: Pour analyser les fichiers CSV
-- `winston`: Pour la journalisation
-
-## Tests
-
-Pour exécuter les tests, utilisez la commande suivante :
+### Installation
 
 ```bash
+# Clone repository (if not already done)
+git clone https://github.com/machichiotte/machi00_shad.git
+cd machi00-shad/backend
+
+# Install dependencies
+yarn install
+```
+
+### Configuration
+
+Create a `.env` file at the root of the backend folder:
+
+```env
+# ===== SERVER =====
+PORT=10000
+NODE_ENV=development
+OFFLINE_MODE=false
+
+# ===== MONGODB =====
+MONGODB_USER=your_username
+MONGODB_PASSWORD=your_password
+MONGODB_CLUSTER=cluster0.xxxxx.mongodb.net
+MONGODB_DATABASE=machi00
+
+# MongoDB Collections
+MONGODB_COLLECTION_BALANCE=balances
+MONGODB_COLLECTION_CMC=coinmarketcap
+MONGODB_COLLECTION_TIMESTAMP=timestamps
+MONGODB_COLLECTION_DASHBOARD=dashboard
+MONGODB_COLLECTION_MARKET=markets
+MONGODB_COLLECTION_ORDER=orders
+MONGODB_COLLECTION_STRAT=strategies
+MONGODB_COLLECTION_SWAP=swaps
+MONGODB_COLLECTION_TRADE=trades
+MONGODB_COLLECTION_TICKER=tickers
+MONGODB_COLLECTION_USER=users
+MONGODB_COLLECTION_HIGHEST_PRICE=highest_prices
+MONGODB_COLLECTION_PRICE_BTC=btc_prices
+MONGODB_COLLECTION_PRICE_ETH=eth_prices
+MONGODB_COLLECTION_SERVER_CONFIG=server_config
+MONGODB_COLLECTION_API_CONFIG=api_config
+MONGODB_COLLECTION_ALARM=alarms
+
+# ===== SECURITY =====
+ENCRYPTION_KEY=your_32_character_encryption_key
+JWT_SECRET=your_jwt_secret
+
+# ===== API KEYS =====
+# Binance
+APIKEY_BINANCE=your_binance_api_key
+SECRETKEY_BINANCE=your_binance_secret
+
+# CoinMarketCap
+APIKEY_CMC=your_coinmarketcap_key
+
+# ===== EMAIL (optional) =====
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASSWORD=your_app_password
+```
+
+### Development
+
+```bash
+# Start server in development mode (with hot reload)
+yarn dev
+
+# Server will be available at http://localhost:10000
+```
+
+### Production
+
+```bash
+# Compile TypeScript
+yarn build
+
+# Start server in production mode
+yarn start:prod
+```
+
+## 📡 API Endpoints
+
+### Authentication
+
+| Method | Endpoint             | Description         |
+| ------ | -------------------- | ------------------- |
+| POST   | `/api/auth/register` | Create user account |
+| POST   | `/api/auth/login`    | Login (returns JWT) |
+| POST   | `/api/auth/logout`   | Logout              |
+| GET    | `/api/auth/me`       | Get current user    |
+
+### Orders
+
+| Method | Endpoint          | Description     |
+| ------ | ----------------- | --------------- |
+| GET    | `/api/orders`     | List all orders |
+| GET    | `/api/orders/:id` | Order details   |
+| POST   | `/api/orders`     | Create order    |
+| PUT    | `/api/orders/:id` | Modify order    |
+| DELETE | `/api/orders/:id` | Cancel order    |
+
+### Market
+
+| Method | Endpoint                        | Description      |
+| ------ | ------------------------------- | ---------------- |
+| GET    | `/api/market/tickers`           | Current prices   |
+| GET    | `/api/market/orderbook/:symbol` | Order book       |
+| GET    | `/api/market/ohlcv/:symbol`     | Historical data  |
+| GET    | `/api/market/balance`           | Account balances |
+
+### Strategies
+
+| Method | Endpoint                    | Description      |
+| ------ | --------------------------- | ---------------- |
+| GET    | `/api/strategies`           | List strategies  |
+| GET    | `/api/strategies/:id`       | Strategy details |
+| POST   | `/api/strategies`           | Create strategy  |
+| PUT    | `/api/strategies/:id`       | Modify strategy  |
+| DELETE | `/api/strategies/:id`       | Delete strategy  |
+| POST   | `/api/strategies/:id/start` | Start strategy   |
+| POST   | `/api/strategies/:id/stop`  | Stop strategy    |
+
+### Alarms
+
+| Method | Endpoint          | Description  |
+| ------ | ----------------- | ------------ |
+| GET    | `/api/alarms`     | List alarms  |
+| POST   | `/api/alarms`     | Create alarm |
+| DELETE | `/api/alarms/:id` | Delete alarm |
+
+For complete documentation, see [./API.md](../API.md)
+
+## 🔐 Authentication
+
+The API uses JWT (JSON Web Tokens) for authentication.
+
+### Get a token
+
+```bash
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "your_password"
+}
+```
+
+Response:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": "123",
+    "email": "user@example.com",
+    "name": "John Doe"
+  }
+}
+```
+
+### Use the token
+
+Include the token in the `Authorization` header:
+
+```bash
+GET /api/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+## 🧪 Testing
+
+```bash
+# Run all tests
 yarn test
+
+# Tests in watch mode
+yarn test --watch
+
+# Tests with coverage
+yarn test --coverage
+
+# Test specific file
+yarn test orderController.test.ts
 ```
 
-## Déploiement
+## 📊 Logging
 
-Le backend peut être déployé sur diverses plateformes cloud comme Heroku, AWS, ou Google Cloud Platform. Assurez-vous de configurer correctement les variables d'environnement sur votre plateforme de déploiement.
+The backend uses Winston for structured logging.
 
-Pour un déploiement sur Heroku, par exemple :
+### Log Levels
 
-1. Créez une application Heroku
-2. Connectez votre dépôt GitHub à Heroku
-3. Configurez les variables d'environnement dans les paramètres de l'application
-4. Déployez l'application via le tableau de bord Heroku ou en poussant vers la branche main
+- `error` - Critical errors
+- `warn` - Warnings
+- `info` - General information
+- `http` - HTTP requests
+- `debug` - Debug information
 
-## Surveillance et journalisation
+### Example
 
-Nous utilisons Winston pour la journalisation. Configurez des alertes dans votre outil de surveillance préféré pour être informé des erreurs critiques.
+```typescript
+import logger from '@/utils/logger'
 
-## Roadmap
+logger.info('Order created', { orderId: '123', symbol: 'BTC/USDT' })
+logger.error('Failed to execute order', { error: err.message })
+```
 
-Voici quelques fonctionnalités prévues pour les futures versions :
+### Log Files
 
-- Implémenter un mode hors ligne robuste pour les tests, utilisant des fichiers JSON comme données simulées
-- Améliorer la couverture des tests en incluant des scénarios pour le mode hors ligne
-- Développer un outil pour générer et maintenir facilement les données de test JSON
-- Intégrer le mode hors ligne dans le pipeline CI/CD pour des tests plus fiables
+- `logs/error.log` - Errors only
+- `logs/combined.log` - All logs
+- Console - In development
 
-- Intégration de WebSockets pour les mises à jour en temps réel
-- Ajout de nouvelles stratégies de trading automatisées
-- Amélioration de l'analyse des données historiques
-- Intégration avec plus de plateformes d'échange
-- Mise en place d'un système de notifications avancé
+## 🔄 Scheduled Tasks (Cron Jobs)
 
-## Contribution
+The backend executes several automatic tasks:
 
-Les contributions à ce projet sont les bienvenues. Pour contribuer :
+| Task          | Frequency    | Description            |
+| ------------- | ------------ | ---------------------- |
+| Price updates | Every 30s    | Fetch latest prices    |
+| Alarm checks  | Every minute | Check alert conditions |
+| Log cleanup   | Daily (3am)  | Archive old logs       |
+| DB backup     | Daily (4am)  | MongoDB backup         |
+| CMC update    | Every 5min   | CoinMarketCap data     |
 
-1. Forkez le projet
-2. Créez votre branche de fonctionnalité (`git checkout -b feature/AmazingFeature`)
-3. Committez vos changements (`git commit -m 'Add some AmazingFeature'`)
-4. Poussez vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrez une Pull Request
+Configuration in `src/services/cronService.ts`
 
-## Licence
+## 🚀 Deployment
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus d'informations.
+See the complete [Deployment Guide](../DEPLOYMENT.md) for detailed instructions.
 
-## Contact
+## 🔧 Available Scripts
 
-Si vous avez des questions ou besoin d'aide supplémentaire, n'hésitez pas à nous contacter à [machichiotte@gmail.com](mailto:machichiotte@gmail.com).
+| Script            | Description                      |
+| ----------------- | -------------------------------- |
+| `yarn dev`        | Start server in development mode |
+| `yarn build`      | Compile TypeScript to JavaScript |
+| `yarn start:prod` | Start server in production       |
+| `yarn test`       | Run tests                        |
+| `yarn lint`       | Check code with ESLint           |
+| `yarn clean`      | Clean dist folder                |
+| `yarn copy-files` | Copy config files                |
+
+## 🛡️ Security
+
+### Implemented Best Practices
+
+- ✅ **bcrypt hashing** - Secure passwords (10 rounds)
+- ✅ **Helmet.js** - HTTP header protection
+- ✅ **Configured CORS** - Authorized origins only
+- ✅ **Rate limiting** - Max 100 req/15min per IP
+- ✅ **Joi validation** - All inputs validated
+- ✅ **SQL Injection** - Parameterized queries
+- ✅ **XSS Protection** - Data sanitization
+- ✅ **Encrypted secrets** - API keys encrypted
+- ✅ **HTTPS only** - In production
+- ✅ **JWT expiration** - Tokens with TTL
+
+## 🤝 Contributing
+
+See the [main README](../README.md) for contribution guidelines.
+
+## 📄 License
+
+MIT - See the [LICENSE](../LICENSE) file for details.
+
+## 👤 Author
+
+**Machi Chiotte**
+
+- GitHub: [@machichiotte](https://github.com/machichiotte)
+- Email: [machichiotte@gmail.com](mailto:machichiotte@gmail.com)
+
+---
+
+[⬆ Back to main README](../README.md)
