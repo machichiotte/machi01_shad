@@ -1,11 +1,11 @@
-# 📱 machi00_shad - Frontend
+# 📱 machi01_shad - Frontend
 
 ![Vue.js](https://img.shields.io/badge/Vue.js-3.5-brightgreen)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue)
 ![Vite](https://img.shields.io/badge/Vite-6.2-purple)
 ![PrimeVue](https://img.shields.io/badge/PrimeVue-3.48-blue)
 
-> Modern and reactive user interface for the machi00_shad trading platform
+> Modern and reactive user interface for the machi01_shad trading platform
 
 ## 🎯 Description
 

@@ -5,7 +5,14 @@ import path from 'path'; // Pour gérer les chemins de fichiers
 
 // Assurez-vous que le répertoire des logs existe (optionnel, mais bonne pratique)
 import fs from 'fs';
-const logDir = path.dirname(config.serverConfig.logFiles.info); // Prend le chemin du premier fichier défini
+const isProduction = process.env.NODE_ENV === 'production';
+const OPS_LOG_DIR = '/media/machi/Data/Dev/machi-workspace/machi-projects/machi00_ops/machi01_shad/debug-logs';
+let logDir = path.dirname(config.serverConfig.logFiles.info);
+
+if (!isProduction) {
+  logDir = OPS_LOG_DIR;
+}
+
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir, { recursive: true });
 }
@@ -48,23 +55,23 @@ const logger = winston.createLogger({
   transports: [
     // Transport pour toutes les erreurs (niveau 'error') dans un fichier dédié
     new winston.transports.File({
-      filename: config.serverConfig.logFiles.error, // Assurez-vous que ce chemin est dans config
+      filename: path.join(logDir, path.basename(config.serverConfig.logFiles.error)),
       level: 'error',
       format: fileFormat, // Garder JSON pour les erreurs
     }),
     // Transport pour tous les logs (à partir du niveau 'info' ou 'debug') dans un fichier combiné
     new winston.transports.File({
-      filename: config.serverConfig.logFiles.info, // Renommé pour clarté (ex: 'combined.log')
+      filename: path.join(logDir, path.basename(config.serverConfig.logFiles.info)),
       format: fileFormat, // JSON aussi pour le fichier combiné
     }),
   ],
   // Gestionnaires pour les exceptions non capturées et les rejets de promesses non gérés
   exceptionHandlers: [
-    new winston.transports.File({ filename: config.serverConfig.logFiles.exceptions }), // Chemin requis dans config
+    new winston.transports.File({ filename: path.join(logDir, path.basename(config.serverConfig.logFiles.exceptions)) }),
     new winston.transports.Console({ format: consoleFormat }) // Affiche aussi en console
   ],
   rejectionHandlers: [
-    new winston.transports.File({ filename: config.serverConfig.logFiles.rejections }), // Chemin requis dans config
+    new winston.transports.File({ filename: path.join(logDir, path.basename(config.serverConfig.logFiles.rejections)) }),
     new winston.transports.Console({ format: consoleFormat }) // Affiche aussi en console
   ],
   exitOnError: false, // Winston ne quittera pas le processus sur une exception gérée

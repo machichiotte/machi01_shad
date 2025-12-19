@@ -1,4 +1,4 @@
-# ⚙️ machi00_shad - Backend API
+# ⚙️ machi01_shad - Backend API
 
 ![Node.js](https://img.shields.io/badge/Node.js-14+-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue)
@@ -12,7 +12,7 @@
 
 ## 🎯 Description
 
-Node.js/TypeScript backend with Express.js, handling all business logic for the machi00_shad platform: trading orders, real-time market data, automated strategies, and multi-exchange integration via CCXT.
+Node.js/TypeScript backend with Express.js, handling all business logic for the machi01_shad platform: trading orders, real-time market data, automated strategies, and multi-exchange integration via CCXT.
 
 ## ✨ Key Features
 
@@ -158,8 +158,8 @@ backend/
 
 ```bash
 # Clone repository (if not already done)
-git clone https://github.com/machichiotte/machi00_shad.git
-cd machi00-shad/backend
+git clone https://github.com/machichiotte/machi01_shad.git
+cd machi01_shad/backend
 
 # Install dependencies
 yarn install

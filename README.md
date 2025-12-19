@@ -1,4 +1,4 @@
-# 📊 machi00_shad - Cryptocurrency Trading Platform
+# 📊 machi01_shad - Cryptocurrency Trading Platform
 
 ![Version](https://img.shields.io/badge/version-1.1.1-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
@@ -10,7 +10,7 @@
 
 ## 🎯 Overview
 
-machi00_shad is a comprehensive full-stack cryptocurrency trading application that enables order management, real-time market data visualization, and automated trading strategy execution. The project is structured as a monorepo, combining a modern Vue.js frontend with a performant Node.js backend.
+machi01_shad is a comprehensive full-stack cryptocurrency trading application that enables order management, real-time market data visualization, and automated trading strategy execution. The project is structured as a monorepo, combining a modern Vue.js frontend with a performant Node.js backend.
 
 ### ✨ Key Features
 
@@ -25,7 +25,7 @@ machi00_shad is a comprehensive full-stack cryptocurrency trading application th
 ## 📁 Project Structure
 
 ```
-machi00-shad/
+machi01_shad/
 ├── frontend/              # Vue.js 3 + TypeScript application
 │   ├── src/
 │   │   ├── components/    # Reusable Vue components
@@ -62,8 +62,8 @@ machi00-shad/
 
 ```bash
 # Clone the repository
-git clone https://github.com/machichiotte/machi00_shad.git
-cd machi00-shad
+git clone https://github.com/machichiotte/machi01_shad.git
+cd machi01_shad
 
 # Install frontend dependencies
 cd frontend

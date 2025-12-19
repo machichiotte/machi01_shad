@@ -1,6 +1,6 @@
 # 🤝 Contributing Guide
 
-Thank you for your interest in contributing to machi00_shad! This document provides guidelines for contributing to the project.
+Thank you for your interest in contributing to machi01_shad! This document provides guidelines for contributing to the project.
 
 ## 📋 Table of Contents
 
@@ -31,14 +31,14 @@ Click the "Fork" button at the top right of the repository page.
 ### 2. Clone Your Fork
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/machi00_shad.git
-cd machi00_shad
+git clone https://github.com/YOUR_USERNAME/machi01_shad.git
+cd machi01_shad
 ```
 
 ### 3. Add the Original Repository as Remote
 
 ```bash
-git remote add upstream https://github.com/machichiotte/machi00_shad.git
+git remote add upstream https://github.com/machichiotte/machi01_shad.git
 ```
 
 ### 4. Create a Branch
@@ -366,4 +366,4 @@ If you have questions, feel free to:
 
 ---
 
-Thank you for contributing to machi00_shad! 🚀
+Thank you for contributing to machi01_shad! 🚀
