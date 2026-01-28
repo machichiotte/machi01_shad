@@ -30,6 +30,7 @@
     "@types/jest": "^29.5.13",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vue/test-utils": "^2.4.6",
+    "electron": "^40.0.0",
     "jsdom": "^25.0.1",
     "typescript": "^5.5.3",
     "vite": "^6.2.4",

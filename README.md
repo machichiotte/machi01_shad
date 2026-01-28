@@ -67,11 +67,11 @@ cd machi01_shad
 
 # Install frontend dependencies
 cd frontend
-yarn install
+pnpm install
 
 # Install backend dependencies
 cd ../backend
-yarn install
+pnpm install
 ```
 
 ### Configuration
@@ -111,12 +111,12 @@ VITE_API_URL=http://localhost:10000
 ```bash
 # Terminal 1 - Backend
 cd backend
-yarn dev
+pnpm dev
 # Server available at http://localhost:10000
 
 # Terminal 2 - Frontend
 cd frontend
-yarn dev
+pnpm dev
 # Application available at http://localhost:5173
 ```
 
@@ -188,11 +188,11 @@ yarn test
 ```bash
 # Build frontend
 cd frontend
-yarn build
+pnpm build
 
 # Build backend
 cd backend
-yarn build
+pnpm build
 ```
 
 ## 🔒 Security
