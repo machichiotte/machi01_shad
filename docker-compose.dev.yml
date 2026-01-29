@@ -1,0 +1,20 @@
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:latest
+    container_name: machi01_mongo_dev
+    ports:
+      - "27001:27017"
+    volumes:
+      - mongodb_data_dev:/data/db
+    environment:
+      - MONGODB_INITDB_DATABASE=machi01_shad_dev
+    networks:
+      - machi01-dev-network
+    restart: unless-stopped
+
+networks:
+  machi01-dev-network:
+    driver: bridge
+
+volumes:
+  mongodb_data_dev:

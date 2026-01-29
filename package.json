@@ -1,0 +1,17 @@
+{
+    "name": "machi01_shad",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Machi 01 - Shad Project",
+    "scripts": {
+        "dev": "pnpm run dev --recursive",
+        "build": "pnpm run build --recursive",
+        "lint": "pnpm run lint --recursive",
+        "db:dev": "docker compose -f docker-compose.dev.yml up -d",
+        "docker:up": "docker compose up -d",
+        "docker:down": "docker compose down"
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.2"
+    }
+}
