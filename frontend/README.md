@@ -131,7 +131,7 @@ frontend/
 
 ```bash
 # Install dependencies
-yarn install
+pnpm install
 ```
 
 ### Configuration
@@ -153,7 +153,7 @@ VITE_DEV_MODE=true
 
 ```bash
 # Start development server with HMR
-yarn dev
+pnpm dev
 
 # Application will be available at http://localhost:5173
 ```
@@ -162,23 +162,23 @@ yarn dev
 
 ```bash
 # Compile and minify for production
-yarn build
+pnpm build
 
 # Preview production build locally
-yarn preview
+pnpm preview
 ```
 
 ## 🧪 Testing
 
 ```bash
 # Run unit tests
-yarn test
+pnpm test
 
 # Run tests in watch mode
-yarn test --watch
+pnpm test --watch
 
 # Generate coverage report
-yarn test --coverage
+pnpm test --coverage
 ```
 
 ## 🎨 Code Conventions
@@ -243,13 +243,13 @@ onMounted(() => {
 
 | Script         | Description                        |
 | -------------- | ---------------------------------- |
-| `yarn dev`     | Start development server with HMR  |
-| `yarn build`   | Compile application for production |
-| `yarn preview` | Preview production build           |
-| `yarn test`    | Run unit tests                     |
-| `yarn lint`    | Check and fix code with ESLint     |
-| `yarn format`  | Format code with Prettier          |
-| `yarn clean`   | Clean dist folder                  |
+| `pnpm dev`     | Start development server with HMR  |
+| `pnpm build`   | Compile application for production |
+| `pnpm preview` | Preview production build           |
+| `pnpm test`    | Run unit tests                     |
+| `pnpm lint`    | Check and fix code with ESLint     |
+| `pnpm format`  | Format code with Prettier          |
+| `pnpm clean`   | Clean dist folder                  |
 
 ## 📊 Performance
 
@@ -319,7 +319,7 @@ if (import.meta.env.DEV) {
 ### Build
 
 ```bash
-yarn build
+pnpm build
 ```
 
 The `dist/` folder will contain optimized files for production.

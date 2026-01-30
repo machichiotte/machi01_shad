@@ -62,7 +62,7 @@ Node.js/TypeScript backend with Express.js, handling all business logic for the 
 
 ### Security
 
-- **bcrypt 5.1** - Password hashing
+- **bcryptjs 5.1** - Password hashing
 - **Helmet 7.1** - HTTP header security
 - **dotenv 16.3** - Environment variable management
 
@@ -162,7 +162,7 @@ git clone https://github.com/machichiotte/machi01_shad.git
 cd machi01_shad/backend
 
 # Install dependencies
-yarn install
+pnpm install
 ```
 
 ### Configuration
@@ -223,7 +223,7 @@ EMAIL_PASSWORD=your_app_password
 
 ```bash
 # Start server in development mode (with hot reload)
-yarn dev
+pnpm dev
 
 # Server will be available at http://localhost:10000
 ```
@@ -232,10 +232,10 @@ yarn dev
 
 ```bash
 # Compile TypeScript
-yarn build
+pnpm build
 
 # Start server in production mode
-yarn start:prod
+pnpm start:prod
 ```
 
 ## 📡 API Endpoints
@@ -332,16 +332,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ```bash
 # Run all tests
-yarn test
+pnpm test
 
 # Tests in watch mode
-yarn test --watch
+pnpm test --watch
 
 # Tests with coverage
-yarn test --coverage
+pnpm test --coverage
 
 # Test specific file
-yarn test orderController.test.ts
+pnpm test orderController.test.ts
 ```
 
 ## 📊 Logging
@@ -393,19 +393,19 @@ See the complete [Deployment Guide](../DEPLOYMENT.md) for detailed instructions.
 
 | Script            | Description                      |
 | ----------------- | -------------------------------- |
-| `yarn dev`        | Start server in development mode |
-| `yarn build`      | Compile TypeScript to JavaScript |
-| `yarn start:prod` | Start server in production       |
-| `yarn test`       | Run tests                        |
-| `yarn lint`       | Check code with ESLint           |
-| `yarn clean`      | Clean dist folder                |
-| `yarn copy-files` | Copy config files                |
+| `pnpm dev`        | Start server in development mode |
+| `pnpm build`      | Compile TypeScript to JavaScript |
+| `pnpm start:prod` | Start server in production       |
+| `pnpm test`       | Run tests                        |
+| `pnpm lint`       | Check code with ESLint           |
+| `pnpm clean`      | Clean dist folder                |
+| `pnpm copy-files` | Copy config files                |
 
 ## 🛡️ Security
 
 ### Implemented Best Practices
 
-- ✅ **bcrypt hashing** - Secure passwords (10 rounds)
+- ✅ **bcryptjs hashing** - Secure passwords (10 rounds)
 - ✅ **Helmet.js** - HTTP header protection
 - ✅ **Configured CORS** - Authorized origins only
 - ✅ **Rate limiting** - Max 100 req/15min per IP

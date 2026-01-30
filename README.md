@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue)
 ![Vue.js](https://img.shields.io/badge/Vue.js-3.5-brightgreen)
-![Node.js](https://img.shields.io/badge/Node.js-14+-green)
+![Node.js](https://img.shields.io/badge/Node.js-20+-green)
 
 > Full-stack cryptocurrency trading platform with modern interface and robust API
 
@@ -138,11 +138,11 @@ The backend follows a layered architecture (MVC):
 ```bash
 # Frontend tests
 cd frontend
-yarn test
+pnpm test
 
 # Backend tests
 cd backend
-yarn test
+pnpm test
 ```
 
 ## 📦 Production Build
@@ -159,7 +159,7 @@ pnpm build
 
 ## 🔒 Security
 
-- ✅ Password hashing with bcrypt
+- ✅ Password hashing with bcryptjs
 - ✅ CSRF and XSS protection via Helmet
 - ✅ User input validation
 - ✅ API key encryption
