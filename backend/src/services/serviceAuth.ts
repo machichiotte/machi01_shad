@@ -1,5 +1,5 @@
 // src/services/serviceAuth.ts
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { RepoAuth } from '@repo/repoAuth';
 import { handleServiceError } from '@utils/errorUtil';

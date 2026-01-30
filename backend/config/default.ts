@@ -148,7 +148,7 @@ export const DEFAULT_SECURITY = {
 
 export const DEFAULT_RSS_CONFIG: ServerRssConfig = {
   // Valeurs par défaut pour les paramètres globaux RSS
-  enabled: true,                     // Le traitement RSS est activé par défaut
+  enabled: false,                     // Désactivé momentanément
   delayBetweenArticlesMs: 2000,    // Délai par défaut entre les articles 
   delayBetweenFeedsMs: 5000,       // Délai par défaut entre les flux 
   minContentLengthForScraping: 250, // Seuil de scraping par défaut 

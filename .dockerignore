@@ -1,5 +1,7 @@
 node_modules
+**/node_modules
 dist
+**/dist
 .next
 .nuxt
 .output
@@ -7,5 +9,4 @@ dist
 .git
 .env
 .env.*.local
-frontend/dist
-backend/dist
+.DS_Store

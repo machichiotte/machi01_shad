@@ -5,16 +5,25 @@ import path from 'path'; // Pour gérer les chemins de fichiers
 
 // Assurez-vous que le répertoire des logs existe (optionnel, mais bonne pratique)
 import fs from 'fs';
-const isProduction = process.env.NODE_ENV === 'production';
-const OPS_LOG_DIR = '/media/machi/Data/Dev/machi-workspace/machi-projects/machi00_ops/machi01_shad/debug-logs';
-let logDir = path.dirname(config.serverConfig.logFiles.info);
+const isProduction = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'prod';
+let logDir = path.join(process.cwd(), 'logs');
 
+// En développement local (hors Docker), on peut utiliser le dossier ops si on a les droits
 if (!isProduction) {
-  logDir = OPS_LOG_DIR;
+  const OPS_LOG_DIR = '/media/machi/Data/Dev/machi-workspace/machi-projects/machi00_ops/machi01_shad/debug-logs';
+  if (fs.existsSync('/media/machi')) {
+    logDir = OPS_LOG_DIR;
+  }
 }
 
+// Tentative de création du dossier de logs avec capture d'erreur pour éviter le crash
 if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir, { recursive: true });
+  try {
+    fs.mkdirSync(logDir, { recursive: true });
+  } catch (error) {
+    console.error(`Impossible de créer le dossier de logs : ${logDir}. Erreur:`, error);
+    // On continue quand même, Winston gérera si les fichiers ne sont pas accessibles
+  }
 }
 
 // Définir le niveau de log en fonction de l'environnement

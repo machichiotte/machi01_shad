@@ -32,18 +32,20 @@ RUN cd backend && pnpm build
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
+ENV NODE_ENV prod
 ENV PORT 4000
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodeuser
 
-# Copy build output and necessary files
-COPY --from=builder /app/backend/dist ./backend/dist
-COPY --from=builder /app/backend/package.json ./backend/package.json
-COPY --from=builder /app/node_modules ./node_modules
-# We might need backend's node_modules if not hoisted
-COPY --from=builder /app/backend/node_modules ./backend/node_modules
+# Copy build output and necessary files with correct ownership
+COPY --from=builder --chown=nodeuser:nodejs /app/backend/dist ./backend/dist
+COPY --from=builder --chown=nodeuser:nodejs /app/backend/package.json ./backend/package.json
+COPY --from=builder --chown=nodeuser:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nodeuser:nodejs /app/backend/node_modules ./backend/node_modules
+
+# Create logs directory and ensure proper permissions for the whole app
+RUN mkdir -p logs && chown -R nodeuser:nodejs /app
 
 USER nodeuser
 

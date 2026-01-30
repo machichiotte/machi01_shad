@@ -4,6 +4,7 @@ services:
     container_name: machi01_mongo
     ports:
       - "27001:27017"
+    command: [ "mongod", "--quiet" ]
     volumes:
       - mongodb_data:/data/db
     environment:
