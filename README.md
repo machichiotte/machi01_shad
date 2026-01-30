@@ -51,105 +51,67 @@ machi01_shad/
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### 🐳 Running with Docker (Recommended)
 
-- **Node.js** >= 14.x
-- **Yarn** >= 1.22.x
-- **MongoDB** >= 4.x (for backend)
-- **Git**
+The easiest way to run the entire stack (MongoDB + Backend + Frontend) is using Docker Compose.
 
-### Complete Installation
-
+#### Production Mode
 ```bash
-# Clone the repository
-git clone https://github.com/machichiotte/machi01_shad.git
-cd machi01_shad
+docker compose up -d
+```
+- **Frontend**: [http://localhost:3001](http://localhost:3001)
+- **Backend API**: [http://localhost:4001/api](http://localhost:4001/api)
+- **MongoDB**: `localhost:27001`
 
-# Install frontend dependencies
-cd frontend
+#### Development Mode
+```bash
+docker compose -f docker-compose.dev.yml up -d
+```
+
+### 💻 Local Development
+
+#### Prerequisites
+- **Node.js** >= 20.x
+- **PNPM** >= 10.x
+- **MongoDB** (Local or Docker)
+
+#### Installation & Launch
+```bash
+# Install everything from root
 pnpm install
 
-# Install backend dependencies
-cd ../backend
-pnpm install
-```
+# Build everything
+pnpm build
 
-### Configuration
-
-#### Backend
-
-Create a `.env` file in the `backend/` folder:
-
-```env
-# Server
-PORT=10000
-OFFLINE_MODE=false
-
-# MongoDB
-MONGODB_USER=your_username
-MONGODB_PASSWORD=your_password
-MONGODB_CLUSTER=your_cluster
-MONGODB_DATABASE=machi00
-
-# API Keys (encrypted)
-ENCRYPTION_KEY=your_encryption_key
-APIKEY_BINANCE=your_binance_key
-SECRETKEY_BINANCE=your_binance_secret
-APIKEY_CMC=your_coinmarketcap_key
-```
-
-#### Frontend
-
-Create a `.env` file in the `frontend/` folder if needed:
-
-```env
-VITE_API_URL=http://localhost:10000
-```
-
-### Launch
-
-```bash
-# Terminal 1 - Backend
-cd backend
+# Launch everything in dev mode
 pnpm dev
-# Server available at http://localhost:10000
-
-# Terminal 2 - Frontend
-cd frontend
-pnpm dev
-# Application available at http://localhost:5173
 ```
 
 ## 🛠️ Tech Stack
 
-### Frontend
+- **Frontend**: Vue.js 3.5, PrimeVue, Pinia, Vite
+- **Backend**: Node.js, Express, TypeScript, CCXT (Trading), MongoDB
+- **Infrastructure**: Docker, Nginx (Frontend server)
 
-- **Framework**: Vue.js 3.5 with Composition API
-- **Language**: TypeScript 5.5
-- **UI Library**: PrimeVue 3.48
-- **State Management**: Pinia 3.0
-- **Routing**: Vue Router 4.0
-- **Build Tool**: Vite 6.2
-- **Testing**: Vitest 2.1
+## 📁 Project Structure
 
-### Backend
+```
+machi01_shad/
+├── apps/
+│   ├── frontend/     # Vue.js Web interface (Vite)
+│   └── backend/      # Node.js Trading API
+├── docker-compose.yml
+├── package.json      # Workspace root
+└── pnpm-workspace.yaml
+```
 
-- **Runtime**: Node.js with Express.js
-- **Language**: TypeScript 5.5
-- **Database**: MongoDB 6.3
-- **Trading Library**: CCXT 4.1
-- **Security**: Helmet, bcrypt
-- **Scheduling**: node-cron
-- **Logging**: Winston
-- **Testing**: Jest 29.7
+*Note: The project uses a PNPM monorepo structure.*
 
-## 📚 Detailed Documentation
+## 📚 Documentation
 
-- [📱 Frontend Documentation](./frontend/README.md) - Architecture, components, and development
-- [⚙️ Backend Documentation](./backend/README.md) - API, services, and deployment
-- [🏗️ Architecture](./ARCHITECTURE.md) - Technical architecture and diagrams
-- [📡 API Documentation](./API.md) - Complete API reference
-- [🚀 Deployment Guide](./DEPLOYMENT.md) - Production deployment instructions
+- [⚙️ Backend API](./backend/README.md)
+- [📱 Frontend UI](./frontend/README.md)
+- [🏗️ Master Architecture](../machi00_ops/MASTER_CONTEXT.md)
 
 ## 🏗️ Architecture
 

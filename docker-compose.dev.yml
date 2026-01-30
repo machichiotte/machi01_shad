@@ -1,20 +1,56 @@
 services:
   mongodb:
     image: mongodb/mongodb-community-server:latest
-    container_name: machi01_mongo_dev
+    container_name: machi01_mongo
     ports:
       - "27001:27017"
     volumes:
-      - mongodb_data_dev:/data/db
+      - mongodb_data:/data/db
     environment:
-      - MONGODB_INITDB_DATABASE=machi01_shad_dev
+      - MONGODB_INITDB_DATABASE=machi01_shad
     networks:
-      - machi01-dev-network
-    restart: unless-stopped
+      - machi01-network
+    restart: always
+
+  backend:
+    image: node:20-alpine
+    container_name: machi01_backend_dev
+    working_dir: /app
+    ports:
+      - "4001:4000"
+    environment:
+      - NODE_ENV=dev
+      - PORT=4000
+      - MONGODB_URI=mongodb://mongodb:27017/machi01_shad
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/backend/node_modules
+      - /app/frontend/node_modules
+    command: sh -c "corepack enable pnpm && pnpm install && cd backend && pnpm dev"
+    depends_on:
+      - mongodb
+    networks:
+      - machi01-network
+
+  frontend:
+    image: node:20-alpine
+    container_name: machi01_frontend_dev
+    working_dir: /app
+    ports:
+      - "3001:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/backend/node_modules
+      - /app/frontend/node_modules
+    command: sh -c "corepack enable pnpm && pnpm install && cd frontend && pnpm dev --host"
+    networks:
+      - machi01-network
 
 networks:
-  machi01-dev-network:
+  machi01-network:
     driver: bridge
 
 volumes:
-  mongodb_data_dev:
+  mongodb_data:

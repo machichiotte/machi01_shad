@@ -14,8 +14,8 @@ services:
 
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     image: machi01_backend:latest
     container_name: machi01_backend
     ports:
@@ -30,8 +30,8 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: frontend/Dockerfile
     image: machi01_frontend:latest
     container_name: machi01_frontend
     ports:

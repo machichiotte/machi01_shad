@@ -4,14 +4,20 @@
     "private": true,
     "description": "Machi 01 - Shad Project",
     "scripts": {
-        "dev": "pnpm run dev --recursive",
-        "build": "pnpm run build --recursive",
-        "lint": "pnpm run lint --recursive",
+        "dev": "pnpm -r dev",
+        "build": "pnpm -r build",
+        "lint": "pnpm -r lint",
         "db:dev": "docker compose -f docker-compose.dev.yml up -d",
         "docker:up": "docker compose up -d",
         "docker:down": "docker compose down"
     },
     "devDependencies": {
         "concurrently": "^9.1.2"
+    },
+    "pnpm": {
+        "overrides": {
+            "@types/express": "^4.17.21",
+            "@types/express-serve-static-core": "^4.17.21"
+        }
     }
 }

@@ -25,7 +25,7 @@ export class ServiceMongodb {
   static async getMongoClient(): Promise<MongoClient> {
     const operation = 'getMongoClient';
     if (!mongoInstance) {
-      const uri = `mongodb+srv://${config.databaseConfig.credentials.user}:${config.databaseConfig.credentials.password}@${config.databaseConfig.credentials.cluster}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+      const uri = process.env.MONGODB_URI || `mongodb+srv://${config.databaseConfig.credentials.user}:${config.databaseConfig.credentials.password}@${config.databaseConfig.credentials.cluster}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
       const safeUri = getSafeUri(uri); // URI sans identifiants pour les logs
 
       logger.info(`Attempting to connect...`, { module: path.parse(__filename).name, operation, uri: safeUri });
